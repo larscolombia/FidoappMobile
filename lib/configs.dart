@@ -7,7 +7,7 @@ const GREEK_LANGUAGE = 'el';
 const DASHBOARD_AUTO_SLIDER_SECOND = 5;
 
 ///Live Url
-const DOMAIN_URL = "";
+const DOMAIN_URL = "http://10.0.2.2:8000";
 
 const BASE_URL = '$DOMAIN_URL/api/';
 
@@ -23,7 +23,8 @@ const STRIPE_URL = 'https://api.stripe.com/v1/payment_intents';
 const STRIPE_merchantIdentifier = "merchant.flutter.stripe.test";
 //endregion
 
-const APP_PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.pawlly.customer';
+const APP_PLAY_STORE_URL =
+    'https://play.google.com/store/apps/details?id=com.pawlly.customer';
 const APP_APPSTORE_URL = 'https://apps.apple.com/in/app/pawlly/id6458044939';
 
 const TERMS_CONDITION_URL = '$DOMAIN_URL/page/terms-conditions';
