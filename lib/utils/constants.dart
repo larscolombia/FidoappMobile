@@ -1,10 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:country_picker/country_picker.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/main.dart';
-
-import '../screens/dashboard/dashboard_res_model.dart';
 
 const DEFAULT_QUANTITY = '1';
 const PERMISSION_STATUS = 'permissionStatus';
@@ -16,7 +13,8 @@ const IS_ADMIN = 'admin';
 class Constants {
   static const perPageItem = 20;
   static var labelTextSize = 15;
-  static var googleMapPrefix = 'https://www.google.com/maps/search/?api=1&query=';
+  static var googleMapPrefix =
+      'https://www.google.com/maps/search/?api=1&query=';
   static const DEFAULT_EMAIL = 'john@gmail.com';
   static const DEFAULT_PASS = '12345678';
   static const appLogoSize = 98.0;
@@ -28,9 +26,12 @@ class DateFormatConst {
   static const DD_MM_YY = "dd-MM-yy"; //TODO Use to show only in UI
   static const MMMM_D_yyyy = "MMMM d, y"; //TODO Use to show only in UI
   static const D_MMMM_yyyy = "d MMMM, y"; //TODO Use to show only in UI
-  static const MMMM_D_yyyy_At_HH_mm_a = "MMMM d, y @ hh:mm a"; //TODO Use to show only in UI
-  static const EEEE_D_MMMM_At_HH_mm_a = "EEEE d MMMM @ hh:mm a"; //TODO Use to show only in UI
-  static const dd_MMM_yyyy_HH_mm_a = "dd MMM y, hh:mm a"; //TODO Use to show only in UI
+  static const MMMM_D_yyyy_At_HH_mm_a =
+      "MMMM d, y @ hh:mm a"; //TODO Use to show only in UI
+  static const EEEE_D_MMMM_At_HH_mm_a =
+      "EEEE d MMMM @ hh:mm a"; //TODO Use to show only in UI
+  static const dd_MMM_yyyy_HH_mm_a =
+      "dd MMM y, hh:mm a"; //TODO Use to show only in UI
   static const yyyy_MM_dd_HH_mm = 'yyyy-MM-dd HH:mm';
   static const yyyy_MM_dd = 'yyyy-MM-dd';
   static const HH_mm12Hour = 'hh:mm a';
@@ -233,6 +234,7 @@ class PaymentMethods {
 }
 //endregion
 
+/*
 Country get defaultCountry {
   return Country(
     phoneCode: '91',
@@ -266,7 +268,7 @@ Rx<UnitModel> defaulWEIGHT = UnitModel.fromJson({
   "sequence": 0,
   "status": 1,
 }).obs;
-
+*/
 // Currency position
 
 //endregion
@@ -315,7 +317,7 @@ class AirtelMoneyResponseCodes {
   static const ERROR_FETCHING_ENCRYPTION_KEY = "DP00800001028";
   static const TRANSACTION_EXPIRED = "DP00800001029";
 }
-
+/*
 (String, String) getAirtelMoneyReasonTextFromCode(String code) {
   switch (code) {
     case AirtelMoneyResponseCodes.AMBIGUOUS:
@@ -325,11 +327,17 @@ class AirtelMoneyResponseCodes {
     case AirtelMoneyResponseCodes.INCORRECT_PIN:
       return (locale.value.incorrectPin, locale.value.incorrectPinHasBeen);
     case AirtelMoneyResponseCodes.LIMIT_EXCEEDED:
-      return (locale.value.exceedsWithdrawalAmountLimit, locale.value.theUserHasExceeded);
+      return (
+        locale.value.exceedsWithdrawalAmountLimit,
+        locale.value.theUserHasExceeded
+      );
     case AirtelMoneyResponseCodes.INVALID_AMOUNT:
       return (locale.value.invalidAmount, locale.value.theAmountUserIs);
     case AirtelMoneyResponseCodes.INVALID_TRANSACTION_ID:
-      return (locale.value.transactionIdIsInvalid, locale.value.userDidnTEnterThePin);
+      return (
+        locale.value.transactionIdIsInvalid,
+        locale.value.userDidnTEnterThePin
+      );
     case AirtelMoneyResponseCodes.IN_PROCESS:
       return (locale.value.inProcess, locale.value.transactionInPendingState);
     case AirtelMoneyResponseCodes.INSUFFICIENT_BALANCE:
@@ -339,21 +347,40 @@ class AirtelMoneyResponseCodes {
     case AirtelMoneyResponseCodes.DO_NOT_HONOR:
       return (locale.value.doNotHonor, locale.value.thisIsAGeneric);
     case AirtelMoneyResponseCodes.TRANSACTION_NOT_PERMITTED:
-      return (locale.value.transactionNotPermittedTo, locale.value.payeeIsAlreadyInitiated);
+      return (
+        locale.value.transactionNotPermittedTo,
+        locale.value.payeeIsAlreadyInitiated
+      );
     case AirtelMoneyResponseCodes.TRANSACTION_TIMED_OUT:
-      return (locale.value.transactionTimedOut, locale.value.theTransactionWasTimed);
+      return (
+        locale.value.transactionTimedOut,
+        locale.value.theTransactionWasTimed
+      );
     case AirtelMoneyResponseCodes.TRANSACTION_NOT_FOUND:
-      return (locale.value.transactionNotFound, locale.value.theTransactionWasNot);
+      return (
+        locale.value.transactionNotFound,
+        locale.value.theTransactionWasNot
+      );
     case AirtelMoneyResponseCodes.FORBIDDEN:
       return (locale.value.forbidden, locale.value.xSignatureAndPayloadDid);
     case AirtelMoneyResponseCodes.FETCHED_ENCRYPTION_KEY_SUCCESSFULLY:
-      return (locale.value.successfullyFetchedEncryptionKey, locale.value.encryptionKeyHasBeen);
+      return (
+        locale.value.successfullyFetchedEncryptionKey,
+        locale.value.encryptionKeyHasBeen
+      );
     case AirtelMoneyResponseCodes.ERROR_FETCHING_ENCRYPTION_KEY:
-      return (locale.value.errorWhileFetchingEncryption, locale.value.couldNotFetchEncryption);
+      return (
+        locale.value.errorWhileFetchingEncryption,
+        locale.value.couldNotFetchEncryption
+      );
     case AirtelMoneyResponseCodes.TRANSACTION_EXPIRED:
-      return (locale.value.transactionExpired, locale.value.transactionHasBeenExpired);
+      return (
+        locale.value.transactionExpired,
+        locale.value.transactionHasBeenExpired
+      );
     default:
       return (locale.value.somethingWentWrong, locale.value.somethingWentWrong);
   }
 }
+*/
 //endregion AirtelMoney

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import '../utils/common_base.dart';
 import 'body_widget.dart';
 
 class AppScaffold extends StatelessWidget {
@@ -66,7 +65,8 @@ class AppScaffold extends StatelessWidget {
               child: AppBar(
                 elevation: appBarelevation,
                 automaticallyImplyLeading: automaticallyImplyLeading,
-                backgroundColor: appBarbackgroundColor ?? context.scaffoldBackgroundColor,
+                backgroundColor:
+                    appBarbackgroundColor ?? context.scaffoldBackgroundColor,
                 centerTitle: isCenterTitle,
                 titleSpacing: 2,
                 title: appBarTitle ??
@@ -75,10 +75,12 @@ class AppScaffold extends StatelessWidget {
                       style: primaryTextStyle(size: 16),
                     ).paddingLeft(hasLeadingWidget ? 0 : 16),
                 actions: actions,
-                leading: leadingWidget ?? (hasLeadingWidget ? backButton() : null),
+                leading:
+                    leadingWidget ?? (hasLeadingWidget ? backButton() : null),
               ).paddingTop(10),
             ),
-      backgroundColor: scaffoldBackgroundColor ?? context.scaffoldBackgroundColor,
+      backgroundColor:
+          scaffoldBackgroundColor ?? context.scaffoldBackgroundColor,
       body: Body(
         isLoading: isLoading ?? false.obs,
         child: body,
@@ -88,4 +90,14 @@ class AppScaffold extends StatelessWidget {
       floatingActionButtonLocation: floatingActionButtonLocation,
     );
   }
+}
+
+Widget backButton({Object? result}) {
+  return IconButton(
+    onPressed: () {
+      Get.back(result: result);
+    },
+    icon: const Icon(Icons.arrow_back_ios_new_outlined,
+        color: Colors.grey, size: 20),
+  );
 }

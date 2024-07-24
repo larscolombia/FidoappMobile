@@ -1,4 +1,4 @@
-  import '../screens/auth/model/login_response.dart';
+import 'package:pawlly/modules/auth/model/login_response.dart';
 
 class RegUserResp {
   bool status;
@@ -14,7 +14,8 @@ class RegUserResp {
   factory RegUserResp.fromJson(Map<String, dynamic> json) {
     return RegUserResp(
       status: json['status'] is bool ? json['status'] : false,
-      userData: json['data'] is Map ? UserData.fromJson(json['data']) : UserData(),
+      userData:
+          json['data'] is Map ? UserData.fromJson(json['data']) : UserData(),
       message: json['message'] is String ? json['message'] : "",
     );
   }
