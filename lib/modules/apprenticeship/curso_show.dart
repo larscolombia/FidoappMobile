@@ -54,7 +54,7 @@ class CursoShow extends StatelessWidget {
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
                                       fontSize: 14,
-                                      fontFamily: 'lato',
+                                      fontFamily: 'Lato',
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
@@ -77,7 +77,7 @@ class CursoShow extends StatelessWidget {
                                       'Compartir',
                                       style: TextStyle(
                                         fontSize: 10,
-                                        fontFamily: 'lato',
+                                        fontFamily: 'Lato',
                                         color: Color.fromRGBO(181, 187, 187, 1),
                                       ),
                                     )
@@ -125,7 +125,7 @@ class CursoShow extends StatelessWidget {
                                 'Descubre cómo enseñar a tu perro a ir al baño en el lugar correcto con nuestro curso de House Breaking! Aprende técnicas rápidas y efectivas para mantener tu hogar limpio y tu mascota feliz.',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  fontFamily: 'lato',
+                                  fontFamily: 'Lato',
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
@@ -151,7 +151,7 @@ class CursoShow extends StatelessWidget {
                               width: 30,
                               child: Text('Programa de entrenimiento',
                                   style: TextStyle(
-                                      fontFamily: 'lato',
+                                      fontFamily: 'Lato',
                                       fontSize: 12,
                                       fontWeight: FontWeight.w800,
                                       color: Color.fromRGBO(156, 156, 156, 1))),
@@ -160,7 +160,7 @@ class CursoShow extends StatelessWidget {
                               width: 30,
                               child: Text('Contenido del Curso',
                                   style: TextStyle(
-                                      fontFamily: 'lato',
+                                      fontFamily: 'Lato',
                                       fontSize: 13,
                                       fontWeight: FontWeight.w800,
                                       color: Color.fromRGBO(22, 17, 17, 1))),

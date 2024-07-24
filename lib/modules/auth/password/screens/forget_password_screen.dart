@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default.dart';
 import 'package:pawlly/components/input_text_custom.dart';
 import 'package:pawlly/components/button_back.dart';
-import 'package:pawlly/modules/auth/sign_in/screen/signin_screen.dart';
+import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/modules/auth/password/screens/change_success_password.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';

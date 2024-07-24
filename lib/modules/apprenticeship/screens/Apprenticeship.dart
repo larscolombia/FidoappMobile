@@ -59,7 +59,7 @@ class ApprenticeshipScreen extends GetView<ApprenticeshipController> {
                     style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'lato',
+                      fontFamily: 'Lato',
                     ),
                   ),
                 ),

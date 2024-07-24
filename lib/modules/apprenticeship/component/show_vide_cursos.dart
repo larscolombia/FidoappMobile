@@ -22,7 +22,7 @@ class ShowVideoCursos extends StatelessWidget {
                 Text(
                   numero,
                   style: TextStyle(
-                    fontFamily: 'lato',
+                    fontFamily: 'Lato',
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -45,7 +45,7 @@ class ShowVideoCursos extends StatelessWidget {
                         child: Text('Titulo del curso',
                             style: TextStyle(
                               fontSize: 14,
-                              fontFamily: 'lato',
+                              fontFamily: 'Lato',
                               fontWeight: FontWeight.w900,
                             )),
                       ),
@@ -56,7 +56,7 @@ class ShowVideoCursos extends StatelessWidget {
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontSize: 9,
-                              fontFamily: 'lato',
+                              fontFamily: 'Lato',
                               fontWeight: FontWeight.w300,
                               color: const Color.fromARGB(255, 167, 165, 162)),
                         ),

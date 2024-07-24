@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/generated/assets.dart';
+import 'package:pawlly/modules/notification/screens/notification_screens.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class HeaderNotification extends StatelessWidget {
@@ -47,20 +48,26 @@ class HeaderNotification extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                width: 43,
-                height: 43,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Styles.fiveColor,
-                ),
-                child: Center(
-                  child: Image.asset(
-                    fit: BoxFit.cover,
-                    Assets.notification,
+              GestureDetector(
+                onTap: () {
+                  // Navegar a la vista de notificaciones
+                  Get.to(() => NotificationsScreen());
+                },
+                child: Container(
+                  width: 43,
+                  height: 43,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    color: Styles.fiveColor,
+                  ),
+                  child: Center(
+                    child: Image.asset(
+                      fit: BoxFit.cover,
+                      Assets.notification,
+                    ),
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),

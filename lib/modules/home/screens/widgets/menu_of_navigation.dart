@@ -111,7 +111,7 @@ class MenuOfNavigation extends GetView<HomeController> {
                 label,
                 style: TextStyle(
                   color: Styles.whiteColor,
-                  fontFamily: 'lato',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w400,
                   fontSize: 13,
                 ),

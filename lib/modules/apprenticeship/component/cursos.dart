@@ -37,7 +37,7 @@ class Cursos extends StatelessWidget {
               child: Text(
                 TituloCurso,
                 style: TextStyle(
-                  fontFamily: 'lato',
+                  fontFamily: 'Lato',
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
                 ),
@@ -55,7 +55,7 @@ class Cursos extends StatelessWidget {
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: Color.fromRGBO(188, 190, 190, 1),
-                            fontFamily: 'lato',
+                            fontFamily: 'Lato',
                             fontSize: 12,
                             fontWeight: FontWeight.w200),
                       ),
@@ -63,7 +63,7 @@ class Cursos extends StatelessWidget {
                         duracion,
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontFamily: 'lato',
+                          fontFamily: 'Lato',
                           fontSize: 9.2,
                           fontWeight: FontWeight.bold,
                         ),
@@ -81,7 +81,7 @@ class Cursos extends StatelessWidget {
                         textAlign: TextAlign.start,
                         style: TextStyle(
                             color: Color.fromRGBO(188, 190, 190, 1),
-                            fontFamily: 'lato',
+                            fontFamily: 'Lato',
                             fontSize: 13,
                             fontWeight: FontWeight.w200),
                       ),
@@ -91,7 +91,7 @@ class Cursos extends StatelessWidget {
                           '20',
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                            fontFamily: 'lato',
+                            fontFamily: 'Lato',
                             fontSize: 9.2,
                             fontWeight: FontWeight.bold,
                           ),

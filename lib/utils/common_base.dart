@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:pawlly/modules/auth/sign_in/screen/signin_screen.dart';
+import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/utils/app_common.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';

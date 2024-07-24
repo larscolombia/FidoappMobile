@@ -7,11 +7,11 @@ class Styles {
   static const tertiaryColor = Color.fromRGBO(130, 56, 0, 1);
   static const fourColor = Color.fromRGBO(255, 219, 214, 1);
   static const fiveColor = Color.fromRGBO(252, 247, 229, 1);
+  static const fiveColor08 = Color.fromRGBO(252, 247, 229, 0.8);
   static const greyColor = Colors.grey;
   static const greyTextColor = Color.fromRGBO(85, 85, 85, 1);
   static const greyDivider = Color.fromRGBO(234, 234, 234, 1);
-
-  static const redColor = Colors.red;
+  static const iconColorBack = Color.fromRGBO(252, 146, 20, 1);
   static const whiteColor = Colors.white;
   static const blackColor = Colors.black;
 
@@ -53,20 +53,39 @@ class Styles {
     color: whiteColor,
   );
 
+  static final boxTitleDashboard = GoogleFonts.lato(
+    fontWeight: FontWeight.w700,
+    fontSize: 14,
+    color: greyTextColor,
+  );
+
   static final textRed = GoogleFonts.poppins(
     fontWeight: FontWeight.w500,
     fontSize: 15,
     color: tertiaryColor,
   );
 
-  static final welcomeTitle = TextStyle(
+  static const dashboardTitle24 = TextStyle(
+    fontFamily: 'PoetsenOne',
+    fontSize: 24,
+    fontWeight: FontWeight.w400,
+    color: primaryColor,
+  );
+  static const dashboardTitle20 = TextStyle(
+    fontFamily: 'PoetsenOne',
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+    color: primaryColor,
+  );
+
+  static const welcomeTitle = TextStyle(
     fontFamily: 'PoetsenOne',
     fontSize: 29,
     fontWeight: FontWeight.w400,
     color: primaryColor,
   );
 
-  static final joinTitle = TextStyle(
+  static const joinTitle = TextStyle(
     fontFamily: 'PoetsenOne',
     fontSize: 32,
     fontWeight: FontWeight.w400,

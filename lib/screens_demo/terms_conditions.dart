@@ -138,7 +138,7 @@ class NumTitulo extends StatelessWidget {
           Titulo,
           textAlign: TextAlign.start,
           style: const TextStyle(
-              fontFamily: 'lato',
+              fontFamily: 'Lato',
               color: Color.fromRGBO(83, 82, 81, 1),
               fontSize: 14.00,
               fontWeight: FontWeight.w800),
@@ -150,7 +150,7 @@ class NumTitulo extends StatelessWidget {
             Descripcion,
             textAlign: TextAlign.start,
             style: const TextStyle(
-              fontFamily: 'lato',
+              fontFamily: 'Lato',
               color: Color.fromRGBO(83, 82, 81, 1),
               fontSize: 13.00,
               fontWeight: FontWeight.w500,

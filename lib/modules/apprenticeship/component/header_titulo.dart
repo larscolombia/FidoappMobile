@@ -36,7 +36,7 @@ class HeaderTitulo extends StatelessWidget {
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontSize: 10,
-                              fontFamily: 'lato',
+                              fontFamily: 'Lato',
                               color: Color.fromRGBO(181, 187, 187, 1)),
                         ),
                       ),
@@ -48,7 +48,7 @@ class HeaderTitulo extends StatelessWidget {
                           style: TextStyle(
                               color: color,
                               fontSize: 13,
-                              fontFamily: 'lato',
+                              fontFamily: 'Lato',
                               fontWeight: FontWeight.bold),
                         ),
                       )
@@ -67,7 +67,7 @@ class HeaderTitulo extends StatelessWidget {
                           'Precio',
                           style: TextStyle(
                               fontSize: 10,
-                              fontFamily: 'lato',
+                              fontFamily: 'Lato',
                               color: Color.fromRGBO(181, 187, 187, 1)),
                         ),
                         Container(

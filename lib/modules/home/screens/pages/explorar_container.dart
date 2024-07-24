@@ -32,7 +32,7 @@ class Explore extends StatelessWidget {
                       child: Text(
                         'Recomendaciones para tu Mascota',
                         style: TextStyle(
-                          fontFamily: 'lato',
+                          fontFamily: 'Lato',
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: Styles.whiteColor,
@@ -46,11 +46,11 @@ class Explore extends StatelessWidget {
                         'Consejos y recursos útiles',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                          fontFamily: 'lato',
+                          fontFamily: 'Lato',
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: Styles.whiteColor,
-                        ),,
+                        ),
                       ),
                     ),
                     Container(

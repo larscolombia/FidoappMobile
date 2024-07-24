@@ -5,16 +5,11 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default.dart';
 import 'package:pawlly/components/input_text_custom.dart';
 import 'package:pawlly/components/button_back.dart';
-import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/controllers/sign_in_controller.dart';
-import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
-import 'package:pawlly/modules/home/screens/home_screen.dart';
-import 'package:pawlly/modules/auth/password/screens/forget_password_screen.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 import '../../../../components/app_scaffold.dart';
-import '../../../../generated/assets.dart';
 
 import '../../../../utils/colors.dart';
 

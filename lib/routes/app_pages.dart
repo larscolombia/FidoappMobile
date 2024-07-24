@@ -7,7 +7,7 @@ import 'package:pawlly/modules/auth/password/bindings/forget_password_binding.da
 import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
 import 'package:pawlly/modules/auth/password/screens/forget_password_screen.dart';
 import 'package:pawlly/modules/auth/password/screens/change_success_password.dart';
-import 'package:pawlly/modules/auth/sign_in/screen/signin_screen.dart';
+import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/modules/auth/sign_up/bindings/sign_un_binding.dart';
 import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
 import 'package:pawlly/modules/home/bindings/home_binding.dart';

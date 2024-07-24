@@ -5,7 +5,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default.dart';
 import 'package:pawlly/components/app_scaffold.dart';
-import 'package:pawlly/modules/auth/sign_in/screen/signin_screen.dart';
+import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
 import 'package:pawlly/modules/welcome/controllers/welcome_controller.dart';
 import 'package:pawlly/modules/welcome/screens/widgets/slide.dart';
