@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/input_text_custom.dart';
+import 'package:pawlly/components/select_input_text.dart';
 import 'package:pawlly/modules/profile/controllers/prodile_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -52,11 +54,11 @@ class MiPerfilPageScreen extends StatelessWidget {
                           child: Container(
                             padding: EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(15),
+                              color: Styles.iconColorBack,
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child:
-                                Icon(Icons.edit, color: Colors.white, size: 16),
+                                Icon(Icons.edit, color: Colors.white, size: 24),
                           ),
                         ),
                       ),
@@ -87,46 +89,70 @@ class MiPerfilPageScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Sección del Perfil
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    Container(
+                      padding: EdgeInsets.only(
+                        top: 20,
+                      ),
+                      alignment: Alignment.center,
                       child: Column(
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () => Navigator.pop(context),
-                                child: Icon(
-                                  Icons.arrow_back_ios,
-                                  color: Styles.greyTextColor,
-                                  size: 22,
-                                ),
-                              ),
-                              Text(
-                                'Perfil de Usuario',
-                                style: Styles.dashboardTitle20,
-                              ),
-                              Obx(
-                                () => IconButton(
-                                  icon: Container(
-                                    padding: EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: controller.isEditing.value
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Icon(Icons.edit,
-                                        color: Colors.white, size: 16),
+                          Container(
+                            padding: EdgeInsets.only(
+                              bottom: 20,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () => Navigator.pop(context),
+                                  child: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Styles.greyTextColor,
+                                    size: 22,
                                   ),
-                                  onPressed: () {
-                                    controller.toggleEditing();
-                                  },
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  'Perfil de Usuario',
+                                  style: Styles.dashboardTitle20,
+                                ),
+                                Container(
+                                  width: 1, // Grosor de la línea
+                                  height: 25, // Altura de la línea
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 3), // Espacio en los lados
+                                  color: Styles.greyColor, // Color de la línea
+                                ),
+                                Obx(
+                                  () => TextButton.icon(
+                                    onPressed: () {
+                                      controller.toggleEditing();
+                                    },
+                                    icon: Container(
+                                      padding: EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        color: controller.isEditing.value
+                                            ? Styles.iconColorBack
+                                            : Styles.greyTextColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Icon(Icons.edit,
+                                          color: Colors.white, size: 24),
+                                    ),
+                                    label: Text(
+                                      'Editar',
+                                      style: TextStyle(
+                                        color: controller.isEditing.value
+                                            ? Styles.iconColorBack
+                                            : Styles.greyTextColor,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          Divider(height: 20, thickness: 1),
+                          Divider(height: 0, thickness: 1),
                         ],
                       ),
                     ),
@@ -134,29 +160,85 @@ class MiPerfilPageScreen extends StatelessWidget {
                     Expanded(
                       child: ListView(
                         children: [
+                          /*
+                          Container(
+                            margin: EdgeInsets.only(top: 20),
+                            child: CustomTextFormField(
+                              controller: controller.nombreController.value,
+                              enabled: controller.isEditing.value,
+                              pleholder: 'Confirmar contraseña',
+                              icon: 'assets/icons/key.png',
+                            ),
+                          ),
+                          
+                          Container(
+                            margin: EdgeInsets.only(top: 20),
+                            child: SelecInputText(
+                              enabled: controller.isEditing.value,
+                              controller: null,
+                              placeholder: 'Tipo de Usuarios',
+                              icon: 'assets/icons/tag-user.png',
+                              items: ['Entrenador', 'Dueño de Mascota'],
+                              isDropdown: true,
+                            ),
+                          ),
+                          */
                           Obx(
-                            () => _buildTextField(
-                                'Nombre',
-                                controller.nombreController.value,
-                                controller.isEditing.value),
+                            () => Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: CustomTextFormField(
+                                controller: controller.nombreController.value,
+                                enabled: controller.isEditing.value,
+                                pleholder: 'Nombre',
+                                icon: 'assets/icons/tag-user.png',
+                              ),
+                            ),
                           ),
                           Obx(
-                            () => _buildTextField(
-                                'Apellido',
-                                controller.apellidoController.value,
-                                controller.isEditing.value),
+                            () => Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: CustomTextFormField(
+                                controller: controller.apellidoController.value,
+                                enabled: controller.isEditing.value,
+                                pleholder: 'Apellido',
+                                icon: 'assets/icons/tag-user.png',
+                              ),
+                            ),
                           ),
                           Obx(
-                            () => _buildTextField(
-                                'Correo',
-                                controller.correoController.value,
-                                controller.isEditing.value),
+                            () => Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: CustomTextFormField(
+                                controller: controller.apellidoController.value,
+                                enabled: controller.isEditing.value,
+                                pleholder: 'Correo',
+                                icon: 'assets/icons/tag-user.png',
+                              ),
+                            ),
                           ),
                           Obx(
-                            () => _buildSelectField(
+                            () => Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: SelecInputText(
+                                enabled: controller.isEditing.value,
+                                controller: null,
+                                placeholder: 'Tipo de Usuarios',
+                                icon: 'assets/icons/tag-user.png',
+                                items: [
+                                  'Femenino',
+                                  'Masculino',
+                                  'Prefiero no decirlo',
+                                ],
+                                isDropdown: true,
+                              ),
+                            ),
+                            /*
+                          _buildSelectField(
                                 'Sexo',
                                 controller.sexoValue.value,
                                 controller.isEditing.value),
+                          ),
+                          */
                           ),
                           _buildTextField('Contraseña',
                               TextEditingController(text: '********'), false),
@@ -177,10 +259,28 @@ class MiPerfilPageScreen extends StatelessWidget {
                             ),
                           ),
                           Obx(
-                            () => _buildSelectField(
+                            () => Container(
+                              margin: EdgeInsets.only(top: 20),
+                              child: SelecInputText(
+                                enabled: controller.isEditing.value,
+                                controller: null,
+                                placeholder: 'Tipo de Usuarios',
+                                icon: 'assets/icons/tag-user.png',
+                                items: [
+                                  'Si',
+                                  'No',
+                                ],
+                                isDropdown: true,
+                              ),
+                            ),
+                            /*
+                            
+                             _buildSelectField(
                                 'Dueño de mascota',
                                 controller.duenioValue.value,
-                                controller.isEditing.value),
+                                controller.isEditing.value,
+                                ),
+                                */
                           ),
                           SizedBox(height: 20),
                           Align(

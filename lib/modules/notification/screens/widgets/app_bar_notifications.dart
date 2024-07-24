@@ -48,6 +48,7 @@ class AppBarNotifications extends StatelessWidget
                           fontSize: 20,
                           fontWeight: FontWeight.w400,
                           fontFamily: 'PoetsenOne',
+                          color: Styles.primaryColor,
                         ),
                       ),
                       Text(

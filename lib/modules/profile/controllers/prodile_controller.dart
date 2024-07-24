@@ -12,6 +12,8 @@ class MiPerfilController extends GetxController {
   var sexoValue = 'Femenino'.obs;
   var duenioValue = 'Sí'.obs;
   var profileImagePath = ''.obs;
+  var isPickerActive =
+      false.obs; // Añadir una bandera para el estado activo del picker
 
   final ImagePicker _picker = ImagePicker();
 
@@ -32,9 +34,16 @@ class MiPerfilController extends GetxController {
   }
 
   Future<void> pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      profileImagePath.value = pickedFile.path;
+    if (isPickerActive.value) return; // Evitar llamadas concurrentes
+    isPickerActive.value = true; // Marcar el picker como activo
+
+    try {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        profileImagePath.value = pickedFile.path;
+      }
+    } finally {
+      isPickerActive.value = false; // Marcar el picker como inactivo
     }
   }
 }
