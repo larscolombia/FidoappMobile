@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/utils/common_base.dart';
 
 class ForgetPasswordController extends GetxController {
   RxBool isLoading = false.obs;
@@ -10,7 +12,7 @@ class ForgetPasswordController extends GetxController {
   TextEditingController emailCont = TextEditingController();
   saveForm() async {
     print('Forget Pass Controller');
-    /*
+
     isLoading(true);
     hideKeyBoardWithoutContext();
 
@@ -25,6 +27,5 @@ class ForgetPasswordController extends GetxController {
       isLoading(false);
       toast(e.toString(), print: true);
     });
-    */
   }
 }

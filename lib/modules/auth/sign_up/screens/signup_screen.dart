@@ -2,11 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:pawlly/components/button_default.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
-import 'package:pawlly/components/input_text_custom.dart';
+import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
-import 'package:pawlly/components/select_input_text.dart';
+import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/auth/sign_up/controllers/sign_up_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/screens_demo/terms_conditions.dart';
@@ -57,32 +57,32 @@ class SignUpScreen extends GetView<SignUpController> {
                           children: [
                             Container(
                               margin: EdgeInsets.only(top: 20),
-                              child: CustomTextFormField(
+                              child: CustomTextFormFieldWidget(
                                 controller: controller.fisrtNameCont,
-                                pleholder: 'Nombre',
+                                placeholder: 'Nombre',
                                 icon: 'assets/icons/profile.png',
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 20),
-                              child: CustomTextFormField(
+                              child: CustomTextFormFieldWidget(
                                 controller: controller.lastNameCont,
-                                pleholder: 'Apellido',
+                                placeholder: 'Apellido',
                                 icon: 'assets/icons/profile.png',
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 20),
-                              child: CustomTextFormField(
+                              child: CustomTextFormFieldWidget(
                                 controller: controller.emailCont,
-                                pleholder: 'Correo Electrónico',
+                                placeholder: 'Correo Electrónico',
                                 icon: 'assets/icons/email.png',
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 20),
-                              child: SelecInputText(
-                                controller: null,
+                              child: CustomSelectFormFieldWidget(
+                                controller: controller.genCont,
                                 placeholder: 'Género',
                                 icon: 'assets/icons/tag-user.png',
                                 items: [
@@ -90,33 +90,36 @@ class SignUpScreen extends GetView<SignUpController> {
                                   'Hombre',
                                   'Prefiero no decirlo'
                                 ],
-                                isDropdown: true,
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 20),
-                              child: CustomTextFormField(
+                              child: CustomTextFormFieldWidget(
                                 controller: controller.passwordCont,
-                                pleholder: 'Contraseña',
+                                placeholder: 'Contraseña',
+                                obscureText: true,
                                 icon: 'assets/icons/key.png',
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 20),
-                              child: CustomTextFormField(
-                                controller: controller.passwordCont,
-                                pleholder: 'Confirmar contraseña',
+                              child: CustomTextFormFieldWidget(
+                                controller: controller.password2Cont,
+                                placeholder: 'Confirmar contraseña',
+                                obscureText: true,
                                 icon: 'assets/icons/key.png',
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 20),
-                              child: SelecInputText(
-                                controller: null,
+                              child: CustomSelectFormFieldWidget(
+                                controller: controller.userTypeCont,
                                 placeholder: 'Tipo de Usuarios',
                                 icon: 'assets/icons/tag-user.png',
-                                items: ['Entrenador', 'Dueño de Mascota'],
-                                isDropdown: true,
+                                items: [
+                                  'Entrenador',
+                                  'Dueño de Mascota',
+                                ],
                               ),
                             ),
                             Column(
@@ -190,16 +193,15 @@ class SignUpScreen extends GetView<SignUpController> {
                             SizedBox(
                               height: 10,
                             ),
-                            ButtonDefault(
+                            ButtonDefaultWidget(
                                 title: "Registrarse",
                                 callback: () {
                                   Get.toNamed(Routes.SIGNUP);
-                                  /*
-                                    if (_signUpformKey.currentState!.validate()) {
-                                      _signUpformKey.currentState!.save();
-                                      controller.saveForm();
-                                    }
-                                    */
+
+                                  if (_signUpformKey.currentState!.validate()) {
+                                    _signUpformKey.currentState!.save();
+                                    controller.saveForm();
+                                  }
                                 }),
                             SizedBox(
                               height: 20,

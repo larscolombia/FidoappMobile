@@ -5,9 +5,12 @@ import 'dart:io';
 
 class MiPerfilController extends GetxController {
   var isEditing = false.obs;
-  var nombreController = TextEditingController(text: 'Victoria').obs;
-  var apellidoController = TextEditingController(text: 'Doe').obs;
-  var correoController =
+  var nameController = TextEditingController(text: 'Victoria').obs;
+  var lastNameController = TextEditingController(text: 'Doe').obs;
+  var passwordController = TextEditingController(text: '1234').obs;
+  var userGenCont = TextEditingController(text: 'Masculino').obs;
+  var userTypeCont = TextEditingController(text: 'Dueño de mascota').obs;
+  var emailController =
       TextEditingController(text: 'victoria.doe@example.com').obs;
   var sexoValue = 'Femenino'.obs;
   var duenioValue = 'Sí'.obs;

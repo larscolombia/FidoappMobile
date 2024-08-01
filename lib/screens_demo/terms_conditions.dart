@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
 import 'package:pawlly/components/titulo.dart';
 import 'package:pawlly/routes/app_pages.dart';
@@ -33,7 +33,7 @@ class TermsConditions extends StatelessWidget {
                 height: 20,
               ),
               Container(
-                child: ButtonDefault(
+                child: ButtonDefaultWidget(
                   title: 'Términos y condiciones',
                   callback: () {
                     Get.toNamed(Routes.TERMSCONDITIONS);
@@ -46,7 +46,7 @@ class TermsConditions extends StatelessWidget {
                 height: 20,
               ),
               Container(
-                child: ButtonDefault(
+                child: ButtonDefaultWidget(
                   title: 'Políticas de privacidad',
                   callback: () {
                     Get.toNamed(Routes.PRIVACYPOLICY);
@@ -80,28 +80,28 @@ class TermsConditions extends StatelessWidget {
                   ),
                 ),
               ),
-              const NumTitulo(
-                Titulo: '1. Aceptación de los Términos ',
+              const NumTitle(
+                Title: '1. Aceptación de los Términos ',
                 Descripcion:
                     "Al descargar o utilizar la aplicación Fido App, usted acepta estar sujeto a estos términos y condiciones (T&C). Si no está de acuerdo con alguno de los términos, no descargue ni utilice esta aplicación.",
               ),
-              const NumTitulo(
-                Titulo: '2. Cambios y Modificaciones',
+              const NumTitle(
+                Title: '2. Cambios y Modificaciones',
                 Descripcion:
                     "Fido App se reserva el derecho de modificar estos T&C en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación en la aplicación o en nuestro sitio web.",
               ),
-              const NumTitulo(
-                Titulo: '3. Licencia de Uso',
+              const NumTitle(
+                Title: '3. Licencia de Uso',
                 Descripcion:
                     "Se le concede una licencia limitada, no exclusiva e intransferible para utilizar Fido App únicamente para fines personales y no comerciales, sujeta a estos T&C.",
               ),
-              const NumTitulo(
-                Titulo: '4. Propiedad Intelectual ',
+              const NumTitle(
+                Title: '4. Propiedad Intelectual ',
                 Descripcion:
                     "Todo el contenido de Fido App, incluyendo textos, gráficos, logos y software, es propiedad de “AppEjemplo” o sus licenciantes y está protegido por leyes de propiedad intelectual.",
               ),
-              const NumTitulo(
-                Titulo: '4. Propiedad Intelectual ',
+              const NumTitle(
+                Title: '4. Propiedad Intelectual ',
                 Descripcion:
                     "Todo el contenido de Fido App, incluyendo textos, gráficos, logos y software, es propiedad de “AppEjemplo” o sus licenciantes y está protegido por leyes de propiedad intelectual.",
               ),
@@ -110,7 +110,7 @@ class TermsConditions extends StatelessWidget {
               ),
               Container(
                   margin: EdgeInsets.only(bottom: 20),
-                  child: ButtonDefault(
+                  child: ButtonDefaultWidget(
                     title: 'Regresar',
                     callback: callabak,
                   )),
@@ -122,10 +122,10 @@ class TermsConditions extends StatelessWidget {
   }
 }
 
-class NumTitulo extends StatelessWidget {
-  final String Titulo;
+class NumTitle extends StatelessWidget {
+  final String Title;
   final String Descripcion;
-  const NumTitulo({super.key, required this.Titulo, required this.Descripcion});
+  const NumTitle({super.key, required this.Title, required this.Descripcion});
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +135,7 @@ class NumTitulo extends StatelessWidget {
         width: width,
         margin: EdgeInsets.only(top: 20),
         child: Text(
-          Titulo,
+          Title,
           textAlign: TextAlign.start,
           style: const TextStyle(
               fontFamily: 'Lato',

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
 import 'package:pawlly/components/titulo.dart';
 import 'package:pawlly/generated/config.dart';
@@ -31,7 +31,7 @@ class PrivacyPolicy extends StatelessWidget {
                 height: 20,
               ),
               Container(
-                child: ButtonDefault(
+                child: ButtonDefaultWidget(
                   title: 'Términos y condiciones',
                   callback: () {
                     Get.toNamed(Routes.TERMSCONDITIONS);
@@ -47,7 +47,7 @@ class PrivacyPolicy extends StatelessWidget {
               ),
               Container(
                 margin: EdgeInsets.only(bottom: 40),
-                child: ButtonDefault(
+                child: ButtonDefaultWidget(
                   title: 'Políticas de privacidad',
                   callback: () {
                     Get.toNamed(Routes.PRIVACYPOLICY);
@@ -65,47 +65,47 @@ class PrivacyPolicy extends StatelessWidget {
               ),
               Column(
                 children: [
-                  const NumTitulo(
-                    Titulo: '¡Políticas de Privacidad de ${Config.NameApp}',
+                  const NumTitle(
+                    Title: '¡Políticas de Privacidad de ${Config.NameApp}',
                     Descripcion: '',
                   ),
-                  const NumTitulo(
-                    Titulo: '1. Introducción',
+                  const NumTitle(
+                    Title: '1. Introducción',
                     Descripcion:
                         'En ${Config.NameApp}, respetamos su privacidad y estamos comprometidos con protegerla a través de nuestro cumplimiento de estas políticas.',
                   ),
-                  const NumTitulo(
-                    Titulo: '2. Información que Recopilamos',
+                  const NumTitle(
+                    Title: '2. Información que Recopilamos',
                     Descripcion:
                         'Podemos recopilar información personal que incluye, pero no se limita a, su nombre, dirección, correo electrónico, número de teléfono y detalles de pago.',
                   ),
-                  const NumTitulo(
-                    Titulo: '3. Cómo Utilizamos su Información',
+                  const NumTitle(
+                    Title: '3. Cómo Utilizamos su Información',
                     Descripcion:
                         'Utilizamos la información recopilada para procesar transacciones, proporcionar soporte al cliente, mejorar nuestros servicios y cumplir con obligaciones legales.',
                   ),
-                  const NumTitulo(
-                    Titulo: '4. Compartir su Información',
+                  const NumTitle(
+                    Title: '4. Compartir su Información',
                     Descripcion:
                         'No compartiremos su información personal con terceros, excepto como sea necesario para proporcionar nuestros servicios o como lo exija la ley.',
                   ),
-                  const NumTitulo(
-                    Titulo: '5. Seguridad de la Información',
+                  const NumTitle(
+                    Title: '5. Seguridad de la Información',
                     Descripcion:
                         'Implementamos medidas de seguridad para proteger su información personal contra el acceso no autorizado, alteración, divulgación o destrucción.',
                   ),
-                  const NumTitulo(
-                    Titulo: '6. Sus Derechos',
+                  const NumTitle(
+                    Title: '6. Sus Derechos',
                     Descripcion:
                         'Usted tiene derecho a acceder, corregir o eliminar su información personal que tenemos en archivo.',
                   ),
-                  const NumTitulo(
-                    Titulo: '7. Cambios a las Políticas de Privacidad',
+                  const NumTitle(
+                    Title: '7. Cambios a las Políticas de Privacidad',
                     Descripcion:
                         'Nos reservamos el derecho de modificar estas políticas en cualquier momento. Cualquier cambio será efectivo inmediatamente después de su publicación en nuestro sitio web.',
                   ),
-                  const NumTitulo(
-                    Titulo: '8. Contacto',
+                  const NumTitle(
+                    Title: '8. Contacto',
                     Descripcion:
                         'Si tiene preguntas o comentarios sobre estas políticas, por favor contáctenos en [correo electrónico/ número de teléfono].',
                   ),
@@ -114,7 +114,7 @@ class PrivacyPolicy extends StatelessWidget {
                   ),
                   Container(
                     margin: EdgeInsets.only(bottom: 20),
-                    child: ButtonDefault(
+                    child: ButtonDefaultWidget(
                       title: 'Regresar',
                       callback: callabak,
                     ),

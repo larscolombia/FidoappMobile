@@ -1,4 +1,4 @@
-import 'package:pawlly/modules/auth/model/login_response.dart';
+import 'package:pawlly/modules/auth/model/login_response_model.dart';
 
 class RegUserResp {
   bool status;

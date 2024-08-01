@@ -63,20 +63,25 @@ class AppBarNotifications extends StatelessWidget
                   ),
                 ],
               ),
-              CircleAvatar(
-                radius: 30, // Aumenta el tamaño de la imagen
-                backgroundImage:
-                    NetworkImage('https://via.placeholder.com/150'),
-                backgroundColor:
-                    Colors.transparent, // Asegura que el fondo sea transparente
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Styles.iconColorBack, // Color del borde
-                      width: 1.0, // Grosor del borde
-                    ),
+              Container(
+                width: 65, // Tamaño del contenedor que contiene la imagen
+                height: 65,
+                padding:
+                    EdgeInsets.all(2), // Espacio entre la imagen y el borde
+                decoration: BoxDecoration(
+                  color: Styles.fiveColor,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Styles.iconColorBack, // Color del borde
+                    width: 2.0, // Grosor del borde
                   ),
+                ),
+                child: CircleAvatar(
+                  radius: 22, // Tamaño de la imagen de perfil
+                  backgroundImage: NetworkImage(
+                      'https://via.placeholder.com/150'), // URL de la imagen de perfil
+                  backgroundColor: Colors
+                      .transparent, // Fondo transparente si la imagen no se carga
                 ),
               ),
             ],

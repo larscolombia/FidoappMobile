@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class Titulo extends StatelessWidget {
-  final String TituloScreen;
+class Title extends StatelessWidget {
+  final String titleScreen;
   // ignore: non_constant_identifier_names
-  const Titulo({super.key, required this.TituloScreen});
+  const Title({super.key, required this.titleScreen});
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
         child: Text(
-          TituloScreen,
+          titleScreen,
           textAlign: TextAlign.center,
           style: const TextStyle(
             color: Color.fromRGBO(255, 73, 49, 1),

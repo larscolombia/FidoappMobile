@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/modules/apprenticeship/component/cursos.dart';
-import 'package:pawlly/modules/apprenticeship/component/header_titulo.dart';
+import 'package:pawlly/modules/apprenticeship/component/header_title.dart';
 import 'package:pawlly/modules/apprenticeship/component/show_vide_cursos.dart';
 
 class CursoShow extends StatelessWidget {
@@ -100,7 +100,7 @@ class CursoShow extends StatelessWidget {
                       Container(
                         width: 30,
                         margin: EdgeInsets.only(top: 30),
-                        child: ButtonDefault(
+                        child: ButtonDefaultWidget(
                           title: 'Comprar Curso',
                           callback: () {},
                         ),
@@ -114,7 +114,7 @@ class CursoShow extends StatelessWidget {
                           color: const Color.fromARGB(255, 170, 165, 157),
                         ),
                       ),
-                      HeaderTitulo(),
+                      HeaderTitle(),
                       Container(
                         margin: EdgeInsets.only(top: 10),
                         width: 30,
@@ -177,9 +177,9 @@ class CursoShow extends StatelessWidget {
                           color: const Color.fromARGB(255, 170, 165, 157),
                         ),
                       ),
-                      HeaderTitulo(
+                      HeaderTitle(
                         label: 'Sección 1',
-                        titulo: 'Introducción al HouseBreaking',
+                        title: 'Introducción al HouseBreaking',
                         precio: '20',
                         color: Color.fromRGBO(130, 56, 0, 1),
                       ),
@@ -187,21 +187,17 @@ class CursoShow extends StatelessWidget {
                         width: 30 + 1,
                         child: Column(
                           children: [
-                            ShowVideoCursos(imagen: Assets.play, numero: '1'),
-                            ShowVideoCursos(
-                                imagen: Assets.candado, numero: "2"),
-                            ShowVideoCursos(
-                                imagen: Assets.candado, numero: '3'),
-                            ShowVideoCursos(
-                                imagen: Assets.candado, numero: '4'),
-                            ShowVideoCursos(
-                                imagen: Assets.candado, numero: '5'),
+                            ShowVideoCursos(img: Assets.play, numero: '1'),
+                            ShowVideoCursos(img: Assets.candado, numero: "2"),
+                            ShowVideoCursos(img: Assets.candado, numero: '3'),
+                            ShowVideoCursos(img: Assets.candado, numero: '4'),
+                            ShowVideoCursos(img: Assets.candado, numero: '5'),
                           ],
                         ),
                       ),
-                      HeaderTitulo(
+                      HeaderTitle(
                         label: 'Sección 2',
-                        titulo: 'HouseBreaking Avanzado',
+                        title: 'HouseBreaking Avanzado',
                         precio: '20',
                         color: Color.fromRGBO(130, 56, 0, 1),
                       ),
@@ -209,15 +205,11 @@ class CursoShow extends StatelessWidget {
                         width: 30 + 1,
                         child: Column(
                           children: [
-                            ShowVideoCursos(imagen: Assets.play, numero: '1'),
-                            ShowVideoCursos(
-                                imagen: Assets.candado, numero: "2"),
-                            ShowVideoCursos(
-                                imagen: Assets.candado, numero: '3'),
-                            ShowVideoCursos(
-                                imagen: Assets.candado, numero: '4'),
-                            ShowVideoCursos(
-                                imagen: Assets.candado, numero: '5'),
+                            ShowVideoCursos(img: Assets.play, numero: '1'),
+                            ShowVideoCursos(img: Assets.candado, numero: "2"),
+                            ShowVideoCursos(img: Assets.candado, numero: '3'),
+                            ShowVideoCursos(img: Assets.candado, numero: '4'),
+                            ShowVideoCursos(img: Assets.candado, numero: '5'),
                           ],
                         ),
                       )

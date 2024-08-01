@@ -3,16 +3,21 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:html/parser.dart';
+import 'package:intl/intl.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
-import 'package:pawlly/utils/app_common.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
+import '../components/new_update_dialog.dart';
+import '../components/price_widget.dart';
 import '../configs.dart';
 import '../generated/assets.dart';
 import '../main.dart';
+import 'app_common.dart';
 import 'colors.dart';
 import 'constants.dart';
 import 'local_storage.dart';
@@ -228,6 +233,10 @@ void launchMail(String url, {List<String>? to}) {
   }
 }
 
+String parseHtmlString(String? htmlString) {
+  return parse(parse(htmlString).body!.text).documentElement!.text;
+}
+
 /* String formatDate(String? dateTime, {String format = DateFormatConst.yyyy_MM_dd}) {
   return DateFormat(format).format(DateTime.parse(dateTime.validate()));
 } */
@@ -236,6 +245,241 @@ void launchMail(String url, {List<String>? to}) {
 /// Date format extension for format datetime in different formats,
 /// e.g. 1) dd-MM-yyyy, 2) yyyy-MM-dd, etc...
 ///
+extension DateData on String {
+  /// Formats the given [DateTime] object in the [dd-MM-yy] format.
+  ///
+  /// Returns a string representing the formatted date.
+  DateTime get dateInyyyyMMddFormat {
+    try {
+      return DateFormat(DateFormatConst.yyyy_MM_dd).parse(this);
+    } catch (e) {
+      return DateTime.now();
+    }
+  }
+
+  String get dateInMMMMDyyyyFormat {
+    try {
+      return DateFormat(DateFormatConst.MMMM_D_yyyy)
+          .format(dateInyyyyMMddHHmmFormat);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  String get dateInEEEEDMMMMAtHHmmAmPmFormat {
+    try {
+      return DateFormat(DateFormatConst.EEEE_D_MMMM_At_HH_mm_a)
+          .format(dateInyyyyMMddHHmmFormat);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  String get dateInDMMMMyyyyFormat {
+    try {
+      return DateFormat(DateFormatConst.D_MMMM_yyyy)
+          .format(dateInyyyyMMddHHmmFormat);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  String get dayFromDate {
+    try {
+      return dateInyyyyMMddHHmmFormat.day.toString();
+    } catch (e) {
+      return "";
+    }
+  }
+
+  String get monthMMMFormat {
+    try {
+      return dateInyyyyMMddHHmmFormat.month.toMonthName(isHalfName: true);
+    } catch (e) {
+      return "";
+    }
+  }
+
+  String get dateInMMMMDyyyyAtHHmmAmPmFormat {
+    try {
+      return DateFormat(DateFormatConst.MMMM_D_yyyy_At_HH_mm_a)
+          .format(dateInyyyyMMddHHmmFormat);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  String get dateInddMMMyyyyHHmmAmPmFormat {
+    try {
+      return DateFormat(DateFormatConst.dd_MMM_yyyy_HH_mm_a)
+          .format(dateInyyyyMMddHHmmFormat);
+    } catch (e) {
+      try {
+        return "$dateInyyyyMMddHHmmFormat";
+      } catch (e) {
+        return this;
+      }
+    }
+  }
+
+  DateTime get dateInyyyyMMddHHmmFormat {
+    try {
+      return DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm).parse(this);
+    } catch (e) {
+      try {
+        return DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm).parse(
+            DateTime.parse(this)
+                .toString()); //TODO: toLocal() Removed for UTC Time
+      } catch (e) {
+        log('dateInyyyyMMddHHmmFormat Error in $this: $e');
+        return DateTime.now();
+      }
+    }
+  }
+
+  DateTime get dateInHHmm24HourFormat {
+    try {
+      return DateFormat(DateFormatConst.HH_mm24Hour).parse(this);
+    } catch (e) {
+      log('dateInHHmm24HourFormat Error in $this: $e');
+      return DateTime.now();
+    }
+  }
+
+  String get timeInHHmmAmPmFormat {
+    try {
+      return DateFormat(DateFormatConst.HH_mm12Hour)
+          .format(dateInyyyyMMddHHmmFormat);
+    } catch (e) {
+      return this;
+    }
+  }
+
+  TimeOfDay get timeOfDay24Format {
+    return TimeOfDay.fromDateTime(
+        DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm).parse(this));
+  }
+
+  /* String get dateIndmmyhmaFormat {
+    return DateFormat(DateFormatConst.yyyy_MM_dd).format(DateFormat(DateFormatConst.MMMM_D_yyyy).parse(this));
+  } */
+
+  bool get isValidTime {
+    return DateTime.tryParse("1970-01-01 $this") != null;
+  }
+
+  bool get isValidDateTime {
+    return DateTime.tryParse(this) != null;
+  }
+
+  bool get isAfterCurrentDateTime {
+    return dateInyyyyMMddHHmmFormat.isAfter(DateTime.now());
+  }
+
+  bool get isToday {
+    try {
+      return "$dateInyyyyMMddFormat" == DateTime.now().formatDateYYYYmmdd();
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Duration toDuration() {
+    final parts = split(':');
+    try {
+      if (parts.length == 2) {
+        final hours = int.parse(parts[0]);
+        final minutes = int.parse(parts[1]);
+        return Duration(hours: hours, minutes: minutes);
+      } else {
+        return Duration.zero;
+      }
+    } catch (e) {
+      return Duration.zero;
+    }
+  }
+
+  String toFormattedDuration({bool showFullTitleHoursMinutes = false}) {
+    try {
+      final duration = toDuration();
+      final hours = duration.inHours;
+      final minutes = duration.inMinutes.remainder(60);
+
+      String formattedDuration = '';
+      if (hours > 0) {
+        formattedDuration +=
+            "$hours ${showFullTitleHoursMinutes ? 'hour' : 'hr'} ";
+      }
+      if (minutes > 0) {
+        formattedDuration +=
+            '$minutes ${showFullTitleHoursMinutes ? 'minute' : 'min'}';
+      }
+      return formattedDuration.trim();
+    } catch (e) {
+      return "";
+    }
+  }
+}
+
+extension DateExtension on DateTime {
+  /// Formats the given [DateTime] object in the [dd-MM-yy] format.
+  ///
+  /// Returns a string representing the formatted date.
+  String formatDateDDMMYY() {
+    final formatter = DateFormat(DateFormatConst.DD_MM_YY);
+    return formatter.format(this);
+  }
+
+  /// Formats the given [DateTime] object in the [DateFormatConst.yyyy_MM_dd] format.
+  ///
+  /// Returns a string representing the formatted date.
+  String formatDateYYYYmmdd() {
+    final formatter = DateFormat(DateFormatConst.yyyy_MM_dd);
+    return formatter.format(this);
+  }
+
+  /// Formats the given [DateTime] object in the [DateFormatConst.yyyy_MM_dd_HH_mm] format.
+  ///
+  /// Returns a string representing the formatted date.
+  String formatDateYYYYmmddHHmm() {
+    final formatter = DateFormat(DateFormatConst.yyyy_MM_dd_HH_mm);
+    return formatter.format(this);
+  }
+
+  /// Formats the given [DateTime] object in the [DateFormatConst.yyyy_MM_dd]+[DateFormatConst.HH_mm12Hour] format.
+  ///
+  /// Returns a string representing the formatted date.
+  String formatDateddmmYYYYHHmmAMPM() {
+    final formatter = DateFormat(DateFormatConst.DD_MM_YY);
+    final timeInAMPM = DateFormat(DateFormatConst.HH_mm12Hour);
+    return "${formatter.format(this)} ${timeInAMPM.format(this)}";
+  }
+
+  /*  /// Formats the given [DateTime] object in the [DateFormatConst.yyyy_MM_dd]+[DateFormatConst.HH_mm_a] format.
+  ///
+  /// Returns a string representing the formatted date.
+  String formatDateddmmYYYYHHmmAMPM() {
+    final formatter = DateFormat("dd-MM-yyyy");
+    final timeInAMPM = DateFormat(DateFormatConst.HH_mm_a);
+    return "${formatter.format(this)} ${timeInAMPM.format(this)}";
+  } */
+
+  /// Formats the given [DateTime] object in the [DateFormatConst.HH_mm12Hour] format.
+  ///
+  /// Returns a string representing the formatted date.
+  String formatTimeHHmmAMPM() {
+    final formatter = DateFormat(DateFormatConst.HH_mm12Hour);
+    return formatter.format(this);
+  }
+
+  String formatTimeHHmm24hour() {
+    final formatter = DateFormat(DateFormatConst.HH_mm24Hour);
+    return formatter.format(this);
+  }
+
+  /// Returns Time Ago
+  String get timeAgoWithLocalization => formatTime(millisecondsSinceEpoch);
+}
 
 /// Splits a date string in the format "dd/mm/yyyy" into its constituent parts and returns a [DateTime] object.
 ///
@@ -250,6 +494,43 @@ void launchMail(String url, {List<String>? to}) {
 /// }
 /// ```
 ///
+DateTime? getDateTimeFromAboveFormat(String date) {
+  if (date.isValidDateTime) {
+    return DateTime.tryParse(date);
+  } else {
+    List<String> dateParts = date.split('/');
+    if (dateParts.length != 3) {
+      log('getDateTimeFromAboveFormat => Invalid date format => DATE: $date');
+      return null;
+    }
+    int day = int.parse(dateParts[0]);
+    int month = int.parse(dateParts[1]);
+    int year = int.parse(dateParts[2]);
+    return DateTime.tryParse('$year-$month-$day');
+  }
+}
+
+extension TimeExtension on TimeOfDay {
+  /// Formats the given [TimeOfDay] object in the [DateFormatConst.HH_mm24Hour] format.
+  ///
+  /// Returns a string representing the formatted time.
+  String formatTimeHHmm24Hour() {
+    final timeIn24Hour = DateFormat(DateFormatConst.HH_mm24Hour);
+    final tempDateTime = DateTime(DateTime.now().year, DateTime.now().month,
+        DateTime.now().day, hour, minute);
+    return timeIn24Hour.format(tempDateTime);
+  }
+
+  /// Formats the given [TimeOfDay] object in the [DateFormatConst.yyyy_MM_dd]+[DateFormatConst.HH_mm12Hour] format.
+  ///
+  /// Returns a string representing the formatted time.
+  String formatTimeHHmmAMPM() {
+    final timeInAMPM = DateFormat(DateFormatConst.HH_mm12Hour);
+    final tempDateTime = DateTime(DateTime.now().year, DateTime.now().month,
+        DateTime.now().day, hour, minute);
+    return timeInAMPM.format(tempDateTime);
+  }
+}
 
 TextStyle get appButtonTextStyleGray => secondaryTextStyle(
     color: secondaryColor,
@@ -375,6 +656,44 @@ InputDecoration inputDecorationWithOutBorder(BuildContext context,
   );
 }
 
+Future<List<PlatformFile>> pickFiles({FileType type = FileType.any}) async {
+  List<PlatformFile> filePath0 = [];
+  try {
+    FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
+      type: type,
+      allowMultiple: true,
+      withData: true,
+      onFileLoading: (FilePickerStatus status) => log(status),
+    );
+    if (filePickerResult != null) {
+      if (Platform.isAndroid) {
+        filePath0 = filePickerResult.files;
+      } else {
+        Directory cacheDir = await getTemporaryDirectory();
+        for (PlatformFile file in filePickerResult.files) {
+          if (file.bytes != null) {
+            String filePath = '${cacheDir.path}/${file.name}';
+            File cacheFile = File(filePath);
+            await cacheFile.writeAsBytes(file.bytes!.toList());
+            PlatformFile cachedFile = PlatformFile(
+              path: cacheFile.path,
+              name: file.name,
+              size: cacheFile.lengthSync(),
+              bytes: Uint8List.fromList(cacheFile.readAsBytesSync()),
+            );
+            filePath0.add(cachedFile);
+          }
+        }
+      }
+    }
+  } on PlatformException catch (e) {
+    log('Unsupported operation$e');
+  } catch (e) {
+    log(e.toString());
+  }
+  return filePath0;
+}
+
 Widget backButton({Object? result}) {
   return IconButton(
     onPressed: () {
@@ -478,6 +797,38 @@ void doIfLoggedIn(BuildContext context, VoidCallback callback) async {
   }
 }
 
+void showNewUpdateDialog(BuildContext context,
+    {required int currentAppVersionCode}) async {
+  showInDialog(
+    context,
+    contentPadding: EdgeInsets.zero,
+    barrierDismissible:
+        currentAppVersionCode >= appConfigs.value.minimumForceUpdateCode,
+    builder: (_) {
+      return WillPopScope(
+        onWillPop: () {
+          return Future(() =>
+              currentAppVersionCode >= appConfigs.value.minimumForceUpdateCode);
+        },
+        child: NewUpdateDialog(
+            canClose: currentAppVersionCode >=
+                appConfigs.value.minimumForceUpdateCode),
+      );
+    },
+  );
+}
+
+Future<void> showForceUpdateDialog(BuildContext context) async {
+  getPackageInfo().then((value) {
+    if (isAndroid &&
+        appConfigs.value.latestVersionUpdateCode >
+            value.versionCode.validate().toInt()) {
+      showNewUpdateDialog(context,
+          currentAppVersionCode: value.versionCode.validate().toInt());
+    }
+  });
+}
+
 Color getRatingColor(int rating) {
   if (rating == 1 || rating == 2) {
     return ratingBarColor;
@@ -517,4 +868,23 @@ Widget detailWidget(
           .expand(),
     ],
   ).paddingBottom(10).visible(value.isNotEmpty);
+}
+
+Widget detailWidgetPrice(
+    {required String title,
+    required num value,
+    Color? textColor,
+    bool isSemiBoldText = false}) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Text(title, style: secondaryTextStyle()),
+      PriceWidget(
+        price: value,
+        color: textColor ?? black,
+        size: 12,
+        isSemiBoldText: isSemiBoldText,
+      )
+    ],
+  ).paddingBottom(10);
 }

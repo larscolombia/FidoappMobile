@@ -3,9 +3,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:pawlly/modules/auth/model/login_response.dart';
+import 'package:pawlly/models/login_response_model.dart';
+import 'package:pawlly/modules/auth/model/login_response_model.dart';
+import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/utils/app_common.dart';
+import 'package:pawlly/utils/common_base.dart';
 import 'package:pawlly/utils/constants.dart';
 import 'package:pawlly/utils/local_storage.dart';
+import 'package:pawlly/utils/social_logins.dart';
 
 class SignInController extends GetxController {
   RxBool isNavigateToDashboard = false.obs;
@@ -53,8 +61,6 @@ class SignInController extends GetxController {
   }
 
   Future<void> saveForm() async {
-    print('Controller SaveForm');
-    /*
     isLoading(true);
     hideKeyBoardWithoutContext();
 
@@ -71,12 +77,9 @@ class SignInController extends GetxController {
       isLoading(false);
       toast(e.toString(), print: true);
     });
-    */
   }
 
   googleSignIn() async {
-    print('Controller googleSignIn');
-/*
     isLoading(true);
     await GoogleSignInAuthService.signInWithGoogle().then((value) async {
       Map request = {
@@ -98,18 +101,17 @@ class SignInController extends GetxController {
         handleLoginResponse(loginResponse: value, isSocialLogin: true);
       }).catchError((e) {
         isLoading(false);
+        print('sssssssssssssssssss');
         toast(e.toString(), print: true);
       });
     }).catchError((e) {
       isLoading(false);
+      print('aaaaaaaaaaaaaaaaaaaaaaa');
       toast(e.toString(), print: true);
     });
-    */
   }
 
   appleSignIn() async {
-    print('Controller appleSignIn');
-    /*
     isLoading(true);
     await GoogleSignInAuthService.signInWithApple().then((value) async {
       Map request = {
@@ -137,13 +139,10 @@ class SignInController extends GetxController {
       isLoading(false);
       toast(e.toString(), print: true);
     });
-    */
   }
 
   void handleLoginResponse(
       {required LoginResponse loginResponse, bool isSocialLogin = false}) {
-    print('Controller handleLoginResponse');
-    /*
     if (loginResponse.userData.userRole
         .contains(LoginTypeConst.LOGIN_TYPE_USER)) {
       loginUserData(loginResponse.userData);
@@ -157,11 +156,18 @@ class SignInController extends GetxController {
       setValueToLocal(SharedPreferenceConst.IS_REMEMBER_ME, isRememberMe.value);
 
       isLoading(false);
-      if (isNavigateToDashboard.value) {
-        Get.offAll(() => DashboardScreen(), binding: BindingsBuilder(() {
-          Get.put(HomeScreenController());
+      if (!isNavigateToDashboard.value) {
+        Get.offAll(() => HomeScreen(), binding: BindingsBuilder(() {
+          Get.put(HomeController());
         }));
       } else {
+        try {
+          HomeController homeScreenController = Get.find();
+          homeScreenController.updateIndex(0);
+        } catch (e) {
+          log('homeScreenController Get.find E: $e');
+        }
+        /*
         try {
           DashboardController dashboardController = Get.find();
           dashboardController.reloadBottomTabs();
@@ -185,13 +191,13 @@ class SignInController extends GetxController {
         } catch (e) {
           log('myPetsScreenController.init E: $e');
         }
-        Get.back(result: true);
+        */
+        log('Else : isNavigateToDashboard.value');
+        // Get.back(result: true);
       }
     } else {
       isLoading(false);
       toast('Sorry User Cannot Signin'); //TODO: string translation
     }
-  }
-  */
   }
 }

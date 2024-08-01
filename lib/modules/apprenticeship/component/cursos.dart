@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/apprenticeship/curso_show.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class Cursos extends StatelessWidget {
   final double margin = 3;
-  final String TituloCurso;
+  final String TitleCurso;
   final String duracion;
   final String precio;
 
   Cursos({
     super.key,
-    this.TituloCurso = 'Curso de HouseBreaking',
+    this.TitleCurso = 'Curso de HouseBreaking',
     this.duracion = '10meses',
     this.precio = "20.0",
   });
@@ -35,7 +35,7 @@ class Cursos extends StatelessWidget {
               margin: EdgeInsets.only(top: 50),
               width: 128,
               child: Text(
-                TituloCurso,
+                TitleCurso,
                 style: TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 13,
@@ -102,7 +102,7 @@ class Cursos extends StatelessWidget {
                 ),
               ],
             ),
-            ButtonDefault(
+            ButtonDefaultWidget(
               title: 'Ver más',
               callback: callback,
               heigthButtom: 32,

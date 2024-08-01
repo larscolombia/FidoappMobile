@@ -4,17 +4,17 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:pawlly/styles/styles.dart';
 
 // ignore: must_be_immutable
-class Utilidades extends StatelessWidget {
-  const Utilidades({super.key});
+class Resources extends StatelessWidget {
+  const Resources({super.key});
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Container(
       padding: Styles.paddingAll,
-      height: 160,
+      height: 100,
       width: width,
-      margin: EdgeInsets.only(top: 30),
+      margin: EdgeInsets.only(top: 16),
       child: Column(
         children: [
           Container(
@@ -43,7 +43,8 @@ class Utilidades extends StatelessWidget {
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(19),
                       border: Border.all(
-                        color: Styles.greyTextColor, // Color del borde
+                        color: Styles.greyTextColor
+                            .withOpacity(0.2), // Color del borde
                         width: 1, // Ancho del borde
                       ),
                     ),
@@ -63,7 +64,8 @@ class Utilidades extends StatelessWidget {
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(19),
                       border: Border.all(
-                        color: Styles.greyTextColor, // Color del borde
+                        color: Styles.greyTextColor
+                            .withOpacity(0.2), // Color del borde
                         width: 1, // Ancho del borde
                       ),
                     ),
@@ -83,7 +85,8 @@ class Utilidades extends StatelessWidget {
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(19),
                       border: Border.all(
-                        color: Styles.greyTextColor, // Color del borde
+                        color: Styles.greyTextColor
+                            .withOpacity(0.2), // Color del borde
                         width: 1, // Ancho del borde
                       ),
                     ),

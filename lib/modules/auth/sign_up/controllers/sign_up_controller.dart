@@ -5,6 +5,10 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/controllers/sign_in_controller.dart';
+import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/utils/common_base.dart';
+import 'package:pawlly/utils/constants.dart';
 
 class SignUpController extends GetxController {
   RxBool isLoading = false.obs;
@@ -14,13 +18,13 @@ class SignUpController extends GetxController {
   TextEditingController fisrtNameCont = TextEditingController();
   TextEditingController lastNameCont = TextEditingController();
   TextEditingController passwordCont = TextEditingController();
+  TextEditingController password2Cont = TextEditingController();
+  TextEditingController userTypeCont = TextEditingController();
+  TextEditingController genCont = TextEditingController();
 
-  FocusNode emailFocus = FocusNode();
-  FocusNode fisrtNameFocus = FocusNode();
-  FocusNode lastNameFocus = FocusNode();
-  FocusNode passwordFocus = FocusNode();
-
+/*
   void saveForm() {
+
     isLoading(true);
 
     // Simular una operación de registro con un retraso
@@ -31,11 +35,11 @@ class SignUpController extends GetxController {
           snackPosition: SnackPosition.BOTTOM);
     });
   }
-/*
+*/
+
   saveForm() async {
     print('SignUp Controller');
 
-    
     if (isAcceptedTc.value) {
       isLoading(true);
       hideKeyBoardWithoutContext();
@@ -59,7 +63,8 @@ class SignUpController extends GetxController {
           log('E: $e');
           toast(e.toString(), print: true);
         }
-        // Get.offUntil(GetPageRoute(page: () => SignInScreen()), (route) => route.isFirst || route.settings.name == '/$OptionScreen');
+        Get.offUntil(
+            GetPageRoute(page: () => SignInScreen()), (route) => route.isFirst);
       }).catchError((e) {
         toast(e.toString(), print: true);
       }).whenComplete(() => isLoading(false));
@@ -67,7 +72,4 @@ class SignUpController extends GetxController {
       toast(locale.value.pleaseAcceptTermsAnd);
     }
   }
-  
-  }
-  */
 }

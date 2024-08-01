@@ -3,14 +3,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class HeaderTitulo extends StatelessWidget {
+class HeaderTitle extends StatelessWidget {
   final String label;
-  final String titulo;
+  final String title;
   final String precio;
   final Color color;
-  HeaderTitulo({
+  HeaderTitle({
     super.key,
-    this.titulo = 'Curso de HouseBreaking',
+    this.title = 'Curso de HouseBreaking',
     this.precio = '20',
     this.label = "Sobre este curso",
     this.color = const Color.fromRGBO(27, 26, 24, 1),
@@ -43,7 +43,7 @@ class HeaderTitulo extends StatelessWidget {
                       Container(
                         width: 180,
                         child: Text(
-                          titulo,
+                          title,
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               color: color,

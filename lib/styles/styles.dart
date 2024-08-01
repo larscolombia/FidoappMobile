@@ -9,6 +9,7 @@ class Styles {
   static const fiveColor = Color.fromRGBO(252, 247, 229, 1);
   static const fiveColor08 = Color.fromRGBO(252, 247, 229, 0.8);
   static const greyColor = Colors.grey;
+
   static const greyTextColor = Color.fromRGBO(85, 85, 85, 1);
   static const greyDivider = Color.fromRGBO(234, 234, 234, 1);
   static const iconColorBack = Color.fromRGBO(252, 146, 20, 1);

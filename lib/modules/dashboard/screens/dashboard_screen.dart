@@ -30,15 +30,23 @@ class DashboardScreen extends StatelessWidget {
                 Container(
                   width: 100,
                   height: 100,
+                  padding:
+                      EdgeInsets.all(4), // Espacio entre la imagen y el borde
                   decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Styles.iconColorBack,
-                        width: 3), // Borde azul alrededor de la imagen
+                    color: Styles.fiveColor, // Fondo del borde
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage('https://via.placeholder.com/150'),
-                      fit: BoxFit.cover,
+                    border: Border.all(
+                      color: Styles.iconColorBack, // Color del borde
+                      width: 3.0, // Grosor del borde
                     ),
+                  ),
+                  child: CircleAvatar(
+                    radius:
+                        46, // Ajustar el radio para que la imagen se adapte mejor al contenedor
+                    backgroundImage:
+                        NetworkImage('https://via.placeholder.com/150'),
+                    backgroundColor: Colors
+                        .transparent, // Fondo transparente si la imagen no se carga
                   ),
                 ),
                 // Nombre del Usuario

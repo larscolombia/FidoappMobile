@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default.dart';
-import 'package:pawlly/components/input_text_custom.dart';
+import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/modules/auth/password/screens/change_success_password.dart';
@@ -74,22 +74,22 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                           height: 20,
                         ),
                         Container(
-                          child: CustomTextFormField(
+                          child: CustomTextFormFieldWidget(
                               controller: controller.emailCont,
-                              pleholder: 'Correo Electronico',
+                              placeholder: 'Correo Electronico',
                               icon: 'assets/icons/email.png'),
                         ),
                         SizedBox(
                           height: 20,
                         ),
-                        ButtonDefault(
+                        ButtonDefaultWidget(
                             title: 'Enviar enlace',
                             callback: () {
-                              //if (_forgotPassFormKey.currentState!.validate()) {
-                              // _forgotPassFormKey.currentState!.save();
-                              //controller.saveForm();
-                              //}
-                              Get.toNamed(Routes.CHANGESUCCESSPASSWORD);
+                              if (_forgotPassFormKey.currentState!.validate()) {
+                                _forgotPassFormKey.currentState!.save();
+                                controller.saveForm();
+                              }
+                              // Get.toNamed(Routes.CHANGESUCCESSPASSWORD);
                               /* Get.to(() => OtpScreen()); */
                             }),
                         Container(

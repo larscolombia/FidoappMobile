@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:pawlly/generated/assets.dart';
 
 class ShowVideoCursos extends StatelessWidget {
-  final String imagen;
+  final String img;
   final String numero;
 
-  ShowVideoCursos({super.key, required this.imagen, this.numero = '1'});
+  ShowVideoCursos({super.key, required this.img, this.numero = '1'});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,7 +42,7 @@ class ShowVideoCursos extends StatelessWidget {
                     children: [
                       Container(
                         width: 148,
-                        child: Text('Titulo del curso',
+                        child: Text('Title del curso',
                             style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Lato',
@@ -68,7 +68,7 @@ class ShowVideoCursos extends StatelessWidget {
                   width: 28,
                   height: 28,
                   child: Image.asset(
-                    imagen,
+                    img,
                     width: 28,
                     height: 28,
                   ),

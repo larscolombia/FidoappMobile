@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:pawlly/components/button_default.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -14,7 +14,6 @@ class Explore extends StatelessWidget {
       padding: Styles.paddingAll,
       child: Container(
         height: 160,
-        margin: EdgeInsets.only(top: 30),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Styles.tertiaryColor,
@@ -57,7 +56,7 @@ class Explore extends StatelessWidget {
                       margin: EdgeInsets.only(top: 2),
                       child: Align(
                         alignment: Alignment.bottomLeft,
-                        child: ButtonDefault(
+                        child: ButtonDefaultWidget(
                           title: 'Explorar',
                           callback: () {},
                           widthButtom: 97,

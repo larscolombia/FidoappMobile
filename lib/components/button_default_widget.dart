@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class ButtonDefault extends StatelessWidget {
+class ButtonDefaultWidget extends StatelessWidget {
   final String title;
   final VoidCallback callback;
   final Color defaultColor; // Color de fondo predeterminado
@@ -12,7 +12,7 @@ class ButtonDefault extends StatelessWidget {
   final BorderSide? border; // Borde del botón
   final double heigthButtom;
   final double? widthButtom;
-  const ButtonDefault({
+  const ButtonDefaultWidget({
     Key? key,
     this.widthButtom,
     this.heigthButtom = 56,

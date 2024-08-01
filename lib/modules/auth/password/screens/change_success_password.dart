@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
-import 'package:pawlly/components/input_text_custom.dart';
+import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/components/titulo.dart';
 import 'package:pawlly/modules/auth/password/controllers/change_password_controller.dart';
@@ -51,24 +51,24 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                     height: 16,
                   ),
                   Container(
-                    child: CustomTextFormField(
+                    child: CustomTextFormFieldWidget(
                         controller: null,
-                        pleholder: 'Contraseña',
+                        placeholder: 'Contraseña',
                         icon: 'assets/icons/key.png'),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Container(
-                    child: CustomTextFormField(
+                    child: CustomTextFormFieldWidget(
                         controller: null,
-                        pleholder: 'Confirmar Contraseña',
+                        placeholder: 'Confirmar Contraseña',
                         icon: 'assets/icons/key.png'),
                   ),
                   SizedBox(
                     height: 20,
                   ),
-                  ButtonDefault(
+                  ButtonDefaultWidget(
                     title: 'Enviar enlace',
                     callback: calbak,
                   ),

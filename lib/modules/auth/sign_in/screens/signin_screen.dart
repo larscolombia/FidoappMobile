@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default.dart';
-import 'package:pawlly/components/input_text_custom.dart';
+import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/modules/auth/sign_in/controllers/sign_in_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
@@ -13,8 +13,9 @@ import '../../../../components/app_scaffold.dart';
 
 import '../../../../utils/colors.dart';
 
-class SignInScreen extends GetView<SignInController> {
+class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
+  final SignInController signInController = Get.put(SignInController());
   final GlobalKey<FormState> _signInformKey = GlobalKey();
 
   @override
@@ -23,7 +24,7 @@ class SignInScreen extends GetView<SignInController> {
     final height = MediaQuery.of(context).size.height;
     return AppScaffold(
       hideAppBar: true,
-      isLoading: controller.isLoading,
+      isLoading: signInController.isLoading,
       body: Container(
         padding: Styles.paddingAll,
         width: width,
@@ -55,32 +56,33 @@ class SignInScreen extends GetView<SignInController> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              child: CustomTextFormField(
-                                controller: controller.emailCont,
-                                pleholder: 'Email',
+                              child: CustomTextFormFieldWidget(
+                                controller: signInController.emailCont,
+                                placeholder: 'Email',
                                 icon: 'assets/icons/email.png',
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 20),
-                              child: CustomTextFormField(
-                                controller: controller.passwordCont,
-                                pleholder: 'Contraseña',
+                              child: CustomTextFormFieldWidget(
+                                controller: signInController.passwordCont,
+                                placeholder: 'Contraseña',
+                                obscureText: true,
                                 icon: 'assets/icons/key.png',
                               ),
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 20),
-                              child: ButtonDefault(
+                              child: ButtonDefaultWidget(
                                 title: 'Iniciar Sessión',
                                 callback: () {
                                   // Get.to(Inicio());
                                   print('object');
                                   if (_signInformKey.currentState!.validate()) {
                                     _signInformKey.currentState!.save();
-                                    controller.saveForm();
-                                    print(controller);
-                                    Get.toNamed(Routes.HOME);
+                                    signInController.saveForm();
+                                    // print(signInController);
+                                    // Get.toNamed(Routes.HOME);
                                   }
                                 },
                               ),
@@ -146,6 +148,7 @@ class SignInScreen extends GetView<SignInController> {
                             ),
                             child: TextButton.icon(
                                 onPressed: () {
+                                  signInController.googleSignIn();
                                   print('google');
                                 },
                                 icon: const Icon(

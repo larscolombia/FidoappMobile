@@ -6,10 +6,11 @@ import 'package:pawlly/modules/home/screens/widgets/menu_of_navigation.dart';
 import 'package:pawlly/screens_demo/controller/user_default_test.dart';
 import 'package:pawlly/modules/home/screens/pages/explorar_container.dart';
 import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
-import 'package:pawlly/modules/home/screens/pages/utilidades.dart';
+import 'package:pawlly/modules/home/screens/pages/resources.dart';
 
-class HomeScreen extends GetView<HomeController> {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
+  final HomeController homeController = Get.put(HomeController());
   // Asegúrate de inicializar el controlador correctamente
 
   @override
@@ -21,8 +22,8 @@ class HomeScreen extends GetView<HomeController> {
           children: [
             HeaderNotification(),
             ProfilesDogs(),
+            Resources(),
             Explore(),
-            Utilidades(),
           ],
         ),
       ),

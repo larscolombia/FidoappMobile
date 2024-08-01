@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/input_text_custom.dart';
+import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/modules/apprenticeship/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/widgets/menu_of_navigation.dart';
 import 'package:pawlly/modules/apprenticeship/component/cursos.dart';
@@ -43,8 +43,8 @@ class ApprenticeshipScreen extends GetView<ApprenticeshipController> {
                   color: Styles.tertiaryColor,
                   borderRadius: BorderRadius.circular(35),
                 ),
-                child: CustomTextFormField(
-                  pleholder: 'Buscar el curso que necesites',
+                child: CustomTextFormFieldWidget(
+                  placeholder: 'Buscar el curso que necesites',
                   icon: 'assets/icons/ic_search.png',
                   controller: null,
                 ),

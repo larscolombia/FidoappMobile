@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pawlly/components/TextTitleH1.dart';
 import 'package:pawlly/generated/config.dart';
 import 'package:pawlly/modules/welcome/controllers/welcome_controller.dart';
 import 'package:pawlly/styles/styles.dart';

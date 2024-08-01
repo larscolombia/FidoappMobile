@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
@@ -87,7 +87,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ButtonDefault(
+                        ButtonDefaultWidget(
                             title: "Inicia Sesión",
                             callback: () {
                               Get.toNamed(
@@ -97,7 +97,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                         SizedBox(
                           height: 16,
                         ),
-                        ButtonDefault(
+                        ButtonDefaultWidget(
                             title: 'Regístrate',
                             defaultColor: Color.fromARGB(255, 255, 255, 255),
                             border: BorderSide(

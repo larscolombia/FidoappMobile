@@ -16,6 +16,9 @@ class ChangePasswordController extends GetxController {
   TextEditingController oldPasswordCont = TextEditingController();
   TextEditingController newpasswordCont = TextEditingController();
   TextEditingController confirmPasswordCont = TextEditingController();
+  var passwordController = TextEditingController().obs;
+  var newPasswordController = TextEditingController().obs;
+  var repeatNewPasswordController = TextEditingController().obs;
 
   @override
   void onInit() {

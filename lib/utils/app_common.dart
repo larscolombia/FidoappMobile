@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/modules/auth/model/about_data_model.dart';
 import 'package:pawlly/modules/auth/model/app_configuration_res.dart';
-import 'package:pawlly/modules/auth/model/login_response.dart';
+import 'package:pawlly/modules/auth/model/login_response_model.dart';
 import 'package:pawlly/modules/auth/model/order_status_data_model.dart';
 import 'package:pawlly/modules/auth/model/sistem_model.dart';
 import 'package:pawlly/modules/auth/model/status_model.dart';
