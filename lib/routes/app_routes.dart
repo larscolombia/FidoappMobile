@@ -14,6 +14,9 @@ abstract class Routes {
   static const PRIVACYPOLICY = _Paths.PRIVACYPOLICY;
   static const CHANGESUCCESSPASSWORD = _Paths.CHANGESUCCESSPASSWORD;
   static const APPRENTICESHIP = _Paths.APPRENTICESHIP;
+  static const DASHBOARD = _Paths.DASHBOARD;
+  static const PROFILE = _Paths.PROFILE;
+  static const PROFILEPET = _Paths.PROFILEPET;
 }
 
 abstract class _Paths {
@@ -28,6 +31,9 @@ abstract class _Paths {
   static const PRIVACYPOLICY = '/privacy-policy';
   static const CHANGESUCCESSPASSWORD = '/change-success-password';
   static const APPRENTICESHIP = '/apprenticeship';
+  static const DASHBOARD = '/dashboard';
+  static const PROFILE = '/profile';
+  static const PROFILEPET = '/profile-pet';
 }
 
 /*

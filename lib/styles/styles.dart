@@ -30,6 +30,43 @@ class Styles {
     fontSize: 16,
     color: blackColor,
   );
+
+  static final textProfile15w700 = GoogleFonts.lato(
+    fontWeight: FontWeight.w700,
+    fontSize: 15,
+    color: blackColor,
+  );
+
+  static final textProfile15w400 = GoogleFonts.lato(
+    fontWeight: FontWeight.w400,
+    fontSize: 15,
+    color: blackColor,
+  );
+
+  static final textProfile14w800 = GoogleFonts.lato(
+    fontWeight: FontWeight.w800,
+    fontSize: 14,
+    color: blackColor,
+  );
+
+  static final textProfile14w700 = GoogleFonts.lato(
+    fontWeight: FontWeight.w700,
+    fontSize: 14,
+    color: blackColor,
+  );
+
+  static final textProfile14w400 = GoogleFonts.lato(
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    color: blackColor,
+  );
+
+  static final textProfile12w400 = GoogleFonts.lato(
+    fontWeight: FontWeight.w400,
+    fontSize: 12,
+    color: primaryColor,
+  );
+
   static final textSubTitleHome = GoogleFonts.lato(
     fontWeight: FontWeight.w500,
     fontSize: 12,

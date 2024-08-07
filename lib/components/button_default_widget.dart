@@ -12,6 +12,12 @@ class ButtonDefaultWidget extends StatelessWidget {
   final BorderSide? border; // Borde del botón
   final double heigthButtom;
   final double? widthButtom;
+  final double? textSize;
+  final double? borderSize;
+  final IconData? icon; // Icono opcional
+  final bool
+      iconAfterText; // Posición del icono: verdadero para después del texto, falso para antes
+
   const ButtonDefaultWidget({
     Key? key,
     this.widthButtom,
@@ -22,6 +28,10 @@ class ButtonDefaultWidget extends StatelessWidget {
     this.color,
     this.textColor = Styles.whiteColor, // Color del texto predeterminado
     this.border, // Borde del botón
+    this.textSize,
+    this.borderSize,
+    this.icon, // Icono opcional
+    this.iconAfterText = true, // Por defecto, el icono está después del texto
   }) : super(key: key);
 
   @override
@@ -37,22 +47,59 @@ class ButtonDefaultWidget extends StatelessWidget {
             backgroundColor: resolvedColor,
             side: border != null
                 ? MaterialStateProperty.all(border)
-                : null, // Configurar el borde
+                : MaterialStateProperty.all(
+                    BorderSide.none), // Configurar el borde
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16), // Bordes cuadrados
+                borderRadius:
+                    BorderRadius.circular(borderSize ?? 16), // Bordes cuadrados
               ),
             ),
           ),
           onPressed: callback,
-          child: Text(
-            title,
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: textColor,
-            ),
-          ),
+          child: icon == null
+              ? Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                    fontSize: textSize ?? 16,
+                    fontWeight: FontWeight.w500,
+                    color: textColor,
+                  ),
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: iconAfterText
+                      ? [
+                          Text(
+                            title,
+                            style: GoogleFonts.poppins(
+                              fontSize: textSize ?? 16,
+                              fontWeight: FontWeight.w500,
+                              color: textColor,
+                            ),
+                          ),
+                          SizedBox(width: 8), // Espacio entre texto e icono
+                          Icon(
+                            icon,
+                            color: textColor,
+                          ),
+                        ]
+                      : [
+                          Icon(
+                            icon,
+                            color: textColor,
+                          ),
+                          SizedBox(width: 8), // Espacio entre icono y texto
+                          Text(
+                            title,
+                            style: GoogleFonts.poppins(
+                              fontSize: textSize ?? 16,
+                              fontWeight: FontWeight.w500,
+                              color: textColor,
+                            ),
+                          ),
+                        ],
+                ),
         ),
       ),
     );

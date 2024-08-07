@@ -5,11 +5,11 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
-import 'package:pawlly/modules/profile/controllers/prodile_controller.dart';
+import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class MiPerfilPageScreen extends StatelessWidget {
-  final MiPerfilController controller = Get.put(MiPerfilController());
+class ProfileScreen extends StatelessWidget {
+  final ProfileController controller = Get.put(ProfileController());
 
   @override
   Widget build(BuildContext context) {

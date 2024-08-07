@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:pawlly/modules/notification/screens/notification_screens.dart';
+import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class HeaderNotification extends StatelessWidget {
@@ -75,7 +76,7 @@ class HeaderNotification extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       // Navegar a la vista de Dashboard
-                      Get.to(() => DashboardScreen());
+                      Get.toNamed(Routes.DASHBOARD);
                     },
                     child: Container(
                       width: 50, // Tamaño del contenedor que contiene la imagen

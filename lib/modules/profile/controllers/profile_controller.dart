@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class MiPerfilController extends GetxController {
+class ProfileController extends GetxController {
   var isEditing = false.obs;
   var nameController = TextEditingController(text: 'Victoria').obs;
   var lastNameController = TextEditingController(text: 'Doe').obs;

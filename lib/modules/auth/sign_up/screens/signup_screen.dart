@@ -13,17 +13,32 @@ import 'package:pawlly/screens_demo/terms_conditions.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:pawlly/utils/colors.dart';
 
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/app_scaffold.dart';
+import 'package:pawlly/components/custom_text_form_field_widget.dart';
+import 'package:pawlly/components/button_back.dart';
+import 'package:pawlly/components/custom_select_form_field_widget.dart';
+import 'package:pawlly/modules/auth/sign_up/controllers/sign_up_controller.dart';
+import 'package:pawlly/routes/app_pages.dart';
+import 'package:pawlly/screens_demo/terms_conditions.dart';
+import 'package:pawlly/styles/styles.dart';
+import 'package:pawlly/utils/colors.dart';
+
 class SignUpScreen extends GetView<SignUpController> {
   SignUpScreen({super.key});
   final GlobalKey<FormState> _signUpformKey = GlobalKey();
+  final RxBool _autoValidate =
+      false.obs; // Observador para activar auto validación
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return AppScaffold(
-      // hideAppBar: true,
-      // isLoading: controller.isLoading,
       body: Container(
         padding: Styles.paddingAll,
         child: SizedBox(
@@ -50,35 +65,60 @@ class SignUpScreen extends GetView<SignUpController> {
                       ),
                       Form(
                         key: _signUpformKey,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        autovalidateMode: _autoValidate.value
+                            ? AutovalidateMode.onUserInteraction
+                            : AutovalidateMode
+                                .disabled, // Modo de auto validación
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            // Campo de nombre
                             Container(
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.fisrtNameCont,
                                 placeholder: 'Nombre',
                                 icon: 'assets/icons/profile.png',
+                                validators: [
+                                  (value) => (value?.isEmpty ?? true)
+                                      ? 'El nombre es requerido'
+                                      : null,
+                                ],
                               ),
                             ),
+                            // Campo de apellido
                             Container(
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.lastNameCont,
                                 placeholder: 'Apellido',
                                 icon: 'assets/icons/profile.png',
+                                validators: [
+                                  (value) => (value?.isEmpty ?? true)
+                                      ? 'El apellido es requerido'
+                                      : null,
+                                ],
                               ),
                             ),
+                            // Campo de correo electrónico
                             Container(
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.emailCont,
                                 placeholder: 'Correo Electrónico',
                                 icon: 'assets/icons/email.png',
+                                validators: [
+                                  (value) => (value?.isEmpty ?? true)
+                                      ? 'El correo es requerido'
+                                      : null,
+                                  (value) => !value!.contains('@')
+                                      ? 'Ingrese un correo válido'
+                                      : null,
+                                ],
                               ),
                             ),
+                            // Campo de género
                             Container(
                               margin: EdgeInsets.only(top: 20),
                               child: CustomSelectFormFieldWidget(
@@ -90,8 +130,14 @@ class SignUpScreen extends GetView<SignUpController> {
                                   'Hombre',
                                   'Prefiero no decirlo'
                                 ],
+                                validators: [
+                                  (value) => (value?.isEmpty ?? true)
+                                      ? 'Seleccione su género'
+                                      : null,
+                                ],
                               ),
                             ),
+                            // Campo de contraseña
                             Container(
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
@@ -99,8 +145,18 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholder: 'Contraseña',
                                 obscureText: true,
                                 icon: 'assets/icons/key.png',
+                                validators: [
+                                  (value) => (value?.isEmpty ?? true)
+                                      ? 'La contraseña es requerida'
+                                      : null,
+                                  (value) => value!.length < 8 ||
+                                          value.length > 15
+                                      ? 'La contraseña debe tener entre 8 y 15 caracteres'
+                                      : null,
+                                ],
                               ),
                             ),
+                            // Campo de confirmar contraseña
                             Container(
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
@@ -108,20 +164,33 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholder: 'Confirmar contraseña',
                                 obscureText: true,
                                 icon: 'assets/icons/key.png',
+                                validators: [
+                                  (value) =>
+                                      (value != controller.passwordCont.text)
+                                          ? 'Las contraseñas no coinciden'
+                                          : null,
+                                ],
                               ),
                             ),
+                            // Campo de tipo de usuario
                             Container(
                               margin: EdgeInsets.only(top: 20),
                               child: CustomSelectFormFieldWidget(
                                 controller: controller.userTypeCont,
-                                placeholder: 'Tipo de Usuarios',
+                                placeholder: 'Tipo de Usuario',
                                 icon: 'assets/icons/tag-user.png',
                                 items: [
-                                  'Entrenador',
-                                  'Dueño de Mascota',
+                                  'Cliente',
+                                  'Negocio',
+                                ],
+                                validators: [
+                                  (value) => (value?.isEmpty ?? true)
+                                      ? 'Seleccione su género'
+                                      : null,
                                 ],
                               ),
                             ),
+                            // Aceptar términos y condiciones
                             Column(
                               children: [
                                 Row(
@@ -165,7 +234,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                                     fontWeight: FontWeight.w400,
                                                     color: Color.fromRGBO(
                                                         83, 82, 81, 1)),
-                                              ), //TODO: string
+                                              ),
                                               TextSpan(
                                                 text: 'términos y condiciones',
                                                 style: const TextStyle(
@@ -193,33 +262,37 @@ class SignUpScreen extends GetView<SignUpController> {
                             SizedBox(
                               height: 10,
                             ),
-                            ButtonDefaultWidget(
-                                title: "Registrarse",
-                                callback: () {
-                                  Get.toNamed(Routes.SIGNUP);
-
-                                  if (_signUpformKey.currentState!.validate()) {
-                                    _signUpformKey.currentState!.save();
-                                    controller.saveForm();
-                                  }
-                                }),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            const Divider(
-                              height: 16,
-                              color: Styles.greyDivider,
-                              thickness: 1,
-                            ),
-                            Container(
-                              padding: Styles.paddingT10B10,
-                              child: ButtonBack(
-                                text: "Iniciar sesión",
-                              ),
-                            ),
                           ],
                         ),
-                      )
+                      ),
+                      SizedBox(height: 20),
+                      // Botón de registro
+                      Center(
+                        child: ButtonDefaultWidget(
+                          callback: () {
+                            _autoValidate.value = true;
+                            if (_signUpformKey.currentState!.validate()) {
+                              _signUpformKey.currentState!.save();
+                              controller.saveForm();
+                            }
+                          },
+                          title: 'Registrar',
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      const Divider(
+                        height: 16,
+                        color: Styles.greyDivider,
+                        thickness: 1,
+                      ),
+                      Container(
+                        padding: Styles.paddingT10B10,
+                        child: ButtonBack(
+                          text: "Iniciar sesión",
+                        ),
+                      ),
                     ],
                   ),
                 ),

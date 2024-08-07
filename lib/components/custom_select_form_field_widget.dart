@@ -8,6 +8,8 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
   final TextEditingController? controller;
   final List<String>? items;
   final bool? enabled; // Permite habilitar o deshabilitar el widget
+  final List<String? Function(String?)>?
+      validators; // Lista de validadores opcionales
 
   CustomSelectFormFieldWidget({
     Key? key,
@@ -16,6 +18,7 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
     required this.controller,
     this.items,
     this.enabled,
+    this.validators, // Constructor para validadores
   }) : super(key: key);
 
   @override
@@ -38,6 +41,19 @@ class _CustomSelectFormFieldWidgetState
         : null;
   }
 
+  // Función para ejecutar validadores y devolver el primer mensaje de error encontrado
+  String? _validate() {
+    if (widget.validators != null) {
+      for (var validator in widget.validators!) {
+        final validationResult = validator(_selectedValue);
+        if (validationResult != null) {
+          return validationResult;
+        }
+      }
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isEnabled = widget.enabled ?? true;
@@ -55,73 +71,90 @@ class _CustomSelectFormFieldWidgetState
             }
           }
         },
-        child: InputDecorator(
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: hasText || _selectedValue != null
-                ? Colors.white
-                : Color.fromRGBO(254, 247, 229, 1),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(
-                color: hasText || _selectedValue != null
-                    ? Styles.iconColorBack
-                    : Colors.transparent,
-                width: 1.0,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(
-                color: isEnabled
-                    ? (hasText || _selectedValue != null)
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InputDecorator(
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: hasText || _selectedValue != null
+                    ? Colors.white
+                    : Color.fromRGBO(254, 247, 229, 1),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: hasText || _selectedValue != null
                         ? Styles.iconColorBack
-                        : Colors.transparent
-                    : Colors.grey,
-                width: 1.0,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(
-                color: Styles.iconColorBack,
-                width: 1.0,
-              ),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide(
-                color: Colors.grey,
-                width: 1.0,
-              ),
-            ),
-            prefixIcon: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(
-                widget.icon,
-                width: 20,
-                height: 20,
-              ),
-            ),
-            labelText: _selectedValue != null ? null : widget.placeholder,
-            labelStyle: TextStyle(
-              color: isEnabled ? Styles.iconColorBack : Colors.grey,
-            ),
-          ),
-          isEmpty: _selectedValue == null,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                _selectedValue ?? '',
-                style: TextStyle(
-                  color: isEnabled ? Colors.black : Colors.grey,
+                        : Colors.transparent,
+                    width: 1.0,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: isEnabled
+                        ? (hasText || _selectedValue != null)
+                            ? Styles.iconColorBack
+                            : Colors.transparent
+                        : Colors.grey,
+                    width: 1.0,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Styles.iconColorBack,
+                    width: 1.0,
+                  ),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.grey,
+                    width: 1.0,
+                  ),
+                ),
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    widget.icon,
+                    width: 20,
+                    height: 20,
+                  ),
+                ),
+                labelText: _selectedValue != null ? null : widget.placeholder,
+                labelStyle: TextStyle(
+                  color: isEnabled ? Styles.iconColorBack : Colors.grey,
                 ),
               ),
-              Icon(Icons.arrow_drop_down,
-                  color: isEnabled ? Styles.iconColorBack : Colors.grey),
-            ],
-          ),
+              isEmpty: _selectedValue == null,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _selectedValue ?? '',
+                    style: TextStyle(
+                      color: isEnabled ? Colors.black : Colors.grey,
+                    ),
+                  ),
+                  Icon(Icons.arrow_drop_down,
+                      color: isEnabled ? Styles.iconColorBack : Colors.grey),
+                ],
+              ),
+            ),
+            // Muestra el mensaje de error si hay una validación fallida
+            if (_validate() != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8, left: 12),
+                child: Text(
+                  _validate()!,
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 12.0,
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );

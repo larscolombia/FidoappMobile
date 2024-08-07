@@ -1,10 +1,16 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pages.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
+import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
+import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class DashboardScreen extends StatelessWidget {
+  final DashboardController controller = Get.put(DashboardController());
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -112,7 +118,7 @@ class DashboardScreen extends StatelessWidget {
                           return GestureDetector(
                             onTap: () {
                               // Navegar a la vista correspondiente
-                              Get.to(() => _getPageForIndex(index));
+                              Get.toNamed(_getPageForIndex(index) as String);
                             },
                             child: Container(
                               margin: const EdgeInsets.only(bottom: 5),
@@ -191,12 +197,12 @@ class DashboardScreen extends StatelessWidget {
   }
 
   // Método auxiliar para obtener la página correspondiente
-  Widget _getPageForIndex(int index) {
+  Object _getPageForIndex(int index) {
     switch (index) {
       case 0:
-        return MiPerfilPageScreen();
+        return Routes.PROFILE;
       case 1:
-        return MascotasPage();
+        return Routes.PROFILEPET;
       case 2:
         return TerminosCondicionesPage();
       case 3:

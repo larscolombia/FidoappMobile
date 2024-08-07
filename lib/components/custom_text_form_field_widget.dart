@@ -10,6 +10,7 @@ class CustomTextFormFieldWidget extends StatefulWidget {
   final bool? obscureText;
   final bool? isNumeric;
   final List<String? Function(String?)>? validators;
+  final AutovalidateMode autovalidateMode; // Nueva propiedad
 
   CustomTextFormFieldWidget({
     Key? key,
@@ -20,6 +21,8 @@ class CustomTextFormFieldWidget extends StatefulWidget {
     this.obscureText,
     this.isNumeric,
     this.validators,
+    this.autovalidateMode =
+        AutovalidateMode.disabled, // Inicializar nueva propiedad
   }) : super(key: key);
 
   @override
@@ -55,6 +58,8 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
             inputFormatters: widget.isNumeric == true
                 ? [FilteringTextInputFormatter.digitsOnly]
                 : [],
+            autovalidateMode:
+                widget.autovalidateMode, // Usar la nueva propiedad
             decoration: InputDecoration(
               filled: true,
               fillColor:
@@ -107,6 +112,8 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
                 color: Styles.iconColorBack,
               ),
               errorText: _errorMessage,
+              errorStyle: TextStyle(
+                  color: Colors.red), // Cambiar color del texto de error a rojo
               suffixIcon: widget.obscureText == true
                   ? IconButton(
                       icon: Icon(
