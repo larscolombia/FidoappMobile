@@ -204,9 +204,9 @@ class DashboardScreen extends StatelessWidget {
       case 1:
         return Routes.PROFILEPET;
       case 2:
-        return TerminosCondicionesPage();
+        return Routes.TERMSCONDITIONS;
       case 3:
-        return PoliticasPrivacidadPage();
+        return Routes.PRIVACYPOLICY;
       case 4:
         return SobreAppPage();
       case 5:

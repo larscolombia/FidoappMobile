@@ -6,6 +6,7 @@ import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_date_form_field_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/add_pet/controllers/add_pet_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -78,7 +79,7 @@ class AddPetScreen extends StatelessWidget {
                         margin: EdgeInsets.only(top: 20),
                         child: CustomTextFormFieldWidget(
                           controller: controller.petName,
-                          placeholder: 'Nombre de mascota',
+                          placeholder: locale.value.petName,
                           icon: 'assets/icons/profile.png',
                           validators: [
                             (value) => (value?.isEmpty ?? true)
@@ -93,7 +94,7 @@ class AddPetScreen extends StatelessWidget {
                         margin: EdgeInsets.only(top: 20),
                         child: CustomTextFormFieldWidget(
                           controller: controller.petDescription,
-                          placeholder: 'Cuéntanos más sobre tu mascota',
+                          placeholder: locale.value.addYourPetInformation,
                           icon: 'assets/icons/profile.png',
                         ),
                       ),
@@ -133,7 +134,7 @@ class AddPetScreen extends StatelessWidget {
                         margin: EdgeInsets.only(top: 20),
                         child: CustomDateFormFieldWidget(
                           controller: controller.petBirthDateController,
-                          placeholder: 'Fecha de nacimiento',
+                          placeholder: locale.value.birthday,
                         ),
                       ),
                       // Campo para seleccionar la raza de la mascota
@@ -141,7 +142,7 @@ class AddPetScreen extends StatelessWidget {
                         margin: EdgeInsets.only(top: 20),
                         child: CustomSelectFormFieldWidget(
                           controller: controller.petBreed,
-                          placeholder: 'Raza',
+                          placeholder: locale.value.petBreed,
                           icon: 'assets/icons/tag-user.png',
                           items: [
                             'Raza 1',
@@ -234,7 +235,7 @@ class AddPetScreen extends StatelessWidget {
                         margin: EdgeInsets.only(top: 20),
                         child: CustomTextFormFieldWidget(
                           controller: controller.petWeightController,
-                          placeholder: 'Peso',
+                          placeholder: locale.value.weight,
                           isNumeric: true,
                           icon: 'assets/icons/profile.png',
                         ),
@@ -242,7 +243,7 @@ class AddPetScreen extends StatelessWidget {
                       SizedBox(height: 20),
                       // Botón para enviar el formulario
                       ButtonDefaultWidget(
-                        title: "Nueva Mascota +",
+                        title: locale.value.addPet + ' +',
                         callback: () {
                           if (_formKey.currentState!.validate()) {
                             controller.submitForm(

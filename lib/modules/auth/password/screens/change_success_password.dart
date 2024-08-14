@@ -5,6 +5,7 @@ import 'package:pawlly/components/app_scaffold.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/components/titulo.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/password/controllers/change_password_controller.dart';
 import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -28,7 +29,7 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
               child: Column(
                 children: [
                   Text(
-                    'Cambiar Contraseña',
+                    locale.value.changePassword,
                     style: Styles.joinTitle,
                     textAlign: TextAlign.center,
                   ),
@@ -36,7 +37,7 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                     height: 26,
                   ),
                   Text(
-                    'Ingresa tu nueva contraseña',
+                    locale.value.enterNewPassword,
                     style: Styles.secondTextTitle,
                   ),
                   SizedBox(
@@ -53,7 +54,7 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                   Container(
                     child: CustomTextFormFieldWidget(
                         controller: null,
-                        placeholder: 'Contraseña',
+                        placeholder: locale.value.password,
                         icon: 'assets/icons/key.png'),
                   ),
                   SizedBox(
@@ -62,14 +63,14 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                   Container(
                     child: CustomTextFormFieldWidget(
                         controller: null,
-                        placeholder: 'Confirmar Contraseña',
+                        placeholder: locale.value.confirmPassword,
                         icon: 'assets/icons/key.png'),
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   ButtonDefaultWidget(
-                    title: 'Enviar enlace',
+                    title: locale.value.sendLink,
                     callback: calbak,
                   ),
                   Container(
@@ -77,8 +78,8 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Volver a ",
+                        Text(
+                          '${locale.value.returnTo} ',
                           style: const TextStyle(
                               fontSize: 14,
                               color: Color.fromRGBO(83, 82, 81, 1),
@@ -89,8 +90,8 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                           onPressed: () {
                             Get.back();
                           },
-                          child: const Text(
-                            "Inicio Sesión",
+                          child: Text(
+                            locale.value.signIn,
                             style: const TextStyle(
                                 fontSize: 14,
                                 color: Color.fromRGBO(83, 82, 81, 1),
@@ -109,8 +110,8 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                           onPressed: () {
                             Get.to(() => SignUpScreen());
                           },
-                          child: const Text(
-                            "Registro",
+                          child: Text(
+                            locale.value.signUp,
                             style: const TextStyle(
                                 fontSize: 14,
                                 color: Color.fromRGBO(83, 82, 81, 1),

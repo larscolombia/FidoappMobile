@@ -7,24 +7,9 @@ import 'package:pawlly/components/app_scaffold.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_up/controllers/sign_up_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
-import 'package:pawlly/screens_demo/terms_conditions.dart';
-import 'package:pawlly/styles/styles.dart';
-import 'package:pawlly/utils/colors.dart';
-
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:nb_utils/nb_utils.dart';
-import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/components/app_scaffold.dart';
-import 'package:pawlly/components/custom_text_form_field_widget.dart';
-import 'package:pawlly/components/button_back.dart';
-import 'package:pawlly/components/custom_select_form_field_widget.dart';
-import 'package:pawlly/modules/auth/sign_up/controllers/sign_up_controller.dart';
-import 'package:pawlly/routes/app_pages.dart';
-import 'package:pawlly/screens_demo/terms_conditions.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:pawlly/utils/colors.dart';
 
@@ -55,9 +40,9 @@ class SignUpScreen extends GetView<SignUpController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Registro',
-                        style: TextStyle(
+                      Text(
+                        locale.value.register,
+                        style: const TextStyle(
                           color: Color.fromRGBO(255, 73, 49, 1),
                           fontSize: 34,
                           fontWeight: FontWeight.w800,
@@ -78,7 +63,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.fisrtNameCont,
-                                placeholder: 'Nombre',
+                                placeholder: locale.value.firstName,
                                 icon: 'assets/icons/profile.png',
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)
@@ -92,7 +77,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.lastNameCont,
-                                placeholder: 'Apellido',
+                                placeholder: locale.value.lastName,
                                 icon: 'assets/icons/profile.png',
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)
@@ -106,7 +91,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.emailCont,
-                                placeholder: 'Correo Electrónico',
+                                placeholder: locale.value.email,
                                 icon: 'assets/icons/email.png',
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)
@@ -123,7 +108,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               margin: EdgeInsets.only(top: 20),
                               child: CustomSelectFormFieldWidget(
                                 controller: controller.genCont,
-                                placeholder: 'Género',
+                                placeholder: locale.value.gender,
                                 icon: 'assets/icons/tag-user.png',
                                 items: [
                                   'Mujer',
@@ -142,7 +127,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.passwordCont,
-                                placeholder: 'Contraseña',
+                                placeholder: locale.value.password,
                                 obscureText: true,
                                 icon: 'assets/icons/key.png',
                                 validators: [
@@ -161,7 +146,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.password2Cont,
-                                placeholder: 'Confirmar contraseña',
+                                placeholder: locale.value.confirmPassword,
                                 obscureText: true,
                                 icon: 'assets/icons/key.png',
                                 validators: [
@@ -177,7 +162,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               margin: EdgeInsets.only(top: 20),
                               child: CustomSelectFormFieldWidget(
                                 controller: controller.userTypeCont,
-                                placeholder: 'Tipo de Usuario',
+                                placeholder: locale.value.userType,
                                 icon: 'assets/icons/tag-user.png',
                                 items: [
                                   'Cliente',
@@ -226,9 +211,10 @@ class SignUpScreen extends GetView<SignUpController> {
                                               width: 1.5),
                                           title: RichTextWidget(
                                             list: [
-                                              const TextSpan(
-                                                text: 'Acepto los ',
-                                                style: TextStyle(
+                                              TextSpan(
+                                                text:
+                                                    '${locale.value.iAcceptThe} ',
+                                                style: const TextStyle(
                                                     fontSize: 14,
                                                     fontFamily: "Lato",
                                                     fontWeight: FontWeight.w400,
@@ -236,7 +222,8 @@ class SignUpScreen extends GetView<SignUpController> {
                                                         83, 82, 81, 1)),
                                               ),
                                               TextSpan(
-                                                text: 'términos y condiciones',
+                                                text: locale
+                                                    .value.termsAndConditions,
                                                 style: const TextStyle(
                                                   fontFamily: 'Lato',
                                                   fontWeight: FontWeight.w700,
@@ -247,7 +234,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                                     TapGestureRecognizer()
                                                       ..onTap = () {
                                                         Get.toNamed(Routes
-                                                            .TERMSCONDITIONS);
+                                                            .PRIVACYTERMS);
                                                       },
                                               ),
                                             ],
@@ -276,7 +263,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               controller.saveForm();
                             }
                           },
-                          title: 'Registrar',
+                          title: locale.value.signUp,
                         ),
                       ),
                       SizedBox(
@@ -290,7 +277,7 @@ class SignUpScreen extends GetView<SignUpController> {
                       Container(
                         padding: Styles.paddingT10B10,
                         child: ButtonBack(
-                          text: "Iniciar sesión",
+                          text: locale.value.signIn,
                         ),
                       ),
                     ],

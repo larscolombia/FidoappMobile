@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -20,6 +22,8 @@ import '../../../utils/constants.dart';
 import '../../../utils/local_storage.dart';
 
 class AuthServiceApis {
+  static ValueNotifier<LoginResponse?> currentUser = ValueNotifier(null);
+
   static Future<RegUserResp> createUser({required Map request}) async {
     return RegUserResp.fromJson(await handleResponse(await buildHttpResponse(
         APIEndPoints.register,
@@ -27,6 +31,69 @@ class AuthServiceApis {
         method: HttpMethodType.POST)));
   }
 
+  static Future<LoginResponse> loginUser({
+    required Map request,
+    bool isSocialLogin = false,
+  }) async {
+    // Captura la solicitud que estás enviando
+    print("Solicitud enviada: $request");
+
+    // Realiza la solicitud y captura la respuesta
+    var responseJson = await handleResponse(await buildHttpResponse(
+      isSocialLogin ? APIEndPoints.socialLogin : APIEndPoints.login,
+      request: request,
+      method: HttpMethodType.POST,
+    ));
+
+    // Captura la respuesta recibida
+    print("Respuesta recibida: $responseJson");
+
+    // Guarda la solicitud y la respuesta en SharedPreferences
+    await saveLoginData(request, responseJson);
+
+    // Actualiza el ValueNotifier con el usuario logueado
+    currentUser.value = LoginResponse.fromJson(responseJson);
+
+    return currentUser.value!;
+  }
+
+  static Future<void> saveLoginData(Map request, Map response) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Guarda la solicitud
+    await prefs.setString('lastLoginRequest', request.toString());
+
+    // Convirtiendo el mapa a Map<String, dynamic> explícitamente
+    Map<String, dynamic> responseMap = response.cast<String, dynamic>();
+
+    // Guarda la respuesta como un string JSON
+    await prefs.setString('lastLoginResponse', json.encode(responseMap));
+
+    // Guarda los datos del usuario en el ValueNotifier
+    currentUser.value = LoginResponse.fromJson(responseMap);
+  }
+
+  static Future<void> loadLoginData() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Recupera la respuesta guardada
+    String? lastLoginResponse = prefs.getString('lastLoginResponse');
+
+    if (lastLoginResponse != null) {
+      try {
+        Map<String, dynamic> responseMap = jsonDecode(lastLoginResponse);
+
+        // Inicializa el ValueNotifier con los datos recuperados
+        currentUser.value = LoginResponse.fromJson(responseMap);
+
+        print("Datos del usuario cargados: ${currentUser.value}");
+      } catch (e) {
+        print("Error al decodificar la respuesta: $e");
+      }
+    }
+  }
+
+/*
   static Future<LoginResponse> loginUser(
       {required Map request, bool isSocialLogin = false}) async {
     return LoginResponse.fromJson(await handleResponse(await buildHttpResponse(
@@ -34,6 +101,7 @@ class AuthServiceApis {
         request: request,
         method: HttpMethodType.POST)));
   }
+  */
 
   static Future<ChangePassRes> changePasswordAPI({required Map request}) async {
     return ChangePassRes.fromJson(await handleResponse(await buildHttpResponse(

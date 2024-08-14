@@ -7,9 +7,9 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
   final String icon;
   final TextEditingController? controller;
   final List<String>? items;
-  final bool? enabled; // Permite habilitar o deshabilitar el widget
-  final List<String? Function(String?)>?
-      validators; // Lista de validadores opcionales
+  final bool? enabled;
+  final List<String? Function(String?)>? validators;
+  final AutovalidateMode autovalidateMode; // Nueva propiedad
 
   CustomSelectFormFieldWidget({
     Key? key,
@@ -18,7 +18,9 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
     required this.controller,
     this.items,
     this.enabled,
-    this.validators, // Constructor para validadores
+    this.validators,
+    this.autovalidateMode =
+        AutovalidateMode.disabled, // Inicializar nueva propiedad
   }) : super(key: key);
 
   @override
@@ -35,13 +37,19 @@ class _CustomSelectFormFieldWidgetState
   @override
   void initState() {
     super.initState();
-    // Sincroniza _selectedValue con el valor del controlador al inicializar
     _selectedValue = widget.controller?.text.isNotEmpty == true
         ? widget.controller?.text
         : null;
+
+    // Si autovalidateMode es always o onUserInteraction, validamos inmediatamente al iniciar
+    if (widget.autovalidateMode == AutovalidateMode.always ||
+        widget.autovalidateMode == AutovalidateMode.onUserInteraction) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {}); // Dispara la validación inicial
+      });
+    }
   }
 
-  // Función para ejecutar validadores y devolver el primer mensaje de error encontrado
   String? _validate() {
     if (widget.validators != null) {
       for (var validator in widget.validators!) {
@@ -58,6 +66,15 @@ class _CustomSelectFormFieldWidgetState
   Widget build(BuildContext context) {
     bool isEnabled = widget.enabled ?? true;
     bool hasText = widget.controller?.text.isNotEmpty ?? false;
+    String? errorText;
+
+    // Si autovalidateMode es always o onUserInteraction, obtenemos el error
+    if (widget.autovalidateMode == AutovalidateMode.always ||
+        (widget.autovalidateMode == AutovalidateMode.onUserInteraction &&
+            _selectedValue != null)) {
+      errorText = _validate();
+    }
+
     return CompositedTransformTarget(
       link: _layerLink,
       child: GestureDetector(
@@ -126,6 +143,7 @@ class _CustomSelectFormFieldWidgetState
                 labelStyle: TextStyle(
                   color: isEnabled ? Styles.iconColorBack : Colors.grey,
                 ),
+                errorText: errorText, // Mostrar mensaje de error si existe
               ),
               isEmpty: _selectedValue == null,
               child: Row(
@@ -142,12 +160,11 @@ class _CustomSelectFormFieldWidgetState
                 ],
               ),
             ),
-            // Muestra el mensaje de error si hay una validación fallida
-            if (_validate() != null)
+            if (errorText != null)
               Padding(
                 padding: const EdgeInsets.only(top: 8, left: 12),
                 child: Text(
-                  _validate()!,
+                  errorText,
                   style: TextStyle(
                     color: Colors.red,
                     fontSize: 12.0,
@@ -160,7 +177,6 @@ class _CustomSelectFormFieldWidgetState
     );
   }
 
-  // Crea el OverlayEntry para mostrar las opciones
   OverlayEntry _createOverlayEntry() {
     RenderBox renderBox = context.findRenderObject() as RenderBox;
     var size = renderBox.size;
@@ -198,6 +214,12 @@ class _CustomSelectFormFieldWidgetState
                         widget.controller?.text = item;
                         _removeOverlay();
                       });
+
+                      // Revalida cuando el usuario selecciona un valor si el modo es onUserInteraction
+                      if (widget.autovalidateMode ==
+                          AutovalidateMode.onUserInteraction) {
+                        setState(() {});
+                      }
                     },
                   ),
                 );
@@ -209,7 +231,6 @@ class _CustomSelectFormFieldWidgetState
     );
   }
 
-  // Remueve el OverlayEntry cuando se selecciona un valor
   void _removeOverlay() {
     _overlayEntry?.remove();
     _overlayEntry = null;

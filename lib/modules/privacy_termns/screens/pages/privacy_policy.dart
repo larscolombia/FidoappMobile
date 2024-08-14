@@ -4,8 +4,9 @@ import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
 import 'package:pawlly/components/titulo.dart';
 import 'package:pawlly/generated/config.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/routes/app_pages.dart';
-import 'package:pawlly/screens_demo/terms_conditions.dart';
+import 'package:pawlly/modules/privacy_termns/screens/pages/terms_conditions.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class PrivacyPolicy extends StatelessWidget {
@@ -23,7 +24,7 @@ class PrivacyPolicy extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'Políticas de Privacidad',
+                locale.value.privacyPolicy,
                 style: Styles.joinTitle,
                 textAlign: TextAlign.center,
               ),
@@ -32,29 +33,15 @@ class PrivacyPolicy extends StatelessWidget {
               ),
               Container(
                 child: ButtonDefaultWidget(
-                  title: 'Términos y condiciones',
+                  title: locale.value.privacyPolicy,
                   callback: () {
-                    Get.toNamed(Routes.TERMSCONDITIONS);
-                    // TermsConditions();
-                  },
-                  defaultColor: Color.fromARGB(255, 255, 255, 255),
-                  border: BorderSide(color: Color.fromARGB(255, 247, 133, 28)),
-                  textColor: Color.fromARGB(78, 0, 0, 50),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 40),
-                child: ButtonDefaultWidget(
-                  title: 'Políticas de privacidad',
-                  callback: () {
-                    Get.toNamed(Routes.PRIVACYPOLICY);
                     // TermsConditions();
                   },
                   defaultColor: Color.fromARGB(255, 252, 146, 20),
                 ),
+              ),
+              SizedBox(
+                height: 20,
               ),
               Container(
                 child: Divider(

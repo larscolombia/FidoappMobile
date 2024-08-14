@@ -83,7 +83,8 @@ class LanguageAr extends BaseLanguage {
   String get taxIncluded => 'شامل الضريبة';
 
   @override
-  String get demoUserCannotBeGrantedForThis => 'لا يمكن منح المستخدم التجريبي لهذا الإجراء';
+  String get demoUserCannotBeGrantedForThis =>
+      'لا يمكن منح المستخدم التجريبي لهذا الإجراء';
 
   @override
   String get somethingWentWrong => 'هناك خطأ ما';
@@ -95,7 +96,8 @@ class LanguageAr extends BaseLanguage {
   String get profileUpdatedSuccessfully => 'تم تحديث الملف الشخصي بنجاح';
 
   @override
-  String get deleteAccountConfirmation => 'سيتم حذف حسابك بشكل دائم. لن تتم استعادة بياناتك مرة أخرى.';
+  String get deleteAccountConfirmation =>
+      'سيتم حذف حسابك بشكل دائم. لن تتم استعادة بياناتك مرة أخرى.';
 
   @override
   String get searchHere => 'ابحث هنا';
@@ -122,7 +124,8 @@ class LanguageAr extends BaseLanguage {
   String get rating => 'تقييم';
 
   @override
-  String get wouldYouLikeToSetProfilePhotoAsEmployee => 'هل ترغب في تعيين هذه الصورة كصورة ملفك الشخصي؟';
+  String get wouldYouLikeToSetProfilePhotoAsEmployee =>
+      'هل ترغب في تعيين هذه الصورة كصورة ملفك الشخصي؟';
 
   @override
   String get wouldYouLikeToSetPictureAs => 'هل ترغب في ضبط هذه الصورة على أنها';
@@ -131,10 +134,12 @@ class LanguageAr extends BaseLanguage {
   String get sProfilePicture => 'صورة الملف الشخصي؟';
 
   @override
-  String get yourOldPasswordDoesnT => 'كلمة المرور القديمة الخاصة بك غير صحيحة!';
+  String get yourOldPasswordDoesnT =>
+      'كلمة المرور القديمة الخاصة بك غير صحيحة!';
 
   @override
-  String get yourNewPasswordDoesnT => 'كلمة المرور الجديدة لا تتطابق مع مؤكد كلمة المرور!';
+  String get yourNewPasswordDoesnT =>
+      'كلمة المرور الجديدة لا تتطابق مع مؤكد كلمة المرور!';
 
   @override
   String get findBestPawllyAround => 'ابحث عن أفضل pawlly حول موقعك';
@@ -143,10 +148,12 @@ class LanguageAr extends BaseLanguage {
   String get letUsGiveThem => 'دعونا نقدم لهم أفضل علاج';
 
   @override
-  String get youCanFindNearEasily => 'يمكنك أن تجد بسهولة بالقرب منك أفضل حلاق وصالون والاستمتاع بأفضل تجربة خدمة';
+  String get youCanFindNearEasily =>
+      'يمكنك أن تجد بسهولة بالقرب منك أفضل حلاق وصالون والاستمتاع بأفضل تجربة خدمة';
 
   @override
-  String get petSittersWhoAre => 'محترفي الحيوانات الأليفة الذين يهتمون بالرفقة الصغار لمدة 24*7 ساعات';
+  String get petSittersWhoAre =>
+      'محترفي الحيوانات الأليفة الذين يهتمون بالرفقة الصغار لمدة 24*7 ساعات';
 
   @override
   String get bookingStatus => 'وضع الحجز';
@@ -173,7 +180,8 @@ class LanguageAr extends BaseLanguage {
   String get noBookingsFound => 'لم يتم العثور على حجوزات';
 
   @override
-  String get thereAreCurrentlyNo => 'لا توجد مواعيد متاحة حاليًا. ابدأ في حجز موعدك التالي الآن.';
+  String get thereAreCurrentlyNo =>
+      'لا توجد مواعيد متاحة حاليًا. ابدأ في حجز موعدك التالي الآن.';
 
   @override
   String get customerInformation => 'معلومات العميل';
@@ -275,7 +283,8 @@ class LanguageAr extends BaseLanguage {
   String get changePassword => 'تغيير كلمة المرور';
 
   @override
-  String get yourNewPasswordMust => 'يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور السابقة';
+  String get yourNewPasswordMust =>
+      'يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور السابقة';
 
   @override
   String get password => 'كلمة المرور';
@@ -296,7 +305,8 @@ class LanguageAr extends BaseLanguage {
   String get forgetPassword => 'ننسى كلمة المرور';
 
   @override
-  String get toResetYourNew => 'لإعادة تعيين كلمة المرور الجديدة ، يرجى إدخال عنوان بريدك الإلكتروني';
+  String get toResetYourNew =>
+      'لإعادة تعيين كلمة المرور الجديدة ، يرجى إدخال عنوان بريدك الإلكتروني';
 
   @override
   String get myPets => 'حيواناتي الأليفة';
@@ -308,7 +318,8 @@ class LanguageAr extends BaseLanguage {
   String get looksLikeYouHavenT => 'يبدو أنك لم تضيف أي حيوانات أليفة بعد.';
 
   @override
-  String get addYourFirstPet => 'أضف حيوانك الأليف الأول لتتبع رعايتهم ورفاههم.';
+  String get addYourFirstPet =>
+      'أضف حيوانك الأليف الأول لتتبع رعايتهم ورفاههم.';
 
   @override
   String get addYourPet => 'أضف حيوانك الأليف';
@@ -317,7 +328,8 @@ class LanguageAr extends BaseLanguage {
   String get stayTunedNoNew => 'ابقوا متابعين! لا يوجد إشعارات جديدة.';
 
   @override
-  String get noNewNotificationsAt => 'لا توجد إشعارات جديدة في الوقت الحالي. سنبقيك على اطلاع عندما يكون هناك تحديث.';
+  String get noNewNotificationsAt =>
+      'لا توجد إشعارات جديدة في الوقت الحالي. سنبقيك على اطلاع عندما يكون هناك تحديث.';
 
   @override
   String get findANewPetForYou => 'ابحث عن حيوان أليف جديد لك';
@@ -332,7 +344,8 @@ class LanguageAr extends BaseLanguage {
   String get explore => 'يستكشف';
 
   @override
-  String get pleaseTypeTheVerification => 'يرجى كتابة رمز التحقق إرسال إلى عنوان بريدك الإلكتروني';
+  String get pleaseTypeTheVerification =>
+      'يرجى كتابة رمز التحقق إرسال إلى عنوان بريدك الإلكتروني';
 
   @override
   String get verify => 'يؤكد';
@@ -416,10 +429,12 @@ class LanguageAr extends BaseLanguage {
   String get alreadyHaveAnAccount => 'هل لديك حساب ؟';
 
   @override
-  String get yourPasswordHasBeen => 'تمت إعادة تعيين كلمة المرور الخاصة بك بنجاح';
+  String get yourPasswordHasBeen =>
+      'تمت إعادة تعيين كلمة المرور الخاصة بك بنجاح';
 
   @override
-  String get youCanNowLog => 'يمكنك الآن تسجيل الدخول إلى حسابك الجديد بكلمة مرورك الجديدة';
+  String get youCanNowLog =>
+      'يمكنك الآن تسجيل الدخول إلى حسابك الجديد بكلمة مرورك الجديدة';
 
   @override
   String get done => 'منتهي';
@@ -458,10 +473,12 @@ class LanguageAr extends BaseLanguage {
   String get editPetInfo => 'تحرير معلومات الحيوانات الأليفة';
 
   @override
-  String get itAppearsTheAdmin => 'يبدو أن المسؤول لم يضاف أي أنواع الحيوانات الأليفة حتى الآن.';
+  String get itAppearsTheAdmin =>
+      'يبدو أن المسؤول لم يضاف أي أنواع الحيوانات الأليفة حتى الآن.';
 
   @override
-  String get youCanUtilizeThe => 'يمكنك الاستفادة من الزر أدناه لإرسال طلب إلى المسؤول ، مما يحتمل أن يسرع عملية إضافة حيوانك الأليف.';
+  String get youCanUtilizeThe =>
+      'يمكنك الاستفادة من الزر أدناه لإرسال طلب إلى المسؤول ، مما يحتمل أن يسرع عملية إضافة حيوانك الأليف.';
 
   @override
   String get sendRequestToAdmin => 'إرسال طلب إلى المسؤول';
@@ -476,16 +493,19 @@ class LanguageAr extends BaseLanguage {
   String get next => 'التالي';
 
   @override
-  String get oopsYouHavenTUploaded => 'أُووبس! لم تقم بتحميل صورة ملف تعريف الحيوانات الأليفة';
+  String get oopsYouHavenTUploaded =>
+      'أُووبس! لم تقم بتحميل صورة ملف تعريف الحيوانات الأليفة';
 
   @override
-  String get youCanEnjoyOur => 'يمكنك الاستمتاع بخدماتنا ومنتجات الحيوانات الأليفة لدينا لحيوانك الأليف المذهل.';
+  String get youCanEnjoyOur =>
+      'يمكنك الاستمتاع بخدماتنا ومنتجات الحيوانات الأليفة لدينا لحيوانك الأليف المذهل.';
 
   @override
   String get confirmBooking => 'تأكيد الحجز';
 
   @override
-  String get iHaveReadAll => 'لقد قرأت كل التفاصيل وأملأ النموذج وسأؤكد هذا الحجز به';
+  String get iHaveReadAll =>
+      'لقد قرأت كل التفاصيل وأملأ النموذج وسأؤكد هذا الحجز به';
 
   @override
   String get pleaseAcceptTermsAnd => 'يرجى قبول الشروط والأحكام';
@@ -533,7 +553,8 @@ class LanguageAr extends BaseLanguage {
   String get pleaseSelectDropOffTime => 'الرجاء تحديد وقت الخروج';
 
   @override
-  String get pleaseSelectValidDrop => 'الرجاء تحديد تاريخ ووقت إسقاط ساري المفعول';
+  String get pleaseSelectValidDrop =>
+      'الرجاء تحديد تاريخ ووقت إسقاط ساري المفعول';
 
   @override
   String get pickupTime => 'اختار المعاد';
@@ -560,10 +581,12 @@ class LanguageAr extends BaseLanguage {
   String get pleaseSelectDateFirst => 'الرجاء تحديد التاريخ أولاً';
 
   @override
-  String get pleaseMakeSureTo => 'يرجى التأكد من اختيار وقت الاستلام الذي يأتي بعد وقت الانخفاض.';
+  String get pleaseMakeSureTo =>
+      'يرجى التأكد من اختيار وقت الاستلام الذي يأتي بعد وقت الانخفاض.';
 
   @override
-  String get oopsItSeemsYouVePickupTime => 'أُووبس! يبدو أنك اخترت وقت التقاط قد مرت بالفعل.';
+  String get oopsItSeemsYouVePickupTime =>
+      'أُووبس! يبدو أنك اخترت وقت التقاط قد مرت بالفعل.';
 
   @override
   String get favoriteFood => 'الطعام المفضل';
@@ -602,7 +625,8 @@ class LanguageAr extends BaseLanguage {
   String get confirmPayment => 'تأكيد الدفع';
 
   @override
-  String get razorPayIsNot => 'لم يتم تنفيذ رواتب الشفرة بعد ذلك ، فسيأتي قريباً';
+  String get razorPayIsNot =>
+      'لم يتم تنفيذ رواتب الشفرة بعد ذلك ، فسيأتي قريباً';
 
   @override
   String get creditCardOrDebitCard => 'بطاقة الائتمان أو بطاقة الخصم';
@@ -704,7 +728,8 @@ class LanguageAr extends BaseLanguage {
   String get addCard => 'إضافة بطاقة';
 
   @override
-  String get noOnlinePaymentIs => 'لا يوجد دفعة عبر الإنترنت متاحة. دفع في العيادة بعد التعيين';
+  String get noOnlinePaymentIs =>
+      'لا يوجد دفعة عبر الإنترنت متاحة. دفع في العيادة بعد التعيين';
 
   @override
   String get placeOrder => 'مكان الامر';
@@ -851,7 +876,8 @@ class LanguageAr extends BaseLanguage {
   String get selectTime => 'حدد الوقت';
 
   @override
-  String get yourPetAppointmentIs => 'تم تحديد موعد حيوانك الأليف ، سننتظر حيوانك الأليف';
+  String get yourPetAppointmentIs =>
+      'تم تحديد موعد حيوانك الأليف ، سننتظر حيوانك الأليف';
 
   @override
   String get yourBookingIdIs => 'معرف الحجز الخاص بك';
@@ -908,13 +934,15 @@ class LanguageAr extends BaseLanguage {
   String get noBlogsFound => 'لم يتم العثور على مدونات.';
 
   @override
-  String get thereAreNoBlogs => 'لا توجد مدونات مدرجة في الوقت الحالي. تحقق مرة أخرى لاحقًا للحصول على مقالات جديدة ومثيرة.';
+  String get thereAreNoBlogs =>
+      'لا توجد مدونات مدرجة في الوقت الحالي. تحقق مرة أخرى لاحقًا للحصول على مقالات جديدة ومثيرة.';
 
   @override
   String get noEventsFound => 'لم يتم العثور على أحداث.';
 
   @override
-  String get thereAreNoEvents => 'لا توجد أحداث مدرجة في الوقت الحالي. ترقبوا الأحداث المثيرة.';
+  String get thereAreNoEvents =>
+      'لا توجد أحداث مدرجة في الوقت الحالي. ترقبوا الأحداث المثيرة.';
 
   @override
   String get noDataFound => 'لاتوجد بيانات';
@@ -938,7 +966,8 @@ class LanguageAr extends BaseLanguage {
   String get notifications => 'إشعارات';
 
   @override
-  String get chooseYourConvenientPayment => 'اختر خيار الدفع المريح الخاص بك وإلغاء تأمين وصول غير محدود إلى اشتراكات متميزة.';
+  String get chooseYourConvenientPayment =>
+      'اختر خيار الدفع المريح الخاص بك وإلغاء تأمين وصول غير محدود إلى اشتراكات متميزة.';
 
   @override
   String get areYouSureYou => 'هل أنت متأكد أنك تريد حذف حيوانك الأليف؟';
@@ -956,7 +985,8 @@ class LanguageAr extends BaseLanguage {
   String get anUpdateTo => 'تحديث ل';
 
   @override
-  String get isAvailableGoTo => 'متاح. انتقل إلى المتجر وتنزيل الإصدار الجديد من التطبيق.';
+  String get isAvailableGoTo =>
+      'متاح. انتقل إلى المتجر وتنزيل الإصدار الجديد من التطبيق.';
 
   @override
   String get later => 'لاحقاً';
@@ -977,22 +1007,27 @@ class LanguageAr extends BaseLanguage {
   String get zoomVideoCall => 'تكبير مكالمة فيديو';
 
   @override
-  String get discoverPetCareExcellence => 'اكتشف التميز في رعاية الحيوانات الأليفة';
+  String get discoverPetCareExcellence =>
+      'اكتشف التميز في رعاية الحيوانات الأليفة';
 
   @override
   String get empowerYourPetSWellness => 'تمكين عافية حيوانك الأليف';
 
   @override
-  String get unleashPetHappinessWith => 'أطلق العنان لسعادة الحيوانات الأليفة بسهولة';
+  String get unleashPetHappinessWith =>
+      'أطلق العنان لسعادة الحيوانات الأليفة بسهولة';
 
   @override
-  String get exploreAWorldOf => 'استكشف عالمًا من خدمات رعاية الحيوانات الأليفة السلس ، من الرعاية البيطرية إلى الاستمالة ، كل ذلك في متناول يدك.';
+  String get exploreAWorldOf =>
+      'استكشف عالمًا من خدمات رعاية الحيوانات الأليفة السلس ، من الرعاية البيطرية إلى الاستمالة ، كل ذلك في متناول يدك.';
 
   @override
-  String get elevateYourPetSWellBeing => 'ارفع رفاهية حيوانك الأليف مع تطبيقنا ، حيث يقدم خدمات التدريب والمشي والرعاية النهارية لحياة نابضة بالحياة.';
+  String get elevateYourPetSWellBeing =>
+      'ارفع رفاهية حيوانك الأليف مع تطبيقنا ، حيث يقدم خدمات التدريب والمشي والرعاية النهارية لحياة نابضة بالحياة.';
 
   @override
-  String get elevateYourPetSJoy => 'ارفع فرحة حيوانك الأليف دون عناء من خلال مجموعة من الخدمات ، من الاستمالة إلى التدريب ، المتاحة في قيادتك.';
+  String get elevateYourPetSJoy =>
+      'ارفع فرحة حيوانك الأليف دون عناء من خلال مجموعة من الخدمات ، من الاستمالة إلى التدريب ، المتاحة في قيادتك.';
 
   @override
   String get medicalReport => 'تقرير طبي';
@@ -1010,13 +1045,15 @@ class LanguageAr extends BaseLanguage {
   String get facilityListIsEmpty => 'قائمة المنشأة فارغة.';
 
   @override
-  String get theFacilityListIs => 'قائمة المنشأة فارغة حاليًا. سيتم إضافة المزيد من الخيارات قريبًا. ترقب!';
+  String get theFacilityListIs =>
+      'قائمة المنشأة فارغة حاليًا. سيتم إضافة المزيد من الخيارات قريبًا. ترقب!';
 
   @override
   String get durationListIsEmpty => 'قائمة المدة فارغة.';
 
   @override
-  String get theDurationListIs => 'قائمة المدة فارغة حاليًا. سيتم إضافة المزيد من الخيارات قريبًا. ترقب!';
+  String get theDurationListIs =>
+      'قائمة المدة فارغة حاليًا. سيتم إضافة المزيد من الخيارات قريبًا. ترقب!';
 
   @override
   String get areYouSureWantDeleteNote => 'هل أنت متأكد من حذف هذه الملاحظة؟';
@@ -1124,12 +1161,6 @@ class LanguageAr extends BaseLanguage {
   String get notRegistered => 'غير مسجل ؟';
 
   @override
-  String get signInWithGoogle => 'الدخول مع جوجل';
-
-  @override
-  String get signInWithApple => 'تسجيل الدخول مع Apple';
-
-  @override
   String get orSignInWith => 'أو تسجيل الدخول مع';
 
   @override
@@ -1142,55 +1173,64 @@ class LanguageAr extends BaseLanguage {
   String get daycareTakerListIsEmpty => 'قائمة Taker للرعاية النهارية فارغة.';
 
   @override
-  String get thereAreNoDaycare => 'لا يوجد محتجزون للرعاية النهارية المدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
+  String get thereAreNoDaycare =>
+      'لا يوجد محتجزون للرعاية النهارية المدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
 
   @override
   String get walkerListIsEmpty => 'قائمة Walker فارغة.';
 
   @override
-  String get thereAreNoWalkers => 'لا توجد مشاة مدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
+  String get thereAreNoWalkers =>
+      'لا توجد مشاة مدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
 
   @override
   String get veterinaryTypeListIs => 'قائمة النوع البيطري فارغ.';
 
   @override
-  String get thereAreNoVeterinary => 'لا توجد أنواع بيطرية مدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
+  String get thereAreNoVeterinary =>
+      'لا توجد أنواع بيطرية مدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
 
   @override
   String get serviceListIsEmpty => 'قائمة الخدمة فارغة.';
 
   @override
-  String get thereAreNoServices => 'لا توجد خدمات مدرجة في الوقت الحالي. ترقبوا المزيد من عروض الخدمة.';
+  String get thereAreNoServices =>
+      'لا توجد خدمات مدرجة في الوقت الحالي. ترقبوا المزيد من عروض الخدمة.';
 
   @override
   String get vetListIsEmpty => 'قائمة الطبيب البيطري فارغ.';
 
   @override
-  String get thereAreNoVeterinarians => 'لا يوجد الأطباء البيطريين المدرجين في الوقت الحالي. ترقبوا المزيد من الخيارات.';
+  String get thereAreNoVeterinarians =>
+      'لا يوجد الأطباء البيطريين المدرجين في الوقت الحالي. ترقبوا المزيد من الخيارات.';
 
   @override
   String get trainingListIsEmpty => 'قائمة التدريب فارغة.';
 
   @override
-  String get thereAreNoTraining => 'لا توجد جلسات تدريبية مدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
+  String get thereAreNoTraining =>
+      'لا توجد جلسات تدريبية مدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
 
   @override
   String get trainerListIsEmpty => 'قائمة المدربين فارغة.';
 
   @override
-  String get thereAreNoTrainers => 'لا يوجد مدربين مدربين في الوقت الحالي. ترقبوا المزيد من الخيارات.';
+  String get thereAreNoTrainers =>
+      'لا يوجد مدربين مدربين في الوقت الحالي. ترقبوا المزيد من الخيارات.';
 
   @override
   String get groomerListIsEmpty => 'قائمة Groomer فارغة.';
 
   @override
-  String get thereAreNoGroomers => 'لا يوجد مراقبون مدرجين في الوقت الحالي. ترقبوا المزيد من الخيارات.';
+  String get thereAreNoGroomers =>
+      'لا يوجد مراقبون مدرجين في الوقت الحالي. ترقبوا المزيد من الخيارات.';
 
   @override
   String get boarderListIsEmpty => 'قائمة الحدود فارغة.';
 
   @override
-  String get thereAreNoBoarders => 'لا توجد حدود مدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
+  String get thereAreNoBoarders =>
+      'لا توجد حدود مدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
 
   @override
   String get order => 'طلب';
@@ -1199,7 +1239,8 @@ class LanguageAr extends BaseLanguage {
   String get ohNoYouAreLeaving => 'أوه لا ، أنت تغادر!';
 
   @override
-  String get chooseYourConvenientPaymentOptions => 'اختر خيار الدفع المناسب الخاص بك.';
+  String get chooseYourConvenientPaymentOptions =>
+      'اختر خيار الدفع المناسب الخاص بك.';
 
   @override
   String get oldPassword => 'كلمة المرور القديمة';
@@ -1208,7 +1249,8 @@ class LanguageAr extends BaseLanguage {
   String get breedListIsEmpty => 'قائمة السلالات فارغة.';
 
   @override
-  String get thereAreNoBreeds => 'لا توجد سلالات مدرجة في الوقت الحالي. ترقبوا سلالات مثيرة.';
+  String get thereAreNoBreeds =>
+      'لا توجد سلالات مدرجة في الوقت الحالي. ترقبوا سلالات مثيرة.';
 
   @override
   String get oldAndNewPassword => 'كلمة المرور القديمة والجديدة هي نفسها.';
@@ -1241,7 +1283,8 @@ class LanguageAr extends BaseLanguage {
   String get off => 'عن';
 
   @override
-  String get areYouSureYouWantRemove => 'هل أنت متأكد أنك تريد إزالة هذا العنصر؟';
+  String get areYouSureYouWantRemove =>
+      'هل أنت متأكد أنك تريد إزالة هذا العنصر؟';
 
   @override
   String get remove => 'يزيل';
@@ -1280,7 +1323,8 @@ class LanguageAr extends BaseLanguage {
   String get noOrdersFound => 'لم يتم العثور على أية طلبات';
 
   @override
-  String get thereAreNoOrders => 'لا توجد أوامر مدرجة في الوقت الحالي. تتبع طلباتك هنا.';
+  String get thereAreNoOrders =>
+      'لا توجد أوامر مدرجة في الوقت الحالي. تتبع طلباتك هنا.';
 
   @override
   String get priceDetails => 'تفاصيل السعر';
@@ -1472,7 +1516,8 @@ class LanguageAr extends BaseLanguage {
   String get deliverHere => 'تسليم هنا';
 
   @override
-  String get areYouSureYouWantToDeleteThisAddress => 'هل أنت متأكد من أنك تريد حذف هذا العنوان؟';
+  String get areYouSureYouWantToDeleteThisAddress =>
+      'هل أنت متأكد من أنك تريد حذف هذا العنوان؟';
 
   @override
   String get weAreNotShipping => 'نحن لا نشحن إلى مدينتك الآن.';
@@ -1526,22 +1571,26 @@ class LanguageAr extends BaseLanguage {
   String get addressDeleteSuccessfully => 'العنوان حذف بنجاح';
 
   @override
-  String get thereAreCurrentlyNoItemsInYourCart => 'لا يوجد حاليا أي عناصر في سلة التسوق الخاصة بك. ابدأ التسوق وإضافة عناصر إلى عربة التسوق الخاصة بك.';
+  String get thereAreCurrentlyNoItemsInYourCart =>
+      'لا يوجد حاليا أي عناصر في سلة التسوق الخاصة بك. ابدأ التسوق وإضافة عناصر إلى عربة التسوق الخاصة بك.';
 
   @override
-  String get thereAreCurrentlyNoItemsInYourWishlist => 'لا توجد حاليًا أي عناصر في قائمة الأمنيات الخاصة بك. ابدأ في إضافة عناصر تحب حفظها في وقت لاحق.';
+  String get thereAreCurrentlyNoItemsInYourWishlist =>
+      'لا توجد حاليًا أي عناصر في قائمة الأمنيات الخاصة بك. ابدأ في إضافة عناصر تحب حفظها في وقت لاحق.';
 
   @override
   String get petEvents => 'أحداث الحيوانات الأليفة';
 
   @override
-  String get doYouWantToAddEvent => 'هل تريد إضافة هذا الحدث في تقويم Google الخاص بك';
+  String get doYouWantToAddEvent =>
+      'هل تريد إضافة هذا الحدث في تقويم Google الخاص بك';
 
   @override
   String get noDashboardData => 'لا توجد بيانات لوحة القيادة';
 
   @override
-  String get thereIsSomethingMight => 'هناك شيء ما قد يحدث خطأ ، يرجى المحاولة بعد وقت ما';
+  String get thereIsSomethingMight =>
+      'هناك شيء ما قد يحدث خطأ ، يرجى المحاولة بعد وقت ما';
 
   @override
   String get searchProducts => 'البحث عن المنتجات';
@@ -1565,7 +1614,8 @@ class LanguageAr extends BaseLanguage {
   String get notificationDeleted => 'تم حذف الإخطار';
 
   @override
-  String get areYouSureWantToClearAll => 'هل أنت متأكد من رغبتك في مسح كل الإخطار';
+  String get areYouSureWantToClearAll =>
+      'هل أنت متأكد من رغبتك في مسح كل الإخطار';
 
   @override
   String get newBooking => 'حجز جديد';
@@ -1625,7 +1675,8 @@ class LanguageAr extends BaseLanguage {
   String get statusListIsEmpty => 'قائمة الحالة فارغة';
 
   @override
-  String get thereAreNoStatus => 'لا توجد حالة مدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
+  String get thereAreNoStatus =>
+      'لا توجد حالة مدرجة في الوقت الحالي. ترقبوا المزيد من الخيارات.';
 
   @override
   String get filters => 'المرشحات';
@@ -1643,7 +1694,8 @@ class LanguageAr extends BaseLanguage {
   String get optional => 'خياري';
 
   @override
-  String get iHaveReadAllDetailFillFormOrder => 'لقد قرأت كل التفاصيل وأملأ النموذج وسأؤكد هذا الطلب';
+  String get iHaveReadAllDetailFillFormOrder =>
+      'لقد قرأت كل التفاصيل وأملأ النموذج وسأؤكد هذا الطلب';
 
   @override
   String get orderStatus => 'حالة الطلب';
@@ -1694,10 +1746,12 @@ class LanguageAr extends BaseLanguage {
   String get milesAway => 'على بعد أميال';
 
   @override
-  String get pleaseSelectAnItem => 'يرجى تحديد عنصر أو إجراء قبل النقر فوق تطبيق.';
+  String get pleaseSelectAnItem =>
+      'يرجى تحديد عنصر أو إجراء قبل النقر فوق تطبيق.';
 
   @override
-  String get administratorHasDeactivatedThis => 'قام المسؤول بإلغاء تنشيط هذه الخدمة. الرجاء معاودة المحاولة في وقت لاحق.';
+  String get administratorHasDeactivatedThis =>
+      'قام المسؤول بإلغاء تنشيط هذه الخدمة. الرجاء معاودة المحاولة في وقت لاحق.';
 
   @override
   String get petSitters => 'لاعبو الحيوانات الأليفة';
@@ -1733,7 +1787,8 @@ class LanguageAr extends BaseLanguage {
   String get enterYourMsisdnHere => 'أدخل msisdn الخاص بك هنا';
 
   @override
-  String get walkerIsCurrentlyNot => 'Walker حاليًا غير متوفر ضمن النطاق المحدد.';
+  String get walkerIsCurrentlyNot =>
+      'Walker حاليًا غير متوفر ضمن النطاق المحدد.';
 
   @override
   String get rescheduleBooking => 'إعادة جدولة الحجز';
@@ -1748,7 +1803,8 @@ class LanguageAr extends BaseLanguage {
   String get incorrectPin => 'دبوس غير صحيح';
 
   @override
-  String get exceedsWithdrawalAmountLimit => 'يتجاوز الحد الأقصى لمبلغ السحب / حد السحب';
+  String get exceedsWithdrawalAmountLimit =>
+      'يتجاوز الحد الأقصى لمبلغ السحب / حد السحب';
 
   @override
   String get inProcess => 'تحت المعالجة';
@@ -1790,7 +1846,8 @@ class LanguageAr extends BaseLanguage {
   String get successfullyFetchedEncryptionKey => 'مفتاح التشفير بنجاح';
 
   @override
-  String get theTransactionIsStill => 'لا تزال المعاملة معالجة وهي في حالة غامضة. يرجى إجراء استفسار المعاملة لجلب حالة المعاملة.';
+  String get theTransactionIsStill =>
+      'لا تزال المعاملة معالجة وهي في حالة غامضة. يرجى إجراء استفسار المعاملة لجلب حالة المعاملة.';
 
   @override
   String get transactionIsSuccessful => 'عملية ناجحة';
@@ -1799,19 +1856,23 @@ class LanguageAr extends BaseLanguage {
   String get incorrectPinHasBeen => 'تم إدخال رقم التعريف الشخصي غير الصحيح';
 
   @override
-  String get theUserHasExceeded => 'لقد تجاوز المستخدم حد معاملة محفظته المسموح به';
+  String get theUserHasExceeded =>
+      'لقد تجاوز المستخدم حد معاملة محفظته المسموح به';
 
   @override
-  String get theAmountUserIs => 'المبلغ الذي يحاول المستخدم نقله أقل من الحد الأدنى المسموح به';
+  String get theAmountUserIs =>
+      'المبلغ الذي يحاول المستخدم نقله أقل من الحد الأدنى المسموح به';
 
   @override
   String get userDidnTEnterThePin => 'لم يدخل المستخدم الرقم التعريف الشخصي';
 
   @override
-  String get transactionInPendingState => 'المعاملة في حالة معلقة. يرجى التحقق بعد وقت ما';
+  String get transactionInPendingState =>
+      'المعاملة في حالة معلقة. يرجى التحقق بعد وقت ما';
 
   @override
-  String get userWalletDoesNot => 'لا تحتوي محفظة المستخدم على ما يكفي من المال لتغطية المبلغ المستحق';
+  String get userWalletDoesNot =>
+      'لا تحتوي محفظة المستخدم على ما يكفي من المال لتغطية المبلغ المستحق';
 
   @override
   String get theTransactionWasRefused => 'تم رفض الصفقة';
@@ -1823,7 +1884,8 @@ class LanguageAr extends BaseLanguage {
   String get transactionHasBeenExpired => 'انتهت صلاحية المعاملة';
 
   @override
-  String get payeeIsAlreadyInitiated => 'تم بالفعل بدء Pleadee لـ Churn أو Barred أو غير مسجل على منصة Airtel Money';
+  String get payeeIsAlreadyInitiated =>
+      'تم بالفعل بدء Pleadee لـ Churn أو Barred أو غير مسجل على منصة Airtel Money';
 
   @override
   String get theTransactionWasNot => 'لم يتم العثور على المعاملة.';
@@ -1845,4 +1907,119 @@ class LanguageAr extends BaseLanguage {
 
   @override
   String get reschedule => 'إعادة جدولة';
+  // -----------------------------------------------------------------
+  // -----------------------------------------------------------------
+  // -----------------------------------------------------------------
+  @override
+  String get welcomeTo => 'مرحبًا بـ';
+
+  @override
+  String get designedToAccompany =>
+      'مصمم لمرافقتك في الأنشطة اليومية لحيوانك الأليف';
+
+  @override
+  String get yourPetLifeRegister => 'سجل حياة حيوانك الأليف';
+
+  @override
+  String get forYourPet => 'لحيوانك الأليف';
+
+  @override
+  String get registerAllPetInfo =>
+      'سجل جميع معلومات حيوانك الأليف في مكان واحد';
+
+  @override
+  String get findUse => 'اعثر على';
+
+  @override
+  String get usefulInformation => 'معلومات مفيدة';
+
+  @override
+  String get findInformationForYourPet =>
+      'ابحث عن معلومات مفيدة لحيوانك الأليف';
+
+  @override
+  String get emailAddress => 'البريد الإلكتروني';
+
+  @override
+  String get confirmPassword => 'تأكيد كلمة المرور';
+
+  @override
+  String get userType => 'نوع المستخدم';
+
+  @override
+  String get iAcceptThe => 'أوافق على';
+
+  @override
+  String get termsAndConditions => 'الشروط والأحكام';
+
+  @override
+  String get actionPerformedSuccessfully => 'تم تنفيذ العملية بنجاح';
+
+  @override
+  String get actionFailed => 'فشلت العملية';
+
+  @override
+  String get returnTo => 'العودة إلى';
+
+  @override
+  String get resources => 'الموارد';
+
+  @override
+  String get utilities => 'المرافق';
+
+  @override
+  String get trainings => 'التدريبات';
+
+  @override
+  String get selectAProfile => 'اختر ملفًا شخصيًا';
+
+  @override
+  String get selectThePetProfile =>
+      'اختر ملف الحيوان الأليف الذي تريد عرض معلوماته';
+
+  @override
+  String get resetPassword => 'إعادة تعيين كلمة المرور';
+
+  @override
+  String get dontHaveAnAccount => 'ليس لديك حساب بعد؟';
+
+  @override
+  String get signInWithGoogle => 'تسجيل الدخول باستخدام جوجل';
+
+  @override
+  String get signInWithApple => 'تسجيل الدخول باستخدام أبل';
+
+  @override
+  String get signInWithFacebook => 'تسجيل الدخول باستخدام فيسبوك';
+
+  @override
+  String get register => 'تسجيل';
+
+  @override
+  String get passwordRecovery => 'استعادة كلمة المرور';
+
+  @override
+  String get enterEmailYouRegistered =>
+      'أدخل البريد الإلكتروني الذي قمت بالتسجيل به سابقًا';
+
+  @override
+  String get sendLink => 'إرسال الرابط';
+
+  @override
+  String get enterNewPassword => 'أدخل كلمة المرور الجديدة الخاصة بك';
+
+  @override
+  String get currentPassword => 'كلمة المرور الحالية';
+
+  @override
+  String get send => 'إرسال';
+
+  @override
+  String get termsAndConditionsTitle => 'الشروط والأحكام';
+
+  @override
+  String get privacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get newPet => 'حيوان أليف جديد';
 }

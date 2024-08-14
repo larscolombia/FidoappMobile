@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/controllers/sign_in_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -40,8 +41,8 @@ class SignInScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Iniciar Sesión',
+                      Text(
+                        locale.value.signIn,
                         style: TextStyle(
                             color: Color.fromRGBO(255, 73, 49, 1),
                             fontSize: 34,
@@ -58,7 +59,7 @@ class SignInScreen extends StatelessWidget {
                             Container(
                               child: CustomTextFormFieldWidget(
                                 controller: signInController.emailCont,
-                                placeholder: 'Email',
+                                placeholder: locale.value.email,
                                 icon: 'assets/icons/email.png',
                               ),
                             ),
@@ -66,7 +67,7 @@ class SignInScreen extends StatelessWidget {
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: signInController.passwordCont,
-                                placeholder: 'Contraseña',
+                                placeholder: locale.value.password,
                                 obscureText: true,
                                 icon: 'assets/icons/key.png',
                               ),
@@ -74,7 +75,7 @@ class SignInScreen extends StatelessWidget {
                             Container(
                               margin: EdgeInsets.only(top: 20),
                               child: ButtonDefaultWidget(
-                                title: 'Iniciar Sessión',
+                                title: locale.value.signIn,
                                 callback: () {
                                   // Get.to(Inicio());
                                   print('object');
@@ -96,8 +97,8 @@ class SignInScreen extends StatelessWidget {
                                       Routes.FORGETPASSWORD,
                                     );
                                   },
-                                  child: const Text(
-                                    "Reestablecer contraseña",
+                                  child: Text(
+                                    locale.value.resetPassword,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       color: Color.fromRGBO(83, 82, 81, 1),
@@ -155,9 +156,9 @@ class SignInScreen extends StatelessWidget {
                                   Icons.person,
                                   color: Color.fromARGB(255, 146, 160, 172),
                                 ),
-                                label: const Text(
-                                  'Iniciar con Google',
-                                  style: TextStyle(color: Colors.black),
+                                label: Text(
+                                  locale.value.signInWithGoogle,
+                                  style: const TextStyle(color: Colors.black),
                                 )),
                           ),
                           Container(
@@ -177,9 +178,9 @@ class SignInScreen extends StatelessWidget {
                                   Icons.apple,
                                   color: Color.fromARGB(255, 146, 160, 172),
                                 ),
-                                label: const Text(
-                                  'Iniciar con Apple',
-                                  style: TextStyle(color: Colors.black),
+                                label: Text(
+                                  locale.value.signInWithApple,
+                                  style: const TextStyle(color: Colors.black),
                                 )),
                           ),
                           Container(
@@ -198,9 +199,9 @@ class SignInScreen extends StatelessWidget {
                                   Icons.facebook,
                                   color: Colors.blue,
                                 ),
-                                label: const Text(
-                                  'Iniciar con facebook',
-                                  style: TextStyle(color: Colors.black),
+                                label: Text(
+                                  locale.value.signInWithFacebook,
+                                  style: const TextStyle(color: Colors.black),
                                 )),
                           )
                         ],
@@ -211,9 +212,9 @@ class SignInScreen extends StatelessWidget {
                         children: [
                           Container(
                             margin: const EdgeInsets.only(top: 20.0),
-                            child: const Text(
-                              '¿No tienes una cuenta aún? ',
-                              style: TextStyle(
+                            child: Text(
+                              locale.value.dontHaveAnAccount,
+                              style: const TextStyle(
                                 fontSize: 14,
                               ),
                               textAlign: TextAlign.center,
@@ -227,9 +228,9 @@ class SignInScreen extends StatelessWidget {
                                   Routes.SIGNUP,
                                 );
                               },
-                              child: const Text(
-                                'Regístrate',
-                                style: TextStyle(
+                              child: Text(
+                                locale.value.signUp,
+                                style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w800,
                                     fontFamily: 'Lato',
@@ -246,7 +247,7 @@ class SignInScreen extends StatelessWidget {
                           Container(
                             padding: Styles.paddingT10B10,
                             child: ButtonBack(
-                              text: "Inicio",
+                              text: locale.value.home,
                             ),
                           )
                         ],

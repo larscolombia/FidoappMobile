@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/add_pet/screens/add_pet_screen.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ProfilesDogs extends StatelessWidget {
@@ -145,10 +147,12 @@ class ProfilesDogs extends StatelessWidget {
           // Botones de acción en el diálogo
           actions: [
             ButtonDefaultWidget(
-              title: "Nueva Mascota +",
+              title: locale.value.newPet + ' +',
               callback: () async {
-                // Navegar a AddPetScreen y esperar los datos devueltos
-                var result = await Get.to(() => AddPetScreen());
+                // Navegar a AddPetScreen a través de la ruta nombrada
+                var result = await Get.toNamed(Routes.ADDPET);
+
+                // Si se devuelve algún resultado de la pantalla AddPetScreen, se agrega el perfil
                 if (result != null) {
                   controller.addProfile(result);
                 }

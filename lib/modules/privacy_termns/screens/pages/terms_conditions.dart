@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
 import 'package:pawlly/components/titulo.dart';
+import 'package:pawlly/generated/config.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/routes/app_pages.dart';
-import 'package:pawlly/screens_demo/privacy_policy.dart';
+import 'package:pawlly/modules/privacy_termns/screens/pages/privacy_policy.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class TermsConditions extends StatelessWidget {
@@ -25,7 +27,7 @@ class TermsConditions extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'Términos y Condiciones',
+                locale.value.termsAndConditionsTitle,
                 style: Styles.joinTitle,
                 textAlign: TextAlign.center,
               ),
@@ -34,9 +36,8 @@ class TermsConditions extends StatelessWidget {
               ),
               Container(
                 child: ButtonDefaultWidget(
-                  title: 'Términos y condiciones',
+                  title: locale.value.termsAndConditionsTitle,
                   callback: () {
-                    Get.toNamed(Routes.TERMSCONDITIONS);
                     // PrivacyPolicy();
                   },
                   defaultColor: Color.fromARGB(255, 252, 146, 20),
@@ -46,39 +47,15 @@ class TermsConditions extends StatelessWidget {
                 height: 20,
               ),
               Container(
-                child: ButtonDefaultWidget(
-                  title: 'Políticas de privacidad',
-                  callback: () {
-                    Get.toNamed(Routes.PRIVACYPOLICY);
-                    // PrivacyPolicy();
-                  },
-                  defaultColor: Color.fromARGB(255, 255, 255, 255),
-                  border: BorderSide(color: Color.fromARGB(255, 247, 133, 28)),
-                  textColor: Color.fromARGB(78, 0, 0, 50),
+                child: Divider(
+                  thickness: 0.5, // Make the line thicker
+                  color: const Color.fromARGB(
+                      255, 182, 164, 137), // Change the line color
                 ),
               ),
-              SizedBox(
-                height: 16,
-              ),
-              const Divider(
-                height: 16,
-                color: Styles.greyDivider,
-                thickness: 1,
-              ),
-              SizedBox(
-                height: 26,
-              ),
-              Container(
-                width: width,
-                child: const Text(
-                  'Términos y condiciones del uso de la App',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                    color: Color.fromRGBO(83, 82, 81, 1),
-                    fontSize: 14.00,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
+              const NumTitle(
+                Title: 'Términos y condiciones del uso de ${Config.NameApp}',
+                Descripcion: '',
               ),
               const NumTitle(
                 Title: '1. Aceptación de los Términos ',

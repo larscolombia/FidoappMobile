@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:pawlly/modules/add_pet/bindings/home_binding.dart';
+import 'package:pawlly/modules/add_pet/screens/add_pet_screen.dart';
 import 'package:pawlly/modules/apprenticeship/bindings/home_binding.dart';
 import 'package:pawlly/modules/apprenticeship/screens/Apprenticeship.dart';
 import 'package:pawlly/modules/auth/password/bindings/change_password_binding.dart';
@@ -15,14 +17,16 @@ import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:pawlly/modules/home/bindings/home_binding.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/auth/sign_in/bindings/sign_in_binding.dart';
+import 'package:pawlly/modules/privacy_termns/bindings/privacy_terms_binding.dart';
+import 'package:pawlly/modules/privacy_termns/screens/privacyterms_screen.dart';
 import 'package:pawlly/modules/profile/bindings/profile_binding.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
 import 'package:pawlly/modules/profile_pet/bindings/profile_pet_binding.dart';
 import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
 import 'package:pawlly/modules/welcome/bindings/welcome_binding.dart';
 import 'package:pawlly/modules/welcome/screens/welcome_screen.dart';
-import 'package:pawlly/screens_demo/privacy_policy.dart';
-import 'package:pawlly/screens_demo/terms_conditions.dart';
+import 'package:pawlly/modules/privacy_termns/screens/pages/privacy_policy.dart';
+import 'package:pawlly/modules/privacy_termns/screens/pages/terms_conditions.dart';
 
 part 'app_routes.dart';
 
@@ -94,6 +98,16 @@ class AppPages {
       name: _Paths.PROFILEPET,
       page: () => ProfilePetScreen(),
       binding: ProfilePetBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADDPET,
+      page: () => AddPetScreen(),
+      binding: AddPetBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRIVACYTERMS,
+      page: () => PrivacyTermsScreen(),
+      binding: PrivacyTermsBinding(),
     ),
   ];
 }

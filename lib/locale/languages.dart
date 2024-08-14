@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 abstract class BaseLanguage {
-  static BaseLanguage of(BuildContext context) => Localizations.of<BaseLanguage>(context, BaseLanguage)!;
+  static BaseLanguage of(BuildContext context) =>
+      Localizations.of<BaseLanguage>(context, BaseLanguage)!;
 
   String get language;
 
@@ -751,10 +752,6 @@ abstract class BaseLanguage {
 
   String get notRegistered;
 
-  String get signInWithGoogle;
-
-  String get signInWithApple;
-
   String get orSignInWith;
 
   String get pawlcomeToYourPetSHaven;
@@ -1232,4 +1229,78 @@ abstract class BaseLanguage {
   String get doYouWantToRemoveThisReview;
 
   String get reschedule;
+  // -----------------------------------------------------------------
+  // -----------------------------------------------------------------
+  // -----------------------------------------------------------------
+  String get welcomeTo;
+
+  String get designedToAccompany;
+
+  String get yourPetLifeRegister;
+
+  String get forYourPet;
+
+  String get registerAllPetInfo;
+
+  String get findUse;
+
+  String get usefulInformation;
+
+  String get findInformationForYourPet;
+
+  String get emailAddress;
+
+  String get confirmPassword;
+
+  String get userType;
+
+  String get iAcceptThe;
+
+  String get termsAndConditions;
+
+  String get actionPerformedSuccessfully;
+
+  String get actionFailed;
+
+  String get returnTo;
+
+  String get resources;
+
+  String get utilities;
+
+  String get trainings;
+
+  String get selectAProfile;
+
+  String get selectThePetProfile;
+
+  String get resetPassword;
+
+  String get dontHaveAnAccount;
+
+  String get signInWithGoogle;
+
+  String get signInWithApple;
+
+  String get signInWithFacebook;
+
+  String get register;
+
+  String get passwordRecovery;
+
+  String get enterEmailYouRegistered;
+
+  String get sendLink;
+
+  String get enterNewPassword;
+
+  String get currentPassword;
+
+  String get send;
+
+  String get termsAndConditionsTitle;
+
+  String get privacyPolicy;
+
+  String get newPet;
 }

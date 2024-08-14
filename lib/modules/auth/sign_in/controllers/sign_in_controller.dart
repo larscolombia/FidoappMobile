@@ -73,6 +73,7 @@ class SignInController extends GetxController {
 
     await AuthServiceApis.loginUser(request: req).then((value) async {
       handleLoginResponse(loginResponse: value);
+      print('VALUEEE LOGIN $value');
     }).catchError((e) {
       isLoading(false);
       toast(e.toString(), print: true);
@@ -99,6 +100,7 @@ class SignInController extends GetxController {
       await AuthServiceApis.loginUser(request: request, isSocialLogin: true)
           .then((value) async {
         handleLoginResponse(loginResponse: value, isSocialLogin: true);
+        print('VALUEEE LOGIN $value');
       }).catchError((e) {
         isLoading(false);
         print('sssssssssssssssssss');
@@ -131,6 +133,7 @@ class SignInController extends GetxController {
       await AuthServiceApis.loginUser(request: request, isSocialLogin: true)
           .then((value) async {
         handleLoginResponse(loginResponse: value, isSocialLogin: true);
+        print('VALUEEE LOGIN $value');
       }).catchError((e) {
         isLoading(false);
         toast(e.toString(), print: true);

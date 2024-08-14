@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import 'package:pawlly/services/auth_service_apis.dart';
+
 class ProfileController extends GetxController {
+  late AuthServiceApis currentUser;
   var isEditing = false.obs;
   var nameController = TextEditingController(text: 'Victoria').obs;
   var lastNameController = TextEditingController(text: 'Doe').obs;

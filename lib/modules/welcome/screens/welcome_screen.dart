@@ -5,6 +5,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
 import 'package:pawlly/modules/welcome/controllers/welcome_controller.dart';
@@ -23,16 +24,16 @@ class WelcomeScreen extends GetView<WelcomeController> {
     Slide(
       img4: "assets/images/arco2.png",
       img5: "assets/images/welcome2.png",
-      title1: 'Tu Registro de Vida ',
-      title2: 'para tu Mascota',
-      subtitle: 'Registra toda la información de tu mascota en un solo lugar',
+      title1: locale.value.yourPetLifeRegister,
+      title2: locale.value.forYourPet,
+      subtitle: locale.value.registerAllPetInfo,
     ),
     Slide(
       img4: "assets/images/arco3.png",
       img5: "assets/images/welcome3.png",
-      title1: 'Encuentra',
-      title2: 'Información Útil',
-      subtitle: 'Encuentra información útil para tu mascota',
+      title1: locale.value.findUse,
+      title2: locale.value.usefulInformation,
+      subtitle: locale.value.findInformationForYourPet,
     ),
   ];
 
@@ -88,7 +89,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ButtonDefaultWidget(
-                            title: "Inicia Sesión",
+                            title: locale.value.signIn,
                             callback: () {
                               Get.toNamed(
                                 'signin',
@@ -98,7 +99,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                           height: 16,
                         ),
                         ButtonDefaultWidget(
-                            title: 'Regístrate',
+                            title: locale.value.signUp,
                             defaultColor: Color.fromARGB(255, 255, 255, 255),
                             border: BorderSide(
                               color: Styles.primaryColor,

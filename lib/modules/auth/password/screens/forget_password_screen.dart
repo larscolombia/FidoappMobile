@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/modules/auth/password/screens/change_success_password.dart';
 import 'package:pawlly/routes/app_pages.dart';
@@ -26,7 +27,7 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
     final height = MediaQuery.of(context).size.height;
     return AppScaffold(
       isCenterTitle: true,
-      appBartitleText: 'Reestablecer Contraseña',
+      appBartitleText: locale.value.resetPassword,
       body: Container(
         alignment: Alignment.center,
         padding: Styles.paddingAll,
@@ -49,7 +50,7 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Recuperación de Contraseña',
+                          locale.value.passwordRecovery,
                           style: Styles.joinTitle,
                           textAlign: TextAlign.center,
                         ),
@@ -59,7 +60,7 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                         SizedBox(
                           width: width * 0.8,
                           child: Text(
-                            'Ingresa el correo con el que te registraste anteriormente',
+                            locale.value.enterEmailYouRegistered,
                             style: Styles.secondTextTitle,
                             textAlign: TextAlign.center,
                           ),
@@ -76,14 +77,14 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                         Container(
                           child: CustomTextFormFieldWidget(
                               controller: controller.emailCont,
-                              placeholder: 'Correo Electronico',
+                              placeholder: locale.value.email,
                               icon: 'assets/icons/email.png'),
                         ),
                         SizedBox(
                           height: 20,
                         ),
                         ButtonDefaultWidget(
-                            title: 'Enviar enlace',
+                            title: locale.value.sendLink,
                             callback: () {
                               if (_forgotPassFormKey.currentState!.validate()) {
                                 _forgotPassFormKey.currentState!.save();
@@ -97,8 +98,8 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                "Volver a ",
+                              Text(
+                                '${locale.value.returnTo} ',
                                 style: const TextStyle(
                                     fontSize: 14,
                                     color: Color.fromRGBO(83, 82, 81, 1),
@@ -109,8 +110,8 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                                 onPressed: () {
                                   Get.back();
                                 },
-                                child: const Text(
-                                  "Inicio Sesión",
+                                child: Text(
+                                  locale.value.signIn,
                                   style: const TextStyle(
                                       fontSize: 14,
                                       color: Color.fromRGBO(83, 82, 81, 1),
@@ -129,8 +130,8 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                                 onPressed: () {
                                   Get.toNamed(Routes.SIGNUP);
                                 },
-                                child: const Text(
-                                  "Registro",
+                                child: Text(
+                                  locale.value.signUp,
                                   style: const TextStyle(
                                       fontSize: 14,
                                       color: Color.fromRGBO(83, 82, 81, 1),

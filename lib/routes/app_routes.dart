@@ -17,6 +17,8 @@ abstract class Routes {
   static const DASHBOARD = _Paths.DASHBOARD;
   static const PROFILE = _Paths.PROFILE;
   static const PROFILEPET = _Paths.PROFILEPET;
+  static const ADDPET = _Paths.ADDPET;
+  static const PRIVACYTERMS = _Paths.PRIVACYTERMS;
 }
 
 abstract class _Paths {
@@ -34,6 +36,8 @@ abstract class _Paths {
   static const DASHBOARD = '/dashboard';
   static const PROFILE = '/profile';
   static const PROFILEPET = '/profile-pet';
+  static const ADDPET = '/add-pet';
+  static const PRIVACYTERMS = '/privacy-terms';
 }
 
 /*

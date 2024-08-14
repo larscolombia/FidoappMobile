@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/controllers/sign_in_controller.dart';
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
@@ -37,7 +38,7 @@ class SignUpController extends GetxController {
   }
 */
 
-  saveForm() async {
+  Future<void> saveForm() async {
     print('SignUp Controller');
 
     if (isAcceptedTc.value) {
@@ -51,23 +52,61 @@ class SignUpController extends GetxController {
         UserKeys.userType: LoginTypeConst.LOGIN_TYPE_USER,
       };
 
-      await AuthServiceApis.createUser(request: req).then((value) async {
+      try {
+        final value = await AuthServiceApis.createUser(request: req);
         toast(value.message.toString(), print: true);
-        try {
-          final SignInController sCont = Get.find();
-          sCont.emailCont.text = emailCont.text.trim();
-          sCont.passwordCont.text = passwordCont.text.trim();
-          isLoading(true);
-          sCont.saveForm().whenComplete(() => isLoading(false));
-        } catch (e) {
-          log('E: $e');
-          toast(e.toString(), print: true);
-        }
-        Get.offUntil(
-            GetPageRoute(page: () => SignInScreen()), (route) => route.isFirst);
-      }).catchError((e) {
+
+        // Mostrar el diálogo de éxito con dos botones
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: locale.value.actionPerformedSuccessfully,
+            description: "¡Felicidades! Tu cuenta ha sido creada.",
+            primaryButtonText: "Continuar",
+            onPrimaryButtonPressed: () {
+              // Navegar a la pantalla de inicio de sesión sin iniciar sesión automáticamente
+              Get.offUntil(GetPageRoute(page: () => SignInScreen()),
+                  (route) => route.isFirst);
+            },
+            /*
+            secondaryButtonText: "Conectar",
+            onSecondaryButtonPressed: () async {
+              // Registrar el controlador si no está registrado
+              if (!Get.isRegistered<SignInController>()) {
+                Get.put(SignInController());
+              }
+
+              final SignInController sCont = Get.find();
+              sCont.emailCont.text = emailCont.text.trim();
+              sCont.passwordCont.text = passwordCont.text.trim();
+              await sCont.saveForm().whenComplete(() => isLoading(false));
+            },
+            */
+          ),
+          barrierDismissible:
+              false, // No permite cerrar el diálogo tocando fuera
+        );
+      } catch (e) {
+        log('E: $e');
         toast(e.toString(), print: true);
-      }).whenComplete(() => isLoading(false));
+
+        // Mostrar el diálogo de error con un botón
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.error_outline,
+            title: locale.value.actionFailed,
+            description: "Ha ocurrido un error.",
+            primaryButtonText: "Regresar",
+            onPrimaryButtonPressed: () {
+              Get.back(); // Regresa al diálogo anterior
+            },
+          ),
+          barrierDismissible:
+              false, // No permite cerrar el diálogo tocando fuera
+        );
+      } finally {
+        isLoading(false);
+      }
     } else {
       toast(locale.value.pleaseAcceptTermsAnd);
     }

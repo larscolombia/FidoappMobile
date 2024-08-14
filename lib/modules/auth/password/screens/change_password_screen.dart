@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:pawlly/utils/common_base.dart';
 import '../../../../../components/app_scaffold.dart';
@@ -35,7 +36,7 @@ class ChangePasswordScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Cambiar Contraseña',
+                  locale.value.changePassword,
                   style: Styles.joinTitle,
                   textAlign: TextAlign.center,
                 ),
@@ -48,7 +49,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     controller: controller.passwordController.value,
                     enabled: true,
                     obscureText: true,
-                    placeholder: 'Contraseña Actual',
+                    placeholder: locale.value.currentPassword,
                     icon: 'assets/icons/key.png',
                   ),
                 ),
@@ -58,7 +59,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     controller: controller.newPasswordController.value,
                     enabled: true,
                     obscureText: true,
-                    placeholder: 'Contraseña',
+                    placeholder: locale.value.password,
                     icon: 'assets/icons/key.png',
                   ),
                 ),
@@ -68,14 +69,14 @@ class ChangePasswordScreen extends StatelessWidget {
                     controller: controller.repeatNewPasswordController.value,
                     enabled: true,
                     obscureText: true,
-                    placeholder: 'Confirmar Contraseña',
+                    placeholder: locale.value.confirmPassword,
                     icon: 'assets/icons/key.png',
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20),
                   child: ButtonDefaultWidget(
-                    title: 'Enviar',
+                    title: locale.value.send,
                     callback: () {
                       // Get.to(Inicio());
                       print('object');

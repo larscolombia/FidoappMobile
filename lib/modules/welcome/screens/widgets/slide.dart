@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/generated/config.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/welcome/controllers/welcome_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -9,25 +10,32 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 class Slide extends StatelessWidget {
   final WelcomeController welcomeController = Get.put(WelcomeController());
 
-  late final String img1;
-  late final String img2;
-  late final String img4;
-  late final String img5;
-  late final String title1;
-  late final String title2;
-  final String subtitle;
+  late String img1;
+  late String img2;
+  late String img4;
+  late String img5;
+  late String title1;
+  late String title2;
+  late String subtitle;
+
   Slide({
     Key? key,
-    this.img1 = "assets/images/main4.png",
-    this.img2 = "assets/images/main1.png",
-    this.img4 = "assets/images/main2.png",
-    this.img5 = "assets/images/welcome.png",
-    this.title1 = "Bienvenido a",
-    this.title2 = Config.NameApp,
-    //
-    this.subtitle =
-        "Diseñada para acompañarte en las actividades diarias de tu mascota",
-  }) : super(key: key);
+    String? img1,
+    String? img2,
+    String? img4,
+    String? img5,
+    String? title1,
+    String? title2,
+    String? subtitle,
+  })  : img1 = img1 ?? "assets/images/main4.png",
+        img2 = img2 ?? "assets/images/main1.png",
+        img4 = img4 ?? "assets/images/main2.png",
+        img5 = img5 ?? "assets/images/welcome.png",
+        title1 = title1 ?? locale.value.welcomeTo,
+        title2 = title2 ?? Config.NameApp,
+        subtitle = subtitle ?? locale.value.designedToAccompany,
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
