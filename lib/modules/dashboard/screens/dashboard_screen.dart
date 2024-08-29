@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pages.dart';
+import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
 import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
 import 'package:pawlly/routes/app_pages.dart';
@@ -118,7 +119,8 @@ class DashboardScreen extends StatelessWidget {
                           return GestureDetector(
                             onTap: () {
                               // Navegar a la vista correspondiente
-                              Get.toNamed(_getPageForIndex(index) as String);
+                              _onItemTap(index,
+                                  context); // Llama al nuevo método que maneja el modal y la navegación
                             },
                             child: Container(
                               margin: const EdgeInsets.only(bottom: 5),
@@ -196,13 +198,34 @@ class DashboardScreen extends StatelessWidget {
     }
   }
 
-  // Método auxiliar para obtener la página correspondiente
+  void _onItemTap(int index, BuildContext context) {
+    if (index == 1) {
+      // Mostrar el modal para el caso 1
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return ProfileModal();
+        },
+      );
+    } else {
+      // Navegar a la vista correspondiente para otros casos
+      var route = _getPageForIndex(index);
+      if (route is String) {
+        Get.toNamed(route);
+      } else if (route is Widget) {
+        Get.to(() => route);
+      }
+    }
+  }
+
   Object _getPageForIndex(int index) {
     switch (index) {
       case 0:
         return Routes.PROFILE;
       case 1:
-        return Routes.PROFILEPET;
+        return ''; // Devuelve una cadena vacía o cualquier valor que indique que no se debe navegar
       case 2:
         return Routes.TERMSCONDITIONS;
       case 3:

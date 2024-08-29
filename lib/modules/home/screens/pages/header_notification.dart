@@ -16,7 +16,7 @@ class HeaderNotification extends StatelessWidget {
     return Container(
       height: 130,
       width: width,
-      padding: EdgeInsets.only(bottom: 20, left: 25, right: 25),
+      padding: Styles.paddingAll,
       decoration: const BoxDecoration(
         color: Styles.fiveColor,
         borderRadius: BorderRadius.only(
@@ -28,7 +28,7 @@ class HeaderNotification extends StatelessWidget {
         alignment:
             Alignment.bottomCenter, // Alinea el contenido en la parte inferior
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment:

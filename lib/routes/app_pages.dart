@@ -12,6 +12,8 @@ import 'package:pawlly/modules/auth/password/screens/change_success_password.dar
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/modules/auth/sign_up/bindings/sign_un_binding.dart';
 import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
+import 'package:pawlly/modules/calendar/bindings/calendar_binding.dart';
+import 'package:pawlly/modules/calendar/screens/calendar_screen.dart';
 import 'package:pawlly/modules/dashboard/bindings/dashboard_binding.dart';
 import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:pawlly/modules/home/bindings/home_binding.dart';
@@ -40,6 +42,11 @@ class AppPages {
       name: _Paths.HOME,
       page: () => HomeScreen(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.CALENDAR,
+      page: () => CalendarScreen(),
+      binding: CalendarBinding(),
     ),
     GetPage(
       name: _Paths.WELCOME,

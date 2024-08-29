@@ -9,70 +9,42 @@ class MenuOfNavigation extends GetView<HomeController> {
     final width = MediaQuery.of(context).size.width;
     return Obx(
       () => Container(
-        padding: Styles.paddingAll,
         width: width,
-        child: Container(
-          width: width,
-          height: 75,
-          margin: EdgeInsets.symmetric(
-            vertical: 30,
+        height: 75,
+        decoration: BoxDecoration(
+          color: Styles.primaryColor,
+          borderRadius: BorderRadius.all(
+            Radius.circular(66),
           ),
-          decoration: BoxDecoration(
-            color: Styles.primaryColor,
-            borderRadius: BorderRadius.all(
-              Radius.circular(66),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _buildNavItem(
+              icon: Icons.home,
+              label: 'Inicio',
+              index: 0,
+              controller: controller,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 10,
-                spreadRadius: 1,
-                offset: Offset(0, -3),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.all(
-              Radius.circular(66),
+            _buildNavItem(
+              icon: Icons.calendar_today,
+              label: 'Agenda',
+              index: 1,
+              controller: controller,
             ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Styles.primaryColor,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(25),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildNavItem(
-                    icon: Icons.home,
-                    label: 'Inicio',
-                    index: 0,
-                    controller: controller,
-                  ),
-                  _buildNavItem(
-                    icon: Icons.calendar_today,
-                    label: 'Agenda',
-                    index: 1,
-                    controller: controller,
-                  ),
-                  _buildNavItem(
-                    icon: Icons.pets,
-                    label: 'Entrenos',
-                    index: 2,
-                    controller: controller,
-                  ),
-                  _buildNavItem(
-                    icon: Icons.search,
-                    label: 'Explorar',
-                    index: 3,
-                    controller: controller,
-                  ),
-                ],
-              ),
+            _buildNavItem(
+              icon: Icons.pets,
+              label: 'Entrenos',
+              index: 2,
+              controller: controller,
             ),
-          ),
+            _buildNavItem(
+              icon: Icons.search,
+              label: 'Explorar',
+              index: 3,
+              controller: controller,
+            ),
+          ],
         ),
       ),
     );

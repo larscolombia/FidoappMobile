@@ -1,0 +1,105 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pawlly/modules/calendar/controllers/calendar_controller.dart';
+import 'package:pawlly/styles/styles.dart';
+
+class ActivityListScreen extends StatelessWidget {
+  final CalendarController calendarController = Get.put(CalendarController());
+
+  ActivityListScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Lista de Actividades',
+            style: TextStyle(
+              fontSize: 20,
+              color: Styles.primaryColor,
+              fontFamily: 'PoetsenOne',
+            ),
+            textAlign: TextAlign.left,
+          ),
+          SizedBox(height: 10),
+          // Muestra la fecha seleccionada
+          Obx(() {
+            return Text(
+              '${calendarController.selectedDay.value.day}/${calendarController.selectedDay.value.month}/${calendarController.selectedDay.value.year}',
+              style: TextStyle(
+                fontFamily: 'Lato',
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Styles.blackColor,
+              ),
+            );
+          }),
+          SizedBox(height: 16),
+          // Lista de actividades para la fecha seleccionada
+          Obx(() {
+            final eventsForDay = calendarController.getEventsForSelectedDay();
+            if (eventsForDay.isEmpty) {
+              return Center(child: Text('No hay actividades.'));
+            }
+            return ListView.builder(
+              physics:
+                  NeverScrollableScrollPhysics(), // Desactiva el scroll interno
+              shrinkWrap: true, // Deja que la lista se ajuste al contenido
+              itemCount: eventsForDay.length,
+              itemBuilder: (context, index) {
+                final eventTime = eventsForDay[index]['time'] as DateTime;
+                final eventTitle = eventsForDay[index]['title'];
+
+                return Container(
+                  margin: EdgeInsets.only(bottom: 16),
+                  padding: EdgeInsets.all(12),
+                  width: Get.width,
+                  decoration: BoxDecoration(
+                    color: Styles.fiveColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        eventTitle.toString(),
+                        style: TextStyle(
+                          fontFamily: 'Lato',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          color: Styles.blackColor,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Descripción de la actividad aquí.',
+                        style: TextStyle(
+                          fontFamily: 'Lato',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Styles.greyTextColor,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Hora: ${eventTime.hour}:${eventTime.minute.toString().padLeft(2, '0')}',
+                        style: TextStyle(
+                          fontFamily: 'Lato',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                          color: Styles.iconColorBack,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          }),
+        ],
+      ),
+    );
+  }
+}

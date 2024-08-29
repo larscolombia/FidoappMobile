@@ -98,7 +98,7 @@ class _CustomSelectFormFieldWidgetState
                     ? Colors.white
                     : Color.fromRGBO(254, 247, 229, 1),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
                     color: hasText || _selectedValue != null
                         ? Styles.iconColorBack
@@ -107,7 +107,7 @@ class _CustomSelectFormFieldWidgetState
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
                     color: isEnabled
                         ? (hasText || _selectedValue != null)
@@ -118,14 +118,14 @@ class _CustomSelectFormFieldWidgetState
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
                     color: Styles.iconColorBack,
                     width: 1.0,
                   ),
                 ),
                 disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
                     color: Colors.grey,
                     width: 1.0,
@@ -189,11 +189,11 @@ class _CustomSelectFormFieldWidgetState
         top: offset.dy + size.height,
         child: Material(
           elevation: 4.0,
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(16),
           child: Container(
             decoration: BoxDecoration(
               border: Border.all(color: Styles.iconColorBack),
-              borderRadius: BorderRadius.circular(8.0),
+              borderRadius: BorderRadius.circular(16),
             ),
             child: ListView(
               padding: EdgeInsets.zero,

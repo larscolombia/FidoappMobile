@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
         // themeMode: ThemeMode.system,
 
         // Aquí se establece el modo del tema dependiendo de si el modo oscuro está activado o no.
-        themeMode: isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
+        // themeMode: isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
 
         // Esta es la pantalla de inicio que se muestra cuando la app se carga.
         home: SplashScreen(),

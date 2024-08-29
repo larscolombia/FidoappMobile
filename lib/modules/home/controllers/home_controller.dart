@@ -20,6 +20,9 @@ class HomeController extends GetxController {
       case 0:
         Get.toNamed(Routes.HOME);
         break;
+      case 1:
+        Get.toNamed(Routes.CALENDAR);
+        break;
       /*
       case 2:
         Get.toNamed(Routes.APPRENTICESHIP);

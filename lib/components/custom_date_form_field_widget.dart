@@ -51,28 +51,28 @@ class _CustomDateFormFieldWidgetState extends State<CustomDateFormFieldWidget> {
                 fillColor:
                     hasText ? Colors.white : Color.fromRGBO(254, 247, 229, 1),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
                     color: Colors.transparent,
                     width: 1.0,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
                     color: hasText ? Styles.iconColorBack : Colors.transparent,
                     width: 1.0,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
                     color: Styles.iconColorBack,
                     width: 1.0,
                   ),
                 ),
                 disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
                     color: Styles.iconColorBack.withOpacity(0.5),
                     width: 1.0,

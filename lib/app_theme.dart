@@ -22,8 +22,8 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: scafoldColor,
       cardColor: cardColor,
-      bottomNavigationBarTheme:
-          const BottomNavigationBarThemeData(backgroundColor: Colors.white),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.transparent),
       iconTheme: IconThemeData(color: textPrimaryColorGlobal),
       textTheme: TextTheme(
         bodySmall: TextStyle(fontFamily: 'PoetsenOne'),
@@ -43,7 +43,7 @@ class AppTheme {
         displayLarge: TextStyle(fontFamily: 'PoetsenOne'),
         // Agrega otros estilos según sea necesario
       ),
-      dialogBackgroundColor: const Color.fromARGB(255, 165, 104, 104),
+      dialogBackgroundColor: Colors.white,
       unselectedWidgetColor: Colors.black,
       dividerColor: borderColor.withOpacity(0.5),
       switchTheme: SwitchThemeData(
@@ -56,7 +56,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(
             borderRadius:
                 radiusOnly(topLeft: defaultRadius, topRight: defaultRadius)),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
       ),
       appBarTheme: const AppBarTheme(
         surfaceTintColor: Colors.transparent,

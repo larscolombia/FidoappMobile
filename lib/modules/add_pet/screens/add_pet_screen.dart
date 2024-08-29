@@ -28,7 +28,7 @@ class AddPetScreen extends StatelessWidget {
             Container(
               height: headerHeight,
               width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: Styles.paddingAll,
               decoration: const BoxDecoration(
                 color: Styles.fiveColor,
                 borderRadius: BorderRadius.only(
@@ -72,7 +72,7 @@ class AddPetScreen extends StatelessWidget {
                 child: Form(
                   key: _formKey, // Asignar la clave del formulario
                   child: ListView(
-                    padding: EdgeInsets.all(16),
+                    padding: EdgeInsets.only(top: 16),
                     children: [
                       // Campo para el nombre de la mascota
                       Container(
@@ -251,6 +251,7 @@ class AddPetScreen extends StatelessWidget {
                           }
                         },
                       ),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
