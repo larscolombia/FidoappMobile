@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                         Colors.white, // Fondo blanco
                         Colors.white
                             .withOpacity(0.5), // Degradado hacia transparente
-                        Colors.white.withOpacity(0.0), // Transparente
+                        Colors.white.withOpacity(0.3), // Transparente
                       ],
                       stops: [0.0, 0.7, 1.0],
                     ),

@@ -40,7 +40,7 @@ class ProfilesDogs extends StatelessWidget {
           ),
         ),
         child: Obx(() {
-          if (controller.selectedProfile.value.isEmpty) {
+          if (controller.selectedProfile.value == null) {
             // Mostrar mensaje si no hay perfil seleccionado
             return Center(
               child: Text(
@@ -55,6 +55,7 @@ class ProfilesDogs extends StatelessWidget {
             );
           } else {
             // Mostrar imagen y datos del perfil seleccionado
+            final profile = controller.selectedProfile.value!;
             return Row(
               children: [
                 Container(
@@ -73,8 +74,7 @@ class ProfilesDogs extends StatelessWidget {
                   child: CircleAvatar(
                     radius:
                         26, // Ajustar el radio para que la imagen se adapte mejor al contenedor
-                    backgroundImage:
-                        NetworkImage('https://via.placeholder.com/150'),
+                    backgroundImage: NetworkImage(profile.petImage),
                     backgroundColor: Colors
                         .transparent, // Fondo transparente si la imagen no se carga
                   ),
@@ -87,7 +87,7 @@ class ProfilesDogs extends StatelessWidget {
                     Container(
                       width: width / 2.5,
                       child: Text(
-                        controller.selectedProfile.value,
+                        profile.name,
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Styles.primaryColor,
@@ -100,7 +100,7 @@ class ProfilesDogs extends StatelessWidget {
                     Container(
                       width: width / 2.5,
                       child: Text(
-                        'Perfil de ${controller.selectedProfile.value}',
+                        'Perfil de ${profile.name}',
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           color: Styles.blackColor,

@@ -86,12 +86,12 @@ class ProfileModal extends StatelessWidget {
                     itemBuilder: (context, index) {
                       var profile = controller.profiles[index];
                       var isSelected =
-                          controller.selectedProfile.value == profile['name'];
+                          controller.selectedProfile.value == profile;
 
                       return GestureDetector(
                         onTap: () {
                           // Actualiza el perfil seleccionado
-                          controller.updateProfile(profile['name']);
+                          controller.updateProfile(profile);
                           Navigator.of(context).pop(); // Cierra el modal
                         },
                         child: Container(
@@ -120,9 +120,9 @@ class ProfileModal extends StatelessWidget {
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: profile['image'] != null
+                                  child: profile.petImage != null
                                       ? Image.network(
-                                          profile['image'],
+                                          profile.petImage!,
                                           fit: BoxFit.cover,
                                           errorBuilder:
                                               (context, error, stackTrace) {
@@ -138,16 +138,14 @@ class ProfileModal extends StatelessWidget {
                                         ),
                                 ),
                               ),
-                              SizedBox(
-                                  width:
-                                      12), // Espacio entre imagen y contenido
+                              SizedBox(width: 12),
                               // Contenido del perfil que ocupa el otro 50% del ancho
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      profile['name'],
+                                      profile.name,
                                       style: TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize: 18,
@@ -157,7 +155,7 @@ class ProfileModal extends StatelessWidget {
                                     ),
                                     SizedBox(height: 4),
                                     Text(
-                                      '${profile['age']} años',
+                                      '${profile.age}',
                                       style: TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize: 12,
@@ -167,7 +165,7 @@ class ProfileModal extends StatelessWidget {
                                     ),
                                     SizedBox(height: 4),
                                     Text(
-                                      profile['gender'] ?? 'No Especificado',
+                                      profile.gender!,
                                       style: TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize: 12,
@@ -181,7 +179,11 @@ class ProfileModal extends StatelessWidget {
                                       borderSize: 30,
                                       title: 'Ver perfil >',
                                       callback: () {
-                                        Get.toNamed(Routes.PROFILEPET);
+                                        Get.toNamed(
+                                          Routes.PROFILEPET,
+                                          arguments:
+                                              profile, // Pasar el perfil de la mascota como argumento
+                                        );
                                       },
                                     ),
                                   ],

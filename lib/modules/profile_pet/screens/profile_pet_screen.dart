@@ -2,11 +2,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/information_tab.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/medical_histor_tab.dart';
-import 'package:pawlly/modules/profile_pet/screens/widget/show_filter_dialog.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ProfilePetScreen extends StatelessWidget {

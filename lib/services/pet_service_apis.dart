@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/pet_note_model.dart';
 import 'package:pawlly/models/pet_type_model.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import '../../../models/base_response_model.dart';
 import '../../../network/network_utils.dart';
 import '../../../utils/api_end_points.dart';
@@ -61,20 +64,132 @@ class PetService {
   }
 
   static Future<List<PetData>> getPetListApi({
-    page = 1,
-    int perPage = 25,
     required List<PetData> pets,
   }) async {
     if (isLoggedIn.value) {
-      final res = PetListRes.fromJson(await handleResponse(
-          await buildHttpResponse(
-              "${APIEndPoints.getPetList}?per_page=$perPage&page=$page",
-              method: HttpMethodType.GET)));
-      pets.clear();
-      pets.addAll(res.data);
-      return res.data;
+      // Construir la URL completa con el user_id
+      final url = Uri.parse(
+          '${BASE_URL}${APIEndPoints.getPetList}?user_id=${AuthServiceApis.idCurrentUser}');
+
+      // Realizar la solicitud con el token en los headers
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.tokenCurrentUser}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final res = PetListRes.fromJson(jsonDecode(response.body));
+        pets.clear();
+        pets.addAll(res.data);
+        return res.data;
+      } else {
+        // Manejo de error
+        print('Error en la solicitud: ${response.statusCode}');
+        return [];
+      }
     } else {
       return [];
+    }
+  }
+
+  static Future<PetData?> postCreatePetApi({
+    required Map<String, dynamic> body, // Recibe el body ya validado
+  }) async {
+    if (isLoggedIn.value) {
+      // Construir la URL completa
+      final url = Uri.parse('${BASE_URL}${APIEndPoints.getPetList}');
+
+      // Realizar la solicitud POST con el token en los headers
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.tokenCurrentUser}',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body), // Convertir el body a JSON
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        // Parsear la respuesta JSON y retornar el objeto PetData
+        final petData = PetData.fromJson(jsonDecode(response.body)['data']);
+        return petData;
+      } else {
+        // Manejo de error
+        print('Error en la solicitud: ${response.statusCode}');
+        print('Respuesta: ${response.body}');
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  static Future<PetData?> postEditPetApi({
+    required int petId, // ID de la mascota a editar
+    required Map<String, dynamic> body, // Recibe el body ya validado
+  }) async {
+    if (isLoggedIn.value) {
+      // Construir la URL completa para la edición, incluyendo el ID de la mascota
+      final url = Uri.parse('${BASE_URL}${APIEndPoints.getPetList}/$petId');
+
+      // Realizar la solicitud POST con el token en los headers
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.tokenCurrentUser}',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(body), // Convertir el body a JSON
+      );
+
+      if (response.statusCode == 200) {
+        // Parsear la respuesta JSON y retornar el objeto PetData actualizado
+        final petData = PetData.fromJson(jsonDecode(response.body)['data']);
+        return petData;
+      } else {
+        // Manejo de error
+        print('Error en la solicitud: ${response.statusCode}');
+        print('Respuesta: ${response.body}');
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  static Future<PetData?> getPetDetailsApi({
+    required int petId, // ID de la mascota a recuperar
+  }) async {
+    if (isLoggedIn.value) {
+      // Construir la URL completa con el ID de la mascota
+      final url = Uri.parse('${BASE_URL}${APIEndPoints.getPetList}/$petId');
+
+      // Realizar la solicitud GET con el token en los headers
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.tokenCurrentUser}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Parsear la respuesta JSON y retornar el objeto PetData
+        final petData = PetData.fromJson(jsonDecode(response.body)['data']);
+        return petData;
+      } else if (response.statusCode == 404) {
+        // Manejo del caso donde la mascota no es encontrada
+        print('Mascota no encontrada.');
+        return null;
+      } else {
+        // Manejo de otros errores
+        print('Error en la solicitud: ${response.statusCode}');
+        print('Respuesta: ${response.body}');
+        return null;
+      }
+    } else {
+      return null;
     }
   }
 

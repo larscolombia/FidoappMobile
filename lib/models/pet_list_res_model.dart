@@ -14,7 +14,9 @@ class PetListRes {
   factory PetListRes.fromJson(Map<String, dynamic> json) {
     return PetListRes(
       status: json['status'] is bool ? json['status'] : false,
-      data: json['data'] is List ? List<PetData>.from(json['data'].map((x) => PetData.fromJson(x))) : [],
+      data: json['data'] is List
+          ? List<PetData>.from(json['data'].map((x) => PetData.fromJson(x)))
+          : [],
       message: json['message'] is String ? json['message'] : "",
     );
   }
@@ -49,6 +51,7 @@ class PetData {
   int createdBy;
   int updatedBy;
   int deletedBy;
+  String additionalInfo;
   List<NotePetModel> petNotes;
 
   PetData({
@@ -72,6 +75,7 @@ class PetData {
     this.createdBy = -1,
     this.updatedBy = -1,
     this.deletedBy = -1,
+    this.additionalInfo = "",
     this.petNotes = const <NotePetModel>[],
   });
 
@@ -97,7 +101,12 @@ class PetData {
       createdBy: json['created_by'] is int ? json['created_by'] : -1,
       updatedBy: json['updated_by'] is int ? json['updated_by'] : -1,
       deletedBy: json['deleted_by'] is int ? json['deleted_by'] : -1,
-      petNotes: json['pet_notes'] is List ? List<NotePetModel>.from(json['pet_notes'].map((x) => NotePetModel.fromJson(x))) : [],
+      additionalInfo:
+          json['additional_info'] is String ? json['additional_info'] : "",
+      petNotes: json['pet_notes'] is List
+          ? List<NotePetModel>.from(
+              json['pet_notes'].map((x) => NotePetModel.fromJson(x)))
+          : [],
     );
   }
 
@@ -123,6 +132,7 @@ class PetData {
       'created_by': createdBy,
       'updated_by': updatedBy,
       'deleted_by': deletedBy,
+      'additional_info': additionalInfo,
       'pet_notes': petNotes.map((e) => e.toJson()).toList(),
     };
   }

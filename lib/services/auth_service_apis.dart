@@ -23,6 +23,8 @@ import '../../../utils/local_storage.dart';
 
 class AuthServiceApis {
   static ValueNotifier<LoginResponse?> currentUser = ValueNotifier(null);
+  static int? idCurrentUser;
+  static String? tokenCurrentUser;
 
   static Future<RegUserResp> createUser({required Map request}) async {
     return RegUserResp.fromJson(await handleResponse(await buildHttpResponse(
@@ -47,7 +49,10 @@ class AuthServiceApis {
 
     // Captura la respuesta recibida
     print("Respuesta recibida: $responseJson");
-
+    idCurrentUser = responseJson['data']['id'];
+    tokenCurrentUser = responseJson['data']['api_token'];
+    print('token::::: $tokenCurrentUser');
+    print('id:::::::: $idCurrentUser');
     // Guarda la solicitud y la respuesta en SharedPreferences
     await saveLoginData(request, responseJson);
 
