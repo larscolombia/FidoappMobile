@@ -7,6 +7,7 @@ const GREEK_LANGUAGE = 'el';
 const DASHBOARD_AUTO_SLIDER_SECOND = 5;
 
 // Live Url
+// const DOMAIN_URL = "http://localhost:8000";
 const DOMAIN_URL = "https://balance.healtheworld.com.co";
 // const DOMAIN_URL = "http://10.0.2.2:8000";
 

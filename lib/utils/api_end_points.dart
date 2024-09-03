@@ -23,6 +23,7 @@ class APIEndPoints {
   //Pet Service
   static const String getFacility = 'facility-list';
   static const String getTraining = 'training-list';
+  static const String getTrainingService = 'service-training';
   static const String getDuration = 'duration-list';
   static const String saveBooking = 'save-booking';
   static const String savePayment = 'save-payment';
