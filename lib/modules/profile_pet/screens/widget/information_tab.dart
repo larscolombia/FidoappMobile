@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/associated_persons_modal.dart';
+import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class InformationTab extends StatelessWidget {
@@ -223,39 +224,48 @@ class InformationTab extends StatelessWidget {
         const SizedBox(height: 10),
         Column(
           children: controller.associatedPersons.map((person) {
-            return Card(
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.grey.withOpacity(0.2), width: 1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              color: Colors.white,
-              child: ListTile(
-                leading: CircleAvatar(
-                  radius: 30,
-                  backgroundImage:
-                      const NetworkImage('https://via.placeholder.com/150'),
-                  backgroundColor: Colors.transparent,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Styles.iconColorBack,
-                        width: 1.0,
+            return GestureDetector(
+              onTap: () {
+                // Navegar a la ruta 'PETOWNERPROFILE' y pasar los datos del perfil si es necesario
+                Get.toNamed(Routes.PETOWNERPROFILE, arguments: person);
+              },
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  side:
+                      BorderSide(color: Colors.grey.withOpacity(0.2), width: 1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                color: Colors.white,
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(
+                      person['imageUrl'] ??
+                          'https://via.placeholder.com/150', // Cambiar por la URL de la persona
+                    ),
+                    backgroundColor: Colors.transparent,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Styles.iconColorBack,
+                          width: 1.0,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                title: Text(
-                  person['name'] ?? '',
-                  style: Styles.textProfile14w700,
-                ),
-                subtitle: Text(
-                  person['relation'] ?? '',
-                  style: Styles.textProfile12w400,
-                ),
-                trailing: const Icon(
-                  Icons.arrow_forward_ios,
-                  color: Styles.iconColorBack,
+                  title: Text(
+                    person['name'] ?? '',
+                    style: Styles.textProfile14w700,
+                  ),
+                  subtitle: Text(
+                    person['relation'] ?? '',
+                    style: Styles.textProfile12w400,
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: Styles.iconColorBack,
+                  ),
                 ),
               ),
             );

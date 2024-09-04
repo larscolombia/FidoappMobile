@@ -1,27 +1,54 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pawlly/models/user_data_model.dart';
+import 'package:pawlly/modules/auth/model/login_response_model.dart';
 import 'dart:io';
-
 import 'package:pawlly/services/auth_service_apis.dart';
 
 class ProfileController extends GetxController {
-  late AuthServiceApis currentUser;
+  late UserData currentUser; // Instancia del modelo de datos de usuario
+
   var isEditing = false.obs;
-  var nameController = TextEditingController(text: 'Victoria').obs;
-  var lastNameController = TextEditingController(text: 'Doe').obs;
-  var passwordController = TextEditingController(text: '1234').obs;
-  var userGenCont = TextEditingController(text: 'Masculino').obs;
-  var userTypeCont = TextEditingController(text: 'Dueño de mascota').obs;
-  var emailController =
-      TextEditingController(text: 'victoria.doe@example.com').obs;
-  var sexoValue = 'Femenino'.obs;
-  var duenioValue = 'Sí'.obs;
+  var nameController = TextEditingController().obs;
+  var lastNameController = TextEditingController().obs;
+  var passwordController = TextEditingController(text: '12345678')
+      .obs; // Por seguridad, normalmente no se pre-llenaría
+  var userGenCont = TextEditingController().obs;
+  var userTypeCont = TextEditingController().obs;
+  var emailController = TextEditingController().obs;
+  var sexoValue = ''.obs;
+  var duenioValue = ''.obs;
   var profileImagePath = ''.obs;
   var isPickerActive =
       false.obs; // Añadir una bandera para el estado activo del picker
 
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Cargar los datos del usuario desde AuthServiceApis al iniciar el controlador
+    currentUser = AuthServiceApis.dataCurrentUser
+        as UserData; // Asegúrate de que el servicio esté correctamente configurado
+
+    // Inicializar los controladores con los datos del usuario actual
+    nameController.value.text = currentUser.firstName;
+    lastNameController.value.text = currentUser.lastName;
+    emailController.value.text = currentUser.email;
+    userGenCont.value.text = currentUser.gender;
+    userTypeCont.value.text = currentUser.userType;
+    profileImagePath.value =
+        currentUser.profileImage; // Imagen de perfil del usuario
+
+    // Configura los valores iniciales de los campos sexo y dueño
+    sexoValue.value = currentUser.gender.isNotEmpty
+        ? currentUser.gender
+        : 'Femenino'; // Valor predeterminado si no está definido
+    duenioValue.value = currentUser.userType.isNotEmpty
+        ? currentUser.userType
+        : 'Sí'; // Ajusta según el valor de userType o pon un valor por defecto
+  }
 
   void toggleEditing() {
     isEditing.value = !isEditing.value;

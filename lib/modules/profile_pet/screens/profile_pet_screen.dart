@@ -57,7 +57,7 @@ class ProfilePetScreen extends StatelessWidget {
                                   onTap: () => Navigator.pop(context),
                                   child: const Icon(
                                     Icons.arrow_back_ios,
-                                    color: Styles.greyTextColor,
+                                    color: Styles.primaryColor,
                                     size: 22,
                                   ),
                                 ),

@@ -74,6 +74,42 @@ class AddPetScreen extends StatelessWidget {
                   child: ListView(
                     padding: EdgeInsets.only(top: 16),
                     children: [
+                      Container(
+                        padding: EdgeInsets.only(
+                          top: 20,
+                        ),
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(
+                                bottom: 20,
+                              ),
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => Navigator.pop(context),
+                                    child: const Icon(
+                                      Icons.arrow_back_ios,
+                                      color: Styles.primaryColor,
+                                      size: 22,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  const Text(
+                                    'Lista de Mascotas',
+                                    style: Styles.dashboardTitle20,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Divider(height: 0, thickness: 1),
+                          ],
+                        ),
+                      ),
+
                       // Campo para el nombre de la mascota
                       Container(
                         margin: EdgeInsets.only(top: 20),
@@ -140,16 +176,20 @@ class AddPetScreen extends StatelessWidget {
                       // Campo para seleccionar la raza de la mascota
                       Container(
                         margin: EdgeInsets.only(top: 20),
-                        child: CustomSelectFormFieldWidget(
-                          controller: controller.petBreed,
-                          placeholder: locale.value.petBreed,
-                          icon: 'assets/icons/tag-user.png',
-                          items: [
-                            'Raza 1',
-                            'Raza 2',
-                            'Raza 3',
-                          ],
-                        ),
+                        child: Obx(() {
+                          return CustomSelectFormFieldWidget(
+                            controller: controller.petBreed,
+                            placeholder: locale.value.petBreed,
+                            icon: 'assets/icons/tag-user.png',
+                            items: controller.breedList.isNotEmpty
+                                ? controller.breedList
+                                    .map((breed) => breed.name)
+                                    .toList()
+                                : [
+                                    'No disponible'
+                                  ], // Si la lista está vacía, muestra "No disponible"
+                          );
+                        }),
                       ),
                       // Selector de género
                       Container(

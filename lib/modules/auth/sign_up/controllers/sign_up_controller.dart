@@ -23,21 +23,6 @@ class SignUpController extends GetxController {
   TextEditingController userTypeCont = TextEditingController();
   TextEditingController genCont = TextEditingController();
 
-/*
-  void saveForm() {
-
-    isLoading(true);
-
-    // Simular una operación de registro con un retraso
-    Future.delayed(Duration(seconds: 2), () {
-      // Aquí puedes agregar tu lógica para el registro
-      isLoading(false);
-      Get.snackbar("Registro exitoso", "Tu cuenta ha sido creada exitosamente",
-          snackPosition: SnackPosition.BOTTOM);
-    });
-  }
-*/
-
   Future<void> saveForm() async {
     print('SignUp Controller');
 

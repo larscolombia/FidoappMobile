@@ -4,7 +4,7 @@ import 'package:pawlly/styles/styles.dart';
 
 class ButtonDefaultWidget extends StatelessWidget {
   final String title;
-  final VoidCallback callback;
+  final VoidCallback? callback; // Asegurarse de que el callback pueda ser null
   final Color defaultColor; // Color de fondo predeterminado
   final MaterialStateProperty<Color>?
       color; // Permitir sobreescribir el color de fondo
@@ -17,13 +17,14 @@ class ButtonDefaultWidget extends StatelessWidget {
   final IconData? icon; // Icono opcional
   final bool
       iconAfterText; // Posición del icono: verdadero para después del texto, falso para antes
+  final bool isLoading; // Estado de carga del botón
 
   const ButtonDefaultWidget({
     Key? key,
     this.widthButtom,
     this.heigthButtom = 56,
     required this.title,
-    required this.callback,
+    this.callback,
     this.defaultColor = Styles.primaryColor, // Color de fondo predeterminado
     this.color,
     this.textColor = Styles.whiteColor, // Color del texto predeterminado
@@ -32,12 +33,14 @@ class ButtonDefaultWidget extends StatelessWidget {
     this.borderSize,
     this.icon, // Icono opcional
     this.iconAfterText = true, // Por defecto, el icono está después del texto
+    this.isLoading = false, // Por defecto, no está en estado de carga
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final resolvedColor = color ?? MaterialStateProperty.all(defaultColor);
     final width = MediaQuery.of(context).size.width;
+
     return Container(
       child: SizedBox(
         width: widthButtom ?? width,
@@ -51,55 +54,62 @@ class ButtonDefaultWidget extends StatelessWidget {
                     BorderSide.none), // Configurar el borde
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(borderSize ?? 16), // Bordes cuadrados
+                borderRadius: BorderRadius.circular(
+                    borderSize ?? 16), // Bordes redondeados
               ),
             ),
           ),
-          onPressed: callback,
-          child: icon == null
-              ? Text(
-                  title,
-                  style: GoogleFonts.poppins(
-                    fontSize: textSize ?? 16,
-                    fontWeight: FontWeight.w500,
-                    color: textColor,
-                  ),
+          onPressed: isLoading
+              ? null
+              : callback, // Desactivar botón si está en estado de carga
+          child: isLoading
+              ? CircularProgressIndicator(
+                  // Mostrar indicador de carga
+                  valueColor: AlwaysStoppedAnimation<Color>(textColor),
                 )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: iconAfterText
-                      ? [
-                          Text(
-                            title,
-                            style: GoogleFonts.poppins(
-                              fontSize: textSize ?? 16,
-                              fontWeight: FontWeight.w500,
-                              color: textColor,
-                            ),
-                          ),
-                          SizedBox(width: 8), // Espacio entre texto e icono
-                          Icon(
-                            icon,
-                            color: textColor,
-                          ),
-                        ]
-                      : [
-                          Icon(
-                            icon,
-                            color: textColor,
-                          ),
-                          SizedBox(width: 8), // Espacio entre icono y texto
-                          Text(
-                            title,
-                            style: GoogleFonts.poppins(
-                              fontSize: textSize ?? 16,
-                              fontWeight: FontWeight.w500,
-                              color: textColor,
-                            ),
-                          ),
-                        ],
-                ),
+              : icon == null
+                  ? Text(
+                      title,
+                      style: GoogleFonts.poppins(
+                        fontSize: textSize ?? 16,
+                        fontWeight: FontWeight.w500,
+                        color: textColor,
+                      ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: iconAfterText
+                          ? [
+                              Text(
+                                title,
+                                style: GoogleFonts.poppins(
+                                  fontSize: textSize ?? 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: textColor,
+                                ),
+                              ),
+                              SizedBox(width: 8), // Espacio entre texto e icono
+                              Icon(
+                                icon,
+                                color: textColor,
+                              ),
+                            ]
+                          : [
+                              Icon(
+                                icon,
+                                color: textColor,
+                              ),
+                              SizedBox(width: 8), // Espacio entre icono y texto
+                              Text(
+                                title,
+                                style: GoogleFonts.poppins(
+                                  fontSize: textSize ?? 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: textColor,
+                                ),
+                              ),
+                            ],
+                    ),
         ),
       ),
     );

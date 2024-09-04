@@ -20,6 +20,7 @@ abstract class Routes {
   static const PROFILEPET = _Paths.PROFILEPET;
   static const ADDPET = _Paths.ADDPET;
   static const PRIVACYTERMS = _Paths.PRIVACYTERMS;
+  static const PETOWNERPROFILE = _Paths.PETOWNERPROFILE;
 }
 
 abstract class _Paths {
@@ -40,6 +41,7 @@ abstract class _Paths {
   static const PROFILEPET = '/profile-pet';
   static const ADDPET = '/add-pet';
   static const PRIVACYTERMS = '/privacy-terms';
+  static const PETOWNERPROFILE = '/pet-owner-profile';
 }
 
 /*

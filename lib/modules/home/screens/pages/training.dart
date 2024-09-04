@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/models/training_model.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -14,31 +15,6 @@ class Training extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final double imageWidth = width * 0.5;
 
-    // Datos de ejemplo para los cursos con ID
-    final List<Map<String, dynamic>> courses = [
-      {
-        'id': 1,
-        'image': 'https://via.placeholder.com/150',
-        'level': 'Principiante',
-        'title': 'Curso de Adiestramiento Básico para Perros',
-        'progress': 0.6, // 60% completado
-      },
-      {
-        'id': 2,
-        'image': null, // Imagen faltante, se usará la predeterminada
-        'level': 'Intermedio',
-        'title': 'Entrenamiento Avanzado de Obediencia',
-        'progress': 0.8, // 80% completado
-      },
-      {
-        'id': 3,
-        'image': 'https://via.placeholder.com/150',
-        'level': 'Experto',
-        'title': 'Entrenamiento de Agilidad Canina',
-        'progress': 0.3, // 30% completado
-      },
-    ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,15 +28,24 @@ class Training extends StatelessWidget {
           textAlign: TextAlign.left,
         ),
         SizedBox(height: 10),
-        // Lista de cursos
+        // Lista de entrenamientos
         Obx(() {
+          if (controller.training.isEmpty) {
+            return Center(
+              child: Text(
+                'No hay entrenamientos disponibles',
+                style: TextStyle(fontSize: 16, color: Styles.greyTextColor),
+              ),
+            );
+          }
           return Column(
-            children: controller.training.map((course) {
+            children: controller.training.map((trainingModel) {
+              // Asegúrate de que `trainingModel` sea del tipo `TrainingModel`
               return GestureDetector(
                 onTap: () {
-                  // Imprime el nombre y el ID del contenedor cuando se toca
+                  // Imprime el nombre y el ID del entrenamiento cuando se toca
                   print(
-                      'Nombre del container: ${course['name']} - ID: ${course['id']}');
+                      'Nombre del container: ${trainingModel.name} - ID: ${trainingModel.id}');
                 },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 16),
@@ -70,7 +55,7 @@ class Training extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       color: Styles.greyTextColor
-                          .withOpacity(0.5), // Borde con opacidad
+                          .withOpacity(0.2), // Borde con opacidad
                       width: 1,
                     ),
                   ),
@@ -87,9 +72,9 @@ class Training extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: course['image'] != null
+                            child: trainingModel.image != null
                                 ? Image.network(
-                                    course['image'],
+                                    trainingModel.image!,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
                                       return Image.asset(
@@ -113,7 +98,7 @@ class Training extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              course['level'],
+                              trainingModel.level ?? 'Nivel no especificado',
                               style: TextStyle(
                                 fontFamily: 'Lato',
                                 fontSize: 12,
@@ -123,7 +108,7 @@ class Training extends StatelessWidget {
                             ),
                             SizedBox(height: 4),
                             Text(
-                              course['name'],
+                              trainingModel.name,
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -133,7 +118,8 @@ class Training extends StatelessWidget {
                                 color: Styles.greyTextColor,
                               ),
                             ),
-                            SizedBox(height: 8),
+                            SizedBox(height: 4),
+                            // Mostrar el nivel si está disponible
                             Text(
                               'Progreso:',
                               style: TextStyle(
@@ -149,7 +135,7 @@ class Training extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: LinearProgressIndicator(
-                                    value: course['progress'],
+                                    value: trainingModel.progress ?? 0.0,
                                     backgroundColor:
                                         Styles.greyTextColor.withOpacity(0.2),
                                     color: Styles.iconColorBack,
@@ -158,7 +144,7 @@ class Training extends StatelessWidget {
                                 ),
                                 SizedBox(width: 8),
                                 Text(
-                                  '${(course['progress'] * 100).toInt() ?? 3}%',
+                                  '${((trainingModel.progress ?? 0) * 100).toInt()}%',
                                   style: TextStyle(
                                     fontFamily: 'Lato',
                                     fontSize: 12,

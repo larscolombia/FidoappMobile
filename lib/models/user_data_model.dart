@@ -13,6 +13,7 @@ class UserData {
   String playerId;
   bool isSocialLogin;
   String userType;
+  String gender; // Campo "gender" agregado
 
   UserData({
     this.id = -1,
@@ -29,6 +30,7 @@ class UserData {
     this.playerId = "",
     this.isSocialLogin = false,
     this.userType = "",
+    this.gender = "", // Inicialización del campo gender
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -53,6 +55,9 @@ class UserData {
       isSocialLogin:
           json['is_social_login'] is bool ? json['is_social_login'] : false,
       userType: json['user_type'] is String ? json['user_type'] : "",
+      gender: json['gender'] is String
+          ? json['gender']
+          : "", // Campo gender añadido
     );
   }
 
@@ -72,6 +77,7 @@ class UserData {
       'player_id': playerId,
       'is_social_login': isSocialLogin,
       'user_type': userType,
+      'gender': gender, // Agregado a la serialización
     };
   }
 }

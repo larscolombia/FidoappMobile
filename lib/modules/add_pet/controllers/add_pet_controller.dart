@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:pawlly/models/brear_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart'; // Asegúrate de importar tu servicio
 
@@ -10,13 +11,31 @@ class AddPetController extends GetxController {
   TextEditingController petDescription = TextEditingController();
   TextEditingController petWeightController = TextEditingController();
   TextEditingController petBirthDateController = TextEditingController();
+  TextEditingController petBreed = TextEditingController();
 
-  // Observables para los demás campos
+  // Observables
   var petImage = Rx<XFile?>(null);
   var petBirthDate = DateTime.now().obs;
-  TextEditingController petBreed = TextEditingController();
   var petGender = ''.obs;
   var petWeight = 0.0.obs;
+  var breedList = <BreedModel>[].obs; // Observable para la lista de razas
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchBreedsList(); // Llamar a la API cuando se inicializa el controlador
+  }
+
+  // Método para obtener la lista de razas desde la API
+  Future<void> fetchBreedsList() async {
+    final breeds = await PetService.getBreedsListApi();
+    if (breeds.isNotEmpty) {
+      breedList.assignAll(breeds);
+    } else {
+      // Manejar el error si la lista está vacía
+      Get.snackbar('Error', 'No se pudo cargar la lista de razas');
+    }
+  }
 
   // Método para seleccionar una imagen
   void pickImage() async {
@@ -45,10 +64,8 @@ class AddPetController extends GetxController {
   // Método para manejar el envío del formulario
   void submitForm(GlobalKey<FormState> formKey) async {
     if (formKey.currentState?.validate() ?? false) {
-      // Sincroniza el valor del controlador de peso con la variable observable
       petWeight.value = double.tryParse(petWeightController.text) ?? 0.0;
 
-      // Mapea los datos del formulario en un Map<String, dynamic>
       Map<String, dynamic> petData = {
         'name': petName.text,
         'description': petDescription.text,
@@ -57,27 +74,20 @@ class AddPetController extends GetxController {
         'breed_name': petBreed.text,
         'gender': petGender.value,
         'weight': petWeight.value,
-        'user_id': AuthServiceApis
-            .idCurrentUser, // Asegúrate de que el user_id está disponible
+        'user_id': AuthServiceApis.dataCurrentUser.id,
       };
 
-      // Llamar al servicio para crear la mascota
       final newPet = await PetService.postCreatePetApi(body: petData);
 
       if (newPet != null) {
-        // Mascota creada con éxito
         Get.snackbar('Éxito', 'Mascota creada con éxito');
         Get.back(result: newPet);
       } else {
-        // Error al crear la mascota
         Get.snackbar('Error', 'Hubo un problema al crear la mascota');
       }
-    } else {
-      // Aquí puedes manejar lo que suceda si la validación falla
     }
   }
 
-  // Limpiar los controladores cuando se destruye el controlador
   @override
   void onClose() {
     petName.dispose();

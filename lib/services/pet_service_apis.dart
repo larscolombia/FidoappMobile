@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/models/brear_model.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/pet_note_model.dart';
 import 'package:pawlly/models/pet_type_model.dart';
@@ -69,13 +70,13 @@ class PetService {
     if (isLoggedIn.value) {
       // Construir la URL completa con el user_id
       final url = Uri.parse(
-          '${BASE_URL}${APIEndPoints.getPetList}?user_id=${AuthServiceApis.idCurrentUser}');
+          '${BASE_URL}${APIEndPoints.getPetList}?user_id=${AuthServiceApis.dataCurrentUser.id}');
 
       // Realizar la solicitud con el token en los headers
       final response = await http.get(
         url,
         headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.tokenCurrentUser}',
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
         },
       );
 
@@ -94,6 +95,30 @@ class PetService {
     }
   }
 
+  static Future<List<BreedModel>> getBreedsListApi() async {
+    // Construir la URL
+    final url = Uri.parse('${BASE_URL}${APIEndPoints.getBreedsList}');
+
+    // Realizar la solicitud con el token en los headers (si es necesario)
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization':
+            'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Ajusta según tu autenticación
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Decodificar la respuesta JSON
+      final res = BreedListResponse.fromJson(jsonDecode(response.body));
+      return res.data; // Devolver la lista de razas
+    } else {
+      // Manejo de error
+      print('Error en la solicitud: ${response.statusCode}');
+      return [];
+    }
+  }
+
   static Future<PetData?> postCreatePetApi({
     required Map<String, dynamic> body, // Recibe el body ya validado
   }) async {
@@ -101,11 +126,17 @@ class PetService {
       // Construir la URL completa
       final url = Uri.parse('${BASE_URL}${APIEndPoints.getPetList}');
 
+      // Imprimir la URL completa
+      print('URL completa: $url');
+
+      // Imprimir el cuerpo de la solicitud
+      print('Cuerpo de la solicitud (JSON): ${jsonEncode(body)}');
+
       // Realizar la solicitud POST con el token en los headers
       final response = await http.post(
         url,
         headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.tokenCurrentUser}',
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
         },
         body: jsonEncode(body), // Convertir el body a JSON
@@ -138,7 +169,7 @@ class PetService {
       final response = await http.post(
         url,
         headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.tokenCurrentUser}',
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
         },
         body: jsonEncode(body), // Convertir el body a JSON
@@ -170,7 +201,7 @@ class PetService {
       final response = await http.get(
         url,
         headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.tokenCurrentUser}',
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
         },
       );
 

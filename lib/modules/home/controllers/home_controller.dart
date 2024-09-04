@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
+import 'package:pawlly/models/training_model.dart';
+import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/routes/app_pages.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
 import 'package:pawlly/services/training_service_apis.dart';
 
@@ -9,12 +12,16 @@ class HomeController extends GetxController {
   var profiles = <PetData>[].obs; // Lista de perfiles usando el modelo
   var selectedProfile =
       Rxn<PetData>(); // Perfil seleccionado, inicialmente null
-  var training = [].obs;
+  var training = <TrainingModel>[].obs;
+  late UserData currentUser;
+  var profileImagePath = ''.obs;
 
 // Llamar al método cuando el controlador se inicializa
   @override
   void onInit() {
     super.onInit();
+    currentUser = AuthServiceApis.dataCurrentUser as UserData;
+    profileImagePath.value = currentUser.profileImage;
     fetchProfiles();
     fetchTraining();
   }
@@ -70,11 +77,10 @@ class HomeController extends GetxController {
   }
 
   void fetchTraining() async {
-    // Llamar al servicio para obtener los training
+    // Llamar al servicio para obtener los trainings
     final trainingData = await TrainingService.getTrainingServiceApi();
 
     // Actualizar la lista observable con los datos obtenidos
     training.value = trainingData;
-    // Verificar si la lista no está vacía y actualizar el perfil seleccionado
   }
 }

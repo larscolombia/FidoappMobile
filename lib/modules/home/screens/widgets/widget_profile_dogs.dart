@@ -49,14 +49,24 @@ class ProfileModal extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Text(
-                    'Lista de Mascotas',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Styles.primaryColor,
-                      fontFamily: 'PoetsenOne',
-                      fontWeight: FontWeight.w400,
-                    ),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: const Icon(
+                          Icons.arrow_back_ios,
+                          color: Styles.primaryColor,
+                          size: 22,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        'Lista de Mascotas',
+                        style: Styles.dashboardTitle20,
+                      ),
+                    ],
                   ),
                   SizedBox(height: 10),
                 ],

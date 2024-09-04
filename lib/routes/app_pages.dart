@@ -19,6 +19,8 @@ import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:pawlly/modules/home/bindings/home_binding.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/auth/sign_in/bindings/sign_in_binding.dart';
+import 'package:pawlly/modules/pet_owner_profile/bindings/pet_owner_profile_binding.dart';
+import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
 import 'package:pawlly/modules/privacy_termns/bindings/privacy_terms_binding.dart';
 import 'package:pawlly/modules/privacy_termns/screens/privacyterms_screen.dart';
 import 'package:pawlly/modules/profile/bindings/profile_binding.dart';
@@ -115,6 +117,11 @@ class AppPages {
       name: _Paths.PRIVACYTERMS,
       page: () => PrivacyTermsScreen(),
       binding: PrivacyTermsBinding(),
+    ),
+    GetPage(
+      name: _Paths.PETOWNERPROFILE,
+      page: () => PetOwnerProfileScreen(),
+      binding: PetOwnerProfileBinding(),
     ),
   ];
 }

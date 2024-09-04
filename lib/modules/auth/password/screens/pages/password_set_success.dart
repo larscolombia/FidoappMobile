@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/main.dart';
+import 'package:pawlly/styles/styles.dart';
 
 import '../../../../../../components/app_scaffold.dart';
 import '../../../../../../generated/assets.dart';
@@ -21,7 +23,7 @@ class PasswordSetSuccess extends StatelessWidget {
         height: Get.height,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: Styles.paddingAll,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -55,16 +57,25 @@ class PasswordSetSuccess extends StatelessWidget {
                 ),
               ),
               48.height,
+              ButtonDefaultWidget(
+                title: locale.value.done,
+                callback: () {
+                  Get.back();
+                  Get.back();
+                },
+              ),
+              /*
               AppButton(
                 width: Get.width,
                 text: locale.value.done,
-                textStyle: const TextStyle(fontSize: 14, color: Colors.white),
+                textStyle: const TextStyle(fontSize: 14, color: Colors.black),
                 onTap: () {
                   Get.back();
                   Get.back();
                   /* Get.to(() => OptionScreen()); */
                 },
               ),
+              */
             ],
           ),
         ),

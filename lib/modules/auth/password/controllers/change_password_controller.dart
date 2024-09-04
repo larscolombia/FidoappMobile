@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/main.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/utils/app_common.dart';
 
 import '../screens/pages/password_set_success.dart';
@@ -16,20 +17,17 @@ class ChangePasswordController extends GetxController {
   TextEditingController oldPasswordCont = TextEditingController();
   TextEditingController newpasswordCont = TextEditingController();
   TextEditingController confirmPasswordCont = TextEditingController();
-  var passwordController = TextEditingController().obs;
-  var newPasswordController = TextEditingController().obs;
-  var repeatNewPasswordController = TextEditingController().obs;
 
   @override
   void onInit() {
-    // oldPasswordCont.text =
-    //     getValueFromLocal(SharedPreferenceConst.USER_PASSWORD);
+    oldPasswordCont.text =
+        getValueFromLocal(SharedPreferenceConst.USER_PASSWORD);
     super.onInit();
   }
 
   saveForm() async {
     print('change Pass Controller join');
-    /*
+
     isLoading(true);
     if (getValueFromLocal(SharedPreferenceConst.USER_PASSWORD) !=
         oldPasswordCont.text.trim()) {
@@ -57,6 +55,5 @@ class ChangePasswordController extends GetxController {
       isLoading(false);
       toast(e.toString(), print: true);
     });
-    */
   }
 }

@@ -45,13 +45,17 @@ class DashboardScreen extends StatelessWidget {
                       width: 3.0, // Grosor del borde
                     ),
                   ),
-                  child: CircleAvatar(
-                    radius:
-                        46, // Ajustar el radio para que la imagen se adapte mejor al contenedor
-                    backgroundImage:
-                        NetworkImage('https://via.placeholder.com/150'),
-                    backgroundColor: Colors
-                        .transparent, // Fondo transparente si la imagen no se carga
+                  child: Obx(
+                    () => CircleAvatar(
+                      radius:
+                          46, // Ajustar el radio para que la imagen se adapte mejor al contenedor
+                      backgroundImage: controller.profileImagePath.isNotEmpty
+                          ? NetworkImage(controller.profileImagePath
+                              .value) // Carga la imagen desde la red si hay una URL
+                          : AssetImage('assets/images/avatar.png')
+                              as ImageProvider, // Imagen predeterminada si la URL está vacía
+                      backgroundColor: Colors.transparent, // Fondo transparente
+                    ),
                   ),
                 ),
                 // Nombre del Usuario
@@ -59,10 +63,11 @@ class DashboardScreen extends StatelessWidget {
                   height: imageSize,
                   width: double.infinity,
                   alignment: Alignment.bottomCenter,
-                  child: Text(
-                    'Victoria',
-                    style: Styles.dashboardTitle24,
-                  ),
+                  child: Obx(() => Text(
+                        controller
+                            .name.value, // Acceder al valor de name con .value
+                        style: Styles.dashboardTitle24,
+                      )),
                 ),
               ],
             ),
@@ -90,7 +95,7 @@ class DashboardScreen extends StatelessWidget {
                                 Navigator.pop(context), // Acción de retroceso
                             child: Icon(
                               Icons.arrow_back_ios,
-                              color: Styles.greyTextColor,
+                              color: Styles.primaryColor,
                               size: 22,
                             ),
                           ),
@@ -207,6 +212,9 @@ class DashboardScreen extends StatelessWidget {
           return ProfileModal();
         },
       );
+    } else if (index == 5) {
+      // Mostrar el diálogo de confirmación para cerrar sesión
+      _showLogoutConfirmationDialog(context);
     } else {
       // Navegar a la vista correspondiente para otros casos
       var route = _getPageForIndex(index);
@@ -216,6 +224,35 @@ class DashboardScreen extends StatelessWidget {
         Get.to(() => route);
       }
     }
+  }
+
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Cerrar Sesión"),
+          content: Text("¿Desea cerrar sesión?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                // Si el usuario elige "No", simplemente cierra el modal
+                Navigator.of(context).pop();
+              },
+              child: Text("No"),
+            ),
+            TextButton(
+              onPressed: () async {
+                // Si el usuario elige "Sí", llama a la función de logout y cierra el modal
+                await controller.logoutUser();
+                Navigator.of(context).pop(); // Cerrar el modal
+              },
+              child: Text("Sí"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Object _getPageForIndex(int index) {
@@ -231,7 +268,7 @@ class DashboardScreen extends StatelessWidget {
       case 4:
         return SobreAppPage();
       case 5:
-        return CerrarSesionPage();
+        return '';
       default:
         return Container();
     }

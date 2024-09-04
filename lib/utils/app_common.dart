@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/auth/model/about_data_model.dart';
 import 'package:pawlly/modules/auth/model/app_configuration_res.dart';
 import 'package:pawlly/modules/auth/model/login_response_model.dart';

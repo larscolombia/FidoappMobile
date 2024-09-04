@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pawlly/models/user_data_model.dart';
+import 'package:pawlly/modules/auth/model/login_response_model.dart';
 
 class PetNoteRes {
   bool status;

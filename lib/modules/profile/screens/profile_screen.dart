@@ -128,7 +128,7 @@ class ProfileScreen extends StatelessWidget {
                                   onTap: () => Navigator.pop(context),
                                   child: Icon(
                                     Icons.arrow_back_ios,
-                                    color: Styles.greyTextColor,
+                                    color: Styles.primaryColor,
                                     size: 22,
                                   ),
                                 ),

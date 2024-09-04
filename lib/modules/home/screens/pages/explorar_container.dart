@@ -37,9 +37,17 @@ class Explore extends StatelessWidget {
             top: 0,
             bottom: 0,
             right: 0,
-            child: Image.asset(
-              'assets/images/pet_care.png',
-              fit: BoxFit.cover,
+            child: Container(
+              width: Get.width * 0.5,
+              height: Get.height,
+              decoration: BoxDecoration(),
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Image.asset(
+                  'assets/images/pet_care.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
           // Contenedor de texto y botón al frente
@@ -49,7 +57,7 @@ class Explore extends StatelessWidget {
               children: [
                 // Texto y botón ocupando el 60% del ancho
                 Container(
-                  width: Get.width * 0.6, // 60% del ancho total
+                  width: Get.width * 0.4, // 60% del ancho total
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min, // Ajuste dinámico en altura

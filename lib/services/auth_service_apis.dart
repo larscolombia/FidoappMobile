@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pawlly/models/login_response_model.dart';
+import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/auth/model/app_configuration_res.dart';
 import 'package:pawlly/modules/auth/model/change_password_res.dart';
 import 'package:pawlly/modules/auth/model/employee_model.dart';
@@ -23,8 +24,7 @@ import '../../../utils/local_storage.dart';
 
 class AuthServiceApis {
   static ValueNotifier<LoginResponse?> currentUser = ValueNotifier(null);
-  static int? idCurrentUser;
-  static String? tokenCurrentUser;
+  static UserData dataCurrentUser = UserData();
 
   static Future<RegUserResp> createUser({required Map request}) async {
     return RegUserResp.fromJson(await handleResponse(await buildHttpResponse(
@@ -37,9 +37,6 @@ class AuthServiceApis {
     required Map request,
     bool isSocialLogin = false,
   }) async {
-    // Captura la solicitud que estás enviando
-    print("Solicitud enviada: $request");
-
     // Realiza la solicitud y captura la respuesta
     var responseJson = await handleResponse(await buildHttpResponse(
       isSocialLogin ? APIEndPoints.socialLogin : APIEndPoints.login,
@@ -47,12 +44,10 @@ class AuthServiceApis {
       method: HttpMethodType.POST,
     ));
 
-    // Captura la respuesta recibida
-    print("Respuesta recibida: $responseJson");
-    idCurrentUser = responseJson['data']['id'];
-    tokenCurrentUser = responseJson['data']['api_token'];
-    print('token::::: $tokenCurrentUser');
-    print('id:::::::: $idCurrentUser');
+    // Asignar la data del usuario al modelo UserData usando fromJson
+    dataCurrentUser = UserData.fromJson(responseJson['data']);
+    print('DATA:::::::: $dataCurrentUser');
+
     // Guarda la solicitud y la respuesta en SharedPreferences
     await saveLoginData(request, responseJson);
 
@@ -97,16 +92,6 @@ class AuthServiceApis {
       }
     }
   }
-
-/*
-  static Future<LoginResponse> loginUser(
-      {required Map request, bool isSocialLogin = false}) async {
-    return LoginResponse.fromJson(await handleResponse(await buildHttpResponse(
-        isSocialLogin ? APIEndPoints.socialLogin : APIEndPoints.login,
-        request: request,
-        method: HttpMethodType.POST)));
-  }
-  */
 
   static Future<ChangePassRes> changePasswordAPI({required Map request}) async {
     return ChangePassRes.fromJson(await handleResponse(await buildHttpResponse(

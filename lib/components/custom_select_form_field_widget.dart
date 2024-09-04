@@ -187,43 +187,53 @@ class _CustomSelectFormFieldWidgetState
         left: offset.dx,
         width: size.width,
         top: offset.dy + size.height,
-        child: Material(
-          elevation: 4.0,
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Styles.iconColorBack),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: ListView(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              children: widget.items!.map((item) {
-                return Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom:
-                          BorderSide(color: Styles.iconColorBack, width: 0.5),
-                    ),
-                  ),
-                  child: ListTile(
-                    title: Text(item),
-                    onTap: () {
-                      setState(() {
-                        _selectedValue = item;
-                        widget.controller?.text = item;
-                        _removeOverlay();
-                      });
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          child: Material(
+            elevation: 4.0,
+            borderRadius: BorderRadius.circular(16),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: 200, // Limitar la altura máxima a 200px
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Styles.iconColorBack),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  children: widget.items!.map((item) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Styles.iconColorBack,
+                            width: 0.5,
+                          ),
+                        ),
+                      ),
+                      child: ListTile(
+                        title: Text(item),
+                        onTap: () {
+                          setState(() {
+                            _selectedValue = item;
+                            widget.controller?.text = item;
+                            _removeOverlay();
+                          });
 
-                      // Revalida cuando el usuario selecciona un valor si el modo es onUserInteraction
-                      if (widget.autovalidateMode ==
-                          AutovalidateMode.onUserInteraction) {
-                        setState(() {});
-                      }
-                    },
-                  ),
-                );
-              }).toList(),
+                          if (widget.autovalidateMode ==
+                              AutovalidateMode.onUserInteraction) {
+                            setState(() {});
+                          }
+                        },
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
           ),
         ),

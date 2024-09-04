@@ -13,6 +13,7 @@ class APIEndPoints {
   static const String deleteUserAccount = 'delete-account';
   //Pet
   static const String getPetTypeList = 'pet-types';
+  static const String getBreedsList = 'breeds';
   static const String getPetList = 'pets';
   static const String getPetDetail = 'pet-details';
   static const String deletePet = 'delete-pet';

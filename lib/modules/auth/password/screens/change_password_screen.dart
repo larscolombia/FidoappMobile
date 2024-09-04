@@ -40,48 +40,94 @@ class ChangePasswordScreen extends StatelessWidget {
                   style: Styles.joinTitle,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(
-                  height: 26,
-                ),
+                SizedBox(height: 26),
+
+                // Campo de contraseña actual
                 Container(
                   margin: EdgeInsets.only(top: 20, bottom: 20),
                   child: CustomTextFormFieldWidget(
-                    controller: controller.passwordController.value,
+                    controller: controller.oldPasswordCont,
                     enabled: true,
                     obscureText: true,
                     placeholder: locale.value.currentPassword,
                     icon: 'assets/icons/key.png',
+                    validators: [
+                      (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Ingrea tu contraseña';
+                          // return locale.value.enterYourCurrentPassword;
+                        }
+                        return null;
+                      }
+                    ],
                   ),
                 ),
+
+                // Campo de nueva contraseña
                 Container(
                   margin: EdgeInsets.only(top: 20, bottom: 20),
                   child: CustomTextFormFieldWidget(
-                    controller: controller.newPasswordController.value,
+                    controller: controller.newpasswordCont,
                     enabled: true,
                     obscureText: true,
                     placeholder: locale.value.password,
                     icon: 'assets/icons/key.png',
+                    validators: [
+                      (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Ingrea tu nueva contraseña';
+                          // return locale.value.enterYourNewPassword;
+                        } else if (value.length < 6) {
+                          return 'Muy pocos caracteres';
+                          // return locale.value.passwordTooShort;
+                        }
+                        return null;
+                      }
+                    ],
                   ),
                 ),
+
+                // Campo de confirmación de nueva contraseña
                 Container(
                   margin: EdgeInsets.only(top: 20, bottom: 20),
                   child: CustomTextFormFieldWidget(
-                    controller: controller.repeatNewPasswordController.value,
+                    controller: controller.confirmPasswordCont,
                     enabled: true,
                     obscureText: true,
                     placeholder: locale.value.confirmPassword,
                     icon: 'assets/icons/key.png',
+                    validators: [
+                      (value) {
+                        if (value == null || value.isEmpty) {
+                          return locale.value.confirmPassword;
+                        } else if (value !=
+                            controller.newpasswordCont.value.text) {
+                          return 'Las contraseñas no cinciden';
+                          //return locale.value.passwordsDoNotMatch;
+                        }
+                        return null;
+                      }
+                    ],
                   ),
                 ),
+
+                // Botón para enviar y validar
                 Container(
                   margin: EdgeInsets.only(top: 20),
-                  child: ButtonDefaultWidget(
-                    title: locale.value.send,
-                    callback: () {
-                      // Get.to(Inicio());
-                      print('object');
-                    },
-                  ),
+                  child: Obx(() => ButtonDefaultWidget(
+                        title: locale.value.send,
+                        isLoading: controller
+                            .isLoading.value, // Mostrar loader si está cargando
+                        callback: () {
+                          if (_changePassformKey.currentState!.validate()) {
+                            controller
+                                .saveForm(); // Llamar al método para cambiar la contraseña
+                          } else {
+                            toast('por favor checa los campos');
+                            // toast(locale.value.pleaseFillAllFields);
+                          }
+                        },
+                      )),
                 ),
               ],
             ),
