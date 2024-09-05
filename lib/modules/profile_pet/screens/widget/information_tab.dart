@@ -275,7 +275,8 @@ class InformationTab extends StatelessWidget {
         // Botón de eliminar mascota
         Center(
           child: TextButton(
-            onPressed: controller.deletePet,
+            onPressed: controller
+                .deletePet, // Llamar a la función para mostrar el modal
             child: const Text(
               'Eliminar mascota',
               style: TextStyle(color: Colors.red),

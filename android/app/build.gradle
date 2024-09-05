@@ -1,9 +1,7 @@
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
+    localProperties.load(localPropertiesFile.newDataInputStream())
 }
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
@@ -12,10 +10,8 @@ if (flutterRoot == null) {
 }
 
 apply plugin: 'com.android.application'
-// START: FlutterFire Configuration
-apply plugin: 'com.google.gms.google-services'
-// END: FlutterFire Configuration
 apply plugin: 'kotlin-android'
+apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 // Cargar las propiedades del archivo key.properties
@@ -26,14 +22,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.pawlly.customer"
     compileSdkVersion 34
-    ndkVersion = flutter.ndkVersion
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 
     defaultConfig {
         applicationId "com.pawlly.customer"
@@ -45,7 +34,6 @@ android {
 
     signingConfigs {
         release {
-            // Configuración de firma para el release
             keyAlias keystoreProperties['keyAlias']
             keyPassword keystoreProperties['keyPassword']
             storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
@@ -55,7 +43,6 @@ android {
 
     buildTypes {
         release {
-            // Configuración para la compilación de release
             signingConfig signingConfigs.release
             minifyEnabled false
             shrinkResources false
@@ -70,7 +57,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     implementation platform('com.google.firebase:firebase-bom:30.3.1')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'phonepe.intentsdk.android.release:IntentSDK:2.3.0'

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
 
 class ProfilePetController extends GetxController {
@@ -141,138 +143,79 @@ class ProfilePetController extends GetxController {
     }
   }
 
-  // Eliminar mascota
+  // Eliminar mascota con confirmación
   void deletePet() {
-    Get.back();
-    Get.snackbar(
-        'Mascota eliminada', 'La mascota ha sido eliminada exitosamente');
-  }
-}
-/*
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Confirmar eliminación'),
+        content:
+            Text('¿Estás seguro de que deseas eliminar a ${petName.value}?'),
+        actions: [
+          TextButton(
+            onPressed: () => Get.back(), // Cerrar el modal sin eliminar
+            child: const Text('No'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Get.back(); // Cerrar el modal antes de ejecutar la eliminación
+              final success =
+                  await _deletePetApi(); // Llamar a la función para eliminar la mascota
+              if (success) {
+                // Obtener el controlador de HomeController para actualizar la lista
+                final homeController = Get.find<HomeController>();
 
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:pawlly/models/pet_list_res_model.dart';
-import 'package:pawlly/services/pet_service_apis.dart';
+                // Eliminar el pet de la lista en HomeController
+                homeController.profiles
+                    .removeWhere((pet) => pet.id == petProfile.id);
 
-class ProfilePetController extends GetxController {
-  final TextEditingController searchController = TextEditingController();
-
-  late PetData petProfile;
-  var profile = PetProfile(
-    name: 'Oasis',
-    breed: 'Golden Retriever',
-    description: 'Una mascota muy amigable y juguetona.',
-    age: '2 años',
-    birthDate: '01/01/2021',
-    weight: '10 kg',
-    gender: 'Hembra',
-    imagePath: '',
-    associatedPersons: [
-      {'name': 'John Doe', 'relation': 'Dueño'},
-      {'name': 'Jane Smith', 'relation': 'Veterinario'},
-      {'name': 'Alice Johnson', 'relation': 'Invitado'},
-    ],
-    medicalHistory: [
-      {'title': 'Consulta General', 'type': 'Consulta', 'date': '01/08/2023', 'reportNumber': '12345'},
-      {'title': 'Vacunación Anual', 'type': 'Vacuna', 'date': '15/07/2023', 'reportNumber': '67890'},
-    ],
-  ).obs;
-
-  var isEditing = false.obs;
-  var selectedTab = 0.obs;
-  var isPickerActive = false.obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    // Recibe el perfil de la mascota desde los argumentos
-    petProfile = Get.arguments as PetData;
-    profile.update((val) {
-      val?.updateFromPetData(petProfile);
-    });
-
-    // Llamar al servicio para obtener los detalles actualizados de la mascota
-    fetchPetDetails();
-  }
-
-  // Función para obtener los detalles de la mascota desde el servicio
-  Future<void> fetchPetDetails() async {
-    final fetchedPet = await PetService.getPetDetailsApi(petId: petProfile.id);
-
-    if (fetchedPet != null) {
-      profile.update((val) {
-        val?.updateFromPetData(fetchedPet);
-      });
-    } else {
-      Get.snackbar('Error', 'No se pudieron recuperar los detalles de la mascota.');
-    }
-  }
-
-  // Cambiar entre pestañas
-  void changeTab(int index) {
-    selectedTab.value = index;
-  }
-
-  // Alternar modo de edición
-  void toggleEditing() {
-    isEditing.value = !isEditing.value;
-  }
-
-  // Seleccionar imagen
-  Future<void> pickImage() async {
-    if (isPickerActive.value) return;
-    isPickerActive.value = true;
-
-    try {
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        profile.update((val) {
-          val?.imagePath = pickedFile.path;
-        });
-      }
-    } finally {
-      isPickerActive.value = false;
-    }
-  }
-
-  // Función para actualizar el perfil de la mascota
-  Future<void> updatePetProfile() async {
-    // Recoger los datos actualizados en un Map
-    Map<String, dynamic> updatedData = {
-      'name': profile.value.name,
-      'breed_name': profile.value.breed,
-      'size': 'Medium',
-      'date_of_birth': profile.value.birthDate,
-      'gender': profile.value.gender,
-      'weight': double.tryParse(profile.value.weight) ?? 0.0,
-      'user_id': petProfile.userId,
-      'additional_info': profile.value.description,
-      'pet_image': profile.value.imagePath.isNotEmpty ? profile.value.imagePath : null,
-    };
-
-    // Llamar al servicio para editar el perfil de la mascota
-    final updatedPet = await PetService.postEditPetApi(
-      petId: petProfile.id,
-      body: updatedData,
+                // Mostrar el diálogo de éxito con el CustomAlertDialog
+                Get.dialog(
+                  CustomAlertDialog(
+                    icon: Icons.check_circle_outline,
+                    title: 'Éxito',
+                    description: 'La mascota ha sido eliminada exitosamente.',
+                    primaryButtonText: 'Aceptar',
+                    onPrimaryButtonPressed: () {
+                      Get.back(); // Cerrar el diálogo
+                      Get.back();
+                      Get.back();
+                    },
+                  ),
+                  barrierDismissible:
+                      false, // No permite cerrar el diálogo tocando fuera
+                );
+              } else {
+                // Mostrar el diálogo de error con el CustomAlertDialog
+                Get.dialog(
+                  CustomAlertDialog(
+                    icon: Icons.error_outline,
+                    title: 'Error',
+                    description: 'Hubo un problema al eliminar la mascota.',
+                    primaryButtonText: 'Aceptar',
+                    onPrimaryButtonPressed: () {
+                      Get.back(); // Cerrar el diálogo
+                    },
+                  ),
+                  barrierDismissible:
+                      false, // No permite cerrar el diálogo tocando fuera
+                );
+              }
+            },
+            child: const Text('Sí', style: TextStyle(color: Colors.red)),
+          ),
+        ],
+      ),
     );
+  }
 
-    if (updatedPet != null) {
-      profile.update((val) {
-        val?.updateFromPetData(updatedPet);
-      });
-      Get.snackbar('Éxito', 'Perfil de la mascota actualizado con éxito');
-    } else {
-      // Manejo del error
-      Get.snackbar('Error', 'Hubo un problema al actualizar el perfil');
+// Función para eliminar la mascota a través del API
+  Future<bool> _deletePetApi() async {
+    try {
+      final response = await PetService.deletePetApi(id: petProfile.id);
+      return response != null;
+    } catch (e) {
+      print('Error al eliminar la mascota: $e');
+      return false;
     }
   }
-
-  // Eliminar mascota
-  void deletePet() {
-    Get.back();
-    Get.snackbar('Mascota eliminada', 'La mascota ha sido eliminada exitosamente');
-  }
 }
-*/

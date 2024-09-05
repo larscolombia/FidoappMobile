@@ -45,7 +45,7 @@ class Calendar extends StatelessWidget {
                 },
                 calendarStyle: CalendarStyle(
                   todayDecoration: BoxDecoration(
-                    color: Styles.iconColorBack,
+                    color: Styles.blackColor,
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -62,32 +62,32 @@ class Calendar extends StatelessWidget {
                 ),
                 headerStyle: HeaderStyle(
                   formatButtonVisible: false,
-                  titleCentered: false,
+                  titleCentered: true,
                   titleTextStyle: TextStyle(
                     fontFamily: 'Lato',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Styles.iconColorBack,
+                    color: Styles.blackColor,
                   ),
                   leftChevronIcon: Icon(
                     Icons.chevron_left,
-                    color: Styles.iconColorBack,
+                    color: Styles.blackColor,
                   ),
                   rightChevronIcon: Icon(
                     Icons.chevron_right,
-                    color: Styles.iconColorBack,
+                    color: Styles.blackColor,
                   ),
                 ),
                 daysOfWeekStyle: DaysOfWeekStyle(
                   weekendStyle: TextStyle(
                     fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
-                    color: Styles.primaryColor,
+                    color: Styles.blackColor,
                   ),
                   weekdayStyle: TextStyle(
                     fontFamily: 'Lato',
                     fontWeight: FontWeight.w600,
-                    color: Styles.primaryColor,
+                    color: Styles.blackColor,
                   ),
                 ),
                 calendarBuilders: CalendarBuilders(

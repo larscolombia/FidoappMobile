@@ -51,6 +51,10 @@ class _CustomSelectFormFieldWidgetState
   }
 
   String? _validate() {
+    if (_selectedValue == null || _selectedValue!.isEmpty) {
+      return 'Este campo es requerido';
+    }
+
     if (widget.validators != null) {
       for (var validator in widget.validators!) {
         final validationResult = validator(_selectedValue);

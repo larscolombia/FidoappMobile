@@ -11,6 +11,8 @@ class APIEndPoints {
   static const String userDetail = 'user-detail';
   static const String updateProfile = 'update-profile';
   static const String deleteUserAccount = 'delete-account';
+  //Event
+  static const String getEventUser = 'events/user';
   //Pet
   static const String getPetTypeList = 'pet-types';
   static const String getBreedsList = 'breeds';

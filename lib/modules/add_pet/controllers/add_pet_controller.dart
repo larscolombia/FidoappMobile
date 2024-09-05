@@ -1,11 +1,14 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/models/brear_model.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart'; // Asegúrate de importar tu servicio
 
 class AddPetController extends GetxController {
+  RxBool isLoading = false.obs;
   // Controladores para los campos de texto
   TextEditingController petName = TextEditingController();
   TextEditingController petDescription = TextEditingController();
@@ -61,9 +64,10 @@ class AddPetController extends GetxController {
     }
   }
 
-  // Método para manejar el envío del formulario
   void submitForm(GlobalKey<FormState> formKey) async {
     if (formKey.currentState?.validate() ?? false) {
+      isLoading(true);
+
       petWeight.value = double.tryParse(petWeightController.text) ?? 0.0;
 
       Map<String, dynamic> petData = {
@@ -77,13 +81,58 @@ class AddPetController extends GetxController {
         'user_id': AuthServiceApis.dataCurrentUser.id,
       };
 
-      final newPet = await PetService.postCreatePetApi(body: petData);
+      // Eliminar las claves con valores nulos o vacíos
+      petData.removeWhere(
+          (key, value) => value == null || value == '' || value == 0.0);
 
-      if (newPet != null) {
-        Get.snackbar('Éxito', 'Mascota creada con éxito');
-        Get.back(result: newPet);
-      } else {
-        Get.snackbar('Error', 'Hubo un problema al crear la mascota');
+      try {
+        final newPet = await PetService.postCreatePetApi(body: petData);
+
+        if (newPet != null) {
+          // Actualizar la lista de mascotas en HomeController
+          final homeController = Get.find<HomeController>();
+          homeController.profiles
+              .add(newPet); // Agregar la nueva mascota a la lista
+          homeController.profiles.refresh(); // Refrescar la lista
+
+          // Mostrar el diálogo de éxito
+          Get.dialog(
+            CustomAlertDialog(
+              icon: Icons.check_circle_outline,
+              title: 'Mascota creada',
+              description: 'La mascota ha sido creada exitosamente.',
+              primaryButtonText: 'Continuar',
+              onPrimaryButtonPressed: () {
+                Get.back(); // Cerrar el diálogo
+                Get.back(); // Regresar a la pantalla anterior
+                Get.back();
+              },
+            ),
+            barrierDismissible:
+                false, // No permite cerrar el diálogo tocando fuera
+          );
+        } else {
+          throw Exception('Error al crear la mascota');
+        }
+      } catch (e) {
+        print('Error al crear la mascota: $e');
+
+        // Mostrar el diálogo de error
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.error_outline,
+            title: 'Error',
+            description: 'Hubo un problema al crear la mascota.',
+            primaryButtonText: 'Regresar',
+            onPrimaryButtonPressed: () {
+              Get.back(); // Cerrar el diálogo
+            },
+          ),
+          barrierDismissible:
+              false, // No permite cerrar el diálogo tocando fuera
+        );
+      } finally {
+        isLoading(false);
       }
     }
   }

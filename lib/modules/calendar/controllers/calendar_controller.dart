@@ -1,44 +1,53 @@
 import 'package:get/get.dart';
+import 'package:pawlly/models/event_model.dart';
+import 'package:pawlly/services/event_service_apis.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarController extends GetxController {
   var selectedIndex = 0.obs;
-  var profiles = <Map<String, dynamic>>[].obs; // Lista de perfiles
-  var selectedProfile = ''.obs; // Perfil seleccionado
+  var profiles = <Map<String, dynamic>>[].obs;
+  var selectedProfile = ''.obs;
 
   var selectedDay = DateTime.now().obs;
   var focusedDay = DateTime.now().obs;
 
   var calendarFormat = CalendarFormat.month.obs;
-  var events = <DateTime, List<String>>{}.obs; // Mapa de eventos por fecha
+  var events = <DateTime, List<EventData>>{}.obs;
 
   @override
   void onInit() {
     super.onInit();
-    _initializeSampleEvents();
+    _loadEventsFromService();
   }
 
-  void _initializeSampleEvents() {
-    addEvent(DateTime(2024, 8, 10, 10, 0), 'Consulta veterinaria');
-    addEvent(DateTime(2024, 8, 10, 14, 0), 'Vacunación');
-    addEvent(DateTime(2024, 8, 20, 9, 0), 'Entrenamiento avanzado');
-    addEvent(DateTime(2024, 8, 25, 16, 0), 'Día de juego con otros perros');
+  // Método para cargar los eventos desde el servicio
+  Future<void> _loadEventsFromService() async {
+    try {
+      List<EventData> eventList = await EventService.getBreedsListApi();
+      for (var event in eventList) {
+        // Asegúrate de que la fecha del evento no sea nula
+        if (event.date != null) {
+          addEvent(event.date!, event);
+        }
+      }
+    } catch (e) {
+      print('Error al cargar los eventos: $e');
+    }
+    events.refresh(); // Asegúrate de actualizar la interfaz de usuario
   }
 
-  void addEvent(DateTime day, String event) {
-    final DateTime eventDate =
-        DateTime(day.year, day.month, day.day); // Solo usa año, mes y día
+  void addEvent(DateTime day, EventData event) {
+    final DateTime eventDate = DateTime(day.year, day.month, day.day);
     if (events[eventDate] != null) {
       events[eventDate]!.add(event);
     } else {
       events[eventDate] = [event];
     }
-    events.refresh(); // Actualiza la UI después de modificar los eventos
+    events.refresh();
   }
 
-  List<String> getEventsForDay(DateTime day) {
-    final DateTime eventDate =
-        DateTime(day.year, day.month, day.day); // Solo año, mes y día
+  List<EventData> getEventsForDay(DateTime day) {
+    final DateTime eventDate = DateTime(day.year, day.month, day.day);
     return events[eventDate] ?? [];
   }
 
@@ -56,8 +65,8 @@ class CalendarController extends GetxController {
     final selectedEvents = getEventsForDay(selectedDay.value);
     return selectedEvents.map((event) {
       return {
-        'time': selectedDay.value, // La hora del evento
-        'title': event, // El título del evento
+        'time': event.date, // La hora del evento
+        'title': event.name, // El título del evento
       };
     }).toList();
   }

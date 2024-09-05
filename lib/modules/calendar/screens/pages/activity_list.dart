@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pawlly/modules/calendar/controllers/calendar_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -25,17 +26,31 @@ class ActivityListScreen extends StatelessWidget {
           ),
           SizedBox(height: 10),
           // Muestra la fecha seleccionada
-          Obx(() {
-            return Text(
-              '${calendarController.selectedDay.value.day}/${calendarController.selectedDay.value.month}/${calendarController.selectedDay.value.year}',
-              style: TextStyle(
-                fontFamily: 'Lato',
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Styles.blackColor,
-              ),
-            );
-          }),
+          Container(
+            alignment: Alignment.centerRight,
+            child: Obx(() {
+              // Formatear el mes a texto y el día en número con dos dígitos
+              final selectedDate = calendarController.selectedDay.value;
+              final formattedDay =
+                  DateFormat('dd').format(selectedDate); // Día con dos dígitos
+              String formattedMonth = DateFormat('MMMM', 'es_ES')
+                  .format(selectedDate); // Mes en texto completo
+
+              // Capitalizar la primera letra del mes
+              formattedMonth =
+                  formattedMonth[0].toUpperCase() + formattedMonth.substring(1);
+
+              return Text(
+                '$formattedDay de $formattedMonth',
+                style: const TextStyle(
+                  fontFamily: 'Lato',
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Styles.blackColor,
+                ),
+              );
+            }),
+          ),
           SizedBox(height: 16),
           // Lista de actividades para la fecha seleccionada
           Obx(() {

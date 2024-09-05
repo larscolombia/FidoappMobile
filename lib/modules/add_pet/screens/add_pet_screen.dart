@@ -185,35 +185,42 @@ class AddPetScreen extends StatelessWidget {
                                 ? controller.breedList
                                     .map((breed) => breed.name)
                                     .toList()
-                                : [
-                                    'No disponible'
-                                  ], // Si la lista está vacía, muestra "No disponible"
+                                : ['No disponible'],
+                            validators: [
+                              (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'El campo raza es requerido'; // Mensaje de error personalizado
+                                }
+                                return null;
+                              },
+                            ], // Validación de campo requerido
                           );
                         }),
                       ),
+
                       // Selector de género
                       Container(
                         margin: EdgeInsets.only(top: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            // Opción Hembra
+                            // Opción female
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  controller.petGender.value = 'Hembra';
+                                  controller.petGender.value = 'female';
                                 },
                                 child: Obx(
                                   () => Container(
                                     padding: EdgeInsets.all(16),
                                     decoration: BoxDecoration(
                                       color: controller.petGender.value ==
-                                              'Hembra'
+                                              'female'
                                           ? Colors.white
                                           : Color.fromRGBO(254, 247, 229, 1),
                                       border: Border.all(
                                         color: controller.petGender.value ==
-                                                'Hembra'
+                                                'female'
                                             ? Styles.iconColorBack
                                             : Colors.transparent,
                                       ),
@@ -221,7 +228,7 @@ class AddPetScreen extends StatelessWidget {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        'Hembra',
+                                        'Female',
                                         style: TextStyle(
                                           color: Styles.iconColorBack,
                                           fontWeight: FontWeight.bold,
@@ -233,30 +240,30 @@ class AddPetScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: 16), // Espacio entre los cuadros
-                            // Opción Macho
+                            // Opción male
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  controller.petGender.value = 'Macho';
+                                  controller.petGender.value = 'male';
                                 },
                                 child: Obx(
                                   () => Container(
                                     padding: EdgeInsets.all(16),
                                     decoration: BoxDecoration(
                                       color: controller.petGender.value ==
-                                              'Macho'
+                                              'male'
                                           ? Colors.white
                                           : Color.fromRGBO(254, 247, 229, 1),
                                       border: Border.all(
                                           color: controller.petGender.value ==
-                                                  'Macho'
+                                                  'male'
                                               ? Styles.iconColorBack
                                               : Colors.transparent),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Center(
                                       child: Text(
-                                        'Macho',
+                                        'Male',
                                         style: TextStyle(
                                           color: Styles.iconColorBack,
                                           fontWeight: FontWeight.bold,
@@ -282,15 +289,20 @@ class AddPetScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 20),
                       // Botón para enviar el formulario
-                      ButtonDefaultWidget(
-                        title: locale.value.addPet + ' +',
-                        callback: () {
-                          if (_formKey.currentState!.validate()) {
-                            controller.submitForm(
-                                _formKey); // Llama al método para enviar el formulario
-                          }
-                        },
+                      Obx(
+                        () => ButtonDefaultWidget(
+                          title: locale.value.addPet + ' +',
+                          isLoading: controller.isLoading
+                              .value, // Mostrar loader si está cargando
+                          callback: () {
+                            if (_formKey.currentState!.validate()) {
+                              controller.submitForm(
+                                  _formKey); // Enviar formulario si es válido
+                            }
+                          },
+                        ),
                       ),
+
                       SizedBox(height: 20),
                     ],
                   ),

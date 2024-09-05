@@ -14,7 +14,6 @@ class CalendarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserDefaultTest userController = Get.put(UserDefaultTest());
     return Scaffold(
       body: Stack(
         children: [

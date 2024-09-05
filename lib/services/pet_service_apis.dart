@@ -142,12 +142,63 @@ class PetService {
         body: jsonEncode(body), // Convertir el body a JSON
       );
 
+      print('responseee ${response.statusCode}');
+      print('Respuesta completa: ${response.body}');
+
       if (response.statusCode == 201 || response.statusCode == 200) {
-        // Parsear la respuesta JSON y retornar el objeto PetData
-        final petData = PetData.fromJson(jsonDecode(response.body)['data']);
-        return petData;
+        try {
+          // Parsear la respuesta JSON
+          final responseData = jsonDecode(response.body);
+          if (responseData.containsKey('data')) {
+            // Asegúrate de que el modelo PetData pueda manejar los datos correctamente
+            final petData = PetData.fromJson(responseData['data']);
+            return petData;
+          } else {
+            print('Advertencia: la respuesta no contiene el campo "data".');
+            return null;
+          }
+        } catch (e) {
+          print('Error al parsear la respuesta: $e');
+          return null;
+        }
       } else {
-        // Manejo de error
+        print('Error en la solicitud: ${response.statusCode}');
+        print('Respuesta: ${response.body}');
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  static Future deletePetApi({
+    required int id, // Recibe el body ya validado
+  }) async {
+    if (isLoggedIn.value) {
+      // Construir la URL completa
+      final url = Uri.parse('${BASE_URL}${APIEndPoints.getPetList}/${id}');
+
+      // Imprimir la URL completa
+      print('URL completa: $url');
+
+      // Imprimir el cuerpo de la solicitud
+
+      // Realizar la solicitud POST con el token en los headers
+      final response = await http.delete(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      print('responseee ${response.statusCode}');
+      print('Respuesta completa: ${response.body}');
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        // Parsear la respuesta JSON
+        return response;
+      } else {
         print('Error en la solicitud: ${response.statusCode}');
         print('Respuesta: ${response.body}');
         return null;
