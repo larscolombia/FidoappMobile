@@ -27,6 +27,8 @@ import 'package:pawlly/modules/profile/bindings/profile_binding.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
 import 'package:pawlly/modules/profile_pet/bindings/profile_pet_binding.dart';
 import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
+import 'package:pawlly/modules/training/bindings/training_binding.dart';
+import 'package:pawlly/modules/training/screens/training_screen.dart';
 import 'package:pawlly/modules/welcome/bindings/welcome_binding.dart';
 import 'package:pawlly/modules/welcome/screens/welcome_screen.dart';
 import 'package:pawlly/modules/privacy_termns/screens/pages/privacy_policy.dart';
@@ -49,6 +51,11 @@ class AppPages {
       name: _Paths.CALENDAR,
       page: () => CalendarScreen(),
       binding: CalendarBinding(),
+    ),
+    GetPage(
+      name: _Paths.TRAINING,
+      page: () => TrainingScreen(),
+      binding: TrainingBinding(),
     ),
     GetPage(
       name: _Paths.WELCOME,

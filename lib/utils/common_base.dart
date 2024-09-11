@@ -130,6 +130,12 @@ List<LanguageDataModel> languageList() {
         fullLanguageCode: 'en-US',
         flag: Assets.flagsIcUs),
     LanguageDataModel(
+        id: 6,
+        name: 'Español',
+        languageCode: 'es',
+        fullLanguageCode: 'es-ES',
+        flag: Assets.flagsIcUs),
+    LanguageDataModel(
         id: 2,
         name: 'Hindi',
         languageCode: 'hi',

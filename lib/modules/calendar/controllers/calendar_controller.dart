@@ -30,6 +30,9 @@ class CalendarController extends GetxController {
           addEvent(event.date!, event);
         }
       }
+
+      focusedDay.value = DateTime.now();
+      selectedDay.value = DateTime.now();
     } catch (e) {
       print('Error al cargar los eventos: $e');
     }

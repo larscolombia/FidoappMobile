@@ -1,28 +1,26 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/training_model.dart';
-import 'package:pawlly/models/user_data_model.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
-import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
 import 'package:pawlly/services/training_service_apis.dart';
 
-class HomeController extends GetxController {
+class TrainingController extends GetxController {
   var selectedIndex = 0.obs;
   var profiles = <PetData>[].obs; // Lista de perfiles usando el modelo
   var selectedProfile =
       Rxn<PetData>(); // Perfil seleccionado, inicialmente null
   var training = <TrainingModel>[].obs;
-  late UserData currentUser;
   var profileImagePath = ''.obs;
 
 // Llamar al método cuando el controlador se inicializa
   @override
   void onInit() {
     super.onInit();
-    currentUser = AuthServiceApis.dataCurrentUser as UserData;
-    profileImagePath.value = currentUser.profileImage;
-    fetchProfiles();
     fetchTraining();
   }
 
@@ -40,9 +38,11 @@ class HomeController extends GetxController {
       case 1:
         Get.toNamed(Routes.CALENDAR);
         break;
+      /*
       case 2:
-        Get.toNamed(Routes.TRAINING);
+        Get.toNamed(Routes.APPRENTICESHIP);
         break;
+        */
     }
   }
 

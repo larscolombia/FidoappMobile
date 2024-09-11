@@ -2,7 +2,7 @@
 
 const APP_NAME = 'Fideo App';
 const APP_LOGO_URL = '$DOMAIN_URL/img/logo/mini_logo.png';
-const DEFAULT_LANGUAGE = 'en';
+const DEFAULT_LANGUAGE = 'es';
 const GREEK_LANGUAGE = 'el';
 const DASHBOARD_AUTO_SLIDER_SECOND = 5;
 

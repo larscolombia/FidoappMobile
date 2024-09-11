@@ -34,7 +34,7 @@ class MenuOfNavigation extends GetView<HomeController> {
             ),
             _buildNavItem(
               icon: Icons.pets,
-              label: 'Entrenos',
+              label: 'Entrenamiento',
               index: 2,
               controller: controller,
             ),
