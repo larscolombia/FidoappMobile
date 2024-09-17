@@ -56,6 +56,7 @@ dependencies:
   table_calendar: ^3.1.2
   http: ^1.2.2
   flutter_rating_bar: ^4.0.1
+  just_audio: ^0.9.40
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +73,7 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -87,6 +89,9 @@ flutter:
   assets:
     - assets/
     - assets/flags/
+    - assets/soun/leash.mp3
+    - assets/soun/silbato.mp3
+    - assets/soun/click4.mp3
     - assets/images/
     - assets/icons/
     - assets/images/walkthrough_images/

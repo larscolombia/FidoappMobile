@@ -5,7 +5,6 @@ part of 'app_pages.dart';
 abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
-  static const CALENDAR = _Paths.CALENDAR;
   static const WELCOME = _Paths.WELCOME;
   static const SIGNIN = _Paths.SIGNIN;
   static const SIGNUP = _Paths.SIGNUP;
@@ -21,13 +20,11 @@ abstract class Routes {
   static const ADDPET = _Paths.ADDPET;
   static const PRIVACYTERMS = _Paths.PRIVACYTERMS;
   static const PETOWNERPROFILE = _Paths.PETOWNERPROFILE;
-  static const TRAINING = _Paths.TRAINING;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
-  static const CALENDAR = '/calendar';
   static const WELCOME = '/welcome';
   static const SIGNIN = '/signin';
   static const SIGNUP = '/signup';
@@ -43,7 +40,6 @@ abstract class _Paths {
   static const ADDPET = '/add-pet';
   static const PRIVACYTERMS = '/privacy-terms';
   static const PETOWNERPROFILE = '/pet-owner-profile';
-  static const TRAINING = '/training';
 }
 
 /*

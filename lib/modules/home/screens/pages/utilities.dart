@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/home/screens/widgets/audio_player.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class Utilities extends StatelessWidget {
@@ -28,7 +29,18 @@ class Utilities extends StatelessWidget {
             // Cuadro 1
             Expanded(
               child: GestureDetector(
-                onTap: () => print('Whistle'), // Acción al tocar el cuadro
+                onTap: () {
+                  // Abre el modal para reproducir audio
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      // Aquí colocas el widget de reproducción de audio con la ruta proporcionada
+                      return AudioPlayerWidget(
+                          audioPath:
+                              'soun/silbato.mp3'); // Ejemplo de ruta local
+                    },
+                  );
+                },
                 child: Container(
                   height: 90,
                   decoration: BoxDecoration(
@@ -62,7 +74,18 @@ class Utilities extends StatelessWidget {
             // Cuadro 2
             Expanded(
               child: GestureDetector(
-                onTap: () => print('Leash'), // Acción al tocar el cuadro
+                onTap: () {
+                  // Abre el modal para reproducir audio
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      // Aquí colocas el widget de reproducción de audio con la ruta proporcionada
+                      return AudioPlayerWidget(
+                          audioPath:
+                              'soun/silbato.mp3'); // Ejemplo de ruta local
+                    },
+                  );
+                }, // Acción al tocar el cuadro
                 child: Container(
                   height: 90,
                   decoration: BoxDecoration(
@@ -96,7 +119,18 @@ class Utilities extends StatelessWidget {
             // Cuadro 3
             Expanded(
               child: GestureDetector(
-                onTap: () => print('Clicker'), // Acción al tocar el cuadro
+                onTap: () {
+                  // Abre el modal para reproducir audio
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      // Aquí colocas el widget de reproducción de audio con la ruta proporcionada
+                      return AudioPlayerWidget(
+                          audioPath:
+                              'soun/silbato.mp3'); // Ejemplo de ruta local
+                    },
+                  );
+                }, // Acción al tocar el cuadro
                 child: Container(
                   height: 90,
                   decoration: BoxDecoration(

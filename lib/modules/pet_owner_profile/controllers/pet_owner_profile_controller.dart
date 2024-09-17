@@ -1,37 +1,60 @@
 import 'package:get/get.dart';
 
 class PetOwnerProfileController extends GetxController {
-  var ownerName = ''.obs;
-  var email = ''.obs;
-  var phone = ''.obs;
-  var address = ''.obs;
-  var profileImagePath = ''.obs; // La URL de la imagen del perfil
-  var rating = 3.3.obs; // Clasificación por defecto (valor de 0.0 a 5.0)
-  var userType =
-      ''.obs; // Tipo de usuario (veterinario, entrenador, dueño, etc.)
+  var ownerName = 'Juan Pérez'.obs;
+  var email = 'juan.perez@example.com'.obs;
+  var phone = '+1 809 555 5555'.obs;
+  var address = 'Av. Independencia, Santo Domingo, R.D.'.obs;
+  var profileImagePath = ''.obs;
+  var rating = 4.5.obs; // Clasificación
+  var userType = 'Veterinario'.obs; // Tipo de usuario
+  var description =
+      'Descripción del usuario aquí... Esta es una breve descripción de la persona asociada.'
+          .obs;
+  var veterinarianLinked = true.obs; // Condición si está vinculado
+  var specializationArea = 'Cirugía'.obs; // Área de especialización principal
+  var otherAreas = ['Cardiología', 'Dermatología', 'Oftalmología']
+      .obs; // Lista de otras áreas de especialización
+  var commentCount = 456.obs; // Número de comentarios
+  var commenterImages = [
+    'https://example.com/img1.jpg',
+    'https://example.com/img2.jpg',
+    'https://example.com/img3.jpg',
+    'https://example.com/img4.jpg',
+    'https://example.com/img5.jpg'
+  ].obs; // Lista de URLs de imágenes de los comentaristas
 
-  @override
-  void onInit() {
-    super.onInit();
-
-    // Recibir los datos del perfil pasados como argumentos
-    if (Get.arguments != null) {
-      var person = Get.arguments;
-
-      ownerName.value = person['name'] ?? 'No name provided';
-      email.value = person['email'] ?? 'No email provided';
-      phone.value = person['phone'] ?? 'No phone provided';
-      address.value = person['address'] ?? 'No address provided';
-      profileImagePath.value =
-          person['profileImage'] ?? ''; // Asignar la imagen si existe
-      rating.value = person['rating'] ?? 4.0; // Asignar el rating si existe
-      userType.value =
-          person['userType'] ?? 'Dueño'; // Asignar el tipo de usuario si existe
+  // Datos dummy de comentarios
+  var comments = [
+    {
+      'image': 'https://example.com/img1.jpg',
+      'name': 'Ana López',
+      'rating': 4.5,
+      'comment': 'Excelente servicio y atención.'
+    },
+    {
+      'image': 'https://example.com/img2.jpg',
+      'name': 'Carlos Gómez',
+      'rating': 5.0,
+      'comment': 'Muy satisfecho con el trato recibido.'
+    },
+    {
+      'image': 'https://example.com/img3.jpg',
+      'name': 'María Martínez',
+      'rating': 4.0,
+      'comment': 'Todo bien, aunque el tiempo de espera fue algo largo.'
+    },
+    {
+      'image': 'https://example.com/img4.jpg',
+      'name': 'Pedro Sánchez',
+      'rating': 5.0,
+      'comment': 'Increíble servicio, altamente recomendado.'
+    },
+    {
+      'image': 'https://example.com/img5.jpg',
+      'name': 'Lucía Fernández',
+      'rating': 4.8,
+      'comment': 'Gran atención al detalle y profesionalismo.'
     }
-  }
-
-  void editProfile() {
-    // Lógica para navegar a la pantalla de edición del perfil
-    Get.toNamed('/edit-profile');
-  }
+  ].obs;
 }

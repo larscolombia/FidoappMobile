@@ -100,10 +100,8 @@ class Assets {
       'assets/images/ic_editprofile_outlined.png';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String imagesOptionImage = 'assets/images/option_image.png';
-  static const String imagesPawllyLoaderDark =
-      'assets/images/pawlly_loader_dark.gif';
-  static const String imagesPawllyLoaderLight =
-      'assets/images/pawlly_loader_light.gif';
+  static const String imagesPawllyLoaderDark = 'assets/images/splah.png';
+  static const String imagesPawllyLoaderLight = 'assets/images/splah.png';
   static const String imagesPaymentImages = 'assets/images/payment_images.png';
   static const String imagesPaypalLogo = 'assets/images/paypal_logo.png';
   static const String imagesPaystackLogo = 'assets/images/paystack_logo.png';

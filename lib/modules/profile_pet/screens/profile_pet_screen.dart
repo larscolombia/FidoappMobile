@@ -16,166 +16,149 @@ class ProfilePetScreen extends StatelessWidget {
     final imageSize = size.height / 4;
 
     return Scaffold(
-      body: Stack(
-        children: [
+      body: CustomScrollView(
+        slivers: [
           // Imagen de fondo
-          Container(
-            height: imageSize + 36,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage('https://via.placeholder.com/600x400'),
-                fit: BoxFit.cover,
+          SliverAppBar(
+            expandedHeight: imageSize + 36,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Obx(() {
+                // Usa la imagen de perfil si está disponible, de lo contrario, usa la imagen predeterminada
+                final imageUrl = controller.profileImagePath.value.isNotEmpty
+                    ? controller.profileImagePath.value
+                    : 'https://via.placeholder.com/600x400'; // Imagen predeterminada
+
+                return Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(imageUrl),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                );
+              }),
+            ),
+            pinned: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+          // Contenido del perfil
+          SliverToBoxAdapter(
+            child: Container(
+              padding: Styles.paddingAll,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Sección del Perfil
+                  Container(
+                    padding: const EdgeInsets.only(top: 20),
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () => Navigator.pop(context),
+                              child: const Icon(
+                                Icons.arrow_back_ios,
+                                color: Styles.primaryColor,
+                                size: 22,
+                              ),
+                            ),
+                            const Text(
+                              'Perfil de la Mascota',
+                              style: Styles.dashboardTitle20,
+                            ),
+                            Obx(
+                              () => ElevatedButton(
+                                onPressed: controller.toggleEditing,
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  backgroundColor: controller.isEditing.value
+                                      ? Styles.iconColorBack
+                                      : Styles.greyTextColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  minimumSize: const Size(48, 48),
+                                ),
+                                child: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Pestañas
+                  Container(
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Obx(
+                          () => ButtonDefaultWidget(
+                            title: 'Información',
+                            callback: () => controller.changeTab(0),
+                            widthButtom:
+                                (MediaQuery.of(context).size.width / 2) - 30,
+                            defaultColor: controller.selectedTab.value == 0
+                                ? Styles.iconColorBack
+                                : Colors.transparent,
+                            textColor: controller.selectedTab.value == 0
+                                ? Styles.whiteColor
+                                : Colors.black,
+                            border: controller.selectedTab.value == 0
+                                ? null
+                                : const BorderSide(
+                                    color: Colors.grey, width: 1),
+                            textSize: 14,
+                          ),
+                        ),
+                        Obx(
+                          () => ButtonDefaultWidget(
+                            title: 'Historial Médico',
+                            callback: () => controller.changeTab(1),
+                            widthButtom:
+                                (MediaQuery.of(context).size.width / 2) - 30,
+                            defaultColor: controller.selectedTab.value == 1
+                                ? Styles.iconColorBack
+                                : Colors.transparent,
+                            textColor: controller.selectedTab.value == 1
+                                ? Styles.whiteColor
+                                : Colors.black,
+                            border: controller.selectedTab.value == 1
+                                ? null
+                                : const BorderSide(
+                                    color: Colors.grey, width: 1),
+                            textSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Divider(height: 40, thickness: 1),
+                ],
               ),
             ),
           ),
-          // Contenido del perfil
-          Column(
-            children: [
-              Expanded(
-                child: Container(
-                  margin: EdgeInsets.only(top: imageSize + 16),
-                  padding: Styles.paddingAll,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(25)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Sección del Perfil
-                      Container(
-                        padding: const EdgeInsets.only(top: 20),
-                        alignment: Alignment.center,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                GestureDetector(
-                                  onTap: () => Navigator.pop(context),
-                                  child: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: Styles.primaryColor,
-                                    size: 22,
-                                  ),
-                                ),
-                                const Text(
-                                  'Perfil de la Mascota',
-                                  style: Styles.dashboardTitle20,
-                                ),
-                                /*
-                                Container(
-                                  width: 1,
-                                  height: 25,
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 3),
-                                  color: Styles.greyColor,
-                                ),
-                                */
-                                Obx(
-                                  () => ElevatedButton(
-                                    onPressed: controller.toggleEditing,
-                                    style: ElevatedButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      backgroundColor:
-                                          controller.isEditing.value
-                                              ? Styles.iconColorBack
-                                              : Styles.greyTextColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      minimumSize: const Size(
-                                          48, 48), // Ajusta el tamaño del botón
-                                    ),
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.white,
-                                      size: 24,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      // Pestañas
-                      Container(
-                        margin: const EdgeInsets.only(top: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Obx(
-                              () => ButtonDefaultWidget(
-                                title: 'Información',
-                                callback: () => controller.changeTab(0),
-                                widthButtom: (MediaQuery.of(context)
-                                            .size
-                                            .width /
-                                        2) -
-                                    30, // Ajusta el ancho para que los dos botones ocupen el ancho total
-                                defaultColor: controller.selectedTab.value == 0
-                                    ? Styles.iconColorBack
-                                    : Colors.transparent,
-                                textColor: controller.selectedTab.value == 0
-                                    ? Styles.whiteColor
-                                    : Colors.black,
-                                border: controller.selectedTab.value == 0
-                                    ? null
-                                    : const BorderSide(
-                                        color: Colors.grey, width: 1),
-                                textSize: 14,
-                              ),
-                            ),
-                            Obx(
-                              () => ButtonDefaultWidget(
-                                title: 'Historial Médico',
-                                callback: () => controller.changeTab(1),
-                                widthButtom: (MediaQuery.of(context)
-                                            .size
-                                            .width /
-                                        2) -
-                                    30, // Ajusta el ancho para que los dos botones ocupen el ancho total
-                                defaultColor: controller.selectedTab.value == 1
-                                    ? Styles.iconColorBack
-                                    : Colors.transparent,
-                                textColor: controller.selectedTab.value == 1
-                                    ? Styles.whiteColor
-                                    : Colors.black,
-                                border: controller.selectedTab.value == 1
-                                    ? null
-                                    : const BorderSide(
-                                        color: Colors.grey, width: 1),
-                                textSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      const Divider(height: 40, thickness: 1),
-
-                      // Contenido de las pestañas
-                      Expanded(
-                        child: Obx(() {
-                          if (controller.selectedTab.value == 0) {
-                            return InformationTab(
-                                controller:
-                                    controller); // Clase de la pestaña de información
-                          } else {
-                            return MedicalHistoryTab(
-                                controller:
-                                    controller); // Clase de la pestaña de historial médico
-                          }
-                        }),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+          SliverFillRemaining(
+            child: Obx(() {
+              if (controller.selectedTab.value == 0) {
+                return InformationTab(controller: controller);
+              } else {
+                return MedicalHistoryTab(controller: controller);
+              }
+            }),
           ),
         ],
       ),

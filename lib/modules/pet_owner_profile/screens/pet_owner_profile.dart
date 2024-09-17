@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/screens/widgets/comments_section.dart';
 import 'package:pawlly/styles/styles.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart'; // Paquete para manejar estrellas de clasificación
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class PetOwnerProfileScreen extends StatelessWidget {
   final PetOwnerProfileController controller =
@@ -11,185 +13,370 @@ class PetOwnerProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final headerHeight = size.height / 8; // Reducir la altura del header
+    final headerHeight = size.height / 8;
 
     return Scaffold(
-      body: Stack(
-        clipBehavior: Clip.none, // Permitir que la imagen salga del Stack
-        children: [
-          Column(
+      body: Container(
+        height: double.infinity,
+        color: Colors.white,
+        child: SingleChildScrollView(
+          // Cambiado a SingleChildScrollView para todo el contenido
+          child: Column(
             children: [
-              // Contenedor superior (encabezado)
-              Container(
-                height: headerHeight, // Ajustar la altura del header
-                width: double.infinity,
-                color:
-                    Styles.fiveColor, // Color amarillo pálido (parte superior)
-              ),
-              // Contenedor inferior para mostrar los detalles del dueño de la mascota
-              Expanded(
-                child: Container(
-                  padding: Styles.paddingAll,
-                  decoration: BoxDecoration(
-                    color: Styles.whiteColor, // Contenedor blanco
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(25)),
+              // Encabezado
+              Stack(
+                children: [
+                  Container(
+                    height: headerHeight,
+                    width: double.infinity,
+                    color: Styles.fiveColor,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  // Imagen circular ahora dentro del Stack pero sin Positioned
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: headerHeight - 50),
+                      width: 100,
+                      height: 100,
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Styles.whiteColor,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Styles.iconColorBack,
+                          width: 3.0,
+                        ),
+                      ),
+                      child: Obx(
+                        () => CircleAvatar(
+                          radius: 46,
+                          backgroundImage: controller
+                                  .profileImagePath.value.isNotEmpty
+                              ? NetworkImage(controller.profileImagePath.value)
+                              : AssetImage('assets/images/avatar.png')
+                                  as ImageProvider,
+                          backgroundColor: Colors.transparent,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              // Espacio entre la imagen y el contenido
+              Container(
+                padding: Styles.paddingAll,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                          height: 60), // Espacio para la imagen superpuesta
-                      // Nombre del dueño de la mascota, centrado
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () =>
-                                  Navigator.pop(context), // Acción de retroceso
-                              child: Icon(
-                                Icons.arrow_back_ios,
-                                color: Styles.primaryColor,
-                                size: 22,
-                              ),
-                            ),
-                            Obx(
-                              () => Text(
-                                controller.ownerName.value, // Nombre del dueño
-                                style: Styles.dashboardTitle20,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            SizedBox(
-                              width:
-                                  40, // Espacio vacío para mantener el nombre centrado
-                            ),
-                          ],
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Styles.primaryColor,
+                          size: 22,
                         ),
                       ),
-
-                      // Agregar sección de estrellas y rating
-                      Obx(
-                        () => Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Estrellas de clasificación (tamaño reducido)
-                            RatingBar.builder(
-                              initialRating: controller.rating.value,
-                              minRating: 1,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemPadding:
-                                  EdgeInsets.symmetric(horizontal: 2.0),
-                              itemSize:
-                                  20.0, // Tamaño reducido de las estrellas
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                color: Colors.amber,
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Icon(Icons.location_on,
+                                  color: Colors.grey, size: 20),
+                              SizedBox(width: 4),
+                              Text(
+                                'Santo Domingo, R.D',
+                                style: TextStyle(
+                                    color: Styles.primaryColor,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    fontFamily: 'lato'),
                               ),
-                              onRatingUpdate: (rating) {
-                                // Puedes añadir lógica si deseas permitir cambios en el rating
-                              },
-                              ignoreGestures:
-                                  true, // Para evitar que el usuario lo modifique
-                            ),
-                            SizedBox(width: 8),
-                            Text(
-                              controller.rating.value.toString(),
-                              style: Styles
-                                  .secondTextTitle, // Mostrar el número de rating
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      // Agregar el tipo de usuario
-                      Obx(
-                        () => Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            controller.userType
-                                .value, // Tipo de usuario (dueño, veterinario, etc.)
-                            style: Styles
-                                .secondTextTitle, // Estilo para el texto del tipo de usuario
+                            ],
                           ),
-                        ),
+                        ],
                       ),
-
-                      // Divider con espacio
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 0),
-                        child: Divider(height: 10, thickness: 1),
-                      ),
-                      // Sección de detalles del perfil del dueño de la mascota
-                      SizedBox(height: 16),
-                      Obx(() =>
-                          _buildDetailItem('Email', controller.email.value)),
-                      Obx(() =>
-                          _buildDetailItem('Teléfono', controller.phone.value)),
-                      Obx(() => _buildDetailItem(
-                          'Dirección', controller.address.value)),
+                      SizedBox(width: 40),
                     ],
                   ),
                 ),
               ),
+              Obx(() => Text(
+                    controller.ownerName.value,
+                    style: Styles.dashboardTitle20,
+                    textAlign: TextAlign.center,
+                  )),
+              Obx(
+                () => Text(
+                  controller.userType.value,
+                  style: Styles.secondTextTitle,
+                ),
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RatingBar.builder(
+                    initialRating: controller.rating.value,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                    itemSize: 20.0,
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {},
+                    ignoreGestures: true,
+                  ),
+                  SizedBox(width: 8),
+                  Text(
+                    controller.rating.value.toString(),
+                    style: Styles.secondTextTitle,
+                  ),
+                ],
+              ),
+              Padding(
+                padding: Styles.paddingAll,
+                child: Divider(height: 10, thickness: 1),
+              ),
+              Obx(
+                () {
+                  if (controller.userType.value == 'Veterinario' ||
+                      controller.userType.value == 'Entrenador') {
+                    return Container(
+                      padding: Styles.paddingAll,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 54,
+                            margin: const EdgeInsets.symmetric(vertical: 10.0),
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE5FEED),
+                              border: Border.all(
+                                color: Color(0xFF19A02F),
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.check_circle,
+                                      color: Color(0xFF19A02F), size: 20),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'Veterinario Calificado',
+                                    style: TextStyle(
+                                        color: Color(0xFF19A02F),
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'lato'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
+              Obx(
+                () => Container(
+                  padding: Styles.paddingAll,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Sobre ${controller.ownerName.value}',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'lato',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Obx(() => Container(
+                    padding: Styles.paddingAll,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          controller.description.value,
+                          style: Styles.secondTextTitle,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ),
+                  )),
+              Container(
+                padding: Styles.paddingAll,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: ButtonDefaultWidget(
+                    title: 'Compartir',
+                    callback: () {
+                      // Lógica para compartir perfil
+                    },
+                    defaultColor: Colors.transparent,
+                    border: const BorderSide(color: Colors.grey, width: 1),
+                    textColor: Colors.black,
+                    icon: Icons.share,
+                    iconAfterText: true,
+                    widthButtom: 150,
+                    textSize: 14,
+                    borderSize: 25,
+                    heigthButtom: 40,
+                  ),
+                ),
+              ),
+              Obx(() {
+                if (controller.veterinarianLinked.value) {
+                  return Container(
+                    padding: Styles.paddingAll,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10.0),
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFE5FEED),
+                        border: Border.all(
+                          color: Color(0xFF19A02F),
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.check_circle,
+                              color: Color(0xFF19A02F), size: 20),
+                          SizedBox(width: 8),
+                          Text(
+                            controller.veterinarianLinked.value
+                                ? 'Veterinario vinculado a tu mascota'
+                                : 'No vinculado',
+                            style: TextStyle(
+                                color: Color(0xFF19A02F),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'lato'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return SizedBox.shrink();
+              }),
+              Container(
+                padding: Styles.paddingAll,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Área de especialización',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'lato',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Obx(() => Container(
+                    padding: Styles.paddingAll,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(vertical: 10.0),
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFFEF7E5),
+                        border: Border.all(
+                          color: Color(0xFFFC9214),
+                          width: 1.0,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            controller.specializationArea.value,
+                            style: TextStyle(
+                                color: Color(0xFFFC9214),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'lato'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+              Container(
+                padding: Styles.paddingAll,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Otras áreas de especialización',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'lato',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Obx(() => Container(
+                    padding: Styles.paddingAll,
+                    child: Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: controller.otherAreas.map((area) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 12.0),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFEF7E5),
+                            border: Border.all(
+                              color: Color(0xFFFC9214),
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            area,
+                            style: TextStyle(
+                                color: Color(0xFFFC9214),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'lato'),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  )),
+              SizedBox(height: 16),
+              Container(
+                padding: Styles.paddingAll,
+                child: CommentsSection(),
+              ),
+              SizedBox(height: 16),
             ],
           ),
-          // Imagen circular que se posiciona sobre ambos contenedores
-          Positioned(
-            top: headerHeight -
-                50, // Alinea la imagen en el medio de los dos contenedores
-            left: (size.width / 2) - 50, // Centrar horizontalmente la imagen
-            child: Container(
-              width: 100,
-              height: 100,
-              padding: EdgeInsets.all(4), // Espacio entre la imagen y el borde
-              decoration: BoxDecoration(
-                color: Styles.whiteColor, // Fondo del borde
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Styles.iconColorBack, // Color del borde
-                  width: 3.0, // Grosor del borde
-                ),
-              ),
-              child: Obx(
-                () => CircleAvatar(
-                  radius: 46, // Ajustar el radio
-                  backgroundImage: controller.profileImagePath.isNotEmpty
-                      ? NetworkImage(controller.profileImagePath.value)
-                      : AssetImage('assets/images/avatar.png')
-                          as ImageProvider, // Imagen predeterminada si no hay URL
-                  backgroundColor: Colors.transparent, // Fondo transparente
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Widget que crea un ítem de detalle
-  Widget _buildDetailItem(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: Styles
-                .secondTextTitle, // Puedes definir este estilo en tu archivo de estilos
-          ),
-          Text(
-            value,
-            style: Styles
-                .secondTextTitle, // Puedes definir este estilo en tu archivo de estilos
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +9,7 @@ import 'package:pawlly/models/brear_model.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart'; // Asegúrate de importar tu servicio
+import 'package:image_picker/image_picker.dart';
 
 class AddPetController extends GetxController {
   RxBool isLoading = false.obs;
@@ -17,11 +21,12 @@ class AddPetController extends GetxController {
   TextEditingController petBreed = TextEditingController();
 
   // Observables
-  var petImage = Rx<XFile?>(null);
   var petBirthDate = DateTime.now().obs;
   var petGender = ''.obs;
   var petWeight = 0.0.obs;
   var breedList = <BreedModel>[].obs; // Observable para la lista de razas
+  var petImage = Rx<XFile?>(null);
+  var base64Image = ''.obs;
 
   @override
   void onInit() {
@@ -40,12 +45,22 @@ class AddPetController extends GetxController {
     }
   }
 
-  // Método para seleccionar una imagen
+  // Método para seleccionar una imagen y convertirla a Base64
   void pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
     if (image != null) {
       petImage.value = image;
+
+      // Leer la imagen como un archivo
+      final File imageFile = File(image.path);
+
+      // Leer los bytes de la imagen
+      final bytes = await imageFile.readAsBytes();
+
+      // Convertir los bytes a una cadena en Base64 y almacenarlo
+      base64Image.value = base64Encode(bytes);
     }
   }
 
@@ -73,7 +88,7 @@ class AddPetController extends GetxController {
       Map<String, dynamic> petData = {
         'name': petName.text,
         'description': petDescription.text,
-        'pet_image': petImage.value != null ? petImage.value!.path : null,
+        'pet_image': petImage.value != null ? base64Image.value : null,
         'date_of_birth': petBirthDateController.text,
         'breed_name': petBreed.text,
         'gender': petGender.value,

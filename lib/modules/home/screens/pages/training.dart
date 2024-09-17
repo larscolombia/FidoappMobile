@@ -20,7 +20,9 @@ class Training extends StatelessWidget {
         Text(
           controller.selectedIndex.value == 0
               ? 'Entrenamientos'
-              : 'Cursos y Programas de Entrenamiento',
+              : controller.selectedIndex.value == 3
+                  ? 'Seguir Viendo'
+                  : 'Cursos y Programas de Entrenamiento',
           style: TextStyle(
             fontSize: 20,
             color: Styles.primaryColor,
@@ -44,12 +46,13 @@ class Training extends StatelessWidget {
           if (controller.selectedIndex.value == 0) {
             // Mostrar entrenamientos en vista vertical
             return TrainingVertical(trainingList: controller.training);
-          } else if (controller.selectedIndex.value == 2) {
-            // Mostrar entrenamientos en vista horizontal
+          } else if (controller.selectedIndex.value == 2 ||
+              controller.selectedIndex.value == 3) {
+            // Mostrar entrenamientos en vista horizontal para ambos casos (2 y 3)
             return TrainingHorizontal(trainingList: controller.training);
           }
 
-          // Si no es ni caso 0 ni caso 2, devolver un contenedor vacío
+          // Si no es ni caso 0, 2 o 3, devolver un contenedor vacío
           return Container();
         }),
       ],

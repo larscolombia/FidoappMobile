@@ -1,11 +1,14 @@
 import 'package:get/get.dart';
+import 'package:pawlly/models/event_model.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/training_model.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/services/event_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
 import 'package:pawlly/services/training_service_apis.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class HomeController extends GetxController {
   var selectedIndex = 0.obs;
@@ -16,6 +19,12 @@ class HomeController extends GetxController {
   late UserData currentUser;
   var profileImagePath = ''.obs;
 
+  var selectedDay = DateTime.now().obs;
+  var focusedDay = DateTime.now().obs;
+
+  var calendarFormat = CalendarFormat.month.obs;
+  var events = <DateTime, List<EventData>>{}.obs;
+
 // Llamar al método cuando el controlador se inicializa
   @override
   void onInit() {
@@ -24,6 +33,7 @@ class HomeController extends GetxController {
     profileImagePath.value = currentUser.profileImage;
     fetchProfiles();
     fetchTraining();
+    _loadEventsFromService();
   }
 
   // Método para actualizar el índice seleccionado
@@ -35,13 +45,13 @@ class HomeController extends GetxController {
   void pantallas(index) {
     switch (index) {
       case 0:
-        Get.toNamed(Routes.HOME);
+        // Get.toNamed(Routes.HOME);
         break;
       case 1:
-        Get.toNamed(Routes.CALENDAR);
+        // Get.toNamed(Routes.CALENDAR);
         break;
       case 2:
-        Get.toNamed(Routes.TRAINING);
+        // Get.toNamed(Routes.TRAINING);
         break;
     }
   }
@@ -80,5 +90,60 @@ class HomeController extends GetxController {
 
     // Actualizar la lista observable con los datos obtenidos
     training.value = trainingData;
+  }
+
+  // Calendar
+  // Método para cargar los eventos desde el servicio
+  Future<void> _loadEventsFromService() async {
+    try {
+      List<EventData> eventList = await EventService.getBreedsListApi();
+      for (var event in eventList) {
+        // Asegúrate de que la fecha del evento no sea nula
+        if (event.date != null) {
+          addEvent(event.date!, event);
+        }
+      }
+
+      focusedDay.value = DateTime.now();
+      selectedDay.value = DateTime.now();
+    } catch (e) {
+      print('Error al cargar los eventos: $e');
+    }
+    events.refresh(); // Asegúrate de actualizar la interfaz de usuario
+  }
+
+  void addEvent(DateTime day, EventData event) {
+    final DateTime eventDate = DateTime(day.year, day.month, day.day);
+    if (events[eventDate] != null) {
+      events[eventDate]!.add(event);
+    } else {
+      events[eventDate] = [event];
+    }
+    events.refresh();
+  }
+
+  List<EventData> getEventsForDay(DateTime day) {
+    final DateTime eventDate = DateTime(day.year, day.month, day.day);
+    return events[eventDate] ?? [];
+  }
+
+  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    this.selectedDay.value = selectedDay;
+    this.focusedDay.value = focusedDay;
+  }
+
+  void onFormatChanged(CalendarFormat format) {
+    calendarFormat.value = format;
+  }
+
+  // Método para obtener eventos para el día seleccionado
+  List<Map<String, dynamic>> getEventsForSelectedDay() {
+    final selectedEvents = getEventsForDay(selectedDay.value);
+    return selectedEvents.map((event) {
+      return {
+        'time': event.date, // La hora del evento
+        'title': event.name, // El título del evento
+      };
+    }).toList();
   }
 }

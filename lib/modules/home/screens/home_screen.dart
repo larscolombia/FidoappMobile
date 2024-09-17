@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/calendar/activity_list.dart';
+import 'package:pawlly/modules/home/screens/calendar/calendar.dart';
+import 'package:pawlly/modules/home/screens/explore/entretaiment_blogs.dart';
+import 'package:pawlly/modules/home/screens/explore/explore_input.dart';
+import 'package:pawlly/modules/home/screens/explore/training_programs.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/home/screens/pages/training.dart';
 import 'package:pawlly/modules/home/screens/pages/utilities.dart';
+import 'package:pawlly/modules/home/screens/training/commands.dart';
 import 'package:pawlly/modules/home/screens/widgets/menu_of_navigation.dart';
 import 'package:pawlly/screens_demo/controller/user_default_test.dart';
 import 'package:pawlly/modules/home/screens/pages/explorar_container.dart';
@@ -18,38 +24,37 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserDefaultTest userController = Get.put(UserDefaultTest());
+
     return Scaffold(
       body: Stack(
         children: [
           SingleChildScrollView(
             child: Container(
               constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context)
-                    .size
-                    .height, // Ocupa al menos toda la pantalla
+                minHeight: MediaQuery.of(context).size.height,
               ),
-              padding: const EdgeInsets.only(
-                  bottom: 100), // Ajuste para el espacio inferior
+              padding: const EdgeInsets.only(bottom: 100),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   HeaderNotification(),
                   Container(
                     padding: Styles.paddingAll,
-                    child: Column(
-                      children: [
-                        SizedBox(height: 16),
-                        ProfilesDogs(),
-                        SizedBox(height: 16),
-                        Resources(),
-                        SizedBox(height: 16),
-                        Explore(),
-                        SizedBox(height: 16),
-                        Utilities(),
-                        SizedBox(height: 16),
-                        Training(),
-                      ],
-                    ),
+                    child: Obx(() {
+                      // Cambiar el contenido basado en el selectedIndex
+                      switch (homeController.selectedIndex.value) {
+                        case 0:
+                          return _buildCase1Content();
+                        case 1:
+                          return _buildCase2Content();
+                        case 2:
+                          return _buildCase3Content();
+                        case 3:
+                          return _buildCase4Content();
+                        default:
+                          return _buildCase1Content();
+                      }
+                    }),
                   ),
                 ],
               ),
@@ -61,25 +66,21 @@ class HomeScreen extends StatelessWidget {
             bottom: 0,
             child: Stack(
               children: [
-                // Container que proporciona el fondo blanco con degradado
                 Container(
-                  height:
-                      135, // Altura ajustada para cubrir el menú y el margen inferior
+                  height: 135,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.bottomCenter,
                       end: Alignment.topCenter,
                       colors: [
-                        Colors.white, // Fondo blanco
-                        Colors.white
-                            .withOpacity(0.5), // Degradado hacia transparente
-                        Colors.white.withOpacity(0.3), // Transparente
+                        Colors.white,
+                        Colors.white.withOpacity(0.5),
+                        Colors.white.withOpacity(0.3),
                       ],
                       stops: [0.0, 0.7, 1.0],
                     ),
                   ),
                 ),
-                // El MenuOfNavigation encima del fondo con degradado
                 Positioned(
                   left: 25,
                   right: 25,
@@ -91,6 +92,73 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  // Funciones que devuelven el contenido basado en el selectedIndex
+
+  Widget _buildCase1Content() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 16),
+        ProfilesDogs(),
+        SizedBox(height: 16),
+        Resources(),
+        SizedBox(height: 16),
+        Explore(),
+        SizedBox(height: 16),
+        Utilities(),
+        SizedBox(height: 16),
+        Training(),
+      ],
+    );
+  }
+
+  Widget _buildCase2Content() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 16),
+        Calendar(),
+        SizedBox(height: 16),
+        ActivityListScreen(),
+      ],
+    );
+  }
+
+  Widget _buildCase3Content() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 16),
+        ProfilesDogs(),
+        SizedBox(height: 16),
+        Training(),
+        SizedBox(height: 16),
+        Commands(),
+      ],
+    );
+  }
+
+  Widget _buildCase4Content() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 16),
+        ProfilesDogs(),
+        SizedBox(height: 16),
+        Resources(),
+        SizedBox(height: 16),
+        ExploreInput(),
+        SizedBox(height: 16),
+        Training(),
+        SizedBox(height: 16),
+        EntertainmentBlogs(),
+        SizedBox(height: 16),
+        TrainingPrograms(),
+        SizedBox(height: 20),
+      ],
     );
   }
 }

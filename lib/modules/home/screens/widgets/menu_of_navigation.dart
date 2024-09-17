@@ -61,7 +61,7 @@ class MenuOfNavigation extends GetView<HomeController> {
     return GestureDetector(
       onTap: () {
         controller.updateIndex(index);
-        controller.pantallas(index);
+        // controller.pantallas(index);
       },
       child: Container(
         decoration: isSelected
