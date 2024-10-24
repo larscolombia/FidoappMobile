@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
@@ -23,18 +24,17 @@ class ProfilePetScreen extends StatelessWidget {
             expandedHeight: imageSize + 36,
             flexibleSpace: FlexibleSpaceBar(
               background: Obx(() {
-                // Usa la imagen de perfil si está disponible, de lo contrario, usa la imagen predeterminada
                 final imageUrl = controller.profileImagePath.value.isNotEmpty
                     ? controller.profileImagePath.value
-                    : 'https://via.placeholder.com/600x400'; // Imagen predeterminada
+                    : 'https://via.placeholder.com/600x400';
 
-                return Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(imageUrl),
-                      fit: BoxFit.cover,
-                    ),
+                return CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(),
                   ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 );
               }),
             ),
@@ -151,14 +151,18 @@ class ProfilePetScreen extends StatelessWidget {
               ),
             ),
           ),
-          SliverFillRemaining(
-            child: Obx(() {
-              if (controller.selectedTab.value == 0) {
-                return InformationTab(controller: controller);
-              } else {
-                return MedicalHistoryTab(controller: controller);
-              }
-            }),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Obx(() {
+                  if (controller.selectedTab.value == 0) {
+                    return InformationTab(controller: controller);
+                  } else {
+                    return MedicalHistoryTab(controller: controller);
+                  }
+                }),
+              ],
+            ),
           ),
         ],
       ),
