@@ -6,6 +6,7 @@ class PetOwnerProfileController extends GetxController {
   var phone = '+1 809 555 5555'.obs;
   var address = 'Av. Independencia, Santo Domingo, R.D.'.obs;
   var profileImagePath = ''.obs;
+  var relation = 'Dueño'.obs;
   var rating = 4.5.obs; // Clasificación
   var userType = 'Veterinario'.obs; // Tipo de usuario
   var description =

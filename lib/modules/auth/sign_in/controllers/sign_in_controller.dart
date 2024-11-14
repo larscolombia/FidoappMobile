@@ -68,10 +68,10 @@ class SignInController extends GetxController {
       'player_id': playerId.value,
       UserKeys.userType: LoginTypeConst.LOGIN_TYPE_USER,
     };
-
+    print('playerId');
+    print(playerId.value);
     await AuthServiceApis.loginUser(request: req).then((value) async {
       handleLoginResponse(loginResponse: value);
-      print('VALUEEE LOGIN $value');
     }).catchError((e) {
       isLoading(false);
       toast(e.toString(), print: true);
@@ -98,15 +98,14 @@ class SignInController extends GetxController {
       await AuthServiceApis.loginUser(request: request, isSocialLogin: true)
           .then((value) async {
         handleLoginResponse(loginResponse: value, isSocialLogin: true);
-        print('VALUEEE LOGIN $value');
       }).catchError((e) {
         isLoading(false);
-        print('sssssssssssssssssss');
+
         toast(e.toString(), print: true);
       });
     }).catchError((e) {
       isLoading(false);
-      print('aaaaaaaaaaaaaaaaaaaaaaa');
+
       toast(e.toString(), print: true);
     });
   }
@@ -146,6 +145,7 @@ class SignInController extends GetxController {
       {required LoginResponse loginResponse, bool isSocialLogin = false}) {
     if (loginResponse.userData.userRole
         .contains(LoginTypeConst.LOGIN_TYPE_USER)) {
+      //role
       loginUserData(loginResponse.userData);
       loginUserData.value.playerId = playerId.value;
       loginUserData.value.isSocialLogin = isSocialLogin;

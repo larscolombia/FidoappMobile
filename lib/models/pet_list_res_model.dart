@@ -1,30 +1,27 @@
-import 'pet_note_model.dart';
-
 class PetListRes {
   bool status;
   List<PetData> data;
   String message;
 
   PetListRes({
-    this.status = false,
-    this.data = const <PetData>[],
-    this.message = "",
+    required this.status,
+    required this.data,
+    required this.message,
   });
 
   factory PetListRes.fromJson(Map<String, dynamic> json) {
     return PetListRes(
-      status: json['status'] is bool ? json['status'] : false,
-      data: json['data'] is List
-          ? List<PetData>.from(json['data'].map((x) => PetData.fromJson(x)))
-          : [],
-      message: json['message'] is String ? json['message'] : "",
+      status: json['status'] ?? false,
+      data:
+          (json['data'] as List).map((item) => PetData.fromJson(item)).toList(),
+      message: json['message'] ?? "",
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'status': status,
-      'data': data.map((e) => e.toJson()).toList(),
+      'data': data.map((item) => item.toJson()).toList(),
       'message': message,
     };
   }
@@ -35,78 +32,71 @@ class PetData {
   String name;
   String slug;
   String pettype;
-  String gender;
   String breed;
   int breedId;
   dynamic size;
-  String petImage;
-  String dateOfBirth;
+  String? petImage;
+  String? dateOfBirth;
   String age;
+  String gender;
   num weight;
   String weightUnit;
   num height;
   String heightUnit;
   int userId;
   int status;
-  int createdBy;
-  int updatedBy;
-  int deletedBy;
-  String additionalInfo;
-  List<NotePetModel> petNotes;
+  String? qrCode;
+  int? createdBy;
+  int? updatedBy;
+  int? deletedBy;
 
   PetData({
-    this.id = -1,
-    this.name = "",
-    this.slug = "",
-    this.pettype = "",
-    this.gender = "",
-    this.breed = "",
-    this.breedId = -1,
+    required this.id,
+    required this.name,
+    required this.slug,
+    required this.pettype,
+    required this.breed,
+    required this.breedId,
     this.size,
-    this.petImage = "",
-    this.dateOfBirth = "",
-    this.age = "",
-    this.weight = 0,
-    this.weightUnit = "",
-    this.height = 0,
-    this.heightUnit = "",
-    this.userId = -1,
-    this.status = -1,
-    this.createdBy = -1,
-    this.updatedBy = -1,
-    this.deletedBy = -1,
-    this.additionalInfo = "",
-    this.petNotes = const <NotePetModel>[],
+    this.petImage,
+    this.dateOfBirth,
+    required this.age,
+    required this.gender,
+    required this.weight,
+    required this.weightUnit,
+    required this.height,
+    required this.heightUnit,
+    required this.userId,
+    required this.status,
+    this.qrCode,
+    this.createdBy,
+    this.updatedBy,
+    this.deletedBy,
   });
 
   factory PetData.fromJson(Map<String, dynamic> json) {
     return PetData(
-      id: json['id'] is int ? json['id'] : -1,
-      name: json['name'] is String ? json['name'] : "",
-      slug: json['slug'] is String ? json['slug'] : "",
-      pettype: json['pettype'] is String ? json['pettype'] : "",
-      gender: json['gender'] is String ? json['gender'] : "",
-      breed: json['breed'] is String ? json['breed'] : "",
-      breedId: json['breed_id'] is int ? json['breed_id'] : -1,
+      id: json['id'] ?? -1,
+      name: json['name'] ?? "",
+      slug: json['slug'] ?? "",
+      pettype: json['pettype'] ?? "",
+      breed: json['breed'] ?? "",
+      breedId: json['breed_id'] ?? -1,
       size: json['size'],
-      petImage: json['pet_image'] is String ? json['pet_image'] : "",
-      dateOfBirth: json['date_of_birth'] is String ? json['date_of_birth'] : "",
-      age: json['age'] is String ? json['age'] : "",
-      weight: json['weight'] is num ? json['weight'] : 0,
-      weightUnit: json['weight_unit'] is String ? json['weight_unit'] : "",
-      height: json['height'] is num ? json['height'] : 0,
-      heightUnit: json['height_unit'] is String ? json['height_unit'] : "",
-      userId: json['user_id'] is int ? json['user_id'] : -1,
-      status: json['status'] is int ? json['status'] : -1,
-      createdBy: json['created_by'] is int ? json['created_by'] : -1,
-      updatedBy: json['updated_by'] is int ? json['updated_by'] : -1,
-      deletedBy: json['deleted_by'] is int ? json['deleted_by'] : -1,
-      additionalInfo:
-          json['additional_info'] is String ? json['additional_info'] : "",
-      petNotes: json['pet_notes'] is List
-          ? List<NotePetModel>.from(
-              json['pet_notes'].map((x) => NotePetModel.fromJson(x)))
-          : [],
+      petImage: json['pet_image'],
+      dateOfBirth: json['date_of_birth'],
+      age: json['age'] ?? "",
+      gender: json['gender'] ?? "",
+      weight: json['weight'] ?? 0,
+      weightUnit: json['weight_unit'] ?? "",
+      height: json['height'] ?? 0,
+      heightUnit: json['height_unit'] ?? "",
+      userId: json['user_id'] ?? -1,
+      status: json['status'] ?? -1,
+      qrCode: json['qr_code'],
+      createdBy: json['created_by'],
+      updatedBy: json['updated_by'],
+      deletedBy: json['deleted_by'],
     );
   }
 
@@ -116,24 +106,23 @@ class PetData {
       'name': name,
       'slug': slug,
       'pettype': pettype,
-      'gender': gender,
       'breed': breed,
       'breed_id': breedId,
       'size': size,
       'pet_image': petImage,
       'date_of_birth': dateOfBirth,
       'age': age,
+      'gender': gender,
       'weight': weight,
       'weight_unit': weightUnit,
       'height': height,
       'height_unit': heightUnit,
       'user_id': userId,
       'status': status,
+      'qr_code': qrCode,
       'created_by': createdBy,
       'updated_by': updatedBy,
       'deleted_by': deletedBy,
-      'additional_info': additionalInfo,
-      'pet_notes': petNotes.map((e) => e.toJson()).toList(),
     };
   }
 }

@@ -73,7 +73,7 @@ class HomeController extends GetxController {
 
     // Llamar al servicio para obtener los perfiles
     final petsData = await PetService.getPetListApi(pets: tempProfiles);
-
+    print('petsData ${petsData}');
     // Actualizar la lista observable con los datos obtenidos
     profiles.value = petsData;
 

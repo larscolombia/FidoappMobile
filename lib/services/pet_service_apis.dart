@@ -24,6 +24,26 @@ class PetService {
         method: HttpMethodType.GET)));
   }
 
+  /*** 
+  Future<PetService?> fetchPetData(int petId) async {
+    final url = Uri.parse('$baseUrl/pets/$petId');
+
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        return PetService.fromJson(jsonResponse);
+      } else {
+        print('Failed to load pet data. Status code: ${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching pet data: $e');
+      return null;
+    }
+  }
+  */
   static Future<List<NotePetModel>> getNoteApi({
     int page = 1,
     required int petId,
@@ -71,7 +91,7 @@ class PetService {
       // Construir la URL completa con el user_id
       final url = Uri.parse(
           '${BASE_URL}${APIEndPoints.getPetList}?user_id=${AuthServiceApis.dataCurrentUser.id}');
-
+      print(' url pets ${url}');
       // Realizar la solicitud con el token en los headers
       final response = await http.get(
         url,
@@ -79,9 +99,10 @@ class PetService {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
         },
       );
-
+      print('response s ${jsonDecode(response.body)}');
       if (response.statusCode == 200) {
         final res = PetListRes.fromJson(jsonDecode(response.body));
+        print('1000 ${res.data}');
         pets.clear();
         pets.addAll(res.data);
         return res.data;

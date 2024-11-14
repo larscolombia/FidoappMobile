@@ -26,6 +26,8 @@ class PetProfile {
   });
 
   factory PetProfile.fromPetData(PetData petData) {
+    print(petData);
+    print('imo')
     return PetProfile(
       name: petData.name,
       breed: petData.breed,
@@ -33,12 +35,13 @@ class PetProfile {
           petData.additionalInfo ?? 'Una mascota muy amigable y juguetona.',
       age: petData.age,
       birthDate: petData.dateOfBirth ?? '01/01/2021',
-      weight: '${petData.weight} kg',
+      weight: '${petData.weight}',
       gender: petData.gender!,
       imagePath: petData.petImage ?? '',
       associatedPersons: [
-        {'name': 'John Doe', 'relation': 'Dueño'},
-        {'name': 'Jane Smith', 'relation': 'Veterinario'},
+        {'name': 'John Does', 'relation': 'Dueño'},
+        {'name': 'Jane Smiths', 'relation': 'Veterinario'},
+        {'name': 'Alice Johnson', 'relation': 'Invitado'},
         {'name': 'Alice Johnson', 'relation': 'Invitado'},
       ],
       medicalHistory: [
@@ -62,10 +65,10 @@ class PetProfile {
     name = petData.name;
     breed = petData.breed;
     description =
-        petData.additionalInfo ?? 'Una mascota muy amigable y juguetona.';
+        petData.breed.description ?? 'Una mascota muy amigable y juguetona.';
     age = petData.age;
     birthDate = petData.dateOfBirth ?? '01/01/2021';
-    weight = '${petData.weight} kg';
+    weight = '${petData.weight}';
     gender = petData.gender!;
     imagePath = petData.petImage ?? '';
   }

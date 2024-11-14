@@ -20,10 +20,11 @@ class ProfilePetController extends GetxController {
   var petBirthDate = '01/01/2021'.obs;
   var petWeight = '10 kg'.obs;
   var petGender = 'Hembra'.obs;
+
   var associatedPersons = [
     {'name': 'John Doe', 'relation': 'Dueño'},
-    {'name': 'Jane Smith', 'relation': 'Veterinario'},
-    {'name': 'Alice Johnson', 'relation': 'Invitado'}
+    {'name': 'Jane Smiths', 'relation': 'Veterinario'},
+    {'name': 'Alice Johnson', 'relation': 'Invitado'},
   ].obs;
   var profileImagePath = ''.obs;
   var isPickerActive = false.obs;
@@ -57,7 +58,7 @@ class ProfilePetController extends GetxController {
     super.onInit();
     // Recibe el perfil de la mascota desde los argumentos
     petProfile = Get.arguments as PetData;
-
+    print('controlador del perfil onInit ${petProfile}');
     // Ahora puedes inicializar las variables con los datos del perfil recibido
     petName.value = petProfile.name;
     petBreed.value = petProfile.breed;

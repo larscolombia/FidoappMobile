@@ -1,287 +1,318 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/profile_pet/controllers/pet_owner_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/associated_persons_modal.dart';
+import 'package:pawlly/modules/profile_pet/screens/widget/owner_pet.dart';
 import 'package:pawlly/routes/app_pages.dart';
+
 import 'package:pawlly/styles/styles.dart';
 
 class InformationTab extends StatelessWidget {
   final ProfilePetController controller;
+  final PetOwnerController petcontroller = Get.put(PetOwnerController());
+  // ignore: non_constant_identifier_names
+  final PetOwnerProfileController OnewrProfileController =
+      Get.put(PetOwnerProfileController());
 
   InformationTab({required this.controller});
 
   @override
   Widget build(BuildContext context) {
+    var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
+    Get.put(PetOwnerController());
     return Obx(() {
       return SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Nombre de la mascota y botón de compartir
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      'Nombre',
-                      style: Styles.textProfile14w400,
-                    ),
-                    Text(
-                      controller.petName.value,
-                      style: Styles.dashboardTitle20,
-                    ),
-                  ],
-                ),
-                ButtonDefaultWidget(
-                  title: 'Compartir',
-                  callback: () {
-                    // Lógica para compartir perfil
-                  },
-                  defaultColor: Colors.transparent,
-                  border: const BorderSide(color: Colors.grey, width: 1),
-                  textColor: Colors.black,
-                  icon: Icons.share,
-                  iconAfterText: true,
-                  widthButtom: 150,
-                  textSize: 14,
-                  borderSize: 25,
-                  heigthButtom: 40,
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            // Card de la raza
-            Card(
-              color: Styles.fiveColor,
-              child: ListTile(
-                leading: const Icon(
-                  Icons.pets,
-                  color: Styles.iconColorBack,
-                ),
-                title: Text(
-                  'Raza:',
-                  style: Styles.textProfile14w400,
-                ),
-                subtitle: Text(
-                  controller.petBreed.value,
-                  style: Styles.textProfile14w800,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Sección sobre la mascota
-            Text(
-              'Sobre ${controller.petName.value}',
-              style: Styles.textProfile15w700,
-            ),
-            Text(
-              controller.petDescription.value,
-              style: Styles.textProfile15w400,
-            ),
-            const SizedBox(height: 20),
-            // Card de cumpleaños y fecha de nacimiento
-            Card(
-              color: Styles.fiveColor,
-              child: ListTile(
-                leading: const Icon(
-                  Icons.cake,
-                  color: Styles.iconColorBack,
-                ),
-                title: Text(
-                  'Edad:',
-                  style: Styles.textProfile14w400,
-                ),
-                subtitle: Text(
-                  controller.petAge.value,
-                  style: Styles.textProfile14w800,
-                ),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Fecha de nacimiento:',
-                      style: Styles.textProfile14w400,
-                    ),
-                    Text(
-                      controller.petBirthDate.value,
-                      style: Styles.textProfile14w800,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            // Cards de peso y sexo
-            Row(
-              children: [
-                Expanded(
-                  child: Card(
-                    color: Styles.fiveColor,
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.line_weight,
-                        color: Styles.iconColorBack,
-                      ),
-                      title: Text(
-                        'Peso:',
+        child: Container(
+          color: Colors
+              .white, // Esto establece el fondo del contenedor como blanco
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Nombre de la mascota y botón de compartir
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Text(
+                        'Nombre',
                         style: Styles.textProfile14w400,
                       ),
-                      subtitle: Text(
-                        controller.petWeight.value,
-                        style: Styles.textProfile14w800,
+                      Text(
+                        controller.petName.value,
+                        style: Styles.dashboardTitle20,
                       ),
-                    ),
+                    ],
+                  ),
+                  ButtonDefaultWidget(
+                    title: 'Compartir',
+                    callback: () {
+                      // Lógica para compartir perfil
+                    },
+                    defaultColor: Colors.transparent,
+                    border: const BorderSide(color: Colors.grey, width: 1),
+                    textColor: Colors.black,
+                    icon: Icons.share,
+                    iconAfterText: true,
+                    widthButtom: 150,
+                    textSize: 14,
+                    borderSize: 25,
+                    heigthButtom: 40,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              // Card de la raza
+              Card(
+                color: Styles.fiveColor,
+                elevation: 0.0,
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.pets,
+                    color: Styles.iconColorBack,
+                  ),
+                  title: Text(
+                    'Raza:',
+                    style: Styles.textProfile14w400,
+                  ),
+                  subtitle: Text(
+                    controller.petBreed.value,
+                    style: Styles.textProfile14w800,
                   ),
                 ),
-                Expanded(
-                  child: Card(
-                    color: Styles.fiveColor,
-                    child: ListTile(
-                      leading: const Icon(
-                        Icons.female,
-                        color: Styles.iconColorBack,
-                      ),
-                      title: Text(
-                        'Sexo:',
+              ),
+              const SizedBox(height: 20),
+              // Sección sobre la mascota
+              Text(
+                'Sobre ${controller.petName.value}',
+                style: Styles.textProfile15w700,
+              ),
+              Text(
+                controller.petDescription.value,
+                style: Styles.textProfile15w400,
+              ),
+              const SizedBox(height: 20),
+              // Card de cumpleaños y fecha de nacimiento
+              Card(
+                color: Styles.fiveColor,
+                elevation: 0.0,
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.cake,
+                    color: Styles.iconColorBack,
+                  ),
+                  title: Text(
+                    'Edad:',
+                    style: Styles.textProfile14w400,
+                  ),
+                  subtitle: Text(
+                    controller.petAge.value,
+                    style: Styles.textProfile14w800,
+                  ),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Fecha de nacimiento:',
                         style: Styles.textProfile14w400,
                       ),
-                      subtitle: Text(
-                        controller.petGender.value,
+                      Text(
+                        controller.petBirthDate.value,
                         style: Styles.textProfile14w800,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              // Cards de peso y sexo
+              Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      color: Styles.fiveColor,
+                      elevation: 0.0,
+                      child: ListTile(
+                        leading: const Icon(
+                          Icons.line_weight,
+                          color: Styles.iconColorBack,
+                        ),
+                        title: Text(
+                          'Peso:',
+                          style: Styles.textProfile14w400,
+                        ),
+                        subtitle: Text(
+                          controller.petWeight.value,
+                          style: Styles.textProfile14w800,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            // Sección de compartir QR
-            Text(
-              'Comparte este perfil con este QR:',
-              style: Styles.textProfile14w700,
-            ),
-            const SizedBox(height: 10),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(30),
-              decoration: BoxDecoration(
-                color: Colors.transparent,
-                shape: BoxShape.rectangle,
-                border: Border.all(
-                  color: Colors.grey.withOpacity(0.2),
-                  width: 1.0,
-                ),
-                borderRadius: BorderRadius.circular(15),
+                  Expanded(
+                    child: Card(
+                      color: Styles.fiveColor,
+                      elevation: 0.0,
+                      child: ListTile(
+                        leading: const Icon(
+                          Icons.female,
+                          color: Styles.iconColorBack,
+                        ),
+                        title: Text(
+                          'Sexo:',
+                          style: Styles.textProfile14w400,
+                        ),
+                        subtitle: Text(
+                          controller.petGender.value,
+                          style: Styles.textProfile14w800,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: Image.network(
-                  'https://via.placeholder.com/300', // Imagen QR agrandada
-                  width: double.infinity,
-                ),
+              const SizedBox(height: 20),
+              // Sección de compartir QR
+              Text(
+                'Comparte este perfil con este QR:',
+                style: Styles.textProfile14w700,
               ),
-            ),
-            const SizedBox(height: 20),
-            // Personas asociadas a la mascota
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Personas Asociadas a esta Mascota',
-                    style: Styles.textTitleHome,
+              const SizedBox(height: 10),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(30),
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  shape: BoxShape.rectangle,
+                  border: Border.all(
+                    color: Colors.grey.withOpacity(0.2),
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Image.network(
+                    controller.petProfile.qrCode ??
+                        'https://via.placeholder.com/300', // Imagen QR agrandada
+                    width: double.infinity,
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
+              ),
+              const SizedBox(height: 20),
+              // Personas asociadas a la mascota
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Personas Asociadas a esta Mascota',
+                      style: Styles.textTitleHome,
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        builder: (context) {
+                          return AssociatedPersonsModal(controller: controller);
+                        },
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Styles.iconColorBack,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      builder: (context) {
-                        return AssociatedPersonsModal(controller: controller);
-                      },
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Styles.iconColorBack,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
                     ),
+                    child: const Icon(Icons.add, color: Colors.white),
                   ),
-                  child: const Icon(Icons.add, color: Colors.white),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Column(
-              children: controller.associatedPersons.map((person) {
-                return GestureDetector(
-                  onTap: () {
-                    // Navegar a la ruta 'PETOWNERPROFILE' y pasar los datos del perfil si es necesario
-                    Get.toNamed(Routes.PETOWNERPROFILE, arguments: person);
-                  },
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                          color: Colors.grey.withOpacity(0.2), width: 1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    color: Colors.white,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        radius: 30,
-                        backgroundImage: NetworkImage(
-                          person['imageUrl'] ??
-                              'https://via.placeholder.com/150', // Cambiar por la URL de la persona
-                        ),
-                        backgroundColor: Colors.transparent,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Styles.iconColorBack,
-                              width: 1.0,
+                ],
+              ),
+              const SizedBox(height: 10),
+
+              Column(
+                children: petcontroller.associatedPersons.map((person) {
+                  return GestureDetector(
+                    onTap: () {
+                      OnewrProfileController.ownerName.value = person['name'];
+                      OnewrProfileController.relation.value =
+                          person['relation'];
+                      OnewrProfileController.profileImagePath.value =
+                          person['profile_image'];
+                      // Navegar a la ruta 'PETOWNERPROFILE' y pasar los datos del perfil si es necesario
+                      Get.toNamed(Routes.PETOWNERPROFILE, arguments: person);
+
+                      print(person);
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                            color: Colors.grey.withOpacity(0.2), width: 1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      color: Colors.white,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(
+                            person['imageUrl'] ??
+                                'https://via.placeholder.com/150', // Cambiar por la URL de la persona
+                          ),
+                          backgroundColor: Colors.transparent,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Styles.iconColorBack,
+                                width: 1.0,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      title: Text(
-                        person['name'] ?? '',
-                        style: Styles.textProfile14w700,
-                      ),
-                      subtitle: Text(
-                        person['relation'] ?? '',
-                        style: Styles.textProfile12w400,
-                      ),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Styles.iconColorBack,
+                        title: Text(
+                          person['name'] ?? '',
+                          style: Styles.textProfile14w700,
+                        ),
+                        subtitle: Text(
+                          person['relation'] ?? '',
+                          style: Styles.textProfile12w400,
+                        ),
+                        trailing: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: Styles.iconColorBack,
+                        ),
                       ),
                     ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+              // Botón de eliminar mascota
+              Center(
+                child: TextButton(
+                  onPressed: controller
+                      .deletePet, // Llamar a la función para mostrar el modal
+                  child: const Text(
+                    'Eliminar mascota',
+                    style: TextStyle(color: Colors.red),
                   ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20),
-            // Botón de eliminar mascota
-            Center(
-              child: TextButton(
-                onPressed: controller
-                    .deletePet, // Llamar a la función para mostrar el modal
-                child: const Text(
-                  'Eliminar mascota',
-                  style: TextStyle(color: Colors.red),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       );
     });

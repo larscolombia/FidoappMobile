@@ -78,7 +78,7 @@ class SignInScreen extends StatelessWidget {
                                 title: locale.value.signIn,
                                 callback: () {
                                   // Get.to(Inicio());
-                                  print('object');
+                                  print('login');
                                   if (_signInformKey.currentState!.validate()) {
                                     _signInformKey.currentState!.save();
                                     signInController.saveForm();

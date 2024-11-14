@@ -74,7 +74,7 @@ class ProfilesDogs extends StatelessWidget {
                   child: CircleAvatar(
                     radius:
                         26, // Ajustar el radio para que la imagen se adapte mejor al contenedor
-                    backgroundImage: NetworkImage(profile.petImage),
+                    backgroundImage: NetworkImage(profile.petImage!),
                     backgroundColor: Colors
                         .transparent, // Fondo transparente si la imagen no se carga
                   ),

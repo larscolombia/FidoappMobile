@@ -3,21 +3,25 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
+import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
+import 'package:pawlly/services/pet_owner_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class AssociatedPersonsModal extends StatelessWidget {
   final ProfilePetController controller;
-
+  PetOwnerServiceApi petOwnerServiceApi = PetOwnerServiceApi();
   AssociatedPersonsModal({required this.controller});
 
   @override
   Widget build(BuildContext context) {
+    print('petOwnerServiceApi');
+    print(petOwnerServiceApi);
     return FractionallySizedBox(
       heightFactor: 0.7, // Ocupa el 70% de la pantalla
       child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
           color: Styles.whiteColor, // Fondo del modal
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
@@ -28,7 +32,7 @@ class AssociatedPersonsModal extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Título
-            Text(
+            const Text(
               "Personas Asociadas a esta Mascota",
               style: TextStyle(
                 fontSize: 18,
@@ -40,7 +44,7 @@ class AssociatedPersonsModal extends StatelessWidget {
             // Input de correo electrónico
             Obx(
               () => Container(
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 child: CustomTextFormFieldWidget(
                   controller: controller.emailController.value,
                   placeholder: 'Correo',
@@ -50,12 +54,12 @@ class AssociatedPersonsModal extends StatelessWidget {
             ),
             Obx(
               () => Container(
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 child: CustomSelectFormFieldWidget(
                   controller: controller.userTypeCont.value,
                   placeholder: 'Rol',
                   icon: 'assets/icons/tag-user.png',
-                  items: [
+                  items: const [
                     'Dueño de mascota',
                     'Veterinario',
                     'Entrenador',
@@ -65,10 +69,10 @@ class AssociatedPersonsModal extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Título: "Invitados:"
-            Text(
+            const Text(
               "Invitados:",
               style: TextStyle(
                 fontSize: 16,
@@ -77,7 +81,7 @@ class AssociatedPersonsModal extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
 
             // Lista de personas asociadas
             Expanded(
@@ -115,7 +119,7 @@ class AssociatedPersonsModal extends StatelessWidget {
                         text: TextSpan(
                           text: person['relation'] ?? '',
                           style: Styles.textProfile12w400, // Usa tu estilo aquí
-                          children: [
+                          children: const [
                             TextSpan(
                               text: ' | Pendiente',
                               style: TextStyle(
@@ -135,7 +139,7 @@ class AssociatedPersonsModal extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Botón de Cerrar
             Align(

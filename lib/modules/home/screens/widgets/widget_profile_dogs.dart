@@ -189,7 +189,8 @@ class ProfileModal extends StatelessWidget {
                                       borderSize: 30,
                                       title: 'Ver perfil >',
                                       callback: () {
-                                        print('profilee: ${profile.toJson()}');
+                                        print(
+                                            'perfil de la mascota: ${profile.toJson()}');
                                         Get.toNamed(
                                           Routes.PROFILEPET,
                                           arguments:

@@ -1,11 +1,16 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/configs.dart';
+import 'package:pawlly/models/event_model.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/information_tab.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/medical_histor_tab.dart';
+import 'package:pawlly/modules/profile_pet/screens/widget/pet_info_modal.dart';
+
 import 'package:pawlly/styles/styles.dart';
 
 class ProfilePetScreen extends StatelessWidget {
@@ -15,6 +20,7 @@ class ProfilePetScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final imageSize = size.height / 4;
+    // ignore: unused_local_variable
 
     return Scaffold(
       body: CustomScrollView(
@@ -76,7 +82,16 @@ class ProfilePetScreen extends StatelessWidget {
                             ),
                             Obx(
                               () => ElevatedButton(
-                                onPressed: controller.toggleEditing,
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return PetInfoModal(
+                                          controller:
+                                              controller); // Pasa el controlador
+                                    },
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.zero,
                                   backgroundColor: controller.isEditing.value

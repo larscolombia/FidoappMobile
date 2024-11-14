@@ -94,4 +94,7 @@ class APIEndPoints {
 
   static const String removeNotification = 'notification-remove';
   static const String clearAllNotification = 'notification-deleteall';
+
+  //pet owner
+  // static const String getBreedsList = '';
 }

@@ -6,6 +6,7 @@ import 'package:pawlly/modules/pet_owner_profile/screens/widgets/comments_sectio
 import 'package:pawlly/styles/styles.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+//perfil del usuario
 class PetOwnerProfileScreen extends StatelessWidget {
   final PetOwnerProfileController controller =
       Get.put(PetOwnerProfileController());
@@ -14,7 +15,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final headerHeight = size.height / 8;
-
+    print('profile image ${controller}');
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -78,7 +79,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
                         ),
                       ),
                       Column(
-                        children: [
+                        children: const [
                           Row(
                             children: [
                               Icon(Icons.location_on,
