@@ -97,9 +97,10 @@ class PetService {
         url,
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
         },
       );
-      print('response s ${jsonDecode(response.body)}');
+
       if (response.statusCode == 200) {
         final res = PetListRes.fromJson(jsonDecode(response.body));
         print('1000 ${res.data}');

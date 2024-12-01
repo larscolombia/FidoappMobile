@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:pawlly/models/training_model.dart';
+import 'package:pawlly/modules/integracion/model/curosos/cursos_usuarios.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class TrainingHorizontal extends StatelessWidget {
-  final List<TrainingModel> trainingList;
+  final List<CursosUsuarios> trainingList;
 
   // Constructor que recibe la lista de entrenamientos
   TrainingHorizontal({required this.trainingList});
@@ -73,7 +74,7 @@ class TrainingHorizontal extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          trainingModel.level ?? 'Nivel no especificado',
+                          'Nivel no especificado',
                           style: TextStyle(
                             fontFamily: 'Lato',
                             fontSize: 12,
@@ -109,7 +110,9 @@ class TrainingHorizontal extends StatelessWidget {
                           children: [
                             Expanded(
                               child: LinearProgressIndicator(
-                                value: trainingModel.progress ?? 0.0,
+                                value: double.parse(
+                                        trainingModel.progress.toString()) ??
+                                    0.0,
                                 backgroundColor:
                                     Styles.greyTextColor.withOpacity(0.2),
                                 color: Styles.iconColorBack,

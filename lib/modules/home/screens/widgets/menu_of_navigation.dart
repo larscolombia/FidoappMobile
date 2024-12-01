@@ -44,6 +44,12 @@ class MenuOfNavigation extends GetView<HomeController> {
               index: 3,
               controller: controller,
             ),
+            _buildNavItem(
+              icon: Icons.search,
+              label: 'Diario',
+              index: 4,
+              controller: controller,
+            ),
           ],
         ),
       ),

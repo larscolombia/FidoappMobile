@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/calendar/formulario_evento.dart';
+
 import 'package:pawlly/styles/styles.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatelessWidget {
-  final HomeController controller = Get.put(HomeController());
+  final HomeController controller = Get.find<HomeController>();
 
   Calendar({super.key});
 
@@ -15,137 +17,90 @@ class Calendar extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Calendario',
             style: TextStyle(
               fontSize: 20,
               color: Styles.primaryColor,
               fontFamily: 'PoetsenOne',
             ),
-            textAlign: TextAlign.left,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           // Calendario
-          Obx(() => TableCalendar(
-                firstDay: DateTime.utc(2022, 1, 1),
-                lastDay: DateTime.utc(2030, 12, 31),
-                focusedDay: controller.focusedDay.value,
-                calendarFormat: CalendarFormat.month,
-                selectedDayPredicate: (day) {
-                  return isSameDay(controller.selectedDay.value, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  controller.onDaySelected(selectedDay, focusedDay);
-                },
-                onFormatChanged: (format) {
-                  controller.onFormatChanged(format);
-                },
-                eventLoader: (day) {
-                  return controller.getEventsForDay(day);
-                },
-                calendarStyle: CalendarStyle(
-                  todayDecoration: BoxDecoration(
-                    color: Styles.blackColor,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  selectedDecoration: BoxDecoration(
-                    color: Styles.fiveColor,
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  markerDecoration: BoxDecoration(
-                    color: Colors.red, // Punto rojo para días con eventos
-                    shape: BoxShape.circle,
-                  ),
-                  outsideDaysVisible: true,
+          Obx(() {
+            return TableCalendar(
+              firstDay: DateTime.utc(2022, 1, 1),
+              lastDay: DateTime.utc(2030, 12, 31),
+              focusedDay: controller.focusedDay.value,
+              selectedDayPredicate: (day) =>
+                  isSameDay(controller.selectedDay.value, day),
+              onDaySelected: (selectedDay, focusedDay) {
+                controller.onDaySelected(selectedDay, focusedDay);
+              },
+              eventLoader: (day) {
+                return controller.getEventsForDay(day);
+              },
+              calendarStyle: CalendarStyle(
+                todayDecoration: BoxDecoration(
+                  color: Styles.blackColor,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                headerStyle: HeaderStyle(
-                  formatButtonVisible: false,
-                  titleCentered: true,
-                  titleTextStyle: TextStyle(
-                    fontFamily: 'Lato',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Styles.blackColor,
-                  ),
-                  leftChevronIcon: Icon(
-                    Icons.chevron_left,
-                    color: Styles.blackColor,
-                  ),
-                  rightChevronIcon: Icon(
-                    Icons.chevron_right,
-                    color: Styles.blackColor,
-                  ),
+                selectedDecoration: BoxDecoration(
+                  color: Styles.fiveColor,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                daysOfWeekStyle: DaysOfWeekStyle(
-                  weekendStyle: TextStyle(
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w600,
-                    color: Styles.blackColor,
-                  ),
-                  weekdayStyle: TextStyle(
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w600,
-                    color: Styles.blackColor,
-                  ),
+                markerDecoration: const BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
                 ),
-                calendarBuilders: CalendarBuilders(
-                  selectedBuilder: (context, date, _) {
-                    return Container(
-                      margin: const EdgeInsets.all(4.0),
-                      decoration: BoxDecoration(
-                        color: Styles.iconColorBack,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${date.day}',
-                          style: TextStyle(
-                            fontFamily: 'Lato',
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  todayBuilder: (context, date, _) {
-                    return Container(
-                      margin: const EdgeInsets.all(4.0),
-                      decoration: BoxDecoration(
-                        color: Styles.iconColorBack,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${date.day}',
-                          style: TextStyle(
-                            fontFamily: 'Lato',
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                  markerBuilder: (context, date, events) {
-                    if (events.isNotEmpty) {
-                      return Positioned(
-                        top: 1,
-                        right: 1,
-                        child: Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red,
-                          ),
-                        ),
-                      );
-                    }
-                    return SizedBox();
-                  },
+              ),
+              headerStyle: const HeaderStyle(
+                formatButtonVisible: false,
+                titleCentered: true,
+                titleTextStyle: TextStyle(
+                  fontFamily: 'Lato',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Styles.blackColor,
                 ),
-              )),
+                leftChevronIcon: Icon(
+                  Icons.chevron_left,
+                  color: Styles.blackColor,
+                ),
+                rightChevronIcon: Icon(
+                  Icons.chevron_right,
+                  color: Styles.blackColor,
+                ),
+              ),
+              daysOfWeekStyle: const DaysOfWeekStyle(
+                weekendStyle: TextStyle(
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.w600,
+                  color: Styles.blackColor,
+                ),
+                weekdayStyle: TextStyle(
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.w600,
+                  color: Styles.blackColor,
+                ),
+              ),
+            );
+          }),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                onPressed: () {
+                  Get.to(() => CreateEvent());
+                },
+                backgroundColor: Styles.primaryColor,
+                child: const Icon(Icons.add, color: Colors.white),
+              ),
+            ],
+          ),
         ],
       ),
     );

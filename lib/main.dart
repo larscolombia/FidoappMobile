@@ -46,6 +46,7 @@ class MyApp extends StatelessWidget {
         initialRoute: Routes.WELCOME,
         getPages: AppPages.routes,
         supportedLocales: LanguageDataModel.languageLocales(),
+        color: Colors.white,
         localizationsDelegates: const [
           AppLocalizations(),
           GlobalMaterialLocalizations.delegate,

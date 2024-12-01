@@ -26,13 +26,10 @@ class PetProfile {
   });
 
   factory PetProfile.fromPetData(PetData petData) {
-    print(petData);
-    print('imo')
     return PetProfile(
       name: petData.name,
       breed: petData.breed,
-      description:
-          petData.additionalInfo ?? 'Una mascota muy amigable y juguetona.',
+      description: petData.additionalInfo ?? 'No se a colocado descripción',
       age: petData.age,
       birthDate: petData.dateOfBirth ?? '01/01/2021',
       weight: '${petData.weight}',

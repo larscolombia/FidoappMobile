@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:pawlly/models/training_model.dart';
+import 'package:pawlly/modules/integracion/model/curosos/cursos_usuarios.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class TrainingVertical extends StatelessWidget {
-  final List<TrainingModel> trainingList;
+  final List<CursosUsuarios> cursoslista;
 
   // Constructor que recibe la lista de entrenamientos
-  TrainingVertical({required this.trainingList});
+  TrainingVertical({required this.cursoslista});
 
   @override
   Widget build(BuildContext context) {
     final double imageWidth = MediaQuery.of(context).size.width * 0.5;
 
     return Column(
-      children: trainingList.map((trainingModel) {
+      children: cursoslista.map((trainingModel) {
         return GestureDetector(
           onTap: () {
             // Acción cuando se hace tap en un entrenamiento
@@ -70,7 +71,7 @@ class TrainingVertical extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        trainingModel.level ?? 'Nivel no especificado',
+                        'Nivel no especificado',
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 12,
@@ -106,7 +107,9 @@ class TrainingVertical extends StatelessWidget {
                         children: [
                           Expanded(
                             child: LinearProgressIndicator(
-                              value: trainingModel.progress ?? 0.0,
+                              value: double.parse(
+                                      trainingModel.progress.toString()) ??
+                                  0.0,
                               backgroundColor:
                                   Styles.greyTextColor.withOpacity(0.2),
                               color: Styles.iconColorBack,

@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
+import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/services/auth_service_apis.dart';
@@ -40,8 +40,10 @@ class _PetInfoModalState extends State<PetInfoModal> {
     petBreed = widget.controller.petBirthDate.value;
   }
 
-  Future<void> _updatePetInfo() async {
-    final url = Uri.parse('https://balance.healtheworld.com.co/api/pets/1');
+  //Actuliza la información de la mascota
+  Future<void> _updatePetInfo(String petId) async {
+    final url = Uri.parse('${DOMAIN_URL}/api/pets/${petId}');
+
     final token = AuthServiceApis.dataCurrentUser.apiToken;
     'tu_token_de_autenticacion_aqui'; // Reemplaza con tu token de autenticación
     final response = await http.post(
@@ -243,11 +245,11 @@ class _PetInfoModalState extends State<PetInfoModal> {
               // Actualizamos los valores en el controlador
               widget.controller.petName.value = petName;
               widget.controller.petAge.value = petAge;
-              print('dioewjodijwoeijd');
+
               // Lógica adicional como guardar en una API si es necesario
               _formKey.currentState
                   ?.save(); // Lógica para guardar la información actualizada
-              _updatePetInfo();
+              // _updatePetInfo();
 
               // Navigator.of(context).pop();
             }

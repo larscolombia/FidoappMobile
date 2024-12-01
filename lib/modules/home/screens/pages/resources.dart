@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/integracion/controller/recursos_select.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class Resources extends StatelessWidget {
@@ -8,7 +9,7 @@ class Resources extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-
+    final RecursosSelect selectRecursos = Get.put(RecursosSelect());
     // Lista de recursos (ahora fija, no dinámica)
     final List<Map<String, String>> resources = [
       {'icon': 'book', 'label': 'Ebook’s'},
@@ -19,7 +20,7 @@ class Resources extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Recursos',
           style: TextStyle(
             fontSize: 20,
@@ -37,8 +38,10 @@ class Resources extends StatelessWidget {
             itemCount: resources.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () => print(
-                    resources[index]['label']), // Acción al tocar el cuadro
+                onTap: () {
+                  print(resources[index]['label']);
+                  selectRecursos.ver(resources[index]['label']);
+                }, // Acción al tocar el cuadro
                 child: Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.symmetric(
@@ -48,7 +51,7 @@ class Resources extends StatelessWidget {
                       right:
                           10), // Espacio entre elementos y margen hacia abajo
                   decoration: BoxDecoration(
-                    color: Colors.transparent,
+                    color: index == 0 ? Styles.fiveColor : Colors.transparent,
                     borderRadius: BorderRadius.circular(19),
                     border: Border.all(
                       color: Styles.greyTextColor.withOpacity(0.2),

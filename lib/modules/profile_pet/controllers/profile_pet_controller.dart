@@ -15,11 +15,11 @@ class ProfilePetController extends GetxController {
   var selectedTab = 0.obs;
   var petName = 'Oasis'.obs;
   var petBreed = 'Golden Retriever'.obs;
-  var petDescription = 'Una mascota muy amigable y juguetona.'.obs;
-  var petAge = '2 años'.obs;
+  var petDescription = 'sin descripción'.obs;
+  var petAge = ''.obs;
   var petBirthDate = '01/01/2021'.obs;
-  var petWeight = '10 kg'.obs;
-  var petGender = 'Hembra'.obs;
+  var petWeight = ''.obs;
+  var petGender = ''.obs;
 
   var associatedPersons = [
     {'name': 'John Doe', 'relation': 'Dueño'},
@@ -29,18 +29,6 @@ class ProfilePetController extends GetxController {
   var profileImagePath = ''.obs;
   var isPickerActive = false.obs;
   var medicalHistory = [
-    {
-      'title': 'Consulta General',
-      'type': 'Consulta',
-      'date': '01/08/2023',
-      'reportNumber': '12345'
-    },
-    {
-      'title': 'Vacunación Anual',
-      'type': 'Vacuna',
-      'date': '15/07/2023',
-      'reportNumber': '67890'
-    },
     // Agrega más registros según sea necesario
   ].obs;
 

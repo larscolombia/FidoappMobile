@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/event_model.dart';
+import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/information_tab.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/medical_histor_tab.dart';
@@ -15,14 +16,16 @@ import 'package:pawlly/styles/styles.dart';
 
 class ProfilePetScreen extends StatelessWidget {
   final ProfilePetController controller = Get.put(ProfilePetController());
+  final PetControllerv2 petController = Get.put(PetControllerv2());
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final imageSize = size.height / 4;
     // ignore: unused_local_variable
-
+    var pet = petController.showPet('1');
     return Scaffold(
+      backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
           // Imagen de fondo
@@ -30,12 +33,10 @@ class ProfilePetScreen extends StatelessWidget {
             expandedHeight: imageSize + 36,
             flexibleSpace: FlexibleSpaceBar(
               background: Obx(() {
-                final imageUrl = controller.profileImagePath.value.isNotEmpty
-                    ? controller.profileImagePath.value
-                    : 'https://via.placeholder.com/600x400';
+                print('imagen profile ${controller.profileImagePath.value}');
 
                 return CachedNetworkImage(
-                  imageUrl: imageUrl,
+                  imageUrl: controller.profileImagePath.value,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Center(
                     child: CircularProgressIndicator(),

@@ -17,6 +17,22 @@ class ProfilesDogs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    return PerfilMascotas(controller: controller, width: width);
+  }
+}
+
+class PerfilMascotas extends StatelessWidget {
+  const PerfilMascotas({
+    super.key,
+    required this.controller,
+    required this.width,
+  });
+
+  final HomeController controller;
+  final double width;
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
@@ -74,7 +90,12 @@ class ProfilesDogs extends StatelessWidget {
                   child: CircleAvatar(
                     radius:
                         26, // Ajustar el radio para que la imagen se adapte mejor al contenedor
-                    backgroundImage: NetworkImage(profile.petImage!),
+                    backgroundImage: profile.petImage != null &&
+                            profile.petImage!.isNotEmpty
+                        ? NetworkImage(profile.petImage!)
+                        : NetworkImage(
+                                'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg')
+                            as ImageProvider,
                     backgroundColor: Colors
                         .transparent, // Fondo transparente si la imagen no se carga
                   ),

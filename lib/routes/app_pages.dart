@@ -15,6 +15,8 @@ import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
 import 'package:pawlly/modules/dashboard/bindings/dashboard_binding.dart';
 import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:pawlly/modules/home/bindings/home_binding.dart';
+import 'package:pawlly/modules/home/screens/calendar/formulario_evento.dart';
+import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/auth/sign_in/bindings/sign_in_binding.dart';
 import 'package:pawlly/modules/pet_owner_profile/bindings/pet_owner_profile_binding.dart';
@@ -115,6 +117,10 @@ class AppPages {
       name: _Paths.PETOWNERPROFILE,
       page: () => PetOwnerProfileScreen(),
       binding: PetOwnerProfileBinding(),
+    ),
+    GetPage(
+      name: '/CreateEvent',
+      page: () => CreateEvent(),
     ),
   ];
 }

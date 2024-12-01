@@ -3,6 +3,7 @@ import 'package:pawlly/models/event_model.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/training_model.dart';
 import 'package:pawlly/models/user_data_model.dart';
+import 'package:pawlly/modules/home/screens/Diario/index.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/event_service_apis.dart';
@@ -11,7 +12,7 @@ import 'package:pawlly/services/training_service_apis.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeController extends GetxController {
-  var selectedIndex = 0.obs;
+  var selectedIndex = 1.obs;
   var profiles = <PetData>[].obs; // Lista de perfiles usando el modelo
   var selectedProfile =
       Rxn<PetData>(); // Perfil seleccionado, inicialmente null
@@ -53,6 +54,9 @@ class HomeController extends GetxController {
       case 2:
         // Get.toNamed(Routes.TRAINING);
         break;
+      case 4:
+        Get.to(DiarioMascotas());
+        break;
     }
   }
 
@@ -73,7 +77,7 @@ class HomeController extends GetxController {
 
     // Llamar al servicio para obtener los perfiles
     final petsData = await PetService.getPetListApi(pets: tempProfiles);
-    print('petsData ${petsData}');
+
     // Actualizar la lista observable con los datos obtenidos
     profiles.value = petsData;
 
@@ -145,5 +149,40 @@ class HomeController extends GetxController {
         'title': event.name, // El título del evento
       };
     }).toList();
+  }
+
+//metodo para obtener el perfil de mascota por su id
+  PetData getPetById(String id) {
+    try {
+      // Intentar encontrar la mascota con el ID proporcionado
+      return profiles.firstWhere((pet) => pet.id == id);
+    } catch (e) {
+      // Imprimir el error en caso de que ocurra
+      print('Error al recuperar la mascota: $e');
+      // Devolver una instancia de Pet con valores predeterminados si ocurre un error
+      return PetData(
+        id: 0,
+        name: '',
+        slug: '',
+        pettype: '',
+        breed: '',
+        breedId: 0,
+        size: null,
+        petImage: null,
+        dateOfBirth: null,
+        age: '',
+        gender: '',
+        weight: 0.0,
+        weightUnit: '',
+        height: 0,
+        heightUnit: '',
+        userId: 0,
+        status: -1,
+        qrCode: '',
+        createdBy: null,
+        updatedBy: null,
+        deletedBy: null,
+      );
+    }
   }
 }

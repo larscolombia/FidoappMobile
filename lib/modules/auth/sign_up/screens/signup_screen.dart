@@ -165,8 +165,9 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholder: locale.value.userType,
                                 icon: 'assets/icons/tag-user.png',
                                 items: [
-                                  'Cliente',
-                                  'Negocio',
+                                  'Entrenador',
+                                  'Veterinario',
+                                  'Dueño de Mascota'
                                 ],
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)

@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
+import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ProfileModal extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
-
+  final HistorialClinicoController medicalHistoryController =
+      Get.put(HistorialClinicoController());
+  final PetActivityController activityController =
+      Get.put(PetActivityController());
   @override
   Widget build(BuildContext context) {
+    //controller.fetchProfiles();
     return FractionallySizedBox(
       heightFactor: 0.7, // Ocupa el 60% de la pantalla
       child: Container(
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
           color: Styles.whiteColor, // Fondo del modal
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
@@ -29,7 +35,7 @@ class ProfileModal extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Selecciona un perfil',
                     style: TextStyle(
                       fontSize: 18,
@@ -39,7 +45,7 @@ class ProfileModal extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 8),
-                  Text(
+                  const Text(
                     'Seleccionar el perfil de la mascota la cual quieres ver la información',
                     style: TextStyle(
                       fontSize: 14,
@@ -101,6 +107,9 @@ class ProfileModal extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           // Actualiza el perfil seleccionado
+                          activityController
+                              .fetchPetActivities(profile.id.toString());
+                          print('Perfil seleccionado: ${profile.id}');
                           controller.updateProfile(profile);
                           Navigator.of(context).pop(); // Cierra el modal
                         },
@@ -137,13 +146,13 @@ class ProfileModal extends StatelessWidget {
                                           errorBuilder:
                                               (context, error, stackTrace) {
                                             return Image.asset(
-                                              'assets/images/petcare_1.png',
+                                              'assets/images/404.jpg',
                                               fit: BoxFit.cover,
                                             );
                                           },
                                         )
                                       : Image.asset(
-                                          'assets/images/petcare_1.png',
+                                          'assets/images/404.jpg',
                                           fit: BoxFit.cover,
                                         ),
                                 ),
@@ -156,27 +165,27 @@ class ProfileModal extends StatelessWidget {
                                   children: [
                                     Text(
                                       profile.name,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                         color: Styles.blackColor,
                                       ),
                                     ),
-                                    SizedBox(height: 4),
+                                    const SizedBox(height: 4),
                                     Text(
                                       '${profile.age}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
                                         color: Styles.blackColor,
                                       ),
                                     ),
-                                    SizedBox(height: 4),
+                                    const SizedBox(height: 4),
                                     Text(
                                       profile.gender!,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -189,8 +198,9 @@ class ProfileModal extends StatelessWidget {
                                       borderSize: 30,
                                       title: 'Ver perfil >',
                                       callback: () {
-                                        print(
-                                            'perfil de la mascota: ${profile.toJson()}');
+                                        medicalHistoryController.updateField(
+                                            "pet_id", profile.id.toString());
+
                                         Get.toNamed(
                                           Routes.PROFILEPET,
                                           arguments:

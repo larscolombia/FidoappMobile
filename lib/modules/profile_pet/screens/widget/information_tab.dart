@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
+import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/pet_owner_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
@@ -14,19 +16,29 @@ import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class InformationTab extends StatelessWidget {
-  final ProfilePetController controller;
-  final PetOwnerController petcontroller = Get.put(PetOwnerController());
+  final ProfilePetController controller; // eliminar este controller
+  final PetOwnerController petcontroller =
+      Get.put(PetOwnerController()); //eliminar este controller
   // ignore: non_constant_identifier_names
   final PetOwnerProfileController OnewrProfileController =
-      Get.put(PetOwnerProfileController());
+      Get.put(PetOwnerProfileController()); ////eliminar este controller
 
+  final PetControllerv2 petController = Get.find<PetControllerv2>();
   InformationTab({required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
-    Get.put(PetOwnerController());
+    var pet =
+        petcontroller.fetchOwnersList(controller.petProfile.id); // pisa papel
+    petController.showPet(controller.petProfile.id.toString());
+
     return Obx(() {
+      if (petController.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (petController.selectedPet.value == null) {
+        return const Center(child: Text('Pet profile not found'));
+      }
+      var petProfile = petController.selectedPet.value!;
       return SingleChildScrollView(
         child: Container(
           color: Colors
@@ -46,7 +58,7 @@ class InformationTab extends StatelessWidget {
                         style: Styles.textProfile14w400,
                       ),
                       Text(
-                        controller.petName.value,
+                        petProfile.name,
                         style: Styles.dashboardTitle20,
                       ),
                     ],
@@ -83,7 +95,7 @@ class InformationTab extends StatelessWidget {
                     style: Styles.textProfile14w400,
                   ),
                   subtitle: Text(
-                    controller.petBreed.value,
+                    petProfile.breed,
                     style: Styles.textProfile14w800,
                   ),
                 ),
@@ -91,7 +103,7 @@ class InformationTab extends StatelessWidget {
               const SizedBox(height: 20),
               // Sección sobre la mascota
               Text(
-                'Sobre ${controller.petName.value}',
+                'Sobre aqui va la descripcion',
                 style: Styles.textProfile15w700,
               ),
               Text(
@@ -113,7 +125,7 @@ class InformationTab extends StatelessWidget {
                     style: Styles.textProfile14w400,
                   ),
                   subtitle: Text(
-                    controller.petAge.value,
+                    petProfile.age,
                     style: Styles.textProfile14w800,
                   ),
                   trailing: Column(
@@ -124,7 +136,7 @@ class InformationTab extends StatelessWidget {
                         style: Styles.textProfile14w400,
                       ),
                       Text(
-                        controller.petBirthDate.value,
+                        petProfile.dateOfBirth.toString(),
                         style: Styles.textProfile14w800,
                       ),
                     ],
@@ -149,7 +161,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          controller.petWeight.value,
+                          petProfile.weight.toString(),
                           style: Styles.textProfile14w800,
                         ),
                       ),
@@ -169,7 +181,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          controller.petGender.value,
+                          petProfile.gender,
                           style: Styles.textProfile14w800,
                         ),
                       ),
@@ -184,6 +196,7 @@ class InformationTab extends StatelessWidget {
                 style: Styles.textProfile14w700,
               ),
               const SizedBox(height: 10),
+
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(30),
@@ -199,8 +212,8 @@ class InformationTab extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 1,
                   child: Image.network(
-                    controller.petProfile.qrCode ??
-                        'https://via.placeholder.com/300', // Imagen QR agrandada
+                    petProfile.qrCode ??
+                        'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg', // Imagen QR agrandada
                     width: double.infinity,
                   ),
                 ),
@@ -215,6 +228,7 @@ class InformationTab extends StatelessWidget {
                       style: Styles.textTitleHome,
                     ),
                   ),
+                  /** 
                   ElevatedButton(
                     onPressed: () {
                       showModalBottomSheet(
@@ -237,7 +251,7 @@ class InformationTab extends StatelessWidget {
                       ),
                     ),
                     child: const Icon(Icons.add, color: Colors.white),
-                  ),
+                  ),*/
                 ],
               ),
               const SizedBox(height: 10),
@@ -300,6 +314,7 @@ class InformationTab extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               // Botón de eliminar mascota
+              /** 
               Center(
                 child: TextButton(
                   onPressed: controller
@@ -309,7 +324,7 @@ class InformationTab extends StatelessWidget {
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
-              ),
+              ),*/
               const SizedBox(height: 20),
             ],
           ),

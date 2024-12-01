@@ -59,7 +59,7 @@ class SignInScreen extends StatelessWidget {
                             Container(
                               child: CustomTextFormFieldWidget(
                                 controller: signInController.emailCont,
-                                placeholder: locale.value.email,
+                                placeholder: "", //locale.value.email,
                                 icon: 'assets/icons/email.png',
                               ),
                             ),
@@ -67,7 +67,7 @@ class SignInScreen extends StatelessWidget {
                               margin: EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: signInController.passwordCont,
-                                placeholder: locale.value.password,
+                                placeholder: "", //locale.value.password,
                                 obscureText: true,
                                 icon: 'assets/icons/key.png',
                               ),

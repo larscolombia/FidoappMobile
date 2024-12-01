@@ -1,22 +1,69 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/components/historia_componente.dart';
+import 'package:pawlly/modules/components/input_select.dart';
+import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
+import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
+import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
+import 'package:pawlly/modules/profile_pet/screens/form_historial.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/show_filter_dialog.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class MedicalHistoryTab extends StatelessWidget {
   final ProfilePetController controller;
-
+  final HistorialClinicoController medicalHistoryController =
+      Get.put(HistorialClinicoController());
+  final CategoryController categoryController = Get.put(CategoryController());
   MedicalHistoryTab({required this.controller});
 
   @override
   Widget build(BuildContext context) {
+    medicalHistoryController.fetchHistorialClinico(controller.petProfile.id);
     return SingleChildScrollView(
       // Cambiamos a SingleChildScrollView para manejar el contenido desplazable
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Center(
+            child: Container(
+              width: 312,
+              child: Container(
+                width: 302,
+                child: InputSelect(
+                  prefiIcon: Icon(
+                    Icons.file_copy,
+                    color: Colors.white,
+                    size: 24,
+                  ),
+                  placeholder: 'Agregar nuevo informe',
+                  color: Styles.primaryColor,
+                  TextColor: Colors.white,
+                  onChanged: (value) {
+                    medicalHistoryController.updateField("report_type", value);
+                    Get.to(FormularioRegistro());
+                  },
+                  items: const [
+                    DropdownMenuItem(
+                      value: "1",
+                      child: Text('Vacunas'),
+                    ),
+                    DropdownMenuItem(
+                      value: '2',
+                      child: Text('Antiparasitante'),
+                    ),
+                    DropdownMenuItem(
+                      value: '3',
+                      child: Text('com'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           // Título
           const Padding(
             padding: EdgeInsets.all(16.0),
@@ -25,8 +72,10 @@ class MedicalHistoryTab extends StatelessWidget {
               style: Styles.dashboardTitle20,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 1),
           // Barra de búsqueda y botón de filtro
+
+          const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
@@ -75,87 +124,43 @@ class MedicalHistoryTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          // Lista del historial médico
+
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: GridView.builder(
-              physics:
-                  const NeverScrollableScrollPhysics(), // Desactivar el scroll del GridView
-              shrinkWrap:
-                  true, // Permitir que el GridView se ajuste al contenido
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                childAspectRatio: 0.70,
-              ),
-              itemCount: controller.medicalHistory.length,
-              itemBuilder: (context, index) {
-                final history = controller.medicalHistory[index];
-                // Aquí no necesitas un Obx ya que estás mostrando datos fijos
-                return Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Styles.whiteColor,
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 55,
-                        child: Text(
-                          history['title']!,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${history['type']}',
-                        style: const TextStyle(
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12,
-                          color: Styles.iconColorBack,
-                        ),
-                      ),
-                      Text(
-                        '${history['date']}',
-                        style: const TextStyle(
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                        ),
-                      ),
-                      Text(
-                        'Informe: ${history['reportNumber']}',
-                        style: const TextStyle(
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const Spacer(),
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ButtonDefaultWidget(
-                          title: 'Abrir >',
-                          callback: () {},
-                          heigthButtom: 46,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+            child: Obx(() {
+              final historial = medicalHistoryController.historialClinico;
+              if (medicalHistoryController.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (historial.isEmpty) {
+                return const Center(child: Text('No hay datos disponibles.'));
+              }
+
+              return GridView.builder(
+                physics:
+                    const NeverScrollableScrollPhysics(), // Desactivar el scroll del GridView
+                shrinkWrap:
+                    true, // Permitir que el GridView se ajuste al contenido
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 0.70,
+                ),
+                itemCount: historial.length,
+                itemBuilder: (context, index) {
+                  final history = historial[index];
+                  return HistoriaMascotaComponent(
+                    reportName: history.reportName,
+                    categoryName: history.categoryName,
+                    applicationDate: history.applicationDate,
+                    callback: () {
+                      // Acción para abrir el detalle del informe
+                    },
+                  );
+                },
+              );
+            }),
           ),
         ],
       ),

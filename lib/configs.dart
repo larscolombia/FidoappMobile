@@ -8,7 +8,10 @@ const DASHBOARD_AUTO_SLIDER_SECOND = 5;
 
 // Live Url
 // const DOMAIN_URL = "http://localhost:8000";
-const DOMAIN_URL = "https://balance.healtheworld.com.co";
+const DOMINIO_LOCAL = "https://ee4f-190-120-252-210.ngrok-free.app";
+const DOMINIO_PRUEBA = "https://balance.healtheworld.com.co";
+const DOMINIO_PRODUCTION = "";
+const DOMAIN_URL = DOMINIO_LOCAL; //DOMINIO_LOCAL; //aqui va la url
 // const DOMAIN_URL = "http://10.0.2.2:8000";
 
 const BASE_URL = '$DOMAIN_URL/api/';
