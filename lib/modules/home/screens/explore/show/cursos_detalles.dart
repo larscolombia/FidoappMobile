@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/components/boton_compartir.dart';
+import 'package:pawlly/modules/components/recarga_componente.dart';
+import 'package:pawlly/modules/components/regresr_components.dart';
+import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
-import 'package:pawlly/styles/styles.dart';
+import 'package:pawlly/modules/integracion/model/curosos/cursos_model.dart';
 
 class CursosDetalles extends StatelessWidget {
   final String? cursoId;
@@ -12,10 +17,21 @@ class CursosDetalles extends StatelessWidget {
   final CourseController controller = Get.put(CourseController());
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
 
+  String dificultad(String dificultad) {
+    switch (dificultad) {
+      case '1':
+        return 'Fácil';
+      case '2':
+        return 'Media';
+      case '3':
+        return 'Difícil';
+      default:
+        return 'Difícil';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    miscursos.fetchCourses();
-
     return Scaffold(
       body: Obx(() {
         if (controller.isLoading.value || miscursos.isLoading.value) {
@@ -28,13 +44,29 @@ class CursosDetalles extends StatelessWidget {
         return Stack(
           children: [
             Positioned(
+              top: 1,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 400,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  image: DecorationImage(
+                    image: NetworkImage(curso.image),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
               top: 300,
               left: 0,
               right: 0,
               bottom: 0,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Colors.white, // Color de fondo
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -44,22 +76,34 @@ class CursosDetalles extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 50),
-                        NavbarBack(
-                          title: curso.name,
+                        Container(
+                          width: 302,
+                          child: BarraBack(
+                            titulo: curso.name,
+                            subtitle: dificultad('${curso.difficulty}'),
+                            callback: () {
+                              Get.off(HomeScreen());
+                            },
+                          ),
                         ),
                         const SizedBox(height: 20),
-                        Abaut(description: curso.description),
-                        const SizedBox(height: 10),
+                        Container(
+                          width: 302,
+                          child: Text(
+                            curso.description,
+                            textAlign: TextAlign.start,
+                            style: Styles.descripcion,
+                          ),
+                        ),
                         const SizedBox(height: 20),
                         Center(
                           child: Container(
                             width: 305,
                             height: 50,
                             decoration: BoxDecoration(
-                              color: Styles.fiveColor,
+                              color: Styles.colorContainer,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
@@ -80,20 +124,22 @@ class CursosDetalles extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Center(
-                          child: Container(
-                            width: 320,
-                            height: 54,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                BtnCompartir(
+                        Container(
+                          width: 305,
+                          child: cursoAdquirido
+                              ? BotonCompartir(
+                                  modo: "compra",
                                   compra: cursoAdquirido,
+                                  onCompartir: () {
+                                    print('comprando');
+                                  },
+                                )
+                              : BotonCompartir(
+                                  modo: "compartir",
+                                  onCompartir: () {
+                                    print('comprando');
+                                  },
                                 ),
-                              ],
-                            ),
-                          ),
                         ),
                         const SizedBox(height: 20),
                         if (!cursoAdquirido)
@@ -114,6 +160,40 @@ class CursosDetalles extends StatelessWidget {
                             ),
                           ),
                         ),
+                        Container(
+                          width: 302,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Sección #${curso.id}',
+                                      style: Styles.textTituloLibros),
+                                  Text('${curso.name}',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black,
+                                        fontFamily: 'PoetsenOne',
+                                      )),
+                                ],
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: Styles.colorContainer,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Text(
+                                  '\$${curso.price}',
+                                  style: Styles.textTituloLibros,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         ...curso.videos.map((video) {
                           return GestureDetector(
                             onTap: () {
@@ -128,15 +208,15 @@ class CursosDetalles extends StatelessWidget {
                                 price: curso.price,
                                 difficulty: curso.difficulty,
                                 videoUrl: video.url,
+                                tipovideo: 'video',
                               ));
-                              print('Video ID: ${video.url}');
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 20),
                               child: MediaCard(
                                 imageUrl: curso.image,
-                                title: video.video,
-                                duration: '4.5',
+                                title: 'pendiente',
+                                duration: 'pendiente',
                               ),
                             ),
                           );
@@ -147,109 +227,9 @@ class CursosDetalles extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 350,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  image: DecorationImage(
-                    image: NetworkImage(curso.image),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
           ],
         );
       }),
-    );
-  }
-}
-
-class BtnCompartir extends StatelessWidget {
-  const BtnCompartir({super.key, this.compra});
-  final bool? compra;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        if (compra!)
-          Container(
-            child: Container(
-              width: 127,
-              height: 32,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                color: Colors.green[100],
-                border: Border.all(
-                  color: Color.fromARGB(255, 11, 139, 7),
-                  width: 1,
-                ),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(
-                      Icons.check,
-                      color: Colors.green,
-                      size: 16,
-                    ),
-                    Text(
-                      'Adquirido',
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.green,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        Container(
-          child: GestureDetector(
-            onTap: () {},
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: 160,
-                height: 32,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: Color.fromARGB(255, 245, 245, 245),
-                  border: Border.all(
-                    color: Color.fromARGB(255, 172, 172, 172),
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      'Compartir curso',
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Image.asset(
-                      'assets/icons/send-2.png',
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -355,96 +335,6 @@ class ElementoInfo extends StatelessWidget {
   }
 }
 
-class Abaut extends StatelessWidget {
-  final String? description;
-  const Abaut({
-    super.key,
-    this.description,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 302,
-        child: Center(
-          child: Text(description ?? "",
-              style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'Lato',
-                  color: Colors.black)),
-        ),
-      ),
-    );
-  }
-}
-
-// para regresar atras
-class NavbarBack extends StatelessWidget {
-  final String? title;
-  final String? dificulta;
-  const NavbarBack({
-    super.key,
-    this.title,
-    this.dificulta,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 302,
-        decoration:
-            BoxDecoration(color: const Color.fromARGB(255, 255, 255, 255)),
-        height: 45,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              width: 30,
-              child: GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Image.asset('assets/icons/back.png'),
-              ),
-            ),
-            Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: Text(
-                      title ?? 'g',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Styles.primaryColor,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    child: Text(
-                      dificulta ?? 'Principiantes',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: Styles.iconColorBack,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class MediaCard extends StatelessWidget {
   final String imageUrl;
   final String title;
@@ -462,7 +352,7 @@ class MediaCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(8.0),
       padding: EdgeInsets.all(12.0),
-      height: 72,
+      height: 100,
       decoration: BoxDecoration(
         color: Color.fromARGB(255, 255, 255, 255),
         borderRadius: BorderRadius.circular(10),
@@ -500,6 +390,8 @@ class MediaCard extends StatelessWidget {
                 SizedBox(height: 8),
                 Text(
                   'Duración: $duration minutos',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 14,
                     fontFamily: 'Lato',
@@ -510,11 +402,11 @@ class MediaCard extends StatelessWidget {
             ),
           ),
           // Ícono de reproducción
-          Icon(
-            Icons.play_circle_fill,
-            color: Colors.orange,
-            size: 32,
-          ),
+          Image.asset(
+            'assets/images/reproductor.png',
+            width: 32,
+            height: 32,
+          )
         ],
       ),
     );

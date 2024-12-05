@@ -1,34 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/recursos_select.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class Resources extends StatelessWidget {
-  const Resources({super.key});
+import '../../../components/regresr_components.dart';
 
+class Resources extends StatelessWidget {
+  Resources({super.key});
+  final HomeController controller = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final RecursosSelect selectRecursos = Get.put(RecursosSelect());
     // Lista de recursos (ahora fija, no dinámica)
-    final List<Map<String, String>> resources = [
-      {'icon': 'book', 'label': 'Ebook’s'},
-      {'icon': 'video_library', 'label': 'YouTube'},
-      {'icon': 'extension', 'label': 'Accesorios'},
+    final List<Map<String, dynamic>> resources = [
+      {'id': 5, 'icon': 'book', 'label': 'Ebook’s'},
+      {'id': 6, 'icon': 'video_library', 'label': 'YouTube'},
+      {'id': 7, 'icon': 'extension', 'label': 'Accesorios'},
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Recursos',
-          style: TextStyle(
-            fontSize: 20,
-            color: Styles.primaryColor,
-            fontFamily: 'PoetsenOne',
-          ),
-          textAlign: TextAlign.left,
-        ),
+        Obx(() {
+          if (controller.selectedIndex.value == 5) {
+            return BarraBack(
+              titulo: 'Recursos',
+              callback: () {
+                controller.updateIndex(0);
+              },
+            );
+          }
+          if (controller.selectedIndex.value == 6) {
+            return BarraBack(
+              titulo: 'Blogs y Vídeos',
+              callback: () {
+                controller.updateIndex(0);
+              },
+            );
+          }
+          return const Text(
+            'Recursos',
+            style: TextStyle(
+              fontSize: 20,
+              color: Styles.primaryColor,
+              fontFamily: 'PoetsenOne',
+            ),
+            textAlign: TextAlign.left,
+          );
+        }),
+
         SizedBox(height: 10),
         // Carrusel deslizable de recursos
         Container(
@@ -39,8 +61,7 @@ class Resources extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  print(resources[index]['label']);
-                  selectRecursos.ver(resources[index]['label']);
+                  controller.updateIndex(resources[index]['id']!);
                 }, // Acción al tocar el cuadro
                 child: Container(
                   alignment: Alignment.center,
@@ -50,8 +71,11 @@ class Resources extends StatelessWidget {
                   margin: EdgeInsets.only(
                       right:
                           10), // Espacio entre elementos y margen hacia abajo
+
                   decoration: BoxDecoration(
-                    color: index == 0 ? Styles.fiveColor : Colors.transparent,
+                    color: controller.selectedIndex == resources[index]['id']!
+                        ? Styles.fiveColor
+                        : Colors.transparent,
                     borderRadius: BorderRadius.circular(19),
                     border: Border.all(
                       color: Styles.greyTextColor.withOpacity(0.2),

@@ -16,6 +16,7 @@ class CourseController extends GetxController {
   void onInit() {
     super.onInit();
     fetchCourses();
+    // getCourseById(AuthServiceApis.dataCurrentUser.id);
   }
 
   Future<void> fetchCourses() async {
@@ -45,7 +46,7 @@ class CourseController extends GetxController {
     } catch (e) {
       print('error en course controller ${e}');
     } finally {
-      isLoading.value = false;
+      isLoading(false);
     }
   }
 

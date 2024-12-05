@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CalendarModel {
   String? id;
-  String? name;
+  String name;
   String? description;
   String? startDate;
   String? endDate;
@@ -19,7 +19,7 @@ class CalendarModel {
 
   CalendarModel({
     this.id,
-    this.name,
+    required this.name,
     this.description,
     this.startDate,
     this.endDate,

@@ -38,22 +38,26 @@ class AddPetScreen extends StatelessWidget {
               ),
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 60),
                   Text(
                     'Completa la Información',
                     style: TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Styles.tertiaryColor,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black,
+                      fontFamily: 'PoetsenOne',
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 8),
                   Text(
                     'Añade los datos de tu mascota',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Styles.tertiaryColor,
+                      color: Colors.black,
+                      fontFamily: 'PoetsenOne',
+                      fontWeight: FontWeight.w500,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -143,8 +147,10 @@ class AddPetScreen extends StatelessWidget {
                             width: size.width,
                             height: size.width,
                             decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage('assets/icons/imagen.png'),
+                                  fit: BoxFit.cover),
                               color: Styles.iconColorBack,
-                              border: Border.all(color: Styles.iconColorBack),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: controller.petImage.value != null
@@ -180,7 +186,7 @@ class AddPetScreen extends StatelessWidget {
                           return CustomSelectFormFieldWidget(
                             controller: controller.petBreed,
                             placeholder: locale.value.petBreed,
-                            icon: 'assets/icons/tag-user.png',
+                            icon: 'assets/icons/patica.png',
                             items: controller.breedList.isNotEmpty
                                 ? controller.breedList
                                     .map((breed) => breed.name)
@@ -224,14 +230,15 @@ class AddPetScreen extends StatelessWidget {
                                             ? Styles.iconColorBack
                                             : Colors.transparent,
                                       ),
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: Center(
                                       child: Text(
-                                        'Female',
+                                        'Hembra',
                                         style: TextStyle(
-                                          color: Styles.iconColorBack,
-                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'PoetsenOne',
                                         ),
                                       ),
                                     ),
@@ -263,10 +270,11 @@ class AddPetScreen extends StatelessWidget {
                                     ),
                                     child: Center(
                                       child: Text(
-                                        'Male',
+                                        'Macho',
                                         style: TextStyle(
-                                          color: Styles.iconColorBack,
-                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'PoetsenOne',
                                         ),
                                       ),
                                     ),
@@ -284,7 +292,7 @@ class AddPetScreen extends StatelessWidget {
                           controller: controller.petWeightController,
                           placeholder: locale.value.weight,
                           isNumeric: true,
-                          icon: 'assets/icons/profile.png',
+                          icon: 'assets/icons/weight.png',
                         ),
                       ),
                       SizedBox(height: 20),

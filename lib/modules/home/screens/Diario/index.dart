@@ -6,9 +6,13 @@ import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_co
 import 'package:pawlly/styles/styles.dart';
 
 class DiarioMascotas extends StatelessWidget {
+  final PetActivityController controller = Get.put(PetActivityController());
+  final HomeController homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
-    final PetActivityController controller = Get.put(PetActivityController());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchPetActivities('${homeController.selectedProfile}');
+    });
 
     return Obx(() {
       if (controller.isLoading.value) {

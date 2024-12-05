@@ -45,15 +45,17 @@ class ProfileModal extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 8),
-                  const Text(
-                    'Seleccionar el perfil de la mascota la cual quieres ver la información',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  controller.SelectType == 1
+                      ? const Text(
+                          'Seleccionar el perfil de la mascota la cual quieres ver la información',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
+                      : SizedBox(),
                   SizedBox(height: 10),
                   Row(
                     children: [
@@ -193,21 +195,22 @@ class ProfileModal extends StatelessWidget {
                                       ),
                                     ),
                                     SizedBox(height: 8),
-                                    ButtonDefaultWidget(
-                                      heigthButtom: 40,
-                                      borderSize: 30,
-                                      title: 'Ver perfil >',
-                                      callback: () {
-                                        medicalHistoryController.updateField(
-                                            "pet_id", profile.id.toString());
+                                    if (controller.SelectType == 1)
+                                      ButtonDefaultWidget(
+                                        heigthButtom: 40,
+                                        borderSize: 30,
+                                        title: 'Ver perfil >',
+                                        callback: () {
+                                          medicalHistoryController.updateField(
+                                              "pet_id", profile.id.toString());
 
-                                        Get.toNamed(
-                                          Routes.PROFILEPET,
-                                          arguments:
-                                              profile, // Pasar el perfil de la mascota como argumento
-                                        );
-                                      },
-                                    ),
+                                          Get.toNamed(
+                                            Routes.PROFILEPET,
+                                            arguments:
+                                                profile, // Pasar el perfil de la mascota como argumento
+                                          );
+                                        },
+                                      ),
                                   ],
                                 ),
                               ),

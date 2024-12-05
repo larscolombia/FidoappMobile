@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_model.dart';
@@ -31,7 +32,7 @@ class TrainingPrograms extends StatelessWidget {
           if (cursosController.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           } else if (cursosController.courses.isEmpty) {
-            return const Center(child: Text('No hay cursos disponibles'));
+            return Center(child: Text('No hay cursos disponibles'));
           } else {
             return Column(
               children: cursosController.courses.map((course) {
@@ -170,6 +171,13 @@ class TrainingPrograms extends StatelessWidget {
             );
           }
         }),
+        Center(
+          child: RecargaComponente(
+            callback: () {
+              cursosController.fetchCourses();
+            },
+          ),
+        ),
       ],
     );
   }

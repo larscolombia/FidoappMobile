@@ -19,7 +19,7 @@ class APIEndPoints {
   static const String getPetList = 'pets';
   static const String getPetDetail = 'pet-details';
   static const String deletePet = 'delete-pet';
-  static const String addPet = 'pet';
+  static const String addPet = 'pets';
   static const String getNote = 'get-notes';
   static const String addNote = 'save-note';
   static const String deleteNote = 'delete-note';

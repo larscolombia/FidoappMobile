@@ -10,7 +10,9 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
   final bool? enabled;
   final List<String? Function(String?)>? validators;
   final AutovalidateMode autovalidateMode; // Nueva propiedad
-
+  final void Function(String?)? onChange; // Parámetro opcional
+  final Color? filcolorCustom;
+  final Color? textColor;
   CustomSelectFormFieldWidget({
     Key? key,
     required this.placeholder,
@@ -21,6 +23,9 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
     this.validators,
     this.autovalidateMode =
         AutovalidateMode.disabled, // Inicializar nueva propiedad
+    this.onChange, // Inicializar el parámetro opcional
+    this.filcolorCustom,
+    this.textColor,
   }) : super(key: key);
 
   @override
@@ -100,7 +105,7 @@ class _CustomSelectFormFieldWidgetState
                 filled: true,
                 fillColor: hasText || _selectedValue != null
                     ? Colors.white
-                    : Color.fromRGBO(254, 247, 229, 1),
+                    : widget.filcolorCustom ?? Color.fromRGBO(252, 186, 103, 1),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
@@ -145,7 +150,9 @@ class _CustomSelectFormFieldWidgetState
                 ),
                 labelText: _selectedValue != null ? null : widget.placeholder,
                 labelStyle: TextStyle(
-                  color: isEnabled ? Styles.iconColorBack : Colors.grey,
+                  color: widget.textColor ?? Colors.black,
+                  fontFamily: 'lato',
+                  fontSize: 14,
                 ),
                 errorText: errorText, // Mostrar mensaje de error si existe
               ),
@@ -231,6 +238,11 @@ class _CustomSelectFormFieldWidgetState
                           if (widget.autovalidateMode ==
                               AutovalidateMode.onUserInteraction) {
                             setState(() {});
+                          }
+
+                          // Llamar a onChange si no es null
+                          if (widget.onChange != null) {
+                            widget.onChange!(_selectedValue);
                           }
                         },
                       ),

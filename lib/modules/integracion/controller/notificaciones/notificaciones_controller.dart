@@ -1,0 +1,148 @@
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:pawlly/configs.dart'; // Asegúrate de tener este archivo configurado con tus URLs y otros detalles
+import 'package:pawlly/modules/integracion/model/notigicaciones/notificaciones.dart';
+import 'package:pawlly/services/auth_service_apis.dart'; // Asegúrate de tener este servicio para obtener el token de autenticación
+
+class NotificationController extends GetxController {
+  var notifications = <NotificationData>[]
+      .obs; // Usamos RxList para almacenar las notificaciones
+  var isLoading = false.obs;
+  final String baseUrl = "${DOMAIN_URL}/api";
+
+  void onInit() {
+    super.onInit();
+    fetchNotifications();
+  }
+
+  Future<void> fetchNotifications() async {
+    try {
+      // isLoading(true);
+      final response = await http.get(
+        Uri.parse(
+            '$baseUrl/user-notification?user_id=${AuthServiceApis.dataCurrentUser.id}'), // Ajusta el endpoint según sea necesario
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      print('Respuesta de las notificaciones: ${json.decode(response.body)}');
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body)['data'] as List;
+        notifications.value =
+            data.map((item) => NotificationData.fromJson(item)).toList();
+      } else {
+        //throw Exception('Failed to load notifications');
+      }
+    } catch (e) {
+      print('Error al obtener las notificaciones: $e');
+      // isLoading(false);
+    }
+  }
+
+  Future<void> markAsRead(int notificationId) async {
+    try {
+      final response = await http.post(
+        Uri.parse(
+            '$baseUrl/notifications/mark-as-read/$notificationId'), // Ajusta el endpoint según sea necesario
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Actualiza la lista de notificaciones después de marcar una como leída
+        fetchNotifications();
+      } else {
+        throw Exception('Failed to mark notification as read');
+      }
+    } catch (e) {
+      print('Error al marcar la notificación como leída: $e');
+    }
+  }
+
+  int countUnreadNotifications() {
+    return notifications
+        .where((notification) => notification.isRead == 0)
+        .length;
+  }
+
+  // Método para obtener las notificaciones de hoy
+  List<NotificationData> getTodayNotifications() {
+    DateTime today = DateTime.now();
+    return notifications
+        .where((n) =>
+            n.createdAt != null &&
+            DateTime.parse(n.createdAt!).year == today.year &&
+            DateTime.parse(n.createdAt!).month == today.month &&
+            DateTime.parse(n.createdAt!).day == today.day)
+        .toList();
+  }
+
+  // Método para obtener las notificaciones de ayer
+  List<NotificationData> getYesterdayNotifications() {
+    DateTime yesterday = DateTime.now().subtract(Duration(days: 1));
+    return notifications
+        .where((n) =>
+            n.createdAt != null &&
+            DateTime.parse(n.createdAt!).year == yesterday.year &&
+            DateTime.parse(n.createdAt!).month == yesterday.month &&
+            DateTime.parse(n.createdAt!).day == yesterday.day)
+        .toList();
+  }
+
+  // Método para obtener las notificaciones anteriores a ayer
+  List<NotificationData> getOlderNotifications() {
+    DateTime today = DateTime.now();
+    return notifications
+        .where((n) =>
+            n.createdAt != null &&
+            DateTime.parse(n.createdAt!)
+                .isBefore(DateTime(today.year, today.month, today.day - 1)))
+        .toList();
+  }
+
+  var notificacionData = {
+    "pet_id": null,
+    "category_id": null,
+    "date": AuthServiceApis.dataCurrentUser.id,
+    "actividad": "",
+    "notas": "",
+    "image": "",
+  }.obs;
+
+  void updateField(String key, dynamic value) {
+    notificacionData[key] = value;
+  }
+
+  // Método para enviar los datos
+  Future<void> submitNotificacion() async {
+    isLoading.value = true;
+    final url = '${DOMAIN_URL}/api/training-diaries';
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
+        body: jsonEncode(notificacionData),
+      );
+
+      if (response.statusCode == 200) {
+        // Éxito
+        print("Datos enviados correctamente a evento: ${response.body}");
+      } else {
+        // Error
+      }
+    } catch (e) {
+      print("Error: $e");
+    } finally {
+      isLoading(false);
+    }
+  }
+}

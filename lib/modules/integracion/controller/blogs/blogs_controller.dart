@@ -9,6 +9,8 @@ class BlogController extends GetxController {
   var isLoading = true.obs; // Estado de carga
   var blogPosts = <BlogPost>[].obs; // Lista observable de BlogPost
   var url = "${DOMAIN_URL}/api/blog-list";
+  var filteredBlogPosts =
+      <BlogPost>[].obs; // Lista observable para blogs filtrados
 
   @override
   void onInit() {
@@ -28,8 +30,8 @@ class BlogController extends GetxController {
       );
 
       // Verifica la respuesta del servidor
-      print('URL: $url');
-      print('Respuesta del servidor: ${response.body}');
+
+      print('inyectado los blogs: ${response.body}');
       print('Estado de la solicitud: ${response.statusCode}');
 
       var jsonResponse = json.decode(response.body);
@@ -54,12 +56,37 @@ class BlogController extends GetxController {
     } catch (e) {
       print('Excepción capturada: $e');
     } finally {
-      // isLoading(false); // Asegúrate de cambiar el estado de carga
+      isLoading(false); // Asegúrate de cambiar el estado de carga
     }
   }
 
   // Método para obtener un post por su id
   BlogPost getBlogPostById(int id) {
     return blogPosts.firstWhere((post) => post.id == id);
+  }
+
+  // Método para buscar blogs por nombre (parcial o completo)
+  List<BlogPost> getBlogPostsByName(String? name) {
+    if (name == null || name.isEmpty || name == "0") {
+      print(
+          'Texto de búsqueda nulo, vacío o igual a "0". Retornando todos los blogs.');
+      filteredBlogPosts.value = blogPosts; // Retorna todos los blogs
+      return blogPosts.toList();
+    }
+
+    // Busca coincidencias parciales
+    var filteredBlogs = blogPosts
+        .where((post) => post.name.toLowerCase().contains(name.toLowerCase()))
+        .toList();
+
+    if (filteredBlogs.isEmpty) {
+      print('No existen blogs que coincidan con el texto: $name');
+      filteredBlogPosts.clear(); // Limpia la lista si no hay coincidencias
+    } else {
+      filteredBlogPosts.value =
+          filteredBlogs; // Actualiza la lista con los resultados
+    }
+
+    return filteredBlogs;
   }
 }

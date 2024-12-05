@@ -9,6 +9,9 @@ import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/pet_owner_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
+import 'package:pawlly/modules/profile_pet/screens/pasaporte_mascota.dart';
+import 'package:pawlly/modules/profile_pet/screens/pasaporte_mascota.dart';
+import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/associated_persons_modal.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/owner_pet.dart';
 import 'package:pawlly/routes/app_pages.dart';
@@ -16,69 +19,79 @@ import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class InformationTab extends StatelessWidget {
-  final ProfilePetController controller; // eliminar este controller
-  final PetOwnerController petcontroller =
-      Get.put(PetOwnerController()); //eliminar este controller
+  final ProfilePetController controller;
+  final PetOwnerController petcontroller = Get.put(PetOwnerController());
   // ignore: non_constant_identifier_names
   final PetOwnerProfileController OnewrProfileController =
-      Get.put(PetOwnerProfileController()); ////eliminar este controller
+      Get.put(PetOwnerProfileController());
 
-  final PetControllerv2 petController = Get.find<PetControllerv2>();
   InformationTab({required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    var pet =
-        petcontroller.fetchOwnersList(controller.petProfile.id); // pisa papel
-    petController.showPet(controller.petProfile.id.toString());
-
+    var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
+    print('profile qr ${controller.petProfile.age}');
     return Obx(() {
-      if (petController.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
-      } else if (petController.selectedPet.value == null) {
-        return const Center(child: Text('Pet profile not found'));
-      }
-      var petProfile = petController.selectedPet.value!;
       return SingleChildScrollView(
         child: Container(
-          color: Colors
-              .white, // Esto establece el fondo del contenedor como blanco
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.only(
+            left: 30,
+            right: 30,
+          ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Nombre de la mascota y botón de compartir
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      Text(
-                        'Nombre',
-                        style: Styles.textProfile14w400,
-                      ),
-                      Text(
-                        petProfile.name,
-                        style: Styles.dashboardTitle20,
-                      ),
-                    ],
-                  ),
-                  ButtonDefaultWidget(
-                    title: 'Compartir',
+              Container(
+                width: 305,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          'Nombre',
+                          style: Styles.textProfile14w400,
+                        ),
+                        Text(
+                          controller.petName.value,
+                          style: Styles.dashboardTitle20,
+                        ),
+                      ],
+                    ),
+                    ButtonDefaultWidget(
+                      title: 'Compartir',
+                      callback: () {
+                        // Lógica para compartir perfil
+                      },
+                      defaultColor: Colors.transparent,
+                      border: const BorderSide(color: Colors.grey, width: 1),
+                      textColor: Colors.black,
+                      icon: Icons.share,
+                      iconAfterText: true,
+                      widthButtom: 150,
+                      textSize: 14,
+                      borderSize: 25,
+                      heigthButtom: 40,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Center(
+                child: Container(
+                  height: 54,
+                  child: ButtonDefaultWidget(
+                    title: 'Pasaporte',
                     callback: () {
-                      // Lógica para compartir perfil
+                      Get.to(
+                        VerPasaporteMascota(),
+                      );
                     },
-                    defaultColor: Colors.transparent,
-                    border: const BorderSide(color: Colors.grey, width: 1),
-                    textColor: Colors.black,
-                    icon: Icons.share,
-                    iconAfterText: true,
-                    widthButtom: 150,
-                    textSize: 14,
-                    borderSize: 25,
-                    heigthButtom: 40,
                   ),
-                ],
+                ),
               ),
               const SizedBox(height: 20),
               // Card de la raza
@@ -95,16 +108,19 @@ class InformationTab extends StatelessWidget {
                     style: Styles.textProfile14w400,
                   ),
                   subtitle: Text(
-                    petProfile.breed,
+                    controller.petBreed.value,
                     style: Styles.textProfile14w800,
                   ),
                 ),
               ),
               const SizedBox(height: 20),
               // Sección sobre la mascota
-              Text(
-                'Sobre aqui va la descripcion',
-                style: Styles.textProfile15w700,
+              Container(
+                width: 305,
+                child: Text(
+                  'Sobre ${controller.petName.value}',
+                  style: Styles.textProfile15w700,
+                ),
               ),
               Text(
                 controller.petDescription.value,
@@ -125,7 +141,7 @@ class InformationTab extends StatelessWidget {
                     style: Styles.textProfile14w400,
                   ),
                   subtitle: Text(
-                    petProfile.age,
+                    "${controller.petAge}",
                     style: Styles.textProfile14w800,
                   ),
                   trailing: Column(
@@ -136,7 +152,7 @@ class InformationTab extends StatelessWidget {
                         style: Styles.textProfile14w400,
                       ),
                       Text(
-                        petProfile.dateOfBirth.toString(),
+                        controller.petBirthDate.value,
                         style: Styles.textProfile14w800,
                       ),
                     ],
@@ -161,7 +177,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          petProfile.weight.toString(),
+                          controller.petWeight.value,
                           style: Styles.textProfile14w800,
                         ),
                       ),
@@ -181,7 +197,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          petProfile.gender,
+                          controller.petGender.value,
                           style: Styles.textProfile14w800,
                         ),
                       ),
@@ -211,10 +227,20 @@ class InformationTab extends StatelessWidget {
                 ),
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: Image.network(
-                    petProfile.qrCode ??
-                        'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg', // Imagen QR agrandada
+                  child: FadeInImage.assetNetwork(
+                    placeholder:
+                        'assets/images/404.jpg', // Imagen de respaldo (colócala en la carpeta assets)
+                    image: controller.petProfile.qrCode ??
+                        'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
                     width: double.infinity,
+                    height: double.infinity,
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        'assets/images/pop_up_design.png', // Imagen a mostrar si ocurre un error
+                        width: double.infinity,
+                        height: double.infinity,
+                      );
+                    },
                   ),
                 ),
               ),

@@ -39,6 +39,7 @@ dependencies:
   nb_utils: ^7.0.3
   get: ^4.6.6
   smooth_page_indicator: ^1.2.0+3
+  badges: ^2.0.1
   google_fonts: ^6.2.1
   get_storage: ^2.1.1
   carousel_slider: ^4.2.1
@@ -59,7 +60,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   just_audio: ^0.9.40
   cached_network_image: ^3.4.1
- 
+  share_plus: ^10.1.2
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -29,7 +29,7 @@ class PetActivityController extends GetxController {
       'date': "",
       'category_id': "",
       'notas': "",
-      'pet_id': "1", // Cambia esto si es necesario
+      'pet_id': "", // Cambia esto si es necesario
       'image': "",
     };
   }

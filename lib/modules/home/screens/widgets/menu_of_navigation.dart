@@ -45,7 +45,7 @@ class MenuOfNavigation extends GetView<HomeController> {
               controller: controller,
             ),
             _buildNavItem(
-              icon: Icons.search,
+              icon: Icons.note_sharp,
               label: 'Diario',
               index: 4,
               controller: controller,
@@ -57,7 +57,7 @@ class MenuOfNavigation extends GetView<HomeController> {
   }
 
   Widget _buildNavItem({
-    required IconData icon,
+    IconData? icon,
     required String label,
     required int index,
     required HomeController controller,

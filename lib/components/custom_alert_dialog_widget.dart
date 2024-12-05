@@ -31,17 +31,20 @@ class CustomAlertDialog extends StatelessWidget {
       contentPadding: EdgeInsets.all(20),
       title: Column(
         children: [
-          Icon(
-            icon,
-            size: 50,
-            color: Colors.blue, // Cambia el color si lo deseas
+          Image.asset(
+            'assets/icons/check.png',
+            width: 80,
+            height: 80,
           ),
           SizedBox(height: 10),
           Text(
             title,
+            textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 28,
               fontWeight: FontWeight.bold,
+              fontFamily: 'Lato',
+              color: Styles.primaryColor,
             ),
           ),
         ],
@@ -49,7 +52,15 @@ class CustomAlertDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(description),
+          Text(
+            description,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              fontFamily: 'Lato',
+              color: Colors.black,
+            ),
+          ),
           if (primaryButtonText != null || secondaryButtonText != null) ...[
             SizedBox(height: 20),
             Divider(), // Línea divisoria

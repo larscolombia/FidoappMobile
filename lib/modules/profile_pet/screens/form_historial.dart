@@ -58,21 +58,21 @@ class FormularioRegistro extends StatelessWidget {
                         Container(
                           margin: const EdgeInsets.all(10),
                           width: 302,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Icon(
-                                  Icons.arrow_back_ios,
-                                  color: Styles.primaryColor,
+                          child: GestureDetector(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Styles.primaryColor,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              GestureDetector(
-                                onTap: () {
-                                  Get.back();
-                                },
-                                child: const Text(
+                                const SizedBox(width: 10),
+                                const Text(
                                   "Informe Médico",
                                   style: TextStyle(
                                     fontSize: 20,
@@ -81,18 +81,16 @@ class FormularioRegistro extends StatelessWidget {
                                     fontFamily: 'PoetsenOne',
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 20),
                         InputText(
                           label: '',
-                          placeholder: 'Nombre',
+                          placeholder: 'Nombre del informe',
                           onChanged: (value) {
                             print('value $value');
                             controller.updateField("name", value);
-                            controller.updateField("report_name", value);
                           },
                         ),
                         Container(
@@ -122,8 +120,6 @@ class FormularioRegistro extends StatelessWidget {
                                             .name), // Nombre de la categoría como texto
                                       ))
                                   .toList(),
-                              suffixIcon:
-                                  const Icon(Icons.arrow_drop_down_sharp),
                             );
                           }),
                         ),
@@ -136,11 +132,11 @@ class FormularioRegistro extends StatelessWidget {
                           },
                           suffixIcon: Icon(
                             Icons.arrow_drop_down,
-                            color: Styles.primaryColor,
+                            color: Styles.fiveColor,
                           ),
                           prefiIcon: Icon(
                             Icons.calendar_today,
-                            color: Styles.primaryColor,
+                            color: Color.fromRGBO(252, 186, 103, 1),
                           ),
                         ),
                         InputText(
@@ -152,11 +148,11 @@ class FormularioRegistro extends StatelessWidget {
                           },
                           suffixIcon: Icon(
                             Icons.arrow_drop_down,
-                            color: Styles.primaryColor,
+                            color: Color.fromRGBO(252, 186, 103, 1),
                           ),
                           prefiIcon: Icon(
                             Icons.calendar_today,
-                            color: Styles.primaryColor,
+                            color: Color.fromRGBO(252, 186, 103, 1),
                           ),
                         ),
                         InputText(
@@ -173,7 +169,7 @@ class FormularioRegistro extends StatelessWidget {
                           isFilePicker: true,
                           prefiIcon: Icon(
                             Icons.file_copy,
-                            color: Styles.primaryColor,
+                            color: Color.fromRGBO(252, 186, 103, 1),
                           ),
                           onChanged: (filePath) {
                             print("Archivo seleccionado: $filePath");
@@ -186,7 +182,7 @@ class FormularioRegistro extends StatelessWidget {
                           isFilePicker: true,
                           prefiIcon: Icon(
                             Icons.file_copy,
-                            color: Styles.primaryColor,
+                            color: Color.fromRGBO(252, 186, 103, 1),
                           ),
                           onChanged: (filePath) {
                             print("Archivo seleccionado: $filePath");
@@ -200,7 +196,13 @@ class FormularioRegistro extends StatelessWidget {
                               title: 'Terminar Informe  >',
                               callback: () {
                                 controller.isEditing.value = false;
-                                Get.to(ConfirmarFormulario());
+                                if (controller.validateReportData()) {
+                                  Get.to(ConfirmarFormulario());
+                                } else {
+                                  Get.snackbar("Error",
+                                      "Por favor, rellene todos los campos");
+                                }
+                                // Get.to(ConfirmarFormulario());
                               },
                             ),
                           ),

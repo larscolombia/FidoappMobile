@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/event_model.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/information_tab.dart';
@@ -16,14 +17,15 @@ import 'package:pawlly/styles/styles.dart';
 
 class ProfilePetScreen extends StatelessWidget {
   final ProfilePetController controller = Get.put(ProfilePetController());
-  final PetControllerv2 petController = Get.put(PetControllerv2());
+  //final PetControllerv2 petController = Get.put(PetControllerv2());
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final imageSize = size.height / 4;
     // ignore: unused_local_variable
-    var pet = petController.showPet('1');
+    //petController.showPet();
+    print(' que esta pasando ?${controller.profileImagePath.value.isNotEmpty}');
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(
@@ -33,15 +35,23 @@ class ProfilePetScreen extends StatelessWidget {
             expandedHeight: imageSize + 36,
             flexibleSpace: FlexibleSpaceBar(
               background: Obx(() {
-                print('imagen profile ${controller.profileImagePath.value}');
+                final imageUrl = controller.profileImagePath.value.isNotEmpty
+                    ? controller.profileImagePath.value
+                    : 'https://via.placeholder.com/600x400';
 
                 return CachedNetworkImage(
-                  imageUrl: controller.profileImagePath.value,
+                  imageUrl: imageUrl,
                   fit: BoxFit.cover,
                   placeholder: (context, url) => Center(
                     child: CircularProgressIndicator(),
                   ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) {
+                    // Imagen predeterminada si falla la carga
+                    return Image.asset(
+                      'assets/images/404.jpg', // Ruta de la imagen predeterminada
+                      fit: BoxFit.cover,
+                    );
+                  },
                 );
               }),
             ),
@@ -49,6 +59,7 @@ class ProfilePetScreen extends StatelessWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
           ),
+
           // Contenido del perfil
           SliverToBoxAdapter(
             child: Container(
@@ -70,7 +81,7 @@ class ProfilePetScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             GestureDetector(
-                              onTap: () => Navigator.pop(context),
+                              onTap: () => Get.off(HomeScreen()),
                               child: const Icon(
                                 Icons.arrow_back_ios,
                                 color: Styles.primaryColor,
@@ -78,7 +89,7 @@ class ProfilePetScreen extends StatelessWidget {
                               ),
                             ),
                             const Text(
-                              'Perfil de la Mascota',
+                              'Perfil de la Mascotas',
                               style: Styles.dashboardTitle20,
                             ),
                             Obx(
@@ -162,7 +173,7 @@ class ProfilePetScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Divider(height: 40, thickness: 1),
+                  const Divider(height: 40, thickness: .2),
                 ],
               ),
             ),

@@ -34,12 +34,25 @@ class HistorialClinicoController extends GetxController {
     "file": null,
     "image": null,
   }.obs;
+
   @override
   void onInit() {
     super.onInit();
   }
 
-  // Método para actualizar un campo
+  bool validateReportData() {
+    if (reportData['pet_id'] == null ||
+        reportData['report_type'] == null ||
+        reportData['report_name'] == null ||
+        reportData['name'] == null ||
+        reportData['fecha_aplicacion'] == null ||
+        reportData['category'] == null ||
+        reportData['fecha_refuerzo'] == null) {
+      return false;
+    }
+    return true;
+  }
+
   void updateField(String key, dynamic value) {
     reportData[key] = value;
   }
@@ -52,10 +65,9 @@ class HistorialClinicoController extends GetxController {
     historialClinico.removeWhere((item) => item.id == id);
   }
 
-  // Método para enviar los datos
   Future<void> submitReport() async {
     isLoading.value = true;
-    isSuccess(false);
+    isSuccess(true);
     final url =
         '${DOMAIN_URL}/api/pet-histories?user_id=${AuthServiceApis.dataCurrentUser.id}&pet_id=${reportData['pet_id']}';
     print('url de envio  $url');
@@ -72,25 +84,21 @@ class HistorialClinicoController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        // Éxito
         print("Datos enviados correctamente: ${response.body}");
         isSuccess.value = true;
       } else {
-        // Error
+        print("Error al enviar datos: ${response.body}");
+        isSuccess.value = false;
       }
     } catch (e) {
       print("Error: $e");
+      isSuccess.value = false;
     } finally {
-      isLoading(false);
-      isSuccess(true);
-      isSuccess.value = true;
-      print('isSuccess ${isSuccess.value}');
+      isLoading.value = false;
     }
   }
 
-  //recupera el historial de medical
   Future<void> fetchHistorialClinico(int petId) async {
-    // isLoading.value = true;
     final url = '${DOMAIN_URL}/api/medical-history-per-pet?pet_id=$petId';
     print('Fetching historial médico desde $url');
 
@@ -106,11 +114,8 @@ class HistorialClinicoController extends GetxController {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print('Respuesta JSON: ${Uri.parse(url)}');
-        print('Respuesta JSON: ${json.encode(data['data'])}');
-        print('Respuesta JSON: ${historialClinico.length}');
+
         if (data['success'] == true) {
-          // Mapea los datos de la respuesta a la lista de `HistorialClinico`
           historialClinico.value = (data['data'] as List)
               .map((item) => HistorialClinico.fromJson(item))
               .toList();
@@ -126,6 +131,21 @@ class HistorialClinicoController extends GetxController {
       print('Error al recuperar el historial médico: $e');
     } finally {
       isLoading.value = false;
+    }
+  }
+
+// Método para filtrar el historial clínico por report_name
+  void filterHistorialClinico(String? reportName) {
+    if (reportName == null || reportName.isEmpty) {
+      // Si reportName es nulo o está vacío, mostrar todo el historial
+      historialClinico.value = historialClinico.value;
+    } else {
+      // Filtrar por report_name (insensible a mayúsculas/minúsculas)
+      historialClinico.value = historialClinico.where((historial) {
+        return historial.reportName
+            .toLowerCase()
+            .contains(reportName.toLowerCase());
+      }).toList();
     }
   }
 }

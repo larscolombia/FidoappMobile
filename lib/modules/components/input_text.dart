@@ -12,31 +12,42 @@ class InputText extends StatefulWidget {
     this.placeholder,
     required this.onChanged,
     this.isDateField = false,
-    this.isFilePicker = false, // Habilitar carga de archivos
-    this.isImagePicker = false, // Habilitar carga de imagen
+    this.isFilePicker = false,
+    this.isImagePicker = false,
     this.suffixIcon,
     this.prefiIcon,
     this.isTimeField = false,
+    this.readOnly = false,
+    this.initialValue, // Nuevo parámetro para el valor inicial
+    this.fondoColor = Styles.colorContainer,
   }) : super(key: key);
 
   final String? placeholder;
   final String? label;
   final bool isDateField;
   final bool isFilePicker;
-  final bool
-      isImagePicker; // Nuevo parámetro para habilitar la selección de imágenes
+  final bool isImagePicker;
   final ValueChanged<String> onChanged;
   final Icon? suffixIcon;
   final Icon? prefiIcon;
   final bool isTimeField;
-
+  final bool readOnly;
+  final String? initialValue; // Definir el parámetro
+  final Color? fondoColor;
   @override
   _InputTextState createState() => _InputTextState();
 }
 
 class _InputTextState extends State<InputText> {
-  final TextEditingController _textController = TextEditingController();
-  File? _imageFile; // Para almacenar la imagen seleccionada
+  late TextEditingController _textController;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController(text: widget.initialValue ?? "");
+  }
+
+  File? _imageFile;
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +56,17 @@ class _InputTextState extends State<InputText> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.label ?? 'label',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-              fontFamily: 'Lato',
-              fontWeight: FontWeight.w400,
-            ),
-          ),
+          widget.label != null
+              ? Text(
+                  widget.label ?? 'label',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w400,
+                  ),
+                )
+              : SizedBox(),
           SizedBox(height: 8),
           GestureDetector(
             onTap: widget.isDateField
@@ -64,13 +77,13 @@ class _InputTextState extends State<InputText> {
                         ? () => _pickFile()
                         : (widget.isImagePicker ? () => _pickImage() : null))),
             child: AbsorbPointer(
-              absorbing: widget.isDateField ||
+              absorbing: widget.readOnly ||
+                  widget.isDateField ||
                   widget.isTimeField ||
                   widget.isFilePicker ||
                   widget.isImagePicker,
               child: TextFormField(
-                controller:
-                    _textController, // Controlador para mostrar el nombre
+                controller: _textController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
@@ -94,19 +107,19 @@ class _InputTextState extends State<InputText> {
                     fontWeight: FontWeight.w400,
                   ),
                   filled: true,
-                  fillColor: Styles.colorContainer,
+                  fillColor: widget.fondoColor,
                   suffixIcon: widget.isFilePicker
-                      ? Icon(Icons.attach_file) // Icono de archivo
+                      ? Icon(Icons.attach_file)
                       : widget.isImagePicker
-                          ? Icon(Icons.image) // Icono de imagen
+                          ? Icon(Icons.image)
                           : widget.suffixIcon,
                   prefixIcon: widget.prefiIcon,
                 ),
                 onChanged: widget.onChanged,
+                readOnly: widget.readOnly,
               ),
             ),
           ),
-          // Mostrar vista previa de la imagen seleccionada
           if (_imageFile != null)
             Container(
               margin: EdgeInsets.only(top: 10),
@@ -157,36 +170,31 @@ class _InputTextState extends State<InputText> {
   Future<void> _pickFile() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf'], // Solo permitir archivos PDF
+      allowedExtensions: ['pdf'],
     );
     if (result != null && result.files.single.path != null) {
       final filePath = result.files.single.path!;
-      final fileName = result.files.single.name; // Obtén el nombre del archivo
+      final fileName = result.files.single.name;
 
       setState(() {
-        _textController.text =
-            fileName; // Actualiza el campo con el nombre del archivo
+        _textController.text = fileName;
       });
 
-      widget.onChanged(filePath); // Notifica al padre la ruta del archivo
+      widget.onChanged(filePath);
     }
   }
 
-  // Función para seleccionar una imagen desde la galería
   Future<void> _pickImage() async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(
-        source: ImageSource.gallery); // Obtener la imagen desde la galería
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
-        _imageFile = File(pickedFile.path); // Actualiza la imagen
-        _textController.text = pickedFile
-            .name; // Puedes actualizar el campo con el nombre de la imagen si lo prefieres
+        _imageFile = File(pickedFile.path);
+        _textController.text = pickedFile.name;
       });
 
-      widget.onChanged(pickedFile
-          .path); // Notificar al padre la ruta de la imagen seleccionada
+      widget.onChanged(pickedFile.path);
     }
   }
 }

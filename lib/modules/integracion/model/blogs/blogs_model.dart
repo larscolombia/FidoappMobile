@@ -7,6 +7,7 @@ class BlogPost {
   final String blogImage;
   final int createdBy;
   final int updatedBy;
+  final String? url_video;
   final int? deletedBy;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -25,6 +26,7 @@ class BlogPost {
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
+    this.url_video,
   });
 
   // Método para crear una instancia de BlogPost desde un JSON
@@ -39,6 +41,7 @@ class BlogPost {
       createdBy: json['created_by'] ?? 0, // Asegurar que no sea nulo
       updatedBy: json['updated_by'] ?? 0, // Asegurar que no sea nulo
       deletedBy: json['deleted_by'], // Asegurar que permita nulos
+      url_video: json['url_video'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
       deletedAt: json['deleted_at'] != null

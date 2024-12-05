@@ -109,11 +109,15 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
               ),
               labelText: hasText ? null : widget.placeholder,
               labelStyle: TextStyle(
-                color: Styles.iconColorBack,
+                color: Colors.black,
+                fontSize: 14,
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.w500,
               ),
               errorText: _errorMessage,
               errorStyle: TextStyle(
-                  color: Colors.red), // Cambiar color del texto de error a rojo
+                  color:
+                      Colors.black), // Cambiar color del texto de error a rojo
               suffixIcon: widget.obscureText == true
                   ? IconButton(
                       icon: Icon(

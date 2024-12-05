@@ -10,26 +10,27 @@ class HistoriaMascotaComponent extends StatelessWidget {
     required this.categoryName,
     required this.applicationDate,
     required this.callback,
+    this.id,
   });
   final String? reportName;
   final String? categoryName;
   final String? applicationDate;
-
+  final String? id;
   final void Function()? callback;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
         color: Styles.whiteColor,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey),
+        border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            height: 55,
             child: Text(
               reportName ?? "Sin nombre",
               maxLines: 2,
@@ -41,7 +42,7 @@ class HistoriaMascotaComponent extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 10),
           Text(
             'Categoría: ${categoryName ?? 'N/A'}',
             style: const TextStyle(
@@ -59,6 +60,17 @@ class HistoriaMascotaComponent extends StatelessWidget {
               fontSize: 12,
             ),
           ),
+          const SizedBox(height: 10),
+          id != null
+              ? Text(
+                  'Informe: Nro. ${id}',
+                  style: const TextStyle(
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
+                  ),
+                )
+              : SizedBox(),
           const Spacer(),
           Align(
             alignment: Alignment.bottomCenter,

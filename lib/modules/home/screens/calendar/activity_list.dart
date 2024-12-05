@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 
@@ -14,11 +15,10 @@ class ActivityListScreen extends StatelessWidget {
     return Stack(
       children: [
         Obx(() {
-          final data =
-              calendarController.filteredCalendars; // Usa los eventos filtrados
+          final data = calendarController
+              .filteredCalendars.value; // Usa los eventos filtrados
 
           if (calendarController.isLoading.value) {
-            calendarController.getEventos();
             return const Center(
               child: CircularProgressIndicator(),
             );

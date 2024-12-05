@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/generated/assets.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
 import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -9,10 +11,10 @@ import 'package:pawlly/styles/styles.dart';
 class EntertainmentBlogs extends StatelessWidget {
   EntertainmentBlogs({super.key});
   final BlogController blogController = Get.put(BlogController());
-
+  final HomeController homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
-    blogController.fetchBlogPosts();
+    //blogController.fetchBlogPosts();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -36,8 +38,19 @@ class EntertainmentBlogs extends StatelessWidget {
               children: blogController.blogPosts.map((video) {
                 return GestureDetector(
                   onTap: () {
-                    // Acción al tocar un video
-                    print('Video seleccionado: ${video.id}');
+                    Get.to(CursoVideo(
+                      videoId: "",
+                      cursoId: video.id.toString(),
+                      name: video.name,
+                      description: video.description,
+                      image: video.blogImage,
+                      duration: "",
+                      price: "",
+                      difficulty: "blogs",
+                      videoUrl: video.url_video ?? "",
+                      tipovideo: 'blogs',
+                      dateCreated: video.createdAt.toString(),
+                    ));
                   },
                   child: Container(
                     margin: EdgeInsets.only(right: 16),
@@ -175,16 +188,21 @@ class EntertainmentBlogs extends StatelessWidget {
           onTap: () {
             print('Ver más de esta sección');
           },
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(
-                'Ver más de esta sección',
-                style: TextStyle(
-                  fontFamily: 'Lato',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: Styles.iconColorBack,
+              GestureDetector(
+                onTap: () {
+                  homeController.updateIndex(6);
+                },
+                child: Text(
+                  'Ver más de esta sección',
+                  style: TextStyle(
+                    fontFamily: 'Lato',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: Styles.iconColorBack,
+                  ),
                 ),
               ),
               SizedBox(width: 5),

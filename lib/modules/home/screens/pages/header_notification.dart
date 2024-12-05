@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/modules/notification/screens/notification_screens.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -13,19 +14,19 @@ class HeaderNotification extends StatelessWidget {
 
   final HomeController controller = Get.put(HomeController());
 
+  final NotificationController notificationController =
+      Get.find<NotificationController>();
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    print(
+        'Respuesta de las notificaciones: tienes un total de ${notificationController.countUnreadNotifications()}');
     return Container(
       height: 130,
       width: width,
       padding: Styles.paddingAll,
       decoration: const BoxDecoration(
         color: Styles.fiveColor,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(35),
-          bottomRight: Radius.circular(35),
-        ),
       ),
       child: Align(
         alignment:
@@ -68,10 +69,45 @@ class HeaderNotification extends StatelessWidget {
                         color: Styles.fiveColor,
                       ),
                       child: Center(
-                        child: Image.asset(
-                          fit: BoxFit.cover,
-                          Assets.notification,
-                        ),
+                        child: Obx(() {
+                          int unreadCount =
+                              notificationController.countUnreadNotifications();
+                          return Stack(
+                            children: [
+                              Image.asset(
+                                fit: BoxFit.cover,
+                                unreadCount > 0
+                                    ? 'assets/icons/notificaiones_active.png'
+                                    : 'assets/icons/notificaiones_active.png',
+                                width: 24,
+                                height: 24,
+                              ),
+                              if (unreadCount > 0)
+                                Positioned(
+                                  right: 0,
+                                  child: Container(
+                                    padding: EdgeInsets.all(1),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    constraints: BoxConstraints(
+                                      minWidth: 12,
+                                      minHeight: 12,
+                                    ),
+                                    child: Text(
+                                      unreadCount.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 8,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          );
+                        }),
                       ),
                     ),
                   ),

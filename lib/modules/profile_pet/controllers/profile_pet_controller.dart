@@ -13,9 +13,9 @@ class ProfilePetController extends GetxController {
   late PetData petProfile;
   var isEditing = false.obs;
   var selectedTab = 0.obs;
-  var petName = 'Oasis'.obs;
-  var petBreed = 'Golden Retriever'.obs;
-  var petDescription = 'sin descripción'.obs;
+  var petName = ''.obs;
+  var petBreed = ''.obs;
+  var petDescription = ''.obs;
   var petAge = ''.obs;
   var petBirthDate = '01/01/2021'.obs;
   var petWeight = ''.obs;
@@ -50,8 +50,8 @@ class ProfilePetController extends GetxController {
     // Ahora puedes inicializar las variables con los datos del perfil recibido
     petName.value = petProfile.name;
     petBreed.value = petProfile.breed;
-    petDescription.value =
-        'Una mascota muy amigable y juguetona.'; // Puedes ajustar esto si tienes una descripción en tu modelo
+    petDescription.value = petProfile.description ?? '';
+
     petAge.value = petProfile.age;
     petGender.value = petProfile.gender!;
     profileImagePath.value = petProfile.petImage ?? '';
@@ -114,6 +114,7 @@ class ProfilePetController extends GetxController {
       'additional_info': petDescription.value,
       'pet_image':
           profileImagePath.value.isNotEmpty ? profileImagePath.value : null,
+      'age': petAge.value,
     };
 
     // Llamar al servicio para editar el perfil de la mascota

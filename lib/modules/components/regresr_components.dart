@@ -6,15 +6,21 @@ class BarraBack extends StatelessWidget {
     super.key,
     required this.titulo,
     this.callback,
+    this.color = Styles.primaryColor, // Color por defecto
+    this.subtitle,
   });
 
   final String titulo;
+  final Color color;
+  final String? subtitle;
   final void Function()? callback;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           GestureDetector(
             onTap: callback,
@@ -24,20 +30,47 @@ class BarraBack extends StatelessWidget {
               child: Center(
                 child: Icon(
                   Icons.arrow_back_ios,
-                  color: Styles.fiveColor,
+                  color: Styles.fiveColor, // Usar el color personalizado
                   size: 20,
                 ),
               ),
             ),
           ),
-          SizedBox(width: 10),
-          Text(
-            titulo,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Lato',
-              color: Styles.primaryColor,
+          // Aquí envolvemos el contenido del texto en un Expanded
+          Expanded(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    titulo,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    softWrap:
+                        true, // Ajusta el texto automáticamente cuando sea necesario
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: 'PoetsenOne',
+                      color: color, // Usar el color personalizado
+                    ),
+                  ),
+                  if (subtitle != null)
+                    Text(
+                      subtitle!,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      softWrap:
+                          true, // Ajusta el texto automáticamente cuando sea necesario
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Lato',
+                        color: Styles.fiveColor, // Usar el color personalizado
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ],

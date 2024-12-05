@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
+import 'package:pawlly/modules/integracion/model/notigicaciones/notificaciones.dart';
 import 'package:pawlly/modules/notification/controllers/notification_controller.dart';
-import 'package:pawlly/models/notification_model.dart' as Model;
+
 import 'package:pawlly/modules/notification/screens/widgets/app_bar_notifications.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class NotificationsScreen extends StatelessWidget {
   final NotificationsController controller = Get.put(NotificationsController());
-
+  final NotificationController notificationController =
+      Get.find<NotificationController>();
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -25,14 +28,21 @@ class NotificationsScreen extends StatelessWidget {
           () => ListView(
             children: [
               _buildSectionTitle('Hoy'),
-              _buildNotificationList(controller.getTodayNotifications(),
+              _buildNotificationList(
+                  notificationController.getTodayNotifications(),
                   showTime: true),
-              _buildSectionTitle('Ayer'),
-              _buildNotificationList(controller.getYesterdayNotifications(),
+              notificationController.getYesterdayNotifications().length > 0
+                  ? _buildSectionTitle('Ayer')
+                  : Container(),
+              _buildNotificationList(
+                  notificationController.getYesterdayNotifications(),
                   showTime: true),
-              _buildSectionTitle('Anteriores'),
-              _buildNotificationList(controller.getOlderNotifications(),
-                  showTime: false),
+              notificationController.getOlderNotifications().length > 0
+                  ? _buildSectionTitle('Anteriores')
+                  : Container(),
+              _buildNotificationList(
+                  notificationController.getOlderNotifications(),
+                  showTime: true),
             ],
           ),
         ),
@@ -52,7 +62,7 @@ class NotificationsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildNotificationList(List<Model.NotificationModel> notifications,
+  Widget _buildNotificationList(List<NotificationData> notifications,
       {required bool showTime}) {
     return ListView.builder(
       shrinkWrap: true,
@@ -61,26 +71,24 @@ class NotificationsScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         final notification = notifications[index];
         return GestureDetector(
-          onTap: () {
-            _showNotificationDetails(context, notification);
-            controller
-                .markAsRead(notification); // Marcar como leída al seleccionar
-          },
+          onTap: () {},
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12),
-
             width:
                 double.infinity, // Asegurar que ocupe todo el ancho disponible
             margin: EdgeInsets.symmetric(vertical: 4.0),
             decoration: BoxDecoration(
-              color: notification.isRead ? Styles.whiteColor : Styles.fiveColor,
+              color: notification.isRead == 1
+                  ? Styles.whiteColor
+                  : Styles.fiveColor,
               borderRadius: BorderRadius.circular(8.0),
             ),
             child: Row(
               children: [
                 CircleAvatar(
                   radius: 30, // Aumenta el tamaño de la imagen
-                  backgroundImage: NetworkImage(notification.imageUrl),
+                  backgroundImage: NetworkImage(
+                      'https://via.placeholder.com/150'), // URL por defecto
                   backgroundColor: Colors
                       .transparent, // Asegura que el fondo sea transparente
                   child: Container(
@@ -99,7 +107,8 @@ class NotificationsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        notification.title,
+                        notification.description ??
+                            '', // Asumiendo que description es el título
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontFamily: 'Lato',
@@ -111,7 +120,7 @@ class NotificationsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            notification.type,
+                            notification.type ?? '',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Lato',
@@ -121,9 +130,10 @@ class NotificationsScreen extends StatelessWidget {
                           ),
                           Text(
                             showTime
-                                ? DateFormat('HH:mm').format(notification.date)
-                                : DateFormat('dd MMM')
-                                    .format(notification.date),
+                                ? DateFormat('HH:mm').format(
+                                    DateTime.parse(notification.createdAt!))
+                                : DateFormat('dd MMM').format(
+                                    DateTime.parse(notification.createdAt!)),
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Lato',
@@ -143,7 +153,7 @@ class NotificationsScreen extends StatelessWidget {
       },
     );
   }
-
+  /** 
   void _showNotificationDetails(
       BuildContext context, Model.NotificationModel notification) {
     showDialog(
@@ -170,5 +180,5 @@ class NotificationsScreen extends StatelessWidget {
         );
       },
     );
-  }
+  }*/
 }

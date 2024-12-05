@@ -31,7 +31,7 @@ class CursoUsuarioController extends GetxController {
   // Método para listar cursos
   Future<void> fetchCourses() async {
     // isLoading.value = true;
-
+    print('inicializando subscriccion de cursos');
     try {
       final response = await http.get(
         Uri.parse(
@@ -70,6 +70,7 @@ class CursoUsuarioController extends GetxController {
 
   Future<void> subscribeToCourse(int courseId) async {
     isLoading.value = true;
+
     try {
       final response = await http.post(
         Uri.parse('${DOMAIN_URL}/api/course-platform/subscribe'),

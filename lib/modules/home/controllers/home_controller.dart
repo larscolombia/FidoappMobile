@@ -12,7 +12,7 @@ import 'package:pawlly/services/training_service_apis.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class HomeController extends GetxController {
-  var selectedIndex = 1.obs;
+  var selectedIndex = 0.obs;
   var profiles = <PetData>[].obs; // Lista de perfiles usando el modelo
   var selectedProfile =
       Rxn<PetData>(); // Perfil seleccionado, inicialmente null
@@ -26,6 +26,8 @@ class HomeController extends GetxController {
   var calendarFormat = CalendarFormat.month.obs;
   var events = <DateTime, List<EventData>>{}.obs;
 
+  var SelectType = 0.obs;
+
 // Llamar al método cuando el controlador se inicializa
   @override
   void onInit() {
@@ -33,13 +35,17 @@ class HomeController extends GetxController {
     currentUser = AuthServiceApis.dataCurrentUser as UserData;
     profileImagePath.value = currentUser.profileImage;
     fetchProfiles();
-    fetchTraining();
+    //   fetchTraining();
     _loadEventsFromService();
   }
 
   // Método para actualizar el índice seleccionado
   void updateIndex(int index) {
     selectedIndex.value = index;
+  }
+
+  void selectType(int type) {
+    SelectType.value = type;
   }
 
   // Método para navegar a diferentes pantallas

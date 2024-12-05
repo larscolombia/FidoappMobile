@@ -14,17 +14,62 @@ class Styles {
   static const Color transparentColor = Colors.transparent;
   static const Color borderColor = Colors.grey;
   static const colorContainer = Color.fromRGBO(252, 246, 229, 1);
+  static const Color ColorText1 = Color.fromRGBO(56, 56, 56, 1.0);
+  static const Color iconColor = Color.fromRGBO(252, 186, 103, 1);
   static const TextStyle textProfile14w700 = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w700,
     fontFamily: 'Lato',
     color: blackColor,
   );
-
+  static const TextStyle textDescription = TextStyle(
+    fontSize: 14,
+    color: Colors.black,
+    fontFamily: "lato",
+    fontWeight: FontWeight.w400,
+  );
+  static const TextStyle textTituloLibros = TextStyle(
+    fontSize: 18,
+    color: Colors.black,
+    fontFamily: "lato",
+    fontWeight: FontWeight.w400,
+  );
+  static const TextStyle TextTitulo = TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w700,
+      fontFamily: 'PoetsenOne',
+      color: primaryColor);
   static const TextStyle textNameAvatar = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    fontFamily: 'Lato',
+    color: Colors.black,
+  );
+  static const TextStyle AvatarName = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w900,
     fontFamily: 'Lato',
-    color: primaryColor,
+    color: Colors.black,
+  );
+
+  static const TextStyle AvatarComentario = TextStyle(
+    fontSize: 14.0,
+    fontWeight: FontWeight.w400,
+    color: ColorText1,
+    fontFamily: 'Lato',
+  );
+
+  static const TextStyle TextTituloAutor = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w900,
+    fontFamily: 'Lato',
+    color: Colors.black,
+  );
+
+  static const TextStyle descripcion = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    color: Colors.black,
+    fontFamily: "lato",
   );
 }

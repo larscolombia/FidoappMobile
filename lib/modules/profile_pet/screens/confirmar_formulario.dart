@@ -4,27 +4,27 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/medical_histor_tab.dart';
+import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ConfirmarFormulario extends StatelessWidget {
   final HistorialClinicoController medicalHistoryController =
       Get.put(HistorialClinicoController());
-  final PetControllerv2 petController = Get.put(PetControllerv2());
+  final HomeController petController = Get.find<HomeController>();
+
   @override
   Widget build(BuildContext context) {
+    petController.selectType(0);
     return Scaffold(
       backgroundColor: Styles.fiveColor,
       body: Obx(() {
-        if (medicalHistoryController.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
         return Container(
           color: Styles.fiveColor,
           child: Container(
@@ -91,33 +91,95 @@ class ConfirmarFormulario extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          ShowHistorial(
+                          InputText(
                             label: 'Nombre del Informe',
-                            value: medicalHistoryController.reportData["name"]
+                            placeholder: '',
+                            initialValue: medicalHistoryController
+                                .reportData["name"]
                                 .toString(),
+                            prefiIcon: Icon(
+                              Icons.calendar_today,
+                              color: Color.fromRGBO(252, 186, 103, 1),
+                            ),
+                            suffixIcon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Color.fromRGBO(252, 186, 103, 1),
+                            ),
+                            onChanged: (value) {
+                              medicalHistoryController.updateField(
+                                  "fecha_aplicacion", value);
+                            },
+                            readOnly: true,
                           ),
                           const SizedBox(height: 20),
-                          ShowHistorial(
+                          InputText(
                             label: 'Fecha de aplicación',
-                            value: medicalHistoryController
+                            placeholder: '',
+                            initialValue: medicalHistoryController
                                 .reportData["fecha_aplicacion"]
                                 .toString(),
+                            prefiIcon: Icon(
+                              Icons.calendar_today,
+                              color: Color.fromRGBO(252, 186, 103, 1),
+                            ),
+                            suffixIcon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Color.fromRGBO(252, 186, 103, 1),
+                            ),
+                            onChanged: (value) {
+                              medicalHistoryController.updateField(
+                                  "fecha_aplicacion", value);
+                            },
+                            readOnly: true,
                           ),
                           const SizedBox(height: 20),
-                          ShowHistorial(
-                            label: 'Fecha de refuerzo de vacuna:',
-                            value: medicalHistoryController
+                          InputText(
+                            label: 'Nombre del Informe',
+                            placeholder: '',
+                            initialValue: medicalHistoryController
                                 .reportData["fecha_refuerzo"]
                                 .toString(),
+                            prefiIcon: Icon(
+                              Icons.calendar_today,
+                              color: Color.fromRGBO(252, 186, 103, 1),
+                            ),
+                            suffixIcon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Color.fromRGBO(252, 186, 103, 1),
+                            ),
+                            onChanged: (value) {
+                              medicalHistoryController.updateField(
+                                  "fecha_aplicacion", value);
+                            },
+                            readOnly: true,
                           ),
                           const SizedBox(height: 20),
-                          ShowHistorial(
-                            label: 'Nota adicionales',
-                            value: medicalHistoryController
-                                .reportData["fecha_refuerzo"]
+                          InputText(
+                            label: 'Notas adicionales',
+                            placeholder: '',
+                            initialValue: medicalHistoryController
+                                .reportData["notes"]
                                 .toString(),
+                            prefiIcon: Icon(
+                              Icons.calendar_today,
+                              color: Color.fromRGBO(155, 142, 127, 1),
+                            ),
+                            suffixIcon: Icon(
+                              Icons.arrow_drop_down,
+                              color: Color.fromRGBO(252, 186, 103, 1),
+                            ),
+                            onChanged: (value) {
+                              medicalHistoryController.updateField(
+                                  "fecha_aplicacion", value);
+                            },
+                            readOnly: true,
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 20),
+                          Container(
+                            width: 302,
+                            child: Divider(height: 0, thickness: .4),
+                          ),
+                          const SizedBox(height: 20),
                           Container(
                             width: 302,
                             child: Text(
@@ -127,54 +189,9 @@ class ConfirmarFormulario extends StatelessWidget {
                           ),
                           const SizedBox(height: 10),
                           Container(
-                            width: 302,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey, width: 1),
-                            ),
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: const NetworkImage(
-                                    "https://via.placeholder.com/150"),
-                                backgroundColor: Colors.transparent,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Styles
-                                          .iconColorBack, // Cambia al color que desees
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              title: Text(
-                                petController.selectedPet.value!.name,
-                                style: Styles.textProfile14w700,
-                              ),
-                              subtitle: RichText(
-                                text: TextSpan(
-                                  text: petController.selectedPet.value!.age
-                                          .toString() ??
-                                      '',
-                                  style: Styles
-                                      .textProfile12w400, // Usa tu estilo aquí
-                                  children: const [
-                                    TextSpan(
-                                      text: ' | Pendiente',
-                                      style: TextStyle(
-                                          color:
-                                              Colors.black), // Texto en negro
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              trailing: const Icon(
-                                Icons.arrow_forward_ios,
-                                color: Styles
-                                    .iconColorBack, // Cambia al color que desees
-                              ),
+                            width: 305,
+                            child: ProfilesDogs(
+                              isSelect: true,
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -212,12 +229,43 @@ class ConfirmarFormulario extends StatelessWidget {
                                     child: ButtonDefaultWidget(
                                       title: 'Terminar Informe  >',
                                       callback: () {
-                                        medicalHistoryController.submitReport();
+                                        // Asegúrate de que selectedProfile no sea nulo antes de acceder a sus propiedades
+                                        if (petController
+                                                .selectedProfile.value !=
+                                            null) {
+                                          // Accede al valor del perfil de la mascota correctamente
+                                          final petId = petController
+                                              .selectedProfile.value!.id
+                                              .toString();
 
-                                        if (medicalHistoryController
-                                            .isSuccess.value) {
-                                          print('');
-                                          Get.to(ProfilePetScreen());
+                                          // Actualiza el campo 'pet_id' en el controlador de historial médico
+                                          medicalHistoryController.updateField(
+                                              'pet_id', petId);
+                                          print(
+                                              'medical history ${medicalHistoryController.reportData}');
+
+                                          // Envía el informe
+                                          medicalHistoryController
+                                              .submitReport();
+
+                                          // Actualiza el campo 'pet_id' nuevamente (esto parece redundante, tal vez quieras eliminarlo)
+                                          medicalHistoryController.updateField(
+                                              'pet_id', petId);
+
+                                          // Si el controlador está cargando, navega a la página del perfil de la mascota
+                                          if (medicalHistoryController
+                                              .isLoading.value) {
+                                            Get.toNamed(
+                                              Routes.PROFILEPET,
+                                              arguments: petController
+                                                  .selectedProfile
+                                                  .value, // Pasa el perfil de la mascota
+                                            );
+                                          }
+                                        } else {
+                                          // Si el perfil seleccionado es nulo, maneja el caso aquí (puedes mostrar un mensaje de error, por ejemplo)
+                                          print(
+                                              'No se ha seleccionado un perfil de mascota.');
                                         }
                                       },
                                     ),

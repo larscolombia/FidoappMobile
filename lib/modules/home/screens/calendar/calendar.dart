@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/calendar/formulario_evento.dart';
+import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
+import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 
 import 'package:pawlly/styles/styles.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatelessWidget {
   final HomeController controller = Get.find<HomeController>();
-
+  final UserController userController = Get.put(UserController());
+  final CalendarController calendarController = Get.put(CalendarController());
+  // final CalendarController calendarController = Get.find<CalendarController>();
   Calendar({super.key});
 
   @override
@@ -89,17 +95,47 @@ class Calendar extends StatelessWidget {
             );
           }),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              FloatingActionButton(
-                onPressed: () {
-                  Get.to(() => CreateEvent());
-                },
-                backgroundColor: Styles.primaryColor,
-                child: const Icon(Icons.add, color: Colors.white),
-              ),
-            ],
+          Container(
+            width: 325,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 248,
+                  child: InputText(
+                    fondoColor: Colors.white,
+                    onChanged: (value) {
+                      calendarController.filterEvent(value);
+                    },
+                    prefiIcon: Icon(Icons.search_outlined),
+                    placeholder: 'Realiza tu búsqueda',
+                  ),
+                ),
+                const SizedBox(width: 16),
+                FloatingActionButton(
+                  onPressed: () {
+                    Get.to(() => CreateEvent());
+                  },
+                  clipBehavior: Clip.antiAlias,
+                  backgroundColor: Styles.primaryColor,
+                  shape: CircleBorder(), // Forma redonda asegurada
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            child: RecargaComponente(
+              callback: () {
+                calendarController.getEventos();
+              },
+            ),
           ),
         ],
       ),

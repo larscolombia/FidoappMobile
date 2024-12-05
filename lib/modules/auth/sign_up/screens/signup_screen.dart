@@ -184,7 +184,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                   children: [
                                     Obx(
                                       () => Container(
-                                        width: width - 50,
+                                        width: 305,
                                         alignment: Alignment.center,
                                         padding: EdgeInsets.only(
                                             bottom: 10, top: 10),
@@ -255,18 +255,28 @@ class SignUpScreen extends GetView<SignUpController> {
                       ),
                       SizedBox(height: 20),
                       // Botón de registro
-                      Center(
-                        child: ButtonDefaultWidget(
-                          callback: () {
-                            _autoValidate.value = true;
-                            if (_signUpformKey.currentState!.validate()) {
-                              _signUpformKey.currentState!.save();
-                              controller.saveForm();
-                            }
-                          },
-                          title: locale.value.signUp,
-                        ),
-                      ),
+                      Obx(() {
+                        if (controller.isLoading.value) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        return Center(
+                          child: ButtonDefaultWidget(
+                            callback: () {
+                              _autoValidate.value = true;
+
+                              if (_signUpformKey.currentState!.validate()) {
+                                _signUpformKey.currentState!.save();
+                                controller.saveForm();
+                              }
+                            },
+                            title: locale.value.signUp,
+                          ),
+                        );
+                      }),
+
                       SizedBox(
                         height: 20,
                       ),

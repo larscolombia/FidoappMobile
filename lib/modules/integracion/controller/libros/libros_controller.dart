@@ -10,16 +10,22 @@ class EBookController extends GetxController {
   var selectedEBook = EBook().obs; // E-book seleccionado
   var isLoading = false.obs; // Indicador de carga
   var idLibro = "".obs;
+  var filteredEBooks = <EBook>[].obs; // Lista de libros filtrados
 
   void setIdLibro(String id) {
     idLibro.value = id;
   }
 
+  @override
+  void onInit() {
+    super.onInit();
+    fetchEBooks();
+  }
+
   // Método para obtener los e-books desde la API
   Future<void> fetchEBooks() async {
     isLoading.value = true;
-    final url =
-        '${DOMINIO_LOCAL}/api/e-books'; // Reemplaza con la URL de tu API
+    final url = '${DOMAIN_URL}/api/e-books'; // Reemplaza con la URL de tu API
     print('url $url');
     try {
       final response = await http.get(
@@ -38,6 +44,8 @@ class EBookController extends GetxController {
           ebooks.value = (data['data'] as List)
               .map((ebook) => EBook.fromJson(ebook))
               .toList();
+          print('cargando libros en el sistema ${data['data']}');
+          filteredEBooks.value = ebooks;
         } else {
           print('Error: ${data['message']}');
         }
@@ -51,37 +59,32 @@ class EBookController extends GetxController {
     }
   }
 
-  Future<void> fetchEBookById(String id) async {
-    isLoading(true);
-    final url =
-        '${DOMINIO_LOCAL}/api/e-books/$id'; // Reemplaza con la URL de tu API
-
+  // Método para seleccionar un e-book de la lista sin hacer una petición
+  void selectEBookById(String id) {
     try {
-      final response = await http.get(
-        Uri.parse(url),
-        headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true',
-        },
-      );
-
-      final data = json.decode(response.body);
-      print('buscar libro $data');
-      if (response.statusCode == 200) {
-        if (data['success']) {
-          // Mapear el e-book desde el JSON
-          selectedEBook.value = EBook.fromJson(data['data']);
-        } else {
-          print('Error: ${data['message']}');
-        }
+      idLibro.value = id;
+      final ebook = ebooks.firstWhere((book) => book.id.toString() == id,
+          orElse: () => EBook());
+      if (ebook.id != null) {
+        selectedEBook.value = ebook;
       } else {
-        print('Error HTTP: ${response.statusCode}');
+        print('E-book no encontrado');
       }
     } catch (e) {
-      print('Error fetching eBook: $e');
-    } finally {
-      isLoading.value = false;
+      print('Error seleccionando eBook: $e');
+    }
+  }
+
+  void filterEBooks(String? query) {
+    if (query == null || query.isEmpty || query == "0") {
+      filteredEBooks.value =
+          ebooks; // Mostrar todos los libros si no hay filtro
+    } else {
+      filteredEBooks.value = ebooks
+          .where((book) =>
+              book.description?.toLowerCase().contains(query.toLowerCase()) ??
+              false)
+          .toList();
     }
   }
 }

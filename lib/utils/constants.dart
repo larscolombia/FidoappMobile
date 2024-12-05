@@ -15,8 +15,8 @@ class Constants {
   static var labelTextSize = 15;
   static var googleMapPrefix =
       'https://www.google.com/maps/search/?api=1&query=';
-  static const DEFAULT_EMAIL = 'john@gmail.com';
-  static const DEFAULT_PASS = '12345678';
+  static const DEFAULT_EMAIL = '';
+  static const DEFAULT_PASS = '';
   static const appLogoSize = 98.0;
   static const DECIMAL_POINT = 2;
 }
@@ -47,7 +47,7 @@ const THEME_MODE_SYSTEM = 2;
 
 //region LOGIN TYPE
 class LoginTypeConst {
-  static const LOGIN_TYPE_USER = 'vet'; // aqui va el role
+  static const LOGIN_TYPE_USER = 'vet'; // aqui va el role pisa papel
   static const LOGIN_TYPE_GOOGLE = 'google';
   static const LOGIN_TYPE_APPLE = 'apple';
   static const LOGIN_TYPE_OTP = 'mobile';

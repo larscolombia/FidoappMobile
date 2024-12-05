@@ -20,7 +20,7 @@ class Pet {
   final String? createdBy;
   final String? updatedBy;
   final String? deletedBy;
-
+  final String? description;
   Pet({
     required this.id,
     required this.name,
@@ -43,6 +43,7 @@ class Pet {
     this.createdBy,
     this.updatedBy,
     this.deletedBy,
+    this.description,
   });
 
   factory Pet.fromJson(Map<String, dynamic> json) {
@@ -51,10 +52,11 @@ class Pet {
       name: json['name'] ?? '',
       slug: json['slug'] ?? '',
       pettype: json['pettype'] ?? '',
-      breed: json['breed'] ?? '',
+      breed: json['breed'] ?? 'no se encontro',
       breedId: json['breed_id'].toString(), // Convertir a String
       size: json['size'],
-      petImage: json['pet_image'],
+      petImage: json['pet_image'] ??
+          'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
       dateOfBirth: json['date_of_birth'] != null
           ? DateTime.parse(json['date_of_birth'])
           : null,
@@ -73,6 +75,7 @@ class Pet {
           json['updated_by']?.toString(), // Convertir a String si no es nulo
       deletedBy:
           json['deleted_by']?.toString(), // Convertir a String si no es nulo
+      description: json['description'],
     );
   }
 }

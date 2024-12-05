@@ -21,7 +21,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
   String _imagePath = ""; // Para almacenar la ruta de la imagen seleccionada
   final PetActivityController controller = Get.put(PetActivityController());
   // Función para seleccionar la imagen
-  final HomeController homeController = Get.find<HomeController>();
+  final HomeController homeController = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,20 +79,13 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                     topRight: Radius.circular(
                         30), // Redondear la parte superior derecha
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: Offset(0, -5), // Sombra hacia arriba
-                    ),
-                  ],
                 ),
                 padding: EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     BarraBack(
-                      titulo: 'Diario de Mascotas',
+                      titulo: 'Nuevo Registro',
                       callback: () {
                         Get.back();
                         print('Regresar al Diario de Mascotas');
@@ -202,6 +195,11 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               return ButtonDefaultWidget(
                                   title: 'Finalizar',
                                   callback: () {
+                                    controller.updateField(
+                                        'pet_id',
+                                        homeController
+                                            .selectedProfile.value!.id);
+                                    print(controller.diario);
                                     controller.addPetActivity();
                                   });
                             }),

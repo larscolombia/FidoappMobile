@@ -37,10 +37,10 @@ class CalendarController extends GetxController {
           'Content-Type': 'application/json',
         },
       );
-
+      print('data calendario: ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-
+        print('data calendario: $data');
         allCalendars.value = (data['data'] as List)
             .map((item) => CalendarModel.fromJson(item))
             .toList();
@@ -49,9 +49,22 @@ class CalendarController extends GetxController {
         Get.snackbar("Error", "Failed to fetch histories");
       }
     } catch (e) {
-      print("Calendario error: $e");
+      print("data calendario : $e");
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  void filterEvent(String busqueda) {
+    // Si la búsqueda está vacía, simplemente asigna todos los eventos a filteredCalendars
+    if (busqueda.isEmpty) {
+      filteredCalendars.value = allCalendars;
+    } else {
+      // Filtrar eventos que contengan la búsqueda en su nombre
+      filteredCalendars.value = allCalendars
+          .where((event) =>
+              event.name.toLowerCase().contains(busqueda.toLowerCase()))
+          .toList();
     }
   }
 
@@ -78,8 +91,21 @@ class CalendarController extends GetxController {
     'tipo': "salud",
     'status': true,
     'pet_id': '',
-    'owner_id': 12,
+    'owner_id': '',
   }.obs;
+  bool validateEvent(Map<String, dynamic> event) {
+    return event['name']?.isNotEmpty == true &&
+        event['date']?.isNotEmpty == true &&
+        event['event_time']?.isNotEmpty == true &&
+        event['slug']?.isNotEmpty == true &&
+        event['user_id'] != null &&
+        event['description']?.isNotEmpty == true &&
+        event['location']?.isNotEmpty == true &&
+        event['tipo']?.isNotEmpty == true &&
+        event['status'] != null &&
+        event['pet_id'] != null &&
+        event['owner_id'] != null;
+  }
 
   void updateField(String key, dynamic value) {
     event[key] = value;
@@ -87,7 +113,7 @@ class CalendarController extends GetxController {
 
   Future<void> postEvent() async {
     isLoading.value = true;
-    isSuccess.value = true;
+    isSuccess.value = false;
     print('metadata evento : ${jsonEncode(event.toJson())}');
     try {
       final response = await http.post(
@@ -98,14 +124,12 @@ class CalendarController extends GetxController {
         },
         body: jsonEncode(event.toJson()),
       );
-      print('response ${response.body}');
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        print("Evento creado exitosamente");
 
-        isSuccess.value = false;
-      } else {
-        print("Error al crear el evento: ${response.body}");
-      }
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("Evento creado exitosamente {$response.body}");
+
+        isSuccess(true);
+      } else {}
     } catch (e) {
       print('Error al enviar los datos: $e');
       Get.snackbar("Error", "Error al enviar los datos");

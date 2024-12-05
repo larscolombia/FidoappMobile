@@ -9,15 +9,20 @@ import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ProfilesDogs extends StatelessWidget {
-  ProfilesDogs({super.key});
+  ProfilesDogs(
+      {super.key, this.isSelect = false}); // Añadir el parámetro opcional
 
   // Instancia del controlador para manejar el estado
   final HomeController controller = Get.put(HomeController());
+  final bool isSelect; // Declarar el campo
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return PerfilMascotas(controller: controller, width: width);
+    return PerfilMascotas(
+        controller: controller,
+        width: width,
+        isSelect: isSelect); // Pasar el campo
   }
 }
 
@@ -26,10 +31,14 @@ class PerfilMascotas extends StatelessWidget {
     super.key,
     required this.controller,
     required this.width,
+    this.formulario = false,
+    this.isSelect = false, // Campo opcional con valor predeterminado
   });
 
   final HomeController controller;
   final double width;
+  final bool formulario;
+  final bool isSelect; // Campo opcional
 
   @override
   Widget build(BuildContext context) {

@@ -43,8 +43,8 @@ class InputSelect extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Styles.primaryColor, width: 1),
-              color: Styles.primaryColor,
+              border: Border.all(color: Styles.fiveColor, width: .5),
+              color: Styles.fiveColor,
             ),
             child: DropdownButtonFormField<String>(
               decoration: InputDecoration(

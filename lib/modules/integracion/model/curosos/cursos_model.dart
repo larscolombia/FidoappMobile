@@ -1,9 +1,10 @@
 class Video {
-  int id;
-  int coursePlatformId;
+  String id;
+  String coursePlatformId;
   String url;
   String video;
-  String? price;
+  String? visualizations;
+
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -12,18 +13,18 @@ class Video {
     required this.coursePlatformId,
     required this.url,
     required this.video,
-    this.price,
+    required this.visualizations,
     required this.createdAt,
     required this.updatedAt,
   });
 
   factory Video.fromJson(Map<String, dynamic> json) {
     return Video(
-      id: json['id'],
-      coursePlatformId: json['course_platform_id'],
+      id: json['id'].toString(),
+      coursePlatformId: json['course_platform_id'].toString(),
       url: json['url'],
       video: json['video'],
-      price: json['price'],
+      visualizations: json['visualizations'].toString(),
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
     );
