@@ -9,7 +9,7 @@ class SelectedAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 300,
+      width: 270,
       height: 75,
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(

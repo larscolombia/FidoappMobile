@@ -142,50 +142,55 @@ class PetService {
   }
 
   static Future<PetData?> postCreatePetApi({
-    required Map<String, dynamic> body, // Recibe el body ya validado
+    required Map<String, String> body, // Recibe el body ya validado
+    required String imagePath, // Ruta de la imagen
   }) async {
     if (isLoggedIn.value) {
-      // Construir la URL completa
       final url = Uri.parse('${BASE_URL}${APIEndPoints.getPetList}');
 
-      // Imprimir la URL completa
       print('URL completa: $url');
-
-      // Imprimir el cuerpo de la solicitud
       print('Cuerpo de la solicitud (JSON): ${jsonEncode(body)}');
 
-      // Realizar la solicitud POST con el token en los headers
-      final response = await http.post(
-        url,
-        headers: {
+      try {
+        var request = http.MultipartRequest('POST', url);
+
+        request.headers.addAll({
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
-        },
-        body: jsonEncode(body), // Convertir el body a JSON
-      );
+        });
 
-      print('responseee ${response.statusCode}');
-      print('Respuesta completa: ${response.body}');
+        body.forEach((key, value) {
+          request.fields[key] = value;
+        });
 
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        try {
-          // Parsear la respuesta JSON
-          final responseData = jsonDecode(response.body);
-          if (responseData.containsKey('data')) {
-            // Asegúrate de que el modelo PetData pueda manejar los datos correctamente
-            final petData = PetData.fromJson(responseData['data']);
+        if (imagePath.isNotEmpty) {
+          request.files.add(await http.MultipartFile.fromPath(
+            'pet_image',
+            imagePath,
+          ));
+        }
+
+        var response = await request.send();
+        var responseData = await http.Response.fromStream(response);
+        print('responseee ${responseData.statusCode}');
+        print('Respuesta completa: ${responseData.body}');
+
+        if (responseData.statusCode == 201 || responseData.statusCode == 200) {
+          final responseDataJson = jsonDecode(responseData.body);
+          if (responseDataJson.containsKey('data')) {
+            final petData = PetData.fromJson(responseDataJson['data']);
             return petData;
           } else {
             print('Advertencia: la respuesta no contiene el campo "data".');
             return null;
           }
-        } catch (e) {
-          print('Error al parsear la respuesta: $e');
+        } else {
+          print('Error en la solicitud: ${responseData.statusCode}');
+          print('Respuesta: ${responseData.body}');
           return null;
         }
-      } else {
-        print('Error en la solicitud: ${response.statusCode}');
-        print('Respuesta: ${response.body}');
+      } catch (e) {
+        print('Error al crear la mascota: $e');
         return null;
       }
     } else {
@@ -334,4 +339,8 @@ class PetService {
       loaderOff.call();
     });
   }
+
+  //actulizar mascota
+
+  // Método para actualizar la información de una mascota
 }

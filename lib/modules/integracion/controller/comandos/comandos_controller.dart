@@ -1,6 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/util/util.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'dart:convert';
@@ -8,25 +13,38 @@ import 'dart:convert';
 import '../../model/comandos_model/comandos_model.dart';
 
 class ComandoController extends GetxController {
+  final HomeController homeController = Get.find();
   var comandoList = <Comando>[].obs;
-  var isLoading = true.obs;
+  var isLoading = false.obs;
   final String apiUrl = "${DOMAIN_URL}/api"; // Reemplaza con tu URL de API
-
+  var selectedComando =
+      Rxn<Comando>(); // Variable observable para el comando seleccionado
   @override
   void onInit() {
     super.onInit();
+    fetchComandos(
+      homeController.selectedProfile.value!.id.toString() ?? "0",
+    );
   }
 
-  void url() {
-    print('comandos de entrenamientos ${Uri.parse('$apiUrl/comandos')}');
+  void selectComando(Comando comando) {
+    selectedComando.value = comando;
   }
 
-  void fetchComandos() async {
+  void deselectComando() {
+    selectedComando.value = null;
+  }
+
+  void fetchComandos(String petId) async {
+    isLoading.value = true;
     try {
-      final response = await http.get(Uri.parse('$apiUrl/comandos'), headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-      });
+      final response = await http.get(
+          Uri.parse('$apiUrl/comandos/commands-by-user/get?pet_id=${petId}'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization':
+                'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          });
       print('Comandos de entrenamientos ${json.decode(response.body)}');
       print('comandos de entrenamientos ${Uri.parse('$apiUrl/comandos')}');
       if (response.statusCode == 200) {
@@ -115,30 +133,63 @@ class ComandoController extends GetxController {
     }
   }
 
-  final List<Map<String, String>> dummyData = [
-    {
-      "Comando": "Sentarse",
-      "Acción": "El perro se sienta",
-      "Aprendido": "Sí",
-      "Comando personalizado": ""
-    },
-    {
-      "Comando": "Quieto",
-      "Acción": "El perro se queda quieto",
-      "Aprendido": "No",
-      "Comando personalizado": ""
-    },
-    {
-      "Comando": "Buscar",
-      "Acción": "El perro trae el objeto",
-      "Aprendido": "Sí",
-      "Comando personalizado": "Busca pelota"
-    },
-    {
-      "Comando": "Buscar",
-      "Acción": "El perro trae el objeto",
-      "Aprendido": "Sí",
-      "Comando personalizado": "Busca pelota"
-    },
-  ];
+  final List<Map<String, String>> dummyData = [];
+
+  //crear comando
+
+  var dataComando = {
+    "name": "Comando 1",
+    "description": "Descripción del comando 1",
+    "type": "especializado",
+    "is_favorite": true,
+    "category_id": 1,
+    "voz_comando": "Voz de comando 1",
+    "instructions": "Instrucciones del comando 1",
+    "pet_id": ''
+  }.obs;
+
+  void updateField(String key, dynamic value) {
+    dataComando[key] = value;
+  }
+
+  //crear comando
+
+  Future<void> postCommand(Map<String, dynamic> dataComando) async {
+    final url = Uri.parse('${BASE_URL}comandos');
+    isLoading.value = true;
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization':
+              'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Ajusta esto según sea necesario
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(dataComando),
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Éxito',
+            description: 'La mascota ha sido eliminada exitosamente.',
+            primaryButtonText: 'Aceptar',
+            onPrimaryButtonPressed: () {
+              Get.off(HomeScreen()); // Cerrar el diálogo
+            },
+          ),
+          barrierDismissible:
+              false, // No permite cerrar el diálogo tocando fuera
+        );
+      } else {
+        print('Error en la solicitud: ${response.statusCode}');
+        print('Respuesta: ${response.body}');
+      }
+    } catch (e) {
+      print('Error al crear el comando: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }

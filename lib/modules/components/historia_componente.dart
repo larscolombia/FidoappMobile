@@ -33,7 +33,7 @@ class HistoriaMascotaComponent extends StatelessWidget {
           SizedBox(
             child: Text(
               reportName ?? "Sin nombre",
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontFamily: 'Lato',
@@ -45,6 +45,8 @@ class HistoriaMascotaComponent extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             'Categoría: ${categoryName ?? 'N/A'}',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontFamily: 'Lato',
               fontWeight: FontWeight.w700,

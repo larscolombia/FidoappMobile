@@ -37,40 +37,38 @@ class BarraBack extends StatelessWidget {
             ),
           ),
           // Aquí envolvemos el contenido del texto en un Expanded
-          Expanded(
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+          Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  titulo,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  softWrap:
+                      true, // Ajusta el texto automáticamente cuando sea necesario
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'PoetsenOne',
+                    color: color, // Usar el color personalizado
+                  ),
+                ),
+                if (subtitle != null)
                   Text(
-                    titulo,
+                    subtitle!,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     softWrap:
                         true, // Ajusta el texto automáticamente cuando sea necesario
                     style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: 'PoetsenOne',
-                      color: color, // Usar el color personalizado
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Lato',
+                      color: Styles.fiveColor, // Usar el color personalizado
                     ),
                   ),
-                  if (subtitle != null)
-                    Text(
-                      subtitle!,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      softWrap:
-                          true, // Ajusta el texto automáticamente cuando sea necesario
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Lato',
-                        color: Styles.fiveColor, // Usar el color personalizado
-                      ),
-                    ),
-                ],
-              ),
+              ],
             ),
           ),
         ],

@@ -123,7 +123,7 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               Text(
-                controller.petDescription.value,
+                controller.petProfile.description ?? "no lo ha colocado aún",
                 style: Styles.textProfile15w400,
               ),
               const SizedBox(height: 20),
@@ -141,7 +141,7 @@ class InformationTab extends StatelessWidget {
                     style: Styles.textProfile14w400,
                   ),
                   subtitle: Text(
-                    "${controller.petAge}",
+                    "${controller.petProfile.age ?? "no lo ha colocado aún"}",
                     style: Styles.textProfile14w800,
                   ),
                   trailing: Column(
@@ -177,7 +177,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          controller.petWeight.value,
+                          '${controller.petProfile.weight}kg',
                           style: Styles.textProfile14w800,
                         ),
                       ),

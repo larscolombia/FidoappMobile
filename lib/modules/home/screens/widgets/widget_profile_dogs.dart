@@ -195,22 +195,22 @@ class ProfileModal extends StatelessWidget {
                                       ),
                                     ),
                                     SizedBox(height: 8),
-                                    if (controller.SelectType == 1)
-                                      ButtonDefaultWidget(
-                                        heigthButtom: 40,
-                                        borderSize: 30,
-                                        title: 'Ver perfil >',
-                                        callback: () {
-                                          medicalHistoryController.updateField(
-                                              "pet_id", profile.id.toString());
+                                    ButtonDefaultWidget(
+                                      heigthButtom: 40,
+                                      borderSize: 30,
+                                      title: 'Ver perfil >',
+                                      callback: () {
+                                        controller.updateProfile(profile);
+                                        medicalHistoryController.updateField(
+                                            "pet_id", profile.id.toString());
 
-                                          Get.toNamed(
-                                            Routes.PROFILEPET,
-                                            arguments:
-                                                profile, // Pasar el perfil de la mascota como argumento
-                                          );
-                                        },
-                                      ),
+                                        Get.toNamed(
+                                          Routes.PROFILEPET,
+                                          arguments:
+                                              profile, // Pasar el perfil de la mascota como argumento
+                                        );
+                                      },
+                                    ),
                                   ],
                                 ),
                               ),

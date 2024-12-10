@@ -51,16 +51,7 @@ class AddPetController extends GetxController {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      petImage.value = image;
-
-      // Leer la imagen como un archivo
-      final File imageFile = File(image.path);
-
-      // Leer los bytes de la imagen
-      final bytes = await imageFile.readAsBytes();
-
-      // Convertir los bytes a una cadena en Base64 y almacenarlo
-      base64Image.value = base64Encode(bytes);
+      petImage.value = image; // Mantener la referencia al archivo de imagen
     }
   }
 
@@ -85,46 +76,43 @@ class AddPetController extends GetxController {
 
       petWeight.value = double.tryParse(petWeightController.text) ?? 0.0;
 
-      Map<String, dynamic> petData = {
+      Map<String, String> petData = {
         'name': petName.text,
-        'description': petDescription.text,
-        'pet_image': petImage.value != null ? base64Image.value : null,
+        'additional_info': petDescription.text,
         'date_of_birth': petBirthDateController.text,
         'breed_name': petBreed.text,
         'gender': petGender.value,
-        'weight': petWeight.value,
-        'user_id': AuthServiceApis.dataCurrentUser.id,
+        'weight': petWeight.value.toString(),
+        'user_id': AuthServiceApis.dataCurrentUser.id.toString(),
       };
 
-      // Eliminar las claves con valores nulos o vacíos
-      petData.removeWhere(
-          (key, value) => value == null || value == '' || value == 0.0);
+      print('petData: $petData');
+      petData.removeWhere((key, value) => value == null || value.isEmpty);
 
       try {
-        final newPet = await PetService.postCreatePetApi(body: petData);
+        final newPet = await PetService.postCreatePetApi(
+          body: petData,
+          imagePath: petImage.value?.path ?? '', // Añadir la ruta de la imagen
+        );
 
         if (newPet != null) {
-          // Actualizar la lista de mascotas en HomeController
           final homeController = Get.find<HomeController>();
-          homeController.profiles
-              .add(newPet); // Agregar la nueva mascota a la lista
-          homeController.profiles.refresh(); // Refrescar la lista
+          homeController.profiles.add(newPet);
+          homeController.profiles.refresh();
 
-          // Mostrar el diálogo de éxito
           Get.dialog(
+            //pisa papel
             CustomAlertDialog(
               icon: Icons.check_circle_outline,
               title: 'Mascota creada',
               description: 'La mascota ha sido creada exitosamente.',
               primaryButtonText: 'Continuar',
               onPrimaryButtonPressed: () {
-                Get.back(); // Cerrar el diálogo
-                Get.back(); // Regresar a la pantalla anterior
                 Get.back();
+                //Get.offAll(HomeScreen());
               },
             ),
-            barrierDismissible:
-                false, // No permite cerrar el diálogo tocando fuera
+            barrierDismissible: false,
           );
         } else {
           throw Exception('Error al crear la mascota');
@@ -132,25 +120,24 @@ class AddPetController extends GetxController {
       } catch (e) {
         print('Error al crear la mascota: $e');
 
-        // Mostrar el diálogo de error
         Get.dialog(
           CustomAlertDialog(
             icon: Icons.error_outline,
             title: 'Error',
-            description: 'Hubo un problema al crear la mascota.',
+            description: 'Hubo un problema al crear la mascota: $e',
             primaryButtonText: 'Regresar',
             onPrimaryButtonPressed: () {
-              Get.back(); // Cerrar el diálogo
+              Get.back();
             },
           ),
-          barrierDismissible:
-              false, // No permite cerrar el diálogo tocando fuera
+          barrierDismissible: false,
         );
       } finally {
         isLoading(false);
       }
     }
   }
+  //actulizar mascota
 
   @override
   void onClose() {

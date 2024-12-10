@@ -38,6 +38,7 @@ dependencies:
   video_player: ^2.5.0
   nb_utils: ^7.0.3
   get: ^4.6.6
+ 
   smooth_page_indicator: ^1.2.0+3
   badges: ^2.0.1
   google_fonts: ^6.2.1

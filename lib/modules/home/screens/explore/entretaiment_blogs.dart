@@ -19,7 +19,7 @@ class EntertainmentBlogs extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Título de la sección
-        Text(
+        const Text(
           'Blogs y Entrenamientos',
           style: TextStyle(
             fontSize: 20,
@@ -53,8 +53,8 @@ class EntertainmentBlogs extends StatelessWidget {
                     ));
                   },
                   child: Container(
-                    margin: EdgeInsets.only(right: 16),
-                    padding: EdgeInsets.all(12),
+                    margin: const EdgeInsets.only(right: 16),
+                    padding: const EdgeInsets.all(12),
                     width: MediaQuery.of(context).size.width * 0.6,
                     decoration: BoxDecoration(
                       color: Styles.whiteColor,
@@ -111,13 +111,13 @@ class EntertainmentBlogs extends StatelessWidget {
                               bottom: 8,
                               right: 8,
                               child: Container(
-                                padding: EdgeInsets.symmetric(
+                                padding: const EdgeInsets.symmetric(
                                     vertical: 4, horizontal: 6),
                                 decoration: BoxDecoration(
                                   color: Colors.black.withOpacity(0.7),
                                   borderRadius: BorderRadius.circular(5),
                                 ),
-                                child: Text(
+                                child: const Text(
                                   "Necesitamos la duración",
                                   style: TextStyle(
                                     fontFamily: 'Lato',
@@ -134,7 +134,7 @@ class EntertainmentBlogs extends StatelessWidget {
                         // Tema del video
                         Text(
                           video.tags ?? 'Videos de Entrenamiento',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Lato',
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
@@ -145,14 +145,14 @@ class EntertainmentBlogs extends StatelessWidget {
                         // Fecha y cantidad de visualizaciones
                         Text(
                           '${video.createdAt.toString()}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Lato',
                             fontSize: 12,
                             fontWeight: FontWeight.w400,
                             color: Styles.greyTextColor,
                           ),
                         ),
-                        Text(
+                        const Text(
                           'Necesitamos la cantidad de visualizaciones',
                           style: TextStyle(
                             fontFamily: 'Lato',
@@ -167,7 +167,7 @@ class EntertainmentBlogs extends StatelessWidget {
                           video.name,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Lato',
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
@@ -182,7 +182,7 @@ class EntertainmentBlogs extends StatelessWidget {
             );
           }),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         // Ver más sección
         GestureDetector(
           onTap: () {
@@ -195,7 +195,7 @@ class EntertainmentBlogs extends StatelessWidget {
                 onTap: () {
                   homeController.updateIndex(6);
                 },
-                child: Text(
+                child: const Text(
                   'Ver más de esta sección',
                   style: TextStyle(
                     fontFamily: 'Lato',
@@ -205,8 +205,8 @@ class EntertainmentBlogs extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(width: 5),
-              Icon(
+              const SizedBox(width: 5),
+              const Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
                 color: Styles.iconColorBack,

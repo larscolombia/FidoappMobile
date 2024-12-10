@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
@@ -9,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class CalendarController extends GetxController {
+  final HomeController homeController = Get.find();
   final String baseUrl = "${DOMAIN_URL}/api";
   var isLoading = false.obs;
   var isSuccess = false.obs;
@@ -69,7 +73,11 @@ class CalendarController extends GetxController {
   }
 
   void filterByDate(DateTime date) {
-    String formattedDate = date.toIso8601String().split('T')[0];
+    String formattedDate =
+        '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} 00:00:00';
+    print('filtrar por fecha $formattedDate');
+
+    print('filtrar por fecha ${date.toIso8601String().split('T')[0]}');
     filteredCalendars.value =
         allCalendars.where((event) => event.date == formattedDate).toList();
   }
@@ -114,7 +122,7 @@ class CalendarController extends GetxController {
   Future<void> postEvent() async {
     isLoading.value = true;
     isSuccess.value = false;
-    print('metadata evento : ${jsonEncode(event.toJson())}');
+
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/events'),
@@ -124,12 +132,31 @@ class CalendarController extends GetxController {
         },
         body: jsonEncode(event.toJson()),
       );
-
+      print('response ${response.body}');
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print("Evento creado exitosamente {$response.body}");
+        print('response : ${response.statusCode}');
+
+        Get.dialog(
+          //pisa papel
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Evento creado',
+            description: 'El evento ha sido creada exitosamente.',
+            primaryButtonText: 'Continuar',
+            onPrimaryButtonPressed: () {
+              getEventos();
+              homeController.selectedIndex.value = 1;
+              Get.to(HomeScreen());
+              //Get.back();
+            },
+          ),
+          barrierDismissible: true,
+        );
 
         isSuccess(true);
-      } else {}
+      } else {
+        Get.snackbar("Error", "comprueba los datos ");
+      }
     } catch (e) {
       print('Error al enviar los datos: $e');
       Get.snackbar("Error", "Error al enviar los datos");

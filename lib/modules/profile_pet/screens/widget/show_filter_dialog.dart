@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
+import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 
 class FilterDialog extends StatelessWidget {
-  final ProfilePetController controller;
+  final HistorialClinicoController controller;
 
   FilterDialog({required this.controller});
 
@@ -24,7 +24,15 @@ class FilterDialog extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Opciones de orden con checkboxes
+            const SizedBox(height: 8),
+            Text(
+              'Ordenar por',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
             const SizedBox(height: 8),
             Obx(
               () => Column(
@@ -52,7 +60,6 @@ class FilterDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // Filtrar por categoría con checkboxes
             Text(
               'Categoría',
               style: TextStyle(
@@ -95,14 +102,15 @@ class FilterDialog extends StatelessWidget {
           title: 'Filtrar',
           callback: () {
             Navigator.of(context).pop();
-            controller.filterMedicalHistory('');
+            controller.filterHistorialClinico();
           },
         ),
       ],
     );
   }
 
-  static void show(BuildContext context, ProfilePetController controller) {
+  static void show(
+      BuildContext context, HistorialClinicoController controller) {
     showDialog(
       context: context,
       builder: (context) {

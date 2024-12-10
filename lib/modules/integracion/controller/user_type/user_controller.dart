@@ -11,6 +11,9 @@ class UserController extends GetxController {
   var filteredUsers = <User>[].obs;
   var url = "${DOMAIN_URL}/api/get-user-by-type?user_type=vet";
   var isLoading = false.obs;
+  var selectedUser =
+      Rxn<User>(); // Variable observable para el usuario seleccionado
+
   @override
   void onInit() {
     fetchUsers();
@@ -26,7 +29,7 @@ class UserController extends GetxController {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
         },
-      ); // Cambia la URL por la correcta
+      );
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
@@ -44,7 +47,7 @@ class UserController extends GetxController {
     } catch (e) {
       print('Error al obtener usuarios ${e}');
     } finally {
-      //isLoading.value = false;
+      isLoading.value = false;
     }
   }
 
@@ -55,17 +58,16 @@ class UserController extends GetxController {
     lastName: '',
     email: '',
   );
+
   void filterUsers(String query) {
     if (query.isEmpty) {
       filteredUsers.value = users; // Si no hay búsqueda, mostrar todos
     } else {
       var foundUser = users.firstWhere(
         (user) => user.email.toLowerCase() == query.toLowerCase(),
-        orElse: () =>
-            defaultUser, // Retorna el usuario por defecto si no se encuentra ninguno
+        orElse: () => defaultUser,
       );
 
-      // Actualiza filteredUsers solo si no se encuentra el usuario o si se usa el por defecto
       if (foundUser != null && foundUser != defaultUser) {
         filteredUsers.value = [foundUser];
       } else {
@@ -74,13 +76,11 @@ class UserController extends GetxController {
     }
   }
 
-  var user = {
-    "id": "",
-    "first_name": "",
-    "last_name": "",
-  }.obs;
+  void selectUser(User user) {
+    selectedUser.value = user;
+  }
 
-  void SelectUser(String key, dynamic value) {
-    user[key] = value;
+  void deselectUser() {
+    selectedUser.value = null;
   }
 }

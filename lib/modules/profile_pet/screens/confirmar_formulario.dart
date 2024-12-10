@@ -154,26 +154,32 @@ class ConfirmarFormulario extends StatelessWidget {
                             readOnly: true,
                           ),
                           const SizedBox(height: 20),
-                          InputText(
-                            label: 'Notas adicionales',
-                            placeholder: '',
-                            initialValue: medicalHistoryController
-                                .reportData["notes"]
-                                .toString(),
-                            prefiIcon: Icon(
-                              Icons.calendar_today,
-                              color: Color.fromRGBO(155, 142, 127, 1),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Styles.fiveColor,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: Styles.iconColorBack.withOpacity(0.5),
+                                width: 1,
+                              ),
                             ),
-                            suffixIcon: Icon(
-                              Icons.arrow_drop_down,
-                              color: Color.fromRGBO(252, 186, 103, 1),
+                            width: 305,
+                            height: 200,
+                            child: TextField(
+                              expands: true,
+                              maxLines: null,
+                              readOnly: true,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                border: InputBorder.none, // Quitar el borde
+                                hintText: medicalHistoryController
+                                    .reportData["notes"]
+                                    .toString(),
+                              ),
                             ),
-                            onChanged: (value) {
-                              medicalHistoryController.updateField(
-                                  "fecha_aplicacion", value);
-                            },
-                            readOnly: true,
                           ),
+                          const SizedBox(height: 20),
                           const SizedBox(height: 20),
                           Container(
                             width: 302,
@@ -189,7 +195,7 @@ class ConfirmarFormulario extends StatelessWidget {
                           ),
                           const SizedBox(height: 10),
                           Container(
-                            width: 305,
+                            width: 324,
                             child: ProfilesDogs(
                               isSelect: true,
                             ),
@@ -226,49 +232,36 @@ class ConfirmarFormulario extends StatelessWidget {
                                   )
                                 : Container(
                                     width: 302,
-                                    child: ButtonDefaultWidget(
-                                      title: 'Terminar Informe  >',
-                                      callback: () {
-                                        // Asegúrate de que selectedProfile no sea nulo antes de acceder a sus propiedades
-                                        if (petController
-                                                .selectedProfile.value !=
-                                            null) {
-                                          // Accede al valor del perfil de la mascota correctamente
-                                          final petId = petController
-                                              .selectedProfile.value!.id
-                                              .toString();
+                                    child: !medicalHistoryController
+                                            .isEditing.value
+                                        ? ButtonDefaultWidget(
+                                            title: 'Terminar Informe  >',
+                                            callback: () {
+                                              // Asegúrate de que selectedProfile no sea nulo antes de acceder a sus propiedades
+                                              if (petController
+                                                      .selectedProfile.value !=
+                                                  null) {
+                                                // Accede al valor del perfil de la mascota correctamente
+                                                final petId = petController
+                                                    .selectedProfile.value!.id
+                                                    .toString();
 
-                                          // Actualiza el campo 'pet_id' en el controlador de historial médico
-                                          medicalHistoryController.updateField(
-                                              'pet_id', petId);
-                                          print(
-                                              'medical history ${medicalHistoryController.reportData}');
+                                                // Actualiza el campo 'pet_id' en el controlador de historial médico
+                                                medicalHistoryController
+                                                    .updateField(
+                                                        'pet_id', petId);
 
-                                          // Envía el informe
-                                          medicalHistoryController
-                                              .submitReport();
-
-                                          // Actualiza el campo 'pet_id' nuevamente (esto parece redundante, tal vez quieras eliminarlo)
-                                          medicalHistoryController.updateField(
-                                              'pet_id', petId);
-
-                                          // Si el controlador está cargando, navega a la página del perfil de la mascota
-                                          if (medicalHistoryController
-                                              .isLoading.value) {
-                                            Get.toNamed(
-                                              Routes.PROFILEPET,
-                                              arguments: petController
-                                                  .selectedProfile
-                                                  .value, // Pasa el perfil de la mascota
-                                            );
-                                          }
-                                        } else {
-                                          // Si el perfil seleccionado es nulo, maneja el caso aquí (puedes mostrar un mensaje de error, por ejemplo)
-                                          print(
-                                              'No se ha seleccionado un perfil de mascota.');
-                                        }
-                                      },
-                                    ),
+                                                // Envía el informe
+                                                medicalHistoryController
+                                                    .submitReport();
+                                              } else {
+                                                // Si el perfil seleccionado es nulo, maneja el caso aquí (puedes mostrar un mensaje de error, por ejemplo)
+                                                print(
+                                                    'No se ha seleccionado un perfil de mascota.');
+                                              }
+                                            },
+                                          )
+                                        : SizedBox(),
                                   );
                           }),
                           const SizedBox(height: 20),

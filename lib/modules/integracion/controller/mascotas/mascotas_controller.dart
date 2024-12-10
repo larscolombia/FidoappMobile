@@ -12,7 +12,7 @@ class PetControllerv2 extends GetxController {
   var selectedPet = Rxn<Pet>();
   var url =
       '${DOMAIN_URL}/api/pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
-
+  var succesApdate = false.obs;
   get selectedPetIds => null;
   @override
   void onInit() {
@@ -65,6 +65,48 @@ class PetControllerv2 extends GetxController {
       }
     } catch (e) {
       Get.snackbar('Error', e.toString());
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  //actilizar mascota
+
+  // Método para actualizar la información de una mascota
+  Future<void> updatePet(int id, Map<String, dynamic> body) async {
+    try {
+      succesApdate(false);
+
+      final url = Uri.parse('${BASE_URL}pets/$id');
+      print('URL completa: $url');
+      print('Cuerpo de la solicitud (JSON): ${jsonEncode(body)}');
+
+      // Convertir todos los valores a cadenas
+      Map<String, String> stringBody = body.map((key, value) {
+        return MapEntry(key, value?.toString() ?? '');
+      });
+
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(stringBody),
+      );
+
+      print('responseee ${response.statusCode}');
+      print('Respuesta completa: ${response.body}');
+
+      if (response.statusCode == 200) {
+        print('Mascota actualizada con éxito');
+        succesApdate(true);
+      } else {
+        print('Error en la solicitud: ${response.statusCode}');
+        print('Respuesta: ${response.body}');
+      }
+    } catch (e) {
+      print('Error al actualizar la mascota: $e');
     } finally {
       isLoading(false);
     }

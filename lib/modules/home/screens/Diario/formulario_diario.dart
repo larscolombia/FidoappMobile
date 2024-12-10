@@ -19,6 +19,7 @@ class FormularioDiario extends StatefulWidget {
 
 class _FormularioDiarioState extends State<FormularioDiario> {
   String _imagePath = ""; // Para almacenar la ruta de la imagen seleccionada
+  File __imageFile = File('');
   final PetActivityController controller = Get.put(PetActivityController());
   // Función para seleccionar la imagen
   final HomeController homeController = Get.put(HomeController());
@@ -110,7 +111,6 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                             placeholder: 'Selecciona una categoría',
                             onChanged: (value) {
                               controller.updateField('category_id', value);
-                              print('Categoría del registro: $value');
                             },
                             items: const [
                               DropdownMenuItem(
@@ -163,8 +163,9 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               setState(() {
                                 _imagePath =
                                     value; // Aquí obtienes la ruta de la imagen seleccionada
+                                controller.updateField('image', value);
+                                __imageFile = File(value);
                               });
-                              controller.updateField('image', value);
                             },
                           ),
                           if (_imagePath.isNotEmpty)
@@ -200,7 +201,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                         homeController
                                             .selectedProfile.value!.id);
                                     print(controller.diario);
-                                    controller.addPetActivity();
+                                    controller.addPetActivity(__imageFile);
                                   });
                             }),
                           ),

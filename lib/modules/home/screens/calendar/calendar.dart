@@ -37,11 +37,14 @@ class Calendar extends StatelessWidget {
             return TableCalendar(
               firstDay: DateTime.utc(2022, 1, 1),
               lastDay: DateTime.utc(2030, 12, 31),
+              locale: 'es_ES',
               focusedDay: controller.focusedDay.value,
               selectedDayPredicate: (day) =>
                   isSameDay(controller.selectedDay.value, day),
               onDaySelected: (selectedDay, focusedDay) {
-                controller.onDaySelected(selectedDay, focusedDay);
+                //controller.onDaySelected(selectedDay, focusedDay);
+                print(selectedDay);
+                calendarController.filterByDate(selectedDay);
               },
               eventLoader: (day) {
                 return controller.getEventsForDay(day);

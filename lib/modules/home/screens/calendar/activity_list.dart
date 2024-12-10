@@ -122,7 +122,7 @@ class ActivityListScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              event.eventime ?? 'Hora no especificada',
+                              event.date ?? 'Hora no especificada',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,

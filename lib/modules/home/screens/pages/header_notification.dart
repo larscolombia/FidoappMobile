@@ -15,7 +15,7 @@ class HeaderNotification extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
 
   final NotificationController notificationController =
-      Get.find<NotificationController>();
+      Get.put(NotificationController());
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;

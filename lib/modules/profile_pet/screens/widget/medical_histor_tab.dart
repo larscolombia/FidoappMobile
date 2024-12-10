@@ -44,6 +44,7 @@ class MedicalHistoryTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          /** para veterinario 
           Center(
             child: Container(
               width: 312,
@@ -60,6 +61,7 @@ class MedicalHistoryTab extends StatelessWidget {
                     'Antigarrapata',
                   ],
                   onChange: (value) {
+                    medicalHistoryController.isEditing.value = false;
                     medicalHistoryController.updateField('report_name', value);
                     medicalHistoryController.updateField(
                         'report_type', reporType(value));
@@ -69,7 +71,7 @@ class MedicalHistoryTab extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ),*/
           // Título
           const Padding(
             padding: EdgeInsets.all(16.0),
@@ -100,7 +102,7 @@ class MedicalHistoryTab extends StatelessWidget {
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: () {
-                    FilterDialog.show(context, controller);
+                    FilterDialog.show(context, medicalHistoryController);
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
@@ -170,7 +172,8 @@ class MedicalHistoryTab extends StatelessWidget {
                       medicalHistoryController.updateField(
                           'category', history.categoryName);
 
-                      print('viajar');
+                      medicalHistoryController.isEditing.value = true;
+
                       Get.to(ConfirmarFormulario());
                     },
                   );

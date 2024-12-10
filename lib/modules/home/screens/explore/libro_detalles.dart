@@ -180,7 +180,7 @@ class LibroDetalles extends StatelessWidget {
                                 label: 'Idioma',
                                 value:
                                     '${econtroller.selectedEBook.value.lenguaje}',
-                                path: 'assets/icons/idima.png'),
+                                path: 'assets/icons/idioma.png'),
                           ),
                         ]),
                   ),

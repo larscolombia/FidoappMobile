@@ -32,7 +32,6 @@ Future<void> main() async {
   locale = temp.obs;
   locale.value =
       await const AppLocalizations().load(Locale(selectedLanguageCode.value));
-
   Firebase.initializeApp();
 
   runApp(MyApp());

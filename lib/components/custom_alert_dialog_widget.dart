@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -36,11 +36,11 @@ class CustomAlertDialog extends StatelessWidget {
             width: 80,
             height: 80,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
               fontFamily: 'Lato',

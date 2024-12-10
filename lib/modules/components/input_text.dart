@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:image_picker/image_picker.dart'; // Importamos image_picker
+import 'package:image_picker/image_picker.dart';
 import 'dart:io'; // Para manejar los archivos de imagen
 
 class InputText extends StatefulWidget {
@@ -18,8 +18,9 @@ class InputText extends StatefulWidget {
     this.prefiIcon,
     this.isTimeField = false,
     this.readOnly = false,
-    this.initialValue, // Nuevo parámetro para el valor inicial
+    this.initialValue,
     this.fondoColor = Styles.colorContainer,
+    this.onImagePicked, // Añade el callback para la imagen
   }) : super(key: key);
 
   final String? placeholder;
@@ -32,22 +33,24 @@ class InputText extends StatefulWidget {
   final Icon? prefiIcon;
   final bool isTimeField;
   final bool readOnly;
-  final String? initialValue; // Definir el parámetro
+  final String? initialValue;
   final Color? fondoColor;
+  final ValueChanged<File>?
+      onImagePicked; // Callback para cuando se selecciona una imagen
+
   @override
   _InputTextState createState() => _InputTextState();
 }
 
 class _InputTextState extends State<InputText> {
   late TextEditingController _textController;
+  File? _imageFile;
 
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: widget.initialValue ?? "");
   }
-
-  File? _imageFile;
 
   @override
   Widget build(BuildContext context) {
@@ -195,6 +198,9 @@ class _InputTextState extends State<InputText> {
       });
 
       widget.onChanged(pickedFile.path);
+      if (widget.onImagePicked != null) {
+        widget.onImagePicked!(_imageFile!);
+      }
     }
   }
 }

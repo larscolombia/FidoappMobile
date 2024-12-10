@@ -1,33 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/explore/libro_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ExploreInput extends StatelessWidget {
   final EBookController controller = Get.put(EBookController());
-  final List<Map<String, dynamic>> petDataList = [
-    {
-      "image": null, // Sin imagen para probar la ruta local
-      "name": "Cuidados para Perros: Guía Completa",
-      "isBook": true,
-      "price": "\$12.99",
-    },
-    {
-      "image": "https://example.com/petbook2.png",
-      "name": "Entrenamiento Canino: Mejores Técnicas",
-      "isBook": true,
-      "price": "\$15.50",
-    },
-    {
-      "image": "https://example.com/petbook3.png",
-      "name": "Nutrición Saludable para Gatos y Perros",
-      "isBook": true,
-      "price": "\$10.00",
-    },
-  ];
-
+  final HomeController homeController = Get.find<HomeController>();
   ExploreInput({super.key});
 
   @override
@@ -69,13 +50,15 @@ class ExploreInput extends StatelessWidget {
               );
             }
             return Row(
-              children: controller.ebooks.map((petItem) {
+              children: controller.ebooks.map((libro) {
                 return GestureDetector(
                   onTap: () {
                     // Acción al tocar un producto o libro
                     //controller.fetchEBookById("${petItem.id}");
-                    controller.setIdLibro("${petItem.id}");
+                    controller.selectEBookById("${libro.id}");
+
                     Get.to(LibroDetalles());
+                    print('object');
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 16),
@@ -101,9 +84,9 @@ class ExploreInput extends StatelessWidget {
                           ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
-                            child: petItem.coverImage != null
+                            child: libro.coverImage != null
                                 ? Image.network(
-                                    petItem.coverImage!,
+                                    libro.coverImage!,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
                                       return Image.asset(
@@ -121,7 +104,7 @@ class ExploreInput extends StatelessWidget {
                         SizedBox(height: 8),
                         // Nombre del producto (máximo 3 líneas)
                         Text(
-                          petItem.description!,
+                          libro.description!,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -136,17 +119,22 @@ class ExploreInput extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'Producto',
-                              style: TextStyle(
-                                fontFamily: 'Lato',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Styles.iconColorBack,
+                            Container(
+                              width: 60,
+                              child: Text(
+                                '${libro.author}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Styles.iconColorBack,
+                                ),
                               ),
                             ),
                             Text(
-                              '10 €',
+                              '${libro.price}\$' ?? '0.00',
                               style: const TextStyle(
                                 fontFamily: 'Lato',
                                 fontSize: 12,
@@ -168,6 +156,7 @@ class ExploreInput extends StatelessWidget {
         // Ver más sección
         GestureDetector(
           onTap: () {
+            homeController.selectedIndex.value = 5;
             print('Ver más de esta sección');
           },
           child: const Row(

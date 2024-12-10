@@ -1,13 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pawlly/modules/components/historia_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
+import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
+import 'package:pawlly/modules/profile_pet/screens/pasaporte_mascota.dart';
 
 class VerPasaporteMascota extends StatelessWidget {
   final HomeController _homeController = Get.find<HomeController>();
-
+  final HistorialClinicoController historiaClinicaController =
+      Get.put(HistorialClinicoController());
   String formatFecha(String fecha) {
     // Convertir la fecha de String a DateTime
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
@@ -22,6 +28,8 @@ class VerPasaporteMascota extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime dateTime = DateFormat('yyyy-MM-dd').parse(
         _homeController.selectedProfile.value!.dateOfBirth ?? '0000-00-00');
+    historiaClinicaController
+        .fetchHistorialClinico(_homeController.selectedProfile.value!.id);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -38,7 +46,6 @@ class VerPasaporteMascota extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 2),
                 color: Colors.white,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30),
@@ -46,78 +53,98 @@ class VerPasaporteMascota extends StatelessWidget {
                 ),
               ),
               child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: Center(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Barra de navegación y botón de editar
                       Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        width: 305,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             BarraBack(
                               titulo: 'Pasaporte',
-                              callback: () {},
+                              callback: () {
+                                Get.off(HomeScreen());
+                              },
                             ),
                             Container(
-                              child: Image.asset(
-                                'assets/icons/edit-2.png',
-                                width: 100,
-                                height: 100,
+                              child: Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(PasaporteMascota());
+                                    },
+                                    child:
+                                        Image.asset('assets/icons/edit-2.png'),
+                                  )
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Imagen del perro
                       Container(
-                        width: double.infinity,
+                        width: 305,
                         height: 200,
-                        child: Image.network(
-                          _homeController.selectedProfile.value!.petImage ??
-                              'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-                          fit: BoxFit.cover,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Colors.black,
                         ),
+                        child: Obx(() {
+                          final imageUrl =
+                              _homeController.selectedProfile.value!.petImage ??
+                                  'https://via.placeholder.com/600x400';
+
+                          return CachedNetworkImage(
+                            imageUrl: imageUrl,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) {
+                              // Imagen predeterminada si falla la carga
+                              return Image.asset(
+                                'assets/images/404.jpg', // Ruta de la imagen predeterminada
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          );
+                        }),
                       ),
                       const SizedBox(height: 20),
-                      // Contenedor para el ID de microchip
                       Container(
-                        width: 302,
-                        height: 56,
+                        width: 304,
+                        padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: Styles.colorContainer,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(16),
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Image.asset('assets/icons/codigo_mascota.png'),
+                            Image.asset(
+                              'assets/icons/codigo_mascota.png',
+                              width: 20,
+                              height: 20,
+                            ),
                             const SizedBox(width: 10),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'ID del Microchip:',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                    fontFamily: 'Lato',
-                                  ),
+                                  'Codigo de Mascota',
+                                  style: Styles.descripcion,
                                 ),
                                 Text(
-                                  'colocar chip',
+                                  'Encuentra toda la información aquí',
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
+                                    fontSize: 12,
+                                    color: Styles.iconColorBack,
                                     fontFamily: 'Lato',
+                                    fontWeight: FontWeight.w900,
                                   ),
                                 ),
                               ],
@@ -126,38 +153,106 @@ class VerPasaporteMascota extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Título para la sección de Información
                       Container(
-                        width: 302,
                         child: Text(
                           'Información del Perro',
                           style: Styles.TextTitulo,
                         ),
                       ),
-                      // Sección con datos del perro
+                      SizedBox(height: 20),
                       InfoMascota(
-                        value: _homeController.selectedProfile.value!.name,
                         titulo: 'Nombre',
+                        value: '${_homeController.selectedProfile.value!.name}',
                       ),
                       InfoMascota(
-                        value: 'Canino',
                         titulo: 'Especie',
+                        value: 'Canino',
                       ),
                       InfoMascota(
-                        value: _homeController.selectedProfile.value!.gender,
                         titulo: 'Sexo',
+                        value:
+                            '${_homeController.selectedProfile.value!.gender}',
                       ),
                       InfoMascota(
-                        value: 'Fecha de nacimiento',
-                        titulo: '',
+                        titulo: 'Raza',
+                        value:
+                            '${_homeController.selectedProfile.value!.breed}',
+                      ),
+
+                      InfoMascota(
+                        titulo: 'Fecha de nacimiento',
+                        value:
+                            '${_homeController.selectedProfile.value!.dateOfBirth}',
                       ),
                       InfoMascota(
-                        value: 'Color del pelaje',
-                        titulo: '',
+                        titulo: 'Color del pelaje',
+                        value: 'n/A',
                       ),
                       InfoMascota(
-                        value: '',
                         titulo: 'Altura',
+                        value: 'n/A',
+                      ),
+                      const SizedBox(height: 20),
+                      Container(
+                        width: 305,
+                        child: Text(
+                          'Datos de Vacunación y Tratamientos',
+                          style: Styles.TextTitulo,
+                        ),
+                      ),
+
+                      //gridView
+                      Container(
+                        width:
+                            305, // Puedes ajustar el ancho del Container según lo que necesites
+                        padding: EdgeInsets.all(
+                            16), // Espaciado interno si lo deseas
+
+                        child: Obx(() {
+                          final historial =
+                              historiaClinicaController.historialClinico;
+                          if (historiaClinicaController.isLoading.value) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+
+                          if (historial.value.isEmpty) {
+                            return const Center(
+                                child: Text('No hay datos disponibles.'));
+                          }
+                          return GridView.builder(
+                            shrinkWrap:
+                                true, // Permite que el GridView ocupe solo el espacio necesario
+                            physics:
+                                NeverScrollableScrollPhysics(), // Desactiva el scroll para evitar conflictos con el ScrollView principal
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, // Número de elementos por fila
+                              crossAxisSpacing: 1, // Espacio entre columnas
+                              mainAxisSpacing: 1, // Espacio entre filas
+                              childAspectRatio:
+                                  0.5, // Proporción de cada celda, puedes ajustarlo según tu diseño
+                            ),
+                            itemCount: historial
+                                .length, // Número de elementos en el Grid
+                            itemBuilder: (context, index) {
+                              final history = historial[index];
+                              return Container(
+                                height: 200,
+                                child: HistoriaMascotaComponent(
+                                  reportName: history.reportName,
+                                  categoryName: history.categoryName,
+                                  applicationDate: history.applicationDate,
+                                  id: history.id.toString(),
+                                  callback: () {
+                                    print('Callback');
+                                  },
+                                ),
+                              );
+                            },
+                          );
+                        }),
                       ),
                     ],
                   ),

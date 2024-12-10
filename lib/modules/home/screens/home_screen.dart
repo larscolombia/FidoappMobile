@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/Diario/formulario_diario.dart';
@@ -17,11 +18,12 @@ import 'package:pawlly/modules/home/screens/pages/utilities.dart';
 import 'package:pawlly/modules/home/screens/training/commands.dart';
 import 'package:pawlly/modules/home/screens/widgets/menu_of_navigation.dart';
 import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
-import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
+
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
-import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
+import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
+
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
-import 'package:pawlly/screens_demo/controller/user_default_test.dart';
+
 import 'package:pawlly/modules/home/screens/pages/explorar_container.dart';
 import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/pages/resources.dart';
@@ -34,7 +36,8 @@ class HomeScreen extends StatelessWidget {
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
   final NotificationController notificationController =
       Get.put(NotificationController());
-
+  final PetActivityController historialClinicoController =
+      Get.put(PetActivityController());
   final BlogController blogController = Get.put(BlogController());
   @override
   Widget build(BuildContext context) {
@@ -151,6 +154,7 @@ class HomeScreen extends StatelessWidget {
         Training(),
         SizedBox(height: 16),
         Commands(),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -183,15 +187,31 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 16),
         ProfilesDogs(),
         const SizedBox(height: 20),
-        FloatingActionButton(
-          onPressed: () {
-            // Acción cuando el FAB es presionado
-            Get.to(FormularioDiario());
-          },
-          backgroundColor: Styles.primaryColor,
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
+        Container(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                child: InputText(
+                  onChanged: (String value) =>
+                      historialClinicoController.searchActivities(value),
+                ),
+              ),
+              const SizedBox(width: 10),
+              FloatingActionButton(
+                onPressed: () {
+                  // Acción cuando el FAB es presionado
+                  Get.to(FormularioDiario());
+                },
+                shape: CircleBorder(),
+                backgroundColor: Styles.primaryColor,
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
         ),
         const SizedBox(height: 16),

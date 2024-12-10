@@ -29,7 +29,7 @@ class PetProfile {
     return PetProfile(
       name: petData.name,
       breed: petData.breed,
-      description: petData.additionalInfo ?? 'No se a colocado descripción',
+      description: petData.description ?? 'No se a colocado descripción',
       age: petData.age,
       birthDate: petData.dateOfBirth ?? '01/01/2021',
       weight: '${petData.weight}',
@@ -62,7 +62,7 @@ class PetProfile {
     name = petData.name;
     breed = petData.breed;
     description =
-        petData.breed.description ?? 'Una mascota muy amigable y juguetona.';
+        petData.description ?? 'Una mascota muy amigable y juguetona.';
     age = petData.age;
     birthDate = petData.dateOfBirth ?? '01/01/2021';
     weight = '${petData.weight}';

@@ -1,14 +1,24 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 
 import 'package:pawlly/modules/integracion/model/diario/actividad_mascota_modal.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:path/path.dart'
+    as path; // Asegúrate de importar el paquete path
 
 class PetActivityController extends GetxController {
+  final HomeController homeController = Get.put(HomeController());
   var isLoading = true.obs; // Estado de carga
   var activities = <PetActivity>[].obs; // Lista observable de PetActivity
+  var filteredActivities = <PetActivity>[].obs; // Lista filtrada de PetActivity
   var url = "${DOMAIN_URL}/api/get-diary"; // URL para obtener las actividades
   var createUrl =
       "${DOMAIN_URL}/api/training-diaries"; // URL para crear una actividad
@@ -29,13 +39,15 @@ class PetActivityController extends GetxController {
       'date': "",
       'category_id': "",
       'notas': "",
-      'pet_id': "", // Cambia esto si es necesario
+      'pet_id': '0', // Cambia esto si es necesario
       'image': "",
     };
   }
 
   // Método para obtener las actividades de las mascotas
   Future<void> fetchPetActivities(String pet_id) async {
+    print('Respuesta JSON completa 1');
+    print('Respuesta JSON completa ${diario}');
     try {
       isLoading(true);
       final response = await http.get(
@@ -46,10 +58,6 @@ class PetActivityController extends GetxController {
         },
       );
 
-      print('URL de actividades: ${Uri.parse('${url}?pet_id=${pet_id}')}');
-      print('Respuesta del servidor para diario: ${response.body}');
-      print('Estado de la solicitud: ${response.statusCode}');
-
       var jsonResponse = json.decode(response.body);
       print('Respuesta JSON completa: $jsonResponse');
 
@@ -58,6 +66,8 @@ class PetActivityController extends GetxController {
           List<dynamic> data = jsonResponse['data'];
           activities.value =
               data.map((activity) => PetActivity.fromJson(activity)).toList();
+          filteredActivities.value =
+              activities; // Inicialmente igualar a activities
         } else {
           print(
               'Error en la respuesta del servidor: ${jsonResponse['message']}');
@@ -73,40 +83,54 @@ class PetActivityController extends GetxController {
   }
 
   // Método para agregar una nueva actividad de mascota
-  Future<void> addPetActivity() async {
+
+  Future<void> addPetActivity(File? imageFile) async {
     try {
-      // Asegúrate de tener los datos correctos para el POST
-      var requestData = {
-        'actividad': diario['actividad'],
-        'date': diario['date'],
-        'category_id': diario['category_id'],
-        'notas': diario['notas'],
-        'pet_id': diario['pet_id'],
-        'image': null, // Si tienes una imagen, adjunta la URL o base64
-      };
-      print('crear actividad ${Uri.parse(createUrl)}');
       isLoading(true);
-      final response = await http.post(
-        Uri.parse(createUrl),
-        headers: {
+
+      // Crear el request multipart
+      var request = http.MultipartRequest('POST', Uri.parse(createUrl))
+        ..headers.addAll({
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(requestData),
-      );
+          'ngrok-skip-browser-warning': 'true',
+        })
+        ..fields['actividad'] = diario['actividad'] ?? ''
+        ..fields['date'] = diario['date'] ?? ''
+        ..fields['category_id'] = diario['category_id'] ?? ''
+        ..fields['notas'] = diario['notas'] ?? ''
+        ..fields['pet_id'] = diario['pet_id'] ?? '';
 
-      print('URL de creación de actividad: $createUrl');
-      print('Respuesta del servidor para crear actividad: ${response.body}');
-      print('Estado de la solicitud: ${response.statusCode}');
+      // Agregar la imagen al request si existe
+      if (imageFile != null) {
+        var stream = http.ByteStream(imageFile.openRead());
+        var length = await imageFile.length();
+        var multipartFile = http.MultipartFile('image', stream, length,
+            filename: path.basename(imageFile.path)); // Usando path.basename
+        request.files.add(multipartFile);
+      }
 
-      var jsonResponse = json.decode(response.body);
-      if (response.statusCode == 200 && jsonResponse['success']) {
-        print('Actividad registrada con éxito');
-        // Aquí puedes actualizar la lista de actividades si es necesario
-        fetchPetActivities(diario['pet_id']);
+      // Enviar el request
+      var response = await request.send();
+      var responseBody = await http.Response.fromStream(response);
+
+      print('Actividad registrada con éxito ${responseBody.body}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Éxito',
+            description: 'El Diario ha sido creado exitosamente.',
+            primaryButtonText: 'Aceptar',
+            onPrimaryButtonPressed: () {
+              Get.off(HomeScreen()); // Cerrar el diálogo
+              // fetchPetActivities(diario['pet_id'].toString());
+            },
+          ),
+          barrierDismissible:
+              false, // No permite cerrar el diálogo tocando fuera
+        );
       } else {
-        print(
-            'Error en la creación de la actividad: ${jsonResponse['message']}');
+        print('Error en la creación de la actividad: ${responseBody.body}');
       }
     } catch (e) {
       print('Excepción capturada: $e');
@@ -120,7 +144,20 @@ class PetActivityController extends GetxController {
     return activities.firstWhere((activity) => activity.id == id);
   }
 
+  // Método para actualizar un campo en el objeto `diario`
   void updateField(String key, dynamic value) {
     diario[key] = value;
+  }
+
+  // Método para buscar actividades por nombre
+  void searchActivities(String query) {
+    if (query.isEmpty) {
+      filteredActivities.value =
+          activities; // Mostrar todas si la búsqueda está vacía
+    } else {
+      filteredActivities.value = activities.where((activity) {
+        return activity.actividad.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    }
   }
 }

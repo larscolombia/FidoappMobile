@@ -15,7 +15,7 @@ class ProfilePetController extends GetxController {
   var selectedTab = 0.obs;
   var petName = ''.obs;
   var petBreed = ''.obs;
-  var petDescription = ''.obs;
+  var petDescription = 'sxaxasxasx'.obs;
   var petAge = ''.obs;
   var petBirthDate = '01/01/2021'.obs;
   var petWeight = ''.obs;
@@ -55,6 +55,7 @@ class ProfilePetController extends GetxController {
     petAge.value = petProfile.age;
     petGender.value = petProfile.gender!;
     profileImagePath.value = petProfile.petImage ?? '';
+
     // Puedes agregar más inicializaciones según los datos disponibles en PetData
   }
 

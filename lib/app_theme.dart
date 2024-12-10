@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:nb_utils/nb_utils.dart';
 
 import '../utils/colors.dart';
@@ -25,7 +24,7 @@ class AppTheme {
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.transparent),
       iconTheme: IconThemeData(color: textPrimaryColorGlobal),
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         bodySmall: TextStyle(fontFamily: 'PoetsenOne'),
         bodyLarge: TextStyle(fontFamily: 'PoetsenOne'),
         bodyMedium: TextStyle(fontFamily: 'PoetsenOne'),
@@ -109,7 +108,7 @@ class AppTheme {
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: scaffoldSecondaryDark),
       iconTheme: const IconThemeData(color: Colors.white),
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         bodySmall: TextStyle(fontFamily: 'PoetsenOne'),
         bodyLarge: TextStyle(fontFamily: 'PoetsenOne'),
         bodyMedium: TextStyle(fontFamily: 'PoetsenOne'),

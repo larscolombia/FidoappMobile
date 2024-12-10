@@ -95,6 +95,7 @@ class ProfilePetScreen extends StatelessWidget {
                             Obx(
                               () => ElevatedButton(
                                 onPressed: () {
+                                  /**
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -102,7 +103,7 @@ class ProfilePetScreen extends StatelessWidget {
                                           controller:
                                               controller); // Pasa el controlador
                                     },
-                                  );
+                                  );*/
                                 },
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.zero,

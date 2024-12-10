@@ -43,7 +43,7 @@ class ComentariosLibros extends StatelessWidget {
                 Row(
                   children: [
                     RatingBar.builder(
-                      initialRating: ebook.averageRating,
+                      initialRating: 2,
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: true,
@@ -58,7 +58,7 @@ class ComentariosLibros extends StatelessWidget {
                     ),
                     SizedBox(width: 8),
                     Text(
-                      ebook.averageRating.toStringAsFixed(1),
+                      'aqui hay un error fix',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,

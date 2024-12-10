@@ -11,7 +11,8 @@ class DiarioMascotas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.fetchPetActivities('${homeController.selectedProfile}');
+      controller
+          .fetchPetActivities('${homeController.selectedProfile.value!.id}');
     });
 
     return Obx(() {
@@ -34,21 +35,22 @@ class DiarioMascotas extends StatelessWidget {
           padding: EdgeInsets.all(8.0),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 8.0,
-            mainAxisSpacing: 8.0,
+            crossAxisSpacing: 5.0,
+            mainAxisSpacing: 4.0,
             childAspectRatio: 0.75, // Ajusta este valor según sea necesario
           ),
-          itemCount: controller.activities.length,
+          itemCount: controller.filteredActivities.length,
           itemBuilder: (context, index) {
-            final actividad = controller.activities[index];
+            final actividad = controller.filteredActivities[index];
             return Container(
-              width: 145,
+              width: 100,
               height: 200,
               margin: EdgeInsets.symmetric(vertical: 8),
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Styles.whiteColor,
                 borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.black, width: .2),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,14 +98,12 @@ class DiarioMascotas extends StatelessWidget {
                   Center(
                     child: Container(
                       height: 35,
-                      width: 109,
+                      width: 150,
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: ButtonDefaultWidget(
                           title: 'Ver detalles >',
-                          callback: () {
-                            print('Ver detalles >');
-                          },
+                          callback: () {},
                         ),
                       ),
                     ),
