@@ -6,12 +6,14 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/event_model.dart';
+import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/information_tab.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/medical_histor_tab.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/pet_info_modal.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 import 'package:pawlly/styles/styles.dart';
 
@@ -80,22 +82,16 @@ class ProfilePetScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            GestureDetector(
-                              onTap: () => Get.off(HomeScreen()),
-                              child: const Icon(
-                                Icons.arrow_back_ios,
-                                color: Styles.primaryColor,
-                                size: 22,
-                              ),
+                            BarraBack(
+                              titulo: "Perfil de la Mascotas",
+                              callback: () => Get.off(HomeScreen()),
                             ),
-                            const Text(
-                              'Perfil de la Mascotas',
-                              style: Styles.dashboardTitle20,
-                            ),
-                            Obx(
-                              () => ElevatedButton(
-                                onPressed: () {
-                                  /**
+                            if (AuthServiceApis.dataCurrentUser.userType ==
+                                'user')
+                              Obx(
+                                () => ElevatedButton(
+                                  onPressed: () {
+                                    /**
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -104,24 +100,24 @@ class ProfilePetScreen extends StatelessWidget {
                                               controller); // Pasa el controlador
                                     },
                                   );*/
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  backgroundColor: controller.isEditing.value
-                                      ? Styles.iconColorBack
-                                      : Styles.greyTextColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding: EdgeInsets.zero,
+                                    backgroundColor: controller.isEditing.value
+                                        ? Styles.iconColorBack
+                                        : Styles.greyTextColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    minimumSize: const Size(48, 48),
                                   ),
-                                  minimumSize: const Size(48, 48),
-                                ),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                  size: 24,
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                    size: 24,
+                                  ),
                                 ),
                               ),
-                            ),
                           ],
                         ),
                       ],

@@ -5,6 +5,7 @@ import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ProfileModal extends StatelessWidget {
@@ -223,15 +224,16 @@ class ProfileModal extends StatelessWidget {
                 }
               }),
             ),
-            ButtonDefaultWidget(
-              title: 'Nueva Mascota +',
-              callback: () async {
-                var result = await Get.toNamed(Routes.ADDPET);
-                if (result != null) {
-                  controller.addProfile(result);
-                }
-              },
-            ),
+            if (AuthServiceApis.dataCurrentUser.userType == 'user')
+              ButtonDefaultWidget(
+                title: 'Nueva Mascota +',
+                callback: () async {
+                  var result = await Get.toNamed(Routes.ADDPET);
+                  if (result != null) {
+                    controller.addProfile(result);
+                  }
+                },
+              ),
           ],
         ),
       ),

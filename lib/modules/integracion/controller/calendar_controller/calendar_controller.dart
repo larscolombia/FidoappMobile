@@ -16,16 +16,24 @@ class CalendarController extends GetxController {
   final String baseUrl = "${DOMAIN_URL}/api";
   var isLoading = false.obs;
   var isSuccess = false.obs;
+  var isEdit = false.obs;
   RxList<CalendarModel> allCalendars = <CalendarModel>[].obs;
   RxList<CalendarModel> filteredCalendars = <CalendarModel>[].obs;
+  RxList<CalendarModel> selectedEvents = <CalendarModel>[].obs;
 
   var EvenName = TextEditingController();
   var fechaEvento = TextEditingController();
   var isVerMas = <String, bool>{}.obs;
+
   @override
   void onInit() {
     super.onInit();
     getEventos(); // Cargar eventos al iniciar
+  }
+
+  void setEdit() {
+    isEdit.value = !isEdit.value;
+    print(isEdit);
   }
 
   Future<void> getEventos() async {
@@ -75,9 +83,7 @@ class CalendarController extends GetxController {
   void filterByDate(DateTime date) {
     String formattedDate =
         '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} 00:00:00';
-    print('filtrar por fecha $formattedDate');
 
-    print('filtrar por fecha ${date.toIso8601String().split('T')[0]}');
     filteredCalendars.value =
         allCalendars.where((event) => event.date == formattedDate).toList();
   }
@@ -101,6 +107,25 @@ class CalendarController extends GetxController {
     'pet_id': '',
     'owner_id': '',
   }.obs;
+  //resetea el formulario
+  void ResetEvent() {
+    event.value = {
+      'name': "",
+      'date': "",
+      'end_date': "",
+      'event_time': "",
+      'slug': "",
+      'user_id': AuthServiceApis.dataCurrentUser.id,
+      'description': "",
+      'location': "",
+      'tipo': "salud",
+      'status': true,
+      'pet_id': '',
+      'owner_id': '',
+      'evenId': ""
+    };
+  }
+
   bool validateEvent(Map<String, dynamic> event) {
     return event['name']?.isNotEmpty == true &&
         event['date']?.isNotEmpty == true &&
@@ -169,5 +194,50 @@ class CalendarController extends GetxController {
   void selectSinglePet(String id) {
     selectedPetIds.clear();
     selectedPetIds.add(id);
+  }
+
+  // Método para seleccionar un evento por ID y asignarlo a selectedEvents
+  void selectEventById(String id) {
+    try {
+      CalendarModel selectedEvent =
+          allCalendars.firstWhere((event) => event.id == id);
+      selectedEvents.clear();
+      selectedEvents.add(selectedEvent);
+    } catch (e) {
+      print("Evento no encontrado: $e");
+    }
+  }
+
+  //editar evento
+  Future<void> updateEvento() async {
+    if (isLoading.value) return; // Evita llamadas simultáneas
+
+    isLoading.value = true;
+
+    try {
+      final response = await http.put(
+        Uri.parse('$baseUrl/events/${event['evenId']}'),
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(event.toJson()),
+      );
+      print('data calendario: ${json.decode(response.body)}');
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        final data = json.decode(response.body);
+        print('data calendario actualizado: $data');
+        // Actualizar el evento en la lista local
+
+        Get.snackbar("Éxito", "Evento actualizado correctamente");
+      } else {
+        Get.snackbar("Error", "Error al actualizar el evento");
+      }
+    } catch (e) {
+      print("Error al actualizar el evento: $e");
+      Get.snackbar("Error", "Error al actualizar el evento");
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

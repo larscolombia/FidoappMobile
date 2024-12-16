@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/integracion/util/role_user.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class MenuOfNavigation extends GetView<HomeController> {
+  final RoleUser roleUser = Get.put(RoleUser());
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -21,33 +24,35 @@ class MenuOfNavigation extends GetView<HomeController> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildNavItem(
-              icon: Icons.home,
+              path: 'assets/icons/inicio.png',
               label: 'Inicio',
               index: 0,
               controller: controller,
             ),
             _buildNavItem(
-              icon: Icons.calendar_today,
+              path: 'assets/icons/calendario.png',
               label: 'Agenda',
               index: 1,
               controller: controller,
             ),
             _buildNavItem(
-              icon: Icons.pets,
-              label: 'Entrenamiento',
-              index: 2,
-              controller: controller,
-            ),
-            _buildNavItem(
-              icon: Icons.search,
-              label: 'Explorar',
-              index: 3,
-              controller: controller,
-            ),
-            _buildNavItem(
-              icon: Icons.note_sharp,
+              path: 'assets/icons/diario.png',
               label: 'Diario',
               index: 4,
+              controller: controller,
+            ),
+            if (roleUser.roleUser.value == roleUser.tipoUsuario('user') ||
+                roleUser.roleUser.value == roleUser.tipoUsuario('entrenador'))
+              _buildNavItem(
+                path: 'assets/icons/entrenos.png',
+                label: 'Entrenamiento',
+                index: 2,
+                controller: controller,
+              ),
+            _buildNavItem(
+              path: 'assets/icons/explorar.png',
+              label: 'Explorar',
+              index: 3,
               controller: controller,
             ),
           ],
@@ -57,7 +62,7 @@ class MenuOfNavigation extends GetView<HomeController> {
   }
 
   Widget _buildNavItem({
-    IconData? icon,
+    String? path,
     required String label,
     required int index,
     required HomeController controller,
@@ -79,9 +84,9 @@ class MenuOfNavigation extends GetView<HomeController> {
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         child: Row(
           children: [
-            Icon(
-              icon,
-              color: Styles.whiteColor,
+            Image.asset(
+              path ?? 'assets/icons/aprendisaje.png',
+              width: 24,
             ),
             if (isSelected) ...[
               SizedBox(width: 8),

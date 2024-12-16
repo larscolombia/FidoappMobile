@@ -22,9 +22,11 @@ class ComandoController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchComandos(
-      homeController.selectedProfile.value!.id.toString() ?? "0",
-    );
+    if (homeController.selectedProfile.value != null) {
+      fetchComandos(
+        homeController.selectedProfile.value!.id.toString() ?? "0",
+      );
+    }
   }
 
   void selectComando(Comando comando) {
@@ -39,7 +41,8 @@ class ComandoController extends GetxController {
     isLoading.value = true;
     try {
       final response = await http.get(
-          Uri.parse('$apiUrl/comandos/commands-by-user/get?pet_id=${petId}'),
+          Uri.parse(
+              '$apiUrl/comandos/commands-by-user/get?pet_id=${petId ?? '0'}'),
           headers: {
             'Content-Type': 'application/json',
             'Authorization':

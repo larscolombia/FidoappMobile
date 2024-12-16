@@ -12,8 +12,10 @@ class Commands extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller
-          .fetchComandos(homeController.selectedProfile.value!.id.toString());
+      if (homeController.selectedProfile.value != null) {
+        controller
+            .fetchComandos(homeController.selectedProfile.value!.id.toString());
+      }
     });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

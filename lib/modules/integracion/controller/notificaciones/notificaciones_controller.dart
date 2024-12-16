@@ -145,4 +145,37 @@ class NotificationController extends GetxController {
       isLoading(false);
     }
   }
+
+  //actulizar notificaciones
+
+  Future<void> updateNotification(int? notificationId) async {
+    final url =
+        '$DOMAIN_URL/api/user-notification/$notificationId'; // Cambia a tu URL real
+
+    try {
+      final response = await http.put(
+        Uri.parse(url),
+        headers: {
+          'Authorization':
+              'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Token de autorización
+          'Content-Type': 'application/json', // Tipo de contenido
+        },
+        body: jsonEncode({
+          // Aquí puedes incluir los campos que necesitas actualizar
+          'status':
+              'read', // Por ejemplo, si estás actualizando el estado a "leído"
+        }),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print(
+            'Notificación actualizada exitosamente ${json.decode(response.body)}');
+        fetchNotifications();
+      } else {
+        print('Error al actualizar la notificación: ${response.body}');
+      }
+    } catch (e) {
+      print('Excepción capturada: $e');
+    }
+  }
 }

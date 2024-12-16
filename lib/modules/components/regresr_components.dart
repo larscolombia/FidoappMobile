@@ -8,11 +8,13 @@ class BarraBack extends StatelessWidget {
     this.callback,
     this.color = Styles.primaryColor, // Color por defecto
     this.subtitle,
+    this.ColorSubtitle,
   });
 
   final String titulo;
   final Color color;
   final String? subtitle;
+  final Color? ColorSubtitle;
   final void Function()? callback;
 
   @override
@@ -65,7 +67,8 @@ class BarraBack extends StatelessWidget {
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'Lato',
-                      color: Styles.fiveColor, // Usar el color personalizado
+                      color: ColorSubtitle ??
+                          Styles.fiveColor, // Usar el color personalizado
                     ),
                   ),
               ],

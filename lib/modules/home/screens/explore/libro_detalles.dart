@@ -26,292 +26,365 @@ class LibroDetalles extends StatelessWidget {
 
     commentController.fetchComments(id, "books");
 
-    print('libto ${econtroller.idLibro}');
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Contenedor superior
+      body: CustomScrollView(slivers: [
+        SliverList(
+          delegate: SliverChildListDelegate([
             Container(
-              height: 345,
-              width: size.width,
-              color: Styles.colorContainer,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10),
-                    Center(
-                      child: Container(
-                        width: 345,
-                        child: BarraBack(
-                          titulo: 'Sobre este Ebook',
-                          callback: () {
-                            Get.back();
-                            print('Regresar');
-                          },
-                        ),
+              height: 400,
+              child: Stack(children: [
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: HeaderEbook(
+                    size: size,
+                    econtroller: econtroller,
+                  ),
+                ),
+                Positioned(
+                  top: 300,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 150,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: Container(
+                      height: 225,
+                      width: 137,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Obx(() {
+                          if (econtroller.isLoading.value) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return FadeInImage.assetNetwork(
+                            placeholder: 'assets/images/loading.gif',
+                            image:
+                                econtroller.selectedEBook.value!.coverImage ??
+                                    'https://via.placeholder.com/200x300',
+                            fit: BoxFit.cover,
+                            imageErrorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/404.jpg',
+                                fit: BoxFit.cover,
+                              );
+                            },
+                          );
+                        }),
                       ),
                     ),
-                    Center(
-                      child: Container(
-                        height: 225,
-                        width: 137,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
+                  ),
+                ),
+              ]),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
+                        Container(
+                          width: MediaQuery.of(context).size.width - 150,
+                          decoration: BoxDecoration(),
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            econtroller.selectedEBook.value.title ??
+                                "Título del Ebook",
+                            style: Styles.textTituloLibros,
+                          ),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
+                        const SizedBox(height: 4),
+                        Text(
+                          econtroller.selectedEBook.value.author ??
+                              "Autor del Ebook",
+                          style: Styles.textSubTituloLibros,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Obx(() {
+                          if (commentController.isLoading.value) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: RatingBar.builder(
+                                  initialRating: commentController
+                                      .calculateAverageRating(),
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemPadding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0),
+                                  itemBuilder: (context, _) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (value) {},
+                                ),
+                              ),
+                              Container(
+                                width: 45,
+                                child: Text(
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    "${commentController.calculateAverageRating()}",
+                                    style: Styles.textTituloLibros),
+                              ),
+                            ],
+                          );
+                        }),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          width: 305,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Styles.colorContainer),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Container(
+                                  width: 120,
+                                  child: icon_titulo_subtitulo(
+                                    label: 'Logitud',
+                                    value:
+                                        '${econtroller.selectedEBook.value.number_of_pages} Paginas',
+                                    path: 'assets/icons/paginas.png',
+                                  ),
+                                ),
+                                Container(
+                                  height: 27,
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                        left: BorderSide(
+                                      color: Styles.primaryColor,
+                                      width: 1,
+                                    )),
+                                  ),
+                                ),
+                                Container(
+                                  width: 120,
+                                  child: icon_titulo_subtitulo(
+                                      label: 'Idioma',
+                                      value:
+                                          '${econtroller.selectedEBook.value.lenguaje}',
+                                      path: 'assets/icons/idioma.png'),
+                                ),
+                              ]),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 305,
+                          height: 100,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Sobre este Ebook',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontFamily: 'Lato',
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                "${econtroller.selectedEBook.value.description}",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontFamily: 'Lato',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 304,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 94,
+                                height: 54,
+                                child: Center(
+                                  child: Text(
+                                    textAlign: TextAlign.center,
+                                    "${econtroller.selectedEBook.value.price} €",
+                                    style: Styles.TextTituloAutor,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  child: ButtonDefaultWidget(
+                                      title: 'Comprar', callback: () {}),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 304,
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: Styles.primaryColor)),
                           child: Obx(() {
-                            if (econtroller.isLoading.value) {
-                              return Center(
-                                child: CircularProgressIndicator(),
-                              );
+                            if (commentController
+                                .isComentarioPosrLoading.value) {
+                              return Text('cargando');
                             }
-                            return FadeInImage.assetNetwork(
-                              placeholder: 'assets/images/loading.gif',
-                              image:
-                                  econtroller.selectedEBook.value!.coverImage ??
-                                      'https://via.placeholder.com/200x300',
-                              fit: BoxFit.cover,
-                              imageErrorBuilder: (context, error, stackTrace) {
-                                return Image.asset(
-                                  'assets/images/404.jpg',
-                                  fit: BoxFit.cover,
-                                );
+                            return BanerComentarios(
+                              eventTextChanged: (value) {
+                                commentController.updateField(
+                                    'review_msg', value);
+                              },
+                              titulo: 'Tu experiencia',
+                              onRatingUpdate: (rating) {
+                                commentController.updateField('rating', rating);
+                              },
+                              onEvento: () {
+                                commentController.updateField('e_book_id', id);
+                                if (commentController.comentario.isNotEmpty) {
+                                  commentController.postComment('books');
+                                  commentController.fetchComments(id, "books");
+                                }
                               },
                             );
                           }),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            // Contenedor de la imagen y detalles
-            Container(
-              width: 320,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 16),
-                  const SizedBox(height: 16),
-                  Container(
-                    decoration: BoxDecoration(),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      econtroller.selectedEBook.value.title ??
-                          "Título del Ebook",
-                      style: Styles.textTituloLibros,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    econtroller.selectedEBook.value.author ?? "Autor del Ebook",
-                    style: Styles.TextTituloAutor,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Obx(() {
-                    if (commentController.isLoading.value) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    return Container(
-                      child: RatingBar.builder(
-                        initialRating:
-                            commentController.calculateAverageRating(),
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (value) {},
-                      ),
-                    );
-                  }),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    width: 305,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Styles.colorContainer),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            width: 120,
-                            child: icon_titulo_subtitulo(
-                              label: 'Logitud',
-                              value:
-                                  '${econtroller.selectedEBook.value.number_of_pages} Paginas',
-                              path: 'assets/icons/paginas.png',
-                            ),
-                          ),
-                          Container(
-                            height: 27,
-                            decoration: BoxDecoration(
-                              border: Border(
-                                  left: BorderSide(
-                                color: Styles.primaryColor,
-                                width: 1,
-                              )),
-                            ),
-                          ),
-                          Container(
-                            width: 120,
-                            child: icon_titulo_subtitulo(
-                                label: 'Idioma',
-                                value:
-                                    '${econtroller.selectedEBook.value.lenguaje}',
-                                path: 'assets/icons/idioma.png'),
-                          ),
-                        ]),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    width: 305,
-                    height: 100,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Sobre este Ebook',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontFamily: 'Lato',
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "${econtroller.selectedEBook.value.description}",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontFamily: 'Lato',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    width: 304,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                        SizedBox(height: 20),
                         Container(
-                          width: 94,
-                          height: 54,
-                          child: Center(
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              "${econtroller.selectedEBook.value.price} €",
-                              style: Styles.TextTituloAutor,
-                            ),
+                          width: 304,
+                          child: Text(
+                            'Comentarios',
+                            style: Styles.TextTitulo,
                           ),
                         ),
-                        Expanded(
-                          child: Container(
-                            child: ButtonDefaultWidget(
-                                title: 'Comprar', callback: () {}),
-                          ),
-                        )
+                        SizedBox(height: 20),
+                        Obx(() {
+                          if (commentController.isLoading.value) {
+                            return const Center(
+                              child: Text(''),
+                            );
+                          }
+
+                          if (commentController.comments.value == null) {
+                            return Text('no hay comentarios');
+                          }
+
+                          return SingleChildScrollView(
+                            child: Column(
+                              children: commentController.comments.map((value) {
+                                return AvatarComentarios(
+                                  avatar: value.userAvatar ??
+                                      "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg",
+                                  name: value.userFullName,
+                                  date: "Fecha",
+                                  comment: value.reviewMsg,
+                                  rating: double.parse(value.rating.toString()),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        }),
+                        RecargaComponente(
+                          callback: () {
+                            commentController.fetchComments(id, "books");
+                          },
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
                       ],
                     ),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    width: 304,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Styles.primaryColor)),
-                    child: Obx(() {
-                      if (commentController.isComentarioPosrLoading.value) {
-                        return Text('cargando');
-                      }
-                      return BanerComentarios(
-                        eventTextChanged: (value) {
-                          commentController.updateField('review_msg', value);
-                        },
-                        titulo: 'Tu experiencia',
-                        onRatingUpdate: (rating) {
-                          commentController.updateField('rating', rating);
-                        },
-                        onEvento: () {
-                          commentController.updateField('e_book_id', id);
-                          if (commentController.comentario.isNotEmpty) {
-                            commentController.postComment('books');
-                            commentController.fetchComments(id, "books");
-                          }
-                        },
-                      );
-                    }),
-                  ),
-                  SizedBox(height: 20),
-                  Container(
-                    width: 304,
-                    child: Text(
-                      'Comentarios',
-                      style: Styles.TextTitulo,
-                    ),
-                  ),
-                  SizedBox(height: 20),
-                  Obx(() {
-                    if (commentController.isLoading.value) {
-                      return const Center(
-                        child: Text(''),
-                      );
-                    }
-
-                    if (commentController.comments.value == null) {
-                      return Text('no hay comentarios');
-                    }
-
-                    return SingleChildScrollView(
-                      child: Column(
-                        children: commentController.comments.map((value) {
-                          return AvatarComentarios(
-                            avatar: value.userAvatar ??
-                                "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg",
-                            name: value.userFullName,
-                            date: "Fecha",
-                            comment: value.reviewMsg,
-                            rating: double.parse(value.rating.toString()),
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }),
-                  RecargaComponente(
-                    callback: () {
-                      commentController.fetchComments(id, "books");
-                    },
-                  ),
-                  const SizedBox(
-                    height: 50,
                   ),
                 ],
+              ),
+            ),
+          ]),
+        )
+      ]),
+    );
+  }
+}
+
+class HeaderEbook extends StatelessWidget {
+  const HeaderEbook({
+    super.key,
+    required this.size,
+    required this.econtroller,
+  });
+
+  final Size size;
+  final EBookController econtroller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 335,
+      width: size.width,
+      decoration: BoxDecoration(
+        color: Styles.colorContainer,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 40),
+            Center(
+              child: Container(
+                width: 345,
+                child: BarraBack(
+                  titulo: 'Sobre este Ebook',
+                  subtitle: 'Encuentra toda la informacióna aquí',
+                  ColorSubtitle: Colors.black,
+                  callback: () {
+                    Get.back();
+                    print('Regresar');
+                  },
+                ),
               ),
             ),
           ],

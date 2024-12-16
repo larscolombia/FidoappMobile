@@ -2,10 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
+import 'package:pawlly/modules/profile/screens/formulario_verificacion.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -182,7 +184,15 @@ class ProfileScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Divider(height: 0, thickness: 1),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: ButtonDefaultWidget(
+                              callback: () {
+                                Get.to(FormularioVerificacion());
+                              },
+                              title: 'Verificación Profesional >',
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -193,7 +203,6 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         Obx(
                           () => Container(
-                            margin: EdgeInsets.only(top: 20),
                             child: CustomTextFormFieldWidget(
                               controller: controller.nameController.value,
                               enabled: controller.isEditing.value,

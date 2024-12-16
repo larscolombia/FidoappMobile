@@ -19,7 +19,8 @@ class HistorialClinico {
   final String? fechaRefuerzo;
   final String? weight;
   final String? notes;
-
+  final String? createdAt;
+  final String? updatedAt;
   HistorialClinico({
     this.id,
     required this.reportName,
@@ -41,6 +42,8 @@ class HistorialClinico {
     this.fechaRefuerzo,
     this.weight,
     this.notes,
+    this.createdAt,
+    this.updatedAt,
   });
 
   // Método para mapear desde JSON
@@ -75,6 +78,8 @@ class HistorialClinico {
       fechaRefuerzo: json['fecha_refuerzo'],
       weight: json['weight'],
       notes: json['notes'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
     );
   }
 }

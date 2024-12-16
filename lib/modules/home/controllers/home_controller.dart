@@ -71,7 +71,11 @@ class HomeController extends GetxController {
 
   // Método para actualizar el perfil seleccionado
   void updateProfile(PetData profile) {
-    selectedProfile.value = profile;
+    if (profiles.value.length > 0) {
+      selectedProfile.value = profile;
+    } else {
+      selectedProfile.value = selectedProfile.value;
+    }
   }
 
   // Método para agregar un nuevo perfil con datos de mascota

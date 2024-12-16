@@ -32,6 +32,12 @@ class Styles {
     fontSize: 18,
     color: Colors.black,
     fontFamily: "lato",
+    fontWeight: FontWeight.w800,
+  );
+  static const TextStyle textSubTituloLibros = TextStyle(
+    fontSize: 18,
+    color: Colors.black,
+    fontFamily: "lato",
     fontWeight: FontWeight.w400,
   );
   static const TextStyle TextTitulo = TextStyle(
@@ -39,6 +45,11 @@ class Styles {
       fontWeight: FontWeight.w700,
       fontFamily: 'PoetsenOne',
       color: primaryColor);
+  static const TextStyle TextTituloBlack = TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.w700,
+      fontFamily: 'PoetsenOne',
+      color: Colors.black);
   static const TextStyle textNameAvatar = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w700,
@@ -50,6 +61,12 @@ class Styles {
     fontWeight: FontWeight.w900,
     fontFamily: 'Lato',
     color: Colors.black,
+  );
+  static const TextStyle AvatarPetName = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    fontFamily: 'PoetsenOne',
+    color: primaryColor,
   );
 
   static const TextStyle AvatarComentario = TextStyle(

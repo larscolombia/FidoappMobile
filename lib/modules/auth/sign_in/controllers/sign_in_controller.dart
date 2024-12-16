@@ -65,11 +65,10 @@ class SignInController extends GetxController {
     Map<String, dynamic> req = {
       'email': emailCont.text.trim(),
       'password': passwordCont.text.trim(),
-      'player_id': playerId.value,
-      UserKeys.userType: LoginTypeConst.LOGIN_TYPE_USER,
+      // 'player_id': playerId.value,
+      // UserKeys.userType: LoginTypeConst.LOGIN_TYPE_USER,
     };
-    print('playerId');
-    print(playerId.value);
+
     await AuthServiceApis.loginUser(request: req).then((value) async {
       handleLoginResponse(loginResponse: value);
     }).catchError((e) {
@@ -143,8 +142,7 @@ class SignInController extends GetxController {
 
   void handleLoginResponse(
       {required LoginResponse loginResponse, bool isSocialLogin = false}) {
-    if (loginResponse.userData.userRole
-        .contains(LoginTypeConst.LOGIN_TYPE_USER)) {
+    if (true) {
       //role
       loginUserData(loginResponse.userData);
       loginUserData.value.playerId = playerId.value;

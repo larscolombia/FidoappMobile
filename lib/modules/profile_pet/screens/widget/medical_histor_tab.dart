@@ -10,6 +10,7 @@ import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
+import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/confirmar_formulario.dart';
 import 'package:pawlly/modules/profile_pet/screens/form_historial.dart';
@@ -21,6 +22,7 @@ class MedicalHistoryTab extends StatelessWidget {
   final HistorialClinicoController medicalHistoryController =
       Get.put(HistorialClinicoController());
   final CategoryController categoryController = Get.put(CategoryController());
+  final RoleUser roleUser = Get.find<RoleUser>();
   MedicalHistoryTab({required this.controller});
 
   String reporType(String? value) {
@@ -44,34 +46,36 @@ class MedicalHistoryTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /** para veterinario 
-          Center(
-            child: Container(
-              width: 312,
+          if (roleUser.roleUser.value == roleUser.tipoUsuario('vet'))
+            Center(
               child: Container(
-                width: 302,
-                child: CustomSelectFormFieldWidget(
-                  filcolorCustom: Styles.primaryColor,
-                  textColor: Colors.white,
-                  placeholder: 'Agregar nuevo informe',
-                  controller: null,
-                  items: [
-                    'Vacunas',
-                    'Antiparasitante',
-                    'Antigarrapata',
-                  ],
-                  onChange: (value) {
-                    medicalHistoryController.isEditing.value = false;
-                    medicalHistoryController.updateField('report_name', value);
-                    medicalHistoryController.updateField(
-                        'report_type', reporType(value));
-                    Get.off(FormularioRegistro());
-                  },
-                  icon: 'assets/icons/categori.png',
+                width: 312,
+                child: Container(
+                  width: 302,
+                  child: CustomSelectFormFieldWidget(
+                    filcolorCustom: Styles.primaryColor,
+                    textColor: Colors.white,
+                    placeholder: 'Agregar nuevo informe',
+                    controller: null,
+                    items: [
+                      'Vacunas',
+                      'Antiparasitante',
+                      'Antigarrapata',
+                    ],
+                    onChange: (value) {
+                      medicalHistoryController.reseterReportData();
+                      medicalHistoryController.isEditing.value = false;
+                      medicalHistoryController.updateField(
+                          'report_name', value);
+                      medicalHistoryController.updateField(
+                          'report_type', reporType(value));
+                      Get.off(FormularioRegistro());
+                    },
+                    icon: 'assets/icons/categori.png',
+                  ),
                 ),
               ),
             ),
-          ),*/
           // Título
           const Padding(
             padding: EdgeInsets.all(16.0),
@@ -171,10 +175,13 @@ class MedicalHistoryTab extends StatelessWidget {
                           'date', history.fechaAplicacion);
                       medicalHistoryController.updateField(
                           'category', history.categoryName);
+                      medicalHistoryController.updateField('id', history.id);
 
                       medicalHistoryController.isEditing.value = true;
 
-                      Get.to(ConfirmarFormulario());
+                      Get.to(ConfirmarFormulario(
+                        isEdit: true,
+                      ));
                     },
                   );
                 },

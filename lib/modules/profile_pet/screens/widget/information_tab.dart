@@ -15,6 +15,7 @@ import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/associated_persons_modal.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/owner_pet.dart';
 import 'package:pawlly/routes/app_pages.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 import 'package:pawlly/styles/styles.dart';
 
@@ -59,40 +60,42 @@ class InformationTab extends StatelessWidget {
                         ),
                       ],
                     ),
-                    ButtonDefaultWidget(
-                      title: 'Compartir',
-                      callback: () {
-                        // Lógica para compartir perfil
-                      },
-                      defaultColor: Colors.transparent,
-                      border: const BorderSide(color: Colors.grey, width: 1),
-                      textColor: Colors.black,
-                      icon: Icons.share,
-                      iconAfterText: true,
-                      widthButtom: 150,
-                      textSize: 14,
-                      borderSize: 25,
-                      heigthButtom: 40,
-                    ),
+                    if (AuthServiceApis.dataCurrentUser.userType == 'user')
+                      ButtonDefaultWidget(
+                        title: 'Compartir',
+                        callback: () {
+                          // Lógica para compartir perfil
+                        },
+                        defaultColor: Colors.transparent,
+                        border: const BorderSide(color: Colors.grey, width: 1),
+                        textColor: Colors.black,
+                        icon: Icons.share,
+                        iconAfterText: true,
+                        widthButtom: 150,
+                        textSize: 14,
+                        borderSize: 25,
+                        heigthButtom: 40,
+                      ),
                   ],
                 ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Center(
-                child: Container(
-                  height: 54,
-                  child: ButtonDefaultWidget(
-                    title: 'Pasaporte',
-                    callback: () {
-                      Get.to(
-                        VerPasaporteMascota(),
-                      );
-                    },
+              if (AuthServiceApis.dataCurrentUser.userType == 'user')
+                Center(
+                  child: Container(
+                    height: 54,
+                    child: ButtonDefaultWidget(
+                      title: 'Pasaporte',
+                      callback: () {
+                        Get.to(
+                          VerPasaporteMascota(),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
               const SizedBox(height: 20),
               // Card de la raza
               Card(

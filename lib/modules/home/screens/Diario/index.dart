@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/Diario/detalles_diario.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -11,8 +12,10 @@ class DiarioMascotas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller
-          .fetchPetActivities('${homeController.selectedProfile.value!.id}');
+      if (homeController.selectedProfile.value != null) {
+        controller
+            .fetchPetActivities('${homeController.selectedProfile.value!.id}');
+      }
     });
 
     return Obx(() {
@@ -43,7 +46,7 @@ class DiarioMascotas extends StatelessWidget {
           itemBuilder: (context, index) {
             final actividad = controller.filteredActivities[index];
             return Container(
-              width: 100,
+              width: MediaQuery.of(context).size.width,
               height: 200,
               margin: EdgeInsets.symmetric(vertical: 8),
               padding: EdgeInsets.all(12),
@@ -63,7 +66,7 @@ class DiarioMascotas extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       color: Colors.black,
                     ),
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
@@ -103,7 +106,10 @@ class DiarioMascotas extends StatelessWidget {
                         alignment: Alignment.bottomCenter,
                         child: ButtonDefaultWidget(
                           title: 'Ver detalles >',
-                          callback: () {},
+                          callback: () {
+                            controller.getActivityById(actividad.id);
+                            Get.to(DetallesDiario());
+                          },
                         ),
                       ),
                     ),

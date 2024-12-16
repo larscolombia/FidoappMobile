@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/modules/integracion/model/notigicaciones/notificaciones.dart';
 import 'package:pawlly/modules/notification/controllers/notification_controller.dart';
-
 import 'package:pawlly/modules/notification/screens/widgets/app_bar_notifications.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -12,6 +11,7 @@ class NotificationsScreen extends StatelessWidget {
   final NotificationsController controller = Get.put(NotificationsController());
   final NotificationController notificationController =
       Get.find<NotificationController>();
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -64,6 +64,8 @@ class NotificationsScreen extends StatelessWidget {
 
   Widget _buildNotificationList(List<NotificationData> notifications,
       {required bool showTime}) {
+    // ignore: unused_local_variable
+    NotificationController controller = Get.put(NotificationController());
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
@@ -71,17 +73,24 @@ class NotificationsScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         final notification = notifications[index];
         return GestureDetector(
-          onTap: () {},
+          onTap: () {
+            // Mostrar el detalle de la notificación
+            notification.isRead == 0
+                ? controller.updateNotification(notification.id)
+                : null;
+
+            _showNotificationDetails(context, notification);
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12),
             width:
                 double.infinity, // Asegurar que ocupe todo el ancho disponible
             margin: EdgeInsets.symmetric(vertical: 4.0),
             decoration: BoxDecoration(
-              color: notification.isRead == 1
+              borderRadius: BorderRadius.circular(8.0),
+              color: notification.isRead == 0
                   ? Styles.whiteColor
                   : Styles.fiveColor,
-              borderRadius: BorderRadius.circular(8.0),
             ),
             child: Row(
               children: [
@@ -89,8 +98,7 @@ class NotificationsScreen extends StatelessWidget {
                   radius: 30, // Aumenta el tamaño de la imagen
                   backgroundImage: NetworkImage(
                       'https://via.placeholder.com/150'), // URL por defecto
-                  backgroundColor: Colors
-                      .transparent, // Asegura que el fondo sea transparente
+                  backgroundColor: Colors.transparent,
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
@@ -107,8 +115,7 @@ class NotificationsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        notification.description ??
-                            '', // Asumiendo que description es el título
+                        notification.description ?? '',
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontFamily: 'Lato',
@@ -153,23 +160,56 @@ class NotificationsScreen extends StatelessWidget {
       },
     );
   }
-  /** 
+
+  // Método para mostrar el detalle de la notificación en un modal
   void _showNotificationDetails(
-      BuildContext context, Model.NotificationModel notification) {
+      BuildContext context, NotificationData notification) {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(notification.title),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Tipo: ${notification.type}'),
-              SizedBox(height: 8.0),
-              Text(
-                  'Descripción: \n\nLorem ipsum dolor sit amet, consectetur adipiscing elit.'),
-            ],
+          title: Text(notification.description ?? 'Sin descripción'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Tipo: ${notification.type ?? 'Desconocido'}',
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                SizedBox(height: 15.0),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Descripcion:',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Lato',
+                          color: Styles.primaryColor,
+                          fontSize: 14,
+                        ),
+                      ),
+                      Text(
+                        '${notification.description ?? ''}',
+                        style: Styles.textProfile15w700,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 12.0),
+                Text(
+                  'Fecha: ${DateFormat('dd MMM yyyy HH:mm').format(DateTime.parse(notification.createdAt!))}',
+                  style: TextStyle(fontWeight: FontWeight.w400),
+                ),
+                const SizedBox(height: 12.0),
+                Text(
+                  'Leida: ${notification.isRead}',
+                  style: TextStyle(fontWeight: FontWeight.w400),
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -180,5 +220,5 @@ class NotificationsScreen extends StatelessWidget {
         );
       },
     );
-  }*/
+  }
 }

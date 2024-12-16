@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/confirmar_formulario.dart';
@@ -16,13 +17,15 @@ class FormularioRegistro extends StatelessWidget {
   final HistorialClinicoController controller =
       Get.put(HistorialClinicoController());
   final CategoryController categoryController = Get.put(CategoryController());
+  final HomeController homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
+    controller.updateField("pet_id", homeController.selectedProfile.value!.id);
     return Scaffold(
       backgroundColor: Styles.fiveColor,
       body: Container(
         color: Styles.fiveColor,
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           child: Column(
             children: [
@@ -195,6 +198,8 @@ class FormularioRegistro extends StatelessWidget {
                             child: ButtonDefaultWidget(
                               title: 'Terminar Informe  >',
                               callback: () {
+                                print(
+                                    'reporte data editar${controller.reportData}');
                                 controller.isEditing.value = false;
                                 if (controller.validateReportData()) {
                                   Get.to(ConfirmarFormulario());

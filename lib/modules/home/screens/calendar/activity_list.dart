@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/home/screens/calendar/evento_list.dart';
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 
 class ActivityListScreen extends StatelessWidget {
@@ -69,68 +70,93 @@ class ActivityListScreen extends StatelessWidget {
                     const SizedBox(width: 12),
                     // Contenedor del Evento
                     Expanded(
-                      child: Container(
-                        width: containerWidth,
-                        margin: const EdgeInsets.only(bottom: 16),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Styles.colorContainer,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: Colors.grey.withOpacity(0.2),
-                            width: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          print('editar');
+                          calendarController.selectEventById('${event.id}');
+                          var eventos = calendarController.selectedEvents.first;
+                          calendarController.updateField('name', eventos.name);
+                          calendarController.updateField(
+                              'description', eventos.description);
+                          calendarController.updateField(
+                              'date', eventos.startDate);
+                          calendarController.updateField(
+                              'end_date', eventos.endDate);
+                          calendarController.updateField(
+                              'eventTime', eventos.eventime);
+                          calendarController.updateField('slug', eventos.slug);
+                          calendarController.updateField(
+                              'userId', eventos.userId);
+                          calendarController.updateField('tipo', eventos.tipo);
+                          calendarController.updateField(
+                              'status', eventos.status);
+                          calendarController.updateField('evenId', eventos.id);
+                          Get.to(EventoDestalles());
+                        },
+                        child: Container(
+                          width: containerWidth,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Styles.colorContainer,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors.grey.withOpacity(0.2),
+                              width: 1,
+                            ),
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              event.name ?? 'Sin nombre',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w900,
-                                fontFamily: 'Lato',
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                event.name ?? 'Sin nombre',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: 'Lato',
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            GestureDetector(
-                              onTap: () {
-                                calendarController.toggleVerMas("${event.id}");
-                                log('vermas ${calendarController.isVerMas.value}');
-                              },
-                              child: Obx(() {
-                                return Text(
-                                  event.description ?? 'Sin descripción',
-                                  maxLines:
-                                      calendarController.isVerMas[event.id] ??
-                                              false
-                                          ? 4
-                                          : 1,
-                                  overflow:
-                                      calendarController.isVerMas[event.id] ??
-                                              false
-                                          ? TextOverflow.visible
-                                          : TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Lato',
-                                    color: Colors.black,
-                                  ),
-                                );
-                              }),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              event.date ?? 'Hora no especificada',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Lato',
-                                color: Styles.fiveColor,
+                              const SizedBox(height: 4),
+                              GestureDetector(
+                                onTap: () {
+                                  calendarController
+                                      .toggleVerMas("${event.id}");
+                                  log('vermas ${calendarController.isVerMas.value}');
+                                },
+                                child: Obx(() {
+                                  return Text(
+                                    event.description ?? 'Sin descripción',
+                                    maxLines:
+                                        calendarController.isVerMas[event.id] ??
+                                                false
+                                            ? 4
+                                            : 1,
+                                    overflow:
+                                        calendarController.isVerMas[event.id] ??
+                                                false
+                                            ? TextOverflow.visible
+                                            : TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Lato',
+                                      color: Colors.black,
+                                    ),
+                                  );
+                                }),
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 8),
+                              Text(
+                                event.date ?? 'Hora no especificada',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Lato',
+                                  color: Styles.fiveColor,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

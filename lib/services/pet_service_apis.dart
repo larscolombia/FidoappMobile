@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:get/get.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -10,6 +11,7 @@ import 'package:pawlly/models/brear_model.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/pet_note_model.dart';
 import 'package:pawlly/models/pet_type_model.dart';
+import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import '../../../models/base_response_model.dart';
 import '../../../network/network_utils.dart';
@@ -18,6 +20,7 @@ import '../../../utils/app_common.dart';
 import '../../../utils/constants.dart';
 
 class PetService {
+  final RoleUser roleUser = Get.put(RoleUser());
   static Future<PetTypeRes> getPetTypeApi() async {
     return PetTypeRes.fromJson(await handleResponse(await buildHttpResponse(
         APIEndPoints.getPetTypeList,
@@ -88,10 +91,20 @@ class PetService {
     required List<PetData> pets,
   }) async {
     if (isLoggedIn.value) {
-      // Construir la URL completa con el user_id
-      final url = Uri.parse(
-          '${BASE_URL}${APIEndPoints.getPetList}?user_id=${AuthServiceApis.dataCurrentUser.id}');
-      print(' url pets ${url}');
+      var urlRole = '';
+      if (AuthServiceApis.dataCurrentUser.userType == 'vet') {
+        urlRole =
+            '${BASE_URL}owner-pets?employee_id=${AuthServiceApis.dataCurrentUser.id}';
+      } else if (AuthServiceApis.dataCurrentUser.userRole == 'trainer') {
+        urlRole =
+            '${BASE_URL}trainer-pets?employee_id=${AuthServiceApis.dataCurrentUser.id}';
+      } else {
+        urlRole =
+            '${BASE_URL}pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
+      }
+      // Construir la URL completa con el método getApiUrl
+      final url = Uri.parse(urlRole);
+
       // Realizar la solicitud con el token en los headers
       final response = await http.get(
         url,
@@ -102,11 +115,31 @@ class PetService {
       );
 
       if (response.statusCode == 200) {
-        final res = PetListRes.fromJson(jsonDecode(response.body));
-        print('1000 ${res.data}');
-        pets.clear();
-        pets.addAll(res.data);
-        return res.data;
+        final jsonResponse = jsonDecode(response.body);
+        print('JSON RESPONSE: ${jsonResponse}');
+        print(
+            'JSON RESPONSE Role: ${AuthServiceApis.dataCurrentUser.userType}');
+        // Verificar la estructura de la respuesta para vet y trainer
+        if (AuthServiceApis.dataCurrentUser.userType == 'vet' ||
+            AuthServiceApis.dataCurrentUser.userType == 'trainer') {
+          // Estructura para vet y trainer: data es una lista de owners que contiene listas de pets
+          final owners = (jsonResponse['data'] as List);
+          final petDataList =
+              owners.expand((owner) => owner['pets'] as List).toList();
+          final res =
+              petDataList.map((item) => PetData.fromJson(item)).toList();
+
+          pets.clear();
+          pets.addAll(res);
+          return res;
+        } else {
+          // Estructura para user: data es una lista de pets directamente
+          final res = PetListRes.fromJson(jsonResponse);
+          print('Mascotas ${res.data}');
+          pets.clear();
+          pets.addAll(res.data);
+          return res.data;
+        }
       } else {
         // Manejo de error
         print('Error en la solicitud: ${response.statusCode}');
@@ -319,7 +352,7 @@ class PetService {
     }
 
     if (files.validate().isNotEmpty) {
-      multiPartRequest.files.add(await MultipartFile.fromPath(
+      multiPartRequest.files.add(await http.MultipartFile.fromPath(
           'pet_image', files.validate().first.path.validate()));
     }
 

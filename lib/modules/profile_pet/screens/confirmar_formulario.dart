@@ -18,7 +18,9 @@ class ConfirmarFormulario extends StatelessWidget {
   final HistorialClinicoController medicalHistoryController =
       Get.put(HistorialClinicoController());
   final HomeController petController = Get.find<HomeController>();
+  final bool? isEdit;
 
+  ConfirmarFormulario({super.key, this.isEdit = false});
   @override
   Widget build(BuildContext context) {
     petController.selectType(0);
@@ -77,8 +79,11 @@ class ConfirmarFormulario extends StatelessWidget {
                                   onTap: () {
                                     Get.back();
                                   },
-                                  child: const Text(
-                                    "Informe Médico",
+                                  child: Text(
+                                    isEdit == false
+                                        ? "Informe Médico"
+                                        : "Edicion ${medicalHistoryController.reportData['report_name'].toString()} #${medicalHistoryController.reportData['id']}" ??
+                                            '',
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -97,14 +102,6 @@ class ConfirmarFormulario extends StatelessWidget {
                             initialValue: medicalHistoryController
                                 .reportData["name"]
                                 .toString(),
-                            prefiIcon: Icon(
-                              Icons.calendar_today,
-                              color: Color.fromRGBO(252, 186, 103, 1),
-                            ),
-                            suffixIcon: Icon(
-                              Icons.arrow_drop_down,
-                              color: Color.fromRGBO(252, 186, 103, 1),
-                            ),
                             onChanged: (value) {
                               medicalHistoryController.updateField(
                                   "fecha_aplicacion", value);
@@ -130,11 +127,11 @@ class ConfirmarFormulario extends StatelessWidget {
                               medicalHistoryController.updateField(
                                   "fecha_aplicacion", value);
                             },
-                            readOnly: true,
+                            readOnly: isEdit! ? false : true,
                           ),
                           const SizedBox(height: 20),
                           InputText(
-                            label: 'Nombre del Informe',
+                            label: 'Fecha de refuerzo',
                             placeholder: '',
                             initialValue: medicalHistoryController
                                 .reportData["fecha_refuerzo"]
@@ -151,7 +148,7 @@ class ConfirmarFormulario extends StatelessWidget {
                               medicalHistoryController.updateField(
                                   "fecha_aplicacion", value);
                             },
-                            readOnly: true,
+                            readOnly: isEdit! ? false : true,
                           ),
                           const SizedBox(height: 20),
                           Container(
@@ -169,37 +166,43 @@ class ConfirmarFormulario extends StatelessWidget {
                             child: TextField(
                               expands: true,
                               maxLines: null,
-                              readOnly: true,
+                              readOnly: isEdit! ? false : true,
                               keyboardType: TextInputType.multiline,
+                              onChanged: (value) => medicalHistoryController
+                                  .updateField('notes', value),
                               decoration: InputDecoration(
                                 border: InputBorder.none, // Quitar el borde
                                 hintText: medicalHistoryController
-                                    .reportData["notes"]
-                                    .toString(),
+                                        .reportData["notes"]
+                                        .toString() ??
+                                    '',
                               ),
                             ),
                           ),
-                          const SizedBox(height: 20),
                           const SizedBox(height: 20),
                           Container(
                             width: 302,
                             child: Divider(height: 0, thickness: .4),
                           ),
                           const SizedBox(height: 20),
-                          Container(
-                            width: 302,
-                            child: Text(
-                              'Selecciona la mascota',
-                              style: Styles.textProfile15w700,
-                            ),
-                          ),
+                          isEdit == false
+                              ? Container(
+                                  width: 302,
+                                  child: Text(
+                                    'Selecciona la mascota',
+                                    style: Styles.textProfile15w700,
+                                  ),
+                                )
+                              : const SizedBox(),
                           const SizedBox(height: 10),
-                          Container(
-                            width: 324,
-                            child: ProfilesDogs(
-                              isSelect: true,
-                            ),
-                          ),
+                          isEdit == false
+                              ? Container(
+                                  width: 324,
+                                  child: ProfilesDogs(
+                                    isSelect: true,
+                                  ),
+                                )
+                              : const SizedBox(),
                           const SizedBox(height: 20),
                           Container(
                             width: 302,
@@ -225,6 +228,25 @@ class ConfirmarFormulario extends StatelessWidget {
                             }),
                           ),
                           const SizedBox(height: 20),
+                          isEdit == true
+                              ? Obx(() {
+                                  return Container(
+                                    width:
+                                        MediaQuery.of(context).size.width - 80,
+                                    child: ButtonDefaultWidget(
+                                      title: medicalHistoryController
+                                              .isLoading.value
+                                          ? 'Cargando ...'
+                                          : 'Actualizar',
+                                      callback: () {
+                                        print(
+                                            'data actualizado ${medicalHistoryController.reportData}');
+                                        medicalHistoryController.updateReport();
+                                      },
+                                    ),
+                                  );
+                                })
+                              : const SizedBox(),
                           Obx(() {
                             return medicalHistoryController.isLoading.value
                                 ? const Center(

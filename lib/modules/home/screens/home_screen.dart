@@ -57,9 +57,16 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Positioned(
-                      top: 20, left: 0, right: 0, child: HeaderNotification()),
+                      top: 20,
+                      left: 0,
+                      right: 0,
+                      child: Column(
+                        children: [
+                          HeaderNotification(),
+                        ],
+                      )),
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(40),
@@ -79,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                         case 3:
                           return _buildCase4Content();
                         case 4:
-                          return _buildCase5Content();
+                          return _buildCase5Content(context);
                         case 5:
                           return __Ebooks();
                         case 6:
@@ -136,9 +143,9 @@ class HomeScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Calendar(),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         ActivityListScreen(),
       ],
     );
@@ -180,7 +187,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCase5Content() {
+  Widget _buildCase5Content(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -188,11 +195,13 @@ class HomeScreen extends StatelessWidget {
         ProfilesDogs(),
         const SizedBox(height: 20),
         Container(
+          width: MediaQuery.of(context).size.width,
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
+                width: 250,
                 child: InputText(
                   onChanged: (String value) =>
                       historialClinicoController.searchActivities(value),

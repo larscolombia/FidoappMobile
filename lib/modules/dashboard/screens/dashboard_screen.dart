@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
+import 'package:pawlly/modules/dashboard/screens/pacientes.dart';
 import 'package:pawlly/modules/dashboard/screens/pages.dart';
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
+import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
 import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
 import 'package:pawlly/routes/app_pages.dart';
@@ -10,6 +12,7 @@ import 'package:pawlly/styles/styles.dart';
 
 class DashboardScreen extends StatelessWidget {
   final DashboardController controller = Get.put(DashboardController());
+  final RoleUser roleUser = Get.put(RoleUser());
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -122,6 +125,7 @@ class DashboardScreen extends StatelessWidget {
                           return GestureDetector(
                             onTap: () {
                               // Navegar a la vista correspondiente
+
                               _onItemTap(index,
                                   context); // Llama al nuevo método que maneja el modal y la navegación
                             },
@@ -187,7 +191,9 @@ class DashboardScreen extends StatelessWidget {
       case 0:
         return 'Mi Perfil';
       case 1:
-        return 'Mascotas';
+        return roleUser.roleUser() == roleUser.tipoUsuario('vet')
+            ? 'Pacientes'
+            : 'Mascotas';
       case 2:
         return 'Términos y Condiciones';
       case 3:
@@ -202,16 +208,23 @@ class DashboardScreen extends StatelessWidget {
   }
 
   void _onItemTap(int index, BuildContext context) {
+    if (index == 6) {
+      Get.to(Pacientes());
+    }
     if (index == 1) {
       // Mostrar el modal para el caso 1
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (BuildContext context) {
-          return ProfileModal();
-        },
-      );
+      if (roleUser.roleUser() == roleUser.tipoUsuario('vet')) {
+        Get.to(Pacientes());
+      } else {
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (BuildContext context) {
+            return ProfileModal();
+          },
+        );
+      }
     } else if (index == 5) {
       // Mostrar el diálogo de confirmación para cerrar sesión
       _showLogoutConfirmationDialog(context);

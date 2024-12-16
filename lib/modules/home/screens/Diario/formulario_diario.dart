@@ -13,16 +13,63 @@ import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 
 class FormularioDiario extends StatefulWidget {
+  final bool isEdit;
+  bool? cambio;
+  String? ImagenEdit;
+  FormularioDiario({
+    super.key,
+    this.isEdit = false,
+    this.cambio = false,
+    this.ImagenEdit,
+  });
+
   @override
   _FormularioDiarioState createState() => _FormularioDiarioState();
 }
 
 class _FormularioDiarioState extends State<FormularioDiario> {
-  String _imagePath = ""; // Para almacenar la ruta de la imagen seleccionada
-  File __imageFile = File('');
-  final PetActivityController controller = Get.put(PetActivityController());
-  // Función para seleccionar la imagen
+  String? _imagePath = null; // Para almacenar la ruta de la imagen seleccionada
+  File? __imageFile = null;
+  late final PetActivityController controller;
   final HomeController homeController = Get.put(HomeController());
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isEdit) {
+      controller = Get.find<PetActivityController>();
+      widget.ImagenEdit = controller.activitiesOne.value!.image ?? "";
+
+      controller.updateField('actividadId', controller.activitiesOne.value!.id);
+      controller.updateField(
+        'actividad',
+        controller.activitiesOne.value!.actividad,
+      );
+      controller.updateField(
+        'date',
+        controller.activitiesOne.value!.date,
+      );
+      controller.updateField(
+        'category_id',
+        controller.activitiesOne.value!.categoryId.toString(),
+      );
+      controller.updateField(
+        'notas',
+        controller.activitiesOne.value!.notas,
+      );
+      controller.updateField(
+        'pet_id',
+        controller.activitiesOne.value!.petId.toString(),
+      );
+      controller.updateField(
+        'image',
+        controller.activitiesOne.value!.image,
+      );
+    } else {
+      controller = Get.put(PetActivityController());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,6 +144,9 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                       child: Column(
                         children: [
                           InputText(
+                            initialValue: widget.isEdit
+                                ? (controller.diario['actividad'] ?? '')
+                                : "",
                             label: 'Título del registro',
                             placeholder: '',
                             onChanged: (value) {
@@ -129,6 +179,8 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                           ),
                           const SizedBox(height: 8),
                           InputText(
+                            initialValue:
+                                widget.isEdit ? controller.diario['date'] : '',
                             label: 'Fecha del registro',
                             placeholder: '',
                             isDateField: true,
@@ -147,12 +199,15 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                           ),
                           const SizedBox(height: 20),
                           InputText(
-                              label: 'Descripción',
-                              placeholder: 'Describe el evento',
-                              onChanged: (value) {
-                                controller.updateField('notas', value);
-                                print('Descripción del registro: $value');
-                              }),
+                            initialValue:
+                                widget.isEdit ? controller.diario['notas'] : '',
+                            label: 'Descripción',
+                            placeholder: 'Describe el evento',
+                            onChanged: (value) {
+                              controller.updateField('notas', value);
+                              print('Descripción del registro: $value');
+                            },
+                          ),
                           const SizedBox(height: 8),
                           InputText(
                             label: 'Selecciona una Imagen',
@@ -161,6 +216,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                 true, // Habilita la selección de imagen
                             onChanged: (value) {
                               setState(() {
+                                widget.cambio = false;
                                 _imagePath =
                                     value; // Aquí obtienes la ruta de la imagen seleccionada
                                 controller.updateField('image', value);
@@ -168,41 +224,53 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               });
                             },
                           ),
-                          if (_imagePath.isNotEmpty)
-                            Column(
-                              children: [
-                                Text("Imagen seleccionada:"),
-                                Image.file(
-                                  File(
-                                      _imagePath), // Muestra la imagen seleccionada
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
-                              ],
-                            ),
-                          SizedBox(height: 20),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          widget.isEdit == true && widget.cambio == false
+                              ? Column(
+                                  children: [
+                                    Text("Imagen Actual"),
+                                    Image.network(
+                                      widget.ImagenEdit ?? "",
+                                      width: 300,
+                                      height: 220,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox(),
+                          const SizedBox(height: 20),
                           Container(
                             width: 302,
                             height: 54,
                             child: Obx(() {
-                              if (controller.isLoading.value) {
-                                return ButtonDefaultWidget(
-                                  title: 'Guardando...',
-                                  callback: () {},
-                                );
-                              }
-
                               return ButtonDefaultWidget(
-                                  title: 'Finalizar',
-                                  callback: () {
+                                title: widget.isEdit
+                                    ? controller.isLoading.value
+                                        ? 'Cargando ...'
+                                        : 'Editar'
+                                    : controller.isLoading.value
+                                        ? 'Cargando ...'
+                                        : 'Finalizar',
+                                callback: () {
+                                  if (widget.isEdit) {
+                                    print(controller.diario);
+                                    controller.editPetActivity(
+                                      "${controller.activitiesOne.value!.id}",
+                                      __imageFile,
+                                    );
+                                  } else {
                                     controller.updateField(
-                                        'pet_id',
-                                        homeController
-                                            .selectedProfile.value!.id);
+                                      'pet_id',
+                                      homeController.selectedProfile.value!.id
+                                          .toString(),
+                                    );
                                     print(controller.diario);
                                     controller.addPetActivity(__imageFile);
-                                  });
+                                  }
+                                },
+                              );
                             }),
                           ),
                         ],

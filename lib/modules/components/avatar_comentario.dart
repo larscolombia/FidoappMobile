@@ -30,17 +30,6 @@ class AvatarComentarios extends StatelessWidget {
                 radius: 22,
                 backgroundImage: NetworkImage(avatar ??
                     "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg"),
-                child: Image.network(
-                  avatar ??
-                      "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg",
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    // Cuando la imagen no se puede cargar (por ejemplo, 404 o URL inválida), mostramos una imagen de respaldo
-                    return Icon(Icons.account_circle,
-                        size: 44,
-                        color: Colors.grey); // Icono de usuario por defecto
-                  },
-                ),
               ),
               const SizedBox(width: 2),
               Container(
@@ -75,9 +64,14 @@ class AvatarComentarios extends StatelessWidget {
                             onRatingUpdate: (value) {},
                           ),
                           const SizedBox(width: 10),
-                          Text(
-                            '5.0',
-                            style: Styles.textProfile14w700,
+                          Container(
+                            width: 50,
+                            child: Text(
+                              '${rating ?? 0.0}',
+                              style: Styles.textProfile14w700,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
                           ),
                         ],
                       ),

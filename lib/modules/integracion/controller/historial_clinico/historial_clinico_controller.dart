@@ -34,7 +34,7 @@ class HistorialClinicoController extends GetxController {
     "vet_visits": null,
     "date": "",
     "weight": "",
-    "notes": "",
+    "notes": "no tiene nota",
     "file": null,
     "image": null,
   }.obs;
@@ -59,6 +59,27 @@ class HistorialClinicoController extends GetxController {
 
   void updateField(String key, dynamic value) {
     reportData[key] = value;
+  }
+
+  void reseterReportData() {
+    reportData = {
+      'pet_id': null,
+      'report_type': 1,
+      'veterinarian_id': AuthServiceApis.dataCurrentUser.id,
+      'report_name': '',
+      'name': '',
+      'fecha_aplicacion': '',
+      'fecha_refuerzo': '',
+      'category': null,
+      'medical_conditions': '',
+      'test_results': '',
+      'vet_visits': null,
+      'date': '',
+      'weight': '',
+      'notes': null,
+      'file': null,
+      'image': null,
+    }.obs;
   }
 
   void addHistorialClinico(HistorialClinico item) {
@@ -201,5 +222,59 @@ class HistorialClinicoController extends GetxController {
           .sort((a, b) => (a.reportType ?? '').compareTo(b.reportType ?? ''));
     }
     return history;
+  }
+
+  //actulizar historial
+  Future<void> updateReport() async {
+    isLoading.value = true;
+    isSuccess.value = false;
+
+    // Construcción de la URL de la API para actualizar
+    final url =
+        '${DOMAIN_URL}/api/pet-histories/${reportData['id']}'; // Usar el ID del informe
+    print('url $url');
+    try {
+      // Crear la solicitud PUT
+      final response = await http.put(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true',
+        },
+        body: jsonEncode(
+            reportData), // El cuerpo es el mismo que al crear el reporte
+      );
+
+      // Verificar la respuesta
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Si la respuesta es exitosa, mostrar un mensaje de éxito
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Éxito',
+            description: 'El Historial ha sido actualizado exitosamente.',
+            primaryButtonText: 'Aceptar',
+            onPrimaryButtonPressed: () {
+              Get.back(); // Redirigir a la pantalla principal
+            },
+          ),
+          barrierDismissible:
+              false, // No permite cerrar el diálogo tocando fuera
+        );
+        isSuccess.value = true;
+      } else {
+        // Si la respuesta es un error, mostrar el error
+        print("Error al actualizar los datos: ${response.body}");
+        isSuccess.value = false;
+      }
+    } catch (e) {
+      // Manejar excepciones, por ejemplo, errores de red
+      print("Error: $e");
+      isSuccess.value = false;
+    } finally {
+      // Detener el estado de carga
+      isLoading.value = false;
+    }
   }
 }

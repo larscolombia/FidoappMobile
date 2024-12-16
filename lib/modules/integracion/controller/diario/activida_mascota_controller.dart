@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
@@ -8,50 +7,45 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
-
 import 'package:pawlly/modules/integracion/model/diario/actividad_mascota_modal.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-import 'package:path/path.dart'
-    as path; // Asegúrate de importar el paquete path
+import 'package:path/path.dart' as path;
 
 class PetActivityController extends GetxController {
   final HomeController homeController = Get.put(HomeController());
-  var isLoading = true.obs; // Estado de carga
-  var activities = <PetActivity>[].obs; // Lista observable de PetActivity
-  var filteredActivities = <PetActivity>[].obs; // Lista filtrada de PetActivity
-  var url = "${DOMAIN_URL}/api/get-diary"; // URL para obtener las actividades
-  var createUrl =
-      "${DOMAIN_URL}/api/training-diaries"; // URL para crear una actividad
+  var isLoading = true.obs;
+  var activities = <PetActivity>[].obs;
+  var filteredActivities = <PetActivity>[].obs;
+  var activitiesOne =
+      Rxn<PetActivity>(); // Observable para almacenar una sola actividad
+  var url = '$DOMAIN_URL/api/get-diary';
+  var createUrl = "$DOMAIN_URL/api/training-diaries";
 
-  var diario = {}.obs; // Inicializa el mapa vacío
+  var diario = {}.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Mueve la inicialización de 'diario' a onInit() para acceder a 'homeController'
     initDiario();
   }
 
-  // Método para inicializar el objeto `diario`
   void initDiario() {
     diario.value = {
+      'actividadId': "",
       'actividad': "",
       'date': "",
       'category_id': "",
       'notas': "",
-      'pet_id': '0', // Cambia esto si es necesario
+      'pet_id': '0',
       'image': "",
     };
   }
 
-  // Método para obtener las actividades de las mascotas
-  Future<void> fetchPetActivities(String pet_id) async {
-    print('Respuesta JSON completa 1');
-    print('Respuesta JSON completa ${diario}');
+  Future<void> fetchPetActivities(String petId) async {
     try {
       isLoading(true);
       final response = await http.get(
-        Uri.parse('${url}?pet_id=${pet_id}'),
+        Uri.parse('$url?pet_id=$petId'),
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
@@ -59,15 +53,12 @@ class PetActivityController extends GetxController {
       );
 
       var jsonResponse = json.decode(response.body);
-      print('Respuesta JSON completa: $jsonResponse');
-
       if (response.statusCode == 200) {
         if (jsonResponse['success']) {
           List<dynamic> data = jsonResponse['data'];
           activities.value =
               data.map((activity) => PetActivity.fromJson(activity)).toList();
-          filteredActivities.value =
-              activities; // Inicialmente igualar a activities
+          filteredActivities.value = activities;
         } else {
           print(
               'Error en la respuesta del servidor: ${jsonResponse['message']}');
@@ -78,17 +69,16 @@ class PetActivityController extends GetxController {
     } catch (e) {
       print('Excepción capturada: $e');
     } finally {
-      isLoading(false); // Cambiar el estado de carga
+      isLoading(false);
     }
   }
 
-  // Método para agregar una nueva actividad de mascota
-
   Future<void> addPetActivity(File? imageFile) async {
+    isLoading.value = true;
     try {
       isLoading(true);
-
-      // Crear el request multipart
+      var petId = diario['pet_id'];
+      petId = petId != null ? petId.toString() : '';
       var request = http.MultipartRequest('POST', Uri.parse(createUrl))
         ..headers.addAll({
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
@@ -98,22 +88,19 @@ class PetActivityController extends GetxController {
         ..fields['date'] = diario['date'] ?? ''
         ..fields['category_id'] = diario['category_id'] ?? ''
         ..fields['notas'] = diario['notas'] ?? ''
-        ..fields['pet_id'] = diario['pet_id'] ?? '';
+        ..fields['pet_id'] = '1';
 
-      // Agregar la imagen al request si existe
       if (imageFile != null) {
         var stream = http.ByteStream(imageFile.openRead());
         var length = await imageFile.length();
         var multipartFile = http.MultipartFile('image', stream, length,
-            filename: path.basename(imageFile.path)); // Usando path.basename
+            filename: path.basename(imageFile.path));
         request.files.add(multipartFile);
       }
 
-      // Enviar el request
       var response = await request.send();
       var responseBody = await http.Response.fromStream(response);
 
-      print('Actividad registrada con éxito ${responseBody.body}');
       if (response.statusCode == 200 || response.statusCode == 201) {
         Get.dialog(
           CustomAlertDialog(
@@ -122,12 +109,10 @@ class PetActivityController extends GetxController {
             description: 'El Diario ha sido creado exitosamente.',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
-              Get.off(HomeScreen()); // Cerrar el diálogo
-              // fetchPetActivities(diario['pet_id'].toString());
+              Get.off(HomeScreen());
             },
           ),
-          barrierDismissible:
-              false, // No permite cerrar el diálogo tocando fuera
+          barrierDismissible: false,
         );
       } else {
         print('Error en la creación de la actividad: ${responseBody.body}');
@@ -135,29 +120,108 @@ class PetActivityController extends GetxController {
     } catch (e) {
       print('Excepción capturada: $e');
     } finally {
-      isLoading(false); // Cambiar el estado de carga
+      isLoading(false);
     }
   }
 
-  // Método para obtener una actividad por su ID
-  PetActivity getActivityById(int id) {
-    return activities.firstWhere((activity) => activity.id == id);
+  //editar
+  Future<void> editPetActivity(String diaryId, File? imageFile) async {
+    isLoading.value = true;
+    try {
+      isLoading(true);
+
+      // Cambia la URL al endpoint de actualización, utilizando el ID
+      var request = http.MultipartRequest(
+        'PUT',
+        Uri.parse(
+            '${BASE_URL}training-diaries/$diaryId'), // Usa el endpoint PUT con el ID
+      )
+        ..headers.addAll({
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'ngrok-skip-browser-warning': 'true',
+        })
+        ..fields['actividad'] = diario['actividad'] ?? ''
+        ..fields['date'] = diario['date'] ?? ''
+        ..fields['category_id'] = diario['category_id'] ?? ''
+        ..fields['notas'] = diario['notas'] ?? ''
+        ..fields['pet_id'] = diario['pet_id'];
+
+      if (imageFile != null) {
+        // Si se seleccionó una nueva imagen, se agrega al request
+        var stream = http.ByteStream(imageFile.openRead());
+        var length = await imageFile.length();
+        var multipartFile = http.MultipartFile('image', stream, length,
+            filename: path.basename(imageFile.path)); // Nombre del archivo
+        request.files.add(multipartFile);
+      }
+
+      var response = await request.send();
+      var responseBody = await http.Response.fromStream(response);
+      print('responseBody.statusCode: ${json.decode(responseBody.body)}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Si la respuesta es exitosa, mostramos un mensaje de éxito
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Éxito',
+            description: 'El Diario ha sido actualizado exitosamente.',
+            primaryButtonText: 'Aceptar',
+            onPrimaryButtonPressed: () {
+              //  Get.off(HomeScreen());
+            },
+          ),
+          barrierDismissible: false,
+        );
+      } else {
+        // Si hubo algún error en el servidor
+        print('Error al actualizar la actividad: ${responseBody.body}');
+      }
+    } catch (e) {
+      // Manejo de excepciones
+      print('Excepción capturada: $e');
+    } finally {
+      isLoading(false);
+    }
   }
 
-  // Método para actualizar un campo en el objeto `diario`
+  // Método para obtener una actividad por su ID y almacenarla en activitiesOne
+  void getActivityById(int id) {
+    var activity = activities.firstWhere(
+      (activity) => activity.id == id,
+      orElse: () => PetActivity(
+        id: -1,
+        categoryId: -1,
+        categoryName: 'No Encontrada',
+        date: '',
+        actividad: '',
+        notas: '',
+        petId: -1,
+        image: '',
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      ),
+    );
+
+    if (activity.id != -1) {
+      activitiesOne.value = activity;
+    } else {
+      print('Actividad no encontrada');
+    }
+  }
+
   void updateField(String key, dynamic value) {
     diario[key] = value;
   }
 
-  // Método para buscar actividades por nombre
   void searchActivities(String query) {
     if (query.isEmpty) {
-      filteredActivities.value =
-          activities; // Mostrar todas si la búsqueda está vacía
+      filteredActivities.value = activities;
     } else {
       filteredActivities.value = activities.where((activity) {
         return activity.actividad.toLowerCase().contains(query.toLowerCase());
       }).toList();
     }
   }
+
+  //actulizar historial
 }
