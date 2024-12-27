@@ -14,6 +14,8 @@ class ProfileModal extends StatelessWidget {
       Get.put(HistorialClinicoController());
   final PetActivityController activityController =
       Get.put(PetActivityController());
+
+  ProfileModal({super.key});
   @override
   Widget build(BuildContext context) {
     //controller.fetchProfiles();
@@ -45,7 +47,7 @@ class ProfileModal extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   controller.SelectType == 1
                       ? const Text(
                           'Seleccionar el perfil de la mascota la cual quieres ver la información',
@@ -56,8 +58,8 @@ class ProfileModal extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         )
-                      : SizedBox(),
-                  SizedBox(height: 10),
+                      : const SizedBox(),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
                       GestureDetector(
@@ -68,7 +70,7 @@ class ProfileModal extends StatelessWidget {
                           size: 22,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       const Text(
@@ -77,11 +79,11 @@ class ProfileModal extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Expanded(
               child: Obx(() {
                 if (controller.profiles.isEmpty) {
@@ -112,13 +114,13 @@ class ProfileModal extends StatelessWidget {
                           // Actualiza el perfil seleccionado
                           activityController
                               .fetchPetActivities(profile.id.toString());
-                          print('Perfil seleccionado: ${profile.id}');
+
                           controller.updateProfile(profile);
                           Navigator.of(context).pop(); // Cierra el modal
                         },
                         child: Container(
-                          margin: EdgeInsets.only(bottom: 16),
-                          padding: EdgeInsets.all(12),
+                          margin: const EdgeInsets.only(bottom: 16),
+                          padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? Styles.fiveColor
@@ -160,7 +162,7 @@ class ProfileModal extends StatelessWidget {
                                         ),
                                 ),
                               ),
-                              SizedBox(width: 12),
+                              const SizedBox(width: 12),
                               // Contenido del perfil que ocupa el otro 50% del ancho
                               Expanded(
                                 child: Column(
@@ -177,7 +179,7 @@ class ProfileModal extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      '${profile.age}',
+                                      profile.age,
                                       style: const TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize: 12,
@@ -187,7 +189,7 @@ class ProfileModal extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
-                                      profile.gender!,
+                                      profile.gender,
                                       style: const TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize: 12,
@@ -195,7 +197,7 @@ class ProfileModal extends StatelessWidget {
                                         color: Styles.iconColorBack,
                                       ),
                                     ),
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                     ButtonDefaultWidget(
                                       heigthButtom: 40,
                                       borderSize: 30,

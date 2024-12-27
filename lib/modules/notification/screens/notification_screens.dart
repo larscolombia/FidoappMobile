@@ -6,11 +6,14 @@ import 'package:pawlly/modules/integracion/model/notigicaciones/notificaciones.d
 import 'package:pawlly/modules/notification/controllers/notification_controller.dart';
 import 'package:pawlly/modules/notification/screens/widgets/app_bar_notifications.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:pusher_client/pusher_client.dart';
 
 class NotificationsScreen extends StatelessWidget {
   final NotificationsController controller = Get.put(NotificationsController());
   final NotificationController notificationController =
       Get.find<NotificationController>();
+
+  NotificationsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +34,13 @@ class NotificationsScreen extends StatelessWidget {
               _buildNotificationList(
                   notificationController.getTodayNotifications(),
                   showTime: true),
-              notificationController.getYesterdayNotifications().length > 0
+              notificationController.getYesterdayNotifications().isNotEmpty
                   ? _buildSectionTitle('Ayer')
                   : Container(),
               _buildNotificationList(
                   notificationController.getYesterdayNotifications(),
                   showTime: true),
-              notificationController.getOlderNotifications().length > 0
+              notificationController.getOlderNotifications().isNotEmpty
                   ? _buildSectionTitle('Anteriores')
                   : Container(),
               _buildNotificationList(
@@ -56,7 +59,7 @@ class NotificationsScreen extends StatelessWidget {
       child: Center(
         child: Text(
           title,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -68,7 +71,7 @@ class NotificationsScreen extends StatelessWidget {
     NotificationController controller = Get.put(NotificationController());
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: notifications.length,
       itemBuilder: (context, index) {
         final notification = notifications[index];
@@ -85,7 +88,7 @@ class NotificationsScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12),
             width:
                 double.infinity, // Asegurar que ocupe todo el ancho disponible
-            margin: EdgeInsets.symmetric(vertical: 4.0),
+            margin: const EdgeInsets.symmetric(vertical: 4.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
               color: notification.isRead == 0
@@ -96,7 +99,7 @@ class NotificationsScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 30, // Aumenta el tamaño de la imagen
-                  backgroundImage: NetworkImage(
+                  backgroundImage: const NetworkImage(
                       'https://via.placeholder.com/150'), // URL por defecto
                   backgroundColor: Colors.transparent,
                   child: Container(
@@ -109,26 +112,26 @@ class NotificationsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         notification.description ?? '',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontFamily: 'Lato',
                           fontSize: 14,
                         ),
                       ),
-                      SizedBox(height: 4.0),
+                      const SizedBox(height: 4.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             notification.type ?? '',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Lato',
                               fontSize: 14,
@@ -141,7 +144,7 @@ class NotificationsScreen extends StatelessWidget {
                                     DateTime.parse(notification.createdAt!))
                                 : DateFormat('dd MMM').format(
                                     DateTime.parse(notification.createdAt!)),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Lato',
                               fontSize: 12,
@@ -175,9 +178,9 @@ class NotificationsScreen extends StatelessWidget {
               children: [
                 Text(
                   'Tipo: ${notification.type ?? 'Desconocido'}',
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                  style: const TextStyle(fontWeight: FontWeight.w500),
                 ),
-                SizedBox(height: 15.0),
+                const SizedBox(height: 15.0),
                 Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,21 +195,21 @@ class NotificationsScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${notification.description ?? ''}',
+                        notification.description ?? '',
                         style: Styles.textProfile15w700,
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 12.0),
+                const SizedBox(height: 12.0),
                 Text(
                   'Fecha: ${DateFormat('dd MMM yyyy HH:mm').format(DateTime.parse(notification.createdAt!))}',
-                  style: TextStyle(fontWeight: FontWeight.w400),
+                  style: const TextStyle(fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(height: 12.0),
                 Text(
                   'Leida: ${notification.isRead}',
-                  style: TextStyle(fontWeight: FontWeight.w400),
+                  style: const TextStyle(fontWeight: FontWeight.w400),
                 ),
               ],
             ),
@@ -214,7 +217,7 @@ class NotificationsScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Get.back(), // Cerrar el diálogo
-              child: Text('Cerrar'),
+              child: const Text('Cerrar'),
             ),
           ],
         );

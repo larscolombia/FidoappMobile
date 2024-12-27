@@ -24,7 +24,7 @@ class Explore extends StatelessWidget {
             child: Container(
               width: 127,
               height: Get.height,
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Image.asset(
@@ -40,7 +40,7 @@ class Explore extends StatelessWidget {
             child: Container(
               width: Get.width * 0.5,
               height: Get.height,
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Image.asset(
@@ -56,14 +56,14 @@ class Explore extends StatelessWidget {
             child: Row(
               children: [
                 // Texto y botón ocupando el 60% del ancho
-                Container(
+                SizedBox(
                   width: Get.width * 0.4, // 60% del ancho total
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min, // Ajuste dinámico en altura
                     children: [
                       // Texto principal
-                      Text(
+                      const Text(
                         'Recomendaciones para tu Mascota',
                         style: TextStyle(
                           fontFamily: 'Lato',
@@ -72,9 +72,9 @@ class Explore extends StatelessWidget {
                           color: Styles.whiteColor,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       // Subtítulo
-                      Text(
+                      const Text(
                         'Consejos y recursos útiles',
                         textAlign: TextAlign.start,
                         style: TextStyle(
@@ -84,7 +84,7 @@ class Explore extends StatelessWidget {
                           color: Styles.whiteColor,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       // Botón para explorar
                       ButtonDefaultWidget(
                         title: 'Explorar',

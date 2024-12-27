@@ -28,7 +28,7 @@ class EntertainmentBlogs extends StatelessWidget {
           ),
           textAlign: TextAlign.left,
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
 
         // Lista de videos/cursos
         SingleChildScrollView(
@@ -130,7 +130,7 @@ class EntertainmentBlogs extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         // Tema del video
                         Text(
                           video.tags ?? 'Videos de Entrenamiento',
@@ -141,10 +141,10 @@ class EntertainmentBlogs extends StatelessWidget {
                             color: Styles.iconColorBack,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         // Fecha y cantidad de visualizaciones
                         Text(
-                          '${video.createdAt.toString()}',
+                          video.createdAt.toString(),
                           style: const TextStyle(
                             fontFamily: 'Lato',
                             fontSize: 12,
@@ -161,7 +161,7 @@ class EntertainmentBlogs extends StatelessWidget {
                             color: Styles.greyTextColor,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         // Título del video (máximo 2 líneas)
                         Text(
                           video.name,

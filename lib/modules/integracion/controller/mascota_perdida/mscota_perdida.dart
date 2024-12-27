@@ -17,7 +17,7 @@ class MascotaPerdida extends GetxController {
   }
 
   Future<void> reportarMascotaPerdida() async {
-    final url = '${BASE_URL}pets/update-lost';
+    const url = '${BASE_URL}pets/update-lost';
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -30,9 +30,7 @@ class MascotaPerdida extends GetxController {
           'pet_id': homeController.selectedProfile.value!.id,
         }),
       );
-      print('url mascota perdida $url');
-      print('response status code ${response.statusCode}');
-      print('response body ${json.decode(response.body)}');
+
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
           response.statusCode == 202) {
@@ -41,7 +39,7 @@ class MascotaPerdida extends GetxController {
             icon: Icons.check_circle_outline,
             title: 'Éxito',
             description:
-                'Se ha mandado un msm de alerta a todos los usuarios de la plataforma',
+                'Se ha mandado una notificación de alerta a todos los usuarios de la plataforma',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
               Get.back();

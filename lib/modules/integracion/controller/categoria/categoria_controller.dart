@@ -9,7 +9,7 @@ import 'package:pawlly/services/auth_service_apis.dart'; // Para convertir JSON
 class CategoryController extends GetxController {
   // Lista de categorías observable
   var categories = <Category>[].obs;
-  var url = "${DOMAIN_URL}/api/list-category?type=veterinary";
+  var url = "$DOMAIN_URL/api/list-category?type=veterinary";
   // Indicador de carga
   var isLoading = true.obs;
 

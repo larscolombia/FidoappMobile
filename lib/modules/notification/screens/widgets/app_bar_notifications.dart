@@ -6,14 +6,13 @@ class AppBarNotifications extends StatelessWidget
   @override
   final Size preferredSize;
 
-  AppBarNotifications({Key? key})
-      : preferredSize = const Size.fromHeight(120.0),
-        super(key: key);
+  const AppBarNotifications({super.key})
+      : preferredSize = const Size.fromHeight(120.0);
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.vertical(
+      borderRadius: const BorderRadius.vertical(
         bottom: Radius.circular(25),
       ),
       child: AppBar(
@@ -31,13 +30,14 @@ class AppBarNotifications extends StatelessWidget
               Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.black),
+                    icon: const Icon(Icons.arrow_back, color: Colors.black),
                     onPressed: () {
                       Navigator.pop(context); // Acción de retroceso
                     },
                   ),
-                  SizedBox(width: 8), // Espacio entre la flecha y el texto
-                  Column(
+                  const SizedBox(
+                      width: 8), // Espacio entre la flecha y el texto
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment
                         .center, // Centra el texto verticalmente
@@ -66,8 +66,8 @@ class AppBarNotifications extends StatelessWidget
               Container(
                 width: 65, // Tamaño del contenedor que contiene la imagen
                 height: 65,
-                padding:
-                    EdgeInsets.all(2), // Espacio entre la imagen y el borde
+                padding: const EdgeInsets.all(
+                    2), // Espacio entre la imagen y el borde
                 decoration: BoxDecoration(
                   color: Styles.fiveColor,
                   shape: BoxShape.circle,
@@ -76,7 +76,7 @@ class AppBarNotifications extends StatelessWidget
                     width: 2.0, // Grosor del borde
                   ),
                 ),
-                child: CircleAvatar(
+                child: const CircleAvatar(
                   radius: 22, // Tamaño de la imagen de perfil
                   backgroundImage: NetworkImage(
                       'https://via.placeholder.com/150'), // URL de la imagen de perfil

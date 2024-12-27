@@ -7,6 +7,8 @@ class CommentsSection extends StatelessWidget {
   final PetOwnerProfileController controller =
       Get.put(PetOwnerProfileController());
 
+  CommentsSection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -15,10 +17,10 @@ class CommentsSection extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Color(0xFFFEF7E5), // Fondo del cuadro
+            color: const Color(0xFFFEF7E5), // Fondo del cuadro
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: Color(0xFFFC9214),
+              color: const Color(0xFFFC9214),
               width: 1.0,
             ),
           ),
@@ -26,7 +28,7 @@ class CommentsSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Título "Resumen de Calificación"
-              Text(
+              const Text(
                 'Resumen de Calificación:',
                 style: TextStyle(
                   color: Colors.black,
@@ -35,7 +37,7 @@ class CommentsSection extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               // Clasificación en estrellas
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -46,28 +48,28 @@ class CommentsSection extends StatelessWidget {
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
                     itemSize: 20.0,
-                    itemBuilder: (context, _) => Icon(
+                    itemBuilder: (context, _) => const Icon(
                       Icons.star,
                       color: Colors.amber, // Estrellas en color amarillo
                     ),
                     onRatingUpdate: (rating) {},
                     ignoreGestures: true,
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Text(
                     controller.rating.value.toString(),
-                    style: TextStyle(
+                    style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'lato'),
                   ),
                 ],
               ),
-              SizedBox(height: 10),
-              Divider(color: Color(0xFFFC9214), thickness: 1),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
+              const Divider(color: Color(0xFFFC9214), thickness: 1),
+              const SizedBox(height: 10),
               // Comentarios
               Row(
                 children: [
@@ -76,19 +78,20 @@ class CommentsSection extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                     decoration: BoxDecoration(
-                      color: Color(0xFFFC9214), // Fondo del texto "Comentarios"
+                      color: const Color(
+                          0xFFFC9214), // Fondo del texto "Comentarios"
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
                       '${controller.commentCount.value} comentarios',
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.white, // Texto blanco en "Comentarios"
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                           fontFamily: 'lato'),
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   // Imágenes de los comentaristas, solapadas
                   Expanded(
                     child: SizedBox(
@@ -103,11 +106,11 @@ class CommentsSection extends StatelessWidget {
                                 20.0, // Solapar las imágenes desde la mitad
                             child: CircleAvatar(
                               backgroundImage: controller
-                                          .commenterImages[index]?.isNotEmpty ==
+                                          .commenterImages[index].isNotEmpty ==
                                       true
                                   ? NetworkImage(
-                                      controller.commenterImages[index]!)
-                                  : AssetImage('assets/images/avatar.png')
+                                      controller.commenterImages[index])
+                                  : const AssetImage('assets/images/avatar.png')
                                       as ImageProvider, // Imagen predeterminada
                               radius: 15,
                               backgroundColor: Colors.transparent,
@@ -122,7 +125,7 @@ class CommentsSection extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20), // Espaciado entre secciones
+        const SizedBox(height: 20), // Espaciado entre secciones
         // Sección para dejar una reseña
         Container(
           padding: const EdgeInsets.all(16.0),
@@ -130,14 +133,14 @@ class CommentsSection extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: Color(0xFFFC9214),
+              color: const Color(0xFFFC9214),
               width: 1.0,
             ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 '¿Quieres dejar una reseña?',
                 style: TextStyle(
                   color: Colors.black,
@@ -147,16 +150,16 @@ class CommentsSection extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               RatingBar.builder(
                 initialRating: 0,
                 minRating: 1,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
-                itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
                 itemSize: 30.0,
-                itemBuilder: (context, _) => Icon(
+                itemBuilder: (context, _) => const Icon(
                   Icons.star,
                   color: Colors.amber,
                 ),
@@ -164,8 +167,8 @@ class CommentsSection extends StatelessWidget {
                   controller.rating.value = rating;
                 },
               ),
-              SizedBox(height: 10),
-              TextField(
+              const SizedBox(height: 10),
+              const TextField(
                 decoration: InputDecoration(
                   hintText: 'Escribe tu comentario aquí',
                   border: OutlineInputBorder(),
@@ -176,18 +179,18 @@ class CommentsSection extends StatelessWidget {
                 ),
                 maxLines: 3,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFC9214),
-                  padding:
-                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 24.0),
+                  backgroundColor: const Color(0xFFFC9214),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 24.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'Enviar >',
                   style: TextStyle(
                     color: Colors.white,
@@ -200,9 +203,9 @@ class CommentsSection extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20), // Espaciado entre secciones
+        const SizedBox(height: 20), // Espaciado entre secciones
         // Sección de comentarios lista
-        Text(
+        const Text(
           'Comentarios',
           style: TextStyle(
             color: Colors.black,
@@ -211,16 +214,16 @@ class CommentsSection extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-        Divider(color: Colors.grey, thickness: 1),
+        const Divider(color: Colors.grey, thickness: 1),
         Obx(() => ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: controller.comments.length,
               itemBuilder: (context, index) {
                 var comment = controller.comments[index];
                 return ListTile(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 8.0), // Espaciado vertical
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 8.0), // Espaciado vertical
                   title: Row(
                     crossAxisAlignment: CrossAxisAlignment
                         .start, // Alineación para el nombre y la imagen
@@ -230,24 +233,25 @@ class CommentsSection extends StatelessWidget {
                         backgroundImage: (comment['image'] != null &&
                                 (comment['image'] as String).isNotEmpty)
                             ? NetworkImage(comment['image'] as String)
-                            : AssetImage('assets/images/avatar.png')
+                            : const AssetImage('assets/images/avatar.png')
                                 as ImageProvider,
                         radius: 30, // Tamaño de la imagen
                       ),
-                      SizedBox(width: 12), // Espacio entre la imagen y el texto
+                      const SizedBox(
+                          width: 12), // Espacio entre la imagen y el texto
                       // Nombre y estrellas al lado de la imagen
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             comment['name']?.toString() ?? 'Usuario Anónimo',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'lato',
                               fontWeight: FontWeight.bold,
                               fontSize: 16,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                               height:
                                   4), // Espacio entre el nombre y las estrellas
                           RatingBar.builder(
@@ -263,7 +267,7 @@ class CommentsSection extends StatelessWidget {
                             allowHalfRating: true,
                             itemCount: 5,
                             itemSize: 16.0, // Tamaño de las estrellas
-                            itemBuilder: (context, _) => Icon(
+                            itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color:
                                   Colors.amber, // Estrellas en color amarillo
@@ -280,7 +284,7 @@ class CommentsSection extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       comment['comment']?.toString() ?? 'Sin comentario',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'lato',
                         fontSize: 14,
                       ),

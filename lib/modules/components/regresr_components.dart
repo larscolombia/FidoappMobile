@@ -20,13 +20,13 @@ class BarraBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           GestureDetector(
             onTap: callback,
-            child: Container(
+            child: const SizedBox(
               width: 30,
               height: 30,
               child: Center(
@@ -40,13 +40,14 @@ class BarraBack extends StatelessWidget {
           ),
           // Aquí envolvemos el contenido del texto en un Expanded
           Container(
+            width: MediaQuery.of(context).size.width - 120,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   titulo,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
+                  maxLines: 1,
                   softWrap:
                       true, // Ajusta el texto automáticamente cuando sea necesario
                   style: TextStyle(

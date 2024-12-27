@@ -4,7 +4,7 @@ import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class HistoriaMascotaComponent extends StatelessWidget {
-  HistoriaMascotaComponent({
+  const HistoriaMascotaComponent({
     super.key,
     required this.reportName,
     required this.categoryName,
@@ -65,14 +65,14 @@ class HistoriaMascotaComponent extends StatelessWidget {
           const SizedBox(height: 10),
           id != null
               ? Text(
-                  'Informe: Nro. ${id}',
+                  'Informe: Nro. $id',
                   style: const TextStyle(
                     fontFamily: 'Lato',
                     fontWeight: FontWeight.w500,
                     fontSize: 12,
                   ),
                 )
-              : SizedBox(),
+              : const SizedBox(),
           const Spacer(),
           Align(
             alignment: Alignment.bottomCenter,

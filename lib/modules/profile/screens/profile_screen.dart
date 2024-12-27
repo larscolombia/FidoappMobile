@@ -2,16 +2,21 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
+import 'package:pawlly/modules/components/input_select.dart';
+import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/formulario_verificacion.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());
+
+  ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,7 @@ class ProfileScreen extends StatelessWidget {
                           Container(
                             width: 100,
                             height: 100,
-                            padding: EdgeInsets.all(
+                            padding: const EdgeInsets.all(
                                 4), // Espacio entre la imagen y el borde
                             decoration: BoxDecoration(
                               color:
@@ -71,7 +76,8 @@ class ProfileScreen extends StatelessWidget {
                                             : FileImage(File(controller
                                                 .profileImagePath
                                                 .value))) // Imagen local
-                                        : AssetImage('assets/images/avatar.png')
+                                        : const AssetImage(
+                                                'assets/images/avatar.png')
                                             as ImageProvider, // Imagen predeterminada
                                     fit: BoxFit.cover,
                                   ),
@@ -83,12 +89,12 @@ class ProfileScreen extends StatelessWidget {
                             right: 0,
                             bottom: 0,
                             child: Container(
-                              padding: EdgeInsets.all(4),
+                              padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
                                 color: Styles.iconColorBack,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Icon(Icons.edit,
+                              child: const Icon(Icons.edit,
                                   color: Colors.white, size: 24),
                             ),
                           ),
@@ -100,7 +106,7 @@ class ProfileScreen extends StatelessWidget {
                   Positioned(
                     bottom: 16,
                     child: Text(
-                      'Victoria',
+                      '${controller.user['name'].toString()}',
                       style: Styles.dashboardTitle24,
                     ),
                   ),
@@ -110,26 +116,25 @@ class ProfileScreen extends StatelessWidget {
               // Contenido del Perfil
               Container(
                 padding: Styles.paddingAll,
-                margin: EdgeInsets.only(top: 16),
+                margin: const EdgeInsets.only(top: 16),
                 decoration: BoxDecoration(
-                  color: controller.isEditing.value
-                      ? Colors.grey.shade300
-                      : Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+                  color: Colors.white,
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(25)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Sección del Perfil
                     Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         top: 20,
                       ),
                       alignment: Alignment.center,
                       child: Column(
                         children: [
                           Container(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                               bottom: 20,
                             ),
                             child: Row(
@@ -137,13 +142,13 @@ class ProfileScreen extends StatelessWidget {
                               children: [
                                 GestureDetector(
                                   onTap: () => Navigator.pop(context),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.arrow_back_ios,
                                     color: Styles.primaryColor,
                                     size: 22,
                                   ),
                                 ),
-                                Text(
+                                const Text(
                                   'Perfil de Usuario',
                                   style: Styles.dashboardTitle20,
                                 ),
@@ -160,14 +165,14 @@ class ProfileScreen extends StatelessWidget {
                                       controller.toggleEditing();
                                     },
                                     icon: Container(
-                                      padding: EdgeInsets.all(4),
+                                      padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(
                                         color: controller.isEditing.value
                                             ? Styles.iconColorBack
                                             : Styles.greyTextColor,
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: Icon(Icons.edit,
+                                      child: const Icon(Icons.edit,
                                           color: Colors.white, size: 24),
                                     ),
                                     label: Text(
@@ -184,11 +189,11 @@ class ProfileScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width - 100,
                             child: ButtonDefaultWidget(
                               callback: () {
-                                Get.to(FormularioVerificacion());
+                                Get.to(const FormularioVerificacion());
                               },
                               title: 'Verificación Profesional >',
                             ),
@@ -199,49 +204,57 @@ class ProfileScreen extends StatelessWidget {
                     // Formulario de Perfil
                     ListView(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       children: [
+                        Obx(() {
+                          return InputText(
+                            onChanged: (value) =>
+                                controller.user['name'] = value,
+                            initialValue: controller.user['name'].toString(),
+                            placeholder: '',
+                            readOnly: !controller.isEditing.value,
+                            fondoColor: controller.isEditing.value == false
+                                ? Colors.white
+                                : Styles.fiveColor,
+                          );
+                        }),
+                        Obx(() {
+                          return InputText(
+                            onChanged: (value) =>
+                                controller.user['lastName'] = value,
+                            initialValue:
+                                controller.user['lastName'].toString(),
+                            placeholder: '',
+                            readOnly: !controller.isEditing.value,
+                            fondoColor: controller.isEditing.value == false
+                                ? Colors.white
+                                : Styles.fiveColor,
+                          );
+                        }),
+                        Obx(() {
+                          return InputText(
+                            onChanged: (value) =>
+                                controller.user['email'] = value,
+                            initialValue: controller.user['email'].toString(),
+                            placeholder: '',
+                            readOnly: !controller.isEditing.value,
+                            fondoColor: controller.isEditing.value == false
+                                ? Colors.white
+                                : Styles.fiveColor,
+                          );
+                        }),
                         Obx(
                           () => Container(
-                            child: CustomTextFormFieldWidget(
-                              controller: controller.nameController.value,
-                              enabled: controller.isEditing.value,
-                              placeholder: 'Nombre',
-                              icon: 'assets/icons/profile.png',
-                            ),
-                          ),
-                        ),
-                        Obx(
-                          () => Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: CustomTextFormFieldWidget(
-                              controller: controller.lastNameController.value,
-                              enabled: controller.isEditing.value,
-                              placeholder: 'Apellido',
-                              icon: 'assets/icons/profile.png',
-                            ),
-                          ),
-                        ),
-                        Obx(
-                          () => Container(
-                            margin: EdgeInsets.only(top: 20),
-                            child: CustomTextFormFieldWidget(
-                              controller: controller.emailController.value,
-                              enabled: controller.isEditing.value,
-                              placeholder: 'Correo',
-                              icon: 'assets/icons/email.png',
-                            ),
-                          ),
-                        ),
-                        Obx(
-                          () => Container(
-                            margin: EdgeInsets.only(top: 20),
+                            margin: const EdgeInsets.only(top: 20),
                             child: CustomSelectFormFieldWidget(
                               enabled: controller.isEditing.value,
                               controller: controller.userGenCont.value,
+                              onChange: (value) {
+                                controller.user['gender'] = value.toString();
+                              },
                               placeholder: 'Género',
                               icon: 'assets/icons/tag-user.png',
-                              items: [
+                              items: const [
                                 'Femenino',
                                 'Masculino',
                                 'Prefiero no decirlo',
@@ -249,11 +262,15 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                        /**
                         Obx(
                           () => Container(
-                            margin: EdgeInsets.only(top: 20, bottom: 20),
+                            margin: const EdgeInsets.only(top: 20, bottom: 20),
                             child: CustomTextFormFieldWidget(
                               controller: controller.passwordController.value,
+                              callback: (value) {
+                                controller.user['password'] = value.toString();
+                              },
                               enabled: false,
                               obscureText: true,
                               placeholder: 'Contraseña',
@@ -261,12 +278,13 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                         */
                         GestureDetector(
                           onTap: () {
                             // Navegar a la página de cambiar contraseña
                             Get.to(() => ChangePasswordScreen());
                           },
-                          child: Align(
+                          child: const Align(
                             alignment: Alignment.centerRight,
                             child: Text(
                               'Cambiar Contraseña',
@@ -277,35 +295,51 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                        /** 
                         Obx(
                           () => Container(
-                            margin: EdgeInsets.only(top: 20),
+                            margin: const EdgeInsets.only(top: 20),
                             child: CustomSelectFormFieldWidget(
                               enabled: controller.isEditing.value,
                               controller: controller.userTypeCont.value,
                               placeholder: 'Tipo de Usuario',
                               icon: 'assets/icons/tag-user.png',
-                              items: [
+                              onChange: (value) {
+                                controller.user['userType'] = value.toString();
+                              },
+                              items: const [
                                 'Dueño de mascota',
                                 'Invitado de mascota',
                               ],
                             ),
                           ),
-                        ),
-                        SizedBox(height: 20),
+                        ),*/
+                        const SizedBox(height: 20),
+                        controller.isEditing.value == true
+                            ? SizedBox(
+                                width: MediaQuery.of(context).size.width - 100,
+                                child: ButtonDefaultWidget(
+                                  title: 'Editar',
+                                  callback: () {
+                                    print('editar usuario  ${controller.user}');
+                                  },
+                                ),
+                              )
+                            : const SizedBox(),
+                        const SizedBox(height: 20),
                         Align(
                           alignment: Alignment.center,
                           child: TextButton(
                             onPressed: () {
                               // Lógica para eliminar cuenta
                             },
-                            child: Text(
+                            child: const Text(
                               'Eliminar cuenta',
                               style: TextStyle(color: Styles.primaryColor),
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ],

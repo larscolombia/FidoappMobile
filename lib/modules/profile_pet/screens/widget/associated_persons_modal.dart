@@ -11,7 +11,7 @@ import 'package:pawlly/styles/styles.dart';
 class AssociatedPersonsModal extends StatelessWidget {
   final ProfilePetController controller;
   PetOwnerServiceApi petOwnerServiceApi = PetOwnerServiceApi();
-  AssociatedPersonsModal({required this.controller});
+  AssociatedPersonsModal({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

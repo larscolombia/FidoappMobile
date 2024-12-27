@@ -87,10 +87,7 @@ class FormularioVerificacion extends StatelessWidget {
                             label: 'Áreas de especialización',
                             placeholder: 'Áreas de especialización',
                             TextColor: Colors.black,
-                            prefiIcon: const Icon(
-                              Icons.person,
-                              color: Styles.iconColorBack,
-                            ),
+                            prefiIcon: 'assets/icons/categori.png',
                             items: const [
                               DropdownMenuItem(
                                 value: 'vet',

@@ -28,8 +28,8 @@ class FormularioDiario extends StatefulWidget {
 }
 
 class _FormularioDiarioState extends State<FormularioDiario> {
-  String? _imagePath = null; // Para almacenar la ruta de la imagen seleccionada
-  File? __imageFile = null;
+  String? _imagePath; // Para almacenar la ruta de la imagen seleccionada
+  File? __imageFile;
   late final PetActivityController controller;
   final HomeController homeController = Get.put(HomeController());
 
@@ -41,30 +41,6 @@ class _FormularioDiarioState extends State<FormularioDiario> {
       widget.ImagenEdit = controller.activitiesOne.value!.image ?? "";
 
       controller.updateField('actividadId', controller.activitiesOne.value!.id);
-      controller.updateField(
-        'actividad',
-        controller.activitiesOne.value!.actividad,
-      );
-      controller.updateField(
-        'date',
-        controller.activitiesOne.value!.date,
-      );
-      controller.updateField(
-        'category_id',
-        controller.activitiesOne.value!.categoryId.toString(),
-      );
-      controller.updateField(
-        'notas',
-        controller.activitiesOne.value!.notas,
-      );
-      controller.updateField(
-        'pet_id',
-        controller.activitiesOne.value!.petId.toString(),
-      );
-      controller.updateField(
-        'image',
-        controller.activitiesOne.value!.image,
-      );
     } else {
       controller = Get.put(PetActivityController());
     }
@@ -91,7 +67,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                       'Completa la Información', // Título del encabezado
                       style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Lato',
+                        fontFamily: 'PoetsenOne',
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -100,7 +76,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                       'Añade los datos de este diario', // Título del encabezado
                       style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Lato',
+                        fontFamily: 'PoetsenOne',
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
@@ -119,7 +95,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
             bottom: 0, // Hasta el final de la pantalla
             child: SingleChildScrollView(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white, // Fondo blanco del contenedor inferior
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(
@@ -128,7 +104,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                         30), // Redondear la parte superior derecha
                   ),
                 ),
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -136,7 +112,6 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                       titulo: 'Nuevo Registro',
                       callback: () {
                         Get.back();
-                        print('Regresar al Diario de Mascotas');
                       },
                     ),
                     const SizedBox(height: 20),
@@ -145,7 +120,8 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                         children: [
                           InputText(
                             initialValue: widget.isEdit
-                                ? (controller.diario['actividad'] ?? '')
+                                ? (controller.activitiesOne.value!.actividad ??
+                                    "")
                                 : "",
                             label: 'Título del registro',
                             placeholder: '',
@@ -155,40 +131,44 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                             },
                           ),
                           const SizedBox(height: 8),
-                          InputSelect(
-                            TextColor: Colors.black,
-                            label: 'Categoria del registro',
-                            placeholder: 'Selecciona una categoría',
-                            onChanged: (value) {
-                              controller.updateField('category_id', value);
-                            },
-                            items: const [
-                              DropdownMenuItem(
-                                value: '1',
-                                child: Text('Actividad'),
-                              ),
-                              DropdownMenuItem(
-                                value: '2',
-                                child: Text('Informe médico'),
-                              ),
-                              DropdownMenuItem(
-                                value: '3',
-                                child: Text('Entrenamiento'),
-                              ),
-                            ],
+                          Container(
+                            width: MediaQuery.of(context).size.width - 90,
+                            child: InputSelect(
+                              TextColor: Colors.black,
+                              label: 'Categoria del registro',
+                              placeholder: 'Selecciona una categoría',
+                              onChanged: (value) {
+                                controller.updateField('category_id', value);
+                              },
+                              items: const [
+                                DropdownMenuItem(
+                                  value: '1',
+                                  child: Text('Actividad'),
+                                ),
+                                DropdownMenuItem(
+                                  value: '2',
+                                  child: Text('Informe médico'),
+                                ),
+                                DropdownMenuItem(
+                                  value: '3',
+                                  child: Text('Entrenamiento'),
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 8),
                           InputText(
-                            initialValue:
-                                widget.isEdit ? controller.diario['date'] : '',
+                            initialValue: widget.isEdit
+                                ? controller.activitiesOne.value!.date
+                                : '',
                             label: 'Fecha del registro',
                             placeholder: '',
                             isDateField: true,
-                            prefiIcon: Icon(
+                            prefiIcon: const Icon(
                               Icons.calendar_today,
                               color: Styles.iconColorBack,
                             ),
-                            suffixIcon: Icon(
+                            suffixIcon: const Icon(
                               Icons.arrow_drop_down_sharp,
                               color: Styles.iconColorBack,
                             ),
@@ -199,8 +179,9 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                           ),
                           const SizedBox(height: 20),
                           InputText(
-                            initialValue:
-                                widget.isEdit ? controller.diario['notas'] : '',
+                            initialValue: widget.isEdit
+                                ? controller.activitiesOne.value!.notas
+                                : '',
                             label: 'Descripción',
                             placeholder: 'Describe el evento',
                             onChanged: (value) {
@@ -230,18 +211,50 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                           widget.isEdit == true && widget.cambio == false
                               ? Column(
                                   children: [
-                                    Text("Imagen Actual"),
-                                    Image.network(
-                                      widget.ImagenEdit ?? "",
-                                      width: 300,
-                                      height: 220,
-                                      fit: BoxFit.cover,
-                                    ),
+                                    const Text("Imagen Actual"),
+                                    if (widget.ImagenEdit != null)
+                                      Image.network(
+                                        controller.activitiesOne.value!.image ??
+                                            "", // URL de la imagen editada
+                                        width: 300,
+                                        height: 220,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder:
+                                            (context, child, loadingProgress) {
+                                          if (loadingProgress == null) {
+                                            return child; // Si la imagen se carga correctamente
+                                          }
+                                          return const Center(
+                                            child:
+                                                CircularProgressIndicator(), // Muestra un indicador de carga
+                                          );
+                                        },
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Container(
+                                            width: 250,
+                                            height: 150,
+                                            decoration: BoxDecoration(
+                                              color: Colors.black,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(
+                                                color: Colors.grey,
+                                                width: .3,
+                                              ),
+                                            ),
+                                            child: const Icon(
+                                              Icons.image,
+                                              color: Colors.blue,
+                                            ),
+                                          );
+                                        },
+                                      ),
                                   ],
                                 )
                               : const SizedBox(),
                           const SizedBox(height: 20),
-                          Container(
+                          SizedBox(
                             width: 302,
                             height: 54,
                             child: Obx(() {
@@ -256,9 +269,10 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                 callback: () {
                                   if (widget.isEdit) {
                                     print(controller.diario);
-                                    controller.editPetActivity(
+
+                                    controller.editPetActivity2(
                                       "${controller.activitiesOne.value!.id}",
-                                      __imageFile,
+                                      //  __imageFile,
                                     );
                                   } else {
                                     controller.updateField(

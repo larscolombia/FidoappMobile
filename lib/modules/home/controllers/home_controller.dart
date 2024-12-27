@@ -35,7 +35,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    currentUser = AuthServiceApis.dataCurrentUser as UserData;
+    currentUser = AuthServiceApis.dataCurrentUser;
     profileImagePath.value = currentUser.profileImage;
     fetchProfiles();
     //   fetchTraining();
@@ -71,7 +71,7 @@ class HomeController extends GetxController {
 
   // Método para actualizar el perfil seleccionado
   void updateProfile(PetData profile) {
-    if (profiles.value.length > 0) {
+    if (profiles.value.isNotEmpty) {
       selectedProfile.value = profile;
     } else {
       selectedProfile.value = selectedProfile.value;
@@ -141,6 +141,7 @@ class HomeController extends GetxController {
 
   List<EventData> getEventsForDay(DateTime day) {
     final DateTime eventDate = DateTime(day.year, day.month, day.day);
+    print('eventos $eventDate');
     return events[eventDate] ?? [];
   }
 
@@ -165,7 +166,7 @@ class HomeController extends GetxController {
   }
 
 //metodo para obtener el perfil de mascota por su id
-  PetData getPetById(String id) {
+  PetData getPetById(int? id) {
     try {
       // Intentar encontrar la mascota con el ID proporcionado
       return profiles.firstWhere((pet) => pet.id == id);

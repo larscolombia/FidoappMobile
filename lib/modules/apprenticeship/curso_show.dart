@@ -33,13 +33,14 @@ class CursoShow extends StatelessWidget {
                 ),
                 child: Container(
                   width: 300,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         width: 300,
                         height: 64,
                         child: Container(
@@ -47,9 +48,9 @@ class CursoShow extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 180,
-                                child: Text(
+                                child: const Text(
                                   'Información de este Curso',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
@@ -60,11 +61,11 @@ class CursoShow extends StatelessWidget {
                               ),
                               Container(
                                 width: 49,
-                                margin: EdgeInsets.only(top: 5),
+                                margin: const EdgeInsets.only(top: 5),
                                 child: Column(
                                   children: [
                                     Container(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           vertical: 5, horizontal: 5),
                                       decoration: BoxDecoration(
                                         border: Border.all(
@@ -73,7 +74,7 @@ class CursoShow extends StatelessWidget {
                                       ),
                                       child: Image.asset(Assets.compartir),
                                     ),
-                                    Text(
+                                    const Text(
                                       'Compartir',
                                       style: TextStyle(
                                         fontSize: 10,
@@ -89,39 +90,39 @@ class CursoShow extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 1),
+                        margin: const EdgeInsets.only(top: 1),
                         height: 1,
                         width: 30,
-                        child: Divider(
+                        child: const Divider(
                           thickness: .2,
-                          color: const Color.fromARGB(255, 170, 165, 157),
+                          color: Color.fromARGB(255, 170, 165, 157),
                         ),
                       ),
                       Container(
                         width: 30,
-                        margin: EdgeInsets.only(top: 30),
+                        margin: const EdgeInsets.only(top: 30),
                         child: ButtonDefaultWidget(
                           title: 'Comprar Curso',
                           callback: () {},
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 30),
+                        margin: const EdgeInsets.only(top: 30),
                         height: 1,
                         width: 30,
-                        child: Divider(
+                        child: const Divider(
                           thickness: .2,
-                          color: const Color.fromARGB(255, 170, 165, 157),
+                          color: Color.fromARGB(255, 170, 165, 157),
                         ),
                       ),
                       HeaderTitle(),
                       Container(
-                        margin: EdgeInsets.only(top: 10),
+                        margin: const EdgeInsets.only(top: 10),
                         width: 30,
                         child: Column(
                           children: [
                             Container(
-                              child: Text(
+                              child: const Text(
                                 'Descubre cómo enseñar a tu perro a ir al baño en el lugar correcto con nuestro curso de House Breaking! Aprende técnicas rápidas y efectivas para mantener tu hogar limpio y tu mascota feliz.',
                                 style: TextStyle(
                                   fontSize: 14,
@@ -134,31 +135,31 @@ class CursoShow extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 30),
+                        margin: const EdgeInsets.only(top: 30),
                         height: 1,
                         width: 30,
-                        child: Divider(
+                        child: const Divider(
                           thickness: .2,
-                          color: const Color.fromARGB(255, 170, 165, 157),
+                          color: Color.fromARGB(255, 170, 165, 157),
                         ),
                       ),
                       Container(
                         width: 300,
-                        margin: EdgeInsets.only(top: 20),
+                        margin: const EdgeInsets.only(top: 20),
                         child: Column(
                           children: [
-                            Container(
+                            SizedBox(
                               width: 30,
-                              child: Text('Programa de entrenimiento',
+                              child: const Text('Programa de entrenimiento',
                                   style: TextStyle(
                                       fontFamily: 'Lato',
                                       fontSize: 12,
                                       fontWeight: FontWeight.w800,
                                       color: Color.fromRGBO(156, 156, 156, 1))),
                             ),
-                            Container(
+                            SizedBox(
                               width: 30,
-                              child: Text('Contenido del Curso',
+                              child: const Text('Contenido del Curso',
                                   style: TextStyle(
                                       fontFamily: 'Lato',
                                       fontSize: 13,
@@ -169,21 +170,21 @@ class CursoShow extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 30),
+                        margin: const EdgeInsets.only(top: 30),
                         height: 1,
                         width: 30,
-                        child: Divider(
+                        child: const Divider(
                           thickness: .2,
-                          color: const Color.fromARGB(255, 170, 165, 157),
+                          color: Color.fromARGB(255, 170, 165, 157),
                         ),
                       ),
                       HeaderTitle(
                         label: 'Sección 1',
                         title: 'Introducción al HouseBreaking',
                         precio: '20',
-                        color: Color.fromRGBO(130, 56, 0, 1),
+                        color: const Color.fromRGBO(130, 56, 0, 1),
                       ),
-                      Container(
+                      SizedBox(
                         width: 30 + 1,
                         child: Column(
                           children: [
@@ -199,9 +200,9 @@ class CursoShow extends StatelessWidget {
                         label: 'Sección 2',
                         title: 'HouseBreaking Avanzado',
                         precio: '20',
-                        color: Color.fromRGBO(130, 56, 0, 1),
+                        color: const Color.fromRGBO(130, 56, 0, 1),
                       ),
-                      Container(
+                      SizedBox(
                         width: 30 + 1,
                         child: Column(
                           children: [

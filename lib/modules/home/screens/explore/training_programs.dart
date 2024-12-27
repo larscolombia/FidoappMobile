@@ -9,6 +9,8 @@ import 'package:pawlly/styles/styles.dart';
 class TrainingPrograms extends StatelessWidget {
   final CourseController cursosController = Get.put(CourseController());
 
+  TrainingPrograms({super.key});
+
   @override
   Widget build(BuildContext context) {
     //cursosController.fetchCourses();
@@ -32,14 +34,14 @@ class TrainingPrograms extends StatelessWidget {
           if (cursosController.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           } else if (cursosController.courses.isEmpty) {
-            return Center(child: Text('No hay cursos disponibles'));
+            return const Center(child: Text('No hay cursos disponibles'));
           } else {
             return Column(
               children: cursosController.courses.map((course) {
                 return GestureDetector(
                   onTap: () {
                     // Acción cuando se toca el curso
-                    Get.to(CourseDetailPage(course: course));
+                    //Get.to(CourseDetailPage(course: course));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 16),
@@ -92,8 +94,8 @@ class TrainingPrograms extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Nivel del curso
-                              const Text(
-                                'Nivel no especificado',
+                              Text(
+                                cursosController.dificultad(course.difficulty),
                                 style: TextStyle(
                                   fontFamily: 'Lato',
                                   fontSize: 12,
@@ -186,7 +188,7 @@ class TrainingPrograms extends StatelessWidget {
 class CourseDetailPage extends StatelessWidget {
   final Course course;
 
-  CourseDetailPage({required this.course});
+  const CourseDetailPage({super.key, required this.course});
 
   @override
   Widget build(BuildContext context) {

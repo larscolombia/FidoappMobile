@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/Diario/formulario_diario.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 
 class DetallesDiario extends StatelessWidget {
   DetallesDiario({super.key});
   final PetActivityController controller = Get.put(PetActivityController());
-  final HomeController homeController = Get.find<HomeController>();
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class DetallesDiario extends StatelessWidget {
             child: Container(
               height: 200,
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Styles.colorContainer,
               ),
             ),
@@ -48,35 +50,31 @@ class DetallesDiario extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 320,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                            width: 200,
-                            child: BarraBack(
-                              titulo: 'Sobre este Registro',
-                              callback: () {
-                                Get.back();
-                              },
-                            ),
+                          BarraBack(
+                            titulo: 'Sobre este Registro',
+                            callback: () {
+                              Get.off(HomeScreen());
+                            },
                           ),
                           Container(
                             width: 40,
                             height: 40,
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: Styles.colorContainer,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: GestureDetector(
                               onTap: () {
-                                print('editar');
                                 controller.updateField(
-                                  'activityId',
-                                  controller.activitiesOne.value!.id,
+                                  'actividad',
+                                  controller.activitiesOne.value!.actividad,
                                 );
                                 controller.updateField(
                                   'date',
@@ -84,7 +82,8 @@ class DetallesDiario extends StatelessWidget {
                                 );
                                 controller.updateField(
                                   'category_id',
-                                  controller.activitiesOne.value!.categoryId,
+                                  controller.activitiesOne.value!.categoryId
+                                      .toString(),
                                 );
                                 controller.updateField(
                                   'notas',
@@ -92,13 +91,14 @@ class DetallesDiario extends StatelessWidget {
                                 );
                                 controller.updateField(
                                   'pet_id',
-                                  controller.activitiesOne.value!.petId,
+                                  controller.activitiesOne.value!.petId
+                                      .toString(),
                                 );
                                 controller.updateField(
                                   'image',
-                                  controller.activitiesOne.value!.image,
+                                  controller.activitiesOne.value!.image ?? "",
                                 );
-
+                                //print(controller.diario);
                                 Get.to(FormularioDiario(isEdit: true));
                               },
                               child: Image.asset(
@@ -111,60 +111,80 @@ class DetallesDiario extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    SizedBox(
-                      width: 250,
-                      child: Text(
-                        controller.activitiesOne.value!.actividad,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontFamily: 'PoetsenOne',
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                    Obx(() {
+                      return SizedBox(
+                        width: 250,
+                        child: Text(
+                          controller.activitiesOne.value!.actividad,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontFamily: 'PoetsenOne',
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                     const SizedBox(
                       height: 100,
                     ),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text(
-                            'Sobre ${homeController.selectedProfile.value!.name}',
-                          ),
+                          Obx(() {
+                            return Text(
+                              'Sobre ${homeController.selectedProfile.value!.name}',
+                            );
+                          }),
                           const SizedBox(
                             height: 10,
                           ),
-                          Text(
-                            controller.activitiesOne.value!.notas,
-                            textAlign: TextAlign.center,
-                            style: Styles.AvatarComentario,
-                          ),
+                          Obx(() {
+                            return Text(
+                              controller.activitiesOne.value!.notas,
+                              textAlign: TextAlign.center,
+                              style: Styles.AvatarComentario,
+                            );
+                          }),
                           const SizedBox(
                             height: 10,
                           ),
-                          Text('Fecha ${controller.activitiesOne.value!.date}'),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          controller.activitiesOne.value!.image != null
-                              ? Container(
+                          Obx(() {
+                            return Text(
+                              'Fecha ${controller.activitiesOne.value!.date}',
+                            );
+                          }),
+                          Obx(() {
+                            if (controller.activitiesOne.value!.image == null) {
+                              return Center(
+                                child: SizedBox(
                                   width: 302,
                                   height: 200,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(
-                                          controller.activitiesOne.value!.image,
-                                        )),
-                                    borderRadius: BorderRadius.circular(20.0),
+                                  child: const Icon(
+                                    Icons.image,
+                                    color: Colors.black,
                                   ),
-                                )
-                              : Container(),
+                                ),
+                              );
+                            }
+                            return Container(
+                              width: 302,
+                              height: 200,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                      controller.activitiesOne.value!.image ??
+                                          '',
+                                    )),
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            );
+                          }),
                           const SizedBox(
                             height: 50,
                           ),

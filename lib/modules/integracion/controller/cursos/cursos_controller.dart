@@ -9,7 +9,7 @@ import 'package:pawlly/services/auth_service_apis.dart';
 class CourseController extends GetxController {
   var courses = <Course>[].obs;
   var isLoading = false.obs;
-  var url = "${DOMAIN_URL}/api/course-platform";
+  var url = "$DOMAIN_URL/api/course-platform";
 
   get jsonData => null;
   @override
@@ -17,6 +17,19 @@ class CourseController extends GetxController {
     super.onInit();
     fetchCourses();
     // getCourseById(AuthServiceApis.dataCurrentUser.id);
+  }
+
+  String dificultad(String dificultad) {
+    switch (dificultad) {
+      case '1':
+        return 'Fácil';
+      case '2':
+        return 'Media';
+      case '3':
+        return 'Difícil';
+      default:
+        return 'Difícil';
+    }
   }
 
   Future<void> fetchCourses() async {
@@ -32,7 +45,7 @@ class CourseController extends GetxController {
         },
       );
       print('Respuesta JSON: ${Uri.parse(url)}');
-      print('Respuesta JSON: ${response}');
+      print('Respuesta JSON: $response');
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
@@ -44,7 +57,7 @@ class CourseController extends GetxController {
         Get.snackbar('Error', 'No se pudieron recuperar los cursos');
       }
     } catch (e) {
-      print('error en course controller ${e}');
+      print('error en course controller $e');
     } finally {
       isLoading(false);
     }

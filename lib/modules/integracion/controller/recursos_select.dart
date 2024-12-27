@@ -18,7 +18,7 @@ class RecursosSelect extends GetxController {
   }
 
   void ver(value) {
-    print("${value} === ${value}");
+    print("$value === $value");
     print("${value == value}");
   }
 }

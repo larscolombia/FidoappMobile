@@ -34,16 +34,16 @@ class BotonCompartir extends StatelessWidget {
                 width: 1,
               ),
             ),
-            child: Center(
+            child: const Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.check,
                     color: Colors.green,
                     size: 16,
                   ),
-                  const Text(
+                  Text(
                     'Adquirido',
                     style: TextStyle(
                         fontSize: 14,

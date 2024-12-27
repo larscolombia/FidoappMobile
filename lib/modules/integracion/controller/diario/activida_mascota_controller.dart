@@ -31,7 +31,18 @@ class PetActivityController extends GetxController {
 
   void initDiario() {
     diario.value = {
-      'actividadId': "",
+      'actividadId': '0',
+      'actividad': "",
+      'date': "",
+      'category_id': "",
+      'notas': "",
+      'pet_id': '0',
+      'image': "",
+    };
+  }
+
+  void resetDiario() {
+    diario.value = {
       'actividad': "",
       'date': "",
       'category_id': "",
@@ -58,6 +69,7 @@ class PetActivityController extends GetxController {
           List<dynamic> data = jsonResponse['data'];
           activities.value =
               data.map((activity) => PetActivity.fromJson(activity)).toList();
+          print('actividades ${activities.value}');
           filteredActivities.value = activities;
         } else {
           print(
@@ -67,7 +79,7 @@ class PetActivityController extends GetxController {
         print('Error en la solicitud: ${response.statusCode}');
       }
     } catch (e) {
-      print('Excepción capturada: $e');
+      print('Excepción capturada en actividad_mascota_controller linea 82: $e');
     } finally {
       isLoading(false);
     }
@@ -124,42 +136,36 @@ class PetActivityController extends GetxController {
     }
   }
 
-  //editar
-  Future<void> editPetActivity(String diaryId, File? imageFile) async {
+  Future<void> editPetActivity2(String diaryId) async {
     isLoading.value = true;
+
     try {
-      isLoading(true);
+      var url = Uri.parse('${BASE_URL}training-diaries/$diaryId');
+      var headers = {
+        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      };
 
-      // Cambia la URL al endpoint de actualización, utilizando el ID
-      var request = http.MultipartRequest(
-        'PUT',
-        Uri.parse(
-            '${BASE_URL}training-diaries/$diaryId'), // Usa el endpoint PUT con el ID
-      )
-        ..headers.addAll({
-          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-          'ngrok-skip-browser-warning': 'true',
-        })
-        ..fields['actividad'] = diario['actividad'] ?? ''
-        ..fields['date'] = diario['date'] ?? ''
-        ..fields['category_id'] = diario['category_id'] ?? ''
-        ..fields['notas'] = diario['notas'] ?? ''
-        ..fields['pet_id'] = diario['pet_id'];
+      // Construir el cuerpo de la solicitud
+      var body = json.encode({
+        'actividadId': diario['actividadId'],
+        'actividad': diario['actividad'],
+        'date': diario['date'],
+        'category_id': diario['category_id'],
+        'notas': diario['notas'],
+        'pet_id': diario['pet_id'],
+      });
 
-      if (imageFile != null) {
-        // Si se seleccionó una nueva imagen, se agrega al request
-        var stream = http.ByteStream(imageFile.openRead());
-        var length = await imageFile.length();
-        var multipartFile = http.MultipartFile('image', stream, length,
-            filename: path.basename(imageFile.path)); // Nombre del archivo
-        request.files.add(multipartFile);
-      }
+      print('Enviando datos al servidor: $body');
 
-      var response = await request.send();
-      var responseBody = await http.Response.fromStream(response);
-      print('responseBody.statusCode: ${json.decode(responseBody.body)}');
+      // Realizar la solicitud PUT
+      var response = await http.put(url, headers: headers, body: body);
+
+      print('Response Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // Si la respuesta es exitosa, mostramos un mensaje de éxito
         Get.dialog(
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
@@ -167,17 +173,82 @@ class PetActivityController extends GetxController {
             description: 'El Diario ha sido actualizado exitosamente.',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
-              //  Get.off(HomeScreen());
+              Get.back();
+
+              fetchPetActivities(diario['pet_id']);
+              getActivityById(diario['actividadId']);
+
+              Get.off(HomeScreen());
             },
           ),
           barrierDismissible: false,
         );
       } else {
-        // Si hubo algún error en el servidor
-        print('Error al actualizar la actividad: ${responseBody.body}');
+        print('Error al actualizar: ${response.body}');
       }
     } catch (e) {
-      // Manejo de excepciones
+      print('Excepción capturada: $e');
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  //editar
+  Future<void> editPetActivity(String diaryId, File? imageFile) async {
+    isLoading.value = true;
+
+    try {
+      var url = Uri.parse('${BASE_URL}training-diaries/$diaryId');
+      var request = http.MultipartRequest('PUT', url);
+
+      // Encabezados
+      request.headers.addAll({
+        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        'ngrok-skip-browser-warning': 'true',
+      });
+
+      // Agregar JSON como campo 'data'
+      var jsonData = json.encode({
+        'actividadId': diario['actividadId'],
+        'actividad': diario['actividad'],
+        'date': diario['date'],
+        'category_id': diario['category_id'],
+        'notas': diario['notas'],
+        'pet_id': diario['pet_id'],
+      });
+      request.fields['data'] = jsonData;
+
+      // Adjuntar archivo de imagen si está presente
+      if (imageFile != null) {
+        var stream = http.ByteStream(imageFile.openRead());
+        var length = await imageFile.length();
+        var multipartFile = http.MultipartFile(
+          'image',
+          stream,
+          length,
+          filename: path.basename(imageFile.path),
+        );
+        request.files.add(multipartFile);
+      }
+
+      print('Enviando datos y archivo: ${request.fields}');
+      if (imageFile != null) {
+        print('Archivo adjunto: ${imageFile.path}');
+      }
+
+      // Enviar la solicitud
+      var response = await request.send();
+      var responseBody = await http.Response.fromStream(response);
+
+      print('Response Code: ${response.statusCode}');
+      print('Response Body: ${responseBody.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('Diario actualizado exitosamente.');
+      } else {
+        print('Error al actualizar: ${responseBody.body}');
+      }
+    } catch (e) {
       print('Excepción capturada: $e');
     } finally {
       isLoading(false);

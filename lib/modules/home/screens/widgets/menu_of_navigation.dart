@@ -7,6 +7,8 @@ import 'package:pawlly/styles/styles.dart';
 
 class MenuOfNavigation extends GetView<HomeController> {
   final RoleUser roleUser = Get.put(RoleUser());
+
+  MenuOfNavigation({super.key});
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -14,7 +16,7 @@ class MenuOfNavigation extends GetView<HomeController> {
       () => Container(
         width: width,
         height: 75,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Styles.primaryColor,
           borderRadius: BorderRadius.all(
             Radius.circular(66),
@@ -77,11 +79,11 @@ class MenuOfNavigation extends GetView<HomeController> {
       child: Container(
         decoration: isSelected
             ? BoxDecoration(
-                color: Color.fromRGBO(252, 146, 20, 1),
+                color: const Color.fromRGBO(252, 146, 20, 1),
                 borderRadius: BorderRadius.circular(25),
               )
             : null,
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         child: Row(
           children: [
             Image.asset(
@@ -89,10 +91,10 @@ class MenuOfNavigation extends GetView<HomeController> {
               width: 24,
             ),
             if (isSelected) ...[
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Styles.whiteColor,
                   fontFamily: 'Lato',
                   fontWeight: FontWeight.w400,

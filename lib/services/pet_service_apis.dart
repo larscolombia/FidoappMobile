@@ -116,7 +116,7 @@ class PetService {
 
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
-        print('JSON RESPONSE: ${jsonResponse}');
+        print('JSON RESPONSE: $jsonResponse');
         print(
             'JSON RESPONSE Role: ${AuthServiceApis.dataCurrentUser.userType}');
         // Verificar la estructura de la respuesta para vet y trainer
@@ -152,7 +152,7 @@ class PetService {
 
   static Future<List<BreedModel>> getBreedsListApi() async {
     // Construir la URL
-    final url = Uri.parse('${BASE_URL}${APIEndPoints.getBreedsList}');
+    final url = Uri.parse('$BASE_URL${APIEndPoints.getBreedsList}');
 
     // Realizar la solicitud con el token en los headers (si es necesario)
     final response = await http.get(
@@ -179,7 +179,7 @@ class PetService {
     required String imagePath, // Ruta de la imagen
   }) async {
     if (isLoggedIn.value) {
-      final url = Uri.parse('${BASE_URL}${APIEndPoints.getPetList}');
+      final url = Uri.parse('$BASE_URL${APIEndPoints.getPetList}');
 
       print('URL completa: $url');
       print('Cuerpo de la solicitud (JSON): ${jsonEncode(body)}');
@@ -236,7 +236,7 @@ class PetService {
   }) async {
     if (isLoggedIn.value) {
       // Construir la URL completa
-      final url = Uri.parse('${BASE_URL}${APIEndPoints.getPetList}/${id}');
+      final url = Uri.parse('$BASE_URL${APIEndPoints.getPetList}/$id');
 
       // Imprimir la URL completa
       print('URL completa: $url');
@@ -274,7 +274,7 @@ class PetService {
   }) async {
     if (isLoggedIn.value) {
       // Construir la URL completa para la edición, incluyendo el ID de la mascota
-      final url = Uri.parse('${BASE_URL}${APIEndPoints.getPetList}/$petId');
+      final url = Uri.parse('$BASE_URL${APIEndPoints.getPetList}/$petId');
 
       // Realizar la solicitud POST con el token en los headers
       final response = await http.post(
@@ -306,7 +306,7 @@ class PetService {
   }) async {
     if (isLoggedIn.value) {
       // Construir la URL completa con el ID de la mascota
-      final url = Uri.parse('${BASE_URL}${APIEndPoints.getPetList}/$petId');
+      final url = Uri.parse('$BASE_URL${APIEndPoints.getPetList}/$petId');
 
       // Realizar la solicitud GET con el token en los headers
       final response = await http.get(

@@ -19,7 +19,7 @@ class Slide extends StatelessWidget {
   late String subtitle;
 
   Slide({
-    Key? key,
+    super.key,
     String? img1,
     String? img2,
     String? img4,
@@ -33,13 +33,12 @@ class Slide extends StatelessWidget {
         img5 = img5 ?? "assets/images/welcome.png",
         title1 = title1 ?? locale.value.welcomeTo,
         title2 = title2 ?? Config.NameApp,
-        subtitle = subtitle ?? locale.value.designedToAccompany,
-        super(key: key);
+        subtitle = subtitle ?? locale.value.designedToAccompany;
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return Container(
+    return SizedBox(
         width: width,
         child: Column(
           children: [
@@ -50,12 +49,12 @@ class Slide extends StatelessWidget {
                   width: 210,
                   child: Image.asset(img1),
                 ),
-                Container(
+                SizedBox(
                   height: 263,
                   width: 210,
                   child: Image.asset(img2),
                 ),
-                Container(
+                SizedBox(
                   height: 263,
                   width: 210,
                   child: Image.asset(img4),
@@ -68,7 +67,7 @@ class Slide extends StatelessWidget {
               ]),
             ),
             Container(
-              margin: EdgeInsets.only(top: 20, bottom: 20),
+              margin: const EdgeInsets.only(top: 20, bottom: 20),
               child: Obx(() => AnimatedSmoothIndicator(
                     activeIndex: welcomeController.currentIndex.value,
                     count: 3,
@@ -92,7 +91,7 @@ class Slide extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 10),
               child: Center(
                 child: Text(
                   subtitle,

@@ -72,16 +72,16 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CHANGESUCCESSPASSWORD,
-      page: () => ChangeSuccessPassword(),
+      page: () => const ChangeSuccessPassword(),
       binding: ChangeSuccessPasswordBinding(),
     ),
     GetPage(
       name: _Paths.TERMSCONDITIONS,
-      page: () => TermsConditions(),
+      page: () => const TermsConditions(),
     ),
     GetPage(
       name: _Paths.PRIVACYPOLICY,
-      page: () => PrivacyPolicy(),
+      page: () => const PrivacyPolicy(),
     ),
     GetPage(
       name: _Paths.APPRENTICESHIP,

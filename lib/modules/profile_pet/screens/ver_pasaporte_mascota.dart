@@ -14,6 +14,8 @@ class VerPasaporteMascota extends StatelessWidget {
   final HomeController _homeController = Get.find<HomeController>();
   final HistorialClinicoController historiaClinicaController =
       Get.put(HistorialClinicoController());
+
+  VerPasaporteMascota({super.key});
   String formatFecha(String fecha) {
     // Convertir la fecha de String a DateTime
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
@@ -28,8 +30,8 @@ class VerPasaporteMascota extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime dateTime = DateFormat('yyyy-MM-dd').parse(
         _homeController.selectedProfile.value!.dateOfBirth ?? '0000-00-00');
-    historiaClinicaController
-        .fetchHistorialClinico(_homeController.selectedProfile.value!.id);
+    //historiaClinicaController
+    //  .fetchHistorialClinico(_homeController.selectedProfile.value!.id);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -37,7 +39,7 @@ class VerPasaporteMascota extends StatelessWidget {
           // Primer contenedor (fondo o header)
           Container(
             height: 120,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Styles.colorContainer, // Cambia el color según tu diseño
             ),
           ),
@@ -45,9 +47,9 @@ class VerPasaporteMascota extends StatelessWidget {
           Expanded(
             child: Container(
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),
@@ -58,7 +60,7 @@ class VerPasaporteMascota extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
+                      SizedBox(
                         width: 305,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -102,7 +104,7 @@ class VerPasaporteMascota extends StatelessWidget {
                           return CachedNetworkImage(
                             imageUrl: imageUrl,
                             fit: BoxFit.cover,
-                            placeholder: (context, url) => Center(
+                            placeholder: (context, url) => const Center(
                               child: CircularProgressIndicator(),
                             ),
                             errorWidget: (context, url, error) {
@@ -118,7 +120,7 @@ class VerPasaporteMascota extends StatelessWidget {
                       const SizedBox(height: 20),
                       Container(
                         width: 304,
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: Styles.colorContainer,
                           borderRadius: BorderRadius.circular(16),
@@ -154,15 +156,15 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Container(
-                        child: Text(
+                        child: const Text(
                           'Información del Perro',
                           style: Styles.TextTitulo,
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       InfoMascota(
                         titulo: 'Nombre',
-                        value: '${_homeController.selectedProfile.value!.name}',
+                        value: _homeController.selectedProfile.value!.name,
                       ),
                       InfoMascota(
                         titulo: 'Especie',
@@ -170,13 +172,11 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       InfoMascota(
                         titulo: 'Sexo',
-                        value:
-                            '${_homeController.selectedProfile.value!.gender}',
+                        value: _homeController.selectedProfile.value!.gender,
                       ),
                       InfoMascota(
                         titulo: 'Raza',
-                        value:
-                            '${_homeController.selectedProfile.value!.breed}',
+                        value: _homeController.selectedProfile.value!.breed,
                       ),
 
                       InfoMascota(
@@ -193,9 +193,9 @@ class VerPasaporteMascota extends StatelessWidget {
                         value: 'n/A',
                       ),
                       const SizedBox(height: 20),
-                      Container(
+                      SizedBox(
                         width: 305,
-                        child: Text(
+                        child: const Text(
                           'Datos de Vacunación y Tratamientos',
                           style: Styles.TextTitulo,
                         ),
@@ -205,7 +205,7 @@ class VerPasaporteMascota extends StatelessWidget {
                       Container(
                         width:
                             305, // Puedes ajustar el ancho del Container según lo que necesites
-                        padding: EdgeInsets.all(
+                        padding: const EdgeInsets.all(
                             16), // Espaciado interno si lo deseas
 
                         child: Obx(() {
@@ -225,9 +225,9 @@ class VerPasaporteMascota extends StatelessWidget {
                             shrinkWrap:
                                 true, // Permite que el GridView ocupe solo el espacio necesario
                             physics:
-                                NeverScrollableScrollPhysics(), // Desactiva el scroll para evitar conflictos con el ScrollView principal
+                                const NeverScrollableScrollPhysics(), // Desactiva el scroll para evitar conflictos con el ScrollView principal
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2, // Número de elementos por fila
                               crossAxisSpacing: 1, // Espacio entre columnas
                               mainAxisSpacing: 1, // Espacio entre filas
@@ -238,12 +238,12 @@ class VerPasaporteMascota extends StatelessWidget {
                                 .length, // Número de elementos en el Grid
                             itemBuilder: (context, index) {
                               final history = historial[index];
-                              return Container(
+                              return SizedBox(
                                 height: 200,
                                 child: HistoriaMascotaComponent(
                                   reportName: history.reportName,
                                   categoryName: history.categoryName,
-                                  applicationDate: history.applicationDate,
+                                  applicationDate: history.createdAt,
                                   id: history.id.toString(),
                                   callback: () {
                                     print('Callback');
@@ -267,7 +267,7 @@ class VerPasaporteMascota extends StatelessWidget {
 }
 
 class InfoMascota extends StatelessWidget {
-  InfoMascota({
+  const InfoMascota({
     super.key,
     this.titulo,
     this.value,
@@ -280,16 +280,16 @@ class InfoMascota extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 302,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: Color(0xffEFEFEF), width: .5),
+        border: Border.all(color: const Color(0xffEFEFEF), width: .5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             titulo!,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontFamily: 'Lato',
               fontSize: 16,
@@ -298,7 +298,7 @@ class InfoMascota extends StatelessWidget {
           ),
           Text(
             value!,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontFamily: 'Lato',
               fontSize: 16,

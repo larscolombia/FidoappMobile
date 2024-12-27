@@ -8,12 +8,12 @@ class CustomDateFormFieldWidget extends StatefulWidget {
   final TextEditingController? controller;
   final bool? enabled;
 
-  CustomDateFormFieldWidget({
-    Key? key,
+  const CustomDateFormFieldWidget({
+    super.key,
     required this.placeholder,
     required this.controller,
     this.enabled,
-  }) : super(key: key);
+  });
 
   @override
   _CustomDateFormFieldWidgetState createState() =>
@@ -48,11 +48,12 @@ class _CustomDateFormFieldWidgetState extends State<CustomDateFormFieldWidget> {
               enabled: widget.enabled ?? true,
               decoration: InputDecoration(
                 filled: true,
-                fillColor:
-                    hasText ? Colors.white : Color.fromRGBO(254, 247, 229, 1),
+                fillColor: hasText
+                    ? Colors.white
+                    : const Color.fromRGBO(254, 247, 229, 1),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Colors.transparent,
                     width: 1.0,
                   ),
@@ -66,7 +67,7 @@ class _CustomDateFormFieldWidgetState extends State<CustomDateFormFieldWidget> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Styles.iconColorBack,
                     width: 1.0,
                   ),
@@ -78,14 +79,14 @@ class _CustomDateFormFieldWidgetState extends State<CustomDateFormFieldWidget> {
                     width: 1.0,
                   ),
                 ),
-                prefixIcon: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                prefixIcon: const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Icon(
                       Icons.calendar_today,
                       color: Styles.iconColorBack,
                     )),
                 labelText: hasText ? null : widget.placeholder,
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                   color: Styles.iconColorBack,
                 ),
               ),

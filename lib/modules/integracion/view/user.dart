@@ -5,18 +5,20 @@ import 'package:pawlly/modules/integracion/controller/user_type/user_controller.
 class UserSearchPage extends StatelessWidget {
   final UserController userController = Get.put(UserController());
 
+  UserSearchPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Buscar Usuarios'),
+        title: const Text('Buscar Usuarios'),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(50.0),
+          preferredSize: const Size.fromHeight(50.0),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               onChanged: (value) => userController.filterUsers(value),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Buscar por nombre...',
                 border: OutlineInputBorder(),
               ),

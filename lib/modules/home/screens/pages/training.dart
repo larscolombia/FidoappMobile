@@ -28,18 +28,18 @@ class Training extends StatelessWidget {
               : controller.selectedIndex.value == 3
                   ? 'Seguir Viendo'
                   : 'Cursos y Programas de Entrenamiento',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 20,
             color: Styles.primaryColor,
             fontFamily: 'PoetsenOne',
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         // Se usa un Obx para actualizar dinámicamente el contenido según el índice seleccionado
         Obx(() {
           if (miscursos.courses.isEmpty) {
             // Mostrar mensaje cuando no hay entrenamientos disponibles
-            return Center(
+            return const Center(
               child: Text(
                 'No hay entrenamientos disponibles',
                 style: TextStyle(fontSize: 16, color: Styles.greyTextColor),

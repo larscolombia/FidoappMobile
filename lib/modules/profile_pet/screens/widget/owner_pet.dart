@@ -8,7 +8,7 @@ import 'package:pawlly/styles/styles.dart';
 class PetOwnersWidget extends StatelessWidget {
   final int petId;
 
-  PetOwnersWidget({required this.petId});
+  const PetOwnersWidget({super.key, required this.petId});
 
   @override
   Widget build(BuildContext context) {

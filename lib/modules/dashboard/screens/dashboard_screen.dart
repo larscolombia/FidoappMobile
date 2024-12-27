@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pacientes.dart';
 import 'package:pawlly/modules/dashboard/screens/pages.dart';
+import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
@@ -13,6 +16,8 @@ import 'package:pawlly/styles/styles.dart';
 class DashboardScreen extends StatelessWidget {
   final DashboardController controller = Get.put(DashboardController());
   final RoleUser roleUser = Get.put(RoleUser());
+
+  DashboardScreen({super.key});
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -38,8 +43,8 @@ class DashboardScreen extends StatelessWidget {
                 Container(
                   width: 100,
                   height: 100,
-                  padding:
-                      EdgeInsets.all(4), // Espacio entre la imagen y el borde
+                  padding: const EdgeInsets.all(
+                      4), // Espacio entre la imagen y el borde
                   decoration: BoxDecoration(
                     color: Styles.fiveColor, // Fondo del borde
                     shape: BoxShape.circle,
@@ -55,7 +60,7 @@ class DashboardScreen extends StatelessWidget {
                       backgroundImage: controller.profileImagePath.isNotEmpty
                           ? NetworkImage(controller.profileImagePath
                               .value) // Carga la imagen desde la red si hay una URL
-                          : AssetImage('assets/images/avatar.png')
+                          : const AssetImage('assets/images/avatar.png')
                               as ImageProvider, // Imagen predeterminada si la URL está vacía
                       backgroundColor: Colors.transparent, // Fondo transparente
                     ),
@@ -79,8 +84,8 @@ class DashboardScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 padding: Styles.paddingAll,
-                margin: EdgeInsets.only(top: 16),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.only(top: 16),
+                decoration: const BoxDecoration(
                   color: Styles.whiteColor,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
                 ),
@@ -93,34 +98,24 @@ class DashboardScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          GestureDetector(
-                            onTap: () =>
-                                Navigator.pop(context), // Acción de retroceso
-                            child: Icon(
-                              Icons.arrow_back_ios,
-                              color: Styles.primaryColor,
-                              size: 22,
-                            ),
+                          BarraBack(
+                            titulo: 'Dashboard',
+                            callback: () {
+                              Get.off(HomeScreen());
+                            },
                           ),
-                          Text(
-                            'Dashboard',
-                            style: Styles.dashboardTitle20,
-                          ),
-                          SizedBox(width: 40),
-                          SizedBox(
-                              width: 40), // Para mantener el texto centrado
                         ],
                       ),
                     ),
                     // Divider con espacio
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 0),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10, bottom: 0),
                       child: Divider(height: 10, thickness: 1),
                     ),
                     // Lista de Ítems
                     Expanded(
                       child: ListView.builder(
-                        itemCount: 6,
+                        itemCount: 7,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
@@ -143,7 +138,7 @@ class DashboardScreen extends StatelessWidget {
                                   Row(
                                     children: [
                                       Container(
-                                        padding: EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                           color: Styles
                                               .fiveColor, // Fondo del ícono
@@ -156,14 +151,14 @@ class DashboardScreen extends StatelessWidget {
                                           color: Styles.iconColorBack,
                                         ),
                                       ),
-                                      SizedBox(width: 16),
+                                      const SizedBox(width: 16),
                                       Text(
                                         _getItemTitle(index),
                                         style: Styles.boxTitleDashboard,
                                       ),
                                     ],
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.chevron_right,
                                     color: Styles.greyTextColor,
                                     size: 24,
@@ -201,6 +196,8 @@ class DashboardScreen extends StatelessWidget {
       case 4:
         return 'Sobre la App';
       case 5:
+        return 'FidoCoins';
+      case 6:
         return 'Cerrar Sesión';
       default:
         return '';
@@ -209,7 +206,7 @@ class DashboardScreen extends StatelessWidget {
 
   void _onItemTap(int index, BuildContext context) {
     if (index == 6) {
-      Get.to(Pacientes());
+      // Get.to(Pacientes());
     }
     if (index == 1) {
       // Mostrar el modal para el caso 1
@@ -225,7 +222,7 @@ class DashboardScreen extends StatelessWidget {
           },
         );
       }
-    } else if (index == 5) {
+    } else if (index == 6) {
       // Mostrar el diálogo de confirmación para cerrar sesión
       _showLogoutConfirmationDialog(context);
     } else {
@@ -244,15 +241,15 @@ class DashboardScreen extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Cerrar Sesión"),
-          content: Text("¿Desea cerrar sesión?"),
+          title: const Text("Cerrar Sesión"),
+          content: const Text("¿Desea cerrar sesión?"),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 // Si el usuario elige "No", simplemente cierra el modal
                 Navigator.of(context).pop();
               },
-              child: Text("No"),
+              child: const Text("No"),
             ),
             TextButton(
               onPressed: () async {
@@ -260,7 +257,7 @@ class DashboardScreen extends StatelessWidget {
                 await controller.logoutUser();
                 Navigator.of(context).pop(); // Cerrar el modal
               },
-              child: Text("Sí"),
+              child: const Text("Sí"),
             ),
           ],
         );
@@ -281,7 +278,9 @@ class DashboardScreen extends StatelessWidget {
       case 4:
         return SobreAppPage();
       case 5:
-        return '';
+        return FideCoin();
+      case 6:
+        return "";
       default:
         return Container();
     }
@@ -301,6 +300,8 @@ class DashboardScreen extends StatelessWidget {
       case 4:
         return Icons.info;
       case 5:
+        return Icons.monetization_on;
+      case 6:
         return Icons.exit_to_app;
       default:
         return Icons.help;

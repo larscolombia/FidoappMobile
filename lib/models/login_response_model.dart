@@ -1,5 +1,4 @@
 import 'package:pawlly/models/user_data_model.dart';
-import 'package:pawlly/modules/auth/model/login_response_model.dart';
 
 class LoginResponse {
   bool status;

@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'dart:convert';
 import 'package:pawlly/modules/integracion/model/comentario/rainting.dart';
@@ -11,16 +13,16 @@ class CommentController extends GetxController {
   var isLoading = false.obs;
   var isFirstLoad = true.obs; // Variable para controlar si es la primera carga.
 
-  final String baseUrl = "${DOMAIN_URL}/api";
+  final String baseUrl = "$DOMAIN_URL/api";
   final isComentarioPosrLoading = false.obs;
   String getEndpoint(String tipo, String itemId) {
     switch (tipo) {
       case "books":
-        return "/get-book-rating-by-id-ebook?e_book_id=${itemId}";
+        return "/get-book-rating-by-id-ebook?e_book_id=$itemId";
       case "video":
-        return "/course-platform/subscribe/get-rating-course-video?course_platform_video_id=${itemId}";
+        return "/course-platform/subscribe/get-rating-course-video?course_platform_video_id=$itemId";
       case 'blog':
-        return "/get-blog-rating?blog_id=${itemId}";
+        return "/get-blog-rating?blog_id=$itemId";
       default:
         return "Comentarios";
     }
@@ -29,11 +31,11 @@ class CommentController extends GetxController {
   String postEnpoint(String tipo) {
     switch (tipo) {
       case "books":
-        return "${baseUrl}/e-book-rating";
+        return "$baseUrl/e-book-rating";
       case "video":
-        return "${baseUrl}/course-platform/subscribe/rating-course-video";
+        return "$baseUrl/course-platform/subscribe/rating-course-video";
       case "blog":
-        return "${baseUrl}/blog-list/rating";
+        return "$baseUrl/blog-list/rating";
       default:
         return "Comentarios";
     }
@@ -44,17 +46,15 @@ class CommentController extends GetxController {
       try {
         isLoading(true);
         final response = await http
-            .get(Uri.parse('${baseUrl}${getEndpoint(tipo, itemId)}'), headers: {
+            .get(Uri.parse('$baseUrl${getEndpoint(tipo, itemId)}'), headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
         });
 
         var data = json.decode(response.body);
-        print(
-            'response comentarios ${Uri.parse('${baseUrl}${getEndpoint(tipo, itemId)}')}');
-        print('response comentarios ${data['data']}');
 
         if (response.statusCode == 200) {
+          print('comentarios ${data['data']}');
           comments.value = (data['data'] as List)
               .map((item) => Comment.fromJson(item))
               .toList();
@@ -62,7 +62,7 @@ class CommentController extends GetxController {
           throw Exception('Failed to load comments');
         }
       } catch (e) {
-        print('error en comentarios ${e}');
+        print('error en comentarios $e');
       } finally {
         isLoading(false);
       }
@@ -105,19 +105,33 @@ class CommentController extends GetxController {
     comentario[key] = value;
   }
 
-  Future<void> postComment(String tipo) async {
+  Future<void> postComment(String tipo, context) async {
+    print("log comentario ${Uri.parse(postEnpoint(tipo))}");
     try {
       isComentarioPosrLoading(true);
       final response = await http.post(
-        Uri.parse('${postEnpoint(tipo)}'),
+        Uri.parse(postEnpoint(tipo)),
         headers: <String, String>{
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(comentario),
       );
-      print('response comentarios ${comentario}');
-      print('response comentarios ${response.body}');
+      if (response.statusCode == 200) {
+        Get.dialog(
+          //pisa papel
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Evento creado',
+            description: 'El evento ha sido creada exitosamente.',
+            primaryButtonText: 'Continuar',
+            onPrimaryButtonPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          barrierDismissible: true,
+        );
+      }
     } finally {
       isComentarioPosrLoading(false);
     }

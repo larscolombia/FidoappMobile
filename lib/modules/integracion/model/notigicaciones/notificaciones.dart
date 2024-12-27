@@ -29,13 +29,13 @@ class NotificationData {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['type'] = this.type;
-    data['description'] = this.description;
-    data['is_read'] = this.isRead;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['type'] = type;
+    data['description'] = description;
+    data['is_read'] = isRead;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

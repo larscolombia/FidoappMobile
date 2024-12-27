@@ -33,14 +33,14 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                     style: Styles.joinTitle,
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 26,
                   ),
                   Text(
                     locale.value.enterNewPassword,
                     style: Styles.secondTextTitle,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   const Divider(
@@ -48,7 +48,7 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                     color: Styles.greyDivider,
                     thickness: 1,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Container(
@@ -57,7 +57,7 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                         placeholder: locale.value.password,
                         icon: 'assets/icons/key.png'),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Container(
@@ -66,7 +66,7 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                         placeholder: locale.value.confirmPassword,
                         icon: 'assets/icons/key.png'),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   ButtonDefaultWidget(
@@ -74,7 +74,7 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                     callback: calbak,
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 20),
+                    margin: const EdgeInsets.only(top: 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -95,7 +95,7 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                             style: const TextStyle(
                                 fontSize: 14,
                                 color: Color.fromRGBO(83, 82, 81, 1),
-                                fontFamily: 'Lato',
+                                fontFamily: 'Pou',
                                 fontWeight: FontWeight.w800),
                           ),
                         ),
@@ -127,7 +127,7 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                     color: Styles.greyDivider,
                     thickness: 1,
                   ),
-                  ButtonBack(text: 'Regresar')
+                  const ButtonBack(text: 'Regresar')
                 ],
               ),
             ),

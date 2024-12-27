@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class CustomAlertDialog extends StatelessWidget {
@@ -13,8 +13,10 @@ class CustomAlertDialog extends StatelessWidget {
   final String? secondaryButtonText; // Texto del segundo botón (opcional)
   final VoidCallback?
       onSecondaryButtonPressed; // Acción del segundo botón (opcional)
-
-  CustomAlertDialog({
+  final bool buttonCancelar; // Propiedad para mostrar el botón de cerrar modal
+  final bool? isSelect;
+  const CustomAlertDialog({
+    super.key,
     required this.icon,
     required this.title,
     required this.description,
@@ -22,20 +24,20 @@ class CustomAlertDialog extends StatelessWidget {
     this.onPrimaryButtonPressed,
     this.secondaryButtonText,
     this.onSecondaryButtonPressed,
+    this.buttonCancelar = false, // Por defecto es false
+    this.isSelect = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.white, // Fondo blanco
-      contentPadding: EdgeInsets.all(20),
+      contentPadding: const EdgeInsets.all(20),
       title: Column(
         children: [
-          Image.asset(
-            'assets/icons/check.png',
-            width: 80,
-            height: 80,
-          ),
+          Icon(icon,
+              size: 80,
+              color: Styles.primaryColor), // Usar el icono proporcionado
           const SizedBox(height: 10),
           Text(
             title,
@@ -52,19 +54,23 @@ class CustomAlertDialog extends StatelessWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (isSelect == true) ...[
+            ProfilesDogs(),
+            const SizedBox(height: 10),
+          ],
           Text(
             description,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               fontFamily: 'Lato',
               color: Colors.black,
             ),
           ),
           if (primaryButtonText != null || secondaryButtonText != null) ...[
-            SizedBox(height: 20),
-            Divider(), // Línea divisoria
-            SizedBox(height: 10),
+            const SizedBox(height: 20),
+            const Divider(), // Línea divisoria
+            const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -81,13 +87,30 @@ class CustomAlertDialog extends StatelessWidget {
                     ),
                   ),
                 if (secondaryButtonText != null) ...[
-                  SizedBox(width: 10), // Espacio entre los botones
+                  const SizedBox(width: 10), // Espacio entre los botones
                   Expanded(
                     child: ButtonDefaultWidget(
                       title: secondaryButtonText!,
                       callback: onSecondaryButtonPressed ?? () {},
                       defaultColor:
                           Styles.primaryColor, // Color de fondo del botón
+                      textColor: Styles.whiteColor, // Color del texto del botón
+                      heigthButtom: 48, // Altura del botón
+                      borderSize: 12, // Tamaño del borde
+                    ),
+                  ),
+                ],
+                if (buttonCancelar) ...[
+                  const SizedBox(width: 10), // Espacio entre los botones
+                  Expanded(
+                    child: ButtonDefaultWidget(
+                      title: 'Cancelar',
+                      callback: () {
+                        Navigator.of(context).pop();
+                      },
+
+                      defaultColor:
+                          Colors.red, // Color de fondo del botón de cerrar
                       textColor: Styles.whiteColor, // Color del texto del botón
                       heigthButtom: 48, // Altura del botón
                       borderSize: 12, // Tamaño del borde

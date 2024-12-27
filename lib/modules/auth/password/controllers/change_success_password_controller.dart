@@ -14,11 +14,6 @@ import '../../../../../utils/local_storage.dart';
 class ChangeSuccessPasswordController extends GetxController {
   RxBool isLoading = false.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   saveForm() async {
     print('change Pass Controller join');
   }

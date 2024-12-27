@@ -7,7 +7,7 @@ class TrainingVertical extends StatelessWidget {
   final List<CursosUsuarios> cursoslista;
 
   // Constructor que recibe la lista de entrenamientos
-  TrainingVertical({required this.cursoslista});
+  const TrainingVertical({super.key, required this.cursoslista});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +22,8 @@ class TrainingVertical extends StatelessWidget {
                 'Nombre del container: ${trainingModel.name} - ID: ${trainingModel.id}');
           },
           child: Container(
-            margin: EdgeInsets.only(bottom: 16),
-            padding: EdgeInsets.all(12),
+            margin: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Styles.whiteColor,
               borderRadius: BorderRadius.circular(10),
@@ -47,7 +47,7 @@ class TrainingVertical extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       child: trainingModel.image != null
                           ? Image.network(
-                              trainingModel.image!,
+                              trainingModel.image,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Image.asset(
@@ -63,15 +63,15 @@ class TrainingVertical extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 // Contenido del curso
                 Expanded(
                   flex: 1,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Nivel no especificado',
+                      const Text(
+                        'Nivel no especificados',
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 12,
@@ -79,20 +79,20 @@ class TrainingVertical extends StatelessWidget {
                           color: Styles.iconColorBack,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         trainingModel.name,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: Styles.greyTextColor,
                         ),
                       ),
-                      SizedBox(height: 4),
-                      Text(
+                      const SizedBox(height: 4),
+                      const Text(
                         'Progreso:',
                         style: TextStyle(
                           fontFamily: 'Lato',
@@ -101,7 +101,7 @@ class TrainingVertical extends StatelessWidget {
                           color: Styles.iconColorBack,
                         ),
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       // Barra de progreso
                       Row(
                         children: [
@@ -116,10 +116,10 @@ class TrainingVertical extends StatelessWidget {
                               minHeight: 6,
                             ),
                           ),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Text(
                             '${((trainingModel.progress ?? 0) * 100).toInt()}%',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 12,
                               fontWeight: FontWeight.w400,

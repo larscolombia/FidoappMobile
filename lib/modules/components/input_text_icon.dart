@@ -25,7 +25,7 @@ class InputTextWithIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       height: height,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey, width: 0.2),
@@ -46,7 +46,7 @@ class InputTextWithIcon extends StatelessWidget {
             child: TextField(
               onChanged: onChanged,
               controller: controller,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
                 fontFamily: 'Lato',
                 fontWeight: FontWeight.w400,
@@ -55,7 +55,7 @@ class InputTextWithIcon extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: hintText,
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
               ),
             ),
           ),

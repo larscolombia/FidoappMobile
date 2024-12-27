@@ -46,14 +46,14 @@ class ProfilePetController extends GetxController {
     super.onInit();
     // Recibe el perfil de la mascota desde los argumentos
     petProfile = Get.arguments as PetData;
-    print('controlador del perfil onInit ${petProfile}');
+    print('controlador del perfil onInit $petProfile');
     // Ahora puedes inicializar las variables con los datos del perfil recibido
     petName.value = petProfile.name;
     petBreed.value = petProfile.breed;
     petDescription.value = petProfile.description ?? '';
 
     petAge.value = petProfile.age;
-    petGender.value = petProfile.gender!;
+    petGender.value = petProfile.gender;
     profileImagePath.value = petProfile.petImage ?? '';
 
     // Puedes agregar más inicializaciones según los datos disponibles en PetData

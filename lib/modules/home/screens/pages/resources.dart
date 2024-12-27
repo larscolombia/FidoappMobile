@@ -51,9 +51,9 @@ class Resources extends StatelessWidget {
           );
         }),
 
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         // Carrusel deslizable de recursos
-        Container(
+        SizedBox(
           height: 44,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -65,10 +65,10 @@ class Resources extends StatelessWidget {
                 }, // Acción al tocar el cuadro
                 child: Container(
                   alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                       horizontal:
                           12), // Padding para ajustar al ancho del texto
-                  margin: EdgeInsets.only(
+                  margin: const EdgeInsets.only(
                       right:
                           10), // Espacio entre elementos y margen hacia abajo
 
@@ -93,10 +93,11 @@ class Resources extends StatelessWidget {
                         size: 18,
                         color: Styles.primaryColor,
                       ),
-                      SizedBox(width: 5), // Espacio entre el ícono y el texto
+                      const SizedBox(
+                          width: 5), // Espacio entre el ícono y el texto
                       Text(
                         resources[index]['label']!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 14,
                           fontWeight: FontWeight.w700,

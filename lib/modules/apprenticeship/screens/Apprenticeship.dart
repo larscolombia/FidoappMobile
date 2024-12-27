@@ -8,6 +8,8 @@ import 'package:pawlly/screens_demo/component/header_baner_user.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ApprenticeshipScreen extends GetView<ApprenticeshipController> {
+  const ApprenticeshipScreen({super.key});
+
   @override
   Widget build(Object context) {
     return Scaffold(
@@ -22,7 +24,7 @@ class ApprenticeshipScreen extends GetView<ApprenticeshipController> {
               ),
               Container(
                 width: 300,
-                margin: EdgeInsets.only(top: 25),
+                margin: const EdgeInsets.only(top: 25),
                 child: const Align(
                   alignment: Alignment.topLeft,
                   child: Text(
@@ -38,7 +40,7 @@ class ApprenticeshipScreen extends GetView<ApprenticeshipController> {
               Container(
                 width: 300,
                 height: 70,
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 decoration: BoxDecoration(
                   color: Styles.tertiaryColor,
                   borderRadius: BorderRadius.circular(35),
@@ -51,8 +53,8 @@ class ApprenticeshipScreen extends GetView<ApprenticeshipController> {
               ),
               Container(
                 width: 30,
-                margin: EdgeInsets.only(top: 20),
-                child: Align(
+                margin: const EdgeInsets.only(top: 20),
+                child: const Align(
                   alignment: Alignment.topLeft,
                   child: Text(
                     'Cursos',
@@ -64,15 +66,15 @@ class ApprenticeshipScreen extends GetView<ApprenticeshipController> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 30,
                 height: 3,
-                child: Divider(
+                child: const Divider(
                   color: Colors.black,
                   thickness: 0.1,
                 ),
               ),
-              Container(
+              SizedBox(
                 width: 30,
                 child: Row(
                   children: [Cursos(), Cursos()],

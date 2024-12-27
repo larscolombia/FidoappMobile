@@ -17,8 +17,8 @@ class DashboardController extends GetxController {
   void onInit() {
     super.onInit();
     // Cargar los datos del usuario desde AuthServiceApis al iniciar el controlador
-    currentUser = AuthServiceApis.dataCurrentUser
-        as UserData; // Asegúrate de que el servicio esté correctamente configurado
+    currentUser = AuthServiceApis
+        .dataCurrentUser; // Asegúrate de que el servicio esté correctamente configurado
 
     // Inicializar los controladores con los datos del usuario actual
     name.value = currentUser.firstName;
@@ -31,7 +31,7 @@ class DashboardController extends GetxController {
     await AuthServiceApis.logoutApi();
 
     // Agregar un pequeño retraso antes de redirigir
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       // Redirigir al usuario a la pantalla de inicio de sesión
       Get.offAllNamed(
           Routes.SIGNIN); // Limpia el historial de rutas y redirige al login

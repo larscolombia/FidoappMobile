@@ -13,7 +13,7 @@ class Utilities extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Utilidades',
           style: TextStyle(
             fontSize: 20,
@@ -22,7 +22,7 @@ class Utilities extends StatelessWidget {
           ),
           textAlign: TextAlign.left,
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         // Cuadros con íconos y textos
         Row(
           children: [
@@ -47,7 +47,7 @@ class Utilities extends StatelessWidget {
                     color: Styles.fiveColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
@@ -70,7 +70,7 @@ class Utilities extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 12), // Espacio entre los cuadros
+            const SizedBox(width: 12), // Espacio entre los cuadros
             // Cuadro 2
             Expanded(
               child: GestureDetector(
@@ -92,7 +92,7 @@ class Utilities extends StatelessWidget {
                     color: Styles.fiveColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
@@ -115,7 +115,7 @@ class Utilities extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 12), // Espacio entre los cuadros
+            const SizedBox(width: 12), // Espacio entre los cuadros
             // Cuadro 3
             Expanded(
               child: GestureDetector(
@@ -137,7 +137,7 @@ class Utilities extends StatelessWidget {
                     color: Styles.fiveColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Column(
+                  child: const Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(

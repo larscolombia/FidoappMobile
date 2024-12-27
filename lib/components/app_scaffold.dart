@@ -29,7 +29,7 @@ class AppScaffold extends StatelessWidget {
   final PreferredSizeWidget? appBarWidget;
 
   const AppScaffold({
-    Key? key,
+    super.key,
     this.hideAppBar = false,
     //
     this.leadingWidget,
@@ -52,7 +52,7 @@ class AppScaffold extends StatelessWidget {
     this.resizeToAvoidBottomPadding,
     this.scaffoldBackgroundColor,
     this.appBarWidget,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

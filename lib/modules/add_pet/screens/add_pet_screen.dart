@@ -14,6 +14,8 @@ class AddPetScreen extends StatelessWidget {
   final AddPetController controller = Get.put(AddPetController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  AddPetScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -40,7 +42,7 @@ class AddPetScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 60),
+                  SizedBox(height: 60),
                   Text(
                     'Completa la Información',
                     style: TextStyle(
@@ -68,25 +70,25 @@ class AddPetScreen extends StatelessWidget {
             Expanded(
               child: Container(
                 padding: Styles.paddingAll,
-                margin: EdgeInsets.only(top: 16),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.only(top: 16),
+                decoration: const BoxDecoration(
                   color: Styles.whiteColor,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
                 ),
                 child: Form(
                   key: _formKey, // Asignar la clave del formulario
                   child: ListView(
-                    padding: EdgeInsets.only(top: 16),
+                    padding: const EdgeInsets.only(top: 16),
                     children: [
                       Container(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           top: 20,
                         ),
                         alignment: Alignment.center,
                         child: Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 bottom: 20,
                               ),
                               child: Row(
@@ -99,7 +101,7 @@ class AddPetScreen extends StatelessWidget {
                                       size: 22,
                                     ),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     width: 10,
                                   ),
                                   const Text(
@@ -116,7 +118,7 @@ class AddPetScreen extends StatelessWidget {
 
                       // Campo para el nombre de la mascota
                       Container(
-                        margin: EdgeInsets.only(top: 20),
+                        margin: const EdgeInsets.only(top: 20),
                         child: CustomTextFormFieldWidget(
                           controller: controller.petName,
                           placeholder: locale.value.petName,
@@ -131,7 +133,7 @@ class AddPetScreen extends StatelessWidget {
 
                       // Campo para la descripción de la mascota
                       Container(
-                        margin: EdgeInsets.only(top: 20),
+                        margin: const EdgeInsets.only(top: 20),
                         child: CustomTextFormFieldWidget(
                           controller: controller.petDescription,
                           placeholder: locale.value.addYourPetInformation,
@@ -143,11 +145,11 @@ class AddPetScreen extends StatelessWidget {
                         onTap: () => controller.pickImage(),
                         child: Obx(
                           () => Container(
-                            margin: EdgeInsets.only(top: 20),
+                            margin: const EdgeInsets.only(top: 20),
                             width: size.width,
                             height: size.width,
                             decoration: BoxDecoration(
-                              image: DecorationImage(
+                              image: const DecorationImage(
                                   image: AssetImage('assets/icons/imagen.png'),
                                   fit: BoxFit.cover),
                               color: Styles.iconColorBack,
@@ -163,7 +165,7 @@ class AddPetScreen extends StatelessWidget {
                                       height: size.width,
                                     ),
                                   )
-                                : Icon(
+                                : const Icon(
                                     Icons.add_a_photo,
                                     size: 50,
                                     color: Colors.white,
@@ -173,7 +175,7 @@ class AddPetScreen extends StatelessWidget {
                       ),
                       // Selector de fecha de nacimiento
                       Container(
-                        margin: EdgeInsets.only(top: 20),
+                        margin: const EdgeInsets.only(top: 20),
                         child: CustomDateFormFieldWidget(
                           controller: controller.petBirthDateController,
                           placeholder: locale.value.birthday,
@@ -181,7 +183,7 @@ class AddPetScreen extends StatelessWidget {
                       ),
                       // Campo para seleccionar la raza de la mascota
                       Container(
-                        margin: EdgeInsets.only(top: 20),
+                        margin: const EdgeInsets.only(top: 20),
                         child: Obx(() {
                           return CustomSelectFormFieldWidget(
                             controller: controller.petBreed,
@@ -206,7 +208,7 @@ class AddPetScreen extends StatelessWidget {
 
                       // Selector de género
                       Container(
-                        margin: EdgeInsets.only(top: 20),
+                        margin: const EdgeInsets.only(top: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -218,12 +220,13 @@ class AddPetScreen extends StatelessWidget {
                                 },
                                 child: Obx(
                                   () => Container(
-                                    padding: EdgeInsets.all(16),
+                                    padding: const EdgeInsets.all(16),
                                     decoration: BoxDecoration(
-                                      color: controller.petGender.value ==
-                                              'female'
-                                          ? Colors.white
-                                          : Color.fromRGBO(254, 247, 229, 1),
+                                      color:
+                                          controller.petGender.value == 'female'
+                                              ? Colors.white
+                                              : const Color.fromRGBO(
+                                                  254, 247, 229, 1),
                                       border: Border.all(
                                         color: controller.petGender.value ==
                                                 'female'
@@ -232,7 +235,7 @@ class AddPetScreen extends StatelessWidget {
                                       ),
                                       borderRadius: BorderRadius.circular(16),
                                     ),
-                                    child: Center(
+                                    child: const Center(
                                       child: Text(
                                         'Hembra',
                                         style: TextStyle(
@@ -246,7 +249,8 @@ class AddPetScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 16), // Espacio entre los cuadros
+                            const SizedBox(
+                                width: 16), // Espacio entre los cuadros
                             // Opción male
                             Expanded(
                               child: GestureDetector(
@@ -255,12 +259,13 @@ class AddPetScreen extends StatelessWidget {
                                 },
                                 child: Obx(
                                   () => Container(
-                                    padding: EdgeInsets.all(16),
+                                    padding: const EdgeInsets.all(16),
                                     decoration: BoxDecoration(
-                                      color: controller.petGender.value ==
-                                              'male'
-                                          ? Colors.white
-                                          : Color.fromRGBO(254, 247, 229, 1),
+                                      color:
+                                          controller.petGender.value == 'male'
+                                              ? Colors.white
+                                              : const Color.fromRGBO(
+                                                  254, 247, 229, 1),
                                       border: Border.all(
                                           color: controller.petGender.value ==
                                                   'male'
@@ -268,7 +273,7 @@ class AddPetScreen extends StatelessWidget {
                                               : Colors.transparent),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: Center(
+                                    child: const Center(
                                       child: Text(
                                         'Macho',
                                         style: TextStyle(
@@ -287,7 +292,7 @@ class AddPetScreen extends StatelessWidget {
                       ),
                       // Campo para el peso de la mascota
                       Container(
-                        margin: EdgeInsets.only(top: 20),
+                        margin: const EdgeInsets.only(top: 20),
                         child: CustomTextFormFieldWidget(
                           controller: controller.petWeightController,
                           placeholder: locale.value.weight,
@@ -295,11 +300,11 @@ class AddPetScreen extends StatelessWidget {
                           icon: 'assets/icons/weight.png',
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       // Botón para enviar el formulario
                       Obx(
                         () => ButtonDefaultWidget(
-                          title: locale.value.addPet + ' +',
+                          title: '${locale.value.addPet} +',
                           isLoading: controller.isLoading
                               .value, // Mostrar loader si está cargando
                           callback: () {
@@ -311,7 +316,7 @@ class AddPetScreen extends StatelessWidget {
                         ),
                       ),
 
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),

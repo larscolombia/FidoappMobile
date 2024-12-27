@@ -7,15 +7,14 @@ import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/configs.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/utils/api_end_points.dart';
-
-import '../configs.dart';
-import '../main.dart';
-import '../utils/app_common.dart';
-import '../utils/common_base.dart';
-import '../utils/constants.dart';
-import '../utils/local_storage.dart';
+import 'package:pawlly/utils/app_common.dart';
+import 'package:pawlly/utils/common_base.dart';
+import 'package:pawlly/utils/constants.dart';
+import 'package:pawlly/utils/local_storage.dart';
 
 Map<String, String> buildHeaderTokens({
   Map? extraKeys,

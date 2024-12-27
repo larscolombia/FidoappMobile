@@ -13,8 +13,7 @@ class TrainingService {
   static Future<List<TrainingModel>> getTrainingServiceApi() async {
     if (isLoggedIn.value) {
       // Construir la URL completa con el user_id
-      final url =
-          Uri.parse('${BASE_URL}${APIEndPoints.getTrainingService}/get');
+      final url = Uri.parse('$BASE_URL${APIEndPoints.getTrainingService}/get');
 
       // Realizar la solicitud con el token en los headers
       final response = await http.get(

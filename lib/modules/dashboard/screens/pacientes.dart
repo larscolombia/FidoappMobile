@@ -107,12 +107,10 @@ class Pacientes extends StatelessWidget {
                                     profile, // Pasar el perfil de la mascota como argumento
                               );
                             },
-                            child: Center(
-                              child: SeleccionarMascota(
-                                name: profile.name,
-                                edad: profile.age,
-                                avatar: profile.petImage,
-                              ),
+                            child: SeleccionarMascota(
+                              name: profile.name,
+                              edad: profile.age,
+                              avatar: profile.petImage,
                             ),
                           );
                         },

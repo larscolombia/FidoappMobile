@@ -18,16 +18,16 @@ class BorderRedondiado extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       top: top,
-      left: left ?? 0,
-      right: right ?? 0,
-      bottom: bottom ?? 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
       child: Container(
-        height: 70,
+        height: 100,
         width: MediaQuery.of(context).size.width,
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(46), topRight: Radius.circular(46)),
+              topLeft: Radius.circular(56), topRight: Radius.circular(56)),
         ),
       ),
     );

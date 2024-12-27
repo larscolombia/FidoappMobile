@@ -7,7 +7,7 @@ class TrainingHorizontal extends StatelessWidget {
   final List<CursosUsuarios> trainingList;
 
   // Constructor que recibe la lista de entrenamientos
-  TrainingHorizontal({required this.trainingList});
+  const TrainingHorizontal({super.key, required this.trainingList});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,8 @@ class TrainingHorizontal extends StatelessWidget {
                   'Nombre del container: ${trainingModel.name} - ID: ${trainingModel.id}');
             },
             child: Container(
-              margin: EdgeInsets.only(right: 16),
-              padding: EdgeInsets.all(12),
+              margin: const EdgeInsets.only(right: 16),
+              padding: const EdgeInsets.all(12),
               width: MediaQuery.of(context).size.width * 0.8,
               decoration: BoxDecoration(
                 color: Styles.whiteColor,
@@ -50,7 +50,7 @@ class TrainingHorizontal extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                         child: trainingModel.image != null
                             ? Image.network(
-                                trainingModel.image!,
+                                trainingModel.image,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Image.asset(
@@ -66,14 +66,14 @@ class TrainingHorizontal extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(width: 12),
+                  const SizedBox(width: 12),
                   // Contenido del curso
                   Expanded(
                     flex: 1,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Nivel no especificado',
                           style: TextStyle(
                             fontFamily: 'Lato',
@@ -82,20 +82,20 @@ class TrainingHorizontal extends StatelessWidget {
                             color: Styles.iconColorBack,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
                           trainingModel.name,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Lato',
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: Styles.greyTextColor,
                           ),
                         ),
-                        SizedBox(height: 4),
-                        Text(
+                        const SizedBox(height: 4),
+                        const Text(
                           'Progreso:',
                           style: TextStyle(
                             fontFamily: 'Lato',
@@ -104,7 +104,7 @@ class TrainingHorizontal extends StatelessWidget {
                             color: Styles.iconColorBack,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         // Barra de progreso
                         Row(
                           children: [
@@ -119,10 +119,10 @@ class TrainingHorizontal extends StatelessWidget {
                                 minHeight: 6,
                               ),
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
                               '${((trainingModel.progress ?? 0) * 100).toInt()}%',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'Lato',
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,

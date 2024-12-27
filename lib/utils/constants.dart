@@ -1,8 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:get/get.dart';
-import 'package:pawlly/main.dart';
-
 const DEFAULT_QUANTITY = '1';
 const PERMISSION_STATUS = 'permissionStatus';
 const LATITUDE = 'LATITUDE';

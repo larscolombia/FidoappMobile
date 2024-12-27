@@ -9,7 +9,7 @@ import 'package:pawlly/services/auth_service_apis.dart';
 class UserController extends GetxController {
   var users = <User>[].obs;
   var filteredUsers = <User>[].obs;
-  var url = "${DOMAIN_URL}/api/get-user-by-type?user_type=vet";
+  var url = "$DOMAIN_URL/api/get-user-by-type?user_type=vet";
   var isLoading = false.obs;
   var selectedUser =
       Rxn<User>(); // Variable observable para el usuario seleccionado
@@ -45,7 +45,7 @@ class UserController extends GetxController {
         throw Exception('Failed to load users');
       }
     } catch (e) {
-      print('Error al obtener usuarios ${e}');
+      print('Error al obtener usuarios $e');
     } finally {
       isLoading.value = false;
     }
@@ -59,16 +59,17 @@ class UserController extends GetxController {
     email: '',
   );
 
-  void filterUsers(String query) {
-    if (query.isEmpty) {
+  void filterUsers(String? query) {
+    if (query == null || query.isEmpty) {
       filteredUsers.value = users; // Si no hay búsqueda, mostrar todos
     } else {
       var foundUser = users.firstWhere(
         (user) => user.email.toLowerCase() == query.toLowerCase(),
-        orElse: () => defaultUser,
+        orElse: () =>
+            defaultUser, // Devuelve un usuario predeterminado en lugar de null
       );
 
-      if (foundUser != null && foundUser != defaultUser) {
+      if (foundUser != defaultUser) {
         filteredUsers.value = [foundUser];
       } else {
         filteredUsers.value = [defaultUser];

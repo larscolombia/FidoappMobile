@@ -19,6 +19,8 @@ import 'package:pawlly/styles/styles.dart';
 
 class ProfilePetScreen extends StatelessWidget {
   final ProfilePetController controller = Get.put(ProfilePetController());
+
+  ProfilePetScreen({super.key});
   //final PetControllerv2 petController = Get.put(PetControllerv2());
 
   @override
@@ -44,7 +46,7 @@ class ProfilePetScreen extends StatelessWidget {
                 return CachedNetworkImage(
                   imageUrl: imageUrl,
                   fit: BoxFit.cover,
-                  placeholder: (context, url) => Center(
+                  placeholder: (context, url) => const Center(
                     child: CircularProgressIndicator(),
                   ),
                   errorWidget: (context, url, error) {

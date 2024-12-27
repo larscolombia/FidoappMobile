@@ -6,13 +6,13 @@ import 'package:pawlly/modules/integracion/controller/historial_clinico/historia
 class FilterDialog extends StatelessWidget {
   final HistorialClinicoController controller;
 
-  FilterDialog({required this.controller});
+  const FilterDialog({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Colors.white,
-      title: Text(
+      title: const Text(
         'Filtrar',
         style: TextStyle(
           fontSize: 20,
@@ -25,7 +25,7 @@ class FilterDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 8),
-            Text(
+            const Text(
               'Ordenar por',
               style: TextStyle(
                 fontSize: 16,
@@ -60,7 +60,7 @@ class FilterDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Text(
+            const Text(
               'Categoría',
               style: TextStyle(
                 fontSize: 16,

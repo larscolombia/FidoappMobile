@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/modules/components/boton_compartir.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
+import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
+import 'package:pawlly/modules/integracion/controller/balance/producto_pay_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
+import 'package:pawlly/modules/integracion/model/balance/producto_pay_model.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_model.dart';
 
 class CursosDetalles extends StatelessWidget {
@@ -16,7 +20,11 @@ class CursosDetalles extends StatelessWidget {
   CursosDetalles({super.key, this.cursoId});
   final CourseController controller = Get.put(CourseController());
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
+  final ProductoPayController compraController =
+      Get.put(ProductoPayController());
 
+  final UserBalanceController balanceController =
+      Get.put(UserBalanceController());
   String dificultad(String dificultad) {
     switch (dificultad) {
       case '1':
@@ -35,7 +43,7 @@ class CursosDetalles extends StatelessWidget {
     return Scaffold(
       body: Obx(() {
         if (controller.isLoading.value || miscursos.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         var curso = controller.getCourseById(int.parse(cursoId!));
@@ -65,9 +73,9 @@ class CursosDetalles extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white, // Color de fondo
-                  borderRadius: const BorderRadius.only(
+                  borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
@@ -78,18 +86,18 @@ class CursosDetalles extends StatelessWidget {
                     child: Column(
                       children: [
                         const SizedBox(height: 50),
-                        Container(
-                          width: 302,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 100,
                           child: BarraBack(
                             titulo: curso.name,
-                            subtitle: dificultad('${curso.difficulty}'),
+                            subtitle: dificultad(curso.difficulty),
                             callback: () {
                               Get.off(HomeScreen());
                             },
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Container(
+                        SizedBox(
                           width: 302,
                           child: Text(
                             curso.description,
@@ -116,7 +124,7 @@ class CursosDetalles extends StatelessWidget {
                                 ),
                                 ElementoInfo(
                                   title: "Tiempo",
-                                  velue: "${curso.duration}",
+                                  velue: curso.duration,
                                   image: "assets/icons/timer-start.png",
                                 ),
                               ],
@@ -124,7 +132,7 @@ class CursosDetalles extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Container(
+                        SizedBox(
                           width: 305,
                           child: cursoAdquirido
                               ? BotonCompartir(
@@ -146,13 +154,24 @@ class CursosDetalles extends StatelessWidget {
                           BanerCompraPrecio(
                             price: curso.price,
                             callback: () {
-                              print('comprando');
-                              miscursos.subscribeToCourse(curso.id);
+                              compraController.setProduct(
+                                ProductoPayModel(
+                                  precio: curso.price,
+                                  nombreProducto: curso.name,
+                                  imagen: curso.image,
+                                  descripcion: curso.description,
+                                  slug: 'curso',
+                                  id: curso.id,
+                                ),
+                              );
+
+                              balanceController.showPurchaseModal(context);
+                              // miscursos.subscribeToCourse(curso.id);
                             },
                           ),
                         const SizedBox(height: 20),
-                        Center(
-                          child: Container(
+                        const Center(
+                          child: SizedBox(
                             width: 302,
                             child: Divider(
                               color: Colors.grey,
@@ -160,7 +179,7 @@ class CursosDetalles extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           width: 302,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,17 +190,21 @@ class CursosDetalles extends StatelessWidget {
                                 children: [
                                   Text('Sección #${curso.id}',
                                       style: Styles.textTituloLibros),
-                                  Text('${curso.name}',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.black,
-                                        fontFamily: 'PoetsenOne',
-                                      )),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    child: Text(curso.name,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black,
+                                          fontFamily: 'PoetsenOne',
+                                        )),
+                                  ),
                                 ],
                               ),
                               Container(
-                                padding: EdgeInsets.all(10),
+                                padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   color: Styles.colorContainer,
                                   borderRadius: BorderRadius.circular(16),
@@ -197,6 +220,22 @@ class CursosDetalles extends StatelessWidget {
                         ...curso.videos.map((video) {
                           return GestureDetector(
                             onTap: () {
+                              if (!cursoAdquirido) {
+                                Get.dialog(
+                                  //pisa papel
+                                  CustomAlertDialog(
+                                    icon: Icons.warning,
+                                    title: 'Información',
+                                    description: 'Debes comprar el curso',
+                                    primaryButtonText: 'Ok',
+                                    onPrimaryButtonPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  barrierDismissible: true,
+                                );
+                                return;
+                              }
                               // Acción al tocar un video
                               Get.to(CursoVideo(
                                 videoId: video.url,
@@ -220,7 +259,7 @@ class CursosDetalles extends StatelessWidget {
                               ),
                             ),
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                   ),
@@ -251,21 +290,21 @@ class BanerCompraPrecio extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Container(
+        child: SizedBox(
           width: 132,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 254, 253),
+                  color: const Color.fromARGB(255, 255, 254, 253),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 width: 94,
                 height: 54,
-                child: Center(child: Text('${price}\$')),
+                child: Center(child: Text('$price\$')),
               ),
-              Container(
+              SizedBox(
                 width: 190,
                 height: 54,
                 child: ButtonDefaultWidget(
@@ -313,7 +352,7 @@ class ElementoInfo extends StatelessWidget {
             children: [
               Text(
                 title ?? 'Programa:',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color: Colors.black,
@@ -321,7 +360,7 @@ class ElementoInfo extends StatelessWidget {
               ),
               Text(
                 velue ?? '10 Leciones',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: Colors.black,
@@ -341,20 +380,20 @@ class MediaCard extends StatelessWidget {
   final String duration;
 
   const MediaCard({
-    Key? key,
+    super.key,
     required this.imageUrl,
     required this.title,
     required this.duration,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(8.0),
-      padding: EdgeInsets.all(12.0),
+      margin: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(12.0),
       height: 100,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 255, 255, 255),
+        color: const Color.fromARGB(255, 255, 255, 255),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -371,23 +410,25 @@ class MediaCard extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           // Texto y detalles
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.bold,
+                Container(
+                  child: Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   'Duración: $duration minutos',
                   maxLines: 2,

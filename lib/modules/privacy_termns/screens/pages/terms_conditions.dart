@@ -31,7 +31,7 @@ class TermsConditions extends StatelessWidget {
                 style: Styles.joinTitle,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
@@ -40,16 +40,16 @@ class TermsConditions extends StatelessWidget {
                   callback: () {
                     // PrivacyPolicy();
                   },
-                  defaultColor: Color.fromARGB(255, 252, 146, 20),
+                  defaultColor: const Color.fromARGB(255, 252, 146, 20),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
-                child: Divider(
+                child: const Divider(
                   thickness: 0.5, // Make the line thicker
-                  color: const Color.fromARGB(
+                  color: Color.fromARGB(
                       255, 182, 164, 137), // Change the line color
                 ),
               ),
@@ -82,12 +82,12 @@ class TermsConditions extends StatelessWidget {
                 Descripcion:
                     "Todo el contenido de Fido App, incluyendo textos, gráficos, logos y software, es propiedad de “AppEjemplo” o sus licenciantes y está protegido por leyes de propiedad intelectual.",
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Container(
-                  margin: EdgeInsets.only(bottom: 20),
-                  child: ButtonDefaultWidget(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: const ButtonDefaultWidget(
                     title: 'Regresar',
                     callback: callabak,
                   )),
@@ -110,7 +110,7 @@ class NumTitle extends StatelessWidget {
     return Column(children: [
       Container(
         width: width,
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20),
         child: Text(
           Title,
           textAlign: TextAlign.start,
@@ -121,7 +121,7 @@ class NumTitle extends StatelessWidget {
               fontWeight: FontWeight.w800),
         ),
       ),
-      Container(
+      SizedBox(
           width: width,
           child: Text(
             Descripcion,

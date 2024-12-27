@@ -6,7 +6,7 @@ class ButtonDefaultWidget extends StatelessWidget {
   final String title;
   final VoidCallback? callback; // Asegurarse de que el callback pueda ser null
   final Color defaultColor; // Color de fondo predeterminado
-  final MaterialStateProperty<Color>?
+  final WidgetStateProperty<Color>?
       color; // Permitir sobreescribir el color de fondo
   final Color textColor; // Color del texto
   final BorderSide? border; // Borde del botón
@@ -20,7 +20,7 @@ class ButtonDefaultWidget extends StatelessWidget {
   final bool isLoading; // Estado de carga del botón
 
   const ButtonDefaultWidget({
-    Key? key,
+    super.key,
     this.widthButtom,
     this.heigthButtom = 56,
     required this.title,
@@ -34,11 +34,11 @@ class ButtonDefaultWidget extends StatelessWidget {
     this.icon, // Icono opcional
     this.iconAfterText = true, // Por defecto, el icono está después del texto
     this.isLoading = false, // Por defecto, no está en estado de carga
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final resolvedColor = color ?? MaterialStateProperty.all(defaultColor);
+    final resolvedColor = color ?? WidgetStateProperty.all(defaultColor);
     final width = MediaQuery.of(context).size.width;
 
     return Container(
@@ -49,10 +49,10 @@ class ButtonDefaultWidget extends StatelessWidget {
           style: ButtonStyle(
             backgroundColor: resolvedColor,
             side: border != null
-                ? MaterialStateProperty.all(border)
-                : MaterialStateProperty.all(
+                ? WidgetStateProperty.all(border)
+                : WidgetStateProperty.all(
                     BorderSide.none), // Configurar el borde
-            shape: MaterialStateProperty.all(
+            shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
                     borderSize ?? 16), // Bordes redondeados
@@ -88,7 +88,8 @@ class ButtonDefaultWidget extends StatelessWidget {
                                   color: textColor,
                                 ),
                               ),
-                              SizedBox(width: 8), // Espacio entre texto e icono
+                              const SizedBox(
+                                  width: 8), // Espacio entre texto e icono
                               Icon(
                                 icon,
                                 color: textColor,
@@ -99,7 +100,8 @@ class ButtonDefaultWidget extends StatelessWidget {
                                 icon,
                                 color: textColor,
                               ),
-                              SizedBox(width: 8), // Espacio entre icono y texto
+                              const SizedBox(
+                                  width: 8), // Espacio entre icono y texto
                               Text(
                                 title,
                                 style: GoogleFonts.poppins(

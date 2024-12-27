@@ -40,7 +40,7 @@ class Commands extends StatelessWidget {
                 },
                 clipBehavior: Clip.antiAlias,
                 backgroundColor: Styles.primaryColor,
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 child: const Icon(
                   Icons.add,
                   color: Colors.white,
@@ -49,14 +49,14 @@ class Commands extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Container(
           height: 400,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Color.fromRGBO(255, 255, 255, 1),
+            color: const Color.fromRGBO(255, 255, 255, 1),
             border: Border.all(
-              color: Color.fromRGBO(255, 218, 174, 1),
+              color: const Color.fromRGBO(255, 218, 174, 1),
               width: 1,
             ),
             borderRadius: BorderRadius.circular(8),
@@ -98,20 +98,20 @@ class Commands extends StatelessWidget {
                   ];
 
                   return DataTable(
-                    headingRowColor: MaterialStateProperty.all(
-                      Color.fromRGBO(254, 247, 229, 1),
+                    headingRowColor: WidgetStateProperty.all(
+                      const Color.fromRGBO(254, 247, 229, 1),
                     ),
-                    headingTextStyle: TextStyle(
+                    headingTextStyle: const TextStyle(
                       fontFamily: 'Lato',
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: Color.fromRGBO(56, 56, 56, 1),
                     ),
                     dividerThickness: 1,
-                    dataRowColor: MaterialStateProperty.all(
-                      Color.fromRGBO(255, 255, 255, 1),
+                    dataRowColor: WidgetStateProperty.all(
+                      const Color.fromRGBO(255, 255, 255, 1),
                     ),
-                    border: TableBorder(
+                    border: const TableBorder(
                       verticalInside: BorderSide(
                         color: Color.fromRGBO(255, 218, 174, 1),
                         width: 1,
@@ -129,7 +129,7 @@ class Commands extends StatelessWidget {
                       return DataColumn(
                         label: Container(
                           alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(vertical: 8),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
                           child: Text(
                             header,
                             textAlign: TextAlign.center,
@@ -147,12 +147,12 @@ class Commands extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: TextFormField(
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize: 14,
                                         color: Color.fromRGBO(56, 56, 56, 1),
                                       ),
-                                      decoration: InputDecoration(
+                                      decoration: const InputDecoration(
                                         hintText: 'Escribe un comando',
                                         hintStyle: TextStyle(
                                           fontFamily: 'Lato',
@@ -164,7 +164,7 @@ class Commands extends StatelessWidget {
                                     ),
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.edit,
+                                    icon: const Icon(Icons.edit,
                                         color: Styles.iconColorBack),
                                     onPressed: () {
                                       print('Editando comando personalizado');
@@ -177,11 +177,11 @@ class Commands extends StatelessWidget {
                             return DataCell(
                               Container(
                                 width: double.infinity,
-                                color: Color.fromRGBO(255, 255, 255, 1),
-                                padding: EdgeInsets.all(8),
+                                color: const Color.fromRGBO(255, 255, 255, 1),
+                                padding: const EdgeInsets.all(8),
                                 child: Text(
                                   entry.value,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontFamily: 'Lato',
                                     fontSize: 14,
                                     color: Color.fromRGBO(56, 56, 56, 1),
@@ -217,8 +217,8 @@ class Commands extends StatelessWidget {
                   'Comando seleccionado: ${controller.selectedComando.value!.name}'),
             );
           } else {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
+            return const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Text('No hay comando seleccionado'),
             );
           }

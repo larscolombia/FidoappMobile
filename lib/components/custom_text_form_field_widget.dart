@@ -11,9 +11,9 @@ class CustomTextFormFieldWidget extends StatefulWidget {
   final bool? isNumeric;
   final List<String? Function(String?)>? validators;
   final AutovalidateMode autovalidateMode;
-
-  CustomTextFormFieldWidget({
-    Key? key,
+  final Function(String)? callback;
+  const CustomTextFormFieldWidget({
+    super.key,
     required this.placeholder,
     required this.icon,
     required this.controller,
@@ -22,7 +22,8 @@ class CustomTextFormFieldWidget extends StatefulWidget {
     this.isNumeric = false,
     this.validators,
     this.autovalidateMode = AutovalidateMode.disabled, // Valor por defecto
-  }) : super(key: key);
+    this.callback,
+  });
 
   @override
   _CustomTextFormFieldWidgetState createState() =>
@@ -54,10 +55,11 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
       autovalidateMode: widget.autovalidateMode,
       decoration: InputDecoration(
         filled: true,
-        fillColor: hasText ? Colors.white : Color.fromRGBO(254, 247, 229, 1),
+        fillColor:
+            hasText ? Colors.white : const Color.fromRGBO(254, 247, 229, 1),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: BorderSide(color: Colors.transparent, width: 1.0),
+          borderSide: const BorderSide(color: Colors.transparent, width: 1.0),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
@@ -68,18 +70,18 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Styles.iconColorBack,
             width: 1.0,
           ),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: Colors.red, width: 1.0),
+          borderSide: const BorderSide(color: Colors.red, width: 1.0),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(color: Colors.red, width: 1.0),
+          borderSide: const BorderSide(color: Colors.red, width: 1.0),
         ),
         prefixIcon: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -90,7 +92,7 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
           ),
         ),
         labelText: hasText ? null : widget.placeholder,
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           color: Colors.black,
           fontSize: 14,
           fontFamily: 'Lato',
@@ -111,9 +113,7 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
               )
             : null,
       ),
-      onChanged: (value) {
-        setState(() {});
-      },
+      onChanged: widget.callback,
       validator: (value) {
         if (widget.validators != null) {
           for (var validator in widget.validators!) {

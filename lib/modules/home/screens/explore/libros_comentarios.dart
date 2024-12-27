@@ -6,8 +6,7 @@ import 'package:pawlly/modules/integracion/controller/libros/libros_controller.d
 class ComentariosLibros extends StatelessWidget {
   final EBookController controller;
 
-  const ComentariosLibros({Key? key, required this.controller})
-      : super(key: key);
+  const ComentariosLibros({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +17,10 @@ class ComentariosLibros extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Color(0xFFFEF7E5),
+            color: const Color(0xFFFEF7E5),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: Color(0xFFFC9214),
+              color: const Color(0xFFFC9214),
               width: 1.0,
             ),
           ),
@@ -30,7 +29,7 @@ class ComentariosLibros extends StatelessWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Resumen de Calificación:',
                   style: TextStyle(
                     color: Colors.black,
@@ -39,7 +38,7 @@ class ComentariosLibros extends StatelessWidget {
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     RatingBar.builder(
@@ -49,15 +48,15 @@ class ComentariosLibros extends StatelessWidget {
                       allowHalfRating: true,
                       itemCount: 5,
                       itemSize: 20.0,
-                      itemBuilder: (context, _) => Icon(
+                      itemBuilder: (context, _) => const Icon(
                         Icons.star,
                         color: Colors.amber,
                       ),
                       onRatingUpdate: (rating) {},
                       ignoreGestures: true,
                     ),
-                    SizedBox(width: 8),
-                    Text(
+                    const SizedBox(width: 8),
+                    const Text(
                       'aqui hay un error fix',
                       style: TextStyle(
                         color: Colors.black,
@@ -71,19 +70,19 @@ class ComentariosLibros extends StatelessWidget {
             );
           }),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         // Comentarios
         Obx(() {
           final bookRatings = controller.selectedEBook.value.bookRatings;
           if (bookRatings == null || bookRatings.isEmpty) {
-            return Text(
+            return const Text(
               'No hay comentarios.',
               style: TextStyle(color: Colors.grey),
             );
           }
           return ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: bookRatings.length,
             itemBuilder: (context, index) {
               final rating = bookRatings[index];

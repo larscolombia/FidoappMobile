@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
 class RoleUser extends GetxController {

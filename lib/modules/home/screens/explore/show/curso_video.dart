@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pawlly/modules/components/avatar_comentario.dart';
+import 'package:pawlly/modules/components/baner_comentarios.dart';
 import 'package:pawlly/modules/components/boton_compartir.dart';
 import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
@@ -27,6 +28,7 @@ class CursoVideo extends StatelessWidget {
   final String? dateCreated;
 
   CursoVideo({
+    super.key,
     required this.videoId,
     required this.cursoId,
     required this.name,
@@ -48,10 +50,10 @@ class CursoVideo extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (tipovideo == "blogs") {
         _commentController.fetchComments(cursoId, "blog");
-        _commentController.updateField('blog_id', '$cursoId');
+        _commentController.updateField('blog_id', cursoId);
       } else if (tipovideo == "video") {
         _commentController.fetchComments(cursoId, "video");
-        _commentController.updateField('course_platform_video_id', '$cursoId');
+        _commentController.updateField('course_platform_video_id', cursoId);
       }
     });
 
@@ -62,7 +64,7 @@ class CursoVideo extends StatelessWidget {
           Container(
             height: 400,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(color: Colors.white),
+            decoration: const BoxDecoration(color: Colors.white),
             child: VideoPlayerScreen(
               videoUrl: videoUrl,
             ),
@@ -74,7 +76,7 @@ class CursoVideo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Barra de regreso y título
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: BarraBack(
                         titulo: name,
@@ -85,7 +87,7 @@ class CursoVideo extends StatelessWidget {
                       ),
                     ),
                     // Fecha de creación
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: Text(
                         dateCreated ?? '',
@@ -99,9 +101,9 @@ class CursoVideo extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     // Descripción
-                    Container(
+                    SizedBox(
                       width: 305,
-                      child: Text(
+                      child: const Text(
                         "Descripción",
                         style: TextStyle(
                           fontSize: 14,
@@ -112,7 +114,7 @@ class CursoVideo extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: Text(description, style: Styles.textDescription),
                     ),
@@ -135,30 +137,53 @@ class CursoVideo extends StatelessWidget {
                           child: CircularProgressIndicator(),
                         );
                       }
-                      return Container(
-                        width: 305,
-                        child: InputTextWithIcon(
-                          hintText: 'Escribe un comentario',
-                          iconPath: 'assets/icons/send.png',
-                          iconPosition: IconPosition.right,
-                          height: 60.0,
-                          onChanged: (value) {
-                            _commentController.updateField('review_msg', value);
-                          },
-                          callbackButton: true,
-                          onButtonPressed: () {
-                            if (tipovideo == "video") {
-                              _commentController.postComment('video');
-                            } else {
-                              _commentController.postComment('blog');
-                            }
-                          },
-                        ),
+                      return Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          BanerComentarios(
+                            eventTextChanged: (value) {
+                              _commentController.updateField(
+                                  'review_msg', value);
+                            },
+                            titulo: 'Tu experiencia',
+                            onRatingUpdate: (rating) {
+                              _commentController.updateField('rating', rating);
+                            },
+                            onEvento: () {
+                              _commentController.updateField(
+                                  'course_platform_video_id', videoId);
+
+                              _commentController.postComment('blog', context);
+                            },
+                          ),
+                          /** 
+                          SizedBox(
+                            width: 305,
+                            child: InputTextWithIcon(
+                              hintText: 'Escribe un comentario',
+                              iconPath: 'assets/icons/send.png',
+                              iconPosition: IconPosition.right,
+                              height: 60.0,
+                              onChanged: (value) {
+                                _commentController.updateField(
+                                    'review_msg', value);
+                              },
+                              callbackButton: true,
+                              onButtonPressed: () {
+                                if (tipovideo == "video") {
+                                  _commentController.postComment('video');
+                                } else {
+                                  _commentController.postComment('blog');
+                                }
+                              },
+                            ),
+                          ),*/
+                        ],
                       );
                     }),
                     const SizedBox(height: 20),
                     // Título "Comentarios"
-                    Container(
+                    const SizedBox(
                       width: 304,
                       child: Text(
                         'Comentarios',
@@ -173,14 +198,21 @@ class CursoVideo extends StatelessWidget {
                           child: Text('No hay comentarios'),
                         );
                       }
+                      if (_commentController.isLoading.value) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
                       return SingleChildScrollView(
                         child: Column(
                           children: _commentController.comments.map((value) {
+                            print('comentarios ${value.reviewMsg}');
                             return AvatarComentarios(
                               avatar: value.userAvatar,
                               name: value.userFullName,
                               date: "Fecha",
                               comment: value.reviewMsg,
+                              rating: double.parse(value.rating.toString()),
                             );
                           }).toList(),
                         ),

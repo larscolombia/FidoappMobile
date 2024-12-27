@@ -2,8 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/app_theme.dart';
 import 'package:pawlly/configs.dart';
@@ -24,6 +24,9 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]);
 
+  Stripe.publishableKey =
+      'sk_test_51I3R8hFWfM6dcSbz41CTp614CT2MCUOvFKyaY9XHpdxov8nn34SpTq59hoMOLjeMgiXTsfyi9PxgskQoW7UTItng00KWw2a7Ye'; //credenciales de stripe
+
   await initialize(aLocaleLanguageList: languageList());
   selectedLanguageCode(
       getValueFromLocal(SELECTED_LANGUAGE_CODE) ?? DEFAULT_LANGUAGE);
@@ -38,8 +41,11 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    print('Estamos en el inicio');
     return Obx(() {
       return GetMaterialApp(
         initialRoute: Routes.WELCOME,

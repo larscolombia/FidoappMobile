@@ -13,8 +13,8 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
   final void Function(String?)? onChange; // Parámetro opcional
   final Color? filcolorCustom;
   final Color? textColor;
-  CustomSelectFormFieldWidget({
-    Key? key,
+  const CustomSelectFormFieldWidget({
+    super.key,
     required this.placeholder,
     required this.icon,
     required this.controller,
@@ -26,7 +26,7 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
     this.onChange, // Inicializar el parámetro opcional
     this.filcolorCustom,
     this.textColor,
-  }) : super(key: key);
+  });
 
   @override
   _CustomSelectFormFieldWidgetState createState() =>
@@ -105,7 +105,8 @@ class _CustomSelectFormFieldWidgetState
                 filled: true,
                 fillColor: hasText || _selectedValue != null
                     ? Colors.white
-                    : widget.filcolorCustom ?? Color.fromRGBO(252, 186, 103, 1),
+                    : widget.filcolorCustom ??
+                        const Color.fromRGBO(252, 186, 103, 1),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
@@ -128,14 +129,14 @@ class _CustomSelectFormFieldWidgetState
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Styles.iconColorBack,
                     width: 1.0,
                   ),
                 ),
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Colors.grey,
                     width: 1.0,
                   ),
@@ -176,7 +177,7 @@ class _CustomSelectFormFieldWidgetState
                 padding: const EdgeInsets.only(top: 8, left: 12),
                 child: Text(
                   errorText,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.red,
                     fontSize: 12.0,
                   ),
@@ -205,7 +206,7 @@ class _CustomSelectFormFieldWidgetState
             elevation: 4.0,
             borderRadius: BorderRadius.circular(16),
             child: ConstrainedBox(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 maxHeight: 200, // Limitar la altura máxima a 200px
               ),
               child: Container(
@@ -218,7 +219,7 @@ class _CustomSelectFormFieldWidgetState
                   shrinkWrap: true,
                   children: widget.items!.map((item) {
                     return Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
                             color: Styles.iconColorBack,

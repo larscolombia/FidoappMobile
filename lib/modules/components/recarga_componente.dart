@@ -5,8 +5,10 @@ class RecargaComponente extends StatelessWidget {
   const RecargaComponente({
     super.key,
     this.callback,
+    this.titulo = 'Cargar más',
   });
   final VoidCallback? callback;
+  final String titulo;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -19,8 +21,8 @@ class RecargaComponente extends StatelessWidget {
           width: 10,
         ),
         Text(
-          'Cargar más',
-          style: TextStyle(
+          titulo,
+          style: const TextStyle(
             fontSize: 14,
             fontFamily: 'Lato',
             fontWeight: FontWeight.w600,

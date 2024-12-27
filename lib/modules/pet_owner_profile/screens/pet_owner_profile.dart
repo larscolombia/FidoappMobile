@@ -11,11 +11,13 @@ class PetOwnerProfileScreen extends StatelessWidget {
   final PetOwnerProfileController controller =
       Get.put(PetOwnerProfileController());
 
+  PetOwnerProfileScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final headerHeight = size.height / 8;
-    print('profile image ${controller}');
+    print('profile image $controller');
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -38,7 +40,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
                       margin: EdgeInsets.only(top: headerHeight - 50),
                       width: 100,
                       height: 100,
-                      padding: EdgeInsets.all(4),
+                      padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         color: Styles.whiteColor,
                         shape: BoxShape.circle,
@@ -53,7 +55,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
                           backgroundImage: controller
                                   .profileImagePath.value.isNotEmpty
                               ? NetworkImage(controller.profileImagePath.value)
-                              : AssetImage('assets/images/avatar.png')
+                              : const AssetImage('assets/images/avatar.png')
                                   as ImageProvider,
                           backgroundColor: Colors.transparent,
                         ),
@@ -72,14 +74,14 @@ class PetOwnerProfileScreen extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () => Navigator.pop(context),
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_back_ios,
                           color: Styles.primaryColor,
                           size: 22,
                         ),
                       ),
-                      Column(
-                        children: const [
+                      const Column(
+                        children: [
                           Row(
                             children: [
                               Icon(Icons.location_on,
@@ -97,7 +99,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(width: 40),
+                      const SizedBox(width: 40),
                     ],
                   ),
                 ),
@@ -113,7 +115,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
                   style: Styles.secondTextTitle,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -123,23 +125,23 @@ class PetOwnerProfileScreen extends StatelessWidget {
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
                     itemSize: 20.0,
-                    itemBuilder: (context, _) => Icon(
+                    itemBuilder: (context, _) => const Icon(
                       Icons.star,
                       color: Colors.amber,
                     ),
                     onRatingUpdate: (rating) {},
                     ignoreGestures: true,
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Text(
                     controller.rating.value.toString(),
                     style: Styles.secondTextTitle,
                   ),
                 ],
               ),
-              Padding(
+              const Padding(
                 padding: Styles.paddingAll,
                 child: Divider(height: 10, thickness: 1),
               ),
@@ -156,14 +158,14 @@ class PetOwnerProfileScreen extends StatelessWidget {
                             margin: const EdgeInsets.symmetric(vertical: 10.0),
                             padding: const EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
-                              color: Color(0xFFE5FEED),
+                              color: const Color(0xFFE5FEED),
                               border: Border.all(
-                                color: Color(0xFF19A02F),
+                                color: const Color(0xFF19A02F),
                                 width: 1.0,
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            child: Center(
+                            child: const Center(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -185,7 +187,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
                       ),
                     );
                   } else {
-                    return SizedBox.shrink();
+                    return const SizedBox.shrink();
                   }
                 },
               ),
@@ -198,7 +200,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Sobre ${controller.ownerName.value}',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'lato',
@@ -251,9 +253,9 @@ class PetOwnerProfileScreen extends StatelessWidget {
                       margin: const EdgeInsets.symmetric(vertical: 10.0),
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                        color: Color(0xFFE5FEED),
+                        color: const Color(0xFFE5FEED),
                         border: Border.all(
-                          color: Color(0xFF19A02F),
+                          color: const Color(0xFF19A02F),
                           width: 1.0,
                         ),
                         borderRadius: BorderRadius.circular(10),
@@ -261,14 +263,14 @@ class PetOwnerProfileScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.check_circle,
+                          const Icon(Icons.check_circle,
                               color: Color(0xFF19A02F), size: 20),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Text(
                             controller.veterinarianLinked.value
                                 ? 'Veterinario vinculado a tu mascota'
                                 : 'No vinculado',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color(0xFF19A02F),
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'lato'),
@@ -278,12 +280,12 @@ class PetOwnerProfileScreen extends StatelessWidget {
                     ),
                   );
                 }
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               }),
               Container(
                 padding: Styles.paddingAll,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -303,9 +305,9 @@ class PetOwnerProfileScreen extends StatelessWidget {
                       margin: const EdgeInsets.symmetric(vertical: 10.0),
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
-                        color: Color(0xFFFEF7E5),
+                        color: const Color(0xFFFEF7E5),
                         border: Border.all(
-                          color: Color(0xFFFC9214),
+                          color: const Color(0xFFFC9214),
                           width: 1.0,
                         ),
                         borderRadius: BorderRadius.circular(10),
@@ -315,7 +317,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
                         children: [
                           Text(
                             controller.specializationArea.value,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color(0xFFFC9214),
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'lato'),
@@ -326,8 +328,8 @@ class PetOwnerProfileScreen extends StatelessWidget {
                   )),
               Container(
                 padding: Styles.paddingAll,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -351,16 +353,16 @@ class PetOwnerProfileScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               vertical: 8.0, horizontal: 12.0),
                           decoration: BoxDecoration(
-                            color: Color(0xFFFEF7E5),
+                            color: const Color(0xFFFEF7E5),
                             border: Border.all(
-                              color: Color(0xFFFC9214),
+                              color: const Color(0xFFFC9214),
                               width: 1.0,
                             ),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
                             area,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color(0xFFFC9214),
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'lato'),
@@ -369,12 +371,12 @@ class PetOwnerProfileScreen extends StatelessWidget {
                       }).toList(),
                     ),
                   )),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Container(
                 padding: Styles.paddingAll,
                 child: CommentsSection(),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
             ],
           ),
         ),

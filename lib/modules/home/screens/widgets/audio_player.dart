@@ -66,7 +66,7 @@ class AudioPlayerController extends GetxController {
 class AudioPlayerWidget extends StatelessWidget {
   final String audioPath; // Puede ser URL o archivo local
 
-  AudioPlayerWidget({required this.audioPath});
+  const AudioPlayerWidget({super.key, required this.audioPath});
 
   @override
   Widget build(BuildContext context) {
@@ -80,22 +80,22 @@ class AudioPlayerWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
+          const Text(
             'Reproductor de Audio',
             style: TextStyle(
                 fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
 
           // Controles de reproducción
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: Icon(Icons.replay_10),
+                icon: const Icon(Icons.replay_10),
                 onPressed: () {
-                  final newPosition =
-                      controller.currentPosition.value - Duration(seconds: 10);
+                  final newPosition = controller.currentPosition.value -
+                      const Duration(seconds: 10);
                   controller.seekAudio(newPosition >= Duration.zero
                       ? newPosition
                       : Duration.zero);
@@ -117,10 +117,10 @@ class AudioPlayerWidget extends StatelessWidget {
                 );
               }),
               IconButton(
-                icon: Icon(Icons.forward_10),
+                icon: const Icon(Icons.forward_10),
                 onPressed: () {
-                  final newPosition =
-                      controller.currentPosition.value + Duration(seconds: 10);
+                  final newPosition = controller.currentPosition.value +
+                      const Duration(seconds: 10);
                   controller.seekAudio(
                       newPosition <= controller.totalDuration.value
                           ? newPosition
@@ -143,7 +143,7 @@ class AudioPlayerWidget extends StatelessWidget {
                 ),
                 Text(
                   '${formatDuration(controller.currentPosition.value)} / ${formatDuration(controller.totalDuration.value)}',
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             );

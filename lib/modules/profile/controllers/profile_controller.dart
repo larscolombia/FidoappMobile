@@ -12,7 +12,7 @@ class ProfileController extends GetxController {
   var isEditing = false.obs;
   var nameController = TextEditingController().obs;
   var lastNameController = TextEditingController().obs;
-  var passwordController = TextEditingController(text: '12345678')
+  var passwordController = TextEditingController(text: '')
       .obs; // Por seguridad, normalmente no se pre-llenaría
   var userGenCont = TextEditingController().obs;
   var userTypeCont = TextEditingController().obs;
@@ -29,9 +29,9 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     // Cargar los datos del usuario desde AuthServiceApis al iniciar el controlador
-    currentUser = AuthServiceApis.dataCurrentUser
-        as UserData; // Asegúrate de que el servicio esté correctamente configurado
-
+    currentUser = AuthServiceApis
+        .dataCurrentUser; // Asegúrate de que el servicio esté correctamente configurado
+    dataUser();
     // Inicializar los controladores con los datos del usuario actual
     nameController.value.text = currentUser.firstName;
     lastNameController.value.text = currentUser.lastName;
@@ -78,5 +78,24 @@ class ProfileController extends GetxController {
     } finally {
       isPickerActive.value = false; // Marcar el picker como inactivo
     }
+  }
+
+  var user = {
+    'name': "",
+    'lastName': "",
+    'email': "",
+    'gender': "",
+    'userType': "",
+    'profileImage': "",
+    'id': "",
+    'role': "",
+  };
+  void dataUser() {
+    user['name'] = currentUser.firstName;
+    user['lastName'] = currentUser.lastName;
+    user['email'] = currentUser.email;
+    user['gender'] = currentUser.gender;
+    user['userType'] = currentUser.userType;
+    user['profileImage'] = currentUser.profileImage;
   }
 }

@@ -26,7 +26,7 @@ class InformationTab extends StatelessWidget {
   final PetOwnerProfileController OnewrProfileController =
       Get.put(PetOwnerProfileController());
 
-  InformationTab({required this.controller});
+  InformationTab({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class InformationTab extends StatelessWidget {
     return Obx(() {
       return SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             left: 30,
             right: 30,
           ),
@@ -43,7 +43,7 @@ class InformationTab extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Nombre de la mascota y botón de compartir
-              Container(
+              SizedBox(
                 width: 305,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -84,7 +84,7 @@ class InformationTab extends StatelessWidget {
               ),
               if (AuthServiceApis.dataCurrentUser.userType == 'user')
                 Center(
-                  child: Container(
+                  child: SizedBox(
                     height: 54,
                     child: ButtonDefaultWidget(
                       title: 'Pasaporte',
@@ -118,7 +118,7 @@ class InformationTab extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               // Sección sobre la mascota
-              Container(
+              SizedBox(
                 width: 305,
                 child: Text(
                   'Sobre ${controller.petName.value}',
@@ -144,7 +144,7 @@ class InformationTab extends StatelessWidget {
                     style: Styles.textProfile14w400,
                   ),
                   subtitle: Text(
-                    "${controller.petProfile.age ?? "no lo ha colocado aún"}",
+                    controller.petProfile.age ?? "no lo ha colocado aún",
                     style: Styles.textProfile14w800,
                   ),
                   trailing: Column(

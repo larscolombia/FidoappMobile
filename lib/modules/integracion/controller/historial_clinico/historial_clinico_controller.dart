@@ -3,14 +3,17 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
 import 'dart:convert';
 
 class HistorialClinicoController extends GetxController {
+  final HomeController _homeController = Get.find();
   var historialClinico = <HistorialClinico>[].obs;
   var filteredHistorialClinico = <HistorialClinico>[].obs;
+  var selectedHistorial = Rxn<HistorialClinico>();
   var categories =
       ["Vacuna", "Examen", "Consulta"].obs; // Ejemplo de categorías
   var selectedCategory = "".obs; // Categoría seleccionada
@@ -20,6 +23,12 @@ class HistorialClinicoController extends GetxController {
   var isLoading = false.obs;
   var isSuccess = false.obs;
 
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    // fetchHistorialClinico();
+  }
+
   var reportData = {
     "pet_id": null,
     "report_type": null,
@@ -28,20 +37,28 @@ class HistorialClinicoController extends GetxController {
     "name": "",
     "fecha_aplicacion": "",
     "fecha_refuerzo": "",
-    "category": null,
+    "category": '1',
     "medical_conditions": "",
-    "test_results": "",
-    "vet_visits": null,
-    "date": "",
-    "weight": "",
     "notes": "no tiene nota",
-    "file": null,
-    "image": null,
   }.obs;
 
-  @override
-  void onInit() {
-    super.onInit();
+  void updateFieldsFromSelectedHistorial() {
+    if (selectedHistorial.value != null) {
+      final historial = selectedHistorial.value!;
+      updateField('pet_id', historial.petId);
+      updateField('report_type', historial.reportType);
+      updateField('report_name', historial.reportName);
+
+      updateField('fecha_refuerzo', historial.fechaRefuerzo ?? '');
+      updateField('notes', historial.notes);
+      updateField('name', historial.petName);
+      updateField('weight', historial.weight);
+      updateField('date', historial.fechaAplicacion);
+      updateField('category', historial.categoryName);
+      updateField('id', historial.id);
+      updateField('veterinarian_id', historial.veterinarianId);
+      isEditing.value = true;
+    }
   }
 
   bool validateReportData() {
@@ -58,11 +75,14 @@ class HistorialClinicoController extends GetxController {
   }
 
   void updateField(String key, dynamic value) {
-    reportData[key] = value;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      reportData[key] = value;
+    });
   }
 
   void reseterReportData() {
     reportData = {
+      'id': 0,
       'pet_id': null,
       'report_type': 1,
       'veterinarian_id': AuthServiceApis.dataCurrentUser.id,
@@ -70,10 +90,10 @@ class HistorialClinicoController extends GetxController {
       'name': '',
       'fecha_aplicacion': '',
       'fecha_refuerzo': '',
-      'category': null,
+      'category_name': "",
+      "category": "1",
       'medical_conditions': '',
-      'test_results': '',
-      'vet_visits': null,
+      'vet_visits': "1",
       'date': '',
       'weight': '',
       'notes': null,
@@ -94,8 +114,8 @@ class HistorialClinicoController extends GetxController {
     isLoading.value = true;
     isSuccess(true);
     final url =
-        '${DOMAIN_URL}/api/pet-histories?user_id=${AuthServiceApis.dataCurrentUser.id}&pet_id=${reportData['pet_id']}';
-
+        '$DOMAIN_URL/api/pet-histories?user_id=${AuthServiceApis.dataCurrentUser.id}&pet_id=${reportData['pet_id']}';
+    print('url $url');
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -135,9 +155,9 @@ class HistorialClinicoController extends GetxController {
   }
 
   Future<void> fetchHistorialClinico(int petId) async {
-    final url = '${DOMAIN_URL}/api/medical-history-per-pet?pet_id=$petId';
-    print('Fetching historial médico desde $url');
+    final url = '$DOMAIN_URL/api/medical-history-per-pet?pet_id=$petId';
 
+    //  isLoading.value = true;
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -156,8 +176,6 @@ class HistorialClinicoController extends GetxController {
               .map((item) => HistorialClinico.fromJson(item))
               .toList();
           filteredHistorialClinico.value = historialClinico;
-          print(
-              'Historial cargado exitosamente: ${historialClinico.length} items');
         } else {
           print('Error en el servidor: ${data['message']}');
         }
@@ -185,6 +203,7 @@ class HistorialClinicoController extends GetxController {
     var filtered = historialClinico;
 
     if (reportName != null && reportName.isNotEmpty) {
+      /** 
       filtered = filtered
           .where((historial) {
             return historial.reportName
@@ -192,10 +211,11 @@ class HistorialClinicoController extends GetxController {
                 .contains(reportName.toLowerCase());
           })
           .toList()
-          .obs; // Convert to RxList
+          .obs; // Convert to RxList*/
     }
 
     if (selectedCategory.isNotEmpty) {
+      /**
       filtered = filtered
           .where((historial) {
             return historial.categoryName.toLowerCase() ==
@@ -203,6 +223,7 @@ class HistorialClinicoController extends GetxController {
           })
           .toList()
           .obs; // Convert to RxList
+          **/
     }
 
     filteredHistorialClinico.value = _sortHistorialClinico(filtered)
@@ -228,10 +249,10 @@ class HistorialClinicoController extends GetxController {
   Future<void> updateReport() async {
     isLoading.value = true;
     isSuccess.value = false;
-
+    print('json report data ${jsonEncode(reportData)}');
     // Construcción de la URL de la API para actualizar
     final url =
-        '${DOMAIN_URL}/api/pet-histories/${reportData['id']}'; // Usar el ID del informe
+        '$DOMAIN_URL/api/pet-histories/${reportData['id']}'; // Usar el ID del informe
     print('url $url');
     try {
       // Crear la solicitud PUT
@@ -275,6 +296,33 @@ class HistorialClinicoController extends GetxController {
     } finally {
       // Detener el estado de carga
       isLoading.value = false;
+    }
+  }
+
+  void selectHistorialById(int id) {
+    final historial = historialClinico.firstWhere(
+      (item) => item.id == id,
+      orElse: () {
+        throw Exception('No se encontró el historial con el ID: $id');
+      },
+    );
+    selectedHistorial.value =
+        historial; // Asigna el historial a la variable global
+  }
+
+  // Función para mapear el tipo de reporte
+  String reporType(String? value) {
+    switch (value) {
+      case '1':
+        return 'Vacunas';
+      case '2':
+        return 'Antiparasitante';
+      case '3':
+        return 'Antigarrapata';
+      default:
+        reportData['report_type'] = 1;
+        reportData['report_name'] = 'Vacunas';
+        return 'Vacunas';
     }
   }
 }

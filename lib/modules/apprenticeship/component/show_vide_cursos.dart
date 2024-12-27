@@ -6,29 +6,29 @@ class ShowVideoCursos extends StatelessWidget {
   final String img;
   final String numero;
 
-  ShowVideoCursos({super.key, required this.img, this.numero = '1'});
+  const ShowVideoCursos({super.key, required this.img, this.numero = '1'});
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
+    return SizedBox(
       width: 30,
       child: Row(
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 20),
+            margin: const EdgeInsets.only(bottom: 20),
             width: 300,
             child: Row(
               children: [
                 Text(
                   numero,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Lato',
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 15, right: 10),
+                  margin: const EdgeInsets.only(left: 15, right: 10),
                   width: 50,
                   height: 34.2,
                   decoration: BoxDecoration(
@@ -36,35 +36,35 @@ class ShowVideoCursos extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: 175,
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         width: 148,
-                        child: Text('Title del curso',
+                        child: const Text('Title del curso',
                             style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Lato',
                               fontWeight: FontWeight.w900,
                             )),
                       ),
-                      Container(
+                      SizedBox(
                         width: 148,
-                        child: Text(
+                        child: const Text(
                           '4 minutos',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontSize: 9,
                               fontFamily: 'Lato',
                               fontWeight: FontWeight.w300,
-                              color: const Color.fromARGB(255, 167, 165, 162)),
+                              color: Color.fromARGB(255, 167, 165, 162)),
                         ),
                       )
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   width: 28,
                   height: 28,
                   child: Image.asset(

@@ -2,14 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/configs.dart';
+
 import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/utils/app_common.dart';
+import 'package:pawlly/utils/colors.dart';
+import 'package:pawlly/utils/common_base.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../configs.dart';
-import '../utils/colors.dart';
-import '../utils/common_base.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 class NewUpdateDialog extends StatelessWidget {
   final bool canClose;

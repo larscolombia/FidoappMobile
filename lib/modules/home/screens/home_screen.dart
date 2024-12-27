@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
@@ -51,20 +52,12 @@ class HomeScreen extends StatelessWidget {
               constraints: BoxConstraints(
                 minHeight: MediaQuery.of(context).size.height,
               ),
-              padding: const EdgeInsets.only(bottom: 100),
               color: Colors.white,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Positioned(
-                      top: 20,
-                      left: 0,
-                      right: 0,
-                      child: Column(
-                        children: [
-                          HeaderNotification(),
-                        ],
-                      )),
+                      top: 0, left: 0, right: 0, child: HeaderNotification()),
                   Container(
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -129,12 +122,13 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 16),
         Resources(),
         const SizedBox(height: 16),
-        Explore(),
+        const Explore(),
         const SizedBox(height: 16),
-        Utilities(),
+        const Utilities(),
         const SizedBox(height: 16),
-        if (AuthServiceApis.dataCurrentUser.userRole[0] != 'vet') Training(),
+        // if (AuthServiceApis.dataCurrentUser.userRole[0] != 'vet') Training(),
         Training(),
+        const SizedBox(height: 100),
       ],
     );
   }
@@ -147,6 +141,7 @@ class HomeScreen extends StatelessWidget {
         Calendar(),
         const SizedBox(height: 16),
         ActivityListScreen(),
+        const SizedBox(height: 126),
       ],
     );
   }
@@ -155,11 +150,11 @@ class HomeScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         ProfilesDogs(),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Training(),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Commands(),
         const SizedBox(height: 20),
       ],
@@ -180,9 +175,9 @@ class HomeScreen extends StatelessWidget {
         Training(),
         const SizedBox(height: 16),
         EntertainmentBlogs(),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         TrainingPrograms(),
-        const SizedBox(height: 20),
+        const SizedBox(height: 220),
       ],
     );
   }
@@ -194,15 +189,16 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 16),
         ProfilesDogs(),
         const SizedBox(height: 20),
-        Container(
+        SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
+              SizedBox(
                 width: 250,
                 child: InputText(
+                  placeholder: 'Buscar actividades',
                   onChanged: (String value) =>
                       historialClinicoController.searchActivities(value),
                 ),
@@ -213,9 +209,9 @@ class HomeScreen extends StatelessWidget {
                   // Acción cuando el FAB es presionado
                   Get.to(FormularioDiario());
                 },
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
                 backgroundColor: Styles.primaryColor,
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   color: Colors.white,
                 ),
@@ -224,7 +220,24 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        DiarioMascotas(),
+        Container(
+          child: RecargaComponente(
+            callback: () {
+              final PetActivityController controller =
+                  Get.put(PetActivityController());
+              controller.fetchPetActivities(
+                  homeController.selectedProfile.value!.id.toString());
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+        Container(
+          height: 330,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: DiarioMascotas(),
+        ),
       ],
     );
   }
@@ -234,7 +247,7 @@ class HomeScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Resources(),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         EbooksList(),
       ],
     );
@@ -245,7 +258,7 @@ class HomeScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Resources(),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         VideoList(),
         const SizedBox(height: 16),
       ],

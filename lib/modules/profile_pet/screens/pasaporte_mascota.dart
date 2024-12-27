@@ -88,7 +88,7 @@ class PasaporteMascota extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: BarraBack(
                         callback: () {
@@ -97,7 +97,7 @@ class PasaporteMascota extends StatelessWidget {
                         titulo: 'Información del Perro',
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: InputText(
                         placeholder: pet.name,
@@ -107,7 +107,7 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: InputText(
                         placeholder: pet.pettype,
@@ -117,7 +117,7 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: InputText(
                         label: 'Sexo',
@@ -127,7 +127,7 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: InputText(
                         label: 'Raza',
@@ -137,7 +137,7 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: InputText(
                         placeholder: pet.dateOfBirth,
@@ -148,7 +148,7 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: InputText(
                         label: 'Color del pelaje',
@@ -158,7 +158,7 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: InputText(
                         label: 'Edad',
@@ -168,10 +168,10 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: InputText(
-                        prefiIcon: Icon(
+                        prefiIcon: const Icon(
                           Icons.archive_outlined,
                           color: Styles.fiveColor,
                         ),
@@ -182,10 +182,10 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
+                    SizedBox(
                       width: 305,
                       child: InputText(
-                        prefiIcon: Icon(
+                        prefiIcon: const Icon(
                           Icons.person_outline,
                           color: Styles.fiveColor,
                         ),
@@ -196,7 +196,7 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
+                    SizedBox(
                       width: 305,
                       height: 50,
                       child: Obx(() {

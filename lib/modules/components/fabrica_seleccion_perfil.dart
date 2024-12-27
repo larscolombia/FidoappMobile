@@ -17,7 +17,7 @@ class SelccionarMascota extends StatelessWidget {
         return GestureDetector(
           onTap: () =>
               showPetsModal(context, controller), // Abre el modal al tocar
-          child: Center(
+          child: const Center(
             child: Text(
               'Agrega tu mascota',
               style: TextStyle(
@@ -40,7 +40,7 @@ class SelccionarMascota extends StatelessWidget {
               age: profile.age,
               avatar: profile.petImage != null && profile.petImage!.isNotEmpty
                   ? NetworkImage(profile.petImage!)
-                  : NetworkImage(
+                  : const NetworkImage(
                           'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg')
                       as ImageProvider),
         );
@@ -56,26 +56,28 @@ class SelccionarMascota extends StatelessWidget {
       backgroundColor: Colors.white, // Color de fondo del modal
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(16.0), // Espaciado alrededor del contenido
+          padding:
+              const EdgeInsets.all(16.0), // Espaciado alrededor del contenido
           child: Column(
             mainAxisSize: MainAxisSize.min, // Ajustar el tamaño del modal
             children: [
-              Text(
+              const Text(
                 'Selecciona una mascota',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10), // Espacio entre el título y la lista
+              const SizedBox(height: 10), // Espacio entre el título y la lista
               Obx(() {
                 // Verifica si hay perfiles disponibles
                 if (controller.profiles.isEmpty) {
-                  return Center(child: Text('No hay mascotas disponibles.'));
+                  return const Center(
+                      child: Text('No hay mascotas disponibles.'));
                 }
 
                 return ListView.builder(
                   shrinkWrap:
                       true, // Permite que la lista ocupe solo el espacio necesario
                   physics:
-                      NeverScrollableScrollPhysics(), // Deshabilita el desplazamiento de la lista
+                      const NeverScrollableScrollPhysics(), // Deshabilita el desplazamiento de la lista
                   itemCount: controller.profiles.length,
                   itemBuilder: (context, index) {
                     var profile = controller.profiles[index];
@@ -95,19 +97,19 @@ class SelccionarMascota extends StatelessWidget {
                         avatar: profile.petImage != null &&
                                 profile.petImage!.isNotEmpty
                             ? NetworkImage(profile.petImage!)
-                            : NetworkImage(
+                            : const NetworkImage(
                                 'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg'),
                       ),
                     );
                   },
                 );
               }),
-              SizedBox(height: 10), // Espacio adicional antes de cerrar
+              const SizedBox(height: 10), // Espacio adicional antes de cerrar
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Cerrar el modal
                 },
-                child: Text('Cerrar'),
+                child: const Text('Cerrar'),
               ),
             ],
           ),
@@ -119,7 +121,7 @@ class SelccionarMascota extends StatelessWidget {
 
 // para seleccionar el perfil avatar
 class SelccionarPerfil extends StatelessWidget {
-  SelccionarPerfil({
+  const SelccionarPerfil({
     super.key,
     this.nombre,
     this.age,
@@ -139,8 +141,9 @@ class SelccionarPerfil extends StatelessWidget {
         Container(
           width: 60,
           height: 60,
-          padding: EdgeInsets.all(2), // Espacio entre la imagen y el borde
-          margin: EdgeInsets.only(bottom: 16),
+          padding:
+              const EdgeInsets.all(2), // Espacio entre la imagen y el borde
+          margin: const EdgeInsets.only(bottom: 16),
           decoration: BoxDecoration(
             color: Styles.fiveColor, // Fondo del borde
             shape: BoxShape.circle,
@@ -158,17 +161,17 @@ class SelccionarPerfil extends StatelessWidget {
                 .transparent, // Fondo transparente si la imagen no se carga
           ),
         ),
-        SizedBox(width: 15),
+        const SizedBox(width: 15),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               width: width / 2.5,
               child: Text(
                 nombre ?? '',
                 textAlign: TextAlign.left,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Styles.primaryColor,
                   fontFamily: 'PoetsenOne',
                   fontSize: 20,
@@ -176,10 +179,10 @@ class SelccionarPerfil extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: width / 2.5,
               child: Text(
-                'edad ${nombre}',
+                'edad $nombre',
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   color: Styles.blackColor,
@@ -191,13 +194,13 @@ class SelccionarPerfil extends StatelessWidget {
             ),
           ],
         ),
-        Spacer(),
+        const Spacer(),
         conIcono!
-            ? Icon(
+            ? const Icon(
                 Icons.arrow_drop_down,
                 color: Styles.iconColorBack, // Color del icono
               )
-            : SizedBox(),
+            : const SizedBox(),
       ],
     );
   }

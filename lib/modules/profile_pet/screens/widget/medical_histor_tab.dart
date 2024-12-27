@@ -7,6 +7,8 @@ import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/components/historia_componente.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text_icon.dart';
+import 'package:pawlly/modules/components/recarga_componente.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
@@ -23,16 +25,17 @@ class MedicalHistoryTab extends StatelessWidget {
       Get.put(HistorialClinicoController());
   final CategoryController categoryController = Get.put(CategoryController());
   final RoleUser roleUser = Get.find<RoleUser>();
-  MedicalHistoryTab({required this.controller});
+  final HomeController homeController = Get.find<HomeController>();
+  MedicalHistoryTab({super.key, required this.controller});
 
   String reporType(String? value) {
     switch (value) {
-      case 'Vacunas':
-        return '1';
-      case 'Antiparasitante':
-        return '2';
-      case 'Antigarrapata':
-        return '3';
+      case '1':
+        return 'Vacunas';
+      case '2':
+        return 'Antiparasitante';
+      case '3':
+        return 'Antigarrapata';
       default:
         return '1';
     }
@@ -48,30 +51,64 @@ class MedicalHistoryTab extends StatelessWidget {
         children: [
           if (roleUser.roleUser.value == roleUser.tipoUsuario('vet'))
             Center(
-              child: Container(
+              child: SizedBox(
                 width: 312,
-                child: Container(
+                child: SizedBox(
                   width: 302,
-                  child: CustomSelectFormFieldWidget(
-                    filcolorCustom: Styles.primaryColor,
-                    textColor: Colors.white,
-                    placeholder: 'Agregar nuevo informe',
-                    controller: null,
-                    items: [
-                      'Vacunas',
-                      'Antiparasitante',
-                      'Antigarrapata',
+                  child: Column(
+                    children: [
+                      InputSelect(
+                        onChanged: (value) {
+                          medicalHistoryController.reseterReportData();
+                          medicalHistoryController.isEditing.value = false;
+                          medicalHistoryController.updateField(
+                              'report_name', reporType(value));
+                          medicalHistoryController.updateField(
+                              'report_type', int.parse(value ?? '1'));
+                          Get.off(FormularioRegistro());
+                        },
+                        TextColor: Colors.white,
+                        color: Styles.primaryColor,
+                        placeholder: 'Agregar nuevo informe',
+                        prefiIcon: 'assets/icons/categori.png',
+                        items: const [
+                          DropdownMenuItem(
+                            value: '1',
+                            child: Text('Vacunas'),
+                          ),
+                          DropdownMenuItem(
+                            value: '2',
+                            child: Text('Antiparasitante'),
+                          ),
+                          DropdownMenuItem(
+                            value: '3',
+                            child: Text('Antigarrapata'),
+                          ),
+                        ],
+                      ),
+                      /** 
+                      CustomSelectFormFieldWidget(
+                        filcolorCustom: Styles.primaryColor,
+                        textColor: Colors.white,
+                        placeholder: 'Agregar nuevo informe',
+                        controller: null,
+                        items: const [
+                          'Vacunas',
+                          'Antiparasitante',
+                          'Antigarrapata',
+                        ],
+                        onChange: (value) {
+                          medicalHistoryController.reseterReportData();
+                          medicalHistoryController.isEditing.value = false;
+                          medicalHistoryController.updateField(
+                              'report_name', value);
+                          medicalHistoryController.updateField(
+                              'report_type', reporType(value));
+                          Get.off(FormularioRegistro());
+                        },
+                        icon: 'assets/icons/categori.png',
+                      ),*/
                     ],
-                    onChange: (value) {
-                      medicalHistoryController.reseterReportData();
-                      medicalHistoryController.isEditing.value = false;
-                      medicalHistoryController.updateField(
-                          'report_name', value);
-                      medicalHistoryController.updateField(
-                          'report_type', reporType(value));
-                      Get.off(FormularioRegistro());
-                    },
-                    icon: 'assets/icons/categori.png',
                   ),
                 ),
               ),
@@ -126,7 +163,15 @@ class MedicalHistoryTab extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: RecargaComponente(
+              callback: () {
+                medicalHistoryController.fetchHistorialClinico(
+                    homeController.selectedProfile.value!.id);
+              },
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Obx(() {
@@ -155,27 +200,40 @@ class MedicalHistoryTab extends StatelessWidget {
                   return HistoriaMascotaComponent(
                     reportName: history.reportName,
                     categoryName: history.categoryName,
-                    applicationDate: history.applicationDate,
+                    applicationDate: history.createdAt,
                     id: history.id.toString(),
                     callback: () {
                       // aqui historia clinica
+
+                      medicalHistoryController.updateField('id', history.id);
+                      medicalHistoryController.updateField(
+                          'created_at', history.createdAt);
+                      medicalHistoryController.updateField(
+                          'updated_at', history.updatedAt);
                       medicalHistoryController.updateField(
                           'pet_id', history.petId);
                       medicalHistoryController.updateField(
                           'report_type', history.reportType);
                       medicalHistoryController.updateField(
                           'report_name', history.reportName);
+
                       medicalHistoryController.updateField(
-                          'notes', history.notes);
+                          'medical_conditions', history.medicalConditions);
                       medicalHistoryController.updateField(
-                          'name', history.petName);
+                          'name', history.reportName);
                       medicalHistoryController.updateField(
-                          'weight', history.weight);
+                          'category_name', history.categoryName);
+
                       medicalHistoryController.updateField(
-                          'date', history.fechaAplicacion);
+                          'fecha_aplicacion', history.fechaAplicacion);
                       medicalHistoryController.updateField(
-                          'category', history.categoryName);
+                          'fecha_refuerzo', history.fechaRefuerzo);
+                      medicalHistoryController.updateField(
+                          'category', history.category);
                       medicalHistoryController.updateField('id', history.id);
+
+                      medicalHistoryController.updateField(
+                          'notes', history.medicalConditions);
 
                       medicalHistoryController.isEditing.value = true;
 

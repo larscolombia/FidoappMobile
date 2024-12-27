@@ -28,7 +28,7 @@ class PrivacyPolicy extends StatelessWidget {
                 style: Styles.joinTitle,
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
@@ -37,16 +37,16 @@ class PrivacyPolicy extends StatelessWidget {
                   callback: () {
                     // TermsConditions();
                   },
-                  defaultColor: Color.fromARGB(255, 252, 146, 20),
+                  defaultColor: const Color.fromARGB(255, 252, 146, 20),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
-                child: Divider(
+                child: const Divider(
                   thickness: 0.5, // Make the line thicker
-                  color: const Color.fromARGB(
+                  color: Color.fromARGB(
                       255, 182, 164, 137), // Change the line color
                 ),
               ),
@@ -96,12 +96,12 @@ class PrivacyPolicy extends StatelessWidget {
                     Descripcion:
                         'Si tiene preguntas o comentarios sobre estas políticas, por favor contáctenos en [correo electrónico/ número de teléfono].',
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: ButtonDefaultWidget(
+                    margin: const EdgeInsets.only(bottom: 20),
+                    child: const ButtonDefaultWidget(
                       title: 'Regresar',
                       callback: callabak,
                     ),

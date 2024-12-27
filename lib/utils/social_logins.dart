@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/main.dart';
 import 'package:pawlly/models/user_data_model.dart';
-import 'package:pawlly/modules/auth/model/login_response_model.dart';
+import 'package:pawlly/utils/constants.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
-import '../../../main.dart';
-import '../../../utils/constants.dart';
 
 //region FIREBASE AUTH
 final FirebaseAuth auth = FirebaseAuth.instance;
@@ -41,10 +40,12 @@ class GoogleSignInAuthService {
 
       String firstName = '';
       String lastName = '';
-      if (currentUser.displayName.validate().split(' ').isNotEmpty)
+      if (currentUser.displayName.validate().split(' ').isNotEmpty) {
         firstName = currentUser.displayName.splitBefore(' ');
-      if (currentUser.displayName.validate().split(' ').length >= 2)
+      }
+      if (currentUser.displayName.validate().split(' ').length >= 2) {
         lastName = currentUser.displayName.splitAfter(' ');
+      }
 
       /// Create a temporary request to send
       UserData tempUserData = UserData()
@@ -92,7 +93,7 @@ class GoogleSignInAuthService {
 
           String firstName = '';
           String lastName = '';
-          log('result.credential ==> ${result.credential != null ? result.credential?.toMap() : null}');
+          log('result.credential ==> ${result.credential?.toMap()}');
           log('result.credential!.fullName ==> ${result.credential!.fullName!.toMap()}');
 
           if (result.credential != null &&

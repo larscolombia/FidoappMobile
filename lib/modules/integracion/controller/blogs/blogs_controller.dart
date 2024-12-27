@@ -8,7 +8,7 @@ import 'package:pawlly/services/auth_service_apis.dart';
 class BlogController extends GetxController {
   var isLoading = true.obs; // Estado de carga
   var blogPosts = <BlogPost>[].obs; // Lista observable de BlogPost
-  var url = "${DOMAIN_URL}/api/blog-list";
+  var url = "$DOMAIN_URL/api/blog-list";
   var filteredBlogPosts =
       <BlogPost>[].obs; // Lista observable para blogs filtrados
 
@@ -22,7 +22,7 @@ class BlogController extends GetxController {
     try {
       isLoading(true);
       final response = await http.get(
-        Uri.parse('${url}'),
+        Uri.parse(url),
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',

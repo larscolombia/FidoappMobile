@@ -10,7 +10,7 @@ import '../../../../../../generated/assets.dart';
 import '../../../../../../utils/colors.dart';
 
 class PasswordSetSuccess extends StatelessWidget {
-  const PasswordSetSuccess({Key? key}) : super(key: key);
+  const PasswordSetSuccess({super.key});
 
   @override
   Widget build(BuildContext context) {

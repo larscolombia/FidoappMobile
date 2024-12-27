@@ -10,7 +10,7 @@ class EventService {
   static Future<List<EventData>> getBreedsListApi() async {
     // Construir la URL
     final url = Uri.parse(
-        '${BASE_URL}${APIEndPoints.getEventUser}/${AuthServiceApis.dataCurrentUser.id}');
+        '$BASE_URL${APIEndPoints.getEventUser}/${AuthServiceApis.dataCurrentUser.id}');
 
     // Realizar la solicitud con el token en los headers (si es necesario)
     final response = await http.get(

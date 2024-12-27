@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
+import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
@@ -11,9 +13,12 @@ import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:table_calendar/table_calendar.dart';
+
 class CalendarController extends GetxController {
+  final userController = Get.put(UserController());
   final HomeController homeController = Get.find();
-  final String baseUrl = "${DOMAIN_URL}/api";
+  final String baseUrl = "$DOMAIN_URL/api";
   var isLoading = false.obs;
   var isSuccess = false.obs;
   var isEdit = false.obs;
@@ -36,6 +41,13 @@ class CalendarController extends GetxController {
     print(isEdit);
   }
 
+  String? Slug(String value) {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyyMMddHHmmss').format(now);
+    String valueWithTimestamp = '$value$formattedDate';
+    return valueWithTimestamp;
+  }
+
   Future<void> getEventos() async {
     if (isLoading.value) return; // Evita llamadas simultáneas
 
@@ -49,10 +61,10 @@ class CalendarController extends GetxController {
           'Content-Type': 'application/json',
         },
       );
-      print('data calendario: ${json.decode(response.body)}');
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        print('data calendario: $data');
+
         allCalendars.value = (data['data'] as List)
             .map((item) => CalendarModel.fromJson(item))
             .toList();
@@ -65,6 +77,15 @@ class CalendarController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  List<CalendarModel> getEventsForDay(DateTime day) {
+    return allCalendars.where((event) {
+      // Convertir la fecha del evento (string) a DateTime
+      final eventDate =
+          DateTime.parse(event.date.split('-').reversed.join('-'));
+      return isSameDay(eventDate, day); // Comparar con el día actual
+    }).toList();
   }
 
   void filterEvent(String busqueda) {
@@ -81,9 +102,13 @@ class CalendarController extends GetxController {
   }
 
   void filterByDate(DateTime date) {
-    String formattedDate =
-        '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')} 00:00:00';
+    print('calendario $date');
 
+    // Formatear la fecha en el formato 'dd-MM-yyyy'
+    String formattedDate =
+        '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
+
+    // Filtrar los eventos por la fecha formateada
     filteredCalendars.value =
         allCalendars.where((event) => event.date == formattedDate).toList();
   }
@@ -105,7 +130,7 @@ class CalendarController extends GetxController {
     'tipo': "salud",
     'status': true,
     'pet_id': '',
-    'owner_id': '',
+    'owner_id': [],
   }.obs;
   //resetea el formulario
   void ResetEvent() {
@@ -121,8 +146,8 @@ class CalendarController extends GetxController {
       'tipo': "salud",
       'status': true,
       'pet_id': '',
-      'owner_id': '',
-      'evenId': ""
+      'owner_id': "",
+      'evenId': "",
     };
   }
 
@@ -147,7 +172,7 @@ class CalendarController extends GetxController {
   Future<void> postEvent() async {
     isLoading.value = true;
     isSuccess.value = false;
-
+    print('guardando evento');
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/events'),
@@ -157,7 +182,7 @@ class CalendarController extends GetxController {
         },
         body: jsonEncode(event.toJson()),
       );
-      print('response ${response.body}');
+      print('response data evento  ${response.body}');
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('response : ${response.statusCode}');
 
@@ -170,6 +195,7 @@ class CalendarController extends GetxController {
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
               getEventos();
+              userController.fetchUsers();
               homeController.selectedIndex.value = 1;
               Get.to(HomeScreen());
               //Get.back();
@@ -239,5 +265,25 @@ class CalendarController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void gg(day) {
+    print('allCalendars ${allCalendars.value}');
+  }
+
+  Map<DateTime, List<CalendarModel>> getEventsForCalendar() {
+    print('allCalendars ${allCalendars.value}');
+    Map<DateTime, List<CalendarModel>> events = {};
+
+    for (var event in allCalendars) {
+      // Convierte la fecha del evento a DateTime
+      DateTime eventDate = DateFormat('dd-MM-yyyy').parse(event.date);
+      if (!events.containsKey(eventDate)) {
+        events[eventDate] = [];
+      }
+      events[eventDate]?.add(event);
+    }
+
+    return events;
   }
 }

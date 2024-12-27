@@ -5,6 +5,6 @@ class UserDefaultTest extends GetxController {
   var Avatara = Assets.avatar;
   var Namea = "Pawly";
   var Emaila = "pawly@pawly.com";
-  var Phonea = "123456789";
-  var Addressa = "123456789";
+  var Phonea = "";
+  var Addressa = "";
 }

@@ -16,7 +16,7 @@ class CommentResponse {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = this.status;
+    data['status'] = status;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -46,18 +46,18 @@ class Comment {
     rating = json['rating'].toString();
     reviewMsg = json['review_msg'];
     userId = json['user_id'];
-    userFullName = json['user_full_name'];
+    userFullName = json['user_name'];
     userAvatar = json['user_avatar'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = this.id;
-    data['rating'] = this.rating;
-    data['review_msg'] = this.reviewMsg;
-    data['user_id'] = this.userId;
-    data['user_full_name'] = this.userFullName;
-    data['user_avatar'] = this.userAvatar;
+    data['id'] = id;
+    data['rating'] = rating;
+    data['review_msg'] = reviewMsg;
+    data['user_id'] = userId;
+    data['user_full_name'] = userFullName;
+    data['user_avatar'] = userAvatar;
     return data;
   }
 }

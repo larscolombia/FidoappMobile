@@ -40,11 +40,11 @@ class ChangePasswordScreen extends StatelessWidget {
                   style: Styles.joinTitle,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 26),
+                const SizedBox(height: 26),
 
                 // Campo de contraseña actual
                 Container(
-                  margin: EdgeInsets.only(top: 20, bottom: 20),
+                  margin: const EdgeInsets.only(top: 20, bottom: 20),
                   child: CustomTextFormFieldWidget(
                     controller: controller.oldPasswordCont,
                     enabled: true,
@@ -65,7 +65,7 @@ class ChangePasswordScreen extends StatelessWidget {
 
                 // Campo de nueva contraseña
                 Container(
-                  margin: EdgeInsets.only(top: 20, bottom: 20),
+                  margin: const EdgeInsets.only(top: 20, bottom: 20),
                   child: CustomTextFormFieldWidget(
                     controller: controller.newpasswordCont,
                     enabled: true,
@@ -89,7 +89,7 @@ class ChangePasswordScreen extends StatelessWidget {
 
                 // Campo de confirmación de nueva contraseña
                 Container(
-                  margin: EdgeInsets.only(top: 20, bottom: 20),
+                  margin: const EdgeInsets.only(top: 20, bottom: 20),
                   child: CustomTextFormFieldWidget(
                     controller: controller.confirmPasswordCont,
                     enabled: true,
@@ -113,7 +113,7 @@ class ChangePasswordScreen extends StatelessWidget {
 
                 // Botón para enviar y validar
                 Container(
-                  margin: EdgeInsets.only(top: 20),
+                  margin: const EdgeInsets.only(top: 20),
                   child: Obx(() => ButtonDefaultWidget(
                         title: locale.value.send,
                         isLoading: controller

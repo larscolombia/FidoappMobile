@@ -33,6 +33,16 @@ class AuthServiceApis {
         method: HttpMethodType.POST)));
   }
 
+  static Future<void> saveToken(String token) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('apiToken', token);
+  }
+
+  static Future<String?> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('apiToken');
+  }
+
   static Future<LoginResponse> loginUser({
     required Map request,
     bool isSocialLogin = false,
@@ -217,15 +227,19 @@ class AuthServiceApis {
     if (isLoggedIn.value) {
       MultipartRequest multiPartRequest =
           await getMultiPartRequest(APIEndPoints.updateProfile);
-      if (firstName.isNotEmpty)
+      if (firstName.isNotEmpty) {
         multiPartRequest.fields[UserKeys.firstName] = firstName;
-      if (lastName.isNotEmpty)
+      }
+      if (lastName.isNotEmpty) {
         multiPartRequest.fields[UserKeys.lastName] = lastName;
+      }
       if (mobile.isNotEmpty) multiPartRequest.fields[UserKeys.mobile] = mobile;
-      if (address.isNotEmpty)
+      if (address.isNotEmpty) {
         multiPartRequest.fields[UserKeys.address] = address;
-      if (playerId.isNotEmpty)
+      }
+      if (playerId.isNotEmpty) {
         multiPartRequest.fields[UserKeys.playerId] = playerId;
+      }
 
       if (imageFile != null) {
         multiPartRequest.files.add(await MultipartFile.fromPath(

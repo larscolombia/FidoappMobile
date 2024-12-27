@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class MiPerfilPage extends StatelessWidget {
+  const MiPerfilPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mi Perfil'),
+        title: const Text('Mi Perfil'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Contenido de Mi Perfil'),
       ),
     );
@@ -15,13 +17,15 @@ class MiPerfilPage extends StatelessWidget {
 }
 
 class MascotasPage extends StatelessWidget {
+  const MascotasPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mascotas'),
+        title: const Text('Mascotas'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Contenido de Mascotas'),
       ),
     );
@@ -29,13 +33,15 @@ class MascotasPage extends StatelessWidget {
 }
 
 class TerminosCondicionesPage extends StatelessWidget {
+  const TerminosCondicionesPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Términos y Condiciones'),
+        title: const Text('Términos y Condiciones'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Contenido de Términos y Condiciones'),
       ),
     );
@@ -43,13 +49,15 @@ class TerminosCondicionesPage extends StatelessWidget {
 }
 
 class PoliticasPrivacidadPage extends StatelessWidget {
+  const PoliticasPrivacidadPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Políticas de Privacidad'),
+        title: const Text('Políticas de Privacidad'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Contenido de Políticas de Privacidad'),
       ),
     );
@@ -57,13 +65,15 @@ class PoliticasPrivacidadPage extends StatelessWidget {
 }
 
 class SobreAppPage extends StatelessWidget {
+  const SobreAppPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sobre la App'),
+        title: const Text('Sobre la App'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Contenido de Sobre la App'),
       ),
     );
@@ -71,13 +81,15 @@ class SobreAppPage extends StatelessWidget {
 }
 
 class CerrarSesionPage extends StatelessWidget {
+  const CerrarSesionPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cerrar Sesión'),
+        title: const Text('Cerrar Sesión'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Contenido de Cerrar Sesión'),
       ),
     );

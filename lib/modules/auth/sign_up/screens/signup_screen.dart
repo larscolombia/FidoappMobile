@@ -34,7 +34,7 @@ class SignUpScreen extends GetView<SignUpController> {
             children: [
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: Container(
+                child: SizedBox(
                   width: width,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -60,7 +60,7 @@ class SignUpScreen extends GetView<SignUpController> {
                           children: [
                             // Campo de nombre
                             Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.fisrtNameCont,
                                 placeholder: locale.value.firstName,
@@ -74,7 +74,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de apellido
                             Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.lastNameCont,
                                 placeholder: locale.value.lastName,
@@ -88,7 +88,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de correo electrónico
                             Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.emailCont,
                                 placeholder: locale.value.email,
@@ -105,12 +105,13 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de género
                             Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               child: CustomSelectFormFieldWidget(
                                 controller: controller.genCont,
                                 placeholder: locale.value.gender,
                                 icon: 'assets/icons/tag-user.png',
-                                items: [
+                                filcolorCustom: Styles.fiveColor,
+                                items: const [
                                   'Mujer',
                                   'Hombre',
                                   'Prefiero no decirlo'
@@ -124,7 +125,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de contraseña
                             Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.passwordCont,
                                 placeholder: locale.value.password,
@@ -143,7 +144,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de confirmar contraseña
                             Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.password2Cont,
                                 placeholder: locale.value.confirmPassword,
@@ -159,12 +160,13 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de tipo de usuario
                             Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               child: CustomSelectFormFieldWidget(
                                 controller: controller.userTypeCont,
                                 placeholder: locale.value.userType,
+                                filcolorCustom: Styles.fiveColor,
                                 icon: 'assets/icons/tag-user.png',
-                                items: [
+                                items: const [
                                   'Entrenador',
                                   'Veterinario',
                                   'Dueño de Mascota'
@@ -186,7 +188,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                       () => Container(
                                         width: 305,
                                         alignment: Alignment.center,
-                                        padding: EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                             bottom: 10, top: 10),
                                         child: CheckboxListTile(
                                           checkColor: Colors.amber,
@@ -247,13 +249,13 @@ class SignUpScreen extends GetView<SignUpController> {
                                 ),
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       // Botón de registro
                       Obx(() {
                         if (controller.isLoading.value) {
@@ -277,7 +279,7 @@ class SignUpScreen extends GetView<SignUpController> {
                         );
                       }),
 
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       const Divider(

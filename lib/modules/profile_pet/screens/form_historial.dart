@@ -18,9 +18,13 @@ class FormularioRegistro extends StatelessWidget {
       Get.put(HistorialClinicoController());
   final CategoryController categoryController = Get.put(CategoryController());
   final HomeController homeController = Get.find<HomeController>();
+
+  FormularioRegistro({super.key});
   @override
   Widget build(BuildContext context) {
+    var ancho = MediaQuery.of(context).size.width - 80;
     controller.updateField("pet_id", homeController.selectedProfile.value!.id);
+
     return Scaffold(
       backgroundColor: Styles.fiveColor,
       body: Container(
@@ -32,10 +36,10 @@ class FormularioRegistro extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: 150,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Styles.fiveColor,
                 ),
-                child: Text(
+                child: const Text(
                   'Registro de Historial',
                   style: TextStyle(
                     fontSize: 20,
@@ -69,7 +73,7 @@ class FormularioRegistro extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Container(
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.arrow_back_ios,
                                     color: Styles.primaryColor,
                                   ),
@@ -96,9 +100,9 @@ class FormularioRegistro extends StatelessWidget {
                             controller.updateField("name", value);
                           },
                         ),
-                        Container(
+                        SizedBox(
                           height: 90,
-                          width: 304,
+                          width: ancho,
                           child: Obx(() {
                             if (categoryController.categories.isEmpty) {
                               categoryController.fetchCategories();
@@ -113,7 +117,6 @@ class FormularioRegistro extends StatelessWidget {
                               onChanged: (value) {
                                 controller.updateField("category",
                                     value); // Actualizamos el controlador
-                                print('Categoría seleccionada: $value');
                               },
                               items: categoryController.categories
                                   .map((category) => DropdownMenuItem<String>(
@@ -133,11 +136,11 @@ class FormularioRegistro extends StatelessWidget {
                           onChanged: (value) {
                             controller.updateField("fecha_aplicacion", value);
                           },
-                          suffixIcon: Icon(
+                          suffixIcon: const Icon(
                             Icons.arrow_drop_down,
                             color: Styles.fiveColor,
                           ),
-                          prefiIcon: Icon(
+                          prefiIcon: const Icon(
                             Icons.calendar_today,
                             color: Color.fromRGBO(252, 186, 103, 1),
                           ),
@@ -149,11 +152,11 @@ class FormularioRegistro extends StatelessWidget {
                           onChanged: (value) {
                             controller.updateField("fecha_refuerzo", value);
                           },
-                          suffixIcon: Icon(
+                          suffixIcon: const Icon(
                             Icons.arrow_drop_down,
                             color: Color.fromRGBO(252, 186, 103, 1),
                           ),
-                          prefiIcon: Icon(
+                          prefiIcon: const Icon(
                             Icons.calendar_today,
                             color: Color.fromRGBO(252, 186, 103, 1),
                           ),
@@ -163,6 +166,7 @@ class FormularioRegistro extends StatelessWidget {
                           placeholder: 'Notas adicionales',
                           onChanged: (value) {
                             controller.updateField("notes", value);
+                            controller.updateField("medical_conditions", value);
                           },
                         ),
                         const SizedBox(height: 10),
@@ -170,7 +174,7 @@ class FormularioRegistro extends StatelessWidget {
                           label: "Adjuntar imagen",
                           placeholder: "Sube tu archivo",
                           isFilePicker: true,
-                          prefiIcon: Icon(
+                          prefiIcon: const Icon(
                             Icons.file_copy,
                             color: Color.fromRGBO(252, 186, 103, 1),
                           ),
@@ -183,7 +187,7 @@ class FormularioRegistro extends StatelessWidget {
                           label: "Adjuntar archivo",
                           placeholder: "Sube tu archivo",
                           isFilePicker: true,
-                          prefiIcon: Icon(
+                          prefiIcon: const Icon(
                             Icons.file_copy,
                             color: Color.fromRGBO(252, 186, 103, 1),
                           ),
@@ -193,7 +197,7 @@ class FormularioRegistro extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         Center(
-                          child: Container(
+                          child: SizedBox(
                             width: 302,
                             child: ButtonDefaultWidget(
                               title: 'Terminar Informe  >',

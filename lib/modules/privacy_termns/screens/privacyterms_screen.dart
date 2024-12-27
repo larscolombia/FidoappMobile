@@ -9,6 +9,8 @@ import 'package:pawlly/styles/styles.dart';
 class PrivacyTermsScreen extends StatelessWidget {
   final PrivacyTermsController controller = Get.find();
 
+  PrivacyTermsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -27,26 +29,26 @@ class PrivacyTermsScreen extends StatelessWidget {
                     style: Styles.joinTitle,
                     textAlign: TextAlign.center,
                   )),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Obx(
                     () => Container(
-                      margin: EdgeInsets.only(bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 20),
                       child: ButtonDefaultWidget(
                         title: locale.value.privacyPolicy,
                         callback: () => controller.changeTab(0),
                         widthButtom:
                             width - 40, // Ajusta el ancho según sea necesario
                         defaultColor: controller.selectedTab.value == 0
-                            ? Color.fromARGB(255, 252, 146,
+                            ? const Color.fromARGB(255, 252, 146,
                                 20) // Color para la pestaña seleccionada
-                            : Color.fromARGB(255, 255, 255,
+                            : const Color.fromARGB(255, 255, 255,
                                 255), // Color para la pestaña no seleccionada
                         border: controller.selectedTab.value == 0
                             ? null
-                            : BorderSide(
+                            : const BorderSide(
                                 color: Color.fromARGB(255, 247, 133,
                                     28)), // Borde para la pestaña no seleccionada
                         textColor: controller.selectedTab.value == 0
@@ -59,20 +61,20 @@ class PrivacyTermsScreen extends StatelessWidget {
                   ),
                   Obx(
                     () => Container(
-                      margin: EdgeInsets.only(bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 20),
                       child: ButtonDefaultWidget(
                         title: locale.value.termsAndConditionsTitle,
                         callback: () => controller.changeTab(1),
                         widthButtom:
                             width - 40, // Ajusta el ancho según sea necesario
                         defaultColor: controller.selectedTab.value == 1
-                            ? Color.fromARGB(255, 252, 146, 20)
-                            : Color.fromARGB(255, 255, 255,
+                            ? const Color.fromARGB(255, 252, 146, 20)
+                            : const Color.fromARGB(255, 255, 255,
                                 255) // Color para la pestaña seleccionada
                         , // Color para la pestaña no seleccionada
                         border: controller.selectedTab.value == 1
                             ? null
-                            : BorderSide(
+                            : const BorderSide(
                                 color: Color.fromARGB(255, 247, 133,
                                     28)) // Borde para la pestaña seleccionada
                         ,
@@ -87,9 +89,9 @@ class PrivacyTermsScreen extends StatelessWidget {
                 ],
               ),
               Container(
-                child: Divider(
+                child: const Divider(
                   thickness: 0.5,
-                  color: const Color.fromARGB(255, 182, 164, 137),
+                  color: Color.fromARGB(255, 182, 164, 137),
                 ),
               ),
               Obx(() {
@@ -102,9 +104,9 @@ class PrivacyTermsScreen extends StatelessWidget {
                   }).toList(),
                 );
               }),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Container(
-                margin: EdgeInsets.only(bottom: 20),
+                margin: const EdgeInsets.only(bottom: 20),
                 child: ButtonDefaultWidget(
                   title: 'Regresar',
                   callback: () => Get.back(),
@@ -129,7 +131,7 @@ class NumTitle extends StatelessWidget {
     return Column(children: [
       Container(
         width: width,
-        margin: EdgeInsets.only(top: 20),
+        margin: const EdgeInsets.only(top: 20),
         child: Text(
           Title,
           textAlign: TextAlign.start,
@@ -140,7 +142,7 @@ class NumTitle extends StatelessWidget {
               fontWeight: FontWeight.w800),
         ),
       ),
-      Container(
+      SizedBox(
           width: width,
           child: Text(
             Descripcion,

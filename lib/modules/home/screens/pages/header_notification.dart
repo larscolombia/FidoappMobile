@@ -90,19 +90,19 @@ class HeaderNotification extends StatelessWidget {
                                     Positioned(
                                       right: 0,
                                       child: Container(
-                                        padding: EdgeInsets.all(1),
+                                        padding: const EdgeInsets.all(1),
                                         decoration: BoxDecoration(
                                           color: Colors.red,
                                           borderRadius:
                                               BorderRadius.circular(6),
                                         ),
-                                        constraints: BoxConstraints(
+                                        constraints: const BoxConstraints(
                                           minWidth: 12,
                                           minHeight: 12,
                                         ),
                                         child: Text(
                                           unreadCount.toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 8,
                                           ),
@@ -116,7 +116,7 @@ class HeaderNotification extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10), // Espacio entre los iconos
+                      const SizedBox(width: 10), // Espacio entre los iconos
                       GestureDetector(
                         onTap: () {
                           // Navegar a la vista de Dashboard
@@ -126,7 +126,7 @@ class HeaderNotification extends StatelessWidget {
                             width:
                                 50, // Tamaño del contenedor que contiene la imagen
                             height: 50,
-                            padding: EdgeInsets.all(
+                            padding: const EdgeInsets.all(
                                 2), // Espacio entre la imagen y el borde
                             decoration: BoxDecoration(
                               color: Styles.fiveColor,
@@ -144,7 +144,8 @@ class HeaderNotification extends StatelessWidget {
                                         .profileImagePath.isNotEmpty
                                     ? NetworkImage(controller.profileImagePath
                                         .value) // Carga la imagen desde la red si hay una URL
-                                    : AssetImage('assets/images/avatar.png')
+                                    : const AssetImage(
+                                            'assets/images/avatar.png')
                                         as ImageProvider, // Imagen predeterminada si la URL está vacía
                                 backgroundColor:
                                     Colors.transparent, // Fondo transparente

@@ -11,7 +11,7 @@ class PetControllerv2 extends GetxController {
   var isLoading = true.obs;
   var selectedPet = Rxn<Pet>();
   var url =
-      '${DOMAIN_URL}/api/pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
+      '$DOMAIN_URL/api/pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
   var succesApdate = false.obs;
   get selectedPetIds => null;
   @override
@@ -24,7 +24,7 @@ class PetControllerv2 extends GetxController {
     try {
       isLoading(true);
       var response = await http.get(
-        Uri.parse('${url}'),
+        Uri.parse(url),
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
         },
@@ -45,12 +45,12 @@ class PetControllerv2 extends GetxController {
   }
 
   void showPet(String id) async {
-    var uriShow = '${DOMAIN_URL}/api/pets/$id';
+    var uriShow = '$DOMAIN_URL/api/pets/$id';
     try {
       isLoading(true);
       print('uriShow $uriShow');
       var response = await http.get(
-        Uri.parse('${DOMAIN_URL}/api/pets/$id'),
+        Uri.parse('$DOMAIN_URL/api/pets/$id'),
         headers: {
           'Authorization':
               'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Ajusta según tu autenticación

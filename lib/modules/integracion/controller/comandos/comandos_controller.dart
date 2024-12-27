@@ -16,7 +16,7 @@ class ComandoController extends GetxController {
   final HomeController homeController = Get.find();
   var comandoList = <Comando>[].obs;
   var isLoading = false.obs;
-  final String apiUrl = "${DOMAIN_URL}/api"; // Reemplaza con tu URL de API
+  final String apiUrl = "$DOMAIN_URL/api"; // Reemplaza con tu URL de API
   var selectedComando =
       Rxn<Comando>(); // Variable observable para el comando seleccionado
   @override
@@ -96,14 +96,14 @@ class ComandoController extends GetxController {
 
   void updateDummyData(List<Comando> comandos) {
     dummyData.clear();
-    comandos.forEach((comando) {
+    for (var comando in comandos) {
       dummyData.add({
         "Comando": comando.name,
         "Acción": comando.description,
         "Aprendido": comando.isFavorite ? "Sí" : "No",
         "Comando personalizado": comando.vozComando
       });
-    });
+    }
   }
 
   void toggleFavorite(int id) async {
@@ -115,7 +115,7 @@ class ComandoController extends GetxController {
       isLoading.value = true;
       try {
         final response = await http.put(
-          Uri.parse('$apiUrl/comandos/${id}'),
+          Uri.parse('$apiUrl/comandos/$id'),
           headers: Util.headers(),
           body: json.encode({'is_favorite': newFavoriteStatus ? 1 : 0}),
         );

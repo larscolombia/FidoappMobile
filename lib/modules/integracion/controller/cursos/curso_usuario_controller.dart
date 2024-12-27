@@ -35,7 +35,7 @@ class CursoUsuarioController extends GetxController {
     try {
       final response = await http.get(
         Uri.parse(
-            '${DOMAIN_URL}/api/course-platform/subscribe/all-courses-user?user_id=${AuthServiceApis.dataCurrentUser.id}'),
+            '$DOMAIN_URL/api/course-platform/subscribe/all-courses-user?user_id=${AuthServiceApis.dataCurrentUser.id}'),
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ class CursoUsuarioController extends GetxController {
         throw Exception('Failed to load courses');
       }
     } catch (e) {
-      print('error en cursos controller ${e}');
+      print('error en cursos controller $e');
     } finally {
       //  isLoading.value = false;
     }
@@ -73,11 +73,10 @@ class CursoUsuarioController extends GetxController {
 
     try {
       final response = await http.post(
-        Uri.parse('${DOMAIN_URL}/api/course-platform/subscribe'),
+        Uri.parse('${BASE_URL}course-platform/subscribe'),
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true',
         },
         body: jsonEncode({
           'user_id': AuthServiceApis.dataCurrentUser.id,
@@ -96,7 +95,7 @@ class CursoUsuarioController extends GetxController {
         throw Exception('Failed to subscribe to course');
       }
     } catch (e) {
-      print('error en subscribeToCourse ${e}');
+      print('error en subscribeToCourse $e');
     } finally {
       isLoading.value = false;
     }

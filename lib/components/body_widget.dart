@@ -8,13 +8,13 @@ class Body extends StatelessWidget {
   final Widget child;
   final RxBool isLoading;
 
-  const Body({Key? key, required this.isLoading, required this.child}) : super(key: key);
+  const Body({super.key, required this.isLoading, required this.child});
 
   @override
   Widget build(BuildContext context) {
     // final Size screenSize = MediaQuery.of(context).size;
-    final double height =  MediaQuery.of(context).size.height;
-    final double width =  MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
     return SizedBox(
       width: width,
       height: height,

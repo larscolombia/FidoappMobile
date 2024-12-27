@@ -13,7 +13,7 @@ class ButtonBack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(
+        SizedBox(
           height: 65,
           child: Image.asset(
             Assets.flechita,
@@ -24,7 +24,7 @@ class ButtonBack extends StatelessWidget {
                 const Icon(Icons.g_mobiledata_rounded),
           ),
         ),
-        Container(
+        SizedBox(
           height: 65,
           child: TextButton(
             onPressed: () {

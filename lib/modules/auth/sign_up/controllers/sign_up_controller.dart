@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/main.dart';
-import 'package:pawlly/modules/auth/sign_in/controllers/sign_in_controller.dart';
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/utils/common_base.dart';

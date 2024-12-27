@@ -35,7 +35,7 @@ class SignInScreen extends StatelessWidget {
           children: [
             SingleChildScrollView(
                 scrollDirection: Axis.vertical,
-                child: Container(
+                child: SizedBox(
                   width: 300,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -43,11 +43,11 @@ class SignInScreen extends StatelessWidget {
                     children: [
                       Text(
                         locale.value.signIn,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(255, 73, 49, 1),
                             fontSize: 34,
-                            fontWeight: FontWeight.w800,
-                            fontFamily: "elvetica"),
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "PoetsenOne"),
                       ).paddingTop(80),
                       Form(
                         key: _signInformKey,
@@ -65,17 +65,17 @@ class SignInScreen extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               child: CustomTextFormFieldWidget(
                                 controller: signInController.passwordCont,
                                 placeholder:
-                                    "Contraseña", //locale.value.password,
+                                    "Contraseñas", //locale.value.password,
                                 obscureText: true,
                                 icon: 'assets/icons/key.png',
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 20),
                               child: ButtonDefaultWidget(
                                 title: locale.value.signIn,
                                 callback: () {
@@ -143,10 +143,10 @@ class SignInScreen extends StatelessWidget {
                           Container(
                             width: 300,
                             height: 54,
-                            margin: EdgeInsets.only(bottom: 20, top: 20),
+                            margin: const EdgeInsets.only(bottom: 20, top: 20),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromRGBO(255, 73, 49, 1)),
+                                  color: const Color.fromRGBO(255, 73, 49, 1)),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TextButton.icon(
@@ -166,10 +166,10 @@ class SignInScreen extends StatelessWidget {
                           Container(
                             width: 300,
                             height: 54,
-                            margin: EdgeInsets.only(bottom: 20),
+                            margin: const EdgeInsets.only(bottom: 20),
                             decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromRGBO(255, 73, 49, 1)),
+                                  color: const Color.fromRGBO(255, 73, 49, 1)),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TextButton.icon(
@@ -190,7 +190,7 @@ class SignInScreen extends StatelessWidget {
                             height: 54,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromRGBO(255, 73, 49, 1)),
+                                  color: const Color.fromRGBO(255, 73, 49, 1)),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: TextButton.icon(

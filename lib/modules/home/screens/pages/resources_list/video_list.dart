@@ -15,7 +15,7 @@ class VideoList extends StatelessWidget {
     return Center(
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: 305,
             child: InputTextWithIcon(
               hintText: 'Realiza tu búsqueda',
@@ -59,8 +59,8 @@ class VideoList extends StatelessWidget {
                       ));
                     },
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 16),
-                      padding: EdgeInsets.all(12),
+                      margin: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.all(12),
                       width: 300,
                       decoration: BoxDecoration(
                         color: Styles.whiteColor,
@@ -117,13 +117,13 @@ class VideoList extends StatelessWidget {
                                 bottom: 8,
                                 right: 8,
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       vertical: 4, horizontal: 6),
                                   decoration: BoxDecoration(
                                     color: Colors.black.withOpacity(0.7),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     "Necesitamos la duración",
                                     style: TextStyle(
                                       fontFamily: 'Lato',
@@ -136,29 +136,29 @@ class VideoList extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           // Tema del video
                           Text(
                             video.tags ?? 'Videos de Entrenamiento',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                               color: Styles.iconColorBack,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           // Fecha y cantidad de visualizaciones
                           Text(
-                            '${video.createdAt.toString()}',
-                            style: TextStyle(
+                            video.createdAt.toString(),
+                            style: const TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
                               color: Styles.greyTextColor,
                             ),
                           ),
-                          Text(
+                          const Text(
                             'Necesitamos la cantidad de visualizaciones',
                             style: TextStyle(
                               fontFamily: 'Lato',
@@ -167,13 +167,13 @@ class VideoList extends StatelessWidget {
                               color: Styles.greyTextColor,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           // Título del video (máximo 2 líneas)
                           Text(
                             video.name,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 14,
                               fontWeight: FontWeight.w700,

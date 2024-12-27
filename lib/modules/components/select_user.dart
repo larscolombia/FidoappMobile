@@ -4,14 +4,14 @@ import 'package:pawlly/modules/components/style.dart';
 class SelectedAvatar extends StatelessWidget {
   final String? nombre;
   final String? imageUrl;
-  SelectedAvatar({super.key, this.imageUrl, this.nombre});
+  const SelectedAvatar({super.key, this.imageUrl, this.nombre});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 270,
       height: 75,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
@@ -37,7 +37,7 @@ class SelectedAvatar extends StatelessWidget {
                     nombre ?? "",
                     style: Styles.AvatarName,
                   ),
-                  Text('Veterinario | pendiente'),
+                  const Text('Veterinario | pendiente'),
                 ],
               )
             ],

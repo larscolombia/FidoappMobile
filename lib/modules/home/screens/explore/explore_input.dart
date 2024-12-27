@@ -23,15 +23,16 @@ class ExploreInput extends StatelessWidget {
           child: TextField(
             decoration: InputDecoration(
               hintText: "Buscar productos para mascotas",
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Styles.greyTextColor, width: 1),
+                borderSide:
+                    const BorderSide(color: Styles.greyTextColor, width: 1),
               ),
             ),
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
 
         // Lista de productos para mascotas
         SingleChildScrollView(
@@ -101,25 +102,25 @@ class ExploreInput extends StatelessWidget {
                                   ),
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         // Nombre del producto (máximo 3 líneas)
                         Text(
                           libro.description!,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Lato',
                             fontSize: 14,
                             fontWeight: FontWeight.w700,
                             color: Styles.greyTextColor,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         // Precio y tipo de producto (libro o artículo)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
+                            SizedBox(
                               width: 60,
                               child: Text(
                                 '${libro.author}',
@@ -152,7 +153,7 @@ class ExploreInput extends StatelessWidget {
             );
           }),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         // Ver más sección
         GestureDetector(
           onTap: () {

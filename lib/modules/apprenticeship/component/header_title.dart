@@ -8,7 +8,7 @@ class HeaderTitle extends StatelessWidget {
   final String title;
   final String precio;
   final Color color;
-  HeaderTitle({
+  const HeaderTitle({
     super.key,
     this.title = 'Curso de HouseBreaking',
     this.precio = '20',
@@ -19,7 +19,7 @@ class HeaderTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: 300,
-        margin: EdgeInsets.only(top: 30),
+        margin: const EdgeInsets.only(top: 30),
         child: Column(
           children: [
             Container(
@@ -29,18 +29,18 @@ class HeaderTitle extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      Container(
+                      SizedBox(
                         width: 180,
                         child: Text(
                           label,
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 10,
                               fontFamily: 'Lato',
                               color: Color.fromRGBO(181, 187, 187, 1)),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: 180,
                         child: Text(
                           title,
@@ -59,11 +59,11 @@ class HeaderTitle extends StatelessWidget {
                     height: 49.0,
                     color: const Color.fromARGB(255, 187, 199, 187),
                   ),
-                  Container(
+                  SizedBox(
                     width: 49,
                     child: Column(
                       children: [
-                        Text(
+                        const Text(
                           'Precio',
                           style: TextStyle(
                               fontSize: 10,
@@ -71,11 +71,11 @@ class HeaderTitle extends StatelessWidget {
                               color: Color.fromRGBO(181, 187, 187, 1)),
                         ),
                         Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 5),
                           child: Text(
                             precio,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Styles.primaryColor,
                               fontSize: 13,
                               fontWeight: FontWeight.w900,
@@ -88,8 +88,8 @@ class HeaderTitle extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(
-              color: const Color.fromARGB(255, 172, 163, 163),
+            const Divider(
+              color: Color.fromARGB(255, 172, 163, 163),
               thickness: .5,
             ),
           ],

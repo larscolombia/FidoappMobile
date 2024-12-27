@@ -6,7 +6,7 @@ class PetActivity {
   final String actividad;
   final String notas;
   final int petId;
-  final String image;
+  final String? image;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -18,7 +18,7 @@ class PetActivity {
     required this.actividad,
     required this.notas,
     required this.petId,
-    required this.image,
+    this.image,
     required this.createdAt,
     required this.updatedAt,
   });

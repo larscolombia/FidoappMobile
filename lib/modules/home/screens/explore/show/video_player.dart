@@ -4,7 +4,7 @@ import 'package:video_player/video_player.dart';
 class VideoPlayerScreen extends StatefulWidget {
   final String videoUrl;
 
-  VideoPlayerScreen({required this.videoUrl});
+  const VideoPlayerScreen({super.key, required this.videoUrl});
 
   @override
   _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
@@ -36,13 +36,13 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   void skipForward() {
     final currentPosition = _controller.value.position;
     final duration = _controller.value.duration;
-    final newPosition = currentPosition + Duration(seconds: 10);
+    final newPosition = currentPosition + const Duration(seconds: 10);
     _controller.seekTo(newPosition < duration ? newPosition : duration);
   }
 
   void skipBackward() {
     final currentPosition = _controller.value.position;
-    final newPosition = currentPosition - Duration(seconds: 10);
+    final newPosition = currentPosition - const Duration(seconds: 10);
     _controller
         .seekTo(newPosition > Duration.zero ? newPosition : Duration.zero);
   }
@@ -98,7 +98,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                           VideoProgressIndicator(
                             _controller,
                             allowScrubbing: true,
-                            colors: VideoProgressColors(
+                            colors: const VideoProgressColors(
                               playedColor: Colors.red,
                               bufferedColor: Colors.grey,
                               backgroundColor: Colors.white,
@@ -109,8 +109,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                             children: [
                               IconButton(
                                 onPressed: skipBackward,
-                                icon:
-                                    Icon(Icons.replay_10, color: Colors.white),
+                                icon: const Icon(Icons.replay_10,
+                                    color: Colors.white),
                               ),
                               IconButton(
                                 onPressed: () {
@@ -131,17 +131,17 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                               ),
                               IconButton(
                                 onPressed: skipForward,
-                                icon:
-                                    Icon(Icons.forward_10, color: Colors.white),
+                                icon: const Icon(Icons.forward_10,
+                                    color: Colors.white),
                               ),
                               Text(
                                 "${formatDuration(_controller.value.position)} / ${formatDuration(_controller.value.duration)}",
-                                style: TextStyle(color: Colors.white),
+                                style: const TextStyle(color: Colors.white),
                               ),
                               IconButton(
                                 onPressed: () => enterFullScreen(context),
-                                icon:
-                                    Icon(Icons.fullscreen, color: Colors.white),
+                                icon: const Icon(Icons.fullscreen,
+                                    color: Colors.white),
                               ),
                             ],
                           ),
@@ -151,7 +151,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                   ),
                 ],
               )
-            : CircularProgressIndicator(), // Mientras se carga el video
+            : const CircularProgressIndicator(), // Mientras se carga el video
       ),
     );
   }
@@ -160,7 +160,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 class FullScreenVideoPlayer extends StatelessWidget {
   final VideoPlayerController controller;
 
-  FullScreenVideoPlayer({required this.controller});
+  const FullScreenVideoPlayer({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,8 @@ class HeaderBanerUser extends StatelessWidget {
   final String avatar;
   final String leyenda;
 
-  HeaderBanerUser({
+  const HeaderBanerUser({
+    super.key,
     this.altura = 274.00,
     this.avatar = Assets.avatar,
     this.titulo = 'Bienvenido, Usuario',
@@ -34,10 +35,10 @@ class HeaderBanerUser extends StatelessWidget {
                 child: Container(
               height: 140,
               width: 300,
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 180,
                     child: Column(
                       children: [
@@ -71,7 +72,7 @@ class HeaderBanerUser extends StatelessWidget {
                         Image.asset(
                           avatar,
                         ),
-                        Center(
+                        const Center(
                           child: Icon(
                             color: Colors.white,
                             Icons.notifications,

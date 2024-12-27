@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
-import 'package:pawlly/modules/home/controllers/home_controller.dart';
 
 class DashboardBinding extends Bindings {
   @override

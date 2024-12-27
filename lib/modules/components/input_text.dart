@@ -7,7 +7,7 @@ import 'dart:io'; // Para manejar los archivos de imagen
 
 class InputText extends StatefulWidget {
   const InputText({
-    Key? key,
+    super.key,
     this.label,
     this.placeholder,
     required this.onChanged,
@@ -21,7 +21,7 @@ class InputText extends StatefulWidget {
     this.initialValue,
     this.fondoColor = Styles.colorContainer,
     this.onImagePicked, // Añade el callback para la imagen
-  }) : super(key: key);
+  });
 
   final String? placeholder;
   final String? label;
@@ -54,7 +54,7 @@ class _InputTextState extends State<InputText> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 302,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,15 +62,15 @@ class _InputTextState extends State<InputText> {
           widget.label != null
               ? Text(
                   widget.label ?? 'label',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.black,
                     fontFamily: 'Lato',
                     fontWeight: FontWeight.w400,
                   ),
                 )
-              : SizedBox(),
-          SizedBox(height: 8),
+              : const SizedBox(),
+          const SizedBox(height: 8),
           GestureDetector(
             onTap: widget.isDateField
                 ? () => _selectDate(context)
@@ -112,9 +112,9 @@ class _InputTextState extends State<InputText> {
                   filled: true,
                   fillColor: widget.fondoColor,
                   suffixIcon: widget.isFilePicker
-                      ? Icon(Icons.attach_file)
+                      ? const Icon(Icons.attach_file)
                       : widget.isImagePicker
-                          ? Icon(Icons.image)
+                          ? const Icon(Icons.image)
                           : widget.suffixIcon,
                   prefixIcon: widget.prefiIcon,
                 ),
@@ -125,18 +125,18 @@ class _InputTextState extends State<InputText> {
           ),
           if (_imageFile != null)
             Container(
-              margin: EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 10),
               width: 300,
               height: 220,
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     height: 20,
-                    child: Text(
+                    child: const Text(
                       'Imagen Seleccionada',
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 200,
                     width: 300,
                     child: ClipRRect(

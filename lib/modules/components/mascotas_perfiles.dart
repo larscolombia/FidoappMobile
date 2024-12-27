@@ -28,12 +28,12 @@ class PerfilMascotas extends StatelessWidget {
         );
       },
       child: Container(
-        margin: EdgeInsets.only(top: 16),
+        margin: const EdgeInsets.only(top: 16),
         height: 90,
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
           color: Styles.fiveColor,
-          borderRadius: BorderRadius.all(Radius.circular(25)),
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
           border: Border.all(
             color: Styles.iconColorBack, // Borde con color específico
           ),
@@ -41,7 +41,7 @@ class PerfilMascotas extends StatelessWidget {
         child: Obx(() {
           if (controller.selectedProfile.value == null) {
             // Mostrar mensaje si no hay perfil seleccionado
-            return Center(
+            return const Center(
               child: Text(
                 'Agrega tu mascota',
                 style: TextStyle(
@@ -60,8 +60,8 @@ class PerfilMascotas extends StatelessWidget {
                 Container(
                   width: 60,
                   height: 60,
-                  padding:
-                      EdgeInsets.all(2), // Espacio entre la imagen y el borde
+                  padding: const EdgeInsets.all(
+                      2), // Espacio entre la imagen y el borde
                   decoration: BoxDecoration(
                     color: Styles.fiveColor, // Fondo del borde
                     shape: BoxShape.circle,
@@ -76,24 +76,24 @@ class PerfilMascotas extends StatelessWidget {
                     backgroundImage: profile.petImage != null &&
                             profile.petImage!.isNotEmpty
                         ? NetworkImage(profile.petImage!)
-                        : NetworkImage(
+                        : const NetworkImage(
                                 'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg')
                             as ImageProvider,
                     backgroundColor: Colors
                         .transparent, // Fondo transparente si la imagen no se carga
                   ),
                 ),
-                SizedBox(width: 15),
+                const SizedBox(width: 15),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       width: width / 2.5,
                       child: Text(
                         profile.name,
                         textAlign: TextAlign.left,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Styles.primaryColor,
                           fontFamily: 'PoetsenOne',
                           fontSize: 20,
@@ -101,12 +101,12 @@ class PerfilMascotas extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: width / 2.5,
                       child: Text(
                         'Perfil de ${profile.name}',
                         textAlign: TextAlign.left,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Styles.blackColor,
                           fontFamily: 'Lato',
                           fontSize: 12,
@@ -116,8 +116,8 @@ class PerfilMascotas extends StatelessWidget {
                     ),
                   ],
                 ),
-                Spacer(),
-                Icon(
+                const Spacer(),
+                const Icon(
                   Icons.arrow_drop_down,
                   color: Styles.iconColorBack, // Color del icono
                 ),

@@ -46,10 +46,10 @@ class AppTheme {
       unselectedWidgetColor: Colors.black,
       dividerColor: borderColor.withOpacity(0.5),
       switchTheme: SwitchThemeData(
-        trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
+        trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
         trackColor:
-            MaterialStateProperty.all(switchActiveTrackColor.withOpacity(0.3)),
-        thumbColor: MaterialStateProperty.all(switchActiveTrackColor),
+            WidgetStateProperty.all(switchActiveTrackColor.withOpacity(0.3)),
+        thumbColor: WidgetStateProperty.all(switchActiveTrackColor),
       ),
       bottomSheetTheme: BottomSheetThemeData(
         shape: RoundedRectangleBorder(

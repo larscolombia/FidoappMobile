@@ -9,8 +9,9 @@ class NotificationController extends GetxController {
   var notifications = <NotificationData>[]
       .obs; // Usamos RxList para almacenar las notificaciones
   var isLoading = false.obs;
-  final String baseUrl = "${DOMAIN_URL}/api";
+  final String baseUrl = "$DOMAIN_URL/api";
 
+  @override
   void onInit() {
     super.onInit();
     fetchNotifications();
@@ -84,7 +85,7 @@ class NotificationController extends GetxController {
 
   // Método para obtener las notificaciones de ayer
   List<NotificationData> getYesterdayNotifications() {
-    DateTime yesterday = DateTime.now().subtract(Duration(days: 1));
+    DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
     return notifications
         .where((n) =>
             n.createdAt != null &&
@@ -121,7 +122,7 @@ class NotificationController extends GetxController {
   // Método para enviar los datos
   Future<void> submitNotificacion() async {
     isLoading.value = true;
-    final url = '${DOMAIN_URL}/api/training-diaries';
+    const url = '$DOMAIN_URL/api/training-diaries';
     try {
       final response = await http.post(
         Uri.parse(url),

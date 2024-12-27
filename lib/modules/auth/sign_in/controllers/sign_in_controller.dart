@@ -22,8 +22,7 @@ class SignInController extends GetxController {
 
   TextEditingController emailCont =
       TextEditingController(text: Constants.DEFAULT_EMAIL);
-  TextEditingController passwordCont =
-      TextEditingController(text: Constants.DEFAULT_PASS);
+  TextEditingController passwordCont = TextEditingController(text: '');
 
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();

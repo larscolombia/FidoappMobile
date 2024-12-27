@@ -87,7 +87,7 @@ class AddPetController extends GetxController {
       };
 
       print('petData: $petData');
-      petData.removeWhere((key, value) => value == null || value.isEmpty);
+      petData.removeWhere((key, value) => value.isEmpty);
 
       try {
         final newPet = await PetService.postCreatePetApi(

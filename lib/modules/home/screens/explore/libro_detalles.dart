@@ -11,13 +11,21 @@ import 'package:pawlly/modules/components/recarga_componente.dart';
 
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
+import 'package:pawlly/modules/integracion/controller/balance/producto_pay_controller.dart';
 
 import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
+import 'package:pawlly/modules/integracion/model/balance/producto_pay_model.dart';
 
 class LibroDetalles extends StatelessWidget {
   final EBookController econtroller = Get.put(EBookController());
   final CommentController commentController = Get.put(CommentController());
+  final UserBalanceController balanceController =
+      Get.put(UserBalanceController());
+  final ProductoPayController productController =
+      Get.put(ProductoPayController());
+  LibroDetalles({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +39,7 @@ class LibroDetalles extends StatelessWidget {
       body: CustomScrollView(slivers: [
         SliverList(
           delegate: SliverChildListDelegate([
-            Container(
+            SizedBox(
               height: 400,
               child: Stack(children: [
                 Positioned(
@@ -64,22 +72,21 @@ class LibroDetalles extends StatelessWidget {
                     child: Container(
                       height: 225,
                       width: 137,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
                         child: Obx(() {
                           if (econtroller.isLoading.value) {
-                            return Center(
+                            return const Center(
                               child: CircularProgressIndicator(),
                             );
                           }
                           return FadeInImage.assetNetwork(
                             placeholder: 'assets/images/loading.gif',
-                            image:
-                                econtroller.selectedEBook.value!.coverImage ??
-                                    'https://via.placeholder.com/200x300',
+                            image: econtroller.selectedEBook.value.coverImage ??
+                                'https://via.placeholder.com/200x300',
                             fit: BoxFit.cover,
                             imageErrorBuilder: (context, error, stackTrace) {
                               return Image.asset(
@@ -101,17 +108,17 @@ class LibroDetalles extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         const SizedBox(height: 16),
                         Container(
                           width: MediaQuery.of(context).size.width - 150,
-                          decoration: BoxDecoration(),
+                          decoration: const BoxDecoration(),
                           child: Text(
                             textAlign: TextAlign.center,
                             econtroller.selectedEBook.value.title ??
@@ -147,14 +154,14 @@ class LibroDetalles extends StatelessWidget {
                                   itemCount: 5,
                                   itemPadding: const EdgeInsets.symmetric(
                                       horizontal: 4.0),
-                                  itemBuilder: (context, _) => Icon(
+                                  itemBuilder: (context, _) => const Icon(
                                     Icons.star,
                                     color: Colors.amber,
                                   ),
                                   onRatingUpdate: (value) {},
                                 ),
                               ),
-                              Container(
+                              SizedBox(
                                 width: 45,
                                 child: Text(
                                     overflow: TextOverflow.ellipsis,
@@ -178,7 +185,7 @@ class LibroDetalles extends StatelessWidget {
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: 120,
                                   child: icon_titulo_subtitulo(
                                     label: 'Logitud',
@@ -189,7 +196,7 @@ class LibroDetalles extends StatelessWidget {
                                 ),
                                 Container(
                                   height: 27,
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     border: Border(
                                         left: BorderSide(
                                       color: Styles.primaryColor,
@@ -197,7 +204,7 @@ class LibroDetalles extends StatelessWidget {
                                     )),
                                   ),
                                 ),
-                                Container(
+                                SizedBox(
                                   width: 120,
                                   child: icon_titulo_subtitulo(
                                       label: 'Idioma',
@@ -207,8 +214,8 @@ class LibroDetalles extends StatelessWidget {
                                 ),
                               ]),
                         ),
-                        SizedBox(height: 20),
-                        Container(
+                        const SizedBox(height: 20),
+                        SizedBox(
                           width: 305,
                           height: 100,
                           child: Column(
@@ -223,10 +230,10 @@ class LibroDetalles extends StatelessWidget {
                                   fontFamily: 'Lato',
                                 ),
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               Text(
                                 "${econtroller.selectedEBook.value.description}",
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.black,
                                   fontFamily: 'Lato',
@@ -235,14 +242,14 @@ class LibroDetalles extends StatelessWidget {
                             ],
                           ),
                         ),
-                        SizedBox(height: 20),
-                        Container(
+                        const SizedBox(height: 20),
+                        SizedBox(
                           width: 304,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 94,
                                 height: 54,
                                 child: Center(
@@ -256,23 +263,48 @@ class LibroDetalles extends StatelessWidget {
                               Expanded(
                                 child: Container(
                                   child: ButtonDefaultWidget(
-                                      title: 'Comprar', callback: () {}),
+                                    title: 'Comprar',
+                                    callback: () {
+                                      productController.setProduct(
+                                        ProductoPayModel(
+                                          precio: econtroller
+                                              .selectedEBook.value.price
+                                              .toString(),
+                                          nombreProducto: econtroller
+                                              .selectedEBook.value.title
+                                              .toString(),
+                                          imagen: econtroller
+                                              .selectedEBook.value.coverImage
+                                              .toString(),
+                                          descripcion: econtroller
+                                              .selectedEBook.value.description
+                                              .toString(),
+                                          slug: 'libro',
+                                          id: int.parse(econtroller
+                                                  .selectedEBook.value.id ??
+                                              '0'),
+                                        ),
+                                      );
+                                      balanceController
+                                          .showPurchaseModal(context);
+                                    },
+                                  ),
                                 ),
                               )
                             ],
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Container(
                           width: 304,
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(color: Styles.primaryColor)),
                           child: Obx(() {
                             if (commentController
                                 .isComentarioPosrLoading.value) {
-                              return Text('cargando');
+                              return const Text('cargando');
                             }
                             return BanerComentarios(
                               eventTextChanged: (value) {
@@ -286,31 +318,28 @@ class LibroDetalles extends StatelessWidget {
                               onEvento: () {
                                 commentController.updateField('e_book_id', id);
                                 if (commentController.comentario.isNotEmpty) {
-                                  commentController.postComment('books');
+                                  commentController.postComment(
+                                      'books', context);
                                   commentController.fetchComments(id, "books");
                                 }
                               },
                             );
                           }),
                         ),
-                        SizedBox(height: 20),
-                        Container(
+                        const SizedBox(height: 20),
+                        const SizedBox(
                           width: 304,
                           child: Text(
                             'Comentarios',
                             style: Styles.TextTitulo,
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Obx(() {
                           if (commentController.isLoading.value) {
                             return const Center(
-                              child: Text(''),
+                              child: Text('cargando ...'),
                             );
-                          }
-
-                          if (commentController.comments.value == null) {
-                            return Text('no hay comentarios');
                           }
 
                           return SingleChildScrollView(
@@ -364,7 +393,7 @@ class HeaderEbook extends StatelessWidget {
     return Container(
       height: 335,
       width: size.width,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Styles.colorContainer,
       ),
       child: Padding(
@@ -374,10 +403,10 @@ class HeaderEbook extends StatelessWidget {
           children: [
             const SizedBox(height: 40),
             Center(
-              child: Container(
+              child: SizedBox(
                 width: 345,
                 child: BarraBack(
-                  titulo: 'Sobre este Ebook',
+                  titulo: 'Sobre este Libro',
                   subtitle: 'Encuentra toda la informacióna aquí',
                   ColorSubtitle: Colors.black,
                   callback: () {
@@ -395,7 +424,7 @@ class HeaderEbook extends StatelessWidget {
 }
 
 class BarraComentario extends StatelessWidget {
-  BarraComentario({
+  const BarraComentario({
     super.key,
     required this.eventTextChanged,
     this.titulo,
@@ -407,17 +436,17 @@ class BarraComentario extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
-        Text(
+        const Text(
           '¿Quieres dejar una reseña?',
           style: Styles.textDescription,
         ),
         const SizedBox(
           height: 10,
         ),
-        Container(
+        SizedBox(
           width: 276,
           child: InputText(
             onChanged: eventTextChanged,
@@ -426,7 +455,7 @@ class BarraComentario extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        Container(
+        SizedBox(
           width: 276,
           height: 42,
           child: ButtonDefaultWidget(
@@ -440,7 +469,7 @@ class BarraComentario extends StatelessWidget {
 }
 
 class icon_titulo_subtitulo extends StatelessWidget {
-  icon_titulo_subtitulo(
+  const icon_titulo_subtitulo(
       {super.key,
       required this.label,
       required this.value,
@@ -450,14 +479,21 @@ class icon_titulo_subtitulo extends StatelessWidget {
   final String path;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 116,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            '${path}',
+            path,
             width: 25,
+            errorBuilder: (BuildContext context, Object exception,
+                StackTrace? stackTrace) {
+              return Image.asset(
+                'assets/images/pet_care.png',
+                width: 25,
+              );
+            },
           ),
           const SizedBox(width: 10),
           Column(
@@ -465,8 +501,8 @@ class icon_titulo_subtitulo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${label}:',
-                style: TextStyle(
+                '$label:',
+                style: const TextStyle(
                   fontSize: 14,
                   fontFamily: 'Lato',
                   fontWeight: FontWeight.w400,
@@ -474,8 +510,8 @@ class icon_titulo_subtitulo extends StatelessWidget {
                 ),
               ),
               Text(
-                '${value}',
-                style: TextStyle(
+                value,
+                style: const TextStyle(
                   fontSize: 14,
                   fontFamily: 'Lato',
                   fontWeight: FontWeight.w800,

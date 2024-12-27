@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class AvatarComentarios extends StatelessWidget {
-  AvatarComentarios({
+  const AvatarComentarios({
     super.key,
     this.avatar,
     this.name,
@@ -20,7 +20,7 @@ class AvatarComentarios extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 304,
-      margin: EdgeInsets.only(bottom: 30),
+      margin: const EdgeInsets.only(bottom: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -44,7 +44,7 @@ class AvatarComentarios extends StatelessWidget {
                         style: Styles.AvatarName,
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 200,
                       child: Row(
                         children: [
@@ -57,14 +57,14 @@ class AvatarComentarios extends StatelessWidget {
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 3.0),
                             itemSize: 15,
-                            itemBuilder: (context, _) => Icon(
+                            itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,
                             ),
                             onRatingUpdate: (value) {},
                           ),
                           const SizedBox(width: 10),
-                          Container(
+                          SizedBox(
                             width: 50,
                             child: Text(
                               '${rating ?? 0.0}',
@@ -84,7 +84,7 @@ class AvatarComentarios extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          Container(
+          SizedBox(
             width: 304,
             child: Text(
               comment ?? "",

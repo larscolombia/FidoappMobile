@@ -10,7 +10,7 @@ class Cursos extends StatelessWidget {
   final String duracion;
   final String precio;
 
-  Cursos({
+  const Cursos({
     super.key,
     this.TitleCurso = 'Curso de HouseBreaking',
     this.duracion = '10meses',
@@ -22,7 +22,7 @@ class Cursos extends StatelessWidget {
     // TODO: implement build
     return Center(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Styles.secondColor,
         ),
         margin: EdgeInsets.only(left: margin),
@@ -31,12 +31,12 @@ class Cursos extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-              margin: EdgeInsets.only(top: 50),
+              padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+              margin: const EdgeInsets.only(top: 50),
               width: 128,
               child: Text(
                 TitleCurso,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
@@ -46,11 +46,12 @@ class Cursos extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   width: 60,
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         'tiempo',
                         textAlign: TextAlign.start,
                         style: TextStyle(
@@ -62,7 +63,7 @@ class Cursos extends StatelessWidget {
                       Text(
                         duracion,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 9.2,
                           fontWeight: FontWeight.bold,
@@ -72,20 +73,21 @@ class Cursos extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                   width: 60,
                   child: Column(
                     children: [
                       Text(
                         precio,
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Color.fromRGBO(188, 190, 190, 1),
                             fontFamily: 'Lato',
                             fontSize: 13,
                             fontWeight: FontWeight.w200),
                       ),
-                      Align(
+                      const Align(
                         alignment: Alignment.topLeft,
                         child: Text(
                           '20',
@@ -102,7 +104,7 @@ class Cursos extends StatelessWidget {
                 ),
               ],
             ),
-            ButtonDefaultWidget(
+            const ButtonDefaultWidget(
               title: 'Ver más',
               callback: callback,
               heigthButtom: 32,
@@ -115,5 +117,5 @@ class Cursos extends StatelessWidget {
 }
 
 void callback() {
-  Get.to(CursoShow());
+  Get.to(const CursoShow());
 }

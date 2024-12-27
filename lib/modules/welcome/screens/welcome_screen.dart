@@ -1,23 +1,20 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
 import 'package:pawlly/main.dart';
-import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
-import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
+
 import 'package:pawlly/modules/welcome/controllers/welcome_controller.dart';
 import 'package:pawlly/modules/welcome/screens/widgets/slide.dart';
-import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class WelcomeScreen extends GetView<WelcomeController> {
   WelcomeScreen({super.key});
   // late WelcomeController _con;
 
-  int _current = 0;
+  final int _current = 0;
 
   final List<Widget> _slides = [
     Slide(),
@@ -44,7 +41,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
     return AppScaffold(
       hideAppBar: true,
       body: Container(
-        margin: EdgeInsets.only(top: 50),
+        margin: const EdgeInsets.only(top: 50),
         padding: Styles.paddingAll,
         height: height,
         width: width,
@@ -72,8 +69,8 @@ class WelcomeScreen extends GetView<WelcomeController> {
                                 builder: (BuildContext context) {
                                   return Container(
                                     width: width - 20,
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 5.0),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 5.0),
                                     child: widget,
                                   );
                                 },
@@ -95,13 +92,14 @@ class WelcomeScreen extends GetView<WelcomeController> {
                                 'signin',
                               );
                             }),
-                        SizedBox(
+                        const SizedBox(
                           height: 16,
                         ),
                         ButtonDefaultWidget(
                             title: locale.value.signUp,
-                            defaultColor: Color.fromARGB(255, 255, 255, 255),
-                            border: BorderSide(
+                            defaultColor:
+                                const Color.fromARGB(255, 255, 255, 255),
+                            border: const BorderSide(
                               color: Styles.primaryColor,
                             ),
                             textColor: Styles.blackColor,

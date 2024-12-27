@@ -25,7 +25,7 @@ class EBookController extends GetxController {
   // Método para obtener los e-books desde la API
   Future<void> fetchEBooks() async {
     isLoading.value = true;
-    final url = '${DOMAIN_URL}/api/e-books'; // Reemplaza con la URL de tu API
+    const url = '$DOMAIN_URL/api/e-books'; // Reemplaza con la URL de tu API
     print('url $url');
     try {
       final response = await http.get(

@@ -14,11 +14,11 @@ class EbooksList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: 305,
         child: Column(
           children: [
-            Container(
+            SizedBox(
               width: 305,
               child: InputTextWithIcon(
                 hintText: 'Realiza tu búsqueda',
@@ -57,8 +57,9 @@ class EbooksList extends StatelessWidget {
                   children: [
                     GridView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, // Dos columnas
                         crossAxisSpacing:
                             16, // Espacio horizontal entre elementos

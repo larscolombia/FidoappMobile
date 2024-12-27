@@ -54,7 +54,7 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                           style: Styles.joinTitle,
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 26,
                         ),
                         SizedBox(
@@ -71,7 +71,7 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                           color: Styles.greyDivider,
                           thickness: 1,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Container(
@@ -80,7 +80,7 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                               placeholder: locale.value.email,
                               icon: 'assets/icons/email.png'),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         ButtonDefaultWidget(
@@ -94,7 +94,7 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                               /* Get.to(() => OtpScreen()); */
                             }),
                         Container(
-                          margin: EdgeInsets.only(top: 20),
+                          margin: const EdgeInsets.only(top: 20),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -149,7 +149,7 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                         ),
                         Container(
                           padding: Styles.paddingT10B10,
-                          child: ButtonBack(text: 'Regresar'),
+                          child: const ButtonBack(text: 'Regresar'),
                         ),
                       ],
                     ),

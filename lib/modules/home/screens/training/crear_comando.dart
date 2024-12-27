@@ -24,7 +24,7 @@ class CrearComando extends StatelessWidget {
           // Primer contenedor (fondo o header)
           Container(
             height: 120,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Styles.colorContainer, // Cambia el color según tu diseño
             ),
           ),
@@ -32,9 +32,9 @@ class CrearComando extends StatelessWidget {
           Expanded(
             child: Container(
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: const BorderRadius.only(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),
                 ),
@@ -46,7 +46,7 @@ class CrearComando extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(height: 10),
-                      Container(
+                      SizedBox(
                         width: 305,
                         child: BarraBack(
                           titulo: 'Crear Comando',
@@ -56,17 +56,17 @@ class CrearComando extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Container(
+                      SizedBox(
                         width: 305,
-                        child: Text("Selecciona la mascota",
+                        child: const Text("Selecciona la mascota",
                             style: Styles.TextTituloAutor),
                       ),
-                      Container(
+                      SizedBox(
                         width: 325,
                         child: ProfilesDogs(),
                       ),
                       const SizedBox(height: 10),
-                      Container(
+                      SizedBox(
                         width: 305,
                         child: InputText(
                           label: 'Nombre del Comando',
@@ -76,7 +76,7 @@ class CrearComando extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Container(
+                      SizedBox(
                         width: 305,
                         child: InputText(
                           label: 'Acción',
@@ -86,7 +86,7 @@ class CrearComando extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Container(
+                      SizedBox(
                         width: 305,
                         child: InputText(
                           label: 'Comando',
@@ -96,7 +96,7 @@ class CrearComando extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Container(
+                      SizedBox(
                         width: 305,
                         child: InputText(
                           label: 'Comando',
@@ -106,7 +106,7 @@ class CrearComando extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Container(
+                      SizedBox(
                         width: 302,
                         child: ButtonDefaultWidget(
                             title: controller.isLoading.value

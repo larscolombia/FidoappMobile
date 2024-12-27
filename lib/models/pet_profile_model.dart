@@ -33,7 +33,7 @@ class PetProfile {
       age: petData.age,
       birthDate: petData.dateOfBirth ?? '01/01/2021',
       weight: '${petData.weight}',
-      gender: petData.gender!,
+      gender: petData.gender,
       imagePath: petData.petImage ?? '',
       associatedPersons: [
         {'name': 'John Does', 'relation': 'Dueño'},
@@ -66,7 +66,7 @@ class PetProfile {
     age = petData.age;
     birthDate = petData.dateOfBirth ?? '01/01/2021';
     weight = '${petData.weight}';
-    gender = petData.gender!;
+    gender = petData.gender;
     imagePath = petData.petImage ?? '';
   }
 }

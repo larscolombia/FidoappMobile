@@ -5,7 +5,7 @@ import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class BanerComentarios extends StatelessWidget {
-  BanerComentarios(
+  const BanerComentarios(
       {super.key,
       required this.eventTextChanged,
       this.titulo,
@@ -37,13 +37,13 @@ class BanerComentarios extends StatelessWidget {
           allowHalfRating: true,
           itemCount: 5,
           itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-          itemBuilder: (context, _) => Icon(
+          itemBuilder: (context, _) => const Icon(
             Icons.star,
             color: Colors.amber,
           ),
           onRatingUpdate: onRatingUpdate,
         ),
-        Container(
+        SizedBox(
           height: 66,
           width: 276,
           child: InputText(
@@ -52,7 +52,7 @@ class BanerComentarios extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        Container(
+        SizedBox(
           width: 276,
           height: 42,
           child: ButtonDefaultWidget(
