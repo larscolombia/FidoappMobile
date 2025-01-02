@@ -56,54 +56,59 @@ class DetallesDiario extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          BarraBack(
-                            titulo: 'Sobre este Registro',
-                            callback: () {
-                              Get.off(HomeScreen());
-                            },
-                          ),
-                          Container(
-                            width: 40,
-                            height: 40,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Styles.colorContainer,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                controller.updateField(
-                                  'actividad',
-                                  controller.activitiesOne.value!.actividad,
-                                );
-                                controller.updateField(
-                                  'date',
-                                  controller.activitiesOne.value!.date,
-                                );
-                                controller.updateField(
-                                  'category_id',
-                                  controller.activitiesOne.value!.categoryId
-                                      .toString(),
-                                );
-                                controller.updateField(
-                                  'notas',
-                                  controller.activitiesOne.value!.notas,
-                                );
-                                controller.updateField(
-                                  'pet_id',
-                                  controller.activitiesOne.value!.petId
-                                      .toString(),
-                                );
-                                controller.updateField(
-                                  'image',
-                                  controller.activitiesOne.value!.image ?? "",
-                                );
-                                //print(controller.diario);
-                                Get.to(FormularioDiario(isEdit: true));
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 120,
+                            child: BarraBack(
+                              titulo: 'Sobre este Registro',
+                              callback: () {
+                                Get.off(HomeScreen());
                               },
-                              child: Image.asset(
-                                'assets/icons/edit-2.png',
-                                width: 24,
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Styles.colorContainer,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  controller.updateField(
+                                    'actividad',
+                                    controller.activitiesOne.value!.actividad,
+                                  );
+                                  controller.updateField(
+                                    'date',
+                                    controller.activitiesOne.value!.date,
+                                  );
+                                  controller.updateField(
+                                    'category_id',
+                                    controller.activitiesOne.value!.categoryId
+                                        .toString(),
+                                  );
+                                  controller.updateField(
+                                    'notas',
+                                    controller.activitiesOne.value!.notas,
+                                  );
+                                  controller.updateField(
+                                    'pet_id',
+                                    controller.activitiesOne.value!.petId
+                                        .toString(),
+                                  );
+                                  controller.updateField(
+                                    'image',
+                                    controller.activitiesOne.value!.image ?? "",
+                                  );
+                                  //print(controller.diario);
+                                  Get.to(FormularioDiario(isEdit: true));
+                                },
+                                child: Image.asset(
+                                  'assets/icons/edit-2.png',
+                                  width: 24,
+                                ),
                               ),
                             ),
                           )

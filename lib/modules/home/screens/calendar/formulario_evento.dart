@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/models/pet_profile_model.dart';
+import 'package:pawlly/modules/auth/model/employee_model.dart';
 import 'package:pawlly/modules/components/fabrica_seleccion_perfil.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
@@ -97,7 +98,7 @@ class CreateEvent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 302,
+                        width: MediaQuery.of(context).size.width - 100,
                         child: BarraBack(
                           titulo: 'Evento Nuevo',
                           callback: () {
@@ -417,9 +418,11 @@ class CreateEvent extends StatelessWidget {
                                       id: 1,
                                     ),
                                   );
+                                  balanceController.showPurchaseModal(context);
+                                } else {
+                                  calendarController.postEvent();
                                 }
 
-                                balanceController.showPurchaseModal(context);
                                 // Asegúrate de que el proceso sea esperado
                                 //  await calendarController
                                 //    .postEvent();

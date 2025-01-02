@@ -4,12 +4,13 @@ import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_wdget.dart';
+import 'package:pawlly/modules/integracion/controller/transaccion/transaction_controller.dart';
 
 import '../components/border_redondiado.dart';
 
 class FideCoin extends StatelessWidget {
   FideCoin({super.key});
-
+  final TransactionController controller = Get.put(TransactionController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,17 +64,31 @@ class FideCoin extends StatelessWidget {
                     ),
                   ]),
                 ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      // Crea una lista de movimientos
-                      return const Center(
-                        child: Movimientos(),
-                      );
-                    },
-                    childCount: 20, // Número de elementos en la lista
-                  ),
-                ),
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return const SliverFillRemaining(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        final transaction = controller.transactions[index];
+                        // Crea una lista de movimientos
+                        print('transacciones ${controller.transactions}');
+                        return Center(
+                          child: Movimientos(
+                            amount: transaction.amount.toString(),
+                            description: transaction.description,
+                          ),
+                        );
+                      },
+                      childCount: controller.transactions.length,
+                    ),
+                  );
+                }),
               ],
             ),
           ),
@@ -84,8 +99,12 @@ class FideCoin extends StatelessWidget {
 }
 
 class Movimientos extends StatelessWidget {
-  const Movimientos({
+  final String? description;
+  final String? amount;
+  Movimientos({
     super.key,
+    this.description,
+    this.amount,
   });
 
   @override
@@ -133,16 +152,19 @@ class Movimientos extends StatelessWidget {
                 width: 10,
               ),
               Container(
-                child: const Text(
-                  'Movimiento',
+                width: 200,
+                child: Text(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  description ?? "Movimiento",
                   style: Styles.textDescription,
                 ),
               ),
             ],
           ),
           Container(
-            child: const Text(
-              '20ƒ',
+            child: Text(
+              '$amountƒ',
               style: Styles.textDescription,
             ),
           ),

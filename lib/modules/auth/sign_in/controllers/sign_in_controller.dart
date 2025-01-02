@@ -77,9 +77,11 @@ class SignInController extends GetxController {
   }
 
   googleSignIn() async {
-    isLoading(true);
-    await GoogleSignInAuthService.signInWithGoogle().then((value) async {
-      Map request = {
+    try {
+      isLoading(true);
+      final value = await GoogleSignInAuthService.signInWithGoogle();
+
+      Map<String, dynamic> request = {
         UserKeys.contactNumber: value.mobile,
         UserKeys.email: value.email,
         UserKeys.firstName: value.firstName,
@@ -90,22 +92,21 @@ class SignInController extends GetxController {
         UserKeys.profileImage: value.profileImage,
         UserKeys.loginType: LoginTypeConst.LOGIN_TYPE_GOOGLE,
       };
+
       log('signInWithGoogle REQUEST: $request');
 
       /// Social Login Api
-      await AuthServiceApis.loginUser(request: request, isSocialLogin: true)
-          .then((value) async {
-        handleLoginResponse(loginResponse: value, isSocialLogin: true);
-      }).catchError((e) {
-        isLoading(false);
-
-        toast(e.toString(), print: true);
-      });
-    }).catchError((e) {
-      isLoading(false);
-
+      final loginResponse = await AuthServiceApis.loginUser(
+        request: request,
+        isSocialLogin: true,
+      );
+      handleLoginResponse(loginResponse: loginResponse, isSocialLogin: true);
+    } catch (e) {
+      log('Error during signInWithGoogle: $e');
       toast(e.toString(), print: true);
-    });
+    } finally {
+      isLoading(false);
+    }
   }
 
   appleSignIn() async {

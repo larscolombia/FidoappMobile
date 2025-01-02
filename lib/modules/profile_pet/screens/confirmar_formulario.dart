@@ -213,9 +213,9 @@ class ConfirmarFormulario extends StatelessWidget {
                             ),
                           ),*/
                           const SizedBox(height: 20),
-                          SizedBox(
+                          const SizedBox(
                             width: 302,
-                            child: const Divider(height: 0, thickness: .4),
+                            child: Divider(height: 0, thickness: .4),
                           ),
                           const SizedBox(height: 20),
                           isEdit == false
@@ -283,7 +283,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                     callback: () {
                                       print(
                                           'Informe medico ${jsonEncode(medicalHistoryController.reportData)}');
-                                      return;
+
                                       // Asegúrate de que selectedProfile no sea nulo antes de acceder a sus propiedades
                                       if (petController.selectedProfile.value !=
                                           null) {

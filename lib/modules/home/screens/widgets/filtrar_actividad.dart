@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
+import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 
-class FilterDialog extends StatelessWidget {
-  final HistorialClinicoController controller;
+class FiltrarActividad extends StatelessWidget {
+  final PetActivityController controller;
 
-  const FilterDialog({super.key, required this.controller});
+  const FiltrarActividad({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
-    // Variables para almacenar temporalmente los valores del rango de fechas
+    // Variables para almacenar temporalmente los valores del rango de fechas y el nombre de la actividad
+    final reportNameController = TextEditingController();
     final startDateController = TextEditingController();
     final endDateController = TextEditingController();
-    final reportNameController = TextEditingController();
 
     return AlertDialog(
       backgroundColor: Colors.white,
@@ -29,48 +29,14 @@ class FilterDialog extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 16),
-            const Text(
-              'Ordenar por',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
             const SizedBox(height: 8),
-            Obx(
-              () => Column(
-                children: controller.sortOptions.map((option) {
-                  return Row(
-                    children: [
-                      Checkbox(
-                        value: controller.selectedSortOption.value == option,
-                        onChanged: (bool? value) {
-                          controller.selectSortOption(option);
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                        checkColor: Colors.white,
-                        activeColor: Colors.black,
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(option),
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-            const SizedBox(height: 16),
             const Text(
               'Categoría',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
+                fontFamily: 'Lato',
               ),
             ),
             const SizedBox(height: 8),
@@ -80,9 +46,13 @@ class FilterDialog extends StatelessWidget {
                   return Row(
                     children: [
                       Checkbox(
-                        value: controller.selectedCategory.value == category,
+                        value: controller.diario['category_id'] == category,
                         onChanged: (bool? value) {
-                          controller.selectCategory(category);
+                          if (value == true) {
+                            controller.updateField('category_id', category);
+                          } else {
+                            controller.updateField('category_id', '');
+                          }
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(2),
@@ -100,6 +70,27 @@ class FilterDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
+            const Text(
+              'Ordenar por Fecha',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Obx(
+              () => CheckboxListTile(
+                title: const Text('Fecha de la más reciente a la más antigua'),
+                value: controller.sortByDate.value,
+                onChanged: (bool? value) {
+                  controller.sortByDate.value = value ?? false;
+                },
+                controlAffinity: ListTileControlAffinity.leading,
+                checkColor: Colors.white,
+                activeColor: Colors.black,
+              ),
+            ),
           ],
         ),
       ),
@@ -109,16 +100,9 @@ class FilterDialog extends StatelessWidget {
           callback: () {
             // Extraer valores ingresados
             final reportName = reportNameController.text;
-            final startDate = startDateController.text;
-            final endDate = endDateController.text;
 
             // Aplicar los filtros en el controlador
-            controller.filterHistorialClinico(
-              reportName: reportName.isNotEmpty ? reportName : null,
-              startDate: startDate.isNotEmpty ? startDate : null,
-              endDate: endDate.isNotEmpty ? endDate : null,
-              category: controller.selectedCategory.value,
-            );
+            controller.filterPetActivities(reportName);
 
             Navigator.of(context).pop(); // Cerrar el diálogo
           },
@@ -133,12 +117,11 @@ class FilterDialog extends StatelessWidget {
     );
   }
 
-  static void show(
-      BuildContext context, HistorialClinicoController controller) {
+  static void show(BuildContext context, PetActivityController controller) {
     showDialog(
       context: context,
       builder: (context) {
-        return FilterDialog(controller: controller);
+        return FiltrarActividad(controller: controller);
       },
     );
   }

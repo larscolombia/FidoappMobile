@@ -186,11 +186,11 @@ class Calendar extends StatelessWidget {
   Color _getEventColor(CalendarModel event) {
     switch (event.tipo) {
       case 'medico':
-        return Color.fromARGB(255, 165, 149, 3);
+        return const Color(0xFFFF4931);
       case 'evento':
-        return const Color.fromARGB(255, 20, 84, 136);
+        return const Color(0xFFFC9214);
       case 'entrenamiento':
-        return const Color.fromARGB(255, 158, 39, 31);
+        return const Color(0xFF3177FF);
       default:
         return Colors.grey;
     }

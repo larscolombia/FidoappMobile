@@ -154,13 +154,13 @@ class SignInScreen extends StatelessWidget {
                                   signInController.googleSignIn();
                                   print('google');
                                 },
-                                icon: const Icon(
-                                  Icons.person,
-                                  color: Color.fromARGB(255, 146, 160, 172),
-                                ),
+                                icon: Image.asset('assets/icons/google.png'),
                                 label: Text(
                                   locale.value.signInWithGoogle,
-                                  style: const TextStyle(color: Colors.black),
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: 'Lato',
+                                      fontSize: 14),
                                 )),
                           ),
                           Container(

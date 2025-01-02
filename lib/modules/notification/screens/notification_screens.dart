@@ -6,7 +6,6 @@ import 'package:pawlly/modules/integracion/model/notigicaciones/notificaciones.d
 import 'package:pawlly/modules/notification/controllers/notification_controller.dart';
 import 'package:pawlly/modules/notification/screens/widgets/app_bar_notifications.dart';
 import 'package:pawlly/styles/styles.dart';
-import 'package:pusher_client/pusher_client.dart';
 
 class NotificationsScreen extends StatelessWidget {
   final NotificationsController controller = Get.put(NotificationsController());

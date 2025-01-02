@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -10,11 +12,20 @@ class NotificationController extends GetxController {
       .obs; // Usamos RxList para almacenar las notificaciones
   var isLoading = false.obs;
   final String baseUrl = "$DOMAIN_URL/api";
-
+  Timer? _pollingTimer;
   @override
   void onInit() {
     super.onInit();
     fetchNotifications();
+    //startPolling();
+  }
+
+  void startPolling() {
+    // Iniciar el temporizador para llamar a fetchNotifications cada 5 segundos
+    _pollingTimer = Timer.periodic(Duration(seconds: 15), (timer) {
+      print('notifications con polling');
+      fetchNotifications();
+    });
   }
 
   Future<void> fetchNotifications() async {

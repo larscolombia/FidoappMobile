@@ -20,12 +20,15 @@ class PetActivityController extends GetxController {
       Rxn<PetActivity>(); // Observable para almacenar una sola actividad
   var url = '$DOMAIN_URL/api/get-diary';
   var createUrl = "$DOMAIN_URL/api/training-diaries";
-
+  var categories = ['Actividad', 'Informe médico', 'Entrenamiento'].obs;
   var diario = {}.obs;
-
+  var sortByDate = false.obs;
   @override
   void onInit() {
     super.onInit();
+    if (homeController.selectedProfile.value != null) {
+      fetchPetActivities(homeController.selectedProfile.value!.id.toString());
+    }
     initDiario();
   }
 
@@ -69,7 +72,7 @@ class PetActivityController extends GetxController {
           List<dynamic> data = jsonResponse['data'];
           activities.value =
               data.map((activity) => PetActivity.fromJson(activity)).toList();
-          print('actividades ${activities.value}');
+          // print('actividades ${jsonEncode(activities)}');
           filteredActivities.value = activities;
         } else {
           print(
@@ -295,4 +298,42 @@ class PetActivityController extends GetxController {
   }
 
   //actulizar historial
+  void filterPetActivities(String? reportName) {
+    var filtered = activities.toList(); // Convertir a List<PetActivity>
+
+    if (reportName != null && reportName.isNotEmpty) {
+      filtered = filtered.where((activity) {
+        return activity.actividad
+                ?.toLowerCase()
+                .contains(reportName.toLowerCase()) ??
+            false;
+      }).toList()
+        ..sort((a, b) => a.actividad
+            .toLowerCase()
+            .compareTo(b.actividad.toLowerCase())); // Ordenar alfabéticamente
+    }
+
+    if (diario['category_id'].isNotEmpty) {
+      filtered = filtered.where((activity) {
+        return activity.categoryName?.toLowerCase() ==
+            diario['category_id'].toLowerCase();
+      }).toList(); // Convertir a List<PetActivity>
+    }
+
+    if (sortByDate.value) {
+      filtered.sort((a, b) => DateTime.parse(convertDateFormat(b.date))
+          .compareTo(DateTime.parse(convertDateFormat(a.date))));
+    }
+
+    filteredActivities.value =
+        filtered.toList().obs; // Convertir a RxList<PetActivity>
+  }
+
+  String convertDateFormat(String date) {
+    List<String> parts = date.split('-');
+    if (parts.length == 3) {
+      return '${parts[2]}-${parts[1]}-${parts[0]}';
+    }
+    return date; // Si el formato no es el esperado, retorna la fecha original.
+  }
 }

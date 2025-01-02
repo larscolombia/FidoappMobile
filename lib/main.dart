@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/app_theme.dart';
@@ -10,6 +9,7 @@ import 'package:pawlly/configs.dart';
 import 'package:pawlly/locale/app_localizations.dart';
 import 'package:pawlly/locale/language_en.dart';
 import 'package:pawlly/locale/languages.dart';
+import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/modules/splash/splash_screen.dart';
 import 'package:pawlly/modules/welcome/controllers/welcome_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
@@ -20,13 +20,13 @@ import 'package:pawlly/utils/local_storage.dart';
 Rx<BaseLanguage> locale = LanguageEn().obs;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final NotificationController notificationController = Get.put(
+    NotificationController(),
+  );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-
-  Stripe.publishableKey =
-      'sk_test_51I3R8hFWfM6dcSbz41CTp614CT2MCUOvFKyaY9XHpdxov8nn34SpTq59hoMOLjeMgiXTsfyi9PxgskQoW7UTItng00KWw2a7Ye'; //credenciales de stripe
-
+  //PusherService();
   await initialize(aLocaleLanguageList: languageList());
   selectedLanguageCode(
       getValueFromLocal(SELECTED_LANGUAGE_CODE) ?? DEFAULT_LANGUAGE);
@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Estamos en el inicio');
     return Obx(() {
       return GetMaterialApp(
         initialRoute: Routes.WELCOME,

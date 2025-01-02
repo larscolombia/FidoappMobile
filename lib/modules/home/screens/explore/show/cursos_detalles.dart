@@ -87,7 +87,6 @@ class CursosDetalles extends StatelessWidget {
                       children: [
                         const SizedBox(height: 50),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
                           child: BarraBack(
                             titulo: curso.name,
                             subtitle: dificultad(curso.difficulty),
@@ -254,8 +253,8 @@ class CursosDetalles extends StatelessWidget {
                               padding: const EdgeInsets.only(bottom: 20),
                               child: MediaCard(
                                 imageUrl: curso.image,
-                                title: 'pendiente',
-                                duration: 'pendiente',
+                                title: curso.name,
+                                duration: curso.duration,
                               ),
                             ),
                           );

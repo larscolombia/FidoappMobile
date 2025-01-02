@@ -77,7 +77,7 @@ class CursoVideo extends StatelessWidget {
                   children: [
                     // Barra de regreso y título
                     SizedBox(
-                      width: 305,
+                      width: MediaQuery.of(context).size.width - 30,
                       child: BarraBack(
                         titulo: name,
                         color: Colors.black,
@@ -101,9 +101,9 @@ class CursoVideo extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     // Descripción
-                    SizedBox(
+                    const SizedBox(
                       width: 305,
-                      child: const Text(
+                      child: Text(
                         "Descripción",
                         style: TextStyle(
                           fontSize: 14,

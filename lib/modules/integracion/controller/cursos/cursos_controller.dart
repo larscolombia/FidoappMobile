@@ -66,4 +66,20 @@ class CourseController extends GetxController {
   Course getCourseById(int id) {
     return courses.firstWhere((course) => course.id == id);
   }
+
+  Video? findVideoById({required int courseId, required String videoId}) {
+    try {
+      // Obtén el curso por su ID
+      final course = getCourseById(courseId);
+
+      // Busca el video dentro de la lista de videos del curso
+      return course.videos.firstWhere(
+        (video) => video.id == videoId,
+        orElse: () => throw Exception("Video no encontrado."),
+      );
+    } catch (e) {
+      print("Error buscando el video: $e");
+      return null;
+    }
+  }
 }

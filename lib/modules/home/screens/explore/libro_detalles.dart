@@ -265,6 +265,7 @@ class LibroDetalles extends StatelessWidget {
                                   child: ButtonDefaultWidget(
                                     title: 'Comprar',
                                     callback: () {
+                                      /** 
                                       productController.setProduct(
                                         ProductoPayModel(
                                           precio: econtroller
@@ -287,6 +288,11 @@ class LibroDetalles extends StatelessWidget {
                                       );
                                       balanceController
                                           .showPurchaseModal(context);
+                                          */
+                                      var url =
+                                          econtroller.selectedEBook.value.url;
+                                      econtroller
+                                          .openStripeCheckout(url.toString());
                                     },
                                   ),
                                 ),

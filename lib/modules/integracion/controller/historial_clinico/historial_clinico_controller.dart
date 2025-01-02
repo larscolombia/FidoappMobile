@@ -157,7 +157,7 @@ class HistorialClinicoController extends GetxController {
   Future<void> fetchHistorialClinico(int petId) async {
     final url = '$DOMAIN_URL/api/medical-history-per-pet?pet_id=$petId';
 
-    //  isLoading.value = true;
+    isLoading.value = true;
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -191,6 +191,7 @@ class HistorialClinicoController extends GetxController {
 
   void selectSortOption(String option) {
     selectedSortOption.value = option;
+
     filterHistorialClinico();
   }
 
@@ -199,49 +200,81 @@ class HistorialClinicoController extends GetxController {
     filterHistorialClinico();
   }
 
-  void filterHistorialClinico([String? reportName]) {
+  void filterHistorialClinico({
+    String? reportName,
+    String? category,
+    String? startDate,
+    String? endDate,
+  }) {
     var filtered = historialClinico;
 
+    // Filtrar por nombre
     if (reportName != null && reportName.isNotEmpty) {
-      /** 
       filtered = filtered
-          .where((historial) {
-            return historial.reportName
-                .toLowerCase()
-                .contains(reportName.toLowerCase());
-          })
+          .where((historial) =>
+              historial.reportName
+                  ?.toLowerCase()
+                  .contains(reportName.toLowerCase()) ??
+              false)
           .toList()
-          .obs; // Convert to RxList*/
+          .obs;
     }
 
-    if (selectedCategory.isNotEmpty) {
-      /**
+    // Filtrar por categoría (tipo: Vacuna, Examen, Consulta)
+    if (category != null && category.isNotEmpty) {
       filtered = filtered
-          .where((historial) {
-            return historial.categoryName.toLowerCase() ==
-                selectedCategory.value.toLowerCase();
-          })
+          .where((historial) =>
+              historial.categoryName?.toLowerCase() == category.toLowerCase())
           .toList()
-          .obs; // Convert to RxList
-          **/
+          .obs;
     }
 
-    filteredHistorialClinico.value = _sortHistorialClinico(filtered)
-        .toList()
-        .obs; // Ensure final assignment is an RxList
+    // Filtrar por rango de fechas
+    if (startDate != null &&
+        startDate.isNotEmpty &&
+        endDate != null &&
+        endDate.isNotEmpty) {
+      filtered = filtered
+          .where((historial) {
+            final fechaAplicacion =
+                DateTime.tryParse(historial.fechaAplicacion ?? '');
+            final start = DateTime.tryParse(startDate);
+            final end = DateTime.tryParse(endDate);
+
+            if (fechaAplicacion != null && start != null && end != null) {
+              return fechaAplicacion.isAfter(start) &&
+                  fechaAplicacion.isBefore(end);
+            }
+            return false;
+          })
+          .toList()
+          .obs;
+    }
+
+    // Asignar resultados filtrados
+    filteredHistorialClinico.value = _sortHistorialClinico(filtered).obs;
   }
 
   List<HistorialClinico> _sortHistorialClinico(List<HistorialClinico> history) {
-    if (selectedSortOption.value == "Nombre") {
+    if (selectedSortOption.value == "Fecha") {
+      // Ordenar por fecha en orden descendente
+      history.sort((a, b) {
+        final dateA =
+            DateTime.tryParse(a.fechaAplicacion ?? '') ?? DateTime(1900);
+        final dateB =
+            DateTime.tryParse(b.fechaAplicacion ?? '') ?? DateTime(1900);
+        return dateB.compareTo(dateA); // Más recientes primero
+      });
+    } else if (selectedSortOption.value == "Nombre") {
+      // Ordenar alfabéticamente por nombre
       history
           .sort((a, b) => (a.reportName ?? '').compareTo(b.reportName ?? ''));
-    } else if (selectedSortOption.value == "Fecha") {
-      history.sort((a, b) =>
-          (a.fechaAplicacion ?? '').compareTo(b.fechaAplicacion ?? ''));
     } else if (selectedSortOption.value == "Tipo") {
+      // Agrupar por tipo (Vacuna, Antigarrapata, etc.)
       history
           .sort((a, b) => (a.reportType ?? '').compareTo(b.reportType ?? ''));
     }
+
     return history;
   }
 

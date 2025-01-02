@@ -1,13 +1,18 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pawlly/models/training_model.dart';
+import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
+import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_usuarios.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class TrainingVertical extends StatelessWidget {
   final List<CursosUsuarios> cursoslista;
-
+  final CourseController controller = Get.put(CourseController());
   // Constructor que recibe la lista de entrenamientos
-  const TrainingVertical({super.key, required this.cursoslista});
+  TrainingVertical({super.key, required this.cursoslista});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +23,22 @@ class TrainingVertical extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             // Acción cuando se hace tap en un entrenamiento
-            print(
-                'Nombre del container: ${trainingModel.name} - ID: ${trainingModel.id}');
+            var video = controller.findVideoById(
+                courseId: trainingModel.id,
+                videoId: trainingModel.id.toString());
+
+            Get.to(CursoVideo(
+              videoId: video?.url ?? '',
+              cursoId: trainingModel.id.toString(),
+              name: trainingModel.name,
+              description: trainingModel.description,
+              image: trainingModel.image,
+              duration: trainingModel.duration,
+              price: trainingModel.price,
+              difficulty: trainingModel.difficulty,
+              videoUrl: video?.url ?? '',
+              tipovideo: 'video',
+            ));
           },
           child: Container(
             margin: const EdgeInsets.only(bottom: 16),
@@ -70,9 +89,9 @@ class TrainingVertical extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Nivel no especificados',
-                        style: TextStyle(
+                      Text(
+                        controller.dificultad(trainingModel.difficulty),
+                        style: const TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 12,
                           fontWeight: FontWeight.w400,

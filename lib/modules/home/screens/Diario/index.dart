@@ -14,12 +14,7 @@ class DiarioMascotas extends StatelessWidget {
   DiarioMascotas({super.key});
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (homeController.selectedProfile.value != null) {
-        controller.fetchPetActivities(
-            homeController.selectedProfile.value!.id.toString());
-      }
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
 
     return Obx(() {
       if (controller.isLoading.value) {
@@ -76,7 +71,7 @@ class DiarioMascotas extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    actividad.notas,
+                    actividad.categoryName,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(

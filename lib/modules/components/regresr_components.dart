@@ -20,7 +20,8 @@ class BarraBack extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 1),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -39,8 +40,7 @@ class BarraBack extends StatelessWidget {
             ),
           ),
           // Aquí envolvemos el contenido del texto en un Expanded
-          Container(
-            width: MediaQuery.of(context).size.width - 120,
+          SizedBox(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

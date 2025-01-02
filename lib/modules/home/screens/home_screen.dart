@@ -17,6 +17,7 @@ import 'package:pawlly/modules/home/screens/pages/resources_list/video_list.dart
 import 'package:pawlly/modules/home/screens/pages/training.dart';
 import 'package:pawlly/modules/home/screens/pages/utilities.dart';
 import 'package:pawlly/modules/home/screens/training/commands.dart';
+import 'package:pawlly/modules/home/screens/widgets/filtrar_actividad.dart';
 import 'package:pawlly/modules/home/screens/widgets/menu_of_navigation.dart';
 import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
 
@@ -193,10 +194,10 @@ class HomeScreen extends StatelessWidget {
           width: MediaQuery.of(context).size.width,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: 250,
+                width: 280,
                 child: InputText(
                   placeholder: 'Buscar actividades',
                   onChanged: (String value) =>
@@ -204,22 +205,45 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              FloatingActionButton(
-                onPressed: () {
-                  // Acción cuando el FAB es presionado
-                  Get.to(FormularioDiario());
-                },
-                shape: const CircleBorder(),
-                backgroundColor: Styles.primaryColor,
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // FilterDialog.show(context, medicalHistoryController);
+                    FiltrarActividad.show(context, historialClinicoController);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    backgroundColor: Styles.fiveColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    minimumSize: const Size(48, 48),
+                  ),
+                  child: const Icon(
+                    Icons.filter_list,
+                    color: Styles.iconColorBack,
+                    size: 24,
+                  ),
                 ),
               ),
             ],
           ),
         ),
         const SizedBox(height: 16),
+        Container(
+          child: FloatingActionButton(
+            onPressed: () {
+              // Acción cuando el FAB es presionado
+              Get.to(FormularioDiario());
+            },
+            shape: const CircleBorder(),
+            backgroundColor: Styles.primaryColor,
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+          ),
+        ),
         Container(
           child: RecargaComponente(
             callback: () {

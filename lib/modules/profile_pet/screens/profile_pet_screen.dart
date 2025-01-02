@@ -84,9 +84,12 @@ class ProfilePetScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            BarraBack(
-                              titulo: "Perfil de la Mascotas",
-                              callback: () => Get.off(HomeScreen()),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 100,
+                              child: BarraBack(
+                                titulo: "Perfil de la Mascotas",
+                                callback: () => Get.off(HomeScreen()),
+                              ),
                             ),
                             if (AuthServiceApis.dataCurrentUser.userType ==
                                 'user')

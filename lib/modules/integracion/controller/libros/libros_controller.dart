@@ -4,6 +4,7 @@ import 'package:pawlly/configs.dart';
 import 'dart:convert';
 import 'package:pawlly/modules/integracion/model/libros/libros_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EBookController extends GetxController {
   var ebooks = <EBook>[].obs; // Lista de e-books
@@ -20,6 +21,17 @@ class EBookController extends GetxController {
   void onInit() {
     super.onInit();
     fetchEBooks();
+  }
+
+  Future<void> openStripeCheckout(String url) async {
+    final Uri uri = Uri.parse(url); // Convierte la URL en un objeto Uri
+
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.externalApplication, // Abre en el navegador externo
+    )) {
+      throw 'No se pudo abrir la URL: $url';
+    }
   }
 
   // Método para obtener los e-books desde la API

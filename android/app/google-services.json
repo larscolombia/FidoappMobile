@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "775972566850",
-    "project_id": "pawlly-flutter",
-    "storage_bucket": "pawlly-flutter.appspot.com"
+    "project_number": "193971107292",
+    "project_id": "beon24-5b793",
+    "storage_bucket": "beon24-5b793.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:775972566850:android:b14b594feb22508dc5badb",
+        "mobilesdk_app_id": "1:193971107292:android:b92dbaf645c34eadf78b19",
         "android_client_info": {
-          "package_name": "com.pawlly.customer"
+          "package_name": "com.fidoapp.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "775972566850-bqbak34oggeobvbcp5cls9cs5q3vugml.apps.googleusercontent.com",
+          "client_id": "193971107292-dv5h0aap00d96ef6qv06hb2e0nk78mef.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC98CJ9qJtCnZoSh523huAjVAYSo4_6tGE"
+          "current_key": "AIzaSyBqv0QYCvuWkYfBD6tED_LQef8kbh-XzOY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "775972566850-bqbak34oggeobvbcp5cls9cs5q3vugml.apps.googleusercontent.com",
+              "client_id": "193971107292-dv5h0aap00d96ef6qv06hb2e0nk78mef.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

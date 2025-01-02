@@ -98,11 +98,14 @@ class DashboardScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          BarraBack(
-                            titulo: 'Dashboard',
-                            callback: () {
-                              Get.off(HomeScreen());
-                            },
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: BarraBack(
+                              titulo: 'Dashboard',
+                              callback: () {
+                                Get.off(HomeScreen());
+                              },
+                            ),
                           ),
                         ],
                       ),

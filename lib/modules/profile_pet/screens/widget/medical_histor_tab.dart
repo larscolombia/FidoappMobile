@@ -136,7 +136,9 @@ class MedicalHistoryTab extends StatelessWidget {
                     iconPosition: IconPosition.left,
                     height: 60.0, // Altura personalizada
                     onChanged: (value) {
-                      medicalHistoryController.filterHistorialClinico(value);
+                      medicalHistoryController.filterHistorialClinico(
+                        reportName: value,
+                      );
                     },
                   ),
                 ),
@@ -175,10 +177,12 @@ class MedicalHistoryTab extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Obx(() {
-              final historial = medicalHistoryController.historialClinico;
+              final historial =
+                  medicalHistoryController.filteredHistorialClinico;
               if (medicalHistoryController.isLoading.value) {
                 return const Center(child: CircularProgressIndicator());
               }
+              // ignore: invalid_use_of_protected_member
               if (historial.value.isEmpty) {
                 return const Center(child: Text('No hay datos disponibles.'));
               }
