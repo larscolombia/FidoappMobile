@@ -20,7 +20,7 @@ class BanerComentarios extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 209,
-      width: MediaQuery.of(context).size.width - 50,
+      width: 305,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(13),
           border: Border.all(
@@ -90,7 +90,7 @@ class Estadisticas extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      width: MediaQuery.of(context).size.width - 100,
+      width: 305,
       height: 150,
       decoration: BoxDecoration(
         color: Styles.colorContainer,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/seleccionar_mascota.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -24,21 +25,15 @@ class Pacientes extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              color: Styles.colorContainer,
-            ),
-            height: 200,
-            child: HeaderNotification(),
-          ),
+          Positioned(
+                      top: 0, left: 0, right: 0, child: HeaderNotification()),
           Expanded(
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
+                  topLeft: Radius.circular(0),
+                  topRight: Radius.circular(0),
                 ),
               ),
               child: CustomScrollView(
@@ -53,7 +48,7 @@ class Pacientes extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
+                            width: 350,
                             child: BarraBack(
                               titulo: 'Registro de Pacientes',
                               callback: () {
@@ -63,16 +58,16 @@ class Pacientes extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                           SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: InputText(
-                              placeholder: 'Realizar búsqueda',
+                            width: 350,
+                            child: InputTextWithIcon(
+                              hintText: 'Realiza tu búsqueda',
+                              iconPath: 'assets/icons/search.png',
+                              iconPosition: IconPosition.left,
+                              height: 60.0, // Altura personalizada
                               onChanged: (value) => print(value),
-                              fondoColor: Colors.white,
-                              prefiIcon: const Icon(
-                                Icons.search,
-                              ),
                             ),
                           ),
+                          
                           const SizedBox(
                             height: 20,
                           ),

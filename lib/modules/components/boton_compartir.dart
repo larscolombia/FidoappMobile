@@ -69,9 +69,10 @@ class BotonCompartir extends StatelessWidget {
             child: GestureDetector(
               onTap: onCompartir,
               child: Padding(
-                padding: const EdgeInsets.all(1.0),
+                padding: const EdgeInsets.only(left: 125.0, right:10.0, bottom: 10.0),
                 child: Container(
                   height: 32,
+                  width: 220,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     color: const Color.fromARGB(255, 245, 245, 245),
@@ -85,12 +86,12 @@ class BotonCompartir extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          title ?? "Compartir",
+                          title ?? "Compartir video",
                           style: const TextStyle(
-                            fontSize: 10,
+                            fontSize: 12,
                             color: Colors.black,
                             fontFamily: 'Lato',
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w700,
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),

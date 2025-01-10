@@ -47,7 +47,12 @@ class BalanceWidget extends StatelessWidget {
                         Get.to(RecargarSaldoScreen());
                       },
                       child: const Text('Recargar FidoCoins',
-                          style: Styles.textDescription),
+                              style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Leto',
+                              fontWeight: FontWeight.w700
+                            ),
+                          ),
                     ),
                     const SizedBox(
                       height: 2,
@@ -101,11 +106,12 @@ class Balance extends StatelessWidget {
               children: [
                 const SizedBox(
                   child: Text(
-                    'FidoCoins Disponible ',
+                    'FidoCoins Disponibles',
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontSize: 14,
-                      fontFamily: 'Roboto',
+                      fontFamily: 'Leto',
+                      fontWeight: FontWeight.w700
                     ),
                   ),
                 ),

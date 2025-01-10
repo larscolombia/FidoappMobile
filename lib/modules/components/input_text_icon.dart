@@ -29,7 +29,7 @@ class InputTextWithIcon extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey, width: 0.2),
-        borderRadius: BorderRadius.circular(40.0),
+        borderRadius: BorderRadius.circular(16.0),
       ),
       child: Row(
         children: [

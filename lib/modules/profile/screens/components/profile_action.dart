@@ -19,12 +19,13 @@ class ProfileActions extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: MediaQuery.of(context).size.width - 100,
+          width: 355,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 164,
+                width: 355,
                 child: BotonCompartir(
                   modo: 'compartir',
                   title: 'Compartir perfil',
@@ -61,7 +62,7 @@ class ProfileActions extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Otras áreas de especialización',
+                  'Otras especializaciones',
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,

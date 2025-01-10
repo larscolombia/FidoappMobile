@@ -55,9 +55,9 @@ class FideCoin extends StatelessWidget {
                       child: const Text(
                         'Mis Movimientos',
                         style: TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            fontFamily: 'PoetsenOne',
+                            fontWeight: FontWeight.w800,
                             color: Styles
                                 .primaryColor), // Cambia esto a Styles.textDescription
                       ),
@@ -115,16 +115,11 @@ class Movimientos extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       width: MediaQuery.of(context).size.width - 30,
       decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(.1),
-            blurRadius: 1,
-            offset: const Offset(0, 1),
-            spreadRadius: 1,
-          )
-        ],
-        borderRadius: BorderRadius.circular(3),
+        border: Border.all(
+          width: 1,
+          color: Color(0xFFEFEFEFEF),
+        ),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

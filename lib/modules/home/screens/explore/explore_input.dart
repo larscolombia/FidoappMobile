@@ -139,7 +139,7 @@ class ExploreInput extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '${libro.price}\$' ?? '0.00',
+                              '\$${libro.price}' ?? '0.00',
                               style: const TextStyle(
                                 fontFamily: 'Lato',
                                 fontSize: 12,

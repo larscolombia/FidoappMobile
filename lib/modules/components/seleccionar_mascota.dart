@@ -11,7 +11,7 @@ class SeleccionarMascota extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 300,
+        width: 350,
         padding: const EdgeInsets.all(10),
         margin: const EdgeInsets.only(top: 10),
         decoration: BoxDecoration(
