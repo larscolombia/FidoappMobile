@@ -28,6 +28,7 @@ import 'package:pawlly/modules/integracion/controller/calendar_controller/calend
 
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
+import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_controller.dart';
 
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 
@@ -52,6 +53,9 @@ class HomeScreen extends StatelessWidget {
   final BlogController blogController = Get.put(BlogController());
   //eventos del calendario
   final CalendarController calendarController = Get.put(CalendarController());
+  //herramientas
+  final HerramientasController _herramientasController =
+      Get.put(HerramientasController());
   @override
   Widget build(BuildContext context) {
     homeController.SelectType(1);

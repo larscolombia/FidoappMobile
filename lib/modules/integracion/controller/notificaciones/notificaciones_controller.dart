@@ -19,7 +19,7 @@ class NotificationController extends GetxController {
   void onInit() {
     super.onInit();
     fetchNotifications();
-    startPolling(); // pisa papel notificaciones poolling
+    //startPolling(); // pisa papel notificaciones poolling
   }
 
   void startPolling() {

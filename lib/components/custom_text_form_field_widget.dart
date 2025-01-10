@@ -4,7 +4,7 @@ import 'package:pawlly/styles/styles.dart';
 
 class CustomTextFormFieldWidget extends StatefulWidget {
   final String placeholder;
-  final String icon;
+  final String? icon; // El icono ahora es opcional
   final TextEditingController? controller;
   final bool? enabled;
   final bool? obscureText;
@@ -12,16 +12,17 @@ class CustomTextFormFieldWidget extends StatefulWidget {
   final List<String? Function(String?)>? validators;
   final AutovalidateMode autovalidateMode;
   final Function(String)? callback;
+
   const CustomTextFormFieldWidget({
     super.key,
     required this.placeholder,
-    required this.icon,
+    this.icon, // Elimina el `required`
     required this.controller,
     this.enabled,
     this.obscureText = false,
     this.isNumeric = false,
     this.validators,
-    this.autovalidateMode = AutovalidateMode.disabled, // Valor por defecto
+    this.autovalidateMode = AutovalidateMode.disabled,
     this.callback,
   });
 
@@ -83,14 +84,16 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
           borderRadius: BorderRadius.circular(8.0),
           borderSide: const BorderSide(color: Colors.red, width: 1.0),
         ),
-        prefixIcon: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            widget.icon,
-            width: 20,
-            height: 20,
-          ),
-        ),
+        prefixIcon: widget.icon != null
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  widget.icon!,
+                  width: 20,
+                  height: 20,
+                ),
+              )
+            : null, // Si `icon` es null, no se muestra nada
         labelText: hasText ? null : widget.placeholder,
         labelStyle: const TextStyle(
           color: Colors.black,
@@ -98,7 +101,6 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
           fontFamily: 'Lato',
           fontWeight: FontWeight.w500,
         ),
-        // Aquí se encuentra el 'suffixIcon' dentro de decoration
         suffixIcon: widget.obscureText == true
             ? IconButton(
                 icon: Icon(

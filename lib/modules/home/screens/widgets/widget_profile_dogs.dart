@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/components/custom_checkbox.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
@@ -81,6 +82,25 @@ class ProfileModal extends StatelessWidget {
                           ),
                         )
                       : const SizedBox(),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      CustomCheckbox(
+                        onChanged: (value) {},
+                        isChecked: false,
+                      ),
+                      const SizedBox(width: 16),
+                      const Text(
+                        "Ver información de todos los perros",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Styles.primaryColor,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 10),
                   RecargaComponente(
                     callback: () {
@@ -187,13 +207,31 @@ class ProfileModal extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        profile.name,
-                                        style: const TextStyle(
-                                          fontFamily: 'Lato',
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Styles.blackColor,
+                                      Container(
+                                        width: 140,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              profile.name,
+                                              style: const TextStyle(
+                                                fontFamily: 'Lato',
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: Styles.blackColor,
+                                              ),
+                                            ),
+                                            CustomCheckbox(
+                                              onChanged: (value) {
+                                                controller
+                                                    .updateProfile(profile);
+                                                Navigator.of(context)
+                                                    .pop(); // Cierra el modal
+                                              },
+                                              isChecked: isSelected,
+                                            ),
+                                          ],
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -206,7 +244,6 @@ class ProfileModal extends StatelessWidget {
                                           color: Styles.blackColor,
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
                                       Text(
                                         profile.gender,
                                         style: const TextStyle(
@@ -216,7 +253,7 @@ class ProfileModal extends StatelessWidget {
                                           color: Styles.iconColorBack,
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
+                                      const SizedBox(height: 12),
                                       SizedBox(
                                         width: 140,
                                         height: 34,

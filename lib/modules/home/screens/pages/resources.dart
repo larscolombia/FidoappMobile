@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_controller.dart';
 import 'package:pawlly/modules/integracion/controller/recursos_select.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -13,6 +14,7 @@ class Resources extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final RecursosSelect selectRecursos = Get.put(RecursosSelect());
+
     // Lista de recursos (ahora fija, no dinámica)
     final List<Map<String, dynamic>> resources = [
       {'id': 5, 'icon': 'assets/icons/ebook_icon.png', 'label': 'Libros'},

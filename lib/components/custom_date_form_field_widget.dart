@@ -6,12 +6,16 @@ class CustomDateFormFieldWidget extends StatefulWidget {
   final String placeholder;
   final TextEditingController? controller;
   final bool? enabled;
+  final Color placeholderColor; // Color del placeholder
+  final String? imagePath; // Ruta de la imagen para el prefixIcon
 
   const CustomDateFormFieldWidget({
     super.key,
     required this.placeholder,
     required this.controller,
     this.enabled,
+    this.placeholderColor = Colors.black, // Valor por defecto: negro
+    this.imagePath, // Imagen opcional para el prefixIcon
   });
 
   @override
@@ -26,6 +30,7 @@ class _CustomDateFormFieldWidgetState extends State<CustomDateFormFieldWidget> {
       valueListenable: widget.controller!,
       builder: (context, value, child) {
         bool hasText = value.text.isNotEmpty;
+
         return GestureDetector(
           onTap: () async {
             if (widget.enabled ?? true) {
@@ -78,15 +83,30 @@ class _CustomDateFormFieldWidgetState extends State<CustomDateFormFieldWidget> {
                     width: 1.0,
                   ),
                 ),
-                prefixIcon: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.calendar_today,
-                      color: Styles.iconColorBack,
-                    )),
+                // Usar imagen como prefixIcon si está definida
+                prefixIcon: widget.imagePath != null
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          widget.imagePath!,
+                          width: 24,
+                          height: 24,
+                        ),
+                      )
+                    : const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.calendar_today,
+                          color: Styles.iconColorBack,
+                        ),
+                      ),
                 labelText: hasText ? null : widget.placeholder,
-                labelStyle: const TextStyle(
-                  color: Styles.iconColorBack,
+                labelStyle: TextStyle(
+                  color: widget
+                      .placeholderColor, // Cambiar el color del placeholder
+                  fontSize: 14,
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

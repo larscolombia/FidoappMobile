@@ -105,7 +105,7 @@ class AddPetScreen extends StatelessWidget {
                                     width: 10,
                                   ),
                                   const Text(
-                                    'Lista de Mascotas',
+                                    'Información General',
                                     style: Styles.dashboardTitle20,
                                   ),
                                 ],
@@ -122,7 +122,6 @@ class AddPetScreen extends StatelessWidget {
                         child: CustomTextFormFieldWidget(
                           controller: controller.petName,
                           placeholder: locale.value.petName,
-                          icon: 'assets/icons/profile.png',
                           validators: [
                             (value) => (value?.isEmpty ?? true)
                                 ? 'El nombre es requerido'
@@ -137,7 +136,6 @@ class AddPetScreen extends StatelessWidget {
                         child: CustomTextFormFieldWidget(
                           controller: controller.petDescription,
                           placeholder: locale.value.addYourPetInformation,
-                          icon: 'assets/icons/profile.png',
                         ),
                       ),
                       // Selector de imagen
@@ -177,9 +175,9 @@ class AddPetScreen extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(top: 20),
                         child: CustomDateFormFieldWidget(
-                          controller: controller.petBirthDateController,
-                          placeholder: locale.value.birthday,
-                        ),
+                            controller: controller.petBirthDateController,
+                            placeholder: 'Fecha de aplicación',
+                            imagePath: 'assets/icons/calendar2.png'),
                       ),
                       // Campo para seleccionar la raza de la mascota
                       Container(
@@ -242,7 +240,7 @@ class AddPetScreen extends StatelessWidget {
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w400,
-                                          fontFamily: 'PoetsenOne',
+                                          fontFamily: 'Lato',
                                         ),
                                       ),
                                     ),
@@ -280,7 +278,7 @@ class AddPetScreen extends StatelessWidget {
                                         style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w400,
-                                          fontFamily: 'PoetsenOne',
+                                          fontFamily: 'Lato',
                                         ),
                                       ),
                                     ),
