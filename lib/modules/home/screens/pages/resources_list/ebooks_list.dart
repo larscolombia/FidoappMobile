@@ -15,11 +15,11 @@ class EbooksList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: 305,
+        width: 350,
         child: Column(
           children: [
             SizedBox(
-              width: 305,
+              width: 350,
               child: InputTextWithIcon(
                 hintText: 'Realiza tu búsqueda',
                 iconPath: 'assets/icons/search.png',
@@ -32,7 +32,6 @@ class EbooksList extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 16),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Obx(() {
@@ -159,7 +158,7 @@ class BooksComponents extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontFamily: 'Lato',
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: FontWeight.w700,
                 color: Colors.black,
               ),
@@ -175,16 +174,16 @@ class BooksComponents extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                   color: Styles.iconColorBack,
                 ),
               ),
               Text(
-                '${petItem.price}\$ ',
+                '\$${petItem.price} ',
                 style: const TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 16.5,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                   color: Styles.iconColorBack,
                 ),
               ),

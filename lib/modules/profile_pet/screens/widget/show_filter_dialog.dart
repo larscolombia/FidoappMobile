@@ -105,7 +105,7 @@ class FilterDialog extends StatelessWidget {
       ),
       actions: [
         ButtonDefaultWidget(
-          title: 'Aplicar Filtros',
+          title: 'Filtrar',
           callback: () {
             // Extraer valores ingresados
             final reportName = reportNameController.text;

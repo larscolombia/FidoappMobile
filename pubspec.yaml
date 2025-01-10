@@ -64,6 +64,7 @@ dependencies:
   cached_network_image: ^3.4.1
   share_plus: ^10.1.2
 dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
 
@@ -112,3 +113,8 @@ flutter:
     - assets/icons/upi_payment/
     - assets/images/brand/
     - assets/lottie/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/fidoapp.png"

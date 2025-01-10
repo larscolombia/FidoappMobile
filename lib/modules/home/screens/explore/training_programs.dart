@@ -120,7 +120,7 @@ class TrainingPrograms extends StatelessWidget {
                               // Botón "Ver detalles"
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.start,
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {
@@ -133,11 +133,11 @@ class TrainingPrograms extends StatelessWidget {
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Styles.primaryColor,
                                       padding: const EdgeInsets.symmetric(
-                                        horizontal: 16,
-                                        vertical: 8,
+                                        horizontal: 35,
+                                        vertical: 2,
                                       ),
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
                                     ),
                                     child: const Row(
@@ -147,14 +147,14 @@ class TrainingPrograms extends StatelessWidget {
                                           style: TextStyle(
                                             fontFamily: 'Lato',
                                             fontSize: 12,
-                                            fontWeight: FontWeight.w500,
+                                            fontWeight: FontWeight.w700,
                                             color: Styles.whiteColor,
                                           ),
                                         ),
-                                        SizedBox(width: 5),
+                                        SizedBox(width: 10),
                                         Icon(
                                           Icons.arrow_forward_ios,
-                                          size: 16,
+                                          size: 13,
                                           color: Styles.whiteColor,
                                         ),
                                       ],

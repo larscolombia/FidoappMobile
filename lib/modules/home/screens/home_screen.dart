@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
+import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/Diario/formulario_diario.dart';
 import 'package:pawlly/modules/home/screens/Diario/index.dart';
@@ -255,22 +256,40 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildCase5Content(BuildContext context) {
+    final ancho = MediaQuery.of(context).size.width - 100;
+    var doubleHeight = 10.00;
+
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: [        
         const SizedBox(height: 16),
         ProfilesDogs(),
         const SizedBox(height: 20),
+        SizedBox(
+          width: ancho,
+          child: BarraBack(
+            titulo: 'Registros en el Diario',
+            callback: () {
+              Get.back();
+            },
+          ),
+        ),
+        SizedBox(height: doubleHeight),
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: [           
               SizedBox(
                 width: 280,
                 child: InputText(
-                  placeholder: 'Buscar actividades',
+                  fondoColor: Colors.white,
+                  placeholderImage: Image.asset('assets/icons/busqueda.png'),
+                  placeholderFontFamily: 'lato',
+                  borderColor: const Color.fromARGB(255, 117, 113, 113),
+                  placeholder: 'Realiza tu búsqueda',
                   onChanged: (String value) =>
                       historialClinicoController.searchActivities(value),
                 ),

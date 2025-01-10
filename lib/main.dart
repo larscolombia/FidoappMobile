@@ -8,7 +8,7 @@ import 'package:pawlly/app_theme.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/locale/app_localizations.dart';
 import 'package:pawlly/locale/language_en.dart';
-import 'package:pawlly/locale/languages.dart';
+import 'package:pawlly/locale/languages.dart'; 
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/modules/splash/splash_screen.dart';
 import 'package:pawlly/modules/welcome/controllers/welcome_controller.dart';

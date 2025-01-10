@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/explore/libro_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
@@ -18,20 +19,20 @@ class ExploreInput extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Input de búsqueda con lupa
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: "Buscar productos para mascotas",
-              prefixIcon: const Icon(Icons.search),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide:
-                    const BorderSide(color: Styles.greyTextColor, width: 1),
-              ),
-            ),
+        SizedBox(
+           width: MediaQuery.of(context).size.width,                              
+          child: InputText(
+            fondoColor: Colors.white,
+            placeholderImage: Image.asset('assets/icons/busqueda.png'),
+            placeholderFontFamily: 'lato',
+            borderColor: const Color.fromARGB(255, 117, 113, 113),
+            placeholder: 'Realiza tu búsqueda',
+            onChanged: (value) {
+                //lendarController.filterEvent(value);
+              },
           ),
         ),
+       
         const SizedBox(height: 16),
 
         // Lista de productos para mascotas

@@ -123,7 +123,7 @@ class TrainingVertical extends StatelessWidget {
                           style: TextStyle(
                             fontFamily: 'Lato',
                             fontSize: 12,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w500,
                             color: Colors.black,
                           ),
                         ),

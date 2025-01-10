@@ -28,6 +28,7 @@ class Calendar extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
               color: Styles.primaryColor,
+              fontWeight: FontWeight.w400,
               fontFamily: 'PoetsenOne',
             ),
           ),
@@ -54,7 +55,7 @@ class Calendar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 selectedDecoration: BoxDecoration(
-                  color: Colors.black,
+                  color: const Color(0xFFFFFc9214),
                   shape: BoxShape.rectangle,
                   borderRadius: BorderRadius.circular(10),
                 ),

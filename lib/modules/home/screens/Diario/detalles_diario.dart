@@ -160,7 +160,7 @@ class DetallesDiario extends StatelessWidget {
                           ),
                           Obx(() {
                             return Text(
-                              'Fecha ${controller.activitiesOne.value!.date}',
+                              'Fecha: ${controller.activitiesOne.value!.date}',
                             );
                           }),
                           Obx(() {

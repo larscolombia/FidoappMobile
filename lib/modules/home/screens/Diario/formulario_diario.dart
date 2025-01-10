@@ -48,6 +48,8 @@ class _FormularioDiarioState extends State<FormularioDiario> {
 
   @override
   Widget build(BuildContext context) {
+        final ancho = MediaQuery.of(context).size.width - 100;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -76,9 +78,9 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                       'Añade los datos de este diario', // Título del encabezado
                       style: TextStyle(
                         color: Colors.black,
-                        fontFamily: 'PoetsenOne',
+                        fontFamily: 'Lato',
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                       ),
                     )
                   ],
@@ -131,12 +133,10 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                           ),
                           const SizedBox(height: 8),
                           SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
+                            width: 302,
                             child: InputSelect(
                               TextColor: Colors.black,
-                              label: widget.isEdit
-                                  ? controller.activitiesOne.value!.categoryName
-                                  : 'Categoría',
+                              label: 'Categoría',
                               placeholder:
                                   controller.activitiesOne.value!.categoryName,
                               onChanged: (value) {
@@ -164,7 +164,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                 ? controller.activitiesOne.value!.date
                                 : '',
                             label: 'Fecha del registro',
-                            placeholder: '',
+                            placeholder: 'Fecha del evento',
                             isDateField: true,
                             prefiIcon: const Icon(
                               Icons.calendar_today,
@@ -180,17 +180,22 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                             },
                           ),
                           const SizedBox(height: 20),
-                          InputText(
-                            initialValue: widget.isEdit
-                                ? controller.activitiesOne.value!.notas
-                                : '',
-                            label: 'Descripción',
-                            placeholder: 'Describe el evento',
-                            onChanged: (value) {
-                              controller.updateField('notas', value);
-                              print('Descripción del registro: $value');
-                            },
+                          SizedBox(
+                            width: 300,
+                            child: InputText(
+                              isTextArea: true,
+                              initialValue: widget.isEdit
+                                  ? controller.activitiesOne.value!.notas
+                                  : '',
+                              label: 'Descripción',
+                              placeholder: 'Describe el evento',
+                              onChanged: (value) {
+                                controller.updateField('notas', value);
+                                print('Descripción del registro: $value');
+                              },
+                            ),
                           ),
+                          
                           const SizedBox(height: 8),
                           InputText(
                             label: 'Selecciona una Imagen',

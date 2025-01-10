@@ -65,7 +65,7 @@ class DiarioMascotas extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                         fontFamily: 'Lato',
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w700,
                         color: Colors.black,
                       ),
                       maxLines: 2,
@@ -77,28 +77,28 @@ class DiarioMascotas extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 12,
                       fontFamily: 'Lato',
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                       color: Styles.iconColorBack,
                     ),
                   ),
                   Text(
                     actividad.date.toString(),
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 12,
                       fontFamily: 'Lato',
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w500,
                       color: Color.fromARGB(255, 139, 137, 132),
                     ),
                   ),
                   Text(
-                    'Registro Nro: ${actividad.id}',
+                    'Registro Nro. ${actividad.id}',
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 12,
                       fontFamily: 'Lato',
-                      fontWeight: FontWeight.w800,
-                      color: Color.fromARGB(255, 139, 137, 132),
+                      fontWeight: FontWeight.w400,
+                      color: Color.fromARGB(255, 0, 0, 0),
                     ),
                   ),
                   const Spacer(),
@@ -110,7 +110,7 @@ class DiarioMascotas extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.bottomCenter,
                         child: ButtonDefaultWidget(
-                          title: 'Ver detalles >',
+                          title: 'Abrir >',
                           callback: () {
                             controller.getActivityById(actividad.id);
                             print('actividad ${actividad}');
