@@ -41,6 +41,10 @@ class NotificationsScreen extends StatelessWidget {
               _buildNotificationList(
                   notificationController.getYesterdayNotifications(),
                   showTime: true),
+              const Divider(
+                thickness: .1,
+                color: Colors.black,
+              ),
               notificationController.getOlderNotifications().isNotEmpty
                   ? _buildSectionTitle('Anteriores')
                   : Container(),
@@ -59,19 +63,34 @@ class NotificationsScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
         child: Center(
-          child: Container(
-            width: 66,
-            decoration: BoxDecoration(
-              color: Styles.fiveColor,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Center(
-              child: Text(
-                title,
-                style:
-                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center, // Centra el Row
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: title == "Hoy" ? Colors.orange : Styles.fiveColor,
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Center(
+                    child: Text(
+                      title,
+                      style: TextStyle(
+                        color: title == "Hoy"
+                            ? Colors.white
+                            : Styles.iconColorBack,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Lato',
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),
@@ -101,9 +120,8 @@ class NotificationsScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12),
             width:
                 double.infinity, // Asegurar que ocupe todo el ancho disponible
-            margin: const EdgeInsets.symmetric(vertical: 4.0),
+            //margin: const EdgeInsets.symmetric(vertical: 1.0), //margen notificaciones
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8.0),
               color: notification.isRead == 0
                   ? Styles.whiteColor
                   : Styles.fiveColor,

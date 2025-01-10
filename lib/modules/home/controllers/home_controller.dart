@@ -17,8 +17,11 @@ import 'package:table_calendar/table_calendar.dart';
 class HomeController extends GetxController {
   var selectedIndex = 0.obs;
   var profiles = <PetData>[].obs; // Lista de perfiles usando el modelo
+  var filterPet = <PetData>[].obs; // Lista de resultados filtrados
+
   var selectedProfile =
       Rxn<PetData>(); // Perfil seleccionado, inicialmente null
+
   var training = <TrainingModel>[].obs;
   late UserData currentUser;
   var profileImagePath = '${AuthServiceApis.dataCurrentUser.profileImage}'.obs;
@@ -93,7 +96,7 @@ class HomeController extends GetxController {
 
     // Actualizar la lista observable con los datos obtenidos
     profiles.value = petsData;
-
+    filterPet.value = petsData;
     // Verificar si la lista no está vacía y actualizar el perfil seleccionado
     if (petsData.isNotEmpty) {
       selectedProfile.value =
@@ -197,6 +200,21 @@ class HomeController extends GetxController {
         updatedBy: null,
         deletedBy: null,
       );
+    }
+  }
+
+  //metodo para filtrar por nombre
+  // Método para buscar una mascota por su nombre
+  void searchPetByName(String name) {
+    try {
+      // Filtrar las mascotas cuyo nombre contenga la cadena proporcionada (insensible a mayúsculas)
+      filterPet.value = profiles
+          .where((pet) => pet.name.toLowerCase().contains(name.toLowerCase()))
+          .toList();
+    } catch (e) {
+      // Imprimir cualquier error y limpiar la lista en caso de error
+      print('Error en la búsqueda de mascotas: $e');
+      filterPet.value = [];
     }
   }
 }

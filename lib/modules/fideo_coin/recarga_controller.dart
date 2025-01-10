@@ -6,6 +6,8 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'dart:convert';
 
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,6 +39,8 @@ class StripeController extends GetxController {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         url_pago_stripe.value = data['url'];
+        Get.to(FideCoin());
+
         openStripeCheckout(url_pago_stripe.toString());
       } else {
         // ignore: avoid_print
@@ -62,14 +66,32 @@ class StripeController extends GetxController {
 
   Future<void> showModalCompra(String precio) async {
     Get.dialog(
-      //pisa papel
       CustomAlertDialog(
         icon: Icons.check_circle_outline,
         title: 'Confirmación',
-        description: 'Estas apunto de comprar $precio ',
+        description: 'Estas a punto de comprar $precio',
         primaryButtonText: 'Continuar',
-        onPrimaryButtonPressed: () {
-          //Get.back();
+        onPrimaryButtonPressed: () async {
+          // 1. Cierra el modal
+          Get.back();
+
+          // 2. Muestra una pantalla de carga
+          Get.dialog(
+            Center(
+              child: CircularProgressIndicator(),
+            ),
+            barrierDismissible: false, // Evitar que se cierre al tocar fuera
+          );
+
+          // 3. Simula el proceso de abrir el navegador (espera 2 segundos)
+          await Future.delayed(Duration(seconds: 2));
+
+          // 4. Redirige a la ruta de balance
+          Get.to(HomeScreen()); // Cambia '/balance' por la ruta que necesites
+
+          // 5. (Opcional) Aquí puedes abrir el navegador con tu lógica
+          // Por ejemplo, usando url_launcher
+          // await launchUrl(Uri.parse('https://tu-navegador.com'));
         },
       ),
       barrierDismissible: true,

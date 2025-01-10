@@ -18,7 +18,7 @@ class FideCoin extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height / 5,
+            height: MediaQuery.of(context).size.height / 6.3,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               color:
@@ -28,9 +28,6 @@ class FideCoin extends StatelessWidget {
               children: [
                 // Asumo que HeaderNotification y BorderRedondiado están definidos en otros lugares
                 HeaderNotification(),
-                const BorderRedondiado(
-                  top: 150,
-                ),
               ],
             ),
           ),

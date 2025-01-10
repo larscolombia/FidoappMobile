@@ -25,8 +25,7 @@ class Pacientes extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Positioned(
-                      top: 0, left: 0, right: 0, child: HeaderNotification()),
+          Positioned(top: 0, left: 0, right: 0, child: HeaderNotification()),
           Expanded(
             child: Container(
               decoration: const BoxDecoration(
@@ -64,10 +63,10 @@ class Pacientes extends StatelessWidget {
                               iconPath: 'assets/icons/search.png',
                               iconPosition: IconPosition.left,
                               height: 60.0, // Altura personalizada
-                              onChanged: (value) => print(value),
+                              onChanged: (value) =>
+                                  _homeController.searchPetByName(value),
                             ),
                           ),
-                          
                           const SizedBox(
                             height: 20,
                           ),
@@ -81,7 +80,7 @@ class Pacientes extends StatelessWidget {
                         child: SizedBox(),
                       );
                     }
-                    var pets = _homeController.profiles;
+                    var pets = _homeController.filterPet;
                     return SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {

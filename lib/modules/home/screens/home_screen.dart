@@ -198,7 +198,7 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 16),
         if (calendarController.filteredCalendars.isNotEmpty)
           EventosProximos(calendarController: calendarController),
-        const Utilities(),
+        Utilities(),
         const SizedBox(height: 16),
         Training(),
         const SizedBox(height: 100),
@@ -259,10 +259,9 @@ class HomeScreen extends StatelessWidget {
     final ancho = MediaQuery.of(context).size.width - 100;
     var doubleHeight = 10.00;
 
-    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [        
+      children: [
         const SizedBox(height: 16),
         ProfilesDogs(),
         const SizedBox(height: 20),
@@ -281,7 +280,7 @@ class HomeScreen extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [           
+            children: [
               SizedBox(
                 width: 280,
                 child: InputText(

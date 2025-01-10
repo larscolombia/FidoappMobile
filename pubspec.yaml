@@ -63,6 +63,8 @@ dependencies:
   just_audio: ^0.9.40
   cached_network_image: ^3.4.1
   share_plus: ^10.1.2
+  
+  soundpool: ^2.4.1
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_test:
@@ -113,7 +115,7 @@ flutter:
     - assets/icons/upi_payment/
     - assets/images/brand/
     - assets/lottie/
-
+    
 flutter_icons:
   android: true
   ios: true

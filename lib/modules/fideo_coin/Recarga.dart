@@ -151,10 +151,11 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                               ? "cargando ..."
                               : 'Estas apunto de comprar ${_formattedInput(_input)}ƒ',
                           primaryButtonText: 'Continuar',
-                          onPrimaryButtonPressed: () {
+                          onPrimaryButtonPressed: () async {
+                            // 2. Muestra una pantalla de carga
+
                             controller.GetUrlPayment(
                                 _formattedInput(_input), context);
-                            // Get.off(FideCoin());
                           },
                         ),
                         barrierDismissible: true,

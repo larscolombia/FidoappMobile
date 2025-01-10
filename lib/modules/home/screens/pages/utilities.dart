@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+import 'package:pawlly/modules/integracion/controller/soun/soun_controller.dart';
+
 import 'package:pawlly/modules/home/screens/widgets/audio_player.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class Utilities extends StatelessWidget {
-  const Utilities({super.key});
-
+  Utilities({super.key});
+  SounController sounController = Get.put(SounController());
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -29,17 +32,9 @@ class Utilities extends StatelessWidget {
             // Cuadro 1
             Expanded(
               child: GestureDetector(
-                onTap: () {
-                  // Abre el modal para reproducir audio
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      // Aquí colocas el widget de reproducción de audio con la ruta proporcionada
-                      return AudioPlayerWidget(
-                          audioPath:
-                              'soun/silbato.mp3'); // Ejemplo de ruta local
-                    },
-                  );
+                onTap: () async {
+                  print("click");
+                  sounController.silbato();
                 },
                 child: Container(
                   height: 93,
