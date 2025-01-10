@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/models/brear_model.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart'; // Asegúrate de importar tu servicio
 import 'package:image_picker/image_picker.dart';
@@ -109,7 +110,6 @@ class AddPetController extends GetxController {
               primaryButtonText: 'Continuar',
               onPrimaryButtonPressed: () {
                 Get.back();
-                //Get.offAll(HomeScreen());
               },
             ),
             barrierDismissible: false,
@@ -119,7 +119,7 @@ class AddPetController extends GetxController {
         }
       } catch (e) {
         print('Error al crear la mascota: $e');
-
+        /** 
         Get.dialog(
           CustomAlertDialog(
             icon: Icons.error_outline,
@@ -131,7 +131,7 @@ class AddPetController extends GetxController {
             },
           ),
           barrierDismissible: false,
-        );
+        );*/
       } finally {
         isLoading(false);
       }

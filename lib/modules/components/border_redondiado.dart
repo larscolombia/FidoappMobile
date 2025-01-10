@@ -27,7 +27,7 @@ class BorderRedondiado extends StatelessWidget {
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(56), topRight: Radius.circular(56)),
+              topLeft: Radius.circular(56), topRight: Radius.circular(36)),
         ),
       ),
     );

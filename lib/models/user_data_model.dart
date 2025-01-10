@@ -14,7 +14,7 @@ class UserData {
   bool isSocialLogin;
   String userType;
   String gender; // Campo "gender" agregado
-
+  bool isNewUser;
   UserData({
     this.id = -1,
     this.firstName = "",
@@ -31,6 +31,7 @@ class UserData {
     this.isSocialLogin = false,
     this.userType = "",
     this.gender = "", // Inicialización del campo gender
+    this.isNewUser = true,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {

@@ -42,22 +42,21 @@ class Utilities extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  height: 90,
+                  height: 93,
+                  width: 94,
                   decoration: BoxDecoration(
                     color: Styles.fiveColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.volume_up, // Ícono correspondiente a 'Whistle'
-                        size: 34,
-                        color: Styles.iconColorBack,
+                      Image.asset(
+                        'assets/icons/silbar.png',
                       ),
                       SizedBox(height: 8),
-                      Text(
-                        'Whistle',
+                      const Text(
+                        'Silbar',
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 14,
@@ -92,17 +91,13 @@ class Utilities extends StatelessWidget {
                     color: Styles.fiveColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.pets, // Ícono correspondiente a 'Leash'
-                        size: 34,
-                        color: Styles.iconColorBack,
-                      ),
+                      Image.asset('assets/icons/Correa.png'),
                       SizedBox(height: 8),
-                      Text(
-                        'Leash',
+                      const Text(
+                        'Correa',
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 14,
@@ -137,23 +132,14 @@ class Utilities extends StatelessWidget {
                     color: Styles.fiveColor,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.music_note, // Ícono correspondiente a 'Clicker'
-                        size: 34,
-                        color: Styles.iconColorBack,
-                      ),
+                      Image.asset('assets/icons/tecontador.png'),
                       SizedBox(height: 8),
                       Text(
-                        'Clicker',
-                        style: TextStyle(
-                          fontFamily: 'Lato',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Styles.greyTextColor,
-                        ),
+                        'Taconeador',
+                        style: Styles.homeBoxTextSubTitle,
                       ),
                     ],
                   ),

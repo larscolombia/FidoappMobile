@@ -54,9 +54,8 @@ class PerfilMascotas extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(top: 16),
-        height: 90,
-        padding: const EdgeInsets.symmetric(horizontal: 5),
+        height: 72,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           color: Styles.fiveColor,
           borderRadius: const BorderRadius.all(Radius.circular(25)),
@@ -84,15 +83,15 @@ class PerfilMascotas extends StatelessWidget {
             return Row(
               children: [
                 Container(
-                  width: 60,
-                  height: 60,
+                  width: 41,
+                  height: 41,
                   padding: const EdgeInsets.all(
-                      2), // Espacio entre la imagen y el borde
+                      3), // Espacio entre la imagen y el borde
                   decoration: BoxDecoration(
-                    color: Styles.fiveColor, // Fondo del borde
+                    color: Colors.white, // Fondo del borde
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Styles.iconColorBack, // Color del borde
+                      color: Styles.primaryColor, // Color del borde
                       width: 2.0, // Grosor del borde
                     ),
                   ),
@@ -110,37 +109,45 @@ class PerfilMascotas extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 15),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: width / 2.5,
-                      child: Text(
-                        profile.name,
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(
-                          color: Styles.primaryColor,
-                          fontFamily: 'PoetsenOne',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
+                Container(
+                  width: width / 4,
+                  decoration: BoxDecoration(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: width / 2.5,
+                        child: Text(
+                          profile.name,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                            color: Styles.primaryColor,
+                            fontFamily: 'PoetsenOne',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: width / 2.5,
-                      child: Text(
-                        'Perfil de ${profile.name}',
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(
-                          color: Styles.blackColor,
-                          fontFamily: 'Lato',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                      SizedBox(
+                        width: width / 2.5,
+                        child: Text(
+                          'Perfil de ${profile.name}',
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: const TextStyle(
+                            color: Styles.blackColor,
+                            fontFamily: 'Lato',
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 const Spacer(),
                 const Icon(

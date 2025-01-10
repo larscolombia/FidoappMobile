@@ -188,9 +188,12 @@ class LibroDetalles extends StatelessWidget {
                                 SizedBox(
                                   width: 120,
                                   child: icon_titulo_subtitulo(
-                                    label: 'Logitud',
-                                    value:
-                                        '${econtroller.selectedEBook.value.number_of_pages} Paginas',
+                                    label: 'Longitud',
+                                    value: econtroller.selectedEBook.value
+                                                .number_of_pages ==
+                                            "null"
+                                        ? 'Sin Paginas'
+                                        : '${econtroller.selectedEBook.value.number_of_pages} Paginas',
                                     path: 'assets/icons/paginas.png',
                                   ),
                                 ),
@@ -208,8 +211,12 @@ class LibroDetalles extends StatelessWidget {
                                   width: 120,
                                   child: icon_titulo_subtitulo(
                                       label: 'Idioma',
-                                      value:
-                                          '${econtroller.selectedEBook.value.lenguaje}',
+                                      value: econtroller.selectedEBook.value
+                                                  .lenguaje ==
+                                              'null'
+                                          ? 'Sin datos'
+                                          : econtroller
+                                              .selectedEBook.value.lenguaje,
                                       path: 'assets/icons/idioma.png'),
                                 ),
                               ]),
@@ -217,12 +224,11 @@ class LibroDetalles extends StatelessWidget {
                         const SizedBox(height: 20),
                         SizedBox(
                           width: 305,
-                          height: 100,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
-                                'Sobre este Ebook',
+                                'Sobre este Libro',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -301,37 +307,28 @@ class LibroDetalles extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Container(
-                          width: 304,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(16),
-                              border: Border.all(color: Styles.primaryColor)),
-                          child: Obx(() {
-                            if (commentController
-                                .isComentarioPosrLoading.value) {
-                              return const Text('cargando');
-                            }
-                            return BanerComentarios(
-                              eventTextChanged: (value) {
-                                commentController.updateField(
-                                    'review_msg', value);
-                              },
-                              titulo: 'Tu experiencia',
-                              onRatingUpdate: (rating) {
-                                commentController.updateField('rating', rating);
-                              },
-                              onEvento: () {
-                                commentController.updateField('e_book_id', id);
-                                if (commentController.comentario.isNotEmpty) {
-                                  commentController.postComment(
-                                      'books', context);
-                                  commentController.fetchComments(id, "books");
-                                }
-                              },
-                            );
-                          }),
-                        ),
+                        Obx(() {
+                          if (commentController.isComentarioPosrLoading.value) {
+                            return const Text('cargando');
+                          }
+                          return BanerComentarios(
+                            eventTextChanged: (value) {
+                              commentController.updateField(
+                                  'review_msg', value);
+                            },
+                            titulo: 'Tu experiencia',
+                            onRatingUpdate: (rating) {
+                              commentController.updateField('rating', rating);
+                            },
+                            onEvento: () {
+                              commentController.updateField('e_book_id', id);
+                              if (commentController.comentario.isNotEmpty) {
+                                commentController.postComment('books', context);
+                                commentController.fetchComments(id, "books");
+                              }
+                            },
+                          );
+                        }),
                         const SizedBox(height: 20),
                         const SizedBox(
                           width: 304,
@@ -413,7 +410,7 @@ class HeaderEbook extends StatelessWidget {
                 width: 345,
                 child: BarraBack(
                   titulo: 'Sobre este Libro',
-                  subtitle: 'Encuentra toda la informacióna aquí',
+                  subtitle: 'Encuentra toda la información aquí',
                   ColorSubtitle: Colors.black,
                   callback: () {
                     Get.back();
@@ -475,23 +472,19 @@ class BarraComentario extends StatelessWidget {
 }
 
 class icon_titulo_subtitulo extends StatelessWidget {
-  const icon_titulo_subtitulo(
-      {super.key,
-      required this.label,
-      required this.value,
-      required this.path});
-  final String label;
-  final String value;
-  final String path;
+  const icon_titulo_subtitulo({super.key, this.label, this.value, this.path});
+  final String? label;
+  final String? value;
+  final String? path;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 116,
+      width: 130,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            path,
+            path ?? 'assets/images/pet_care.png',
             width: 25,
             errorBuilder: (BuildContext context, Object exception,
                 StackTrace? stackTrace) {
@@ -516,9 +509,9 @@ class icon_titulo_subtitulo extends StatelessWidget {
                 ),
               ),
               Text(
-                value,
+                value == 'null' ? 'Sin datos' : "${value}",
                 style: const TextStyle(
-                  fontSize: 14,
+                  fontSize: 12,
                   fontFamily: 'Lato',
                   fontWeight: FontWeight.w800,
                   color: Colors.black,

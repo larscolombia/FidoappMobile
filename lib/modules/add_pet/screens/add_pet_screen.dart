@@ -189,6 +189,7 @@ class AddPetScreen extends StatelessWidget {
                             controller: controller.petBreed,
                             placeholder: locale.value.petBreed,
                             icon: 'assets/icons/patica.png',
+                            filcolorCustom: Styles.fiveColor,
                             items: controller.breedList.isNotEmpty
                                 ? controller.breedList
                                     .map((breed) => breed.name)

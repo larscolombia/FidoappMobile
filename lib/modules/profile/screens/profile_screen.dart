@@ -11,6 +11,7 @@ import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/formulario_verificacion.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -106,7 +107,7 @@ class ProfileScreen extends StatelessWidget {
                   Positioned(
                     bottom: 16,
                     child: Text(
-                      '${controller.user['name'].toString()}',
+                      '${controller.user['first_name'].toString()}',
                       style: Styles.dashboardTitle24,
                     ),
                   ),
@@ -189,15 +190,17 @@ class ProfileScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: ButtonDefaultWidget(
-                              callback: () {
-                                Get.to(const FormularioVerificacion());
-                              },
-                              title: 'Verificación Profesional >',
+                          if (AuthServiceApis.dataCurrentUser.userRole[0] !=
+                              'user')
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 100,
+                              child: ButtonDefaultWidget(
+                                callback: () {
+                                  Get.to(const FormularioVerificacion());
+                                },
+                                title: 'Verificación Profesional >',
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -209,8 +212,9 @@ class ProfileScreen extends StatelessWidget {
                         Obx(() {
                           return InputText(
                             onChanged: (value) =>
-                                controller.user['name'] = value,
-                            initialValue: controller.user['name'].toString(),
+                                controller.user['first_name'] = value,
+                            initialValue:
+                                controller.user['first_name'].toString(),
                             placeholder: '',
                             readOnly: !controller.isEditing.value,
                             fondoColor: controller.isEditing.value == false
@@ -221,9 +225,9 @@ class ProfileScreen extends StatelessWidget {
                         Obx(() {
                           return InputText(
                             onChanged: (value) =>
-                                controller.user['lastName'] = value,
+                                controller.user['last_name'] = value,
                             initialValue:
-                                controller.user['lastName'].toString(),
+                                controller.user['last_name'].toString(),
                             placeholder: '',
                             readOnly: !controller.isEditing.value,
                             fondoColor: controller.isEditing.value == false
@@ -249,8 +253,11 @@ class ProfileScreen extends StatelessWidget {
                             child: CustomSelectFormFieldWidget(
                               enabled: controller.isEditing.value,
                               controller: controller.userGenCont.value,
+                              filcolorCustom: Styles.fiveColor,
                               onChange: (value) {
                                 controller.user['gender'] = value.toString();
+                                controller.userGenCont.value.text =
+                                    value.toString().toLowerCase();
                               },
                               placeholder: 'Género',
                               icon: 'assets/icons/tag-user.png',
@@ -315,17 +322,22 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),*/
                         const SizedBox(height: 20),
-                        controller.isEditing.value == true
-                            ? SizedBox(
-                                width: MediaQuery.of(context).size.width - 100,
-                                child: ButtonDefaultWidget(
-                                  title: 'Editar',
-                                  callback: () {
-                                    print('editar usuario  ${controller.user}');
-                                  },
-                                ),
-                              )
-                            : const SizedBox(),
+                        Obx(
+                          () => controller.isEditing.value == true
+                              ? SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width - 100,
+                                  child: ButtonDefaultWidget(
+                                    title: controller.isLoading.value
+                                        ? 'Actualizando ...'
+                                        : 'Editar',
+                                    callback: () {
+                                      controller.updateProfile();
+                                    },
+                                  ),
+                                )
+                              : const SizedBox(),
+                        ),
                         const SizedBox(height: 20),
                         Align(
                           alignment: Alignment.center,

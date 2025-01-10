@@ -208,42 +208,16 @@ class MedicalHistoryTab extends StatelessWidget {
                     id: history.id.toString(),
                     callback: () {
                       // aqui historia clinica
-
-                      medicalHistoryController.updateField('id', history.id);
-                      medicalHistoryController.updateField(
-                          'created_at', history.createdAt);
-                      medicalHistoryController.updateField(
-                          'updated_at', history.updatedAt);
-                      medicalHistoryController.updateField(
-                          'pet_id', history.petId);
-                      medicalHistoryController.updateField(
-                          'report_type', history.reportType);
-                      medicalHistoryController.updateField(
-                          'report_name', history.reportName);
-
-                      medicalHistoryController.updateField(
-                          'medical_conditions', history.medicalConditions);
-                      medicalHistoryController.updateField(
-                          'name', history.reportName);
-                      medicalHistoryController.updateField(
-                          'category_name', history.categoryName);
-
-                      medicalHistoryController.updateField(
-                          'fecha_aplicacion', history.fechaAplicacion);
-                      medicalHistoryController.updateField(
-                          'fecha_refuerzo', history.fechaRefuerzo);
-                      medicalHistoryController.updateField(
-                          'category', history.category);
-                      medicalHistoryController.updateField('id', history.id);
-
-                      medicalHistoryController.updateField(
-                          'notes', history.medicalConditions);
+                      print('callback ${history}');
 
                       medicalHistoryController.isEditing.value = true;
 
-                      Get.to(ConfirmarFormulario(
-                        isEdit: true,
-                      ));
+                      Get.to(
+                        ConfirmarFormulario(
+                          isEdit: true,
+                          historialClinico: history,
+                        ),
+                      );
                     },
                   );
                 },

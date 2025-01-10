@@ -6,11 +6,14 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/brear_model.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/pet_note_model.dart';
 import 'package:pawlly/models/pet_type_model.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import '../../../models/base_response_model.dart';
@@ -210,7 +213,24 @@ class PetService {
 
         if (responseData.statusCode == 201 || responseData.statusCode == 200) {
           final responseDataJson = jsonDecode(responseData.body);
+          Get.dialog(
+            //pisa papel
+            CustomAlertDialog(
+              icon: Icons.check_circle_outline,
+              title: 'Mascota creada',
+              description: 'La mascota ha sido creada exitosamente.',
+              primaryButtonText: 'Continuar',
+              onPrimaryButtonPressed: () {
+                Get.back();
+                // final HomeController homeController = Get.put(HomeController());
+                // homeController.fetchProfiles();
+                //Get.to(HomeScreen());
+              },
+            ),
+            barrierDismissible: false,
+          );
           if (responseDataJson.containsKey('data')) {
+            print('agregar mascota ${responseDataJson['data']}');
             final petData = PetData.fromJson(responseDataJson['data']);
             return petData;
           } else {

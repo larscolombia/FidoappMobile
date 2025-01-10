@@ -107,9 +107,10 @@ class Calendar extends StatelessWidget {
           const Text(
             'Lista de Actividades',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 18,
               color: Styles.primaryColor,
-              fontFamily: 'PoetsenOne',
+              fontFamily: Styles.fuente2,
+              fontWeight: FontWeight.w800,
             ),
           ),
           const SizedBox(height: 16),
@@ -125,7 +126,9 @@ class Calendar extends StatelessWidget {
                     onChanged: (value) {
                       calendarController.filterEvent(value);
                     },
-                    prefiIcon: const Icon(Icons.search_outlined),
+                    placeholderImage: Image.asset('assets/icons/busqueda.png'),
+                    placeholderFontFamily: 'lato',
+                    borderColor: const Color.fromARGB(255, 117, 113, 113),
                     placeholder: 'Realiza tu búsqueda',
                   ),
                 ),
@@ -147,14 +150,12 @@ class Calendar extends StatelessWidget {
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 5,
           ),
-          Container(
-            child: RecargaComponente(
-              callback: () {
-                calendarController.getEventos();
-              },
-            ),
+          RecargaComponente(
+            callback: () {
+              calendarController.getEventos();
+            },
           ),
         ],
       ),

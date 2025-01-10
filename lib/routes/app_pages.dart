@@ -115,7 +115,9 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PETOWNERPROFILE,
-      page: () => PetOwnerProfileScreen(),
+      page: () => PetOwnerProfileScreen(
+        id: '1',
+      ),
       binding: PetOwnerProfileBinding(),
     ),
     GetPage(

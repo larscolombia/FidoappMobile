@@ -151,11 +151,9 @@ class Movimientos extends StatelessWidget {
               const SizedBox(
                 width: 10,
               ),
-              Container(
+              SizedBox(
                 width: 200,
                 child: Text(
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
                   description ?? "Movimiento",
                   style: Styles.textDescription,
                 ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -46,7 +48,7 @@ class ProfilePetController extends GetxController {
     super.onInit();
     // Recibe el perfil de la mascota desde los argumentos
     petProfile = Get.arguments as PetData;
-    print('controlador del perfil onInit $petProfile');
+    print('controlador del perfil onInit ${jsonEncode(petProfile)}');
     // Ahora puedes inicializar las variables con los datos del perfil recibido
     petName.value = petProfile.name;
     petBreed.value = petProfile.breed;

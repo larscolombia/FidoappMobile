@@ -121,7 +121,9 @@ class ActivityListScreen extends StatelessWidget {
                                 onTap: () {
                                   calendarController
                                       .selectEventById(event.id.toString());
-                                  Get.to(EventoDestalles());
+                                  print(
+                                      "evento seleccionado ${json.encode(event)}");
+                                  Get.to(EventoDestalles(), arguments: event);
                                 },
                                 child: Container(
                                   width: containerWidth,
@@ -143,8 +145,9 @@ class ActivityListScreen extends StatelessWidget {
                                         event.name ?? 'Sin nombre',
                                         style: const TextStyle(
                                           fontSize: 14,
-                                          fontWeight: FontWeight.w900,
+                                          fontWeight: FontWeight.bold,
                                           fontFamily: 'Lato',
+                                          color: Colors.black,
                                         ),
                                       ),
                                       const SizedBox(height: 4),
@@ -156,8 +159,7 @@ class ActivityListScreen extends StatelessWidget {
                                         },
                                         child: Obx(() {
                                           return Text(
-                                            "descripcion : ${event.description} titulo ${event.name} petId ${event.petId}" ??
-                                                'Sin descripción',
+                                            "${event.description}",
                                             maxLines:
                                                 calendarController.isVerMas[
                                                             event.id ?? ''] ??

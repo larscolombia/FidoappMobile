@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/models/user_data_model.dart';
+import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/utils/constants.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
@@ -11,11 +13,12 @@ final FirebaseAuth auth = FirebaseAuth.instance;
 //endregion
 
 class GoogleSignInAuthService {
-  static final GoogleSignIn googleSignIn = GoogleSignIn();
+  static final GoogleSignIn googleSignIn = GoogleSignIn(
+    scopes: ['email'],
+  );
 
   static Future<UserData> signInWithGoogle() async {
     GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
-    print('1111');
 
     if (googleSignInAccount != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
@@ -25,18 +28,18 @@ class GoogleSignInAuthService {
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
-      print('222');
+
       final UserCredential authResult =
           await auth.signInWithCredential(credential);
       final User user = authResult.user!;
       assert(!user.isAnonymous);
-      print('3333');
       final User currentUser = auth.currentUser!;
       assert(user.uid == currentUser.uid);
 
       log('CURRENTUSER: $currentUser');
 
-      // await googleSignIn.signOut();
+      // Identificar si el usuario es nuevo
+      bool isNewUser = authResult.additionalUserInfo?.isNewUser ?? false;
 
       String firstName = '';
       String lastName = '';
@@ -47,7 +50,7 @@ class GoogleSignInAuthService {
         lastName = currentUser.displayName.splitAfter(' ');
       }
 
-      /// Create a temporary request to send
+      /// Crear y devolver un objeto UserData con isNewUser
       UserData tempUserData = UserData()
         ..mobile = currentUser.phoneNumber.validate()
         ..email = currentUser.email.validate()
@@ -55,7 +58,8 @@ class GoogleSignInAuthService {
         ..lastName = lastName.validate()
         ..profileImage = currentUser.photoURL.validate()
         ..loginType = LoginTypeConst.LOGIN_TYPE_GOOGLE
-        ..userName = currentUser.displayName.validate();
+        ..userName = currentUser.displayName.validate()
+        ..isNewUser = isNewUser; // Agregar isNewUser al objeto
 
       return tempUserData;
     } else {
@@ -88,8 +92,6 @@ class GoogleSignInAuthService {
           assert(user.uid == currentUser.uid);
 
           log('CURRENTUSER: $currentUser');
-
-          // await googleSignIn.signOut();
 
           String firstName = '';
           String lastName = '';

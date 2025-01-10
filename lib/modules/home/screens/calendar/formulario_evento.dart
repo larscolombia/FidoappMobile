@@ -26,6 +26,8 @@ import 'package:pawlly/modules/integracion/controller/notificaciones/notificacio
 import 'package:pawlly/modules/integracion/controller/servicio_entrenador_categoria/servicio_entrenador_categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 import 'package:pawlly/modules/integracion/model/balance/producto_pay_model.dart';
+import 'package:pawlly/modules/integracion/model/lista_categoria_servicio/category_model.dart';
+import 'package:pawlly/styles/styles.dart' as stylesLocal;
 
 class CreateEvent extends StatelessWidget {
   final CalendarController calendarController = Get.put(CalendarController());
@@ -34,8 +36,6 @@ class CreateEvent extends StatelessWidget {
   final UserController userController = Get.put(UserController());
   final CategoryControllerVet categoryController =
       Get.put(CategoryControllerVet());
-  final NotificationController notificationController =
-      Get.put(NotificationController());
 
   final ServiceEntrenadorController serviceController =
       Get.put(ServiceEntrenadorController());
@@ -44,8 +44,13 @@ class CreateEvent extends StatelessWidget {
       Get.put(UserBalanceController());
   ProductoPayController payController = Get.put(ProductoPayController());
   CreateEvent({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final ancho = MediaQuery.of(context).size.width - 100;
+    var doubleHeight = 10.00;
+    userController.fetchUsers();
+    //homeController.fetchProfiles();
     return Scaffold(
       backgroundColor: Styles.colorContainer,
       body: Column(
@@ -93,21 +98,22 @@ class CreateEvent extends StatelessWidget {
                 ),
               ),
               child: SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - 100,
-                        child: BarraBack(
-                          titulo: 'Evento Nuevo',
-                          callback: () {
-                            Get.back();
-                          },
-                        ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: ancho,
+                      child: BarraBack(
+                        titulo: 'Evento Nuevo',
+                        callback: () {
+                          Get.back();
+                        },
                       ),
-                      const SizedBox(height: 10),
-                      InputText(
+                    ),
+                    SizedBox(height: doubleHeight),
+                    Container(
+                      width: ancho,
+                      child: InputText(
                         label: 'Nombre del Evento',
                         placeholder: 'Nombre del Evento',
                         onChanged: (value) {
@@ -115,149 +121,189 @@ class CreateEvent extends StatelessWidget {
                             'name',
                             value.toString(),
                           );
-
                           calendarController.updateField(
                             'slug',
                             calendarController.Slug(value.toString()),
                           );
                         },
                       ),
-                      const SizedBox(height: 10),
-                      InputText(
+                    ),
+                    SizedBox(height: doubleHeight),
+                    /** 
+                    SizedBox(
+                      width: ancho,
+                      child: InputText(
                         label: 'Descripción del evento',
                         placeholder: 'Describe el evento',
                         onChanged: (value) {
                           calendarController.updateField('description', value);
                         },
                       ),
-                      const SizedBox(height: 10),
-                      InputText(
+                    ),*/
+                    SizedBox(
+                      width: ancho,
+                      child: InputText(
+                        isTextArea: true,
+                        label: 'Descripción del evento ',
+                        placeholder: 'Describe el evento',
+                        onChanged: (value) {
+                          calendarController.updateField('description', value);
+                        },
+                      ),
+                    ),
+                    SizedBox(height: doubleHeight),
+                    Container(
+                      width: ancho,
+                      child: InputText(
                         label: 'Ubicación',
                         placeholder: '',
                         onChanged: (value) {
                           calendarController.updateField('location', value);
                         },
                       ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 302,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Categoria del evento',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black,
-                                    fontFamily: 'lato'),
-                              ),
-                              const SizedBox(height: 10),
-                              CustomSelectFormFieldWidget(
-                                onChange: (value) => calendarController
-                                    .updateField('tipo', value),
-                                items: const [
-                                  'evento',
-                                  'medico',
-                                  'entrenamiento',
-                                ],
-                                icon: "assets/icons/paginas.png",
-                                controller: null,
-                                placeholder: 'Tipo de evento ',
-                                filcolorCustom: Styles.colorContainer,
-                              ),
-                            ]),
-                      ),
-                      const SizedBox(height: 8),
-                      Obx(() {
-                        if (calendarController.event['tipo'] != 'medico') {
-                          return const SizedBox();
-                        }
-
-                        return Column(
+                    ),
+                    SizedBox(height: doubleHeight),
+                    SizedBox(
+                      width: ancho,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width - 100,
-                              child: InputSelect(
-                                label: 'Servicio de evento medico',
-                                placeholder: 'Servicio de evento medico',
-                                TextColor: Colors.black,
-                                onChanged: (value) {
-                                  calendarController.updateField('category_id',
-                                      value); // Actualizamos el controlador
-                                  calendarController.updateField(
-                                      'service_id', value);
-                                  print('value $value');
-                                  categoryController.fetchprecio(value ?? "");
-                                },
-                                items: categoryController.categories
-                                    .map((category) => DropdownMenuItem<String>(
-                                          value: category.id
-                                              .toString(), // ID de la categoría como valor
-                                          child: Text(category
-                                              .name), // Nombre de la categoría como texto
-                                        ))
-                                    .toList(),
-                              ),
+                            const Text(
+                              'Categoria del evento',
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontFamily: 'lato'),
                             ),
-                            const SizedBox(height: 8),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 100,
-                              height: 20,
-                              child: Text(
-                                  "Total del servicio ${calendarController.event['tipo']}: ${categoryController.totalAmount.value}f"),
+                            const SizedBox(height: 10),
+                            CustomSelectFormFieldWidget(
+                              onChange: (value) {
+                                calendarController.updateField('tipo', value);
+                                userController.type.value =
+                                    value == 'medico' ? 'vet' : 'trainer';
+                                userController.fetchUsers();
+                              },
+                              items: const [
+                                'evento',
+                                'medico',
+                                'entrenamiento',
+                              ],
+                              icon: "assets/icons/paginas.png",
+                              controller: null,
+                              placeholder: 'Tipo de evento ',
+                              filcolorCustom: Styles.colorContainer,
                             ),
-                          ],
-                        );
-                      }),
-                      const SizedBox(height: 8),
-                      Obx(() {
-                        if (calendarController.event['tipo'] !=
-                            'entrenamiento') {
-                          return const SizedBox();
-                        }
+                          ]),
+                    ),
+                    SizedBox(height: doubleHeight),
+                    Obx(() {
+                      if (calendarController.event['tipo'] != 'medico') {
+                        return const SizedBox();
+                      }
+                      if (categoryController.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      return SizedBox(
+                        width: ancho,
+                        child: InputSelect(
+                          label: 'Servicio de evento medico',
+                          placeholder: calendarController.cateogoryName.value,
+                          TextColor: Colors.black,
+                          onChanged: (value) {
+                            calendarController.cateogoryName.value =
+                                value ?? "";
 
-                        return Column(
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 100,
-                              child: InputSelect(
-                                label: 'Servicio del entrenamiento',
-                                placeholder: 'Servicio del entrenamiento',
-                                TextColor: Colors.black,
-                                onChanged: (value) {
-                                  calendarController.updateField('category_id',
-                                      value); // Actualizamos el controlador
-                                  calendarController.updateField(
-                                      'service_id', value);
-                                },
-                                items: serviceController.services
-                                    .map(
-                                      (category) => DropdownMenuItem<String>(
-                                        value: category.id
-                                            .toString(), // ID de la categoría como valor
-                                        child: Text(category
-                                            .name), // Nombre de la categoría como texto
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 100,
-                              height: 20,
-                              child: Text(
-                                  "Total del servicio ${calendarController.event['tipo']}: ${categoryController.totalAmount.value}f"),
-                            ),
-                          ],
-                        );
-                      }),
-                      const SizedBox(height: 10),
-                      InputText(
+                            final selectedCategory =
+                                categoryController.categories.firstWhere(
+                              (category) => category.id.toString() == value,
+                              orElse: () => Category(
+                                  id: 0,
+                                  name: 'Unknown',
+                                  slug: '',
+                                  status: 1,
+                                  categoryImage: '',
+                                  createdAt: '',
+                                  updatedAt: ''),
+                            );
+                            calendarController.cateogoryName.value =
+                                selectedCategory.name;
+                            calendarController.updateField('category_id',
+                                value); // Actualizamos el controlador
+                            calendarController.updateField('service_id', value);
+
+                            categoryController.fetchprecio(
+                                value ?? "", context);
+                          },
+                          items: categoryController.categories
+                              .map((category) => DropdownMenuItem<String>(
+                                    value: category.id
+                                        .toString(), // ID de la categoría como valor
+                                    child: Text(category
+                                        .name), // Nombre de la categoría como texto
+                                  ))
+                              .toList(),
+                        ),
+                      );
+                    }),
+                    SizedBox(height: doubleHeight),
+                    Obx(() {
+                      if (calendarController.event['tipo'] != 'entrenamiento') {
+                        return const SizedBox();
+                      }
+                      if (serviceController.isLoading.value) {
+                        return const CircularProgressIndicator();
+                      }
+                      return SizedBox(
+                        width: ancho,
+                        child: InputSelect(
+                          label: 'Servicio del entrenamiento',
+                          placeholder: calendarController.cateogoryName.value,
+                          TextColor: Colors.black,
+                          onChanged: (value) {
+                            final selectedCategory =
+                                categoryController.categories.firstWhere(
+                              (category) => category.id.toString() == value,
+                              orElse: () => Category(
+                                  id: 0,
+                                  name: 'Unknown',
+                                  slug: '',
+                                  status: 1,
+                                  categoryImage: '',
+                                  createdAt: '',
+                                  updatedAt: ''),
+                            );
+                            calendarController.cateogoryName.value =
+                                selectedCategory.name;
+                            calendarController.updateField('training_id',
+                                value); // Actualizamos el controlador
+                            calendarController.updateField(
+                                'duration_id', value);
+                            serviceController.fetchprecio(
+                                value.toString(), context);
+                          },
+                          items: serviceController.services
+                              .map(
+                                (category) => DropdownMenuItem<String>(
+                                  value: category.id
+                                      .toString(), // ID de la categoría como valor
+                                  child: Text(category
+                                      .name), // Nombre de la categoría como texto
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      );
+                    }),
+                    SizedBox(height: doubleHeight),
+                    SizedBox(
+                      width: ancho,
+                      child: InputText(
                         label: 'Fecha del evento',
                         placeholder: 'Fecha del evento',
                         isDateField: true,
                         onChanged: (value) {
+                          calendarController.updateField('start_date',
+                              value.replaceAll('/', '-').toString());
                           calendarController.updateField(
                               'date', value.replaceAll('/', '-').toString());
                         },
@@ -270,8 +316,11 @@ class CreateEvent extends StatelessWidget {
                           color: Styles.iconColor,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      InputText(
+                    ),
+                    SizedBox(height: doubleHeight),
+                    Container(
+                      width: ancho,
+                      child: InputText(
                         label: 'Hora del evento',
                         placeholder: 'Hora del evento',
                         isTimeField: true,
@@ -287,8 +336,11 @@ class CreateEvent extends StatelessWidget {
                           color: Styles.fiveColor,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      InputText(
+                    ),
+                    SizedBox(height: doubleHeight),
+                    SizedBox(
+                      width: ancho,
+                      child: InputText(
                         label: 'Fecha final del evento',
                         placeholder: 'Fecha final del evento',
                         isDateField: true,
@@ -305,143 +357,130 @@ class CreateEvent extends StatelessWidget {
                           color: Styles.iconColor,
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      const SizedBox(
-                        width: 302,
-                        child: Text(
-                          'Selecciona la mascota vinculada a este evento',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w600,
-                          ),
+                    ),
+                    SizedBox(height: doubleHeight),
+                    SizedBox(
+                      width: ancho,
+                      child: const Text(
+                        'Selecciona la mascota vinculada a este evento',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.black,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      Container(
-                        width: 340,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: ProfilesDogs(),
+                    ),
+                    SizedBox(height: doubleHeight),
+                    Container(
+                      width: ancho,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      const SizedBox(
-                        width: 302,
-                        child: Divider(
-                          color: Colors.grey,
-                          thickness: 0.2,
-                        ),
+                      child: ProfilesDogs(),
+                    ),
+                    const SizedBox(
+                      width: 302,
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 0.2,
                       ),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        width: 302,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Invitar Personas a este Evento',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black,
-                                fontFamily: 'PoetsenOne',
-                              ),
+                    ),
+                    SizedBox(height: doubleHeight),
+                    SizedBox(
+                      width: 302,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Invitar Personas a este Evento',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontFamily: 'PoetsenOne',
                             ),
-                            Positioned(
-                              bottom: 100,
-                              right: 16,
-                              child: FloatingActionButton(
-                                elevation: 5,
-                                onPressed: () {
-                                  // Acción al presionar el botón flotante
-                                  _showMyDialog(context);
-                                },
-                                backgroundColor: Styles.fiveColor,
-                                child:
-                                    const Icon(Icons.add, color: Colors.white),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
-                          child: UserEventoSeleccionado()),
-                      const SizedBox(height: 30),
-                      Obx(() {
-                        return SizedBox(
-                          width: 302,
-                          child: ButtonDefaultWidget(
-                            title: calendarController.isLoading.value
-                                ? 'Guardando...'
-                                : 'Finalizar',
-                            callback: () async {
-                              userController.filteredUsers.clear();
-                              calendarController.updateField("pet_id",
-                                  homeController.selectedProfile.value!.id);
-                              notificationController.updateField("pet_id",
-                                  homeController.selectedProfile.value!.id);
-                              notificationController.updateField(
-                                  "category_id", 1);
-                              notificationController.updateField(
-                                  "date",
-                                  // ignore: invalid_use_of_protected_member
-                                  calendarController.event.value['date']);
-                              notificationController.updateField(
-                                  "actividad",
-                                  // ignore: invalid_use_of_protected_member
-                                  calendarController.event.value['name']);
-                              notificationController.updateField(
-                                  "notas",
-                                  calendarController
-                                      // ignore: invalid_use_of_protected_member
-                                      .event
-                                      .value['description']);
-
-                              if (calendarController
-                                  .validateEvent(calendarController.event)) {
-                                if (calendarController.event.value['tipo'] !=
-                                    'evento') {
-                                  payController.setProduct(
-                                    ProductoPayModel(
-                                      precio:
-                                          categoryController.totalAmount.value,
-                                      nombreProducto: "Servicio",
-                                      imagen: calendarController
-                                                  .event.value['tipo'] ==
-                                              'medico'
-                                          ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTDsiOSLQ5UvO73L2AtydpiTYHYvox0FBXUA&s"
-                                          : "https://d3puay5pkxu9s4.cloudfront.net/curso/2136/800_imagen.jpg",
-                                      descripcion: "Servicio",
-                                      slug: "servicio",
-                                      id: 1,
-                                    ),
-                                  );
-                                  balanceController.showPurchaseModal(context);
-                                } else {
-                                  calendarController.postEvent();
-                                }
-
-                                // Asegúrate de que el proceso sea esperado
-                                //  await calendarController
-                                //    .postEvent();
-
-                                // Solo regresa si no está cargando
-                              } else {
-                                Get.snackbar(
-                                  "Campos incompletos",
-                                  "Por favor, rellene todos los campos.",
-                                  snackPosition: SnackPosition.BOTTOM,
-                                );
-                              }
-                            },
                           ),
-                        );
-                      }),
-                      const SizedBox(height: 30),
-                    ],
-                  ),
+                          Positioned(
+                            bottom: 100,
+                            right: 16,
+                            child: FloatingActionButton(
+                              elevation: 5,
+                              onPressed: () {
+                                // Acción al presionar el botón flotante
+                                _showMyDialog(context);
+                              },
+                              backgroundColor: Styles.fiveColor,
+                              child: const Icon(Icons.add, color: Colors.white),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: doubleHeight),
+                    SizedBox(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: UserEventoSeleccionado()),
+                    const SizedBox(height: 30),
+                    Obx(() {
+                      return SizedBox(
+                        width: 302,
+                        child: ButtonDefaultWidget(
+                          title: calendarController.isLoading.value
+                              ? 'Guardando...'
+                              : 'Finalizar',
+                          callback: () async {
+                            calendarController.updateField("pet_id",
+                                homeController.selectedProfile.value!.id);
+                            // ignore: invalid_use_of_protected_member
+                            if (calendarController.event.value['pet_id'] ==
+                                null) {
+                              Get.snackbar("Error", "Seleccione una mascota");
+                            }
+
+                            if (calendarController
+                                .validateEvent(calendarController.event)) {
+                              if (calendarController.event.value['tipo'] !=
+                                  'evento') {
+                                payController.setProduct(
+                                  ProductoPayModel(
+                                    precio: calendarController.event['tipo'] ==
+                                            "medico"
+                                        ? categoryController.totalAmount.value
+                                        : serviceController.totalAmount.value,
+                                    nombreProducto: "Servicio",
+                                    imagen: calendarController
+                                                .event.value['tipo'] ==
+                                            'medico'
+                                        ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTDsiOSLQ5UvO73L2AtydpiTYHYvox0FBXUA&s"
+                                        : "https://d3puay5pkxu9s4.cloudfront.net/curso/2136/800_imagen.jpg",
+                                    descripcion: "Servicio",
+                                    slug: "servicio",
+                                    id: 1,
+                                  ),
+                                );
+                                balanceController.showPurchaseModal(context);
+                              } else {
+                                calendarController.postEvent();
+                              }
+
+                              // Asegúrate de que el proceso sea esperado
+                              //  await calendarController
+                              //    .postEvent();
+
+                              // Solo regresa si no está cargando
+                            } else {
+                              Get.snackbar(
+                                "Campos incompletos",
+                                "Por favor, rellene todos los campos.",
+                                snackPosition: SnackPosition.BOTTOM,
+                              );
+                            }
+                          },
+                        ),
+                      );
+                    }),
+                    SizedBox(height: doubleHeight),
+                  ],
                 ),
               ),
             ),
@@ -460,59 +499,77 @@ class CreateEvent extends StatelessWidget {
         return SizedBox(
           width: 302, // Ancho del modal
           height: 396, // Alto del modal
-
           child: AlertDialog(
             title: const Text('Invita una persona'),
             content: SingleChildScrollView(
               child: Container(
-                  width: 302,
-                  height: 396,
-                  decoration: const BoxDecoration(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      InputText(
-                        suffixIcon: const Icon(
-                          Icons.email,
-                          color: Styles.fiveColor,
-                          size: 24,
-                        ),
-                        label: '',
-                        placeholder: 'Correo Electrónico',
-                        onChanged: (value) => userController.filterUsers(value),
+                width: 302,
+                height: 396,
+                decoration: const BoxDecoration(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    InputText(
+                      suffixIcon: const Icon(
+                        Icons.email,
+                        color: Styles.fiveColor,
+                        size: 24,
                       ),
-                      const SizedBox(height: 20),
-                      Obx(() {
-                        var user = userController.filteredUsers;
-                        if (user.isEmpty) {
-                          return const Text("Seleccione un usuario");
-                        }
+                      label: '',
+                      placeholder: 'Correo Electrónico',
+                      onChanged: (value) => userController.filterUsers(value),
+                    ),
+                    const SizedBox(height: 20),
+                    Obx(() {
+                      var filteredUsers = userController.filteredUsers;
+                      if (filteredUsers.isEmpty) {
+                        return const Text("No se encontraron usuarios");
+                      }
 
-                        return SelectedAvatar(
-                          nombre: userController.filteredUsers.first.firstName,
-                          imageUrl:
-                              userController.filteredUsers.first.profileImage,
-                        );
-                      }),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        width: 300,
-                        child: ButtonDefaultWidget(
-                          title: 'Invitar Persona',
-                          callback: () {
+                      return Column(
+                        children: [
+                          // Mostrar la recomendación solo cuando se encuentren usuarios
+                          if (filteredUsers.isNotEmpty)
+                            SelectedAvatar(
+                              nombre: filteredUsers.first.firstName,
+                              imageUrl: filteredUsers.first.profileImage,
+                            ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      );
+                    }),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: 300,
+                      child: ButtonDefaultWidget(
+                        title: 'Invitar Persona',
+                        callback: () {
+                          if (userController.filteredUsers.isNotEmpty) {
                             calendarController.updateField('owner_id',
                                 [userController.filteredUsers.first.id]);
                             userController.deselectUser();
-                            userController.selectedUser(
-                                userController.filteredUsers.first);
+                            userController
+                                .selectUser(userController.filteredUsers.first);
                             Navigator.of(context).pop();
-                          },
-                        ),
-                      )
-                    ],
-                  )),
+                          } else {
+                            // Si no hay usuarios coincidentes, no se hace nada o muestra un mensaje
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                    'No hay usuarios disponibles para invitar'),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
             actions: <Widget>[
               TextButton(

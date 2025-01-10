@@ -188,9 +188,13 @@ class ComandoController extends GetxController {
       } else {
         print('Error en la solicitud: ${response.statusCode}');
         print('Respuesta: ${response.body}');
+        Get.snackbar('Error', 'Error al crear el comando',
+            backgroundColor: Colors.red);
       }
     } catch (e) {
       print('Error al crear el comando: $e');
+      Get.snackbar('Error', 'Error al crear el comando',
+          backgroundColor: Colors.red);
     } finally {
       isLoading.value = false;
     }

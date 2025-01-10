@@ -1,14 +1,14 @@
 class PetActivity {
-  final int id;
-  final int categoryId;
-  final String categoryName;
-  final String date;
-  final String actividad;
-  final String notas;
-  final int petId;
-  final String? image;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  int id;
+  int categoryId;
+  String categoryName;
+  String date;
+  String actividad;
+  String notas;
+  int petId;
+  String? image;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   PetActivity({
     required this.id,
@@ -37,5 +37,21 @@ class PetActivity {
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
     );
+  }
+
+  // Método para convertir una instancia de PetActivity a un JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'category_id': categoryId,
+      'category_name': categoryName,
+      'date': date,
+      'actividad': actividad,
+      'notas': notas,
+      'pet_id': petId,
+      'image': image,
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
+    };
   }
 }

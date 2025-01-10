@@ -18,7 +18,7 @@ class HeaderTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 300,
+        width: 322,
         margin: const EdgeInsets.only(top: 30),
         child: Column(
           children: [

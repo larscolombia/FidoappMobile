@@ -222,7 +222,7 @@ class UserBalanceController extends GetxController {
                     CustomAlertDialog(
                       icon: Icons.close,
                       title: 'Error',
-                      description: 'Fondos insuficiente',
+                      description: 'Fondos insuficientes',
                       primaryButtonText: 'Aceptar',
                       onPrimaryButtonPressed: () {
                         Get.back();
@@ -245,7 +245,8 @@ class UserBalanceController extends GetxController {
                                 productController.selectedProduct.value.id);
                             break;
                           case 'servicio':
-                            print('servicio medico');
+                            print(
+                                'servicio medicos ${calendarController.event}');
                             calendarController.postEvent();
                             break;
                           default:

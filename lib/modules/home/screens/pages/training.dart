@@ -31,7 +31,7 @@ class Training extends StatelessWidget {
           style: const TextStyle(
             fontSize: 20,
             color: Styles.primaryColor,
-            fontFamily: 'PoetsenOne',
+            fontFamily: Styles.fuente2,
           ),
         ),
         const SizedBox(height: 10),

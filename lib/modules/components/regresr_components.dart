@@ -41,6 +41,7 @@ class BarraBack extends StatelessWidget {
           ),
           // Aquí envolvemos el contenido del texto en un Expanded
           SizedBox(
+            width: MediaQuery.of(context).size.width - 180,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

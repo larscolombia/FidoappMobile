@@ -40,8 +40,15 @@ class AvatarComentarios extends StatelessWidget {
                       margin: const EdgeInsets.only(left: 5),
                       width: 200,
                       child: Text(
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         name ?? "",
-                        style: Styles.AvatarName,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Lato',
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -68,7 +75,12 @@ class AvatarComentarios extends StatelessWidget {
                             width: 50,
                             child: Text(
                               '${rating ?? 0.0}',
-                              style: Styles.textProfile14w700,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.w700,
+                              ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
                             ),

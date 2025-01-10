@@ -3,380 +3,67 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/widgets/comments_section.dart';
+import 'package:pawlly/modules/profile/screens/components/profile_action.dart';
+import 'package:pawlly/modules/profile/screens/components/profile_details.dart';
+import 'package:pawlly/modules/profile/screens/components/profile_header.dart';
+import 'package:pawlly/modules/profile/screens/components/sobremi.dart';
+import 'package:pawlly/modules/profile/screens/components/veteinari_info.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 //perfil del usuario
 class PetOwnerProfileScreen extends StatelessWidget {
+  final String id;
   final PetOwnerProfileController controller =
       Get.put(PetOwnerProfileController());
-
-  PetOwnerProfileScreen({super.key});
+  final UserProfileController profileController =
+      Get.put(UserProfileController());
+  PetOwnerProfileScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final headerHeight = size.height / 8;
-    print('profile image $controller');
+    profileController.fetchUserData(id);
     return Scaffold(
+      backgroundColor: Styles.whiteColor,
       body: Container(
-        height: double.infinity,
-        color: Colors.white,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(36),
+            topRight: Radius.circular(36),
+          ),
+        ),
         child: SingleChildScrollView(
-          // Cambiado a SingleChildScrollView para todo el contenido
           child: Column(
             children: [
-              // Encabezado
-              Stack(
-                children: [
-                  Container(
-                    height: headerHeight,
-                    width: double.infinity,
-                    color: Styles.fiveColor,
-                  ),
-                  // Imagen circular ahora dentro del Stack pero sin Positioned
-                  Center(
-                    child: Container(
-                      margin: EdgeInsets.only(top: headerHeight - 50),
-                      width: 100,
-                      height: 100,
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        color: Styles.whiteColor,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Styles.iconColorBack,
-                          width: 3.0,
-                        ),
-                      ),
-                      child: Obx(
-                        () => CircleAvatar(
-                          radius: 46,
-                          backgroundImage: controller
-                                  .profileImagePath.value.isNotEmpty
-                              ? NetworkImage(controller.profileImagePath.value)
-                              : const AssetImage('assets/images/avatar.png')
-                                  as ImageProvider,
-                          backgroundColor: Colors.transparent,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+              ProfileHeader(
+                profileController: profileController,
+                headerHeight: MediaQuery.of(context).size.height / 8,
               ),
-              // Espacio entre la imagen y el contenido
-              Container(
-                padding: Styles.paddingAll,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          color: Styles.primaryColor,
-                          size: 22,
-                        ),
-                      ),
-                      const Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.location_on,
-                                  color: Colors.grey, size: 20),
-                              SizedBox(width: 4),
-                              Text(
-                                'Santo Domingo, R.D',
-                                style: TextStyle(
-                                    color: Styles.primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                    fontFamily: 'lato'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 40),
-                    ],
-                  ),
+              const SizedBox(height: 20),
+              ProfileDetails(
+                  controller: controller, profileController: profileController),
+              const SizedBox(
+                width: 302,
+                height: 20,
+                child: Divider(
+                  thickness: .2,
+                  color: Color.fromARGB(255, 170, 165, 157),
                 ),
               ),
-              Obx(() => Text(
-                    controller.ownerName.value,
-                    style: Styles.dashboardTitle20,
-                    textAlign: TextAlign.center,
-                  )),
-              Obx(
-                () => Text(
-                  controller.userType.value,
-                  style: Styles.secondTextTitle,
-                ),
-              ),
+              const SizedBox(height: 20),
+              VeterinarianInfo(
+                  controller: controller, profileController: profileController),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  RatingBar.builder(
-                    initialRating: controller.rating.value,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    itemSize: 20.0,
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {},
-                    ignoreGestures: true,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    controller.rating.value.toString(),
-                    style: Styles.secondTextTitle,
-                  ),
-                ],
-              ),
-              const Padding(
-                padding: Styles.paddingAll,
-                child: Divider(height: 10, thickness: 1),
-              ),
-              Obx(
-                () {
-                  if (controller.userType.value == 'Veterinario' ||
-                      controller.userType.value == 'Entrenador') {
-                    return Container(
-                      padding: Styles.paddingAll,
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 54,
-                            margin: const EdgeInsets.symmetric(vertical: 10.0),
-                            padding: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE5FEED),
-                              border: Border.all(
-                                color: const Color(0xFF19A02F),
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.check_circle,
-                                      color: Color(0xFF19A02F), size: 20),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    'Veterinario Calificado',
-                                    style: TextStyle(
-                                        color: Color(0xFF19A02F),
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'lato'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                },
-              ),
-              Obx(
-                () => Container(
-                  padding: Styles.paddingAll,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Sobre ${controller.ownerName.value}',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'lato',
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Obx(() => Container(
-                    padding: Styles.paddingAll,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 16.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          controller.description.value,
-                          style: Styles.secondTextTitle,
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                    ),
-                  )),
-              Container(
-                padding: Styles.paddingAll,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: ButtonDefaultWidget(
-                    title: 'Compartir',
-                    callback: () {
-                      // Lógica para compartir perfil
-                    },
-                    defaultColor: Colors.transparent,
-                    border: const BorderSide(color: Colors.grey, width: 1),
-                    textColor: Colors.black,
-                    icon: Icons.share,
-                    iconAfterText: true,
-                    widthButtom: 150,
-                    textSize: 14,
-                    borderSize: 25,
-                    heigthButtom: 40,
-                  ),
-                ),
-              ),
-              Obx(() {
-                if (controller.veterinarianLinked.value) {
-                  return Container(
-                    padding: Styles.paddingAll,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10.0),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE5FEED),
-                        border: Border.all(
-                          color: const Color(0xFF19A02F),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.check_circle,
-                              color: Color(0xFF19A02F), size: 20),
-                          const SizedBox(width: 8),
-                          Text(
-                            controller.veterinarianLinked.value
-                                ? 'Veterinario vinculado a tu mascota'
-                                : 'No vinculado',
-                            style: const TextStyle(
-                                color: Color(0xFF19A02F),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'lato'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-                return const SizedBox.shrink();
-              }),
-              Container(
-                padding: Styles.paddingAll,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Área de especialización',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'lato',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Obx(() => Container(
-                    padding: Styles.paddingAll,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10.0),
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFEF7E5),
-                        border: Border.all(
-                          color: const Color(0xFFFC9214),
-                          width: 1.0,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            controller.specializationArea.value,
-                            style: const TextStyle(
-                                color: Color(0xFFFC9214),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'lato'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )),
-              Container(
-                padding: Styles.paddingAll,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Otras áreas de especialización',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'lato',
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Obx(() => Container(
-                    padding: Styles.paddingAll,
-                    child: Wrap(
-                      spacing: 8.0,
-                      runSpacing: 8.0,
-                      children: controller.otherAreas.map((area) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 12.0),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFEF7E5),
-                            border: Border.all(
-                              color: const Color(0xFFFC9214),
-                              width: 1.0,
-                            ),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            area,
-                            style: const TextStyle(
-                                color: Color(0xFFFC9214),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'lato'),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  )),
-              const SizedBox(height: 16),
-              Container(
-                padding: Styles.paddingAll,
-                child: CommentsSection(),
-              ),
-              const SizedBox(height: 16),
+              Sobremi(
+                  profileController: profileController, controller: controller),
+              const SizedBox(height: 20),
+              ProfileActions(
+                  controller: controller, profileController: profileController),
+              const SizedBox(height: 20),
+              CommentsSection(id: '${profileController.user.value.id}'),
             ],
           ),
         ),

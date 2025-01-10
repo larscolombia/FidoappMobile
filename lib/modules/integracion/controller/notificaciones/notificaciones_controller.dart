@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'dart:convert';
 import 'package:pawlly/configs.dart'; // Asegúrate de tener este archivo configurado con tus URLs y otros detalles
 import 'package:pawlly/modules/integracion/model/notigicaciones/notificaciones.dart';
@@ -17,7 +19,7 @@ class NotificationController extends GetxController {
   void onInit() {
     super.onInit();
     fetchNotifications();
-    //startPolling();
+    startPolling(); // pisa papel notificaciones poolling
   }
 
   void startPolling() {
@@ -189,5 +191,120 @@ class NotificationController extends GetxController {
     } catch (e) {
       print('Excepción capturada: $e');
     }
+  }
+
+  //aceptar reserva
+  Future<void> acceptBooking(String id, BuildContext context) async {
+    final url = Uri.parse('$baseUrl/accept-or-reject-event');
+    print('url: $url');
+    try {
+      // Construir el cuerpo de la solicitud
+      final body = jsonEncode({
+        "confirm": true,
+        "user_id": AuthServiceApis.dataCurrentUser.id,
+        "event_id": id,
+      });
+
+      // Configurar los encabezados
+      final headers = {
+        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        'Content-Type': 'application/json',
+      };
+
+      // Realizar la petición HTTP
+      final response = await http.put(url, body: body, headers: headers);
+
+      // Manejar la respuesta
+      if (response.statusCode == 200) {
+        // Mostrar diálogo de éxito
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.confirmation_num,
+            title: '¡Enhorabuena!',
+            description: 'Has aceptado la reserva',
+            primaryButtonText: 'Continuar',
+            onPrimaryButtonPressed: () {
+              Get.back();
+            },
+          ),
+          barrierDismissible: true,
+        );
+      } else {
+        // Manejar errores HTTP
+        print('Error: ${response.statusCode}, Body: ${response.body}');
+        showErrorDialog(context,
+            'Hubo un error al aceptar la reserva. Inténtalo de nuevo.');
+      }
+    } catch (e) {
+      // Manejar excepciones
+      print('Error al realizar la petición: $e');
+      showErrorDialog(context,
+          'Ocurrió un error inesperado. Por favor, revisa tu conexión e inténtalo nuevamente.');
+    }
+  }
+
+  Future<void> rechazarReserva(String id, BuildContext context) async {
+    final url = Uri.parse('$baseUrl/accept-or-reject-event');
+    print('url: $url');
+    try {
+      // Construir el cuerpo de la solicitud
+      final body = jsonEncode({
+        "confirm": false,
+        "user_id": AuthServiceApis.dataCurrentUser.id,
+        "event_id": id,
+      });
+
+      // Configurar los encabezados
+      final headers = {
+        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        'Content-Type': 'application/json',
+      };
+
+      // Realizar la petición HTTP
+      final response = await http.put(url, body: body, headers: headers);
+
+      // Manejar la respuesta
+      if (response.statusCode == 200) {
+        // Mostrar diálogo de éxito
+        print('rechazamos el evento  ${response.body}');
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.confirmation_num,
+            title: 'evento rechazado',
+            description: 'Has rechazado el evento',
+            primaryButtonText: 'Continuar',
+            onPrimaryButtonPressed: () {
+              Get.back();
+            },
+          ),
+          barrierDismissible: true,
+        );
+      } else {
+        // Manejar errores HTTP
+        print('Error: ${response.statusCode}, Body: ${response.body}');
+        showErrorDialog(context,
+            'Hubo un error al aceptar la reserva. Inténtalo de nuevo.');
+      }
+    } catch (e) {
+      // Manejar excepciones
+      print('Error al realizar la petición: $e');
+      showErrorDialog(context,
+          'Ocurrió un error inesperado. Por favor, revisa tu conexión e inténtalo nuevamente.');
+    }
+  }
+
+  void showErrorDialog(BuildContext context, String message) {
+    Get.dialog(
+      CustomAlertDialog(
+        icon: Icons.error,
+        title: 'Error',
+        description: message,
+        primaryButtonText: 'Aceptar',
+        onPrimaryButtonPressed: () {
+          Get.back();
+        },
+      ),
+      barrierDismissible: true,
+    );
   }
 }

@@ -38,15 +38,15 @@ class DiarioMascotas extends StatelessWidget {
             crossAxisCount: 2,
             crossAxisSpacing: 5.0,
             mainAxisSpacing: 4.0,
-            childAspectRatio: 0.75, // Ajusta este valor según sea necesario
+            childAspectRatio: 0.70, // Ajusta este valor según sea necesario
           ),
           itemCount: controller.filteredActivities.length,
           itemBuilder: (context, index) {
             final actividad = controller.filteredActivities[index];
-            print('ultimo id ${controller.diario['actividadId']}');
+
             return Container(
               width: MediaQuery.of(context).size.width,
-              height: 200,
+              height: 230,
               margin: const EdgeInsets.symmetric(vertical: 8),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
@@ -59,16 +59,18 @@ class DiarioMascotas extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    actividad.actividad,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
+                  Container(
+                    child: Text(
+                      actividad.actividad,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     actividad.categoryName,
@@ -111,6 +113,7 @@ class DiarioMascotas extends StatelessWidget {
                           title: 'Ver detalles >',
                           callback: () {
                             controller.getActivityById(actividad.id);
+                            print('actividad ${actividad}');
                             Get.to(DetallesDiario());
                           },
                         ),

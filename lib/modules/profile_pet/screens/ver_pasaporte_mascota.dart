@@ -61,30 +61,26 @@ class VerPasaporteMascota extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: 305,
+                        width: MediaQuery.of(context).size.width - 100,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            BarraBack(
-                              titulo: 'Pasaporte',
-                              callback: () {
-                                Get.off(HomeScreen());
-                              },
-                            ),
-                            Container(
-                              child: Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(PasaporteMascota());
-                                    },
-                                    child:
-                                        Image.asset('assets/icons/edit-2.png'),
-                                  )
-                                ],
+                            SizedBox(
+                              width: 260,
+                              child: BarraBack(
+                                titulo: 'Pasaporte',
+                                callback: () {
+                                  Get.off(HomeScreen());
+                                },
                               ),
                             ),
+                            GestureDetector(
+                              onTap: () {
+                                Get.to(PasaporteMascota());
+                              },
+                              child: Image.asset('assets/icons/edit-2.png'),
+                            )
                           ],
                         ),
                       ),
@@ -137,7 +133,7 @@ class VerPasaporteMascota extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Codigo de Mascota',
+                                  'Codigó de Mascota',
                                   style: Styles.descripcion,
                                 ),
                                 Text(

@@ -13,7 +13,7 @@ import 'package:path/path.dart' as path;
 
 class PetActivityController extends GetxController {
   final HomeController homeController = Get.put(HomeController());
-  var isLoading = true.obs;
+  var isLoading = false.obs;
   var activities = <PetActivity>[].obs;
   var filteredActivities = <PetActivity>[].obs;
   var activitiesOne =
@@ -30,6 +30,19 @@ class PetActivityController extends GetxController {
       fetchPetActivities(homeController.selectedProfile.value!.id.toString());
     }
     initDiario();
+  }
+
+  String categoria(int id) {
+    switch (id) {
+      case 1:
+        return 'Actividad';
+      case 2:
+        return 'Informe médico';
+      case 3:
+        return 'Entrenamiento';
+      default:
+        return 'Actividad';
+    }
   }
 
   void initDiario() {
@@ -93,6 +106,7 @@ class PetActivityController extends GetxController {
     try {
       isLoading(true);
       var petId = diario['pet_id'];
+      print('response actividades ${petId}');
       petId = petId != null ? petId.toString() : '';
       var request = http.MultipartRequest('POST', Uri.parse(createUrl))
         ..headers.addAll({
@@ -103,7 +117,8 @@ class PetActivityController extends GetxController {
         ..fields['date'] = diario['date'] ?? ''
         ..fields['category_id'] = diario['category_id'] ?? ''
         ..fields['notas'] = diario['notas'] ?? ''
-        ..fields['pet_id'] = '1';
+        ..fields['pet_id'] =
+            homeController.selectedProfile.value!.id.toString();
 
       if (imageFile != null) {
         var stream = http.ByteStream(imageFile.openRead());
@@ -117,6 +132,7 @@ class PetActivityController extends GetxController {
       var responseBody = await http.Response.fromStream(response);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        print('response actividades ${jsonEncode(responseBody.body)}');
         Get.dialog(
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
@@ -139,35 +155,48 @@ class PetActivityController extends GetxController {
     }
   }
 
-  Future<void> editPetActivity2(String diaryId) async {
+  Future<void> editPetActivity2(String diaryId, File? imageFile) async {
     isLoading.value = true;
-
+    print('Response Body file $imageFile');
     try {
       var url = Uri.parse('${BASE_URL}training-diaries/$diaryId');
       var headers = {
         'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-        'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': 'true',
       };
 
-      // Construir el cuerpo de la solicitud
-      var body = json.encode({
-        'actividadId': diario['actividadId'],
-        'actividad': diario['actividad'],
-        'date': diario['date'],
-        'category_id': diario['category_id'],
-        'notas': diario['notas'],
-        'pet_id': diario['pet_id'],
-      });
+      // Crear una solicitud multipart
+      var request = http.MultipartRequest('PUT', url);
+      request.headers.addAll(headers);
 
-      print('Enviando datos al servidor: $body');
+      // Agregar campos al cuerpo de la solicitud
+      request.fields['actividadId'] = diario['actividadId'].toString();
+      request.fields['actividad'] = diario['actividad'];
+      request.fields['date'] = diario['date'];
+      request.fields['category_id'] = diario['category_id'].toString();
+      request.fields['notas'] = diario['notas'];
+      request.fields['pet_id'] = diario['pet_id'].toString();
 
-      // Realizar la solicitud PUT
-      var response = await http.put(url, headers: headers, body: body);
+      // Adjuntar la imagen si existe
+      if (imageFile != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'image', // Este es el nombre esperado por el servidor para la imagen
+          imageFile.path,
+        ));
+      }
 
-      print('Response Code: ${response.statusCode}');
-      print('Response Body: ${response.body}');
+      if (imageFile != null) {
+        var stream = http.ByteStream(imageFile.openRead());
+        var length = await imageFile.length();
+        var multipartFile = http.MultipartFile('image', stream, length,
+            filename: path.basename(imageFile.path));
+        request.files.add(multipartFile);
+      }
 
+      // Enviar la solicitud
+      var response = await request.send();
+
+      // Manejar la respuesta
       if (response.statusCode == 200 || response.statusCode == 201) {
         Get.dialog(
           CustomAlertDialog(
@@ -177,17 +206,17 @@ class PetActivityController extends GetxController {
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
               Get.back();
-
+              Get.off(HomeScreen());
               fetchPetActivities(diario['pet_id']);
               getActivityById(diario['actividadId']);
-
-              Get.off(HomeScreen());
+              Get.back();
             },
           ),
           barrierDismissible: false,
         );
       } else {
-        print('Error al actualizar: ${response.body}');
+        var responseBody = await response.stream.bytesToString();
+        print('Error al actualizar: $responseBody');
       }
     } catch (e) {
       print('Excepción capturada: $e');
@@ -299,7 +328,8 @@ class PetActivityController extends GetxController {
 
   //actulizar historial
   void filterPetActivities(String? reportName) {
-    var filtered = activities.toList(); // Convertir a List<PetActivity>
+    List<PetActivity> filtered =
+        List<PetActivity>.from(activities); // Convertir a List<PetActivity>
 
     if (reportName != null && reportName.isNotEmpty) {
       filtered = filtered.where((activity) {
@@ -313,20 +343,23 @@ class PetActivityController extends GetxController {
             .compareTo(b.actividad.toLowerCase())); // Ordenar alfabéticamente
     }
 
-    if (diario['category_id'].isNotEmpty) {
+    var categoryId = diario['category_id']?.toLowerCase() ?? '';
+    if (categoryId.isNotEmpty) {
       filtered = filtered.where((activity) {
-        return activity.categoryName?.toLowerCase() ==
-            diario['category_id'].toLowerCase();
+        return activity.categoryName?.toLowerCase() == categoryId;
       }).toList(); // Convertir a List<PetActivity>
     }
 
     if (sortByDate.value) {
-      filtered.sort((a, b) => DateTime.parse(convertDateFormat(b.date))
-          .compareTo(DateTime.parse(convertDateFormat(a.date))));
+      filtered.sort((a, b) {
+        var dateA = DateTime.parse(convertDateFormat(a.date));
+        var dateB = DateTime.parse(convertDateFormat(b.date));
+        return dateB.compareTo(dateA); // Orden descendente
+      });
     }
 
     filteredActivities.value =
-        filtered.toList().obs; // Convertir a RxList<PetActivity>
+        RxList<PetActivity>(filtered); // Convertir a RxList<PetActivity>
   }
 
   String convertDateFormat(String date) {

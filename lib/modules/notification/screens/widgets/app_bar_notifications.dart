@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class AppBarNotifications extends StatelessWidget
@@ -76,10 +77,10 @@ class AppBarNotifications extends StatelessWidget
                     width: 2.0, // Grosor del borde
                   ),
                 ),
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   radius: 22, // Tamaño de la imagen de perfil
                   backgroundImage: NetworkImage(
-                      'https://via.placeholder.com/150'), // URL de la imagen de perfil
+                      "${AuthServiceApis.dataCurrentUser.profileImage}"), // URL de la imagen de perfil
                   backgroundColor: Colors
                       .transparent, // Fondo transparente si la imagen no se carga
                 ),

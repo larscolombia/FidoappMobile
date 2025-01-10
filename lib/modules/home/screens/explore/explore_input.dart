@@ -55,7 +55,7 @@ class ExploreInput extends StatelessWidget {
                 return GestureDetector(
                   onTap: () {
                     // Acción al tocar un producto o libro
-                    //controller.fetchEBookById("${petItem.id}");
+                    print('libro id ${libro.id}');
                     controller.selectEBookById("${libro.id}");
 
                     Get.to(LibroDetalles());
@@ -104,15 +104,18 @@ class ExploreInput extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         // Nombre del producto (máximo 3 líneas)
-                        Text(
-                          libro.description!,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: Styles.greyTextColor,
+                        Container(
+                          height: 74,
+                          child: Text(
+                            libro.description!,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Styles.greyTextColor,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 8),

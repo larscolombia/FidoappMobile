@@ -1,27 +1,28 @@
 class HistorialClinico {
-  final int? id; // Cambiado a int? porque parece ser un número
-  final String? reportName;
-  final String? reportType;
-  final String? applicationDate;
-  final String? medicalConditions;
-  final String? testResults;
-  final String? vetVisits; // Cambiado a int porque parece ser un número
-  final String? file;
-  final String? image;
-  final int? petId; // Cambiado a int? porque parece ser un número
-  final String petName;
-  final String? veterinarianId; // Cambiado a int? porque parece ser un número
-  final String? veterinarianName;
-  final String? categoryName;
-  final String? detailHistoryId; // Cambiado a int?
-  final String? detailHistoryName;
-  final String? fechaAplicacion;
-  final String? fechaRefuerzo;
-  final String? weight;
-  final String? notes;
-  final String? createdAt;
-  final String? updatedAt;
-  final String? category;
+  int? id;
+  String? reportName;
+  String? reportType;
+  String? applicationDate;
+  String? medicalConditions;
+  String? testResults;
+  String? vetVisits;
+  String? file;
+  String? image;
+  int? petId;
+  String petName;
+  int? veterinarianId;
+  String? veterinarianName;
+  String? categoryName;
+  int? detailHistoryId;
+  String? detailHistoryName;
+  String? fechaAplicacion;
+  String? fechaRefuerzo;
+  String? weight;
+  String? notes;
+  String? createdAt;
+  String? updatedAt;
+  String? category;
+
   HistorialClinico({
     this.id,
     required this.reportName,
@@ -48,35 +49,66 @@ class HistorialClinico {
     this.category,
   });
 
-  // Método para mapear desde JSON
   factory HistorialClinico.fromJson(Map<String, dynamic> json) {
     return HistorialClinico(
       id: json['id'] != null ? int.tryParse(json['id'].toString()) : null,
       reportName: json['report_name'] ?? 'Sin nombre',
-      reportType: json['report_type'].toString(),
-      applicationDate: json['application_date'] ?? 'No disponible',
+      reportType: json['report_type']?.toString(),
+      applicationDate: json['application_date'],
       medicalConditions: json['medical_conditions'],
       testResults: json['test_results'],
-      vetVisits: json['vet_visits'].toString(),
+      vetVisits: json['vet_visits']?.toString(),
       file: json['file'],
       image: json['image'],
       petId: json['pet_id'] != null
           ? int.tryParse(json['pet_id'].toString())
           : null,
       petName: json['pet_name'] ?? 'Sin nombre de mascota',
-      veterinarianId: json['veterinarian_id'].toString(),
+      veterinarianId: json['veterinarian_id'] != null
+          ? int.tryParse(json['veterinarian_id'].toString())
+          : null,
       veterinarianName:
           json['veterinarian_name'] ?? 'Sin nombre de veterinario',
       categoryName: json['category_name'] ?? 'Sin categoría',
-      detailHistoryId: json['detail_history_id'].toString(),
+      detailHistoryId: json['detail_history_id'] != null
+          ? int.tryParse(json['detail_history_id'].toString())
+          : null,
       detailHistoryName: json['detail_history_name'],
       fechaAplicacion: json['fecha_aplicacion'],
       fechaRefuerzo: json['fecha_refuerzo'],
       weight: json['weight'],
       notes: json['notes'],
-      category: json['category'].toString(),
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
+      category: json['category']?.toString(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'report_name': reportName,
+      'report_type': reportType,
+      'application_date': applicationDate,
+      'medical_conditions': medicalConditions,
+      'test_results': testResults,
+      'vet_visits': vetVisits,
+      'file': file,
+      'image': image,
+      'pet_id': petId,
+      'pet_name': petName,
+      'veterinarian_id': veterinarianId,
+      'veterinarian_name': veterinarianName,
+      'category_name': categoryName,
+      'detail_history_id': detailHistoryId,
+      'detail_history_name': detailHistoryName,
+      'fecha_aplicacion': fechaAplicacion,
+      'fecha_refuerzo': fechaRefuerzo,
+      'weight': weight,
+      'notes': notes,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+      'category': category,
+    };
   }
 }

@@ -23,6 +23,8 @@ class CommentController extends GetxController {
         return "/course-platform/subscribe/get-rating-course-video?course_platform_video_id=$itemId";
       case 'blog':
         return "/get-blog-rating?blog_id=$itemId";
+      case 'user':
+        return '/raiting-user?employee_id=$itemId';
       default:
         return "Comentarios";
     }
@@ -36,39 +38,40 @@ class CommentController extends GetxController {
         return "$baseUrl/course-platform/subscribe/rating-course-video";
       case "blog":
         return "$baseUrl/blog-list/rating";
+      case 'user':
+        return "$baseUrl/raiting-user";
       default:
         return "Comentarios";
     }
   }
 
   Future<void> fetchComments(String itemId, String tipo) async {
-    if (true) {
-      try {
-        isLoading(true);
-        final response = await http
-            .get(Uri.parse('$baseUrl${getEndpoint(tipo, itemId)}'), headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-          'Content-Type': 'application/json',
-        });
+    print('url comentarios libro ${baseUrl + getEndpoint(tipo, itemId)}');
+    try {
+      comments.value = [];
+      isLoading(true);
+      final response = await http
+          .get(Uri.parse('$baseUrl${getEndpoint(tipo, itemId)}'), headers: {
+        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        'Content-Type': 'application/json',
+      });
 
-        var data = json.decode(response.body);
+      var data = json.decode(response.body);
 
-        if (response.statusCode == 200) {
-          print('comentarios ${data['data']}');
-          comments.value = (data['data'] as List)
-              .map((item) => Comment.fromJson(item))
-              .toList();
-        } else {
-          throw Exception('Failed to load comments');
-        }
-      } catch (e) {
-        print('error en comentarios $e');
-      } finally {
-        isLoading(false);
+      if (response.statusCode == 200) {
+        print('comentarios ${data['data']}');
+        comments.value = (data['data'] as List)
+            .map((item) => Comment.fromJson(item))
+            .toList();
+      } else {
+        throw Exception('Failed to load comments');
       }
-      isFirstLoad.value =
-          false; // Cambiamos el flag para evitar cargas futuras.
+    } catch (e) {
+      print('error en comentarios $e');
+    } finally {
+      isLoading(false);
     }
+    isFirstLoad.value = false; // Cambiamos el flag para evitar cargas futuras.
   }
 
   double calculateAverageRating() {
@@ -98,7 +101,8 @@ class CommentController extends GetxController {
     'rating': 1,
     'review_msg': "",
     "course_platform_video_id": "",
-    "blog_id": ""
+    "blog_id": "",
+    "employee_id": ""
   }.obs;
 
   void updateField(String key, dynamic value) {
@@ -117,7 +121,9 @@ class CommentController extends GetxController {
         },
         body: jsonEncode(comentario),
       );
-      if (response.statusCode == 200) {
+      print('log comentario ${json.decode(response.body)}');
+      print('log comentario ${response.statusCode}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
         Get.dialog(
           //pisa papel
           CustomAlertDialog(

@@ -8,6 +8,7 @@ import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/modules/notification/screens/notification_screens.dart';
 import 'package:pawlly/routes/app_pages.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class HeaderNotification extends StatelessWidget {
@@ -20,15 +21,60 @@ class HeaderNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    print(
-        'Respuesta de las notificaciones: tienes un total de ${notificationController.countUnreadNotifications()}');
+
+    return Container(
+      color: Styles.fiveColor,
+      height: 140,
+      child: Stack(
+        children: [
+          HeaderWiget(
+            width: width,
+            notificationController: notificationController,
+            controller: controller,
+          ),
+          Positioned(
+            top: 120,
+            left: 0,
+            right: 0,
+            child: Container(
+              height: 40,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(36),
+                  topRight: Radius.circular(36),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class HeaderWiget extends StatelessWidget {
+  const HeaderWiget({
+    super.key,
+    required this.width,
+    required this.notificationController,
+    required this.controller,
+  });
+
+  final double width;
+  final NotificationController notificationController;
+  final HomeController controller;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Container(
-          height: 130,
+          height: 120,
           width: width,
           padding: Styles.paddingAll,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Styles.fiveColor,
           ),
           child: Align(

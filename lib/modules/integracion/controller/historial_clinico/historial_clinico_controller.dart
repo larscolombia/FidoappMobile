@@ -157,7 +157,7 @@ class HistorialClinicoController extends GetxController {
   Future<void> fetchHistorialClinico(int petId) async {
     final url = '$DOMAIN_URL/api/medical-history-per-pet?pet_id=$petId';
 
-    isLoading.value = true;
+    // isLoading.value = true;
     try {
       final response = await http.get(
         Uri.parse(url),
@@ -279,14 +279,28 @@ class HistorialClinicoController extends GetxController {
   }
 
   //actulizar historial
-  Future<void> updateReport() async {
+  Future<void> updateReport(HistorialClinico historialClinico) async {
     isLoading.value = true;
-    isSuccess.value = false;
-    print('json report data ${jsonEncode(reportData)}');
+
     // Construcción de la URL de la API para actualizar
+
     final url =
-        '$DOMAIN_URL/api/pet-histories/${reportData['id']}'; // Usar el ID del informe
-    print('url $url');
+        '$DOMAIN_URL/api/pet-histories/${historialClinico.id}'; // Usar el ID del informe
+    print('lo que se va a mandar ${jsonEncode(
+      {
+        "pet_id": historialClinico.petId,
+        "report_type": historialClinico.reportType,
+        "veterinarian_id": historialClinico.veterinarianId,
+        "report_name": historialClinico.reportName,
+        "name": historialClinico.reportName,
+        "fecha_aplicacion": historialClinico.fechaAplicacion,
+        "fecha_refuerzo": historialClinico.fechaRefuerzo,
+        "category_name": historialClinico.categoryName,
+        "user_id": AuthServiceApis.dataCurrentUser.id,
+        "medical_conditions": historialClinico.medicalConditions,
+        "notes": historialClinico.notes,
+      },
+    )}');
     try {
       // Crear la solicitud PUT
       final response = await http.put(
@@ -294,15 +308,28 @@ class HistorialClinicoController extends GetxController {
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true',
         },
         body: jsonEncode(
-            reportData), // El cuerpo es el mismo que al crear el reporte
+          {
+            "pet_id": historialClinico.petId,
+            "report_type": historialClinico.reportType,
+            "veterinarian_id": historialClinico.veterinarianId,
+            "report_name": historialClinico.reportName,
+            "name": historialClinico.reportName,
+            "fecha_aplicacion": historialClinico.fechaAplicacion,
+            "fecha_refuerzo": historialClinico.fechaRefuerzo,
+            "category_name": historialClinico.categoryName,
+            "user_id": AuthServiceApis.dataCurrentUser.id,
+            "medical_conditions": historialClinico.medicalConditions,
+            "notes": historialClinico.notes,
+          },
+        ), // El cuerpo es el mismo que al crear el reporte
       );
 
       // Verificar la respuesta
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Si la respuesta es exitosa, mostrar un mensaje de éxito
+        print('respuesta : ${response.body}');
         Get.dialog(
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
@@ -319,12 +346,15 @@ class HistorialClinicoController extends GetxController {
         isSuccess.value = true;
       } else {
         // Si la respuesta es un error, mostrar el error
-        print("Error al actualizar los datos: ${response.body}");
+
+        Get.snackbar("Error", "Error al actualizar los datos: ${response.body}",
+            backgroundColor: Colors.red);
+        print('error al actualizar los datos: ${response.body}');
         isSuccess.value = false;
       }
     } catch (e) {
-      // Manejar excepciones, por ejemplo, errores de red
-      print("Error: $e");
+      Get.snackbar("Error", "Error", backgroundColor: Colors.red);
+
       isSuccess.value = false;
     } finally {
       // Detener el estado de carga

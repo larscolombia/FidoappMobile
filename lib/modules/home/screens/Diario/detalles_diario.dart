@@ -51,13 +51,13 @@ class DetallesDiario extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
-                      width: 320,
+                      width: MediaQuery.of(context).size.width - 90,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(context).size.width - 120,
+                            width: MediaQuery.of(context).size.width - 130,
                             child: BarraBack(
                               titulo: 'Sobre este Registro',
                               callback: () {
@@ -167,13 +167,10 @@ class DetallesDiario extends StatelessWidget {
                             if (controller.activitiesOne.value!.image == null) {
                               return Center(
                                 child: SizedBox(
-                                  width: 302,
-                                  height: 200,
-                                  child: const Icon(
-                                    Icons.image,
-                                    color: Colors.black,
-                                  ),
-                                ),
+                                    width: 302,
+                                    height: 200,
+                                    child: Image.asset(
+                                        'assets/images/actividad.jpg')),
                               );
                             }
                             return Container(

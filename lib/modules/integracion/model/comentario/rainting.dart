@@ -46,8 +46,8 @@ class Comment {
     rating = json['rating'].toString();
     reviewMsg = json['review_msg'];
     userId = json['user_id'];
-    userFullName = json['user_name'];
-    userAvatar = json['user_avatar'];
+    userFullName = json['username'];
+    userAvatar = json['profile_image'];
   }
 
   Map<String, dynamic> toJson() {

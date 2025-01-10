@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/models/login_response_model.dart';
+import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
@@ -65,7 +66,8 @@ class SignInController extends GetxController {
       'email': emailCont.text.trim(),
       'password': passwordCont.text.trim(),
       // 'player_id': playerId.value,
-      // UserKeys.userType: LoginTypeConst.LOGIN_TYPE_USER,
+      UserKeys.userType: LoginTypeConst
+          .LOGIN_TYPE_USER, // tipo de usuario con google pisa papel
     };
 
     await AuthServiceApis.loginUser(request: req).then((value) async {
@@ -76,18 +78,85 @@ class SignInController extends GetxController {
     });
   }
 
-  googleSignIn() async {
+  googleSignIn(BuildContext context) async {
     try {
       isLoading(true);
+
+      // Realizar el proceso de autenticación de Google
       final value = await GoogleSignInAuthService.signInWithGoogle();
 
+      // Verifica si es un nuevo usuario
+      if (value.isNewUser) {
+        // Mostrar el diálogo solo si el usuario es nuevo
+        final selectedRole = await showDialog<String?>(
+          context: context,
+          barrierDismissible:
+              false, // No permite cerrar al tocar fuera del diálogo
+          builder: (context) => AlertDialog(
+            title: Text('Seleccione su rol'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InputSelect(
+                  TextColor: Colors.black,
+                  label: 'Categoría del registro',
+                  placeholder: 'Seleccione el tipo de usuario',
+                  onChanged: (value) {
+                    LoginTypeConst.LOGIN_TYPE_USER = value ?? 'user';
+                  },
+                  items: const [
+                    DropdownMenuItem(
+                      value: 'user',
+                      child: Text('Usuario'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'vet',
+                      child: Text('Veterinario'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'trainer',
+                      child: Text('Entrenador'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(null), // Devolver null si cancela
+                child: Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () =>
+                    Navigator.of(context).pop(LoginTypeConst.LOGIN_TYPE_USER),
+                child: Text('Aceptar'),
+              ),
+            ],
+          ),
+        );
+
+        // Verificar si el usuario canceló
+        if (selectedRole == null) {
+          log('Acción cancelada por el usuario.'); // Registro de cancelación
+          isLoading(false); // Detener el spinner
+          return; // Detener la ejecución del flujo
+        }
+
+        // Asignar el rol seleccionado
+        value.userType = selectedRole; // Asignar el tipo de usuario
+      }
+
+      // Preparar los datos para la solicitud de inicio de sesión/registro
       Map<String, dynamic> request = {
         UserKeys.contactNumber: value.mobile,
         UserKeys.email: value.email,
         UserKeys.firstName: value.firstName,
         UserKeys.lastName: value.lastName,
         UserKeys.playerId: playerId.value,
-        UserKeys.userType: LoginTypeConst.LOGIN_TYPE_USER,
+        UserKeys.userType: value.userType ??
+            LoginTypeConst
+                .LOGIN_TYPE_USER, // Usar rol predeterminado si no es nuevo usuario
         UserKeys.username: value.userName,
         UserKeys.profileImage: value.profileImage,
         UserKeys.loginType: LoginTypeConst.LOGIN_TYPE_GOOGLE,
@@ -95,14 +164,16 @@ class SignInController extends GetxController {
 
       log('signInWithGoogle REQUEST: $request');
 
-      /// Social Login Api
+      // Llamar a la API de inicio de sesión o registro
       final loginResponse = await AuthServiceApis.loginUser(
         request: request,
         isSocialLogin: true,
       );
+
+      // Manejar la respuesta del inicio de sesión
       handleLoginResponse(loginResponse: loginResponse, isSocialLogin: true);
     } catch (e) {
-      log('Error during signInWithGoogle: $e');
+      log('Error durante signInWithGoogle: $e');
       toast(e.toString(), print: true);
     } finally {
       isLoading(false);

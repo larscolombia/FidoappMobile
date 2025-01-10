@@ -196,26 +196,28 @@ class FormularioRegistro extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 20),
-                        Center(
-                          child: SizedBox(
-                            width: 302,
-                            child: ButtonDefaultWidget(
-                              title: 'Terminar Informe  >',
-                              callback: () {
-                                print(
-                                    'reporte data editar${controller.reportData}');
-                                controller.isEditing.value = false;
-                                if (controller.validateReportData()) {
-                                  Get.to(ConfirmarFormulario());
-                                } else {
-                                  Get.snackbar("Error",
-                                      "Por favor, rellene todos los campos");
-                                }
-                                // Get.to(ConfirmarFormulario());
-                              },
+                        Obx(() {
+                          return Center(
+                            child: SizedBox(
+                              width: 302,
+                              child: ButtonDefaultWidget(
+                                title: controller.isEditing.value
+                                    ? 'Guardando...'
+                                    : 'Terminar Informe  >',
+                                callback: () {
+                                  controller.isEditing.value = true;
+                                  if (controller.validateReportData()) {
+                                    controller.submitReport();
+                                  } else {
+                                    Get.snackbar("Error",
+                                        "Por favor, rellene todos los campos");
+                                  }
+                                  //Get.to(ConfirmarFormulario());
+                                },
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        }),
                         const SizedBox(height: 20),
                       ],
                     ),

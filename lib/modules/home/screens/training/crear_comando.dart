@@ -79,8 +79,8 @@ class CrearComando extends StatelessWidget {
                       SizedBox(
                         width: 305,
                         child: InputText(
-                          label: 'Acción',
-                          placeholder: 'Nombre del Comando',
+                          label: 'Descripción del Comando',
+                          placeholder: 'Descripción del Comando',
                           onChanged: (value) =>
                               controller.updateField('description', value),
                         ),
@@ -89,8 +89,8 @@ class CrearComando extends StatelessWidget {
                       SizedBox(
                         width: 305,
                         child: InputText(
-                          label: 'Comando',
-                          placeholder: 'Nombre del Comando',
+                          label: 'Voz del Comando',
+                          placeholder: 'Voz del Comando',
                           onChanged: (value) =>
                               controller.updateField('voz_comando', value),
                         ),
@@ -99,8 +99,8 @@ class CrearComando extends StatelessWidget {
                       SizedBox(
                         width: 305,
                         child: InputText(
-                          label: 'Comando',
-                          placeholder: 'Nombre del Comando',
+                          label: 'Instrucciones del Comando',
+                          placeholder: 'Instrucciones del Comando',
                           onChanged: (value) =>
                               controller.updateField('instructions', value),
                         ),

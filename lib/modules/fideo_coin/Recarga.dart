@@ -149,7 +149,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                           buttonCancelar: true,
                           description: controller.isLoading == true
                               ? "cargando ..."
-                              : 'Estas apunto de comprar \$${_formattedInput(_input)}? ',
+                              : 'Estas apunto de comprar ${_formattedInput(_input)}ƒ',
                           primaryButtonText: 'Continuar',
                           onPrimaryButtonPressed: () {
                             controller.GetUrlPayment(

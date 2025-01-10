@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.pawlly.user</string>
+	<string>com.fidoapp.user</string>
 	<key>PROJECT_ID</key>
 	<string>pawlly-flutter</string>
 	<key>STORAGE_BUCKET</key>

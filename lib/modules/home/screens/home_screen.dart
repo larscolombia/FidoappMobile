@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
@@ -16,10 +18,12 @@ import 'package:pawlly/modules/home/screens/pages/resources_list/ebooks_list.dar
 import 'package:pawlly/modules/home/screens/pages/resources_list/video_list.dart';
 import 'package:pawlly/modules/home/screens/pages/training.dart';
 import 'package:pawlly/modules/home/screens/pages/utilities.dart';
+import 'package:pawlly/modules/home/screens/profecionales/profecionales.dart';
 import 'package:pawlly/modules/home/screens/training/commands.dart';
 import 'package:pawlly/modules/home/screens/widgets/filtrar_actividad.dart';
 import 'package:pawlly/modules/home/screens/widgets/menu_of_navigation.dart';
 import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
+import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
@@ -29,18 +33,24 @@ import 'package:pawlly/modules/integracion/controller/notificaciones/notificacio
 import 'package:pawlly/modules/home/screens/pages/explorar_container.dart';
 import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/pages/resources.dart';
+import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
+  //controlador principal
   final HomeController homeController = Get.put(HomeController());
+  //carga los cursos
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
-  final NotificationController notificationController =
-      Get.put(NotificationController());
+
+  // carga el el historial de las mascotas
   final PetActivityController historialClinicoController =
       Get.put(PetActivityController());
+  //carga los blogs
   final BlogController blogController = Get.put(BlogController());
+  //eventos del calendario
+  final CalendarController calendarController = Get.put(CalendarController());
   @override
   Widget build(BuildContext context) {
     homeController.SelectType(1);
@@ -72,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                       // Cambiar el contenido basado en el selectedIndex
                       switch (homeController.selectedIndex.value) {
                         case 0:
-                          return _buildCase1Content();
+                          return _buildCase1Content(context);
                         case 1:
                           return _buildCase2Content();
                         case 2:
@@ -86,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                         case 6:
                           return _Youtube();
                         default:
-                          return _buildCase1Content();
+                          return _buildCase1Content(context);
                       }
                     }),
                   ),
@@ -114,20 +124,81 @@ class HomeScreen extends StatelessWidget {
 
   // Funciones que devuelven el contenido basado en el selectedIndex
 
-  Widget _buildCase1Content() {
+  Widget _buildCase1Content(context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 16),
-        ProfilesDogs(),
+        if (AuthServiceApis.dataCurrentUser.userType != 'user') ProfilesDogs(),
+        if (AuthServiceApis.dataCurrentUser.userType == 'user')
+          Container(
+            child: Row(
+              children: [
+                // Widget del 70%
+                Flexible(
+                  flex: 8,
+                  child: Container(
+                    child:
+                        ProfilesDogs(), // Asegúrate de que ProfilesDogs sea completamente responsivo.
+                  ),
+                ),
+                // Widget del 30%
+                SizedBox(width: 20),
+                Flexible(
+                  flex: 2,
+                  child: GestureDetector(
+                    onTap: () {
+                      Get.to(Profecionales());
+                    },
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 64,
+                          height: 47,
+                          decoration: BoxDecoration(
+                            color: Styles.iconColorBack,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Center(
+                            child:
+                                Image.asset('assets/icons/profecionales.png'),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'Profesionales',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Lato",
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         const SizedBox(height: 16),
         Resources(),
         const SizedBox(height: 16),
         const Explore(),
         const SizedBox(height: 16),
+        if (calendarController.filteredCalendars.isNotEmpty)
+          const Text(
+            'Próximos Eventos',
+            style: TextStyle(
+              color: Styles.primaryColor,
+              fontFamily: Styles.fuente2,
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        const SizedBox(height: 16),
+        if (calendarController.filteredCalendars.isNotEmpty)
+          EventosProximos(calendarController: calendarController),
         const Utilities(),
         const SizedBox(height: 16),
-        // if (AuthServiceApis.dataCurrentUser.userRole[0] != 'vet') Training(),
         Training(),
         const SizedBox(height: 100),
       ],
@@ -285,6 +356,143 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 16),
         VideoList(),
         const SizedBox(height: 16),
+      ],
+    );
+  }
+}
+
+class EventosProximos extends StatelessWidget {
+  const EventosProximos({
+    super.key,
+    required this.calendarController,
+  });
+
+  final CalendarController calendarController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Obx(() {
+          // Obtener los eventos más próximos
+          List<CalendarModel> nearestEvents =
+              calendarController.getTwoNearestEvents();
+
+          if (nearestEvents.isEmpty) {
+            return const Text(
+              'No hay eventos próximos.',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+              ),
+            );
+          }
+
+          return Center(
+            child: Container(
+              child: Column(
+                children: nearestEvents.map((event) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width * 100,
+                    decoration: BoxDecoration(
+                      color: Styles.fiveColor,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                    child: Center(
+                      child: Container(
+                        width: 263,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Styles.fiveColor,
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        margin: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: SizedBox(
+                          width: Styles.tamano(context),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: Styles.tamano(context) - 20,
+                                child: Text(
+                                  event.name,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w900,
+                                    fontFamily: Styles.fuente1,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  calendarController
+                                      .toggleVerMas("${event.id}");
+                                },
+                                child: Obx(() {
+                                  return Text(
+                                    event.description ?? '',
+                                    maxLines: calendarController
+                                                .isVerMas[event.id ?? ''] ??
+                                            false
+                                        ? 4
+                                        : 1,
+                                    overflow: calendarController
+                                                .isVerMas[event.id ?? 0] ??
+                                            false
+                                        ? TextOverflow.visible
+                                        : TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: Styles.fuente1,
+                                      color: Colors.black,
+                                    ),
+                                  );
+                                }),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Text(
+                                    calendarController.formatEventTime(
+                                            event.eventime ?? "",
+                                            event.date ?? "") ??
+                                        'Hora no especificada',
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: 'Lato',
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    event.eventime ?? "",
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: Styles.fuente1,
+                                      color: Styles.iconColorBack,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          );
+        }),
       ],
     );
   }

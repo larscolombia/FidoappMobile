@@ -127,16 +127,18 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                             placeholder: '',
                             onChanged: (value) {
                               controller.updateField('actividad', value);
-                              print('Título del registro: $value');
                             },
                           ),
                           const SizedBox(height: 8),
-                          Container(
-                            width: MediaQuery.of(context).size.width - 90,
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
                             child: InputSelect(
                               TextColor: Colors.black,
-                              label: 'Categoria del registro',
-                              placeholder: 'Selecciona una categoría',
+                              label: widget.isEdit
+                                  ? controller.activitiesOne.value!.categoryName
+                                  : 'Categoría',
+                              placeholder:
+                                  controller.activitiesOne.value!.categoryName,
                               onChanged: (value) {
                                 controller.updateField('category_id', value);
                               },
@@ -269,10 +271,10 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                 callback: () {
                                   if (widget.isEdit) {
                                     print(controller.diario);
-
+                                    print('imagen ${__imageFile}');
                                     controller.editPetActivity2(
                                       "${controller.activitiesOne.value!.id}",
-                                      //  __imageFile,
+                                      __imageFile,
                                     );
                                   } else {
                                     controller.updateField(

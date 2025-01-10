@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'dart:convert';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/model/lista_categoria_servicio/category_model.dart';
@@ -17,9 +19,9 @@ class CategoryControllerVet extends GetxController {
     fetchCategories();
   }
 
-  void fetchprecio(String type) async {
+  void fetchprecio(String type, BuildContext context) async {
     isLoading.value = true;
-
+    print('type $type');
     final response = await http.get(
       Uri.parse('${BASE_URL}service-price?service_id=$type'),
       headers: {
@@ -32,6 +34,19 @@ class CategoryControllerVet extends GetxController {
       var jsonResponse = json.decode(response.body);
       print('Respuesta JSON precio: $jsonResponse');
       totalAmount.value = jsonResponse['data']['amount'].toString();
+      Get.dialog(
+        //pisa papel
+        CustomAlertDialog(
+          icon: Icons.check_circle_outline,
+          title: 'Costo del servicio ',
+          description: '${totalAmount.value}ƒ',
+          primaryButtonText: 'Continuar',
+          onPrimaryButtonPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        barrierDismissible: true,
+      );
     } else {
       print('Error: ${response.statusCode}');
     }
@@ -64,5 +79,19 @@ class CategoryControllerVet extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  void nombreCategoria(String value) {
+    final selectedCategory = categories.firstWhere(
+      (category) => category.id.toString() == value,
+      orElse: () => Category(
+          id: 0,
+          name: 'Unknown',
+          slug: '',
+          status: 1,
+          categoryImage: '',
+          createdAt: '',
+          updatedAt: ''),
+    );
   }
 }

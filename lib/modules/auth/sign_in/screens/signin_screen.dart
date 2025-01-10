@@ -69,7 +69,7 @@ class SignInScreen extends StatelessWidget {
                               child: CustomTextFormFieldWidget(
                                 controller: signInController.passwordCont,
                                 placeholder:
-                                    "Contraseñas", //locale.value.password,
+                                    "Contraseña", //locale.value.password,
                                 obscureText: true,
                                 icon: 'assets/icons/key.png',
                               ),
@@ -124,10 +124,13 @@ class SignInScreen extends StatelessWidget {
                               thickness: .5,
                             ),
                           ).expand(),
-                          Text('O',
-                                  style: primaryTextStyle(
-                                      color: secondaryTextColor, size: 14))
-                              .paddingSymmetric(horizontal: 20),
+                          const Text('O',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.w600,
+                              )).paddingSymmetric(horizontal: 20),
                           Container(
                             margin: const EdgeInsets.only(right: 10.0),
                             child: const Divider(
@@ -151,8 +154,7 @@ class SignInScreen extends StatelessWidget {
                             ),
                             child: TextButton.icon(
                                 onPressed: () {
-                                  signInController.googleSignIn();
-                                  print('google');
+                                  signInController.googleSignIn(context);
                                 },
                                 icon: Image.asset('assets/icons/google.png'),
                                 label: Text(
@@ -163,49 +165,6 @@ class SignInScreen extends StatelessWidget {
                                       fontSize: 14),
                                 )),
                           ),
-                          Container(
-                            width: 300,
-                            height: 54,
-                            margin: const EdgeInsets.only(bottom: 20),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color.fromRGBO(255, 73, 49, 1)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextButton.icon(
-                                onPressed: () {
-                                  print('apple');
-                                },
-                                icon: const Icon(
-                                  Icons.apple,
-                                  color: Color.fromARGB(255, 146, 160, 172),
-                                ),
-                                label: Text(
-                                  locale.value.signInWithApple,
-                                  style: const TextStyle(color: Colors.black),
-                                )),
-                          ),
-                          Container(
-                            width: 300,
-                            height: 54,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color.fromRGBO(255, 73, 49, 1)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextButton.icon(
-                                onPressed: () {
-                                  print('Google');
-                                },
-                                icon: const Icon(
-                                  Icons.facebook,
-                                  color: Colors.blue,
-                                ),
-                                label: Text(
-                                  locale.value.signInWithFacebook,
-                                  style: const TextStyle(color: Colors.black),
-                                )),
-                          )
                         ],
                       ),
                       8.height,
@@ -218,6 +177,9 @@ class SignInScreen extends StatelessWidget {
                               locale.value.dontHaveAnAccount,
                               style: const TextStyle(
                                 fontSize: 14,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
                               ),
                               textAlign: TextAlign.center,
                             ),

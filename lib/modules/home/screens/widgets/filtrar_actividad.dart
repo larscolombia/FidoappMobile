@@ -49,6 +49,7 @@ class FiltrarActividad extends StatelessWidget {
                         value: controller.diario['category_id'] == category,
                         onChanged: (bool? value) {
                           if (value == true) {
+                            print('filtrar $value');
                             controller.updateField('category_id', category);
                           } else {
                             controller.updateField('category_id', '');

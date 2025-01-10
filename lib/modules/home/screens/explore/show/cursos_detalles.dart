@@ -48,7 +48,7 @@ class CursosDetalles extends StatelessWidget {
 
         var curso = controller.getCourseById(int.parse(cursoId!));
         bool cursoAdquirido = miscursos.hasCourse(cursoId!);
-
+        print('cursoAdquirido $cursoAdquirido');
         return Stack(
           children: [
             Positioned(
@@ -132,7 +132,7 @@ class CursosDetalles extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
-                          width: 305,
+                          width: MediaQuery.of(context).size.width - 100,
                           child: cursoAdquirido
                               ? BotonCompartir(
                                   modo: "compra",
@@ -149,7 +149,7 @@ class CursosDetalles extends StatelessWidget {
                                 ),
                         ),
                         const SizedBox(height: 20),
-                        if (!cursoAdquirido)
+                        if (cursoAdquirido)
                           BanerCompraPrecio(
                             price: curso.price,
                             callback: () {
@@ -209,7 +209,7 @@ class CursosDetalles extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Text(
-                                  '\$${curso.price}',
+                                  '${curso.price}',
                                   style: Styles.textTituloLibros,
                                 ),
                               ),
@@ -219,7 +219,7 @@ class CursosDetalles extends StatelessWidget {
                         ...curso.videos.map((video) {
                           return GestureDetector(
                             onTap: () {
-                              if (!cursoAdquirido) {
+                              if (cursoAdquirido) {
                                 Get.dialog(
                                   //pisa papel
                                   CustomAlertDialog(
@@ -301,7 +301,7 @@ class BanerCompraPrecio extends StatelessWidget {
                 ),
                 width: 94,
                 height: 54,
-                child: Center(child: Text('$price\$')),
+                child: Center(child: Text('$price ƒ')),
               ),
               SizedBox(
                 width: 190,

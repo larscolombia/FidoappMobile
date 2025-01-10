@@ -21,8 +21,8 @@ class HomeController extends GetxController {
       Rxn<PetData>(); // Perfil seleccionado, inicialmente null
   var training = <TrainingModel>[].obs;
   late UserData currentUser;
-  var profileImagePath = ''.obs;
-
+  var profileImagePath = '${AuthServiceApis.dataCurrentUser.profileImage}'.obs;
+  var isLoading = false.obs;
   var selectedDay = DateTime.now().obs;
   var focusedDay = DateTime.now().obs;
 

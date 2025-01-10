@@ -15,9 +15,13 @@ class Resources extends StatelessWidget {
     final RecursosSelect selectRecursos = Get.put(RecursosSelect());
     // Lista de recursos (ahora fija, no dinámica)
     final List<Map<String, dynamic>> resources = [
-      {'id': 5, 'icon': 'book', 'label': 'Ebook’s'},
-      {'id': 6, 'icon': 'video_library', 'label': 'YouTube'},
-      {'id': 7, 'icon': 'extension', 'label': 'Accesorios'},
+      {'id': 5, 'icon': 'assets/icons/ebook_icon.png', 'label': 'Libros'},
+      {'id': 6, 'icon': 'assets/icons/youtue_icon.png', 'label': 'YouTube'},
+      {
+        'id': 7,
+        'icon': 'assets/icons/accesorios_icon.png',
+        'label': 'Accesorios'
+      },
     ];
 
     return Column(
@@ -40,13 +44,9 @@ class Resources extends StatelessWidget {
               },
             );
           }
-          return const Text(
+          return Text(
             'Recursos',
-            style: TextStyle(
-              fontSize: 20,
-              color: Styles.primaryColor,
-              fontFamily: 'PoetsenOne',
-            ),
+            style: Styles.titulorecursos,
             textAlign: TextAlign.left,
           );
         }),
@@ -64,6 +64,7 @@ class Resources extends StatelessWidget {
                   controller.updateIndex(resources[index]['id']!);
                 }, // Acción al tocar el cuadro
                 child: Container(
+                  width: 123,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(
                       horizontal:
@@ -88,11 +89,7 @@ class Resources extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Ícono antes del texto
-                      Icon(
-                        getIconData(resources[index]['icon']!),
-                        size: 18,
-                        color: Styles.primaryColor,
-                      ),
+                      Image.asset(resources[index]['icon']!),
                       const SizedBox(
                           width: 5), // Espacio entre el ícono y el texto
                       Text(

@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:pawlly/configs.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
+import 'owner_model.dart';
 
 class PetOwnerProfileController extends GetxController {
   var ownerName = 'Juan Pérez'.obs;
@@ -24,38 +30,39 @@ class PetOwnerProfileController extends GetxController {
     'https://example.com/img4.jpg',
     'https://example.com/img5.jpg'
   ].obs; // Lista de URLs de imágenes de los comentaristas
+}
 
-  // Datos dummy de comentarios
-  var comments = [
-    {
-      'image': 'https://example.com/img1.jpg',
-      'name': 'Ana López',
-      'rating': 4.5,
-      'comment': 'Excelente servicio y atención.'
-    },
-    {
-      'image': 'https://example.com/img2.jpg',
-      'name': 'Carlos Gómez',
-      'rating': 5.0,
-      'comment': 'Muy satisfecho con el trato recibido.'
-    },
-    {
-      'image': 'https://example.com/img3.jpg',
-      'name': 'María Martínez',
-      'rating': 4.0,
-      'comment': 'Todo bien, aunque el tiempo de espera fue algo largo.'
-    },
-    {
-      'image': 'https://example.com/img4.jpg',
-      'name': 'Pedro Sánchez',
-      'rating': 5.0,
-      'comment': 'Increíble servicio, altamente recomendado.'
-    },
-    {
-      'image': 'https://example.com/img5.jpg',
-      'name': 'Lucía Fernández',
-      'rating': 4.8,
-      'comment': 'Gran atención al detalle y profesionalismo.'
+class UserProfileController extends GetxController {
+  var user = UserData().obs; // Observa el modelo del usuario.
+  var isLoading = false.obs;
+
+  // Dominio base de la API
+
+  // Método para obtener los datos del usuario
+  Future<void> fetchUserData(String id) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id'),
+        headers: {
+          'Authorization':
+              'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Reemplaza con tu lógica de token.
+          'Content-Type': 'application/json',
+        },
+      );
+
+      print('Perfil de usuario: ${json.decode(response.body)}');
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body)['data'];
+        user.value =
+            UserData.fromJson(data); // Actualiza el modelo con la respuesta.
+      } else {
+        throw Exception('Failed to load user data');
+      }
+    } catch (e) {
+      print("Error al obtener datos del usuario: $e");
+    } finally {
+      isLoading(false);
     }
-  ].obs;
+  }
 }

@@ -77,7 +77,7 @@ class CursoVideo extends StatelessWidget {
                   children: [
                     // Barra de regreso y título
                     SizedBox(
-                      width: MediaQuery.of(context).size.width - 30,
+                      width: MediaQuery.of(context).size.width - 50,
                       child: BarraBack(
                         titulo: name,
                         color: Colors.black,
@@ -129,7 +129,8 @@ class CursoVideo extends StatelessWidget {
                         );
                       },
                     ),
-                    const SizedBox(height: 50),
+
+                    const SizedBox(height: 10),
                     // Comentario (InputTextWithIcon) solo envuelto en Obx si es necesario
                     Obx(() {
                       if (_commentController.isComentarioPosrLoading.value) {
@@ -139,6 +140,12 @@ class CursoVideo extends StatelessWidget {
                       }
                       return Column(
                         children: [
+                          Estadisticas(
+                            comentarios:
+                                '${_commentController.comments.length} ',
+                            calificacion:
+                                "${_commentController.calculateAverageRating().toStringAsFixed(2)}",
+                          ),
                           const SizedBox(height: 20),
                           BanerComentarios(
                             eventTextChanged: (value) {

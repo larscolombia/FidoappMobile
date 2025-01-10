@@ -44,7 +44,7 @@ const THEME_MODE_SYSTEM = 2;
 
 //region LOGIN TYPE
 class LoginTypeConst {
-  static const LOGIN_TYPE_USER = 'user'; // aqui va el role pisa papel
+  static var LOGIN_TYPE_USER = 'user'; // aqui va el role pisa papel
   static const LOGIN_TYPE_GOOGLE = 'google';
   static const LOGIN_TYPE_APPLE = 'apple';
   static const LOGIN_TYPE_OTP = 'mobile';

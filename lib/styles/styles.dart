@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Styles {
-  static const primaryColor = Color.fromRGBO(255, 73, 49, 1);
+  static const primaryColor = Color(0xFFFF4931);
   static const secondColor = Color.fromRGBO(255, 182, 173, 1);
   static const tertiaryColor = Color.fromRGBO(130, 56, 0, 1);
   static const fourColor = Color.fromRGBO(255, 219, 214, 1);
-  static const fiveColor = Color.fromRGBO(252, 247, 229, 1);
+  static const fiveColor = Color(0xFFFEF7E5);
   static const fiveColor08 = Color.fromRGBO(252, 247, 229, 0.8);
   static const greyColor = Colors.grey;
-
+  static const fuente1 = 'Lato';
+  static const fuente2 = 'PoetsenOne';
   static const greyTextColor = Color.fromRGBO(85, 85, 85, 1);
   static const greyDivider = Color.fromRGBO(234, 234, 234, 1);
   static const iconColorBack = Color.fromRGBO(252, 146, 20, 1);
   static const whiteColor = Colors.white;
   static const blackColor = Colors.black;
+  static double tamano(context) {
+    return MediaQuery.of(context).size.width - 100;
+  }
 
   static const paddingAll = EdgeInsets.only(left: 25, right: 25);
   static const paddingT10B10 = EdgeInsets.only(left: 10, right: 10);
@@ -25,10 +29,11 @@ class Styles {
     color: whiteColor,
   );
 
-  static final textTitleHome = GoogleFonts.lato(
+  static final textTitleHome = TextStyle(
     fontWeight: FontWeight.w800,
     fontSize: 16,
     color: blackColor,
+    fontFamily: 'Lato',
   );
 
   static final textProfile15w700 = GoogleFonts.lato(
@@ -67,10 +72,11 @@ class Styles {
     color: primaryColor,
   );
 
-  static final textSubTitleHome = GoogleFonts.lato(
+  static final textSubTitleHome = TextStyle(
     fontWeight: FontWeight.w500,
     fontSize: 12,
     color: greyTextColor,
+    fontFamily: 'Lato',
   );
 
   static final secondTextTitle = GoogleFonts.lato(
@@ -90,7 +96,12 @@ class Styles {
     fontSize: 12,
     color: whiteColor,
   );
-
+  static final homeBoxTextSubTitle = TextStyle(
+    fontFamily: 'Lato',
+    fontSize: 14,
+    color: Color(0xFF383838),
+    fontWeight: FontWeight.w500,
+  );
   static final boxTitleDashboard = GoogleFonts.lato(
     fontWeight: FontWeight.w700,
     fontSize: 14,
@@ -114,6 +125,12 @@ class Styles {
     fontSize: 20,
     fontWeight: FontWeight.w400,
     color: primaryColor,
+  );
+  static TextStyle titulorecursos = TextStyle(
+    fontFamily: 'PoetsenOne',
+    fontSize: 20,
+    fontWeight: FontWeight.w800,
+    color: Color(0xFFFF4931),
   );
 
   static const welcomeTitle = TextStyle(

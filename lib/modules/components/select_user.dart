@@ -37,7 +37,7 @@ class SelectedAvatar extends StatelessWidget {
                     nombre ?? "",
                     style: Styles.AvatarName,
                   ),
-                  const Text('Veterinario | pendiente'),
+                  const Text(''),
                 ],
               )
             ],

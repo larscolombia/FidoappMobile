@@ -56,6 +56,7 @@ class EntertainmentBlogs extends StatelessWidget {
                     margin: const EdgeInsets.only(right: 16),
                     padding: const EdgeInsets.all(12),
                     width: MediaQuery.of(context).size.width * 0.6,
+                    height: 400,
                     decoration: BoxDecoration(
                       color: Styles.whiteColor,
                       borderRadius: BorderRadius.circular(10),
@@ -132,13 +133,16 @@ class EntertainmentBlogs extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         // Tema del video
-                        Text(
-                          video.tags ?? 'Videos de Entrenamiento',
-                          style: const TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Styles.iconColorBack,
+                        SizedBox(
+                          height: 40,
+                          child: Text(
+                            video.tags ?? 'Videos de Entrenamiento',
+                            style: const TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: Styles.iconColorBack,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -153,7 +157,7 @@ class EntertainmentBlogs extends StatelessWidget {
                           ),
                         ),
                         const Text(
-                          'Necesitamos la cantidad de visualizaciones',
+                          '1',
                           style: TextStyle(
                             fontFamily: 'Lato',
                             fontSize: 12,
@@ -161,17 +165,21 @@ class EntertainmentBlogs extends StatelessWidget {
                             color: Styles.greyTextColor,
                           ),
                         ),
-                        const SizedBox(height: 8),
+
                         // Título del video (máximo 2 líneas)
-                        Text(
-                          video.name,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: Styles.greyTextColor,
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 74,
+                          child: Text(
+                            video.name,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: Styles.greyTextColor,
+                            ),
                           ),
                         ),
                       ],

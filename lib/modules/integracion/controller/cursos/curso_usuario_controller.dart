@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_usuarios.dart';
 
@@ -83,10 +85,24 @@ class CursoUsuarioController extends GetxController {
           'course_platform_id': courseId,
         }),
       );
+      var data = json.decode(response.body);
+      print('compara de lonrp ${data}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data['success']) {
-          print('Curso suscrito exitosamente');
+          Get.dialog(
+            //pisa papel
+            CustomAlertDialog(
+              icon: Icons.check_circle_outline,
+              title: 'Felicidades!!! :)',
+              description: 'El curso ha sido suscrito exitosamente.',
+              primaryButtonText: 'Continuar',
+              onPrimaryButtonPressed: () {
+                Get.back();
+              },
+            ),
+            barrierDismissible: true,
+          );
           fetchCourses();
         } else {
           print('Error: ${data['message']}');
@@ -95,7 +111,8 @@ class CursoUsuarioController extends GetxController {
         throw Exception('Failed to subscribe to course');
       }
     } catch (e) {
-      print('error en subscribeToCourse $e');
+      print('error ${e}');
+      Get.snackbar("Error", "error $e", backgroundColor: Colors.red);
     } finally {
       isLoading.value = false;
     }

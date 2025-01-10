@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +18,7 @@ import 'dart:convert';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarController extends GetxController {
+  var cateogoryName = "".obs;
   final userController = Get.put(UserController());
   final HomeController homeController = Get.find();
   final String baseUrl = "$DOMAIN_URL/api";
@@ -123,6 +126,7 @@ class CalendarController extends GetxController {
     'date': "",
     'end_date': "",
     'event_time': "",
+    "start_date": "",
     'slug': "",
     'user_id': AuthServiceApis.dataCurrentUser.id,
     'description': "",
@@ -185,7 +189,7 @@ class CalendarController extends GetxController {
       print('response data evento  ${response.body}');
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('response : ${response.statusCode}');
-
+        userController.selectedUser.value = null;
         Get.dialog(
           //pisa papel
           CustomAlertDialog(
@@ -198,7 +202,6 @@ class CalendarController extends GetxController {
               userController.fetchUsers();
               homeController.selectedIndex.value = 1;
               Get.to(HomeScreen());
-              //Get.back();
             },
           ),
           barrierDismissible: true,
@@ -207,6 +210,7 @@ class CalendarController extends GetxController {
         isSuccess(true);
       } else {
         Get.snackbar("Error", "comprueba los datos ");
+        print('Error al enviar los datos: $e');
       }
     } catch (e) {
       print('Error al enviar los datos: $e');
@@ -235,19 +239,20 @@ class CalendarController extends GetxController {
   }
 
   //editar evento
-  Future<void> updateEvento() async {
+  Future<void> updateEvento(event) async {
     if (isLoading.value) return; // Evita llamadas simultáneas
 
     isLoading.value = true;
+    print("Cuerpo de la solicitud: ${jsonEncode(event.toJson())}");
 
     try {
       final response = await http.put(
-        Uri.parse('$baseUrl/events/${event['evenId']}'),
+        Uri.parse('$baseUrl/events/${event.id}'),
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
         },
-        body: jsonEncode(event.toJson()),
+        body: jsonEncode(event.toJson()), // Añadir el id del evento
       );
       print('data calendario: ${json.decode(response.body)}');
       if (response.statusCode == 200 || response.statusCode == 204) {
@@ -255,13 +260,15 @@ class CalendarController extends GetxController {
         print('data calendario actualizado: $data');
         // Actualizar el evento en la lista local
 
-        Get.snackbar("Éxito", "Evento actualizado correctamente");
+        Get.snackbar("Éxito", "Evento actualizado correctamente",
+            backgroundColor: Colors.green);
       } else {
         Get.snackbar("Error", "Error al actualizar el evento");
       }
     } catch (e) {
       print("Error al actualizar el evento: $e");
-      Get.snackbar("Error", "Error al actualizar el evento");
+      Get.snackbar("Error", "Error al actualizar el evento",
+          backgroundColor: Colors.red);
     } finally {
       isLoading.value = false;
     }
@@ -285,5 +292,43 @@ class CalendarController extends GetxController {
     }
 
     return events;
+  }
+
+  List<CalendarModel> getTwoNearestEvents() {
+    // Ordenar los eventos por fecha en orden ascendente
+    List<CalendarModel> sortedEvents = allCalendars
+        .where((event) =>
+            event.date.isNotEmpty) // Filtrar eventos con fecha válida
+        .toList()
+      ..sort((a, b) {
+        DateTime dateA = DateFormat('dd-MM-yyyy').parse(a.date);
+        DateTime dateB = DateFormat('dd-MM-yyyy').parse(b.date);
+        return dateA.compareTo(dateB);
+      });
+
+    // Obtener los dos eventos más próximos
+    return sortedEvents.take(2).toList();
+  }
+
+  String formatEventTime(String eventTime, String date) {
+    try {
+      // Parseamos la fecha (formato dd-MM-yyyy)
+      DateTime parsedDate = DateFormat('dd-MM-yyyy').parse(date);
+
+      // Obtenemos el día y el mes en el formato deseado
+      String day = DateFormat('dd').format(parsedDate);
+      String month =
+          DateFormat('MMMM', 'es_ES').format(parsedDate); // Mes en español
+
+      // Formateamos la hora del evento (eventTime)
+      String time =
+          DateFormat('hh:mm a').format(DateFormat('HH:mm').parse(eventTime));
+
+      // Retornamos la cadena en el formato: "02 de Agosto 08:00 am"
+      return "$day de ${month[0].toUpperCase()}${month.substring(1)} ";
+    } catch (e) {
+      print("Error al formatear la fecha: $e");
+      return "Formato inválido";
+    }
   }
 }

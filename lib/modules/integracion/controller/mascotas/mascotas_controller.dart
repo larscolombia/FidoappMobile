@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/configs.dart';
@@ -100,6 +101,11 @@ class PetControllerv2 extends GetxController {
 
       if (response.statusCode == 200) {
         print('Mascota actualizada con éxito');
+        Get.snackbar(
+          'exito',
+          'Mascota actualizada con éxito',
+          backgroundColor: Colors.green,
+        );
         succesApdate(true);
       } else {
         print('Error en la solicitud: ${response.statusCode}');

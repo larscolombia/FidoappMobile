@@ -32,7 +32,7 @@ class UserSearchPage extends StatelessWidget {
           itemBuilder: (context, index) {
             final user = userController.filteredUsers[index];
             return ListTile(
-              leading: Image.network(user.profileImage),
+              leading: Image.network(user.profileImage ?? ''),
               title: Text('${user.firstName} ${user.lastName}'),
               subtitle: Text(user.email),
             );

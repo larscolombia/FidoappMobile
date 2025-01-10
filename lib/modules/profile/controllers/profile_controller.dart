@@ -1,14 +1,20 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/auth/model/login_response_model.dart';
 import 'dart:io';
 import 'package:pawlly/services/auth_service_apis.dart';
 
+import 'package:http/http.dart' as http;
+
 class ProfileController extends GetxController {
   late UserData currentUser; // Instancia del modelo de datos de usuario
-
+  var isLoading = false.obs;
   var isEditing = false.obs;
   var nameController = TextEditingController().obs;
   var lastNameController = TextEditingController().obs;
@@ -72,8 +78,10 @@ class ProfileController extends GetxController {
 
     try {
       final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
       if (pickedFile != null) {
         profileImagePath.value = pickedFile.path;
+        user['profile_image'] = pickedFile.path;
       }
     } finally {
       isPickerActive.value = false; // Marcar el picker como inactivo
@@ -81,21 +89,80 @@ class ProfileController extends GetxController {
   }
 
   var user = {
-    'name': "",
+    'first_name': "",
     'lastName': "",
     'email': "",
     'gender': "",
     'userType': "",
-    'profileImage': "",
+    'profile_image': "",
     'id': "",
     'role': "",
   };
   void dataUser() {
-    user['name'] = currentUser.firstName;
-    user['lastName'] = currentUser.lastName;
+    user['first_name'] = currentUser.firstName;
+    user['last_name'] = currentUser.lastName;
     user['email'] = currentUser.email;
     user['gender'] = currentUser.gender;
     user['userType'] = currentUser.userType;
     user['profileImage'] = currentUser.profileImage;
+  }
+
+  Future<void> updateProfile() async {
+    try {
+      isLoading.value = true;
+
+      final url = Uri.parse('$DOMAIN_URL/api/update-profile');
+
+      // Crear la solicitud multipart
+      final request = http.MultipartRequest('POST', url);
+
+      // Agregar encabezados
+      request.headers.addAll({
+        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+      });
+
+      // Agregar datos del usuario
+      user.forEach((key, value) {
+        if (value.isNotEmpty && key != 'profile_image') {
+          request.fields[key] = value.toString();
+        }
+      });
+
+      // Agregar la imagen si está disponible
+      if (user['profile_image'] != null && user['profile_image']!.isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'profile_image',
+          user[
+              'profile_image']!, // Usa el operador de null-aware para asegurar que no sea nulo
+        ));
+      }
+
+      // Enviar la solicitud
+      final response = await request.send();
+
+      // Manejar la respuesta
+      if (response.statusCode == 200) {
+        final responseBody = await response.stream.bytesToString();
+        final data = json.decode(responseBody);
+        print('response data ususario $data');
+        userGenCont.value.text = data['data']['gender'].toLowerCase();
+        currentUser.gender = data['data']['gender'].toLowerCase();
+        user['last_name'] = data['data']['last_name'];
+        currentUser.lastName = data['data']['last_name'];
+        currentUser.profileImage = data['data']['profile_image'];
+        Get.snackbar(
+          'exito',
+          'Perfil actualizado exitosamente',
+          backgroundColor: Colors.green,
+        );
+      } else {
+        final responseBody = await response.stream.bytesToString();
+        print('Error al actualizar el perfil: $responseBody');
+      }
+    } catch (e) {
+      print('Excepción: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

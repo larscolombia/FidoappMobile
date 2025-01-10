@@ -10,6 +10,8 @@ class InputText extends StatefulWidget {
     super.key,
     this.label,
     this.placeholder,
+    this.placeholderImage,
+    this.placeholderFontFamily,
     required this.onChanged,
     this.isDateField = false,
     this.isFilePicker = false,
@@ -20,11 +22,16 @@ class InputText extends StatefulWidget {
     this.readOnly = false,
     this.initialValue,
     this.fondoColor = Styles.colorContainer,
-    this.onImagePicked, // Añade el callback para la imagen
+    this.borderColor = Styles.fiveColor, // Nuevo color del borde
+    this.onImagePicked,
+    this.isTextArea = false,
+    this.fw,
   });
-
+  final FontWeight? fw;
   final String? placeholder;
   final String? label;
+  final String? placeholderFontFamily; // Nueva fuente del placeholder
+  final Image? placeholderImage; // Imagen opcional para el placeholder
   final bool isDateField;
   final bool isFilePicker;
   final bool isImagePicker;
@@ -35,8 +42,9 @@ class InputText extends StatefulWidget {
   final bool readOnly;
   final String? initialValue;
   final Color? fondoColor;
-  final ValueChanged<File>?
-      onImagePicked; // Callback para cuando se selecciona una imagen
+  final Color borderColor; // Nuevo color del borde
+  final ValueChanged<File>? onImagePicked;
+  final bool isTextArea;
 
   @override
   _InputTextState createState() => _InputTextState();
@@ -55,21 +63,22 @@ class _InputTextState extends State<InputText> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 302,
+      width: widget.isTextArea
+          ? double.infinity
+          : 302, // Ajusta el ancho si es textarea
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          widget.label != null
-              ? Text(
-                  widget.label ?? 'label',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w400,
-                  ),
-                )
-              : const SizedBox(),
+          if (widget.label != null)
+            Text(
+              widget.label ?? 'label',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+                fontFamily: 'Lato',
+                fontWeight: widget.fw ?? FontWeight.w400,
+              ),
+            ),
           const SizedBox(height: 8),
           GestureDetector(
             onTap: widget.isDateField
@@ -87,26 +96,31 @@ class _InputTextState extends State<InputText> {
                   widget.isImagePicker,
               child: TextFormField(
                 controller: _textController,
+                maxLines:
+                    widget.isTextArea ? null : 1, // Habilitar múltiples líneas
+                minLines:
+                    widget.isTextArea ? 3 : 1, // Líneas mínimas para textarea
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(
-                      color: Styles.fiveColor,
+                    borderSide: BorderSide(
+                      color: widget.borderColor, // Color de borde personalizado
                       width: 2,
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
-                    borderSide: const BorderSide(
-                      color: Styles.fiveColor,
-                      width: .5,
+                    borderSide: BorderSide(
+                      color: widget.borderColor, // Color de borde personalizado
+                      width: 0.5,
                     ),
                   ),
                   labelText: widget.placeholder ?? 'placeholder',
-                  labelStyle: const TextStyle(
+                  labelStyle: TextStyle(
                     fontSize: 14,
                     color: Colors.black,
-                    fontFamily: 'Lato',
+                    fontFamily: widget.placeholderFontFamily ??
+                        'Lato', // Fuente personalizada
                     fontWeight: FontWeight.w400,
                   ),
                   filled: true,
@@ -116,7 +130,14 @@ class _InputTextState extends State<InputText> {
                       : widget.isImagePicker
                           ? const Icon(Icons.image)
                           : widget.suffixIcon,
-                  prefixIcon: widget.prefiIcon,
+                  prefixIcon: widget.prefiIcon ??
+                      (widget.placeholderImage != null
+                          ? SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: widget.placeholderImage,
+                            )
+                          : null), // Imagen como prefijo
                 ),
                 onChanged: widget.onChanged,
                 readOnly: widget.readOnly,
@@ -130,11 +151,9 @@ class _InputTextState extends State<InputText> {
               height: 220,
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
-                    child: const Text(
-                      'Imagen Seleccionada',
-                    ),
+                    child: Text('Imagen Seleccionada'),
                   ),
                   SizedBox(
                     height: 200,

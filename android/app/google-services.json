@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "193971107292",
-    "project_id": "beon24-5b793",
-    "storage_bucket": "beon24-5b793.firebasestorage.app"
+    "project_number": "236022939581",
+    "project_id": "fideapp-6c373",
+    "storage_bucket": "fideapp-6c373.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:193971107292:android:b92dbaf645c34eadf78b19",
+        "mobilesdk_app_id": "1:236022939581:android:fcd210ee0969b158da5cd4",
         "android_client_info": {
           "package_name": "com.fidoapp.customer"
         }
       },
       "oauth_client": [
         {
-          "client_id": "193971107292-dv5h0aap00d96ef6qv06hb2e0nk78mef.apps.googleusercontent.com",
+          "client_id": "236022939581-f5qjbam24cqabevo8nvbbv8vt1c7okg3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fidoapp.customer",
+            "certificate_hash": "f4100bc8e20f2f5f655d715d23e2b53e00c2fc93"
+          }
+        },
+        {
+          "client_id": "236022939581-udgdvlcmu6nb875qck3o5tf1446p4036.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBqv0QYCvuWkYfBD6tED_LQef8kbh-XzOY"
+          "current_key": "AIzaSyAYluqYgSrmQtSDGDEMxzRHdzrK-OTzQig"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "193971107292-dv5h0aap00d96ef6qv06hb2e0nk78mef.apps.googleusercontent.com",
+              "client_id": "236022939581-udgdvlcmu6nb875qck3o5tf1446p4036.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

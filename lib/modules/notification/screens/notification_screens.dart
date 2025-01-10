@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/modules/integracion/model/notigicaciones/notificaciones.dart';
 import 'package:pawlly/modules/notification/controllers/notification_controller.dart';
@@ -55,10 +57,22 @@ class NotificationsScreen extends StatelessWidget {
   Widget _buildSectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Center(
-        child: Text(
-          title,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      child: Container(
+        child: Center(
+          child: Container(
+            width: 66,
+            decoration: BoxDecoration(
+              color: Styles.fiveColor,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Center(
+              child: Text(
+                title,
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -117,7 +131,7 @@ class NotificationsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        notification.description ?? '',
+                        notification.title ?? '',
                         style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontFamily: 'Lato',
@@ -166,59 +180,161 @@ class NotificationsScreen extends StatelessWidget {
   // Método para mostrar el detalle de la notificación en un modal
   void _showNotificationDetails(
       BuildContext context, NotificationData notification) {
-    showDialog(
+    showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      isScrollControlled: true, // Permite que el contenido sea scrollable
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(notification.description ?? 'Sin descripción'),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Tipo: ${notification.type ?? 'Desconocido'}',
-                  style: const TextStyle(fontWeight: FontWeight.w500),
-                ),
-                const SizedBox(height: 15.0),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Descripcion:',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Lato',
+        return DraggableScrollableSheet(
+          initialChildSize:
+              0.8, // Altura inicial del modal (50% de la pantalla)
+          minChildSize: 0.3, // Altura mínima al deslizar hacia abajo
+          maxChildSize: 0.9, // Altura máxima al deslizar hacia arriba
+          expand: false,
+          builder: (_, scrollController) {
+            return SingleChildScrollView(
+              controller: scrollController,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Línea decorativa del modal
+                    Center(
+                      child: Container(
+                        width: 40,
+                        height: 5,
+                        margin: const EdgeInsets.only(bottom: 16),
+                        decoration: BoxDecoration(
                           color: Styles.primaryColor,
-                          fontSize: 14,
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      Text(
-                        notification.description ?? '',
-                        style: Styles.textProfile15w700,
+                    ),
+                    Center(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        notification.type ?? 'Sin descripción',
+                        style: Styles.welcomeTitle,
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      'Tipo: ${notification.type ?? 'Desconocido'}',
+                      style: const TextStyle(
+                        fontFamily: 'Lato',
+                        fontSize: 14,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      'Descripción:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: Styles.primaryColor,
+                        fontSize: 16,
+                        fontFamily: 'Lato',
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(
+                      notification.description ?? '',
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontFamily: 'Lato',
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      'Fecha: ${DateFormat('dd MMM yyyy HH:mm').format(DateTime.parse(notification.createdAt!))}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w800,
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontFamily: 'Lato',
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      'Leída: ${notification.isRead}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Lato',
+                        color: Colors.black,
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 24.0),
+                    if (notification.type == 'medico' ||
+                        notification.type == "entrenamiento")
+                      Row(
+                        children: [
+                          if (notification.status == "pending")
+                            Expanded(
+                              child: ButtonDefaultWidget(
+                                  title: 'Aceptar',
+                                  callback: () {
+                                    Navigator.of(context).pop();
+                                    Get.dialog(
+                                      CustomAlertDialog(
+                                        icon: Icons.confirmation_num,
+                                        title: 'Confirmación',
+                                        description:
+                                            '¿Deseas rechazar el evento?',
+                                        primaryButtonText: 'Continuar',
+                                        secondaryButtonText: 'Cancelar',
+                                        onPrimaryButtonPressed: () {
+                                          notificationController.acceptBooking(
+                                              notification.eventId ?? "-1",
+                                              context);
+                                          Get.back();
+                                        },
+                                      ),
+                                      barrierDismissible: true,
+                                    );
+                                  }),
+                            ),
+                          const SizedBox(width: 8.0),
+                          if (notification.status == "pending")
+                            Expanded(
+                              child: ButtonDefaultWidget(
+                                  title: 'Rechazar',
+                                  callback: () {
+                                    Navigator.of(context).pop();
+                                    Get.dialog(
+                                      CustomAlertDialog(
+                                        icon: Icons.confirmation_num,
+                                        title: 'Confirmación',
+                                        description:
+                                            '¿Deseas aceptar el evento?',
+                                        primaryButtonText: 'Continuar',
+                                        secondaryButtonText: 'Cancelar',
+                                        onPrimaryButtonPressed: () {
+                                          notificationController
+                                              .rechazarReserva(
+                                            notification.eventId ?? "-1",
+                                            context,
+                                          );
+                                          Get.back();
+                                        },
+                                      ),
+                                      barrierDismissible: true,
+                                    );
+                                  }),
+                            ),
+                          const SizedBox(width: 8.0),
+                        ],
+                      ),
+                  ],
                 ),
-                const SizedBox(height: 12.0),
-                Text(
-                  'Fecha: ${DateFormat('dd MMM yyyy HH:mm').format(DateTime.parse(notification.createdAt!))}',
-                  style: const TextStyle(fontWeight: FontWeight.w400),
-                ),
-                const SizedBox(height: 12.0),
-                Text(
-                  'Leida: ${notification.isRead}',
-                  style: const TextStyle(fontWeight: FontWeight.w400),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Get.back(), // Cerrar el diálogo
-              child: const Text('Cerrar'),
-            ),
-          ],
+              ),
+            );
+          },
         );
       },
     );

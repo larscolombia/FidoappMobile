@@ -151,15 +151,18 @@ class BooksComponents extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           // Nombre del producto (máximo 3 líneas)
-          Text(
-            petItem.description!,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontFamily: 'Lato',
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
+          SizedBox(
+            height: 70,
+            child: Text(
+              petItem.title!,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontFamily: 'Lato',
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
             ),
           ),
           const SizedBox(height: 8),
@@ -177,10 +180,10 @@ class BooksComponents extends StatelessWidget {
                 ),
               ),
               Text(
-                '${petItem.price} \$ ',
+                '${petItem.price}\$ ',
                 style: const TextStyle(
                   fontFamily: 'Lato',
-                  fontSize: 14,
+                  fontSize: 16.5,
                   fontWeight: FontWeight.bold,
                   color: Styles.iconColorBack,
                 ),

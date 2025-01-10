@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
@@ -12,6 +14,7 @@ import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
+import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
 
 class EventoDestalles extends StatelessWidget {
   final calendarController = Get.find<CalendarController>();
@@ -24,27 +27,12 @@ class EventoDestalles extends StatelessWidget {
   Widget build(BuildContext context) {
     final eventos = calendarController.selectedEvents.first;
     var petData = homeController.getPetById(eventos.petId);
-
+    final event = Get.arguments as CalendarModel?;
     homeController.updateProfile(petData);
 
     userController.filterUsers('${eventos.owners.first.email}');
-    userController.selectedUser(userController.filteredUsers.first);
 
-    calendarController.updateField(
-        'evenId', eventos.id ?? -1); // Añadido para el id de la mascota
-    calendarController.updateField('pet_id', eventos.petId ?? -1);
-    calendarController.updateField('name', eventos.name ?? '');
-    calendarController.updateField('description', eventos.description ?? '');
-    calendarController.updateField('start_date', eventos.startDate ?? '');
-    calendarController.updateField('end_date', eventos.endDate ?? '');
-    calendarController.updateField('date', eventos.date ?? '');
-    calendarController.updateField('event_time', eventos.date ?? "");
-    calendarController.updateField('slug', eventos.slug ?? "");
-    calendarController.updateField('user_id', eventos.userId ?? -1);
-    calendarController.updateField('tipo', eventos.tipo ?? "");
-    calendarController.updateField('status', eventos.status ?? "");
-    calendarController.updateField('location', eventos.location ?? "");
-    calendarController.updateField('owner_id', [eventos.owners.first.id ?? -1]);
+    print('evento en la pantalla ${json.encode(event)}');
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(slivers: [
@@ -82,31 +70,37 @@ class EventoDestalles extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 100,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        BarraBack(
-                          titulo: 'Sobre este Evento',
-                          callback: () {
-                            Get.back();
-                          },
-                        ),
-                        Obx(() {
-                          return Editar(
-                            coloredit: !calendarController.isEdit.value
-                                ? const Color.fromARGB(255, 107, 106, 106)
-                                : Styles.colorContainer,
-                            callback: () {
-                              userController
-                                  .filterUsers('${eventos.owners.first.email}');
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: BarraBack(
+                              titulo: 'Sobre este Evento',
+                              callback: () {
+                                Get.back();
+                              },
+                            ),
+                          ),
+                          Obx(() {
+                            return Editar(
+                              coloredit: !calendarController.isEdit.value
+                                  ? const Color.fromARGB(255, 107, 106, 106)
+                                  : Styles.colorContainer,
+                              callback: () {
+                                userController.filterUsers(
+                                    '${eventos.owners.first.email}');
 
-                              calendarController.setEdit();
-                            },
-                          );
-                        })
-                      ],
+                                calendarController.setEdit();
+                              },
+                            );
+                          })
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 40),
@@ -117,19 +111,17 @@ class EventoDestalles extends StatelessWidget {
                         children: [
                           InputText(
                             placeholder: '',
-                            onChanged: (value) =>
-                                calendarController.updateField('name', value),
-                            initialValue:
-                                calendarController.selectedEvents.first.name,
+                            onChanged: (value) => event?.name = value,
+                            initialValue: event?.name ?? "w",
                             label: 'Nombre del Evento',
                             readOnly: !calendarController.isEdit.value,
                           ),
                           const SizedBox(height: 20),
                           InputText(
+                            isTextArea: true,
                             placeholder: '',
-                            onChanged: (value) => calendarController
-                                .updateField('description', value),
-                            initialValue: eventos.description,
+                            onChanged: (value) => event?.description = value,
+                            initialValue: event?.description ?? "",
                             label: 'Descripción del evento',
                             readOnly: !calendarController.isEdit.value,
                           ),
@@ -141,9 +133,8 @@ class EventoDestalles extends StatelessWidget {
                             ),
                             placeholder: '',
                             isDateField: true,
-                            onChanged: (value) => calendarController
-                                .updateField('start_date', value),
-                            initialValue: eventos.startDate,
+                            onChanged: (value) => event?.startDate = value,
+                            initialValue: event?.date ?? "",
                             label: 'Fecha del evento',
                             readOnly: !calendarController.isEdit.value,
                           ),
@@ -155,9 +146,8 @@ class EventoDestalles extends StatelessWidget {
                             ),
                             placeholder: '',
                             isTimeField: true,
-                            onChanged: (value) => calendarController
-                                .updateField('event_time', value),
-                            initialValue: eventos.date ?? '',
+                            onChanged: (value) => event?.eventime = value,
+                            initialValue: event?.eventime ?? "",
                             label: 'Hora del evento',
                             readOnly: !calendarController.isEdit.value,
                           ),
@@ -169,9 +159,8 @@ class EventoDestalles extends StatelessWidget {
                             ),
                             placeholder: '',
                             isDateField: true,
-                            onChanged: (value) =>
-                                calendarController.updateField('date', value),
-                            initialValue: eventos.endDate,
+                            onChanged: (value) => event?.endDate = value,
+                            initialValue: event?.endDate ?? "",
                             label: 'Fecha del evento',
                             readOnly: !calendarController.isEdit.value,
                           ),
@@ -246,11 +235,8 @@ class EventoDestalles extends StatelessWidget {
                                     ? 'cargando ... '
                                     : 'editar',
                                 callback: () {
-                                  calendarController.updateField(
-                                      'slug', 'slug editado');
-                                  print(
-                                      'evento editr  ${calendarController.event}');
-                                  calendarController.updateEvento();
+                                  print('evento editr  ${json.encode(event)}');
+                                  calendarController.updateEvento(event);
                                 },
                               ),
                             ),

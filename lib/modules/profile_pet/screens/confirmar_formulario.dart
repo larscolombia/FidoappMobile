@@ -12,6 +12,7 @@ import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
+import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
 
 import 'package:pawlly/styles/styles.dart';
 
@@ -20,12 +21,16 @@ class ConfirmarFormulario extends StatelessWidget {
       Get.put(HistorialClinicoController());
   final HomeController petController = Get.find<HomeController>();
   final bool? isEdit;
-
-  ConfirmarFormulario({super.key, this.isEdit = false});
+  final HistorialClinico historialClinico;
+  ConfirmarFormulario({
+    super.key,
+    this.isEdit = false,
+    required this.historialClinico,
+  });
   @override
   Widget build(BuildContext context) {
     // petController.selectType(0);
-
+    print('historial en vista ${historialClinico!.fechaAplicacion}');
     return Scaffold(
       backgroundColor: Styles.fiveColor,
       body: Obx(() {
@@ -69,8 +74,7 @@ class ConfirmarFormulario extends StatelessWidget {
                             child: BarraBack(
                               titulo: isEdit == false
                                   ? "Informe Médico"
-                                  : "Edicion #${medicalHistoryController.reportData['id']}" ??
-                                      '',
+                                  : "Edicion #${historialClinico!.id}" ?? '',
                               callback: () {
                                 Get.back();
                               },
@@ -78,19 +82,13 @@ class ConfirmarFormulario extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                           if (isEdit == true)
-                            Container(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width - 90,
                               child: InputSelect(
                                 onChanged: (value) {
-                                  medicalHistoryController.reseterReportData();
-                                  medicalHistoryController.isEditing.value =
-                                      false;
-                                  medicalHistoryController.updateField(
-                                      'report_name',
-                                      medicalHistoryController
-                                          .reporType(value));
-                                  medicalHistoryController.updateField(
-                                      'report_type', int.parse(value ?? '1'));
+                                  historialClinico!.reportName =
+                                      medicalHistoryController.reporType(value);
+                                  historialClinico!.reportType = value;
                                 },
                                 TextColor: Colors.white,
                                 color: Styles.primaryColor,
@@ -118,23 +116,19 @@ class ConfirmarFormulario extends StatelessWidget {
                           InputText(
                             label: 'Nombre del Informe',
                             placeholder: '',
-                            initialValue: medicalHistoryController
-                                .reportData['report_name']
-                                .toString(),
+                            initialValue:
+                                historialClinico!.reportName.toString() ?? '',
                             onChanged: (value) {
-                              medicalHistoryController.updateField(
-                                  "fecha_aplicacion", value);
+                              historialClinico!.reportName = value;
                             },
-                            readOnly: true,
+                            readOnly: isEdit == true ? false : true,
                           ),
                           const SizedBox(height: 20),
                           InputText(
                             isDateField: true,
                             label: 'Fecha de aplicación',
                             placeholder: '',
-                            initialValue: medicalHistoryController
-                                .reportData['fecha_aplicacion']
-                                .toString(),
+                            initialValue: historialClinico.fechaAplicacion,
                             prefiIcon: const Icon(
                               Icons.calendar_today,
                               color: Color.fromRGBO(252, 186, 103, 1),
@@ -144,8 +138,7 @@ class ConfirmarFormulario extends StatelessWidget {
                               color: Color.fromRGBO(252, 186, 103, 1),
                             ),
                             onChanged: (value) {
-                              medicalHistoryController.updateField(
-                                  "fecha_aplicacion", value);
+                              historialClinico!.applicationDate = value;
                             },
                             readOnly: isEdit! ? false : true,
                           ),
@@ -154,9 +147,8 @@ class ConfirmarFormulario extends StatelessWidget {
                             label: 'Fecha de refuerzo',
                             placeholder: '',
                             isDateField: true,
-                            initialValue: medicalHistoryController
-                                .reportData['fecha_refuerzo']
-                                .toString(),
+                            initialValue:
+                                historialClinico!.fechaRefuerzo.toString(),
                             prefiIcon: const Icon(
                               Icons.calendar_today,
                               color: Color.fromRGBO(252, 186, 103, 1),
@@ -166,8 +158,7 @@ class ConfirmarFormulario extends StatelessWidget {
                               color: Color.fromRGBO(252, 186, 103, 1),
                             ),
                             onChanged: (value) {
-                              medicalHistoryController.updateField(
-                                  "fecha_refuerzo", value);
+                              historialClinico!.fechaRefuerzo = value;
                             },
                             readOnly: isEdit! ? false : true,
                           ),
@@ -175,14 +166,11 @@ class ConfirmarFormulario extends StatelessWidget {
                           InputText(
                             label: 'notas',
                             placeholder: '',
-                            initialValue: medicalHistoryController
-                                .reportData['medical_conditions']
-                                .toString(),
+                            initialValue:
+                                historialClinico!.medicalConditions.toString(),
                             onChanged: (value) {
-                              medicalHistoryController.updateField(
-                                  'notes', value);
-                              medicalHistoryController.updateField(
-                                  'medical_conditions', value);
+                              historialClinico!.medicalConditions = value;
+                              historialClinico!.notes = value;
                             },
                             readOnly: isEdit! ? false : true,
                           ),
@@ -244,14 +232,14 @@ class ConfirmarFormulario extends StatelessWidget {
                               children: [
                                 Text(
                                   medicalHistoryController.isEditing.value
-                                      ? "creado ${medicalHistoryController.reportData['created_at']}"
-                                      : "Sera creado : ${medicalHistoryController.reportData['created_at']}",
+                                      ? "creado ${historialClinico!.createdAt}"
+                                      : "Sera creado : ${historialClinico!.createdAt}",
                                   style: Styles.textProfile15w700,
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
                                   medicalHistoryController.isEditing.value
-                                      ? "Editado por última vez el ${medicalHistoryController.reportData['updated_at']}"
+                                      ? "Editado por última vez el ${historialClinico!.updatedAt}"
                                       : "",
                                   style: Styles.textProfile15w700,
                                 ),
@@ -268,9 +256,8 @@ class ConfirmarFormulario extends StatelessWidget {
                                             ? 'Cargando ...'
                                             : 'Actualizar',
                                     callback: () {
-                                      print(
-                                          'data actualizado ${medicalHistoryController.reportData}');
-                                      medicalHistoryController.updateReport();
+                                      medicalHistoryController
+                                          .updateReport(historialClinico);
                                     },
                                   ),
                                 )
