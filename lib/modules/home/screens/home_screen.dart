@@ -143,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 // Widget del 30%
-                SizedBox(width: 20),
+                SizedBox(width: 15),
                 Flexible(
                   flex: 2,
                   child: GestureDetector(

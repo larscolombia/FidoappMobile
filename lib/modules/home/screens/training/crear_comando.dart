@@ -25,7 +25,11 @@ class CrearComando extends StatelessWidget {
           Container(
             height: 120,
             decoration: const BoxDecoration(
-              color: Styles.colorContainer, // Cambia el color según tu diseño
+              color: Styles.colorContainer,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ), // Cambia el color según tu diseño
             ),
           ),
           // Segundo contenedor (superpuesto con scroll)
@@ -56,13 +60,19 @@ class CrearComando extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
+                      const SizedBox(
+                        width: 305,
+                        child: Text("Selecciona la mascota",
+                            style: TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0XFF383838),
+                            )),
+                      ),
+                      SizedBox(height: 10,),
                       SizedBox(
                         width: 305,
-                        child: const Text("Selecciona la mascota",
-                            style: Styles.TextTituloAutor),
-                      ),
-                      SizedBox(
-                        width: 325,
                         child: ProfilesDogs(),
                       ),
                       const SizedBox(height: 10),
@@ -111,7 +121,7 @@ class CrearComando extends StatelessWidget {
                         child: ButtonDefaultWidget(
                             title: controller.isLoading.value
                                 ? 'Creando...'
-                                : 'Guardar',
+                                : 'Crear comando',
                             callback: () {
                               controller.updateField(
                                 'pet_id',
