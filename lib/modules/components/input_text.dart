@@ -27,6 +27,7 @@ class InputText extends StatefulWidget {
     this.isTextArea = false,
     this.fw,
   });
+
   final FontWeight? fw;
   final String? placeholder;
   final String? label;
@@ -57,15 +58,15 @@ class _InputTextState extends State<InputText> {
   @override
   void initState() {
     super.initState();
+    // Inicializamos el controlador con el valor inicial (si existe)
     _textController = TextEditingController(text: widget.initialValue ?? "");
   }
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: widget.isTextArea
-          ? double.infinity
-          : 302, // Ajusta el ancho si es textarea
+      // Si es TextArea, usa todo el ancho; si no, un ancho fijo
+      width: widget.isTextArea ? double.infinity : 302,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -96,11 +97,26 @@ class _InputTextState extends State<InputText> {
                   widget.isImagePicker,
               child: TextFormField(
                 controller: _textController,
-                maxLines:
-                    widget.isTextArea ? null : 1, // Habilitar múltiples líneas
-                minLines:
-                    widget.isTextArea ? 3 : 1, // Líneas mínimas para textarea
+                // Para habilitar múltiples líneas
+                maxLines: widget.isTextArea ? null : 1,
+                minLines: widget.isTextArea ? 3 : 1,
+
                 decoration: InputDecoration(
+                  // Cuando es TextArea, usamos hintText; si no, labelText
+                  labelText: widget.isTextArea
+                      ? null
+                      : (widget.placeholder ?? 'placeholder'),
+                  hintText: widget.isTextArea
+                      ? (widget.placeholder ?? 'placeholder')
+                      : null,
+
+                  // Para alinear texto y placeholder arriba cuando es multiline
+                  alignLabelWithHint: widget.isTextArea,
+                  // Ajuste de padding para que el texto inicie desde arriba
+                  contentPadding: widget.isTextArea
+                      ? const EdgeInsets.symmetric(vertical: 16, horizontal: 16)
+                      : null,
+
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide(
@@ -115,12 +131,18 @@ class _InputTextState extends State<InputText> {
                       width: 0.5,
                     ),
                   ),
-                  labelText: widget.placeholder ?? 'placeholder',
+                  // Fuente personalizada para el placeholder/hint
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                    fontFamily: widget.placeholderFontFamily ?? 'Lato',
+                    fontWeight: FontWeight.w400,
+                  ),
+                  // El labelStyle se usa cuando isTextArea es falso (labelText)
                   labelStyle: TextStyle(
                     fontSize: 14,
                     color: Colors.black,
-                    fontFamily: widget.placeholderFontFamily ??
-                        'Lato', // Fuente personalizada
+                    fontFamily: widget.placeholderFontFamily ?? 'Lato',
                     fontWeight: FontWeight.w400,
                   ),
                   filled: true,
@@ -207,11 +229,9 @@ class _InputTextState extends State<InputText> {
     if (result != null && result.files.single.path != null) {
       final filePath = result.files.single.path!;
       final fileName = result.files.single.name;
-
       setState(() {
         _textController.text = fileName;
       });
-
       widget.onChanged(filePath);
     }
   }
@@ -219,13 +239,11 @@ class _InputTextState extends State<InputText> {
   Future<void> _pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
         _textController.text = pickedFile.name;
       });
-
       widget.onChanged(pickedFile.path);
       if (widget.onImagePicked != null) {
         widget.onImagePicked!(_imageFile!);

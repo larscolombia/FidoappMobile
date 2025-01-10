@@ -196,7 +196,7 @@ class ProfileScreen extends StatelessWidget {
                               width: MediaQuery.of(context).size.width - 100,
                               child: ButtonDefaultWidget(
                                 callback: () {
-                                  Get.to(const FormularioVerificacion());
+                                  Get.to(FormularioVerificacion());
                                 },
                                 title: 'Verificación Profesional >',
                               ),

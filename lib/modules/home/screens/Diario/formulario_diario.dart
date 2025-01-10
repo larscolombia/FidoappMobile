@@ -48,7 +48,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
 
   @override
   Widget build(BuildContext context) {
-        final ancho = MediaQuery.of(context).size.width - 100;
+    final ancho = MediaQuery.of(context).size.width - 100;
 
     return Scaffold(
       body: Stack(
@@ -137,8 +137,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                             child: InputSelect(
                               TextColor: Colors.black,
                               label: 'Categoría',
-                              placeholder:
-                                  controller.activitiesOne.value!.categoryName,
+                              placeholder: "Selecciona una categoría",
                               onChanged: (value) {
                                 controller.updateField('category_id', value);
                               },
@@ -195,7 +194,6 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               },
                             ),
                           ),
-                          
                           const SizedBox(height: 8),
                           InputText(
                             label: 'Selecciona una Imagen',

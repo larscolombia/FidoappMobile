@@ -97,6 +97,8 @@ class ProfileController extends GetxController {
     'profile_image': "",
     'id': "",
     'role': "",
+    'about_self': "",
+    'address': ""
   };
   void dataUser() {
     user['first_name'] = currentUser.firstName;

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/configs.dart';
@@ -40,6 +41,7 @@ class UserProfileController extends GetxController {
 
   // Método para obtener los datos del usuario
   Future<void> fetchUserData(String id) async {
+    print('numero de peticiones');
     try {
       final response = await http.get(
         Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id'),
@@ -50,17 +52,23 @@ class UserProfileController extends GetxController {
         },
       );
 
-      print('Perfil de usuario: ${json.decode(response.body)}');
+      print(
+          'Perfil de usuario: ${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id')}');
 
       if (response.statusCode == 200) {
         var data = json.decode(response.body)['data'];
         user.value =
             UserData.fromJson(data); // Actualiza el modelo con la respuesta.
+        Get.snackbar("Exito", "Perfil de usuario obtenido correctamente",
+            backgroundColor: Colors.green);
       } else {
-        throw Exception('Failed to load user data');
+        Get.snackbar("Error", "Error al obtener datos del usuario",
+            backgroundColor: Colors.red);
       }
     } catch (e) {
-      print("Error al obtener datos del usuario: $e");
+      print('Error al obtener datos del usuario: $e');
+      Get.snackbar("Error", "Error al obtener datos del usuario",
+          backgroundColor: Colors.red);
     } finally {
       isLoading(false);
     }

@@ -21,6 +21,31 @@ class ProfileDetails extends StatelessWidget {
         Obx(
           () => SizedBox(
             width: MediaQuery.of(context).size.width - 100,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.location_on,
+                  color: Styles.primaryColor,
+                  size: 20,
+                ),
+                Text(
+                  profileController.user.value.address ?? "",
+                  style: const TextStyle(
+                    color: Styles.primaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Lato',
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Obx(
+          () => SizedBox(
+            width: MediaQuery.of(context).size.width - 100,
             child: Text(
               profileController.user.value.firstName ?? "",
               style: Styles.dashboardTitle20,

@@ -14,18 +14,28 @@ import 'package:pawlly/modules/profile/screens/components/veteinari_info.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class PublicProfilePage extends StatelessWidget {
+class PublicProfilePage extends StatefulWidget {
   PublicProfilePage({Key? key}) : super(key: key);
 
+  @override
+  State<PublicProfilePage> createState() => _PublicProfilePageState();
+}
+
+class _PublicProfilePageState extends State<PublicProfilePage> {
   final UserProfileController profileController =
       Get.put(UserProfileController());
+
   final PetOwnerProfileController controller =
       Get.put(PetOwnerProfileController());
+  @override
+  void initState() {
+    super.initState();
+    // Llamamos al fetchUserData sólo aquí, para que no se repita en cada build
+    profileController.fetchUserData('${AuthServiceApis.dataCurrentUser.id}');
+  }
 
   @override
   Widget build(BuildContext context) {
-    profileController.fetchUserData('${AuthServiceApis.dataCurrentUser.id}');
-
     return Scaffold(
       backgroundColor: Styles.whiteColor,
       body: Container(

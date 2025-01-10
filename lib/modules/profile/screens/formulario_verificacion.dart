@@ -5,12 +5,29 @@ import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/perfil_publico.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
-class FormularioVerificacion extends StatelessWidget {
+class FormularioVerificacion extends StatefulWidget {
   const FormularioVerificacion({super.key});
+
+  @override
+  State<FormularioVerificacion> createState() => _FormularioVerificacionState();
+}
+
+class _FormularioVerificacionState extends State<FormularioVerificacion> {
+  final UserProfileController controller = Get.put(UserProfileController());
+  final ProfileController profileController = Get.put(ProfileController());
+
+  @override
+  void initState() {
+    super.initState();
+    // Llamamos al fetchUserData sólo aquí, para que no se repita en cada build
+    controller.fetchUserData("${AuthServiceApis.dataCurrentUser.id}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +72,8 @@ class FormularioVerificacion extends StatelessWidget {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
                           child: InputText(
-                            onChanged: (value) {},
+                            onChanged: (value) =>
+                                profileController.user['first_name'] = value,
                             label: 'Nombre',
                             placeholder: '',
                             placeholderFontFamily: 'lato',
@@ -73,8 +91,9 @@ class FormularioVerificacion extends StatelessWidget {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
                           child: InputText(
-                            onChanged: (value) {},
-                            label: 'Nombre',
+                            onChanged: (value) =>
+                                profileController.user['lastName'] = value,
+                            label: 'Apellido',
                             placeholder: '',
                             prefiIcon: const Icon(
                               Icons.person,
@@ -88,25 +107,66 @@ class FormularioVerificacion extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
-                          child: InputText(
-                            onChanged: (value) {},
-                            label: 'Descripción sobre ti',
-                            placeholder: '',
-                            isTextArea: true,
-                            initialValue: "",
+                      Obx(() {
+                        if (controller.isLoading.value) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        print(
+                            'sobremi ${controller.user.value.profile?.aboutSelf ?? ''}');
+                        return Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: InputText(
+                              onChanged: (value) =>
+                                  profileController.user['about_self'] = value,
+                              label: 'Descripción sobre ti',
+                              placeholder: "",
+                              isTextArea: true,
+                              initialValue:
+                                  controller.user.value.profile?.aboutSelf ??
+                                      '',
+                            ),
                           ),
-                        ),
+                        );
+                      }),
+                      const SizedBox(
+                        height: 10,
                       ),
+                      Obx(() {
+                        if (controller.isLoading.value) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        return Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: InputText(
+                              onChanged: (value) =>
+                                  profileController.user['address'] = value,
+                              label: 'Localización',
+                              placeholder: "",
+                              prefiIcon: Icon(
+                                Icons.location_on,
+                                color: Styles.iconColorBack,
+                              ),
+                              initialValue: controller.user.value.address ?? '',
+                            ),
+                          ),
+                        );
+                      }),
                       const SizedBox(height: 10),
                       Center(
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
-                          child: Divider(
-                              height: 1,
-                              color: const Color.fromRGBO(158, 158, 158, 1)),
+                          child: const Divider(
+                            height: 1,
+                            color: Color.fromRGBO(158, 158, 158, 1),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -114,80 +174,31 @@ class FormularioVerificacion extends StatelessWidget {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
                           child: InputSelect(
-                              onChanged: (value) {},
-                              label: 'Áreas de especialización',
-                              placeholder: 'Áreas de especialización',
-                              TextColor: Colors.black,
-                              prefiIcon: 'assets/icons/genero.png',
-                              items: const [
-                                DropdownMenuItem(
-                                  value: 'vet',
-                                  child: Text('Veterinario'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'user',
-                                  child: Text('Usuario'),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'trainer',
-                                  child: Text('Entrenador'),
-                                ),
-                              ]),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      /** 
-                      Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
-                          child: InputText(
-                            isFilePicker: true,
                             onChanged: (value) {},
-                            label:
-                                'Título, certificación profesional o record de notas',
-                            placeholder: '',
-                            prefiIcon: const Icon(
-                              Icons.file_copy_rounded,
-                              color: Styles.iconColorBack,
-                            ),
+                            label: 'Áreas de especialización',
+                            placeholder: 'Áreas de especialización',
+                            TextColor: Colors.black,
+                            prefiIcon: 'assets/icons/genero.png',
+                            items: const [
+                              DropdownMenuItem(
+                                value: 'vet',
+                                child: Text('Veterinario'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'user',
+                                child: Text('Usuario'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'trainer',
+                                child: Text('Entrenador'),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                     
                       const SizedBox(height: 20),
-                      Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
-                          child: InputText(
-                            onChanged: (value) {},
-                            label: 'Nro. de validación del certificado',
-                            placeholder: '',
-                            prefiIcon: const Icon(
-                              Icons.card_travel_rounded,
-                              color: Styles.iconColorBack,
-                            ),
-                            initialValue: '#',
-                          ),
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 20),
-                      Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
-                          child: InputText(
-                            isFilePicker: true,
-                            onChanged: (value) {},
-                            label: 'Curriculum con experiencia profesional',
-                            placeholder: '',
-                            prefiIcon: const Icon(
-                              Icons.file_copy_rounded,
-                              color: Styles.iconColorBack,
-                            ),
-                          ),
-                        ),
-                      ),
-                       */
+                      // Ejemplos de campos comentados
+                      // ...
                       const SizedBox(height: 20),
                       Column(
                         children: [
@@ -204,12 +215,19 @@ class FormularioVerificacion extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 10),
-                          Center(
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width - 100,
-                              child: ButtonDefaultWidget(
-                                callback: () {},
-                                title: 'Finalizar',
+                          Obx(
+                            () => Center(
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width - 100,
+                                child: ButtonDefaultWidget(
+                                  callback: () {
+                                    profileController.updateProfile();
+                                  },
+                                  title:
+                                      profileController.isLoading.value == true
+                                          ? "Procesando"
+                                          : 'Finalizar',
+                                ),
                               ),
                             ),
                           ),
