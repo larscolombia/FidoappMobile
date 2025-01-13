@@ -36,26 +36,51 @@ import 'package:pawlly/modules/home/screens/pages/explorar_container.dart';
 import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/pages/resources.dart';
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
+import 'package:pawlly/modules/provider/push_provider.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   //controlador principal
   final HomeController homeController = Get.put(HomeController());
+
   //carga los cursos
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
 
   // carga el el historial de las mascotas
   final PetActivityController historialClinicoController =
       Get.put(PetActivityController());
+
   //carga los blogs
   final BlogController blogController = Get.put(BlogController());
+
   //eventos del calendario
   final CalendarController calendarController = Get.put(CalendarController());
+
   //herramientas
   final HerramientasController _herramientasController =
       Get.put(HerramientasController());
+
+  final NotificationController notificationController = Get.put(
+    NotificationController(),
+  );
+
+  bool _isFCMInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final pushNotificaciones = PushProvider();
+    pushNotificaciones.setupFCM();
+  }
+
   @override
   Widget build(BuildContext context) {
     homeController.SelectType(1);
@@ -128,7 +153,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   // Funciones que devuelven el contenido basado en el selectedIndex
-
   Widget _buildCase1Content(context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

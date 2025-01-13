@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
+import 'package:http/http.dart' as http;
+import 'package:pawlly/services/auth_service_apis.dart';
 
-class PushProvider {
+class PushProvider extends GetxController {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
@@ -14,6 +19,33 @@ class PushProvider {
       Get.put(NotificationController());
   final UserBalanceController balanceController =
       Get.put(UserBalanceController());
+
+  @override
+  Future<void> updateDeviceToken(String userId, String deviceToken) async {
+    final url = Uri.parse('${BASE_URL}update-device-token');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+      },
+      body: jsonEncode({
+        'user_id': userId,
+        'device_token': deviceToken,
+      }),
+    );
+    print('resupuesta de device token $response');
+    print(response.body);
+    if (response.statusCode == 200) {
+      print('Token actualizado exitosamente');
+      Get.snackbar(
+        'exito',
+        'Vinculado',
+      );
+    } else {
+      print('Error al actualizar token: ${response.statusCode}');
+    }
+  }
 
   /// Solicita permisos, imprime el token FCM y valida si hay autorización.
   Future<void> setupFCM() async {
@@ -27,6 +59,11 @@ class PushProvider {
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('Notificaciones autorizadas');
       String? token = await _firebaseMessaging.getToken();
+      if (token != null) {
+        updateDeviceToken(
+            AuthServiceApis.dataCurrentUser.id.toString(), token!);
+      }
+
       print("Token FCM: $token");
     } else {
       print('Permisos de notificación denegados');

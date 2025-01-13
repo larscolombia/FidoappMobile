@@ -32,9 +32,6 @@ Future<void> main() async {
       .ensureInitialized(); // Asegura la inicialización de Widgets antes de código asincrónico
 
   // Registra el controller de notificaciones
-  final NotificationController notificationController = Get.put(
-    NotificationController(),
-  );
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -67,7 +64,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
