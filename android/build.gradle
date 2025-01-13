@@ -1,13 +1,13 @@
-buildscript {
+buildscript{
     ext.kotlin_version = '1.7.10'
     repositories {
         google()
         mavenCentral()
-    } 
- 
-    dependencies {   
+    }
+
+    dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.gms:google-services:4.3.15'  // Versión más reciente
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -26,6 +26,7 @@ rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
 subprojects {
     project.evaluationDependsOn(":app")
 }

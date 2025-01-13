@@ -4,7 +4,7 @@
     "project_id": "fideapp-6c373",
     "storage_bucket": "fideapp-6c373.firebasestorage.app"
   },
-  "client": [
+  "client": [ 
     {
       "client_info": {
         "mobilesdk_app_id": "1:236022939581:android:fcd210ee0969b158da5cd4",
