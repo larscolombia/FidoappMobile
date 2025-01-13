@@ -9,6 +9,7 @@ import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/formulario_verificacion.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
@@ -25,6 +26,7 @@ class ProfileScreen extends StatelessWidget {
     final imageSize = size.height / 4;
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         // Agregamos el SingleChildScrollView aquí
         child: Container(
@@ -141,52 +143,31 @@ class ProfileScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                GestureDetector(
-                                  onTap: () => Navigator.pop(context),
-                                  child: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: Styles.primaryColor,
-                                    size: 22,
-                                  ),
-                                ),
-                                const Text(
-                                  'Perfil de Usuario',
-                                  style: Styles.dashboardTitle20,
-                                ),
                                 Container(
-                                  width: 1, // Grosor de la línea
-                                  height: 25, // Altura de la línea
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 3), // Espacio en los lados
-                                  color: Styles.greyColor, // Color de la línea
+                                  width:
+                                      MediaQuery.of(context).size.width - 120,
+                                  child: BarraBack(
+                                      titulo: "Perfil de Usuario",
+                                      callback: () {
+                                        Navigator.pop(context);
+                                      }),
                                 ),
-                                Obx(
-                                  () => TextButton.icon(
-                                    onPressed: () {
-                                      controller.toggleEditing();
-                                    },
-                                    icon: Container(
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: controller.isEditing.value
-                                            ? Styles.iconColorBack
-                                            : Styles.greyTextColor,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: const Icon(Icons.edit,
-                                          color: Colors.white, size: 24),
-                                    ),
-                                    label: Text(
-                                      'Editar',
-                                      style: TextStyle(
-                                        color: controller.isEditing.value
-                                            ? Styles.iconColorBack
-                                            : Styles.greyTextColor,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                Obx(() {
+                                  return GestureDetector(
+                                    onTap: () => controller.toggleEditing(),
+                                    child: Container(
+                                        padding: const EdgeInsets.all(7),
+                                        decoration: BoxDecoration(
+                                          color: controller.isEditing.value
+                                              ? Styles.fiveColor
+                                              : Styles.greyTextColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Image.asset(
+                                            'assets/icons/edit-2.png')),
+                                  );
+                                }),
                               ],
                             ),
                           ),
@@ -215,6 +196,8 @@ class ProfileScreen extends StatelessWidget {
                                 controller.user['first_name'] = value,
                             initialValue:
                                 controller.user['first_name'].toString(),
+                            placeholderImage:
+                                Image.asset('assets/icons/profile.png'),
                             placeholder: '',
                             readOnly: !controller.isEditing.value,
                             fondoColor: controller.isEditing.value == false
@@ -222,6 +205,7 @@ class ProfileScreen extends StatelessWidget {
                                 : Styles.fiveColor,
                           );
                         }),
+                        const SizedBox(height: 20),
                         Obx(() {
                           return InputText(
                             onChanged: (value) =>
@@ -229,31 +213,58 @@ class ProfileScreen extends StatelessWidget {
                             initialValue:
                                 controller.user['last_name'].toString(),
                             placeholder: '',
+                            placeholderImage:
+                                Image.asset('assets/icons/profile.png'),
                             readOnly: !controller.isEditing.value,
                             fondoColor: controller.isEditing.value == false
                                 ? Colors.white
                                 : Styles.fiveColor,
                           );
                         }),
+                        const SizedBox(height: 20),
                         Obx(() {
                           return InputText(
                             onChanged: (value) =>
                                 controller.user['email'] = value,
                             initialValue: controller.user['email'].toString(),
                             placeholder: '',
+                            placeholderImage:
+                                Image.asset('assets/icons/sms.png'),
                             readOnly: !controller.isEditing.value,
                             fondoColor: controller.isEditing.value == false
                                 ? Colors.white
                                 : Styles.fiveColor,
                           );
                         }),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            // Navegar a la página de cambiar contraseña
+                            Get.to(() => ChangePasswordScreen());
+                          },
+                          child: const Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              'Cambiar Contraseña  >',
+                              style: TextStyle(
+                                color: Styles.primaryColor,
+                                fontFamily: 'Lato',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                        ),
                         Obx(
                           () => Container(
                             margin: const EdgeInsets.only(top: 20),
                             child: CustomSelectFormFieldWidget(
                               enabled: controller.isEditing.value,
                               controller: controller.userGenCont.value,
-                              filcolorCustom: Styles.fiveColor,
+                              filcolorCustom: Colors.white,
+                              borderColor: Styles.iconColorBack,
                               onChange: (value) {
                                 controller.user['gender'] = value.toString();
                                 controller.userGenCont.value.text =
@@ -286,22 +297,7 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                          */
-                        GestureDetector(
-                          onTap: () {
-                            // Navegar a la página de cambiar contraseña
-                            Get.to(() => ChangePasswordScreen());
-                          },
-                          child: const Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              'Cambiar Contraseña',
-                              style: TextStyle(
-                                color: Styles.primaryColor,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ),
-                        ),
+
                         /** 
                         Obx(
                           () => Container(
@@ -351,7 +347,6 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
                       ],
                     ),
                   ],

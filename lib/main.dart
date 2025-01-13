@@ -42,9 +42,7 @@ Future<void> main() async {
 
   // Inicializa Firebase y espera a que termine
   await Firebase.initializeApp();
-
   // Registra el handler de background para Firebase Messaging
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   // Inicializa PushProvider: se solicita permisos, se obtiene el token
   // y se deben registrar los listeners para los callbacks
@@ -52,7 +50,7 @@ Future<void> main() async {
   await pushNotificaciones.setupFCM();
   await pushNotificaciones
       .initNorification(); // IMPORTANTE: registra los listeners de mensajes
-
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   // Inicializa otros servicios necesarios después de Firebase
   await initialize(aLocaleLanguageList: languageList());
   selectedLanguageCode(

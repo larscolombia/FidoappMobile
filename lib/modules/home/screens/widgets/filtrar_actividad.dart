@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 
 class FiltrarActividad extends StatelessWidget {
@@ -17,19 +19,47 @@ class FiltrarActividad extends StatelessWidget {
 
     return AlertDialog(
       backgroundColor: Colors.white,
-      title: const Text(
-        'Filtrar',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
+      title: Column(
+        children: [
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Filtrar por',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontFamily: 'Lato',
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Image.asset(
+                      'assets/icons/x.png',
+                      width: 20,
+                      height: 20,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Divider(
+                thickness: .2,
+                color: Colors.grey,
+              )
+            ],
+          ),
+        ],
       ),
       content: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 8),
             const Text(
               'Categoría',
               style: TextStyle(
@@ -49,17 +79,20 @@ class FiltrarActividad extends StatelessWidget {
                         value: controller.diario['category_id'] == category,
                         onChanged: (bool? value) {
                           if (value == true) {
-                            print('filtrar $value');
                             controller.updateField('category_id', category);
                           } else {
                             controller.updateField('category_id', '');
                           }
+
+                          controller.buscarIdCategoria(
+                              controller.categoria_value(category));
+                          Navigator.of(context).pop();
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(2),
                         ),
-                        checkColor: Colors.white,
-                        activeColor: Colors.black,
+                        checkColor: Styles.colorContainer,
+                        activeColor: Styles.primaryColor,
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         visualDensity: VisualDensity.compact,
                       ),
@@ -71,48 +104,17 @@ class FiltrarActividad extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Ordenar por Fecha',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Obx(
-              () => CheckboxListTile(
-                title: const Text('Fecha de la más reciente a la más antigua'),
-                value: controller.sortByDate.value,
-                onChanged: (bool? value) {
-                  controller.sortByDate.value = value ?? false;
-                },
-                controlAffinity: ListTileControlAffinity.leading,
-                checkColor: Colors.white,
-                activeColor: Colors.black,
-              ),
-            ),
           ],
         ),
       ),
       actions: [
-        ButtonDefaultWidget(
-          title: 'Filtrar',
-          callback: () {
-            // Extraer valores ingresados
-            final reportName = reportNameController.text;
-
-            // Aplicar los filtros en el controlador
-            controller.filterPetActivities(reportName);
-
-            Navigator.of(context).pop(); // Cerrar el diálogo
-          },
-        ),
         TextButton(
           onPressed: () {
             Navigator.of(context).pop(); // Cerrar el diálogo sin aplicar
           },
-          child: const Text('Cancelar'),
+          child: const Text('Cancelar',
+              style: TextStyle(
+                  color: Colors.black, fontSize: 12, fontFamily: 'Lato')),
         ),
       ],
     );

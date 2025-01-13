@@ -33,6 +33,7 @@ class PasaporteMascota extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pet = _homeController.selectedProfile.value!;
+    var ancho = MediaQuery.of(context).size.width - 100;
     return Scaffold(
       body: Stack(
         children: [
@@ -89,7 +90,7 @@ class PasaporteMascota extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(
-                      width: 305,
+                      width: ancho,
                       child: BarraBack(
                         callback: () {
                           Get.off(VerPasaporteMascota());
@@ -98,7 +99,7 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 305,
+                      width: ancho,
                       child: InputText(
                         placeholder: pet.name,
                         label: 'Nombre',
@@ -108,7 +109,7 @@ class PasaporteMascota extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      width: 305,
+                      width: ancho,
                       child: InputText(
                         placeholder: pet.pettype,
                         label: 'Especie',
@@ -118,7 +119,7 @@ class PasaporteMascota extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      width: 305,
+                      width: ancho,
                       child: InputText(
                         label: 'Sexo',
                         initialValue: pet.gender,
@@ -128,7 +129,7 @@ class PasaporteMascota extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      width: 305,
+                      width: ancho,
                       child: InputText(
                         label: 'Raza',
                         placeholder: pet.breed,
@@ -136,9 +137,9 @@ class PasaporteMascota extends StatelessWidget {
                         onChanged: (value) => pet.petFur = value,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     SizedBox(
-                      width: 305,
+                      width: ancho,
                       child: InputText(
                         placeholder: pet.dateOfBirth,
                         label: 'Fecha de nacimiento',
@@ -149,7 +150,7 @@ class PasaporteMascota extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      width: 305,
+                      width: ancho,
                       child: InputText(
                         label: 'Color del pelaje',
                         placeholder: pet.petFur,
@@ -159,7 +160,7 @@ class PasaporteMascota extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      width: 305,
+                      width: ancho,
                       child: InputText(
                         label: 'Edad',
                         placeholder: pet.age,
@@ -169,7 +170,27 @@ class PasaporteMascota extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      width: 305,
+                      width: ancho,
+                      child: InputText(
+                        label: 'Altura',
+                        placeholder: pet.size,
+                        initialValue: pet.size ?? "no lo ha colocado aún",
+                        onChanged: (value) => pet.size = value,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: ancho,
+                      child: InputText(
+                        label: 'Peso',
+                        placeholder: pet.weightUnit,
+                        initialValue: pet.weightUnit ?? "no lo ha colocado aún",
+                        onChanged: (value) => pet.weightUnit = value,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: ancho,
                       child: InputText(
                         prefiIcon: const Icon(
                           Icons.archive_outlined,
@@ -183,7 +204,7 @@ class PasaporteMascota extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      width: 305,
+                      width: ancho,
                       child: InputText(
                         prefiIcon: const Icon(
                           Icons.person_outline,
@@ -197,7 +218,7 @@ class PasaporteMascota extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      width: 305,
+                      width: ancho,
                       height: 50,
                       child: Obx(() {
                         if (petController.succesApdate.value) {
@@ -220,11 +241,13 @@ class PasaporteMascota extends StatelessWidget {
                                   "breed_name": pet.breed,
                                   "gender": pet.gender,
                                   "weight": pet.weight,
+                                  "eweightUnit": pet.weightUnit,
+                                  "heheightUnit": pet.heightUnit,
                                   "user_id": pet.userId,
                                   "age": "${pet.age}años",
                                   "pet_fur": pet.petFur,
                                   "chip": pet.chip,
-                                  "size": "${pet.size}l",
+                                  "size": "${pet.size}",
                                 },
                               );
                               print(

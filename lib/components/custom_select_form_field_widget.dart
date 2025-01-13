@@ -13,6 +13,8 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
   final void Function(String?)? onChange; // Parámetro opcional
   final Color? filcolorCustom;
   final Color? textColor;
+  final Color? borderColor; // Nueva propiedad para el color del borde
+
   const CustomSelectFormFieldWidget({
     super.key,
     required this.placeholder,
@@ -26,6 +28,7 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
     this.onChange, // Inicializar el parámetro opcional
     this.filcolorCustom,
     this.textColor,
+    this.borderColor, // Inicialización de borderColor
   });
 
   @override
@@ -110,9 +113,10 @@ class _CustomSelectFormFieldWidgetState
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
-                    color: hasText || _selectedValue != null
-                        ? Styles.iconColorBack
-                        : Colors.transparent,
+                    color: widget.borderColor ??
+                        (hasText || _selectedValue != null
+                            ? Styles.iconColorBack
+                            : Colors.transparent),
                     width: 1.0,
                   ),
                 ),
@@ -120,17 +124,18 @@ class _CustomSelectFormFieldWidgetState
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
                     color: isEnabled
-                        ? (hasText || _selectedValue != null)
-                            ? Styles.iconColorBack
-                            : Colors.transparent
+                        ? (widget.borderColor ??
+                            (hasText || _selectedValue != null
+                                ? Styles.iconColorBack
+                                : Colors.transparent))
                         : Colors.grey,
                     width: 1.0,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(
-                    color: Styles.iconColorBack,
+                  borderSide: BorderSide(
+                    color: widget.borderColor ?? Styles.iconColorBack,
                     width: 1.0,
                   ),
                 ),
@@ -152,7 +157,8 @@ class _CustomSelectFormFieldWidgetState
                 labelText: _selectedValue != null ? null : widget.placeholder,
                 labelStyle: TextStyle(
                   color: widget.textColor ?? Colors.black,
-                  fontFamily: 'lato',
+                  fontFamily:
+                      'Lato', // Forzamos la fuente Lato para el placeholder
                   fontSize: 14,
                 ),
                 errorText: errorText, // Mostrar mensaje de error si existe
@@ -165,10 +171,14 @@ class _CustomSelectFormFieldWidgetState
                     _selectedValue ?? '',
                     style: TextStyle(
                       color: isEnabled ? Colors.black : Colors.grey,
+                      fontFamily:
+                          'Lato', // Forzamos la fuente Lato para el texto ingresado
                     ),
                   ),
-                  Icon(Icons.arrow_drop_down,
-                      color: isEnabled ? Styles.iconColorBack : Colors.grey),
+                  Icon(
+                    Icons.arrow_drop_down,
+                    color: isEnabled ? Styles.iconColorBack : Colors.grey,
+                  ),
                 ],
               ),
             ),
@@ -211,7 +221,8 @@ class _CustomSelectFormFieldWidgetState
               ),
               child: Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Styles.iconColorBack),
+                  border: Border.all(
+                      color: widget.borderColor ?? Styles.iconColorBack),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: ListView(
@@ -228,7 +239,12 @@ class _CustomSelectFormFieldWidgetState
                         ),
                       ),
                       child: ListTile(
-                        title: Text(item),
+                        title: Text(
+                          item,
+                          style: const TextStyle(
+                            fontFamily: 'Lato', // Utiliza Lato para los items
+                          ),
+                        ),
                         onTap: () {
                           setState(() {
                             _selectedValue = item;

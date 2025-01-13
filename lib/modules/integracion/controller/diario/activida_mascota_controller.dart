@@ -45,6 +45,19 @@ class PetActivityController extends GetxController {
     }
   }
 
+  String categoria_value(String name) {
+    switch (name) {
+      case 'Actividad':
+        return '1';
+      case 'Informe médico':
+        return '2';
+      case 'Entrenamiento':
+        return '3';
+      default:
+        return 'Actividad';
+    }
+  }
+
   void initDiario() {
     diario.value = {
       'actividadId': '0',
@@ -324,6 +337,21 @@ class PetActivityController extends GetxController {
         return activity.actividad.toLowerCase().contains(query.toLowerCase());
       }).toList();
     }
+  }
+
+  void buscarIdCategoria(String categoryId) {
+    print('Filtrando por categoryId: $categoryId');
+    if (categoryId.isEmpty) {
+      filteredActivities.value = activities;
+    } else {
+      filteredActivities.value = activities.where((activity) {
+        return activity.categoryId ==
+            int.tryParse(categoryId); // Evita errores al convertir
+      }).toList();
+    }
+
+    filteredActivities.refresh(); // Forzar notificación de cambio
+    print('Filtrado: ${jsonEncode(filteredActivities.value)}');
   }
 
   //actulizar historial

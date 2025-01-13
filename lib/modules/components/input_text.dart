@@ -31,7 +31,7 @@ class InputText extends StatefulWidget {
   final FontWeight? fw;
   final String? placeholder;
   final String? label;
-  final String? placeholderFontFamily; // Nueva fuente del placeholder
+  final String? placeholderFontFamily; // Fuente personalizada del placeholder
   final Image? placeholderImage; // Imagen opcional para el placeholder
   final bool isDateField;
   final bool isFilePicker;
@@ -43,7 +43,7 @@ class InputText extends StatefulWidget {
   final bool readOnly;
   final String? initialValue;
   final Color? fondoColor;
-  final Color borderColor; // Nuevo color del borde
+  final Color borderColor; // Color del borde
   final ValueChanged<File>? onImagePicked;
   final bool isTextArea;
 
@@ -76,8 +76,8 @@ class _InputTextState extends State<InputText> {
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,
-                fontFamily: 'Lato',
-                fontWeight: widget.fw ?? FontWeight.w400,
+                fontFamily: 'Lato', // Fuente Lato para el label
+                fontWeight: widget.fw ?? FontWeight.w800,
               ),
             ),
           const SizedBox(height: 8),
@@ -100,7 +100,11 @@ class _InputTextState extends State<InputText> {
                 // Para habilitar múltiples líneas
                 maxLines: widget.isTextArea ? null : 1,
                 minLines: widget.isTextArea ? 3 : 1,
-
+                style: const TextStyle(
+                  fontFamily: 'Lato', // Fuente Lato para el texto ingresado
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
                 decoration: InputDecoration(
                   // Cuando es TextArea, usamos hintText; si no, labelText
                   labelText: widget.isTextArea
@@ -110,7 +114,22 @@ class _InputTextState extends State<InputText> {
                       ? (widget.placeholder ?? 'placeholder')
                       : null,
 
-                  // Para alinear texto y placeholder arriba cuando es multiline
+                  // Fuente personalizada para el placeholder/hint
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                    fontFamily: 'Lato', // Fuente Lato para el placeholder
+                    fontWeight: FontWeight.w400,
+                  ),
+                  // El labelStyle se usa cuando isTextArea es falso (labelText)
+                  labelStyle: TextStyle(
+                    fontSize: 14,
+                    color: Colors.black,
+                    fontFamily: 'Lato', // Fuente Lato para el label
+                    fontWeight: FontWeight.w400,
+                  ),
+
+                  // Alineación del texto y placeholder
                   alignLabelWithHint: widget.isTextArea,
                   // Ajuste de padding para que el texto inicie desde arriba
                   contentPadding: widget.isTextArea
@@ -130,20 +149,6 @@ class _InputTextState extends State<InputText> {
                       color: widget.borderColor, // Color de borde personalizado
                       width: 0.5,
                     ),
-                  ),
-                  // Fuente personalizada para el placeholder/hint
-                  hintStyle: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                    fontFamily: widget.placeholderFontFamily ?? 'Lato',
-                    fontWeight: FontWeight.w400,
-                  ),
-                  // El labelStyle se usa cuando isTextArea es falso (labelText)
-                  labelStyle: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black,
-                    fontFamily: widget.placeholderFontFamily ?? 'Lato',
-                    fontWeight: FontWeight.w400,
                   ),
                   filled: true,
                   fillColor: widget.fondoColor,

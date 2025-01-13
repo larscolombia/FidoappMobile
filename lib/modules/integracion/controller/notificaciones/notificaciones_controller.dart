@@ -19,15 +19,6 @@ class NotificationController extends GetxController {
   void onInit() {
     super.onInit();
     fetchNotifications();
-    //startPolling(); // pisa papel notificaciones poolling
-  }
-
-  void startPolling() {
-    // Iniciar el temporizador para llamar a fetchNotifications cada 5 segundos
-    _pollingTimer = Timer.periodic(Duration(seconds: 15), (timer) {
-      print('notifications con polling');
-      fetchNotifications();
-    });
   }
 
   Future<void> fetchNotifications() async {
@@ -51,7 +42,7 @@ class NotificationController extends GetxController {
         //throw Exception('Failed to load notifications');
       }
     } catch (e) {
-      print('Error al obtener las notificaciones: $e');
+      print('Respuesta de las notificaciones: $e');
       // isLoading(false);
     }
   }

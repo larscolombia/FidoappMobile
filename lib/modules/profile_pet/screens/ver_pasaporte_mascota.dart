@@ -182,11 +182,13 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       InfoMascota(
                         titulo: 'Color del pelaje',
-                        value: 'n/A',
+                        value: _homeController.selectedProfile.value!.petFur,
                       ),
                       InfoMascota(
                         titulo: 'Altura',
-                        value: 'n/A',
+                        value:
+                            _homeController.selectedProfile.value!.heightUnit ??
+                                "n/A",
                       ),
                       const SizedBox(height: 20),
                       SizedBox(

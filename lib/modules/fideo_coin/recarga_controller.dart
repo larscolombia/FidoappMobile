@@ -39,7 +39,7 @@ class StripeController extends GetxController {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         url_pago_stripe.value = data['url'];
-        Get.to(FideCoin());
+        Get.off(() => FideCoin());
 
         openStripeCheckout(url_pago_stripe.toString());
       } else {
@@ -87,7 +87,8 @@ class StripeController extends GetxController {
           await Future.delayed(Duration(seconds: 2));
 
           // 4. Redirige a la ruta de balance
-          Get.to(HomeScreen()); // Cambia '/balance' por la ruta que necesites
+          Get.off(() =>
+              HomeScreen()); // Cambia '/balance' por la ruta que necesites
 
           // 5. (Opcional) Aquí puedes abrir el navegador con tu lógica
           // Por ejemplo, usando url_launcher
