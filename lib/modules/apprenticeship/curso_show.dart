@@ -178,13 +178,13 @@ class CursoShow extends StatelessWidget {
                           color: Color.fromARGB(255, 170, 165, 157),
                         ),
                       ),
-                      HeaderTitle(
+                      const HeaderTitle(
                         label: 'Sección 1',
                         title: 'Introducción al HouseBreaking',
                         precio: '20',
-                        color: const Color.fromRGBO(130, 56, 0, 1),
+                        color: Color.fromRGBO(130, 56, 0, 1),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 30 + 1,
                         child: Column(
                           children: [
@@ -196,11 +196,11 @@ class CursoShow extends StatelessWidget {
                           ],
                         ),
                       ),
-                      HeaderTitle(
+                      const HeaderTitle(
                         label: 'Sección 2',
                         title: 'HouseBreaking Avanzado',
                         precio: '20',
-                        color: const Color.fromRGBO(130, 56, 0, 1),
+                        color: Color.fromRGBO(130, 56, 0, 1),
                       ),
                       SizedBox(
                         width: 30 + 1,

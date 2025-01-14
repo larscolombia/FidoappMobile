@@ -8,6 +8,7 @@ import 'package:pawlly/services/auth_service_apis.dart';
 // curso de la plataforma
 class CourseController extends GetxController {
   var courses = <Course>[].obs;
+  var mycourses = <Course>[].obs;
   var isLoading = false.obs;
   var url = "$DOMAIN_URL/api/course-platform";
 
@@ -16,6 +17,7 @@ class CourseController extends GetxController {
   void onInit() {
     super.onInit();
     fetchCourses();
+
     // getCourseById(AuthServiceApis.dataCurrentUser.id);
   }
 

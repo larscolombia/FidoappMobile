@@ -3,7 +3,10 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/modules/fideo_coin/navegador.dart';
 import 'dart:convert';
+
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
@@ -40,8 +43,8 @@ class StripeController extends GetxController {
         var data = json.decode(response.body);
         url_pago_stripe.value = data['url'];
         Get.off(() => FideCoin());
-
-        openStripeCheckout(url_pago_stripe.toString());
+        abrirNavegador(context, url_pago_stripe.toString());
+        // openStripeCheckout(url_pago_stripe.toString());
       } else {
         // ignore: avoid_print
         print('Error: ${response.statusCode} - ${response.body}');
@@ -96,6 +99,15 @@ class StripeController extends GetxController {
         },
       ),
       barrierDismissible: true,
+    );
+  }
+
+  void abrirNavegador(BuildContext context, String url) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return InAppBrowserModal(url: url);
+      },
     );
   }
 }

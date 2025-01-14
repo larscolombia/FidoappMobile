@@ -108,7 +108,6 @@ class PushProvider extends GetxController {
       print('google notification id: ${notification.title}');
       switch (notification.title) {
         case "Recarga exitosa":
-          await Future.delayed(const Duration(seconds: 10));
           var balanceController = Get.put(UserBalanceController());
           balanceController.fetchUserBalance();
           Get.dialog(

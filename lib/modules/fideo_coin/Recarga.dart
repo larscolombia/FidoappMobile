@@ -147,7 +147,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                           icon: Icons.check_circle_outline,
                           title: 'Confirmación',
                           buttonCancelar: true,
-                          description: controller.isLoading == true
+                          description: controller.isLoading.value == true
                               ? "cargando ..."
                               : 'Estas a punto de comprar ${_formattedInput(_input)}ƒ',
                           primaryButtonText: 'Continuar',

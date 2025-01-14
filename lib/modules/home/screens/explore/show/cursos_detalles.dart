@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
@@ -48,7 +50,7 @@ class CursosDetalles extends StatelessWidget {
 
         var curso = controller.getCourseById(int.parse(cursoId!));
         bool cursoAdquirido = miscursos.hasCourse(curso.id.toString());
-        print('cursoAdquirido $cursoAdquirido');
+        print('cursoAdquirido s $cursoAdquirido');
         return Stack(
           children: [
             Positioned(
@@ -88,7 +90,7 @@ class CursosDetalles extends StatelessWidget {
                         const SizedBox(height: 50),
                         SizedBox(
                           child: BarraBack(
-                            titulo: curso.name,
+                            titulo: curso.name.toString(),
                             subtitle: dificultad(curso.difficulty),
                             callback: () {
                               Get.off(HomeScreen());

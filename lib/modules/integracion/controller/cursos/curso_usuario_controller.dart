@@ -86,7 +86,7 @@ class CursoUsuarioController extends GetxController {
         }),
       );
       var data = json.decode(response.body);
-      print('compara de lonrp ${data}');
+      print('data de mis cursos ${data}');
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         if (data['success']) {
@@ -104,7 +104,6 @@ class CursoUsuarioController extends GetxController {
             ),
             barrierDismissible: true,
           );
-          fetchCourses();
         } else {
           print('Error: ${data['message']}');
         }
@@ -125,8 +124,6 @@ class CursoUsuarioController extends GetxController {
   }
 
   bool hasCourse(String courseId) {
-    print('cursoAdquirido  $courseId');
-    print('cursoAdquirido ${courses}');
     return courses.any((course) => course.id.toString() == courseId);
   }
 }

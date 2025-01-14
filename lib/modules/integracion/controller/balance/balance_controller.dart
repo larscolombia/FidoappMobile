@@ -137,7 +137,7 @@ class UserBalanceController extends GetxController {
               child: Text(
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                '${productController.selectedProduct.value.descripcion}',
+                productController.selectedProduct.value.descripcion,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 12,

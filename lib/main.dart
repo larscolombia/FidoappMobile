@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -18,6 +21,7 @@ import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/utils/app_common.dart';
 import 'package:pawlly/utils/common_base.dart';
 import 'package:pawlly/utils/local_storage.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 Rx<BaseLanguage> locale = LanguageEn().obs;
 
@@ -28,14 +32,17 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Asegura la inicialización de Widgets antes de código asincrónico
-
   // Registra el controller de notificaciones
-
+  WidgetsFlutterBinding.ensureInitialized();
+  // Si usas funciones específicas de Android, por ejemplo:
+  if (Platform.isAndroid) {
+    // Opcional: habilitar debugging para el contenido web de Android (solo para pruebas)
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  }
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  WidgetsFlutterBinding.ensureInitialized();
 
   // Inicializa Firebase y espera a que termine
   await Firebase.initializeApp();
