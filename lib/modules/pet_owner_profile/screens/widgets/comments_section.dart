@@ -10,10 +10,11 @@ import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_c
 
 class CommentsSection extends StatelessWidget {
   final String id;
+  final bool expert;
   final PetOwnerProfileController controller =
       Get.put(PetOwnerProfileController());
   final CommentController comentariosController = Get.put(CommentController());
-  CommentsSection({super.key, required this.id});
+  CommentsSection({super.key, required this.id, this.expert = true});
 
   @override
   Widget build(BuildContext context) {
@@ -21,22 +22,23 @@ class CommentsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: BanerComentarios(
-            eventTextChanged: (value) {
-              comentariosController.updateField('review_msg', value);
-            },
-            titulo: 'Tu experiencia',
-            onRatingUpdate: (rating) {
-              comentariosController.updateField('rating', rating);
-            },
-            onEvento: () {
-              comentariosController.updateField('employee_id', id);
+        if (expert)
+          Center(
+            child: BanerComentarios(
+              eventTextChanged: (value) {
+                comentariosController.updateField('review_msg', value);
+              },
+              titulo: 'Tu experiencia',
+              onRatingUpdate: (rating) {
+                comentariosController.updateField('rating', rating);
+              },
+              onEvento: () {
+                comentariosController.updateField('employee_id', id);
 
-              comentariosController.postComment('user', context);
-            },
+                comentariosController.postComment('user', context);
+              },
+            ),
           ),
-        ),
         const SizedBox(height: 20), // Espaciado entre secciones
         // Sección de comentarios lista
         Center(

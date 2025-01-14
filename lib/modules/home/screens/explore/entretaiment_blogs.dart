@@ -35,7 +35,7 @@ class EntertainmentBlogs extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Obx(() {
             return Row(
-              children: blogController.blogPosts.map((video) {
+              children: blogController.filteredBlogPosts.map((video) {
                 return GestureDetector(
                   onTap: () {
                     Get.to(CursoVideo(

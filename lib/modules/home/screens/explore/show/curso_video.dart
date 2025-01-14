@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/components/avatar_comentario.dart';
 import 'package:pawlly/modules/components/baner_comentarios.dart';
 import 'package:pawlly/modules/components/boton_compartir.dart';
@@ -11,7 +14,11 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/home/screens/explore/show/video_player.dart';
 import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
+import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
+import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:http/http.dart' as http;
 
 // CursoVideo
 class CursoVideo extends StatelessWidget {
@@ -43,7 +50,7 @@ class CursoVideo extends StatelessWidget {
   });
 
   final CommentController _commentController = Get.put(CommentController());
-
+  var cursoController = Get.put(CursoUsuarioController());
   @override
   Widget build(BuildContext context) {
     // Llamamos a la función fetchComments solo después de que el widget se haya construido
@@ -120,18 +127,50 @@ class CursoVideo extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     // Botón de compartir
-                    BotonCompartir(
-                      modo: "compartir",
-                      onCompartir: () {
-                        Share.share(
-                          '¡Hola! Este es un mensaje compartido desde mi app Flutter.',
-                          subject: 'Compartir Mensaje',
-                        );
-                      },
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 100,
+                      child: BotonCompartir(
+                        modo: "compartir",
+                        onCompartir: () {
+                          Share.share(
+                            '¡Hola! Este es un mensaje compartido desde mi app Flutter.',
+                            subject: 'Compartir Mensaje',
+                          );
+                        },
+                      ),
                     ),
+                    const SizedBox(height: 20),
 
-                    const SizedBox(height: 10),
                     // Comentario (InputTextWithIcon) solo envuelto en Obx si es necesario
+                    if (tipovideo == "video")
+                      Container(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: GestureDetector(
+                            onTap: () {
+                              print('tipo de video ${tipovideo} :: $videoId');
+                              cursoController.updateVideoAsWatched(
+                                userId: AuthServiceApis.dataCurrentUser.id,
+                                coursePlatformId: int.parse(cursoId),
+                                coursePlatformVideoId: int.parse(cursoId),
+                                watched: true,
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Image.asset(
+                                  'assets/icons/palomiar.png',
+                                  width: 24,
+                                  height: 24,
+                                ),
+                                const SizedBox(width: 10),
+                                const SizedBox(
+                                  child: Text('Marca como visto'),
+                                ),
+                              ],
+                            )),
+                      ),
+                    const SizedBox(height: 20),
                     Obx(() {
                       if (_commentController.isComentarioPosrLoading.value) {
                         return const Center(

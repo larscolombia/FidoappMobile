@@ -21,33 +21,35 @@ class Commands extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Comandos de Entrenamiento',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Styles.primaryColor,
-                  fontFamily: 'PoetsenOne',
-                ),
-                textAlign: TextAlign.left,
-              ),
-              FloatingActionButton(
-                onPressed: () {
-                  Get.to(() => CrearComando());
-                },
-                clipBehavior: Clip.antiAlias,
-                backgroundColor: Styles.primaryColor,
-                shape: const CircleBorder(),
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-              ),
-            ],
+          width: MediaQuery.of(context).size.width - 100,
+          child: Text(
+            'Comandos de Entrenamiento',
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 20,
+              color: Styles.primaryColor,
+              fontFamily: 'PoetsenOne',
+            ),
+            textAlign: TextAlign.left,
           ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        FloatingActionButton(
+          onPressed: () {
+            Get.to(() => CrearComando());
+          },
+          clipBehavior: Clip.antiAlias,
+          backgroundColor: Styles.primaryColor,
+          shape: const CircleBorder(),
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(
+          height: 20,
         ),
         const SizedBox(height: 10),
         Container(
@@ -208,7 +210,7 @@ class Commands extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 60),
         Obx(() {
           if (controller.selectedComando.value != null) {
             return Padding(

@@ -79,6 +79,7 @@ class FideCoin extends StatelessWidget {
                           child: Movimientos(
                             amount: transaction.amount.toString(),
                             description: transaction.description,
+                            date: transaction.createdAt.toString(),
                           ),
                         );
                       },
@@ -98,17 +99,18 @@ class FideCoin extends StatelessWidget {
 class Movimientos extends StatelessWidget {
   final String? description;
   final String? amount;
+  final String? date;
   Movimientos({
     super.key,
     this.description,
     this.amount,
+    this.date,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(4),
-      height: 70,
       padding: const EdgeInsets.all(8),
       width: MediaQuery.of(context).size.width - 30,
       decoration: BoxDecoration(
@@ -145,9 +147,27 @@ class Movimientos extends StatelessWidget {
               ),
               SizedBox(
                 width: 200,
-                child: Text(
-                  description ?? "Movimiento",
-                  style: Styles.textDescription,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      child: Text(
+                        description ?? "Movimiento",
+                        style: Styles.textDescription,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Fecha: $date',
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 78, 75, 75),
+                        fontFamily: 'Lato ',
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

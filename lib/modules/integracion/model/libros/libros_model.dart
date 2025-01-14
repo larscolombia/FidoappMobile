@@ -1,16 +1,16 @@
 class EBook {
-  final String? id;
-  final String? title;
-  final String? author;
-  final String? url;
-  final String? coverImage;
-  final String? description;
-  final String? number_of_pages;
-  final String? createdAt;
-  final String? updatedAt;
-  final String? lenguaje;
-  final double? price;
-  final List<BookRating>? bookRatings;
+  String? id;
+  String? title;
+  String? author;
+  String? url;
+  String? coverImage;
+  String? description;
+  String? number_of_pages;
+  String? createdAt;
+  String? updatedAt;
+  String? lenguaje;
+  String? price;
+  List<BookRating>? bookRatings;
 
   EBook({
     this.id,
@@ -43,7 +43,7 @@ class EBook {
       number_of_pages: json['number_of_pages'].toString(),
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
-      price: double.tryParse(json['price']) ?? 0.0,
+      price: json['price'].toString().split('ƒ')[0],
       bookRatings: bookRatingsList,
     );
   }

@@ -59,8 +59,6 @@ class UserProfileController extends GetxController {
         var data = json.decode(response.body)['data'];
         user.value =
             UserData.fromJson(data); // Actualiza el modelo con la respuesta.
-        Get.snackbar("Exito", "Perfil de usuario obtenido correctamente",
-            backgroundColor: Colors.green);
       } else {
         Get.snackbar("Error", "Error al obtener datos del usuario",
             backgroundColor: Colors.red);

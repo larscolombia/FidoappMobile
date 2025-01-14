@@ -9,6 +9,7 @@ import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:http/http.dart' as http;
+import 'package:pawlly/modules/integracion/controller/transaccion/transaction_controller.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
 class PushProvider extends GetxController {
@@ -30,14 +31,11 @@ class PushProvider extends GetxController {
         'device_token': deviceToken,
       }),
     );
-    print('resupuesta de device token $response');
+    print('resupuesta de device token ${jsonEncode(response.body)}');
     print(response.body);
     if (response.statusCode == 200) {
       print('Token actualizado exitosamente');
-      Get.snackbar(
-        'exito',
-        'Vinculado',
-      );
+      // Get.snackbar('exito', 'Vinculado', backgroundColor: Colors.black);
     } else {
       print('Error al actualizar token: ${response.statusCode}');
     }
@@ -56,8 +54,8 @@ class PushProvider extends GetxController {
       print('Notificaciones autorizadas');
       String? token = await _firebaseMessaging.getToken();
       if (token != null) {
-        updateDeviceToken(
-            AuthServiceApis.dataCurrentUser.id.toString(), token!);
+        token = token;
+        updateDeviceToken(AuthServiceApis.dataCurrentUser.id.toString(), token);
       }
 
       print("Token FCM: $token");
@@ -88,7 +86,8 @@ class PushProvider extends GetxController {
     // Verifica si el mensaje contiene notificación para mostrar
 
     RemoteNotification? notification = message.notification;
-    print("google notificacion: ${notification}");
+    var notificacionescontroller = Get.put(NotificationController());
+    notificacionescontroller.fetchNotifications();
     if (notification != null) {
       // Detalle de la notificación para Android
       AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
@@ -109,7 +108,9 @@ class PushProvider extends GetxController {
       switch (notification.title) {
         case "Recarga exitosa":
           var balanceController = Get.put(UserBalanceController());
+          var transactionController = Get.put(TransactionController());
           balanceController.fetchUserBalance();
+          transactionController.fetchTransactions();
           Get.dialog(
             //pisa papel
             CustomAlertDialog(
@@ -123,10 +124,7 @@ class PushProvider extends GetxController {
             ),
             barrierDismissible: true,
           );
-        case 'notificacion':
-          var notificacionescontroller = Get.put(NotificationController());
-          notificacionescontroller.fetchNotifications();
-          break;
+
         default:
           print('tipo normal');
           break;

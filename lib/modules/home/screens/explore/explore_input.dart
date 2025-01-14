@@ -4,12 +4,16 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/explore/libro_detalles.dart';
+import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
+import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ExploreInput extends StatelessWidget {
   final EBookController controller = Get.put(EBookController());
   final HomeController homeController = Get.find<HomeController>();
+  final BlogController blogController = Get.find<BlogController>();
+  final CourseController courseController = Get.find<CourseController>();
   ExploreInput({super.key});
 
   @override
@@ -20,7 +24,7 @@ class ExploreInput extends StatelessWidget {
       children: [
         // Input de búsqueda con lupa
         SizedBox(
-           width: MediaQuery.of(context).size.width,                              
+          width: MediaQuery.of(context).size.width,
           child: InputText(
             fondoColor: Colors.white,
             placeholderImage: Image.asset('assets/icons/busqueda.png'),
@@ -28,11 +32,13 @@ class ExploreInput extends StatelessWidget {
             borderColor: const Color.fromARGB(255, 117, 113, 113),
             placeholder: 'Realiza tu búsqueda',
             onChanged: (value) {
-                //lendarController.filterEvent(value);
-              },
+              controller.filterEBooks(value);
+              blogController.getBlogPostsByName(value);
+              courseController.filterCoursesByName(value);
+            },
           ),
         ),
-       
+
         const SizedBox(height: 16),
 
         // Lista de productos para mascotas
@@ -40,7 +46,6 @@ class ExploreInput extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Obx(() {
             if (controller.ebooks.isEmpty) {
-              controller.fetchEBooks();
               return const Center(
                 child: Text('No hay libros disponibles'),
               );
@@ -52,7 +57,7 @@ class ExploreInput extends StatelessWidget {
               );
             }
             return Row(
-              children: controller.ebooks.map((libro) {
+              children: controller.filteredEBooks.map((libro) {
                 return GestureDetector(
                   onTap: () {
                     // Acción al tocar un producto o libro

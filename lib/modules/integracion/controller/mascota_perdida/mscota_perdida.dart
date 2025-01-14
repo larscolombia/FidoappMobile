@@ -30,7 +30,7 @@ class MascotaPerdida extends GetxController {
           'pet_id': homeController.selectedProfile.value!.id,
         }),
       );
-
+      print('respuesta del put $response');
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
           response.statusCode == 202) {

@@ -37,6 +37,7 @@ import 'package:pawlly/modules/home/screens/pages/explorar_container.dart';
 import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/pages/resources.dart';
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
+import 'package:pawlly/modules/provider/push_provider.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -66,6 +67,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var token = new PushProvider();
+    token.setupFCM();
     homeController.SelectType(1);
     return Scaffold(
       body: Stack(

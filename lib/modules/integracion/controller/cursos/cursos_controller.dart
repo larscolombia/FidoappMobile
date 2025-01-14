@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -11,14 +12,17 @@ class CourseController extends GetxController {
   var mycourses = <Course>[].obs;
   var isLoading = false.obs;
   var url = "$DOMAIN_URL/api/course-platform";
-
+  var filteredCourses = <Course>[].obs;
   get jsonData => null;
+
   @override
   void onInit() {
     super.onInit();
     fetchCourses();
-
-    // getCourseById(AuthServiceApis.dataCurrentUser.id);
+    // Inicializamos filteredCourses con todos los cursos
+    ever(courses, (_) {
+      filteredCourses.assignAll(courses);
+    });
   }
 
   String dificultad(String dificultad) {
@@ -46,8 +50,8 @@ class CourseController extends GetxController {
           'ngrok-skip-browser-warning': 'true',
         },
       );
-      print('Respuesta JSON: ${Uri.parse(url)}');
-      print('Respuesta JSON: $response');
+      print('Solicitud a: ${Uri.parse(url)}');
+      print('Respuesta HTTP: $response');
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
@@ -59,9 +63,9 @@ class CourseController extends GetxController {
         Get.snackbar('Error', 'No se pudieron recuperar los cursos');
       }
     } catch (e) {
-      print('error en course controller $e');
+      print('Error en course controller: $e');
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 
@@ -82,6 +86,21 @@ class CourseController extends GetxController {
     } catch (e) {
       print("Error buscando el video: $e");
       return null;
+    }
+  }
+
+  /// Método para filtrar cursos por el nombre
+  void filterCoursesByName(String query) {
+    // Si el query está vacío, se restauran todos los cursos
+    if (query.isEmpty) {
+      filteredCourses.assignAll(courses);
+    } else {
+      // Se filtran ignorando mayúsculas y minúsculas
+      var filteredList = courses
+          .where((course) =>
+              course.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      filteredCourses.assignAll(filteredList);
     }
   }
 }

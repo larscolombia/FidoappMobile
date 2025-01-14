@@ -63,10 +63,13 @@ class Resources extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  controller.updateIndex(resources[index]['id']!);
+                  if (resources[index]['id'] == 7) {
+                    controller.updateIndex(7);
+                  } else {
+                    controller.updateIndex(resources[index]['id']!);
+                  }
                 }, // Acción al tocar el cuadro
                 child: Container(
-                  width: 123,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(
                       horizontal:

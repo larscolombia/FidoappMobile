@@ -303,7 +303,7 @@ class BanerCompraPrecio extends StatelessWidget {
                 ),
                 width: 94,
                 height: 54,
-                child: Center(child: Text('$price ƒ')),
+                child: Center(child: Text('$price')),
               ),
               SizedBox(
                 width: 190,

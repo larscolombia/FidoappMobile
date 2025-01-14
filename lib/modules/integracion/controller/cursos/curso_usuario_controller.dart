@@ -30,6 +30,50 @@ class CursoUsuarioController extends GetxController {
     fetchCourses();
   }
 
+  Future<void> updateVideoAsWatched({
+    required int userId,
+    required int coursePlatformId,
+    required int coursePlatformVideoId,
+    required bool watched,
+  }) async {
+    // Asegúrate de poner la URL base correcta en tu API.
+    final url =
+        Uri.parse('${BASE_URL}course-platform/subscribe/mark-video-as-watched');
+
+    final headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+    };
+
+    final body = jsonEncode({
+      'user_id': userId,
+      'course_platform_id': coursePlatformId,
+      'course_platform_video_id': coursePlatformVideoId,
+      'watched': watched,
+    });
+    try {
+      final response = await http.put(
+        url,
+        headers: headers,
+        body: body,
+      );
+      print('respuesta del put $response');
+
+      if (response.statusCode == 200) {
+        // La actualización fue exitosa.
+        Get.snackbar('Éxito', 'El video ha sido marcado como visto',
+            backgroundColor: Colors.green);
+        fetchCourses();
+      } else {
+        // Se produjo un error en la petición.
+        throw Exception(
+            'Error al actualizar el video. Código: ${response.statusCode}, respuesta: ${response.body}');
+      }
+    } catch (error) {
+      throw Exception('Error en la comunicación: $error');
+    }
+  }
+
   // Método para listar cursos
   Future<void> fetchCourses() async {
     // isLoading.value = true;

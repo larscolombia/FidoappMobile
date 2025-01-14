@@ -46,13 +46,13 @@ class BalanceWidget extends StatelessWidget {
                       onTap: () {
                         Get.to(RecargarSaldoScreen());
                       },
-                      child: const Text('Recargar FidoCoins',
-                              style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Leto',
-                              fontWeight: FontWeight.w700
-                            ),
-                          ),
+                      child: const Text(
+                        'Recargar FidoCoins',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Leto',
+                            fontWeight: FontWeight.w700),
+                      ),
                     ),
                     const SizedBox(
                       height: 2,
@@ -109,10 +109,9 @@ class Balance extends StatelessWidget {
                     'FidoCoins Disponibles',
                     textAlign: TextAlign.start,
                     style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Leto',
-                      fontWeight: FontWeight.w700
-                    ),
+                        fontSize: 14,
+                        fontFamily: 'Leto',
+                        fontWeight: FontWeight.w700),
                   ),
                 ),
                 const SizedBox(
@@ -138,7 +137,7 @@ class Balance extends StatelessWidget {
                       callback: () {
                         controller.fetchUserBalance();
                       },
-                      titulo: 'Actulizar Saldo',
+                      titulo: 'Actualizar Saldo',
                     ),
                   )
               ]),

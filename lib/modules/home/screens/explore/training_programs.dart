@@ -37,7 +37,7 @@ class TrainingPrograms extends StatelessWidget {
             return const Center(child: Text('No hay cursos disponibles'));
           } else {
             return Column(
-              children: cursosController.courses.map((course) {
+              children: cursosController.filteredCourses.map((course) {
                 return GestureDetector(
                   onTap: () {
                     // Acción cuando se toca el curso
@@ -119,8 +119,7 @@ class TrainingPrograms extends StatelessWidget {
                               const SizedBox(height: 8),
                               // Botón "Ver detalles"
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   ElevatedButton(
                                     onPressed: () {

@@ -261,7 +261,7 @@ class LibroDetalles extends StatelessWidget {
                                 child: Center(
                                   child: Text(
                                     textAlign: TextAlign.center,
-                                    "${econtroller.selectedEBook.value.price} €",
+                                    "${econtroller.selectedEBook.value.price}\$",
                                     style: Styles.TextTituloAutor,
                                   ),
                                 ),

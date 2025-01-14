@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/components/baner_comentarios.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/boton_compartir.dart';
 import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/screens/widgets/comments_section.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_action.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_details.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_header.dart';
@@ -27,11 +30,15 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
 
   final PetOwnerProfileController controller =
       Get.put(PetOwnerProfileController());
+
+  final CommentController comentariosController = Get.put(CommentController());
   @override
   void initState() {
     super.initState();
     // Llamamos al fetchUserData sólo aquí, para que no se repita en cada build
     profileController.fetchUserData('${AuthServiceApis.dataCurrentUser.id}');
+    comentariosController.fetchComments(
+        '${AuthServiceApis.dataCurrentUser.id}', "user");
   }
 
   @override
@@ -53,7 +60,6 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                 profileController: profileController,
                 headerHeight: MediaQuery.of(context).size.height / 8,
               ),
-
               const SizedBox(height: 20),
               ProfileDetails(
                   controller: controller, profileController: profileController),
@@ -74,8 +80,19 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
               const SizedBox(height: 20),
               ProfileActions(
                   controller: controller, profileController: profileController),
+              const SizedBox(
+                height: 20,
+              ),
+              Estadisticas(
+                comentarios: '${comentariosController.comments.value.length}',
+                calificacion:
+                    '${comentariosController.calculateAverageRating()}',
+              ),
+              CommentsSection(
+                id: '${AuthServiceApis.dataCurrentUser.id}',
+                expert: false,
+              ),
               const SizedBox(height: 20),
-              // CommentsSection(),
             ],
           ),
         ),

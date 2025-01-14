@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/models/training_model.dart';
 import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
+import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_usuarios.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -22,24 +25,12 @@ class TrainingHorizontal extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: trainingList.map((trainingModel) {
+          final double rawProgress =
+              double.tryParse(trainingModel.progress.toString()) ?? 0.0;
+          final double normalizedProgress =
+              rawProgress > 1 ? rawProgress / 100 : rawProgress;
           return GestureDetector(
-            onTap: () {
-              var video = controller.findVideoById(
-                  courseId: trainingModel.id,
-                  videoId: trainingModel.id.toString());
-              Get.to(CursoVideo(
-                videoId: video?.url ?? '',
-                cursoId: trainingModel.id.toString(),
-                name: trainingModel.name,
-                description: trainingModel.description,
-                image: trainingModel.image,
-                duration: trainingModel.duration,
-                price: trainingModel.price,
-                difficulty: trainingModel.difficulty,
-                videoUrl: video?.url ?? '',
-                tipovideo: 'video',
-              ));
-            },
+            onTap: () {},
             child: Container(
               margin: const EdgeInsets.only(right: 16),
               padding: const EdgeInsets.all(12),
@@ -86,90 +77,112 @@ class TrainingHorizontal extends StatelessWidget {
                   const SizedBox(width: 12),
                   // Contenido del curso
                   Expanded(
-                  flex: 1,
-                  child: SizedBox(
-                    height: 120,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          controller.dificultad(trainingModel.difficulty),
-                          style: const TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Styles.iconColorBack,
-                          ),
-                        ),
-
-                        SizedBox(
-                          height: 40,
-                          child: Text(
-                            trainingModel.name,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                    flex: 1,
+                    child: SizedBox(
+                      height: 120,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            controller.dificultad(trainingModel.difficulty),
                             style: const TextStyle(
                               fontFamily: 'Lato',
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              color: Styles.iconColorBack,
+                            ),
+                          ),
+
+                          SizedBox(
+                            height: 40,
+                            child: Text(
+                              trainingModel.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontFamily: 'Lato',
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+
+                          Text(
+                            'Progreso: ',
+                            style: TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
                           ),
-                        ),
 
-                        const Text(
-                          'Progreso:',
-                          style: TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
+                          // Barra de progreso
+                          // Dentro del build o donde uses el componente, define las variables de progreso:
 
-                        // Barra de progreso
-                        Row(
-                          children: [
-                            Expanded(
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    12.0), // Ajusta el radio de las esquinas según lo necesites
-                                child: LinearProgressIndicator(
-                                  value: double.parse(
-                                          trainingModel.progress.toString()) ??
-                                      0.0,
-                                  backgroundColor:
-                                      Styles.greyTextColor.withOpacity(0.2),
-                                  color: Styles.iconColorBack,
-                                  minHeight: 6,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                    12.0, // Ajusta el radio de las esquinas según lo necesites
+                                  ),
+                                  child: LinearProgressIndicator(
+                                    value:
+                                        normalizedProgress, // Se usa el valor normalizado
+                                    backgroundColor:
+                                        Styles.greyTextColor.withOpacity(0.2),
+                                    color: Styles.iconColorBack,
+                                    minHeight: 6,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              '${((trainingModel.progress ?? 0) * 100).toInt()}%',
-                              style: const TextStyle(
-                                fontFamily: 'Lato',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w800,
-                                color: Styles.iconColorBack,
+                              const SizedBox(width: 8),
+                              Text(
+                                // Se formatea el porcentaje correctamente, mostrando 25% en lugar de 0.25%
+                                '${(normalizedProgress * 100).toStringAsFixed(0)}%',
+                                style: const TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w800,
+                                  color: Styles.iconColorBack,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(
-                          height: 26,
-                          child: ButtonDefaultWidget(
-                            callback: () {},
-                            title: 'Seguir viendo',
-                            textSize: 9,
+                            ],
                           ),
-                        )
-                      ],
+
+                          SizedBox(
+                            height: 26,
+                            child: ButtonDefaultWidget(
+                              callback: () {
+                                Get.to(CursosDetalles(
+                                    cursoId: "${trainingModel.id.toString()}"));
+                                /**
+                                var video = controller.findVideoById(
+                                    courseId: trainingModel.id,
+                                    videoId: trainingModel.id.toString());
+                                Get.to(CursoVideo(
+                                  videoId: video?.url ?? '',
+                                  cursoId: trainingModel.id.toString(),
+                                  name: trainingModel.name,
+                                  description: trainingModel.description,
+                                  image: trainingModel.image,
+                                  duration: trainingModel.duration,
+                                  price: trainingModel.price,
+                                  difficulty: trainingModel.difficulty,
+                                  videoUrl: video?.url ?? '',
+                                  tipovideo: 'video',
+                                )); */
+                              },
+                              title: 'Seguir viendo',
+                              textSize: 9,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
                 ],
               ),
             ),

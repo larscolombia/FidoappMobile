@@ -130,7 +130,7 @@ class Estadisticas extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  '${calificacion} Calificación',
+                  '${double.parse(calificacion).toStringAsFixed(1)} Calificación',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: const TextStyle(

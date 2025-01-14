@@ -7,6 +7,7 @@ import 'package:pawlly/modules/integracion/controller/notificaciones/notificacio
 import 'package:pawlly/modules/integracion/model/notigicaciones/notificaciones.dart';
 import 'package:pawlly/modules/notification/controllers/notification_controller.dart';
 import 'package:pawlly/modules/notification/screens/widgets/app_bar_notifications.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -128,21 +129,37 @@ class NotificationsScreen extends StatelessWidget {
             ),
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 30, // Aumenta el tamaño de la imagen
-                  backgroundImage: const NetworkImage(
-                      'https://via.placeholder.com/150'), // URL por defecto
-                  backgroundColor: Colors.transparent,
-                  child: Container(
+                if (notification.type == 'fidocoin')
+                  Container(
+                    width: 60,
+                    height: 60,
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
+                      color: Styles.iconColorBack,
                       border: Border.all(
                         color: Styles.iconColorBack, // Color del borde
                         width: 1.0, // Grosor del borde
                       ),
                     ),
+                    child: Image.asset('assets/icons/garrita.png'),
                   ),
-                ),
+                if (notification.type != 'fidocoin')
+                  CircleAvatar(
+                    radius: 30, // Aumenta el tamaño de la imagen
+                    backgroundImage: NetworkImage(notification.userAvatar ??
+                        'https://via.placeholder.com/150'), // URL por defecto
+                    backgroundColor: Colors.transparent,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Styles.iconColorBack, // Color del borde
+                          width: 1.0, // Grosor del borde
+                        ),
+                      ),
+                    ),
+                  ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -289,7 +306,8 @@ class NotificationsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 24.0),
                     if (notification.type == 'medico' ||
-                        notification.type == "entrenamiento")
+                        notification.type == "entrenamiento" &&
+                            AuthServiceApis.dataCurrentUser.userType != "user")
                       Row(
                         children: [
                           if (notification.status == "pending")
@@ -303,7 +321,7 @@ class NotificationsScreen extends StatelessWidget {
                                         icon: Icons.confirmation_num,
                                         title: 'Confirmación',
                                         description:
-                                            '¿Deseas rechazar el evento?',
+                                            '¿Quieres Aceptar este Evento?',
                                         primaryButtonText: 'Continuar',
                                         secondaryButtonText: 'Cancelar',
                                         onPrimaryButtonPressed: () {
@@ -329,7 +347,7 @@ class NotificationsScreen extends StatelessWidget {
                                         icon: Icons.confirmation_num,
                                         title: 'Confirmación',
                                         description:
-                                            '¿Deseas aceptar el evento?',
+                                            '¿Quieres rechazar este evento?',
                                         primaryButtonText: 'Continuar',
                                         secondaryButtonText: 'Cancelar',
                                         onPrimaryButtonPressed: () {

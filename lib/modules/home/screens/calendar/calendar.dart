@@ -116,7 +116,6 @@ class Calendar extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           SizedBox(
-            width: 325,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -134,17 +133,19 @@ class Calendar extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 16),
-                FloatingActionButton(
-                  onPressed: () {
-                    calendarController.ResetEvent();
-                    Get.to(() => CreateEvent());
-                  },
-                  clipBehavior: Clip.antiAlias,
-                  backgroundColor: Styles.primaryColor,
-                  shape: const CircleBorder(), // Forma redonda asegurada
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
+                Expanded(
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      calendarController.ResetEvent();
+                      Get.to(() => CreateEvent());
+                    },
+                    clipBehavior: Clip.antiAlias,
+                    backgroundColor: Styles.primaryColor,
+                    shape: const CircleBorder(), // Forma redonda asegurada
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
                   ),
                 )
               ],

@@ -1,9 +1,11 @@
 class NotificationData {
   int? id;
   int? userId;
+  String? userAvatar;
   String? type;
   String? description;
   int? isRead;
+
   String? createdAt;
   String? updatedAt;
   String? title;
@@ -12,6 +14,7 @@ class NotificationData {
   NotificationData({
     this.id,
     this.userId,
+    String? userAvatar,
     this.type,
     this.description,
     this.isRead,
@@ -25,6 +28,7 @@ class NotificationData {
   NotificationData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['user_id'];
+    userAvatar = json['user_avatar'];
     type = json['type'];
     description = json['description'];
     isRead = json['is_read'];
@@ -39,6 +43,7 @@ class NotificationData {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['user_id'] = userId;
+    data['user_avatar'] = userAvatar;
     data['type'] = type;
     data['title'] = title;
     data['description'] = description;

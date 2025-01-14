@@ -36,11 +36,9 @@ class UserController extends GetxController {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body);
-        print(
-            'la respuesta de veterinario es ${Uri.parse("$DOMAIN_URL/api/get-user-by-type?user_type=$type")}');
-        print('la respuesta de veterinario es $data');
+
         if (data['success']) {
           users.value = (data['data'] as List)
               .map((user) => User.fromJson(user))

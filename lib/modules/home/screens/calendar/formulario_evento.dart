@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
@@ -27,30 +25,40 @@ import 'package:pawlly/modules/integracion/controller/servicio_entrenador_catego
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 import 'package:pawlly/modules/integracion/model/balance/producto_pay_model.dart';
 import 'package:pawlly/modules/integracion/model/lista_categoria_servicio/category_model.dart';
-import 'package:pawlly/styles/styles.dart' as stylesLocal;
 
-class CreateEvent extends StatelessWidget {
+class CreateEvent extends StatefulWidget {
+  const CreateEvent({Key? key}) : super(key: key);
+
+  @override
+  _CreateEventState createState() => _CreateEventState();
+}
+
+class _CreateEventState extends State<CreateEvent> {
   final CalendarController calendarController = Get.put(CalendarController());
   final PetControllerv2 mascotas = Get.put(PetControllerv2());
   final HomeController homeController = Get.put(HomeController());
   final UserController userController = Get.put(UserController());
   final CategoryControllerVet categoryController =
       Get.put(CategoryControllerVet());
-
   final ServiceEntrenadorController serviceController =
       Get.put(ServiceEntrenadorController());
-
   final UserBalanceController balanceController =
       Get.put(UserBalanceController());
   ProductoPayController payController = Get.put(ProductoPayController());
-  CreateEvent({super.key});
+
+  @override
+  void initState() {
+    super.initState();
+    // Llamamos a fetchUsers una sola vez cuando se inicie el widget
+    userController.fetchUsers();
+    // Si requieres llamar a otros métodos (por ejemplo, homeController.fetchProfiles()),
+    // también puedes hacerlo aquí.
+  }
 
   @override
   Widget build(BuildContext context) {
     final ancho = MediaQuery.of(context).size.width - 100;
     var doubleHeight = 10.00;
-    userController.fetchUsers();
-    //homeController.fetchProfiles();
     return Scaffold(
       backgroundColor: Styles.colorContainer,
       body: Column(
@@ -86,8 +94,7 @@ class CreateEvent extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-              child: Expanded(
+          Expanded(
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
@@ -129,18 +136,7 @@ class CreateEvent extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: doubleHeight),
-                    /** 
-                    SizedBox(
-                      width: ancho,
-                      child: InputText(
-                        label: 'Descripción del evento',
-                        placeholder: 'Describe el evento',
-                        onChanged: (value) {
-                          calendarController.updateField('description', value);
-                        },
-                      ),
-                    ),*/
-                    SizedBox(
+                    Container(
                       width: ancho,
                       child: InputText(
                         isTextArea: true,
@@ -166,34 +162,36 @@ class CreateEvent extends StatelessWidget {
                     SizedBox(
                       width: ancho,
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Categoria del evento',
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                  fontFamily: 'lato'),
-                            ),
-                            const SizedBox(height: 10),
-                            CustomSelectFormFieldWidget(
-                              onChange: (value) {
-                                calendarController.updateField('tipo', value);
-                                userController.type.value =
-                                    value == 'medico' ? 'vet' : 'trainer';
-                                userController.fetchUsers();
-                              },
-                              items: const [
-                                'evento',
-                                'medico',
-                                'entrenamiento',
-                              ],
-                              icon: "assets/icons/paginas.png",
-                              controller: null,
-                              placeholder: 'Tipo de evento ',
-                              filcolorCustom: Styles.colorContainer,
-                            ),
-                          ]),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Categoria del evento',
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                                fontFamily: 'lato'),
+                          ),
+                          const SizedBox(height: 10),
+                          CustomSelectFormFieldWidget(
+                            onChange: (value) {
+                              calendarController.updateField('tipo', value);
+                              userController.type.value =
+                                  value == 'medico' ? 'vet' : 'trainer';
+                              userController
+                                  .fetchUsers(); // Esta llamada se actualizará, pero sigue siendo necesaria si cambia el tipo
+                            },
+                            items: const [
+                              'evento',
+                              'medico',
+                              'entrenamiento',
+                            ],
+                            icon: "assets/icons/paginas.png",
+                            controller: null,
+                            placeholder: 'Tipo de evento ',
+                            filcolorCustom: Styles.colorContainer,
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height: doubleHeight),
                     Obx(() {
@@ -212,34 +210,31 @@ class CreateEvent extends StatelessWidget {
                           onChanged: (value) {
                             calendarController.cateogoryName.value =
                                 value ?? "";
-
                             final selectedCategory =
                                 categoryController.categories.firstWhere(
                               (category) => category.id.toString() == value,
                               orElse: () => Category(
-                                  id: 0,
-                                  name: 'Unknown',
-                                  slug: '',
-                                  status: 1,
-                                  categoryImage: '',
-                                  createdAt: '',
-                                  updatedAt: ''),
+                                id: 0,
+                                name: 'Unknown',
+                                slug: '',
+                                status: 1,
+                                categoryImage: '',
+                                createdAt: '',
+                                updatedAt: '',
+                              ),
                             );
                             calendarController.cateogoryName.value =
                                 selectedCategory.name;
-                            calendarController.updateField('category_id',
-                                value); // Actualizamos el controlador
+                            calendarController.updateField(
+                                'category_id', value);
                             calendarController.updateField('service_id', value);
-
                             categoryController.fetchprecio(
                                 value ?? "", context);
                           },
                           items: categoryController.categories
                               .map((category) => DropdownMenuItem<String>(
-                                    value: category.id
-                                        .toString(), // ID de la categoría como valor
-                                    child: Text(category
-                                        .name), // Nombre de la categoría como texto
+                                    value: category.id.toString(),
+                                    child: Text(category.name),
                                   ))
                               .toList(),
                         ),
@@ -264,32 +259,29 @@ class CreateEvent extends StatelessWidget {
                                 categoryController.categories.firstWhere(
                               (category) => category.id.toString() == value,
                               orElse: () => Category(
-                                  id: 0,
-                                  name: 'Unknown',
-                                  slug: '',
-                                  status: 1,
-                                  categoryImage: '',
-                                  createdAt: '',
-                                  updatedAt: ''),
+                                id: 0,
+                                name: 'Unknown',
+                                slug: '',
+                                status: 1,
+                                categoryImage: '',
+                                createdAt: '',
+                                updatedAt: '',
+                              ),
                             );
                             calendarController.cateogoryName.value =
                                 selectedCategory.name;
-                            calendarController.updateField('training_id',
-                                value); // Actualizamos el controlador
+                            calendarController.updateField(
+                                'training_id', value);
                             calendarController.updateField(
                                 'duration_id', value);
                             serviceController.fetchprecio(
                                 value.toString(), context);
                           },
                           items: serviceController.services
-                              .map(
-                                (category) => DropdownMenuItem<String>(
-                                  value: category.id
-                                      .toString(), // ID de la categoría como valor
-                                  child: Text(category
-                                      .name), // Nombre de la categoría como texto
-                                ),
-                              )
+                              .map((category) => DropdownMenuItem<String>(
+                                    value: category.id.toString(),
+                                    child: Text(category.name),
+                                  ))
                               .toList(),
                         ),
                       );
@@ -406,7 +398,6 @@ class CreateEvent extends StatelessWidget {
                             child: FloatingActionButton(
                               elevation: 5,
                               onPressed: () {
-                                // Acción al presionar el botón flotante
                                 _showMyDialog(context);
                               },
                               backgroundColor: Styles.fiveColor,
@@ -431,12 +422,11 @@ class CreateEvent extends StatelessWidget {
                           callback: () async {
                             calendarController.updateField("pet_id",
                                 homeController.selectedProfile.value!.id);
-                            // ignore: invalid_use_of_protected_member
                             if (calendarController.event.value['pet_id'] ==
                                 null) {
                               Get.snackbar("Error", "Seleccione una mascota");
+                              return;
                             }
-
                             if (calendarController
                                 .validateEvent(calendarController.event)) {
                               if (calendarController.event.value['tipo'] !=
@@ -462,12 +452,6 @@ class CreateEvent extends StatelessWidget {
                               } else {
                                 calendarController.postEvent();
                               }
-
-                              // Asegúrate de que el proceso sea esperado
-                              //  await calendarController
-                              //    .postEvent();
-
-                              // Solo regresa si no está cargando
                             } else {
                               Get.snackbar(
                                 "Campos incompletos",
@@ -484,7 +468,7 @@ class CreateEvent extends StatelessWidget {
                 ),
               ),
             ),
-          )),
+          ),
         ],
       ),
     );
@@ -525,10 +509,8 @@ class CreateEvent extends StatelessWidget {
                       if (filteredUsers.isEmpty) {
                         return const Text("No se encontraron usuarios");
                       }
-
                       return Column(
                         children: [
-                          // Mostrar la recomendación solo cuando se encuentren usuarios
                           if (filteredUsers.isNotEmpty)
                             SelectedAvatar(
                               nombre: filteredUsers.first.firstName,
@@ -540,9 +522,7 @@ class CreateEvent extends StatelessWidget {
                         ],
                       );
                     }),
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    const SizedBox(height: 20),
                     SizedBox(
                       width: 300,
                       child: ButtonDefaultWidget(
@@ -556,7 +536,6 @@ class CreateEvent extends StatelessWidget {
                                 .selectUser(userController.filteredUsers.first);
                             Navigator.of(context).pop();
                           } else {
-                            // Si no hay usuarios coincidentes, no se hace nada o muestra un mensaje
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(

@@ -20,7 +20,7 @@ class BlogController extends GetxController {
 
   Future<void> fetchBlogPosts() async {
     try {
-      isLoading(true);
+      isLoading.value = true;
       final response = await http.get(
         Uri.parse(url),
         headers: {
@@ -29,21 +29,15 @@ class BlogController extends GetxController {
         },
       );
 
-      // Verifica la respuesta del servidor
-
-      print('inyectado los blogs: ${response.body}');
-      print('Estado de la solicitud: ${response.statusCode}');
-
       var jsonResponse = json.decode(response.body);
-      print('Respuesta JSON completa: $jsonResponse');
 
       if (response.statusCode == 200) {
         if (jsonResponse['status']) {
           List<dynamic> data = jsonResponse['data'];
-          print('Datos recibidos: $data');
+
           blogPosts.value =
               data.map((post) => BlogPost.fromJson(post)).toList();
-          print('blogPosts actualizado: ${blogPosts.value}');
+          filteredBlogPosts.value = blogPosts;
         } else {
           // Manejar el caso en que el estado no sea verdadero
           print(
@@ -67,26 +61,30 @@ class BlogController extends GetxController {
 
   // Método para buscar blogs por nombre (parcial o completo)
   List<BlogPost> getBlogPostsByName(String? name) {
+    // Si el texto de búsqueda es nulo, vacío o "0", devuelve todos los blogs.
+
     if (name == null || name.isEmpty || name == "0") {
       print(
           'Texto de búsqueda nulo, vacío o igual a "0". Retornando todos los blogs.');
-      filteredBlogPosts.value = blogPosts; // Retorna todos los blogs
+      filteredBlogPosts.value = blogPosts;
       return blogPosts.toList();
     }
 
-    // Busca coincidencias parciales
+    // Busca coincidencias parciales.
     var filteredBlogs = blogPosts
         .where((post) => post.name.toLowerCase().contains(name.toLowerCase()))
         .toList();
 
+    // Si no se encontró ninguna coincidencia, se devuelven todos los blogs.
     if (filteredBlogs.isEmpty) {
-      print('No existen blogs que coincidan con el texto: $name');
-      filteredBlogPosts.clear(); // Limpia la lista si no hay coincidencias
+      print(
+          'No existen blogs que coincidan con el texto: $name. Retornando todos los blogs.');
+      filteredBlogPosts.value = blogPosts;
+      return blogPosts.toList();
     } else {
       filteredBlogPosts.value =
           filteredBlogs; // Actualiza la lista con los resultados
+      return filteredBlogs;
     }
-
-    return filteredBlogs;
   }
 }

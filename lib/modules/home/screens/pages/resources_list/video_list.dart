@@ -8,7 +8,7 @@ import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dar
 import 'package:pawlly/styles/styles.dart';
 
 class VideoList extends StatelessWidget {
-  final BlogController blogController = Get.find<BlogController>();
+  final BlogController blogController = Get.put(BlogController());
   VideoList({super.key});
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class VideoList extends StatelessWidget {
             child: Obx(() {
               if (blogController.isLoading.value) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(color: Colors.green),
                 );
               }
               return Column(
