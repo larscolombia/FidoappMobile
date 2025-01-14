@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 class PerfilMascotas extends StatelessWidget {
   const PerfilMascotas({
@@ -41,9 +42,11 @@ class PerfilMascotas extends StatelessWidget {
         child: Obx(() {
           if (controller.selectedProfile.value == null) {
             // Mostrar mensaje si no hay perfil seleccionado
-            return const Center(
+            return Center(
               child: Text(
-                'Agrega tu mascota',
+                AuthServiceApis.dataCurrentUser.userType != "user"
+                    ? 'Aun no tienes mascotas asignadas'
+                    : "Agrega tu mascota",
                 style: TextStyle(
                   color: Styles.primaryColor,
                   fontFamily: 'PoetsenOne',

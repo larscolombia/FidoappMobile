@@ -11,9 +11,9 @@ import 'package:pawlly/styles/styles.dart';
 
 class ExploreInput extends StatelessWidget {
   final EBookController controller = Get.put(EBookController());
-  final HomeController homeController = Get.find<HomeController>();
-  final BlogController blogController = Get.find<BlogController>();
-  final CourseController courseController = Get.find<CourseController>();
+  final HomeController homeController = Get.put(HomeController());
+  final BlogController blogController = Get.put(BlogController());
+  final CourseController courseController = Get.put(CourseController());
   ExploreInput({super.key});
 
   @override

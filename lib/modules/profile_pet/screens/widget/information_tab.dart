@@ -32,7 +32,7 @@ class InformationTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
-    print('profile qr ${controller.petProfile.age}');
+
     return Obx(() {
       return SingleChildScrollView(
         child: Container(
@@ -258,7 +258,6 @@ class InformationTab extends StatelessWidget {
                       style: Styles.textTitleHome,
                     ),
                   ),
-                  /** 
                   ElevatedButton(
                     onPressed: () {
                       showModalBottomSheet(
@@ -281,7 +280,7 @@ class InformationTab extends StatelessWidget {
                       ),
                     ),
                     child: const Icon(Icons.add, color: Colors.white),
-                  ),*/
+                  ),
                 ],
               ),
               const SizedBox(height: 10),
@@ -300,44 +299,52 @@ class InformationTab extends StatelessWidget {
                       Get.to(
                         PetOwnerProfileScreen(id: person['id'].toString()),
                       );
-                      print(person);
                     },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(
-                            color: Colors.grey.withOpacity(0.2), width: 1),
-                        borderRadius: BorderRadius.circular(8),
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                            width: 1, color: const Color(0xffEFEFEF)),
                       ),
-                      color: Colors.white,
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                            person['imageUrl'] ??
-                                'https://via.placeholder.com/150', // Cambiar por la URL de la persona
-                          ),
-                          backgroundColor: Colors.transparent,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Styles.iconColorBack,
-                                width: 1.0,
+                      child: Card(
+                        elevation: 0.0, // Quita la elevación (sombra)
+                        shadowColor: Colors
+                            .transparent, // Opcional: asegura que no se muestre sombra
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            radius: 30,
+                            backgroundImage: NetworkImage(
+                              person['imageUrl'] ??
+                                  'https://via.placeholder.com/150', // Cambiar por la URL de la persona
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Styles.iconColorBack,
+                                  width: 1.0,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        title: Text(
-                          person['name'] ?? '',
-                          style: Styles.textProfile14w700,
-                        ),
-                        subtitle: Text(
-                          person['relation'] ?? '',
-                          style: Styles.textProfile12w400,
-                        ),
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          color: Styles.iconColorBack,
+                          title: Text(
+                            person['name'] ?? '',
+                            style: Styles.textProfile14w700,
+                          ),
+                          subtitle: Text(
+                            person['relation'] ?? '',
+                            style: Styles.textProfile12w400,
+                          ),
+                          trailing: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Styles.iconColorBack,
+                          ),
                         ),
                       ),
                     ),

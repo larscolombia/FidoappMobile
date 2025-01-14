@@ -63,7 +63,7 @@ class CursoVideo extends StatelessWidget {
         _commentController.updateField('course_platform_video_id', cursoId);
       }
     });
-
+    print('videourl $videoId');
     return Scaffold(
       body: Column(
         children: [
@@ -197,9 +197,13 @@ class CursoVideo extends StatelessWidget {
                             },
                             onEvento: () {
                               _commentController.updateField(
-                                  'course_platform_video_id', videoId);
-
-                              _commentController.postComment('blog', context);
+                                  'course_platform_video_id', cursoId);
+                              if (tipovideo == 'video') {
+                                _commentController.postComment(
+                                    'video', context);
+                              } else {
+                                _commentController.postComment('blog', context);
+                              }
                             },
                           ),
                           /** 
@@ -252,7 +256,7 @@ class CursoVideo extends StatelessWidget {
                       return SingleChildScrollView(
                         child: Column(
                           children: _commentController.comments.map((value) {
-                            print('comentarios ${value.reviewMsg}');
+                            print('comentarios value ${value.reviewMsg}');
                             return AvatarComentarios(
                               avatar: value.userAvatar,
                               name: value.userFullName,

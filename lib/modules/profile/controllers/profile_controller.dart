@@ -143,20 +143,22 @@ class ProfileController extends GetxController {
       final response = await request.send();
 
       // Manejar la respuesta
-      if (response.statusCode == 200) {
+      print('response data ususario ${response.statusCode}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final responseBody = await response.stream.bytesToString();
         final data = json.decode(responseBody);
-        print('response data ususario $data');
-        userGenCont.value.text = data['data']['gender'].toLowerCase();
-        currentUser.gender = data['data']['gender'].toLowerCase();
-        user['last_name'] = data['data']['last_name'];
-        currentUser.lastName = data['data']['last_name'];
-        currentUser.profileImage = data['data']['profile_image'];
         Get.snackbar(
           'exito',
           'Perfil actualizado exitosamente',
           backgroundColor: Colors.green,
         );
+        print('response data ususario $data');
+        // currentUser = UserData.fromJson(data['data']);
+        currentUser.profileImage = data['data']['profile_image'];
+        userGenCont.value.text = data['data']['gender'].toLowerCase();
+        currentUser.gender = data['data']['gender'].toLowerCase();
+        user['last_name'] = data['data']['last_name'];
+        currentUser.lastName = data['data']['last_name'];
       } else {
         final responseBody = await response.stream.bytesToString();
         print('Error al actualizar el perfil: $responseBody');

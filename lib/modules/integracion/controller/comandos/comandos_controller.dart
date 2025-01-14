@@ -176,7 +176,7 @@ class ComandoController extends GetxController {
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
             title: 'Éxito',
-            description: 'La mascota ha sido eliminada exitosamente.',
+            description: 'Comando creado con exito',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
               Get.off(HomeScreen()); // Cerrar el diálogo
@@ -196,7 +196,7 @@ class ComandoController extends GetxController {
       Get.snackbar('Error', 'Error al crear el comando',
           backgroundColor: Colors.red);
     } finally {
-      isLoading.value = false;
+      isLoading(false);
     }
   }
 }

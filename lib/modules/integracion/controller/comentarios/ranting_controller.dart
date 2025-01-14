@@ -121,15 +121,20 @@ class CommentController extends GetxController {
         },
         body: jsonEncode(comentario),
       );
-      print('log comentario ${json.decode(response.body)}');
-      print('log comentario ${response.statusCode}');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
+        print(
+          'log comentario ${json.decode(response.body)['data']['rating']}',
+        );
+        var rating = json.decode(response.body)['data']['rating'];
         Get.dialog(
           //pisa papel
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
-            title: 'Evento creado',
-            description: 'El evento ha sido creada exitosamente.',
+            title: 'Comentario creado',
+            description: rating < 3
+                ? "Tu comentario debe ser aprobado por un administrador"
+                : 'Tu comentario ha sido publicado ',
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
               Navigator.of(context).pop();

@@ -188,8 +188,9 @@ class HeaderWiget extends StatelessWidget {
                                     46, // Ajustar el radio para que la imagen se adapte mejor al contenedor
                                 backgroundImage: controller
                                         .profileImagePath.isNotEmpty
-                                    ? NetworkImage(controller.profileImagePath
-                                        .value) // Carga la imagen desde la red si hay una URL
+                                    ? NetworkImage(AuthServiceApis
+                                        .dataCurrentUser
+                                        .profileImage) // Carga la imagen desde la red si hay una URL
                                     : const AssetImage(
                                             'assets/images/avatar.png')
                                         as ImageProvider, // Imagen predeterminada si la URL está vacía

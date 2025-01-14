@@ -27,9 +27,9 @@ class CrearComando extends StatelessWidget {
             decoration: const BoxDecoration(
               color: Styles.colorContainer,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ), // Cambia el color según tu diseño
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ), // Cambia el color según tu diseño
             ),
           ),
           // Segundo contenedor (superpuesto con scroll)
@@ -70,7 +70,9 @@ class CrearComando extends StatelessWidget {
                               color: Color(0XFF383838),
                             )),
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                       SizedBox(
                         width: 305,
                         child: ProfilesDogs(),
@@ -116,20 +118,22 @@ class CrearComando extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      SizedBox(
-                        width: 302,
-                        child: ButtonDefaultWidget(
-                            title: controller.isLoading.value
-                                ? 'Creando...'
-                                : 'Crear comando',
-                            callback: () {
-                              controller.updateField(
-                                'pet_id',
-                                homeController.selectedProfile.value!.id,
-                              );
-                              controller.postCommand(controller.dataComando);
-                            }),
-                      ),
+                      Obx(() {
+                        return SizedBox(
+                          width: 302,
+                          child: ButtonDefaultWidget(
+                              title: controller.isLoading.value
+                                  ? 'Creando...'
+                                  : 'Crear comando',
+                              callback: () {
+                                controller.updateField(
+                                  'pet_id',
+                                  homeController.selectedProfile.value!.id,
+                                );
+                                controller.postCommand(controller.dataComando);
+                              }),
+                        );
+                      })
                     ],
                   ),
                 ),

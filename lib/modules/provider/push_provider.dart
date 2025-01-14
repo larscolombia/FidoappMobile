@@ -20,24 +20,28 @@ class PushProvider extends GetxController {
   @override
   Future<void> updateDeviceToken(String userId, String deviceToken) async {
     final url = Uri.parse('${BASE_URL}update-device-token');
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-      },
-      body: jsonEncode({
-        'user_id': userId,
-        'device_token': deviceToken,
-      }),
-    );
-    print('resupuesta de device token ${jsonEncode(response.body)}');
-    print(response.body);
-    if (response.statusCode == 200) {
-      print('Token actualizado exitosamente');
-      // Get.snackbar('exito', 'Vinculado', backgroundColor: Colors.black);
-    } else {
-      print('Error al actualizar token: ${response.statusCode}');
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        },
+        body: jsonEncode({
+          'user_id': userId,
+          'device_token': deviceToken,
+        }),
+      );
+      print('resupuesta de device token ${jsonEncode(response.body)}');
+      print(response.body);
+      if (response.statusCode == 200) {
+        print('Token actualizado exitosamente');
+        // Get.snackbar('exito', 'Vinculado', backgroundColor: Colors.black);
+      } else {
+        print('Error al actualizar token: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error al actualizar el token');
     }
   }
 

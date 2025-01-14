@@ -286,7 +286,7 @@ class InfoMascota extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            titulo!,
+            titulo ?? "",
             style: const TextStyle(
               color: Colors.black,
               fontFamily: 'Lato',
@@ -295,7 +295,7 @@ class InfoMascota extends StatelessWidget {
             ),
           ),
           Text(
-            value!,
+            value ?? "",
             style: const TextStyle(
               color: Colors.black,
               fontFamily: 'Lato',

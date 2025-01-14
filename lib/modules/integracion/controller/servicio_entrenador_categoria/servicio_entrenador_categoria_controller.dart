@@ -67,7 +67,7 @@ class ServiceEntrenadorController extends GetxController {
         CustomAlertDialog(
           icon: Icons.check_circle_outline,
           title: 'Costo del servicio ',
-          description: '${totalAmount.value}ƒ',
+          description: '${totalAmount.value}',
           primaryButtonText: 'Continuar',
           onPrimaryButtonPressed: () {
             Navigator.pop(context);

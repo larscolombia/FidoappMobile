@@ -28,6 +28,9 @@ class UserController extends GetxController {
   Future<void> fetchUsers() async {
     try {
       isLoading.value = true;
+      print(
+          'usertype url ${Uri.parse("$DOMAIN_URL/api/get-user-by-type?user_type=$type")}');
+
       final response = await http.get(
         Uri.parse("$DOMAIN_URL/api/get-user-by-type?user_type=$type"),
         headers: {
@@ -40,6 +43,7 @@ class UserController extends GetxController {
         var data = json.decode(response.body);
 
         if (data['success']) {
+          print('usuario tipo ${data['data']}');
           users.value = (data['data'] as List)
               .map((user) => User.fromJson(user))
               .toList();
@@ -53,8 +57,6 @@ class UserController extends GetxController {
       }
     } catch (e) {
       print('Error al obtener usuarios $e');
-      Get.snackbar("Error", "Error al obtener usuarios",
-          backgroundColor: Colors.red);
     } finally {
       isLoading.value = false;
     }
@@ -112,5 +114,57 @@ class UserController extends GetxController {
 
   void deselectUser() {
     selectedUser.value = null;
+  }
+
+  Future<void> getSharedOwnersWithEmail(String petId, String email) async {
+    // Reemplaza 'https://example.com' por tu URL base real.
+    final url = Uri.parse('${BASE_URL}pets/$petId/shared-owners-with-email');
+    isLoading.value = true;
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          // Corregido: "email" en lugar de "emaul"
+          "email": email,
+        }),
+      );
+
+      print('Respuesta agregar usuario: ${response}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Decodificamos la respuesta si es exitosa
+        final data = json.decode(response.body);
+
+        Get.snackbar(
+          'Éxito',
+          'Persona agregada exitosamente',
+          backgroundColor: Colors.green,
+        );
+
+        // Aquí puedes retornar o manipular la data obtenida
+      } else {
+        print('Respuesta agregar usuario: ${response.body}');
+
+        Get.snackbar(
+          'Error',
+          'Hubo un error al agregar la persona',
+          backgroundColor: Colors.red,
+        );
+      }
+    } catch (error) {
+      Get.snackbar(
+        'Error',
+        'Error del servidor',
+        backgroundColor: Colors.red,
+      );
+      print('Error de conexión: $error');
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

@@ -37,6 +37,7 @@ class CursoUsuarioController extends GetxController {
     required bool watched,
   }) async {
     // Asegúrate de poner la URL base correcta en tu API.
+    isLoading.value = true;
     final url =
         Uri.parse('${BASE_URL}course-platform/subscribe/mark-video-as-watched');
 
@@ -71,6 +72,8 @@ class CursoUsuarioController extends GetxController {
       }
     } catch (error) {
       throw Exception('Error en la comunicación: $error');
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -139,7 +142,7 @@ class CursoUsuarioController extends GetxController {
             CustomAlertDialog(
               icon: Icons.check_circle_outline,
               title: 'Felicidades!!! :)',
-              description: 'El curso ha sido suscrito exitosamente.',
+              description: 'El curso ha sido comprado con exito!!',
               primaryButtonText: 'Continuar',
               onPrimaryButtonPressed: () {
                 fetchCourses();
