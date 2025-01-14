@@ -15,10 +15,6 @@ class PushProvider extends GetxController {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-  final NotificationController notificacionescontroller =
-      Get.put(NotificationController());
-  final UserBalanceController balanceController =
-      Get.put(UserBalanceController());
 
   @override
   Future<void> updateDeviceToken(String userId, String deviceToken) async {
@@ -90,7 +86,7 @@ class PushProvider extends GetxController {
   /// Callback para mensajes recibidos en primer plano
   void _onMessageHandler(RemoteMessage message) async {
     // Verifica si el mensaje contiene notificación para mostrar
-    notificacionescontroller.fetchNotifications();
+
     RemoteNotification? notification = message.notification;
     print("google notificacion: ${notification}");
     if (notification != null) {
@@ -112,6 +108,8 @@ class PushProvider extends GetxController {
       print('google notification id: ${notification.title}');
       switch (notification.title) {
         case "Recarga exitosa":
+          await Future.delayed(const Duration(seconds: 10));
+          var balanceController = Get.put(UserBalanceController());
           balanceController.fetchUserBalance();
           Get.dialog(
             //pisa papel
@@ -126,6 +124,10 @@ class PushProvider extends GetxController {
             ),
             barrierDismissible: true,
           );
+        case 'notificacion':
+          var notificacionescontroller = Get.put(NotificationController());
+          notificacionescontroller.fetchNotifications();
+          break;
         default:
           print('tipo normal');
           break;

@@ -47,7 +47,7 @@ class CursosDetalles extends StatelessWidget {
         }
 
         var curso = controller.getCourseById(int.parse(cursoId!));
-        bool cursoAdquirido = miscursos.hasCourse(cursoId!);
+        bool cursoAdquirido = miscursos.hasCourse(curso.id.toString());
         print('cursoAdquirido $cursoAdquirido');
         return Stack(
           children: [
@@ -135,21 +135,21 @@ class CursosDetalles extends StatelessWidget {
                           width: MediaQuery.of(context).size.width - 100,
                           child: cursoAdquirido
                               ? BotonCompartir(
-                                  modo: "compra",
+                                  modo: "compartir",
                                   compra: cursoAdquirido,
                                   onCompartir: () {
                                     print('comprando');
                                   },
                                 )
                               : BotonCompartir(
-                                  modo: "compartir",
+                                  modo: "comprar",
                                   onCompartir: () {
                                     print('comprando');
                                   },
                                 ),
                         ),
                         const SizedBox(height: 20),
-                        if (cursoAdquirido)
+                        if (!cursoAdquirido)
                           BanerCompraPrecio(
                             price: curso.price,
                             callback: () {
@@ -219,7 +219,7 @@ class CursosDetalles extends StatelessWidget {
                         ...curso.videos.map((video) {
                           return GestureDetector(
                             onTap: () {
-                              if (cursoAdquirido) {
+                              if (!cursoAdquirido) {
                                 Get.dialog(
                                   //pisa papel
                                   CustomAlertDialog(

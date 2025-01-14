@@ -98,6 +98,7 @@ class CursoUsuarioController extends GetxController {
               description: 'El curso ha sido suscrito exitosamente.',
               primaryButtonText: 'Continuar',
               onPrimaryButtonPressed: () {
+                fetchCourses();
                 Get.back();
               },
             ),
@@ -124,6 +125,8 @@ class CursoUsuarioController extends GetxController {
   }
 
   bool hasCourse(String courseId) {
+    print('cursoAdquirido  $courseId');
+    print('cursoAdquirido ${courses}');
     return courses.any((course) => course.id.toString() == courseId);
   }
 }

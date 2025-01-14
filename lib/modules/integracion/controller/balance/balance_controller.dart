@@ -56,13 +56,12 @@ class UserBalanceController extends GetxController {
         'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
         'Content-Type': 'application/json',
       });
-
+      print('data balance ${json.decode(response.body)}');
       if (response.statusCode == 200) {
         // Decodificar la respuesta JSON
         final data = json.decode(response.body);
-
+        print('data balance $data');
         if (data['success']) {
-          // Actualizar el estado del balance
           userBalance.value = UserBalance.fromJson(data['data']);
         } else {
           throw Exception('Error en los datos del servidor');
@@ -72,7 +71,7 @@ class UserBalanceController extends GetxController {
       }
     } catch (e) {
       // Manejo de errores
-      print('Error: $e');
+      print('data balance: $e');
     } finally {
       isLoading.value = false;
     }
@@ -191,7 +190,7 @@ class UserBalanceController extends GetxController {
                           const SizedBox(height: 25),
                           Center(
                             child: Text(
-                              '${productController.selectedProduct.value.precio}ƒ',
+                              '${productController.selectedProduct.value.precio}',
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                   fontSize: 18,
@@ -216,8 +215,8 @@ class UserBalanceController extends GetxController {
                     snackPosition: SnackPosition.BOTTOM,
                   );
                 } else if (double.parse(controller.userBalance.value.balance) <
-                    double.parse(
-                        productController.selectedProduct.value.precio)) {
+                    double.parse(productController.selectedProduct.value.precio
+                        .split('ƒ')[0])) {
                   Get.dialog(
                     CustomAlertDialog(
                       icon: Icons.close,

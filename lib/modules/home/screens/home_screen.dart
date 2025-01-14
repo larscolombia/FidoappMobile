@@ -23,6 +23,7 @@ import 'package:pawlly/modules/home/screens/profecionales/profecionales.dart';
 import 'package:pawlly/modules/home/screens/training/commands.dart';
 import 'package:pawlly/modules/home/screens/widgets/filtrar_actividad.dart';
 import 'package:pawlly/modules/home/screens/widgets/menu_of_navigation.dart';
+import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 
@@ -36,50 +37,32 @@ import 'package:pawlly/modules/home/screens/pages/explorar_container.dart';
 import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/pages/resources.dart';
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
-import 'package:pawlly/modules/provider/push_provider.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   //controlador principal
   final HomeController homeController = Get.put(HomeController());
-
   //carga los cursos
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
 
   // carga el el historial de las mascotas
   final PetActivityController historialClinicoController =
       Get.put(PetActivityController());
-
   //carga los blogs
   final BlogController blogController = Get.put(BlogController());
-
   //eventos del calendario
   final CalendarController calendarController = Get.put(CalendarController());
-
   //herramientas
   final HerramientasController _herramientasController =
       Get.put(HerramientasController());
 
-  final NotificationController notificationController = Get.put(
-    NotificationController(),
-  );
+  final UserBalanceController userBalanceController =
+      Get.put(UserBalanceController());
 
-  bool _isFCMInitialized = false;
-
-  @override
-  void initState() {
-    super.initState();
-    final pushNotificaciones = PushProvider();
-    pushNotificaciones.setupFCM();
-  }
+  final NotificationController notificationController =
+      Get.put(NotificationController());
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // Funciones que devuelven el contenido basado en el selectedIndex
+
   Widget _buildCase1Content(context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

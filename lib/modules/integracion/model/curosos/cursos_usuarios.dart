@@ -27,17 +27,34 @@ class CursosUsuarios {
 
   factory CursosUsuarios.fromJson(Map<String, dynamic> json) {
     return CursosUsuarios(
-      id: json['id'],
-      progress: json['progress'],
-      name: json['name'],
-      description: json['description'],
-      image: json['image'],
-      duration: json['duration'],
-      price: json['price'],
-      difficulty: json['difficulty'],
-      userId: json['user_id'],
-      userName: json['user_name'],
-      avatar: json['avatar'],
+      id: json['id'] ?? 0, // Valor predeterminado si es nulo
+      progress: json['progress'] ?? 0,
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      image: json['image'] ?? '',
+      duration: json['duration'] ?? '',
+      price: json['price'] ?? '',
+      difficulty: json['difficulty'] ?? '',
+      userId: json['user_id'] ?? 0,
+      userName: json['user_name'] ?? '',
+      avatar: json['avatar'] ?? '',
     );
+  }
+
+  // Método para convertir un objeto en JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'progress': progress,
+      'name': name,
+      'description': description,
+      'image': image,
+      'duration': duration,
+      'price': price,
+      'difficulty': difficulty,
+      'user_id': userId,
+      'user_name': userName,
+      'avatar': avatar,
+    };
   }
 }
