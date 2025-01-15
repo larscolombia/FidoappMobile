@@ -10,6 +10,7 @@ import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
+import 'package:pawlly/modules/profile_pet/screens/pasaporte_mascota.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/information_tab.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/medical_histor_tab.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/pet_info_modal.dart';
@@ -87,42 +88,30 @@ class ProfilePetScreen extends StatelessWidget {
                             SizedBox(
                               width: MediaQuery.of(context).size.width - 100,
                               child: BarraBack(
-                                titulo: "Perfil de la Mascotas",
+                                titulo: "Perfil de la Mascota",
                                 callback: () => Get.off(HomeScreen()),
                               ),
                             ),
                             if (AuthServiceApis.dataCurrentUser.userType ==
                                 'user')
-                              Obx(
-                                () => ElevatedButton(
-                                  onPressed: () {
-                                    /**
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return PetInfoModal(
-                                          controller:
-                                              controller); // Pasa el controlador
-                                    },
-                                  );*/
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    backgroundColor: controller.isEditing.value
-                                        ? Styles.iconColorBack
-                                        : Styles.greyTextColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    minimumSize: const Size(48, 48),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Get.to(PasaporteMascota());
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  backgroundColor: Styles.iconColorBack,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
                                   ),
-                                  child: const Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                    size: 24,
-                                  ),
+                                  minimumSize: const Size(48, 48),
                                 ),
-                              ),
+                                child: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              )
                           ],
                         ),
                       ],

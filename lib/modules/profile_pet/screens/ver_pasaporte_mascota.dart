@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,10 +30,9 @@ class VerPasaporteMascota extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime = DateFormat('yyyy-MM-dd').parse(
-        _homeController.selectedProfile.value!.dateOfBirth ?? '0000-00-00');
     //historiaClinicaController
     //  .fetchHistorialClinico(_homeController.selectedProfile.value!.id);
+    print('date  ${jsonEncode(_homeController.selectedProfile.value!)}');
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -61,13 +62,13 @@ class VerPasaporteMascota extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: MediaQuery.of(context).size.width - 100,
+                        width: MediaQuery.of(context).size.width -
+                            100, // Ajusta el margen
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
-                              width: 260,
+                            Expanded(
                               child: BarraBack(
                                 titulo: 'Pasaporte',
                                 callback: () {
@@ -79,8 +80,18 @@ class VerPasaporteMascota extends StatelessWidget {
                               onTap: () {
                                 Get.to(PasaporteMascota());
                               },
-                              child: Image.asset('assets/icons/edit-2.png'),
-                            )
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Image.asset(
+                                  'assets/icons/edit-2.png',
+                                  width:
+                                      24, // Tamaño ajustado para mantener proporción
+                                  height: 24,
+                                  fit: BoxFit
+                                      .contain, // Asegura que no se deforme
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -168,7 +179,10 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       InfoMascota(
                         titulo: 'Sexo',
-                        value: _homeController.selectedProfile.value!.gender,
+                        value: _homeController.selectedProfile.value!.gender ==
+                                "female"
+                            ? 'Femenino'
+                            : 'Masculino',
                       ),
                       InfoMascota(
                         titulo: 'Raza',
@@ -178,7 +192,7 @@ class VerPasaporteMascota extends StatelessWidget {
                       InfoMascota(
                         titulo: 'Fecha de nacimiento',
                         value:
-                            '${_homeController.selectedProfile.value!.dateOfBirth}',
+                            '${_homeController.selectedProfile.value!.dateOfBirth ?? "no lo ha colocado aún"}',
                       ),
                       InfoMascota(
                         titulo: 'Color del pelaje',

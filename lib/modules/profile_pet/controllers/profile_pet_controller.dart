@@ -17,9 +17,9 @@ class ProfilePetController extends GetxController {
   var selectedTab = 0.obs;
   var petName = ''.obs;
   var petBreed = ''.obs;
-  var petDescription = 'sxaxasxasx'.obs;
+  var petDescription = ''.obs;
   var petAge = ''.obs;
-  var petBirthDate = '01/01/2021'.obs;
+  var petBirthDate = ''.obs;
   var petWeight = ''.obs;
   var petGender = ''.obs;
 

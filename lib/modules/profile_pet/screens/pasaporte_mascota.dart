@@ -1,7 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/modules/components/input_text.dart';
@@ -19,21 +19,31 @@ class PasaporteMascota extends StatelessWidget {
   final String? sexo;
   final String? peso;
   final String? edad;
-  PasaporteMascota(
-      {super.key,
-      this.name,
-      this.fechaNacimiento,
-      this.imageUrl,
-      this.raza,
-      this.sexo,
-      this.peso,
-      this.edad});
+
+  PasaporteMascota({
+    super.key,
+    this.name,
+    this.fechaNacimiento,
+    this.imageUrl,
+    this.raza,
+    this.sexo,
+    this.peso,
+    this.edad,
+  });
+
   final HomeController _homeController = Get.find<HomeController>();
   final PetControllerv2 petController = Get.put(PetControllerv2());
+
   @override
   Widget build(BuildContext context) {
     var pet = _homeController.selectedProfile.value!;
     var ancho = MediaQuery.of(context).size.width - 100;
+    final TextEditingController dateController = TextEditingController();
+
+    if (pet.dateOfBirth != null) {
+      dateController.text = pet.dateOfBirth!;
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -42,14 +52,14 @@ class PasaporteMascota extends StatelessWidget {
             left: 0,
             right: 0,
             child: Container(
-              height: 200, // Ajusta la altura del encabezado
-              color: Styles.colorContainer, // Color del encabezado
+              height: 200,
+              color: Styles.colorContainer,
               child: const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Pasaporte Canino', // Título del encabezado
+                      'Pasaporte Canino',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Lato',
@@ -58,7 +68,7 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'Veriifica la información', // Título del encabezado
+                      'Verifica la información',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'Lato',
@@ -72,19 +82,17 @@ class PasaporteMascota extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 150, // Ajusta esta posición para la superposición
+            top: 150,
             left: 0,
             right: 0,
             bottom: 0,
             child: SingleChildScrollView(
               child: Container(
                 decoration: const BoxDecoration(
-                  color: Colors.white, // Fondo blanco del contenedor inferior
+                  color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(
-                        30), // Redondear la parte superior izquierda
-                    topRight: Radius.circular(
-                        30), // Redondear la parte superior derecha
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30),
                   ),
                 ),
                 child: Column(
@@ -141,11 +149,14 @@ class PasaporteMascota extends StatelessWidget {
                     SizedBox(
                       width: ancho,
                       child: InputText(
-                        placeholder: pet.dateOfBirth,
+                        isDateField: true,
                         label: 'Fecha de nacimiento',
-                        initialValue:
-                            pet.dateOfBirth ?? "no lo ha colocado aún",
-                        onChanged: (value) => pet.dateOfBirth = value,
+                        placeholder: pet.dateOfBirth,
+                        onChanged: (value) {
+                          pet.dateOfBirth = value;
+                          print(
+                              'Fecha de nacimiento actualizada: ${pet.dateOfBirth}');
+                        },
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -223,15 +234,20 @@ class PasaporteMascota extends StatelessWidget {
                       child: Obx(() {
                         if (petController.succesApdate.value) {
                           return ButtonDefaultWidget(
-                              title: 'ok',
-                              callback: () {
-                                petController.succesApdate(false);
-                                Get.off(VerPasaporteMascota());
-                              });
+                            title: 'ok',
+                            callback: () {
+                              petController.succesApdate(false);
+                              Get.off(VerPasaporteMascota());
+                            },
+                          );
                         }
                         return ButtonDefaultWidget(
-                            title: 'Actulizar +',
-                            callback: () {
+                          title: 'Actualizar +',
+                          callback: () {
+                            try {
+                              // Verifica si pet.dateOfBirth no es nulo o vacío
+
+                              // Actualizar los datos de la mascota
                               petController.updatePet(
                                 pet.id,
                                 {
@@ -244,30 +260,25 @@ class PasaporteMascota extends StatelessWidget {
                                   "eweightUnit": pet.weightUnit,
                                   "heheightUnit": pet.heightUnit,
                                   "user_id": pet.userId,
-                                  "age": "${pet.age}años",
+                                  "age": "${pet.age}",
                                   "pet_fur": pet.petFur,
                                   "chip": pet.chip,
                                   "size": "${pet.size}",
                                 },
                               );
+
+                              // Imprimir metadatos para depuración
+                              print('Metadatos: ${json.encode(pet)}');
+                            } catch (e) {
+                              // Manejo de errores
                               print(
-                                'metadatos: ${json.encode(pet)}',
-                              );
-                            });
+                                  'Error al formatear o actualizar la fecha: $e');
+                            }
+                          },
+                        );
                       }),
                     ),
                     const SizedBox(height: 20),
-                    /** 
-                    Container(
-                      width: 305,
-                      child: Text('Datos de Vacunación y Tratamientos',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Styles.primaryColor,
-                            fontFamily: 'Lato',
-                          )),
-                    ),*/
                   ],
                 ),
               ),

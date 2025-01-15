@@ -65,10 +65,20 @@ class HomeScreen extends StatelessWidget {
   final NotificationController notificationController =
       Get.put(NotificationController());
 
+  final PushProvider pushProvider = Get.put(PushProvider());
   @override
   Widget build(BuildContext context) {
-    var token = new PushProvider();
-    token.setupFCM();
+    if (AuthServiceApis.dataCurrentUser.deviceToken == 'null') {
+      var token = new PushProvider();
+      token.setupFCM();
+      print(
+          'device token sin colocar: ${AuthServiceApis.dataCurrentUser.deviceToken}');
+    } else {
+      print(
+          'token en pantaala: ${AuthServiceApis.dataCurrentUser.deviceToken}');
+    }
+    print(
+        'AuthServiceApis.dataCurrentUser.deviceToken ${AuthServiceApis.dataCurrentUser.deviceToken}');
     homeController.SelectType(1);
     return Scaffold(
       body: Stack(

@@ -7,6 +7,7 @@ import 'package:pawlly/modules/integracion/controller/notificaciones/notificacio
 import 'package:pawlly/modules/integracion/model/notigicaciones/notificaciones.dart';
 import 'package:pawlly/modules/notification/controllers/notification_controller.dart';
 import 'package:pawlly/modules/notification/screens/widgets/app_bar_notifications.dart';
+import 'package:pawlly/modules/provider/push_provider.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -14,7 +15,7 @@ class NotificationsScreen extends StatelessWidget {
   final NotificationsController controller = Get.put(NotificationsController());
   final NotificationController notificationController =
       Get.find<NotificationController>();
-
+  final PushProvider tokenDevice = Get.put(PushProvider());
   NotificationsScreen({super.key});
 
   @override
@@ -22,7 +23,7 @@ class NotificationsScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     controller.loadNotifications();
-
+    tokenDevice.verificarDeviceToken();
     return Scaffold(
       appBar: AppBarNotifications(),
       body: Container(

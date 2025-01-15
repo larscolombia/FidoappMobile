@@ -13,6 +13,7 @@ import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 import 'package:pawlly/styles/styles.dart';
 
@@ -30,7 +31,7 @@ class ConfirmarFormulario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // petController.selectType(0);
-    print('historial en vista ${historialClinico!.fechaAplicacion}');
+    print('historial en vista ${AuthServiceApis.dataCurrentUser.userType}');
     return Scaffold(
       backgroundColor: Styles.fiveColor,
       body: Obx(() {
@@ -74,7 +75,7 @@ class ConfirmarFormulario extends StatelessWidget {
                             child: BarraBack(
                               titulo: isEdit == false
                                   ? "Informe Médico"
-                                  : "Edicion #${historialClinico!.id}" ?? '',
+                                  : "${historialClinico!.categoryName}" ?? '',
                               callback: () {
                                 Get.back();
                               },
@@ -113,6 +114,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                 ],
                               ),
                             ),
+                          const SizedBox(height: 20),
                           InputText(
                             label: 'Nombre del Informe',
                             placeholder: '',
@@ -247,21 +249,24 @@ class ConfirmarFormulario extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          isEdit == true
-                              ? SizedBox(
-                                  width: MediaQuery.of(context).size.width - 80,
-                                  child: ButtonDefaultWidget(
-                                    title:
-                                        medicalHistoryController.isLoading.value
-                                            ? 'Cargando ...'
-                                            : 'Actualizar',
-                                    callback: () {
-                                      medicalHistoryController
-                                          .updateReport(historialClinico);
-                                    },
-                                  ),
-                                )
-                              : const SizedBox(),
+                          if (AuthServiceApis.dataCurrentUser.userType !=
+                              'user')
+                            isEdit == true
+                                ? SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width - 80,
+                                    child: ButtonDefaultWidget(
+                                      title: medicalHistoryController
+                                              .isLoading.value
+                                          ? 'Cargando ...'
+                                          : 'Actualizar',
+                                      callback: () {
+                                        medicalHistoryController
+                                            .updateReport(historialClinico);
+                                      },
+                                    ),
+                                  )
+                                : const SizedBox(),
                           SizedBox(
                             width: 302,
                             child: !medicalHistoryController.isEditing.value

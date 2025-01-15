@@ -195,7 +195,7 @@ class CalendarController extends GetxController {
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
             title: 'Evento creado',
-            description: 'El evento ha sido creada exitosamente.',
+            description: 'El evento ha sido creado',
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
               getEventos();

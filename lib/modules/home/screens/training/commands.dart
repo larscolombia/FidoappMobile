@@ -15,6 +15,8 @@ class Commands extends StatelessWidget {
       if (homeController.selectedProfile.value != null) {
         controller
             .fetchComandos(homeController.selectedProfile.value!.id.toString());
+        print(
+            'id de la mascota ${homeController.selectedProfile.value!.id.toString()}');
       }
     });
     return Column(

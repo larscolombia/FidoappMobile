@@ -129,7 +129,7 @@ class _CustomSelectFormFieldWidgetState
                                 ? Styles.iconColorBack
                                 : Colors.transparent))
                         : Colors.grey,
-                    width: 1.0,
+                    width: .5,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(

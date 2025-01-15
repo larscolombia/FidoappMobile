@@ -22,6 +22,8 @@ class RecargaComponente extends StatelessWidget {
         ),
         Text(
           titulo,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: const TextStyle(
             fontSize: 14,
             fontFamily: 'Lato',

@@ -149,8 +149,6 @@ class ProfileModal extends StatelessWidget {
                             // Actualiza el perfil seleccionado
                             activityController
                                 .fetchPetActivities(profile.id.toString());
-                            print(
-                                'profile seleccionado ${json.encode(profile)}');
                             controller.updateProfile(profile);
                             Navigator.of(context).pop(); // Cierra el modal
                           },
@@ -168,11 +166,14 @@ class ProfileModal extends StatelessWidget {
                               ),
                             ),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Imagen del perfil que ocupa exactamente el 50% del ancho del contenedor
+                                // Imagen del perfil
                                 Container(
-                                  width: 123,
-                                  height: 113,
+                                  width: MediaQuery.of(context).size.width *
+                                      0.3, // 30% del ancho de pantalla
+                                  height: MediaQuery.of(context).size.width *
+                                      0.25, // Relación de aspecto
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -197,24 +198,22 @@ class ProfileModal extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 12),
-                                // Contenido del perfil que ocupa el otro 50% del ancho
-                                Container(
-                                  margin: const EdgeInsets.only(left: 12),
-                                  width: 140,
-                                  height: 116,
+                                // Contenido del perfil
+                                Expanded(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        width: 140,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Flexible(
+                                            child: Text(
                                               profile.name,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
                                               style: const TextStyle(
                                                 fontFamily: 'Lato',
                                                 fontSize: 16,
@@ -222,17 +221,16 @@ class ProfileModal extends StatelessWidget {
                                                 color: Styles.blackColor,
                                               ),
                                             ),
-                                            CustomCheckbox(
-                                              onChanged: (value) {
-                                                controller
-                                                    .updateProfile(profile);
-                                                Navigator.of(context)
-                                                    .pop(); // Cierra el modal
-                                              },
-                                              isChecked: isSelected,
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                          CustomCheckbox(
+                                            onChanged: (value) {
+                                              controller.updateProfile(profile);
+                                              Navigator.of(context)
+                                                  .pop(); // Cierra el modal
+                                            },
+                                            isChecked: isSelected,
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
@@ -245,7 +243,9 @@ class ProfileModal extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        profile.gender,
+                                        profile.gender == "female"
+                                            ? 'Femenino'
+                                            : 'Masculino',
                                         style: const TextStyle(
                                           fontFamily: 'Lato',
                                           fontSize: 12,
@@ -255,7 +255,8 @@ class ProfileModal extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 12),
                                       SizedBox(
-                                        width: 140,
+                                        width: double
+                                            .infinity, // Ocupa todo el ancho disponible
                                         height: 34,
                                         child: ButtonDefaultWidget(
                                           heigthButtom: 40,

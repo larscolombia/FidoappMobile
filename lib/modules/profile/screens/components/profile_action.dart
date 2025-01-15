@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pawlly/modules/components/boton_compartir.dart';
@@ -16,6 +18,7 @@ class ProfileActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('profile controller ${jsonEncode(profileController.user.value)}');
     return Column(
       children: [
         Container(
@@ -73,6 +76,28 @@ class ProfileActions extends StatelessWidget {
             ),
           ),
         if (profileController.user.value.userType != 'user')
+          Obx(() {
+            var expert = profileController.user.value.profile?.expert ?? "";
+            return Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 26.0),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFEF7E5),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                expert,
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: Color(0xFFFC9214),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'lato',
+                ),
+              ),
+            );
+          }),
+
+        /** 
           Obx(() => Container(
                 width: MediaQuery.of(context).size.width - 100,
                 child: Wrap(
@@ -98,7 +123,7 @@ class ProfileActions extends StatelessWidget {
                     );
                   }).toList(),
                 ),
-              )),
+              )),*/
       ],
     );
   }

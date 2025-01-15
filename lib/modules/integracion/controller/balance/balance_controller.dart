@@ -181,38 +181,47 @@ class UserBalanceController extends GetxController {
                           ),
                           Expanded(
                             child: Container(
-                              height: 150,
                               padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
+                              height: 150,
+                              decoration: const BoxDecoration(
                                 color: Styles.colorContainer,
-                                borderRadius: BorderRadius.circular(10),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
                               ),
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    productController
-                                        .selectedProduct.value.nombreProducto,
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: 'Roboto',
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  const Spacer(),
-                                  Center(
-                                    child: Text(
-                                      productController
-                                          .selectedProduct.value.precio,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Styles.primaryColor,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      child: Text(
+                                        productController.selectedProduct.value
+                                            .nombreProducto,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Leto',
+                                            fontWeight: FontWeight.w700),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Text(
+                                        productController
+                                            .selectedProduct.value.precio,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Styles.primaryColor),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                  ]),
                             ),
                           ),
                         ],

@@ -6,7 +6,7 @@ class BarraBack extends StatelessWidget {
     super.key,
     required this.titulo,
     this.callback,
-    this.color = Styles.primaryColor, // Color por defecto
+    this.color = Styles.primaryColor,
     this.subtitle,
     this.ColorSubtitle,
   });
@@ -19,65 +19,55 @@ class BarraBack extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 1),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: callback,
-            child: const SizedBox(
-              width: 30,
-              height: 30,
-              child: Center(
-                child: Icon(
-                  Icons.arrow_back_ios,
-                  color: Styles.fiveColor, // Usar el color personalizado
-                  size: 20,
-                ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: callback,
+          child: const SizedBox(
+            width: 30,
+            height: 30,
+            child: Center(
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Styles.fiveColor,
+                size: 20,
               ),
             ),
           ),
-          // Aquí envolvemos el contenido del texto en un Expanded
-          SizedBox(
-            width: MediaQuery.of(context).size.width - 180,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+        ),
+        const SizedBox(width: 8), // Separación fija para evitar apilamientos
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                titulo,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: 'PoetsenOne',
+                  color: color,
+                ),
+              ),
+              if (subtitle != null)
                 Text(
-                  titulo,
+                  subtitle!,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  softWrap:
-                      true, // Ajusta el texto automáticamente cuando sea necesario
+                  maxLines: 2,
                   style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: 'PoetsenOne',
-                    color: color, // Usar el color personalizado
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Lato',
+                    color: ColorSubtitle ?? Styles.fiveColor,
                   ),
                 ),
-                if (subtitle != null)
-                  Text(
-                    subtitle!,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    softWrap:
-                        true, // Ajusta el texto automáticamente cuando sea necesario
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Lato',
-                      color: ColorSubtitle ??
-                          Styles.fiveColor, // Usar el color personalizado
-                    ),
-                  ),
-              ],
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

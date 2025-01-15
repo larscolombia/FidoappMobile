@@ -7,6 +7,7 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/auth/model/login_response_model.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'dart:io';
 import 'package:pawlly/services/auth_service_apis.dart';
 
@@ -152,6 +153,7 @@ class ProfileController extends GetxController {
           'Perfil actualizado exitosamente',
           backgroundColor: Colors.green,
         );
+        Get.off(() => HomeScreen());
         print('response data ususario $data');
         // currentUser = UserData.fromJson(data['data']);
         currentUser.profileImage = data['data']['profile_image'];

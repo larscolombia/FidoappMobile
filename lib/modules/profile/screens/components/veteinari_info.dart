@@ -36,7 +36,9 @@ class VeterinarianInfo extends StatelessWidget {
                 Image.asset('assets/icons/palomiar.png'),
                 SizedBox(width: 8),
                 Text(
-                  'Veterinario Calificado',
+                  profileController.user.value.userType == 'vet'
+                      ? 'Veterinario Calificado'
+                      : "Entrenador Calificado",
                   style: TextStyle(
                     color: Color(0xFF19A02F),
                     fontWeight: FontWeight.bold,

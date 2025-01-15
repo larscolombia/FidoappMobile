@@ -3,22 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/configs.dart';
-import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
-import 'package:pawlly/modules/integracion/util/role_user.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
 import 'package:pawlly/modules/profile_pet/controllers/pet_owner_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
-import 'package:pawlly/modules/profile_pet/screens/pasaporte_mascota.dart';
-import 'package:pawlly/modules/profile_pet/screens/pasaporte_mascota.dart';
+
 import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/associated_persons_modal.dart';
-import 'package:pawlly/modules/profile_pet/screens/widget/owner_pet.dart';
-import 'package:pawlly/routes/app_pages.dart';
+
 import 'package:pawlly/services/auth_service_apis.dart';
 
 import 'package:pawlly/styles/styles.dart';
+import 'package:share_plus/share_plus.dart';
 
 class InformationTab extends StatelessWidget {
   final ProfilePetController controller;
@@ -27,12 +25,13 @@ class InformationTab extends StatelessWidget {
   final PetOwnerProfileController OnewrProfileController =
       Get.put(PetOwnerProfileController());
 
+  final HomeController homeController = Get.put(HomeController());
   InformationTab({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
-
+    print('info pert ${(pet)}');
     return Obx(() {
       return SingleChildScrollView(
         child: Container(
@@ -65,7 +64,11 @@ class InformationTab extends StatelessWidget {
                       ButtonDefaultWidget(
                         title: 'Compartir',
                         callback: () {
-                          // Lógica para compartir perfil
+                          // Lógica para compartir
+                          Share.share(
+                            'Esta es mi mascota muy hermoza : ${homeController.selectedProfile.value!.petImage}',
+                            subject: AuthServiceApis.dataCurrentUser.userName,
+                          );
                         },
                         defaultColor: Colors.transparent,
                         border: const BorderSide(color: Colors.grey, width: 1),
@@ -145,7 +148,8 @@ class InformationTab extends StatelessWidget {
                     style: Styles.textProfile14w400,
                   ),
                   subtitle: Text(
-                    controller.petProfile.age ?? "no lo ha colocado aún",
+                    homeController.selectedProfile.value!.age ??
+                        "no lo ha colocado aún",
                     style: Styles.textProfile14w800,
                   ),
                   trailing: Column(
@@ -156,7 +160,7 @@ class InformationTab extends StatelessWidget {
                         style: Styles.textProfile14w400,
                       ),
                       Text(
-                        controller.petBirthDate.value,
+                        homeController.selectedProfile.value!.dateOfBirth ?? "",
                         style: Styles.textProfile14w800,
                       ),
                     ],
@@ -201,7 +205,9 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          controller.petGender.value,
+                          controller.petGender.value == "female"
+                              ? 'Femenino'
+                              : 'Masculino',
                           style: Styles.textProfile14w800,
                         ),
                       ),

@@ -181,7 +181,7 @@ class Profecionales extends StatelessWidget {
                 return SizedBox(
                   width: width + 35,
                   height: MediaQuery.of(context).size.height *
-                      0.6, // Altura fija o dinámica
+                      0.4, // Altura fija o dinámica
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16),
                     itemCount: controller.filteredUsers.length,

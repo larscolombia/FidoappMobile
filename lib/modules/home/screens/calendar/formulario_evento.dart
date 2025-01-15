@@ -59,6 +59,7 @@ class _CreateEventState extends State<CreateEvent> {
   Widget build(BuildContext context) {
     final ancho = MediaQuery.of(context).size.width - 100;
     var doubleHeight = 10.00;
+    var margen = 10.00;
     return Scaffold(
       backgroundColor: Styles.colorContainer,
       body: Column(
@@ -169,7 +170,8 @@ class _CreateEventState extends State<CreateEvent> {
                             style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.black,
-                                fontFamily: 'lato'),
+                                fontFamily: 'lato',
+                                fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 10),
                           CustomSelectFormFieldWidget(
@@ -286,7 +288,6 @@ class _CreateEventState extends State<CreateEvent> {
                         ),
                       );
                     }),
-                    SizedBox(height: doubleHeight),
                     SizedBox(
                       width: ancho,
                       child: InputText(
@@ -408,9 +409,9 @@ class _CreateEventState extends State<CreateEvent> {
                       ),
                     ),
                     SizedBox(height: doubleHeight),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width - 100,
-                        child: UserEventoSeleccionado()),
+                    Center(
+                        child: SizedBox(
+                            width: 302, child: UserEventoSeleccionado())),
                     const SizedBox(height: 30),
                     Obx(() {
                       return SizedBox(

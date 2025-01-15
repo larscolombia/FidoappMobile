@@ -133,7 +133,7 @@ class CursoVideo extends StatelessWidget {
                         modo: "compartir",
                         onCompartir: () {
                           Share.share(
-                            '¡Hola! Este es un mensaje compartido desde mi app Flutter.',
+                            '¡Hola! Este es un buen video ${videoUrl}.',
                             subject: 'Compartir Mensaje',
                           );
                         },

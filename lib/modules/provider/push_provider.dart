@@ -10,6 +10,7 @@ import 'package:pawlly/modules/integracion/controller/balance/balance_controller
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/modules/integracion/controller/transaccion/transaction_controller.dart';
+import 'package:pawlly/modules/integracion/model/categoria/categoria_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
 class PushProvider extends GetxController {
@@ -18,6 +19,11 @@ class PushProvider extends GetxController {
       FlutterLocalNotificationsPlugin();
 
   @override
+  void onInit() {
+    super.onInit();
+    verificarDeviceToken();
+  }
+
   Future<void> updateDeviceToken(String userId, String deviceToken) async {
     final url = Uri.parse('${BASE_URL}update-device-token');
     try {
@@ -37,11 +43,45 @@ class PushProvider extends GetxController {
       if (response.statusCode == 200) {
         print('Token actualizado exitosamente');
         // Get.snackbar('exito', 'Vinculado', backgroundColor: Colors.black);
+        var data = json.decode(response.body);
+        AuthServiceApis.dataCurrentUser.deviceToken =
+            data['data']['device_token'];
       } else {
         print('Error al actualizar token: ${response.statusCode}');
       }
     } catch (e) {
       print('Error al actualizar el token');
+    }
+  }
+
+  //verifica si el usuario tiene el permiso de notificaciones
+  Future<void> verificarDeviceToken() async {
+    final String url =
+        '${BASE_URL}verifi-device-token-user?user_id=${AuthServiceApis.dataCurrentUser.id}';
+
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        },
+      );
+      print(
+          'Respuesta del servidor: ${json.decode(response.body)['data']['device_token']}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // La petición fue exitosa
+        final data = json.decode(response.body);
+        // Procesa los datos según tus necesidades
+        AuthServiceApis.dataCurrentUser.deviceToken =
+            data['data']['device_token'];
+      } else {
+        // Hubo un error con la petición
+        print('Error en la petición: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Manejo de excepciones
+      print('Excepción al realizar la petición: $e');
     }
   }
 
@@ -59,6 +99,7 @@ class PushProvider extends GetxController {
       String? token = await _firebaseMessaging.getToken();
       if (token != null) {
         token = token;
+
         updateDeviceToken(AuthServiceApis.dataCurrentUser.id.toString(), token);
       }
 

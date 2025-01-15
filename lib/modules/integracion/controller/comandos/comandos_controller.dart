@@ -39,6 +39,8 @@ class ComandoController extends GetxController {
 
   void fetchComandos(String petId) async {
     isLoading.value = true;
+    print(
+        'id de la mascota ${Uri.parse('$apiUrl/comandos/commands-by-user/get?pet_id=${petId ?? '0'}')}');
     try {
       final response = await http.get(
           Uri.parse(
@@ -52,6 +54,7 @@ class ComandoController extends GetxController {
       print('comandos de entrenamientos ${Uri.parse('$apiUrl/comandos')}');
       if (response.statusCode == 200) {
         var comandoData = json.decode(response.body);
+
         if (comandoData['success']) {
           var comandoListFromJson = (comandoData['data'] as List)
               .map((comandoJson) => Comando.fromJson(comandoJson))

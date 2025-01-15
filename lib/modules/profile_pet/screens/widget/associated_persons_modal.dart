@@ -77,6 +77,8 @@ class AssociatedPersonsModal extends StatelessWidget {
                   controller: controller.userTypeCont.value,
                   placeholder: 'Rol',
                   icon: 'assets/icons/tag-user.png',
+                  filcolorCustom: Styles.fiveColor,
+                  borderColor: Styles.iconColorBack,
                   onChange: (value) {
                     switch (value) {
                       case 'Veterinario':

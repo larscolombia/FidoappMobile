@@ -11,6 +11,7 @@ import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
 import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
 import 'package:pawlly/routes/app_pages.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -58,8 +59,8 @@ class DashboardScreen extends StatelessWidget {
                       radius:
                           46, // Ajustar el radio para que la imagen se adapte mejor al contenedor
                       backgroundImage: controller.profileImagePath.isNotEmpty
-                          ? NetworkImage(controller.profileImagePath
-                              .value) // Carga la imagen desde la red si hay una URL
+                          ? NetworkImage(AuthServiceApis.dataCurrentUser
+                              .profileImage) // Carga la imagen desde la red si hay una URL
                           : const AssetImage('assets/images/avatar.png')
                               as ImageProvider, // Imagen predeterminada si la URL está vacía
                       backgroundColor: Colors.transparent, // Fondo transparente
