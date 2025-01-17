@@ -8,12 +8,14 @@ import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/auth/model/login_response_model.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'dart:io';
 import 'package:pawlly/services/auth_service_apis.dart';
 
 import 'package:http/http.dart' as http;
 
 class ProfileController extends GetxController {
+  var profileController = Get.put(UserProfileController());
   late UserData currentUser; // Instancia del modelo de datos de usuario
   var isLoading = false.obs;
   var isEditing = false.obs;
@@ -29,7 +31,7 @@ class ProfileController extends GetxController {
   var profileImagePath = ''.obs;
   var isPickerActive =
       false.obs; // Añadir una bandera para el estado activo del picker
-
+  var userprofile = UserData().obs;
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -89,18 +91,27 @@ class ProfileController extends GetxController {
     }
   }
 
+  // Definición del objeto user con tipos específicos
   var user = {
     'first_name': "",
     'lastName': "",
     'email': "",
     'gender': "",
-    'userType': "",
     'profile_image': "",
     'id': "",
-    'role': "",
+    'expert': "",
     'about_self': "",
-    'address': ""
+    'address': "",
+    'tags': <String>[], // Lista de cadenas
+    'validation_number': ""
   };
+
+  void addUserTag(Map<String, dynamic> user, String tag) {
+    List<String> tags = List<String>.from(user['tags']);
+    tags.add(tag);
+    user['tags'] = tags;
+  }
+
   void dataUser() {
     user['first_name'] = currentUser.firstName;
     user['last_name'] = currentUser.lastName;
@@ -125,18 +136,37 @@ class ProfileController extends GetxController {
       });
 
       // Agregar datos del usuario
+      Map<String, String> fields = {};
+
       user.forEach((key, value) {
-        if (value.isNotEmpty && key != 'profile_image') {
-          request.fields[key] = value.toString();
+        if (key == 'tags' && value is List<String>) {
+          // Limpiar las comillas escapadas de las tags
+          List<String> cleanTags = value.map((tag) {
+            return tag.replaceAll("\"", ""); // Eliminar las comillas escapadas
+          }).toList();
+
+          // Serializar como un array JSON limpio
+          fields[key] = jsonEncode(cleanTags); // Generará ["hhhj", "hjj"]
+        } else if (value is String &&
+            value.isNotEmpty &&
+            key != 'profile_image') {
+          // Añadir otros campos al request, excluyendo 'profile_image'
+          fields[key] = value;
         }
       });
 
+      // Añadir los campos al request
+      fields.forEach((key, value) {
+        request.fields[key] = value;
+      });
+
       // Agregar la imagen si está disponible
-      if (user['profile_image'] != null && user['profile_image']!.isNotEmpty) {
+      if (user['profile_image'] != null &&
+          user['profile_image'] is String &&
+          (user['profile_image'] as String).isNotEmpty) {
         request.files.add(await http.MultipartFile.fromPath(
           'profile_image',
-          user[
-              'profile_image']!, // Usa el operador de null-aware para asegurar que no sea nulo
+          user['profile_image'] as String,
         ));
       }
 
@@ -144,31 +174,86 @@ class ProfileController extends GetxController {
       final response = await request.send();
 
       // Manejar la respuesta
-      print('response data ususario ${response.statusCode}');
+      final responseBody = await response.stream.bytesToString();
+      print('Response body: $responseBody');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseBody = await response.stream.bytesToString();
         final data = json.decode(responseBody);
-        Get.snackbar(
-          'exito',
-          'Perfil actualizado exitosamente',
-          backgroundColor: Colors.green,
+
+        Get.dialog(
+          //pisa papel
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Información Enviada',
+            description:
+                'Te enviaremos un correo electrónico pronto para darte una respuesta acerca de tu verificación',
+            primaryButtonText: 'Aceptar',
+            onPrimaryButtonPressed: () {
+              profileController
+                  .fetchUserData("${AuthServiceApis.dataCurrentUser.id}");
+              currentUser.profileImage = data['data']['profile_image'];
+              userGenCont.value.text = data['data']['gender'].toLowerCase();
+              currentUser.gender = data['data']['gender'].toLowerCase();
+              user['lastName'] = data['data']['last_name'];
+              currentUser.lastName = data['data']['last_name'];
+              Get.back();
+            },
+          ),
+          barrierDismissible: true,
         );
-        Get.off(() => HomeScreen());
-        print('response data ususario $data');
-        // currentUser = UserData.fromJson(data['data']);
-        currentUser.profileImage = data['data']['profile_image'];
-        userGenCont.value.text = data['data']['gender'].toLowerCase();
-        currentUser.gender = data['data']['gender'].toLowerCase();
-        user['last_name'] = data['data']['last_name'];
-        currentUser.lastName = data['data']['last_name'];
       } else {
-        final responseBody = await response.stream.bytesToString();
         print('Error al actualizar el perfil: $responseBody');
+        Get.snackbar(
+          'Error',
+          'No se pudo actualizar el perfil. Por favor, inténtalo nuevamente.',
+          backgroundColor: Colors.red,
+        );
       }
     } catch (e) {
       print('Excepción: $e');
+      Get.snackbar(
+        'Error',
+        'Ocurrió un error al actualizar el perfil: $e',
+        backgroundColor: Colors.red,
+      );
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> fetchUserData(String id) async {
+    try {
+      print(
+          'Perfil de usuario: ${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=${id}')}');
+      final response = await http.get(
+        Uri.parse('${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=${id}')}'),
+        headers: {
+          'Authorization':
+              'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Reemplaza con tu lógica de token.
+          'Content-Type': 'application/json',
+        },
+      );
+
+      print('response profile ${response.statusCode}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = json.decode(response.body)['data'];
+        userprofile.value =
+            UserData.fromJson(data); // Actualiza el modelo con la respuesta.
+        print('userdata ${userprofile}');
+      } else {
+        Get.snackbar(
+          "Error",
+          "Error al obtener datos del usuario",
+        );
+      }
+    } catch (e) {
+      print('Error al obtener datos del usuario: $e');
+      Get.snackbar(
+        "Error",
+        "Error al obtener datos del usuario 500",
+      );
+    } finally {
+      isLoading(false);
     }
   }
 }

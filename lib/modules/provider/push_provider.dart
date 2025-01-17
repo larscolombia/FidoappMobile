@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +18,7 @@ class PushProvider extends GetxController {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
+  var isLoading = false.obs;
   @override
   void onInit() {
     super.onInit();
@@ -26,6 +27,7 @@ class PushProvider extends GetxController {
 
   Future<void> updateDeviceToken(String userId, String deviceToken) async {
     final url = Uri.parse('${BASE_URL}update-device-token');
+    isLoading.value = true;
     try {
       final response = await http.post(
         url,
@@ -42,7 +44,7 @@ class PushProvider extends GetxController {
       print(response.body);
       if (response.statusCode == 200) {
         print('Token actualizado exitosamente');
-        // Get.snackbar('exito', 'Vinculado', backgroundColor: Colors.black);
+        Get.snackbar('exito', 'Vinculado', backgroundColor: Styles.iconColor);
         var data = json.decode(response.body);
         AuthServiceApis.dataCurrentUser.deviceToken =
             data['data']['device_token'];
@@ -51,6 +53,8 @@ class PushProvider extends GetxController {
       }
     } catch (e) {
       print('Error al actualizar el token');
+    } finally {
+      isLoading.value = false;
     }
   }
 

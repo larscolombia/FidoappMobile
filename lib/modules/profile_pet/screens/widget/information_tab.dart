@@ -185,7 +185,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          '${controller.petProfile.weight}kg',
+                          '${controller.petProfile.weight}${controller.petProfile.weightUnit}',
                           style: Styles.textProfile14w800,
                         ),
                       ),

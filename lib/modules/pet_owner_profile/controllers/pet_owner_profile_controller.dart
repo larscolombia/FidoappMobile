@@ -41,10 +41,10 @@ class UserProfileController extends GetxController {
 
   // Método para obtener los datos del usuario
   Future<void> fetchUserData(String id) async {
-    print('numero de peticiones');
     try {
+      isLoading.value = true;
       final response = await http.get(
-        Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id'),
+        Uri.parse('${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=${id}')}'),
         headers: {
           'Authorization':
               'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Reemplaza con tu lógica de token.
@@ -52,21 +52,22 @@ class UserProfileController extends GetxController {
         },
       );
 
-      print(
-          'Perfil de usuario: ${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id')}');
-
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body)['data'];
         user.value =
             UserData.fromJson(data); // Actualiza el modelo con la respuesta.
       } else {
-        Get.snackbar("Error", "Error al obtener datos del usuario",
-            backgroundColor: Colors.red);
+        Get.snackbar(
+          "Error",
+          "Error al obtener datos del usuario",
+        );
       }
     } catch (e) {
       print('Error al obtener datos del usuario: $e');
-      Get.snackbar("Error", "Error al obtener datos del usuario",
-          backgroundColor: Colors.red);
+      Get.snackbar(
+        "Error",
+        "Error al obtener datos del usuario 500",
+      );
     } finally {
       isLoading(false);
     }

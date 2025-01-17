@@ -7,11 +7,27 @@ import 'package:pawlly/modules/home/screens/Diario/detalles_diario.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class DiarioMascotas extends StatelessWidget {
+class DiarioMascotas extends StatefulWidget {
+  DiarioMascotas({super.key});
+
+  @override
+  State<DiarioMascotas> createState() => _DiarioMascotasState();
+}
+
+class _DiarioMascotasState extends State<DiarioMascotas> {
   final PetActivityController controller = Get.put(PetActivityController());
+
   final HomeController homeController = Get.find<HomeController>();
 
-  DiarioMascotas({super.key});
+  @override
+  void initState() {
+    super.initState();
+    if (homeController.selectedProfile.value != null) {
+      controller.fetchPetActivities(
+          homeController.selectedProfile.value!.id.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {});

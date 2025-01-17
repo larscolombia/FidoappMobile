@@ -22,13 +22,13 @@ class ProfileActions extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 355,
+          width: MediaQuery.of(context).size.width - 100,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 355,
+                width: MediaQuery.of(context).size.width - 100,
                 child: BotonCompartir(
                   modo: 'compartir',
                   title: 'Compartir perfil',
@@ -42,23 +42,35 @@ class ProfileActions extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         if (profileController.user.value.userType != 'user')
-          SizedBox(
-            width: MediaQuery.of(context).size.width - 100,
-            child: InputText(
-              placeholder: "",
-              fw: FontWeight.bold,
-              placeholderImage: Image.asset('assets/icons/genero.png'),
-              placeholderFontFamily: "Lato",
-              label: 'Área de especialización',
-              initialValue: controller.specializationArea.value,
-              onChanged: (value) {
-                controller.specializationArea.value = value;
-              },
-            ),
+          Obx(
+            () {
+              if (profileController.isLoading.value) {
+                return const SizedBox(
+                  child: Center(
+                    child: Text('cargando ...'),
+                  ),
+                );
+              }
+              return SizedBox(
+                width: MediaQuery.of(context).size.width - 100,
+                child: InputText(
+                  placeholder: "",
+                  fw: FontWeight.bold,
+                  placeholderImage: Image.asset('assets/icons/genero.png'),
+                  placeholderFontFamily: "Lato",
+                  label: 'Área de especialización',
+                  initialValue:
+                      profileController.user.value.profile?.expert ?? "",
+                  onChanged: (value) {
+                    controller.specializationArea.value = value;
+                  },
+                ),
+              );
+            },
           ),
         const SizedBox(height: 20),
         if (profileController.user.value.userType != 'user')
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width - 100,
             child: const Padding(
               padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -75,55 +87,42 @@ class ProfileActions extends StatelessWidget {
               ),
             ),
           ),
-        if (profileController.user.value.userType != 'user')
-          Obx(() {
-            var expert = profileController.user.value.profile?.expert ?? "";
-            return Container(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 26.0),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFEF7E5),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                expert,
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Color(0xFFFC9214),
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'lato',
-                ),
+        Obx(() {
+          if (profileController.isLoading.value) {
+            return const SizedBox(
+              child: Center(
+                child: Text('cargando ...'),
               ),
             );
-          }),
-
-        /** 
-          Obx(() => Container(
-                width: MediaQuery.of(context).size.width - 100,
-                child: Wrap(
-                  spacing: 8.0,
-                  runSpacing: 8.0,
-                  children: controller.otherAreas.map((area) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 26.0),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFEF7E5),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        area,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFFFC9214),
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'lato',
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              )),*/
+          }
+          return Container(
+            width: MediaQuery.of(context).size.width - 100,
+            child: Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: (profileController.user.value.profile?.tags ?? [])
+                  .map((area) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 26.0),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFEF7E5),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    area,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFFFC9214),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'lato',
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          );
+        })
       ],
     );
   }

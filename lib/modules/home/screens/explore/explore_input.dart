@@ -113,7 +113,7 @@ class ExploreInput extends StatelessWidget {
                         Container(
                           height: 74,
                           child: Text(
-                            libro.description!,
+                            libro.title!,
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -132,7 +132,7 @@ class ExploreInput extends StatelessWidget {
                             SizedBox(
                               width: 60,
                               child: Text(
-                                '${libro.author}',
+                                'Precio',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -141,15 +141,6 @@ class ExploreInput extends StatelessWidget {
                                   fontWeight: FontWeight.w400,
                                   color: Styles.iconColorBack,
                                 ),
-                              ),
-                            ),
-                            Text(
-                              '\$${libro.price}' ?? '0.00',
-                              style: const TextStyle(
-                                fontFamily: 'Lato',
-                                fontSize: 12,
-                                fontWeight: FontWeight.w700,
-                                color: Styles.iconColorBack,
                               ),
                             ),
                           ],

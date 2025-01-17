@@ -75,7 +75,7 @@ class EbooksList extends StatelessWidget {
 
                             Get.to(LibroDetalles());
                           },
-                          child: BooksComponents(petItem: book),
+                          child: BooksComponents(ebook: book),
                         );
                       },
                     ),
@@ -100,10 +100,10 @@ class EbooksList extends StatelessWidget {
 class BooksComponents extends StatelessWidget {
   const BooksComponents({
     super.key,
-    required this.petItem,
+    required this.ebook,
   });
 
-  final EBook petItem;
+  final EBook ebook;
 
   @override
   Widget build(BuildContext context) {
@@ -130,9 +130,9 @@ class BooksComponents extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: petItem.coverImage != null
+                child: ebook.coverImage != null
                     ? Image.network(
-                        petItem.coverImage!,
+                        ebook.coverImage!,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           return Image.asset(
@@ -153,7 +153,7 @@ class BooksComponents extends StatelessWidget {
           SizedBox(
             height: 70,
             child: Text(
-              petItem.title!,
+              ebook.title!,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -166,29 +166,6 @@ class BooksComponents extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           // Precio y tipo de producto (libro o artículo)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Precio',
-                style: TextStyle(
-                  fontFamily: 'Lato',
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Styles.iconColorBack,
-                ),
-              ),
-              Text(
-                '\$${petItem.price} ',
-                style: const TextStyle(
-                  fontFamily: 'Lato',
-                  fontSize: 16.5,
-                  fontWeight: FontWeight.w700,
-                  color: Styles.iconColorBack,
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );

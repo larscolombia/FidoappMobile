@@ -45,8 +45,8 @@ class SignInScreen extends StatelessWidget {
                         locale.value.signIn,
                         style: const TextStyle(
                             color: Color.fromRGBO(255, 73, 49, 1),
-                            fontSize: 34,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
                             fontFamily: "PoetsenOne"),
                       ).paddingTop(80),
                       Form(

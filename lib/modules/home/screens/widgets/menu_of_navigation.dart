@@ -93,39 +93,42 @@ class MenuOfNavigation extends GetView<HomeController> {
         controller.updateIndex(index);
         // Aquí puedes agregar lógica adicional de navegación si fuese necesario.
       },
-      child: Container(
-        decoration: isSelected
-            ? BoxDecoration(
-                color: const Color.fromRGBO(252, 146, 20, 1),
-                borderRadius: BorderRadius.circular(25),
-              )
-            : null,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              path ?? 'assets/icons/aprendisaje.png',
-              width: 24,
-              height: 24,
-            ),
-            // Solo se muestra la etiqueta si hay espacio (showLabel == true)
-            if (isSelected && showLabel) ...[
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  label,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Styles.whiteColor,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 13,
+      child: Expanded(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 100),
+          decoration: isSelected
+              ? BoxDecoration(
+                  color: const Color.fromRGBO(252, 146, 20, 1),
+                  borderRadius: BorderRadius.circular(25),
+                )
+              : null,
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                path ?? 'assets/icons/aprendisaje.png',
+                width: 30,
+                height: 30,
+              ),
+              // Solo se muestra la etiqueta si hay espacio (showLabel == true)
+              if (isSelected && showLabel) ...[
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    label,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Styles.whiteColor,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

@@ -22,7 +22,7 @@ class InputText extends StatefulWidget {
     this.readOnly = false,
     this.initialValue,
     this.fondoColor = Styles.colorContainer,
-    this.borderColor = Styles.fiveColor, // Nuevo color del borde
+    this.borderColor = Colors.transparent, // Nuevo color del borde
     this.onImagePicked,
     this.isTextArea = false,
     this.fw,
@@ -64,8 +64,9 @@ class _InputTextState extends State<InputText> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       // Si es TextArea, usa todo el ancho; si no, un ancho fijo
+
       width: widget.isTextArea ? double.infinity : 302,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +78,7 @@ class _InputTextState extends State<InputText> {
                 fontSize: 14,
                 color: Colors.black,
                 fontFamily: 'Lato', // Fuente Lato para el label
-                fontWeight: widget.fw ?? FontWeight.w800,
+                fontWeight: widget.fw ?? FontWeight.w500,
               ),
             ),
           const SizedBox(height: 8),
@@ -105,6 +106,7 @@ class _InputTextState extends State<InputText> {
                   fontSize: 14,
                   color: Colors.black,
                 ),
+
                 decoration: InputDecoration(
                   // Cuando es TextArea, usamos hintText; si no, labelText
                   labelText: widget.isTextArea
@@ -115,14 +117,14 @@ class _InputTextState extends State<InputText> {
                       : null,
 
                   // Fuente personalizada para el placeholder/hint
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
                     fontFamily: 'Lato', // Fuente Lato para el placeholder
                     fontWeight: FontWeight.w400,
                   ),
                   // El labelStyle se usa cuando isTextArea es falso (labelText)
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     fontSize: 14,
                     color: Colors.black,
                     fontFamily: 'Lato', // Fuente Lato para el label
@@ -133,7 +135,7 @@ class _InputTextState extends State<InputText> {
                   alignLabelWithHint: widget.isTextArea,
                   // Ajuste de padding para que el texto inicie desde arriba
                   contentPadding: widget.isTextArea
-                      ? const EdgeInsets.symmetric(vertical: 16, horizontal: 16)
+                      ? const EdgeInsets.symmetric(vertical: 20, horizontal: 20)
                       : null,
 
                   border: OutlineInputBorder(

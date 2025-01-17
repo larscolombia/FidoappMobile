@@ -37,6 +37,7 @@ import 'package:pawlly/modules/home/screens/pages/explorar_container.dart';
 import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/pages/resources.dart';
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/provider/push_provider.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -66,20 +67,18 @@ class HomeScreen extends StatelessWidget {
       Get.put(NotificationController());
 
   final PushProvider pushProvider = Get.put(PushProvider());
+
+  final UserProfileController profileController =
+      Get.put(UserProfileController());
   @override
   Widget build(BuildContext context) {
-    if (AuthServiceApis.dataCurrentUser.deviceToken == 'null') {
-      var token = new PushProvider();
-      token.setupFCM();
-      print(
-          'device token sin colocar: ${AuthServiceApis.dataCurrentUser.deviceToken}');
-    } else {
-      print(
-          'token en pantaala: ${AuthServiceApis.dataCurrentUser.deviceToken}');
+    if (profileController.user.value.profile == null) {
+      profileController.fetchUserData('${AuthServiceApis.dataCurrentUser.id}');
     }
+
     print(
         'AuthServiceApis.dataCurrentUser.deviceToken ${AuthServiceApis.dataCurrentUser.deviceToken}');
-    homeController.SelectType(1);
+    //homeController.SelectType(1);
     return Scaffold(
       body: Stack(
         children: [
@@ -95,6 +94,53 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   Positioned(
                       top: 0, left: 0, right: 0, child: HeaderNotification()),
+                  // Agregar animación para mostrar/ocultar el contenedor de notificaciones
+                  AnimatedOpacity(
+                    opacity:
+                        AuthServiceApis.dataCurrentUser.deviceToken == 'null'
+                            ? 1.0
+                            : 0.0,
+                    duration:
+                        Duration(milliseconds: 300), // Duración de la animación
+                    child: AuthServiceApis.dataCurrentUser.deviceToken == 'null'
+                        ? Center(
+                            child: Container(
+                              height: 50,
+                              width: 300,
+                              margin: EdgeInsets.all(10),
+                              child: GestureDetector(
+                                onTap: () {
+                                  var token = PushProvider();
+                                  token.setupFCM();
+                                },
+                                child: Center(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: Styles.iconColorBack,
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Obx(() {
+                                      return Text(
+                                        pushProvider.isLoading.value
+                                            ? "Cargando..."
+                                            : 'Activar Notificaciones aquí',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Lato',
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : SizedBox
+                            .shrink(), // Si el token es 'null', no muestra nada
+                  ),
                   Container(
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -142,7 +188,6 @@ class HomeScreen extends StatelessWidget {
               child: MenuOfNavigation(),
             );
           }),
-          // Menu de Navegación siempre visible
         ],
       ),
     );
@@ -348,7 +393,7 @@ class HomeScreen extends StatelessWidget {
           child: FloatingActionButton(
             onPressed: () {
               // Acción cuando el FAB es presionado
-              Get.to(FormularioDiario());
+              Get.to(() => FormularioDiario());
             },
             shape: const CircleBorder(),
             backgroundColor: Styles.primaryColor,
@@ -360,6 +405,7 @@ class HomeScreen extends StatelessWidget {
         ),
         Container(
           child: RecargaComponente(
+            titulo: 'Toca para mostrar actividades',
             callback: () {
               final PetActivityController controller =
                   Get.put(PetActivityController());

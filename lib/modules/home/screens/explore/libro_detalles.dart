@@ -255,17 +255,6 @@ class LibroDetalles extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              SizedBox(
-                                width: 94,
-                                height: 54,
-                                child: Center(
-                                  child: Text(
-                                    textAlign: TextAlign.center,
-                                    "${econtroller.selectedEBook.value.price}\$",
-                                    style: Styles.TextTituloAutor,
-                                  ),
-                                ),
-                              ),
                               Expanded(
                                 child: Container(
                                   child: ButtonDefaultWidget(

@@ -17,42 +17,57 @@ class Sobremi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('vamos ${jsonEncode(profileController.user.value)}');
     return Container(
       child: Column(children: [
         Obx(
-          () => Container(
-            width: MediaQuery.of(context).size.width - 100,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Sobre ${profileController.user.value.firstName}',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'lato',
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Obx(() => SizedBox(
+          () {
+            if (profileController.isLoading.value) {
+              return const SizedBox(
+                child: Text('cargando ...'),
+              );
+            }
+            return Container(
               width: MediaQuery.of(context).size.width - 100,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 16.0),
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    profileController.user.value.profile?.aboutSelf ?? "",
-                    style: Styles.secondTextTitle,
-                    textAlign: TextAlign.left,
+                    'Sobre ${profileController.user.value.firstName}',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'lato',
+                    ),
                   ),
                 ),
               ),
-            )),
+            );
+          },
+        ),
+        Obx(() {
+          if (profileController.isLoading.value) {
+            return const SizedBox(
+              child: Center(
+                child: Text('cargando ...'),
+              ),
+            );
+          }
+          return SizedBox(
+            width: MediaQuery.of(context).size.width - 100,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  profileController.user.value.profile?.aboutSelf ?? "",
+                  style: Styles.secondTextTitle,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+          );
+        }),
       ]),
     );
   }

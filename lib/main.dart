@@ -50,7 +50,7 @@ Future<void> main() async {
 
   // Inicializa PushProvider: se solicita permisos, se obtiene el token
   // y se deben registrar los listeners para los callbacks
-  final pushNotificaciones = PushProvider();
+  final pushNotificaciones = new PushProvider();
   await pushNotificaciones.setupFCM();
   await pushNotificaciones
       .initNorification(); // IMPORTANTE: registra los listeners de mensajes

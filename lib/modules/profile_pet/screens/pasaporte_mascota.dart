@@ -38,6 +38,7 @@ class PasaporteMascota extends StatelessWidget {
   Widget build(BuildContext context) {
     var pet = _homeController.selectedProfile.value!;
     var ancho = MediaQuery.of(context).size.width - 100;
+    var peso = pet.weight.toString().obs;
     final TextEditingController dateController = TextEditingController();
 
     if (pet.dateOfBirth != null) {
@@ -130,7 +131,8 @@ class PasaporteMascota extends StatelessWidget {
                       width: ancho,
                       child: InputText(
                         label: 'Sexo',
-                        initialValue: pet.gender,
+                        initialValue:
+                            pet.gender == 'female' ? 'Mujer' : 'Hombre',
                         placeholder: pet.gender,
                         onChanged: (value) => pet.gender = value,
                       ),
@@ -184,8 +186,8 @@ class PasaporteMascota extends StatelessWidget {
                       width: ancho,
                       child: InputText(
                         label: 'Altura',
-                        placeholder: pet.size,
-                        initialValue: pet.size ?? "no lo ha colocado aún",
+                        placeholder: pet.height.toString(),
+                        initialValue: pet.size ?? "0",
                         onChanged: (value) => pet.size = value,
                       ),
                     ),
@@ -194,9 +196,10 @@ class PasaporteMascota extends StatelessWidget {
                       width: ancho,
                       child: InputText(
                         label: 'Peso',
-                        placeholder: pet.weightUnit,
-                        initialValue: pet.weightUnit ?? "no lo ha colocado aún",
-                        onChanged: (value) => pet.weightUnit = value,
+                        placeholder: pet.weight.toString(),
+                        initialValue:
+                            pet.weight.toString() ?? "no lo ha colocado aún",
+                        onChanged: (value) => peso.value = value,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -242,38 +245,38 @@ class PasaporteMascota extends StatelessWidget {
                           );
                         }
                         return ButtonDefaultWidget(
-                          title: 'Actualizar +',
+                          title: petController.isLoading.value
+                              ? 'Actualizando ...'
+                              : 'Actualizar +',
                           callback: () {
-                            try {
-                              // Verifica si pet.dateOfBirth no es nulo o vacío
+                            // Verifica si pet.dateOfBirth no es nulo o vacío
+                            print('peso.value ${peso.value}');
+                            pet.height = double.parse(pet.size ?? "0");
+                            pet.weight = double.parse(peso.value ?? "0");
+                            pet.weightUnit = "kg";
+                            // Actualizar los datos de la mascota
+                            petController.updatePet(
+                              pet.id,
+                              {
+                                "name": pet.name,
+                                "additional_info": pet.description,
+                                "date_of_birth": pet.dateOfBirth,
+                                "breed_name": pet.breed,
+                                "gender": pet.gender,
+                                "weight": pet.weight,
+                                "eweightUnit": pet.weightUnit,
+                                "heheightUnit": pet.heightUnit,
+                                "height": num.parse(pet.size ?? "0"),
+                                "user_id": pet.userId,
+                                "age": "${pet.age}",
+                                "pet_fur": pet.petFur,
+                                "chip": pet.chip,
+                                "size": "${pet.size}",
+                              },
+                            );
 
-                              // Actualizar los datos de la mascota
-                              petController.updatePet(
-                                pet.id,
-                                {
-                                  "name": pet.name,
-                                  "additional_info": pet.description,
-                                  "date_of_birth": pet.dateOfBirth,
-                                  "breed_name": pet.breed,
-                                  "gender": pet.gender,
-                                  "weight": pet.weight,
-                                  "eweightUnit": pet.weightUnit,
-                                  "heheightUnit": pet.heightUnit,
-                                  "user_id": pet.userId,
-                                  "age": "${pet.age}",
-                                  "pet_fur": pet.petFur,
-                                  "chip": pet.chip,
-                                  "size": "${pet.size}",
-                                },
-                              );
-
-                              // Imprimir metadatos para depuración
-                              print('Metadatos: ${json.encode(pet)}');
-                            } catch (e) {
-                              // Manejo de errores
-                              print(
-                                  'Error al formatear o actualizar la fecha: $e');
-                            }
+                            // Imprimir metadatos para depuración
+                            print('Metadatos: ${json.encode(pet)}');
                           },
                         );
                       }),

@@ -163,7 +163,9 @@ class Profile {
   String? createdAt;
   String? updatedAt;
   String? deletedAt;
-
+  String? validationNumber;
+  String? profecionalTitle;
+  List<String>? tags;
   Profile({
     this.id,
     this.aboutSelf,
@@ -177,6 +179,9 @@ class Profile {
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
+    this.validationNumber,
+    this.profecionalTitle,
+    this.tags,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
@@ -193,6 +198,9 @@ class Profile {
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
       deletedAt: json['deleted_at'],
+      validationNumber: json['validation_number'],
+      profecionalTitle: json['profecional_title'],
+      tags: json['tags'] != null ? List<String>.from(json['tags']) : null,
     );
   }
 
@@ -210,6 +218,9 @@ class Profile {
       'created_at': createdAt,
       'updated_at': updatedAt,
       'deleted_at': deletedAt,
+      'validation_number': validationNumber,
+      'profecional_title': profecionalTitle,
+      'tags': tags,
     };
   }
 }

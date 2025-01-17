@@ -200,9 +200,9 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       InfoMascota(
                         titulo: 'Altura',
-                        value:
-                            _homeController.selectedProfile.value!.heightUnit ??
-                                "n/A",
+                        value: _homeController.selectedProfile.value!.height
+                                .toString() ??
+                            "n/A",
                       ),
                       const SizedBox(height: 20),
                       SizedBox(

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/formulario_verificacion.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
@@ -17,7 +19,7 @@ import 'package:pawlly/styles/styles.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());
-
+  final UserProfileController userCpntroller = Get.put(UserProfileController());
   ProfileScreen({super.key});
 
   @override

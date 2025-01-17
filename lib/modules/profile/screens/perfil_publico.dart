@@ -43,6 +43,10 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (comentariosController.comments.value.isEmpty) {
+      comentariosController.fetchComments(
+          '${AuthServiceApis.dataCurrentUser.id}', "user");
+    }
     return Scaffold(
       backgroundColor: Styles.whiteColor,
       body: Container(

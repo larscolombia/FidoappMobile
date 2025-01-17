@@ -21,7 +21,7 @@ class ProfileHeader extends StatelessWidget {
         Container(
           height: headerHeight + 80,
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Styles.colorContainer,
           ),
           child: Stack(
@@ -43,13 +43,22 @@ class ProfileHeader extends StatelessWidget {
               ),
             ),
             child: Obx(
-              () => CircleAvatar(
-                radius: 46,
-                backgroundImage: NetworkImage(
-                  profileController.user.value.profileImage ?? '',
-                ),
-                backgroundColor: Colors.transparent,
-              ),
+              () {
+                if (profileController.isLoading.value) {
+                  return const SizedBox(
+                    child: Center(
+                      child: Text('cargando ...'),
+                    ),
+                  );
+                }
+                return CircleAvatar(
+                  radius: 46,
+                  backgroundImage: NetworkImage(
+                    profileController.user.value.profileImage ?? '',
+                  ),
+                  backgroundColor: Colors.transparent,
+                );
+              },
             ),
           ),
         ),

@@ -78,15 +78,6 @@ class Cursos extends StatelessWidget {
                   width: 60,
                   child: Column(
                     children: [
-                      Text(
-                        precio,
-                        textAlign: TextAlign.start,
-                        style: const TextStyle(
-                            color: Color.fromRGBO(188, 190, 190, 1),
-                            fontFamily: 'Lato',
-                            fontSize: 13,
-                            fontWeight: FontWeight.w200),
-                      ),
                       const Align(
                         alignment: Alignment.topLeft,
                         child: Text(

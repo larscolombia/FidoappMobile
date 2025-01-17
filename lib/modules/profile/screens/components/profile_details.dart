@@ -18,13 +18,20 @@ class ProfileDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Obx(
-          () => SizedBox(
+        Obx(() {
+          if (profileController.isLoading.value) {
+            return const SizedBox(
+              child: Center(
+                child: Text('cargando ...'),
+              ),
+            );
+          }
+          return SizedBox(
             width: MediaQuery.of(context).size.width - 100,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
+                const Icon(
                   Icons.location_on,
                   color: Styles.primaryColor,
                   size: 20,
@@ -40,30 +47,44 @@ class ProfileDetails extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-        ),
+          );
+        }),
         const SizedBox(height: 10),
-        Obx(
-          () => SizedBox(
+        Obx(() {
+          if (profileController.isLoading.value) {
+            return const SizedBox(
+              child: Center(
+                child: Text('cargando ...'),
+              ),
+            );
+          }
+          return SizedBox(
             width: MediaQuery.of(context).size.width - 100,
             child: Text(
               profileController.user.value.firstName ?? "",
               style: Styles.dashboardTitle20,
               textAlign: TextAlign.center,
             ),
-          ),
-        ),
-        Obx(
-          () => Text(
-            profileController.user.value.userType ?? "",
+          );
+        }),
+        Obx(() {
+          if (profileController.isLoading.value) {
+            return const SizedBox(
+              child: Text('cargando ...'),
+            );
+          }
+          return Text(
+            profileController.user.value.userType == "vet"
+                ? "Veterinario"
+                : "Entrenador",
             style: const TextStyle(
               color: Color(0xff555555),
               fontSize: 12,
               fontWeight: FontWeight.bold,
               fontFamily: 'Lato',
             ),
-          ),
-        ),
+          );
+        }),
         const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/input_select.dart';
+import 'package:pawlly/modules/components/input_tag_wiget.dart';
 import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
@@ -21,7 +26,16 @@ class FormularioVerificacion extends StatefulWidget {
 class _FormularioVerificacionState extends State<FormularioVerificacion> {
   final UserProfileController controller = Get.put(UserProfileController());
   final ProfileController profileController = Get.put(ProfileController());
-
+  var margin = 20.00;
+  final Map<String, String> expertos = {
+    "Comportamiento": "Comportamiento",
+    "Cardiología": "Cardiología",
+    "Dermatología": "Dermatología",
+    "Emergencias y Cuidados Críticos": "Emergencias y Cuidados Críticos",
+    "Cirugía Ortopédica": "Cirugía Ortopédica",
+    "Cirugía Ortopédica": "c",
+    "Anestesiología": "Anestesiología",
+  };
   @override
   void initState() {
     super.initState();
@@ -31,6 +45,8 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
 
   @override
   Widget build(BuildContext context) {
+    var profile = controller.user.value.profile;
+
     return Scaffold(
       body: Column(
         children: [
@@ -40,34 +56,52 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
             decoration: const BoxDecoration(
               color: Styles.colorContainer,
             ),
-            child: const Center(
-              child: Text(
-                'Formulario de Verificación',
-                style: Styles.TextTituloBlack,
-              ),
+            child: const Stack(
+              children: [
+                BorderRedondiado(top: 160),
+                Center(
+                  child: Text(
+                    'Formulario de Verificación',
+                    style: Styles.TextTituloBlack,
+                  ),
+                )
+              ],
             ),
           ),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(36),
+                color: Colors.white,
               ),
               child: CustomScrollView(
                 slivers: [
                   SliverList(
                     delegate: SliverChildListDelegate([
+                      if (controller.user.value.profile == null)
+                        SizedBox(
+                          child: RecargaComponente(
+                            titulo: 'Cargar más',
+                            callback: () {
+                              controller.fetchUserData(
+                                  "${AuthServiceApis.dataCurrentUser.id}");
+                            },
+                          ),
+                        ),
+                      SizedBox(height: margin),
                       Center(
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
                           child: BarraBack(
                             titulo: 'Verificación Profesional',
+                            subtitle: 'Añade tu información profesional',
+                            ColorSubtitle: Colors.black,
                             callback: () {
                               Get.back();
                             },
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: margin),
                       Center(
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
@@ -86,7 +120,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: margin),
                       Center(
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
@@ -104,102 +138,143 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Obx(() {
-                        if (controller.isLoading.value) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        print(
-                            'sobremi ${controller.user.value.profile?.aboutSelf ?? ''}');
-                        return Center(
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: InputText(
-                              onChanged: (value) =>
-                                  profileController.user['about_self'] = value,
-                              label: 'Descripción sobre ti',
-                              placeholder: "",
-                              isTextArea: true,
-                              initialValue:
-                                  controller.user.value.profile?.aboutSelf ??
-                                      '',
-                            ),
+                      SizedBox(height: margin),
+                      Center(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width - 100,
+                          child: InputText(
+                            onChanged: (value) =>
+                                profileController.user['about_self'] = value,
+                            label: 'Descripción sobre ti',
+                            placeholder: "",
+                            isTextArea: true,
+                            initialValue: profile?.aboutSelf ?? '',
                           ),
-                        );
-                      }),
-                      const SizedBox(
-                        height: 10,
+                        ),
                       ),
-                      Obx(() {
-                        if (controller.isLoading.value) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-
-                        return Center(
-                          child: SizedBox(
+                      SizedBox(height: margin),
+                      Center(
+                        child: SizedBox(
                             width: MediaQuery.of(context).size.width - 100,
-                            child: InputText(
-                              onChanged: (value) =>
-                                  profileController.user['address'] = value,
-                              label: 'Localización',
-                              placeholder: "",
-                              prefiIcon: Icon(
-                                Icons.location_on,
-                                color: Styles.iconColorBack,
-                              ),
-                              initialValue: controller.user.value.address ?? '',
-                            ),
-                          ),
-                        );
-                      }),
-                      const SizedBox(height: 10),
+                            child: InputSelect(
+                              onChanged: (value) {
+                                profileController.user['expert'] =
+                                    value.toString();
+                              },
+                              label: 'Áreas de especialización',
+                              placeholder:
+                                  controller.user.value.profile?.expert,
+                              TextColor: Colors.black,
+                              prefiIcon: 'assets/icons/user-octagon.png',
+                              items: expertos.entries.map((entry) {
+                                return DropdownMenuItem(
+                                  value: entry.key,
+                                  child: Text(entry.value,
+                                      style: TextStyle(
+                                        fontFamily: "Lato",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w800,
+                                      )),
+                                );
+                              }).toList(),
+                            )),
+                      ),
+                      SizedBox(height: margin),
                       Center(
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
                           child: const Divider(
-                            height: 1,
-                            color: Color.fromRGBO(158, 158, 158, 1),
+                            thickness: .2,
+                            color: Color.fromRGBO(167, 157, 157, 1),
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
+                      Obx(() {
+                        return Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: InputText(
+                              initialValue: controller.user.value.address ?? '',
+                              onChanged: (value) {},
+                              label: 'Título o certificación profesional',
+                              isFilePicker: true,
+                              placeholder: "",
+                              placeholderImage:
+                                  Image.asset('assets/icons/file.png'),
+                            ),
+                          ),
+                        );
+                      }),
+                      SizedBox(height: margin),
+                      Obx(() {
+                        return Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: InputText(
+                              initialValue: controller
+                                      .user.value.profile?.validationNumber ??
+                                  '#',
+                              onChanged: (value) {
+                                profileController.user['validation_number'] =
+                                    value;
+                              },
+                              label: 'Nro. de validación del certificado',
+                              placeholder: "",
+                              placeholderImage:
+                                  Image.asset('assets/icons/personalcard.png'),
+                            ),
+                          ),
+                        );
+                      }),
+                      SizedBox(height: margin),
+                      Obx(() {
+                        return Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 100,
+                            child: InputText(
+                              initialValue: controller.user.value.address,
+                              onChanged: (value) {
+                                profileController.user['address'] = value;
+                              },
+                              label: 'Dirección de vivienda',
+                              placeholder: "",
+                              prefiIcon: Icon(
+                                Icons.location_on,
+                                color: Styles.primaryColor,
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
+                      SizedBox(height: margin),
                       Center(
-                        child: SizedBox(
+                        child: Container(
                           width: MediaQuery.of(context).size.width - 100,
-                          child: InputSelect(
-                            onChanged: (value) {},
-                            label: 'Áreas de especialización',
-                            placeholder: 'Áreas de especialización',
-                            TextColor: Colors.black,
-                            prefiIcon: 'assets/icons/genero.png',
-                            items: const [
-                              DropdownMenuItem(
-                                value: 'vet',
-                                child: Text('Veterinario'),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Añadir tabs',
+                                style: TextStyle(
+                                  fontFamily: "Lato",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                ),
                               ),
-                              DropdownMenuItem(
-                                value: 'user',
-                                child: Text('Usuario'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'trainer',
-                                child: Text('Entrenador'),
+                              TagInputWidget(
+                                initialTags: profile?.tags ?? [],
+                                onChanged: (value) {
+                                  print("tagas $value");
+                                  List<String> tags = List<String>.from(value);
+                                  profileController.user['tags'] = tags;
+                                },
                               ),
                             ],
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      // Ejemplos de campos comentados
-                      // ...
-                      const SizedBox(height: 20),
+                      SizedBox(height: margin),
                       Column(
                         children: [
                           Center(
@@ -214,7 +289,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          SizedBox(height: margin),
                           Obx(
                             () => Center(
                               child: SizedBox(
@@ -233,7 +308,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: margin),
                     ]),
                   ),
                 ],
