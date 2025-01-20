@@ -238,18 +238,18 @@ class CursosDetalles extends StatelessWidget {
                                 return;
                               }
                               // Acción al tocar un video
-                              Get.to(CursoVideo(
-                                videoId: video.url,
-                                cursoId: curso.id.toString(),
-                                name: curso.name,
-                                description: curso.description,
-                                image: curso.image,
-                                duration: curso.duration,
-                                price: curso.price,
-                                difficulty: curso.difficulty,
-                                videoUrl: video.url,
-                                tipovideo: 'video',
-                              ));
+                              Get.to(() => CursoVideo(
+                                    videoId: video.url,
+                                    cursoId: curso.id.toString(),
+                                    name: curso.name,
+                                    description: curso.description,
+                                    image: curso.image,
+                                    duration: curso.duration,
+                                    price: curso.price,
+                                    difficulty: curso.difficulty,
+                                    videoUrl: video.url,
+                                    tipovideo: 'video',
+                                  ));
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 20),

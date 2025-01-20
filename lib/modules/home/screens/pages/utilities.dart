@@ -19,16 +19,21 @@ class Utilities extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Utilidades',
-          style: TextStyle(
-            fontSize: 20,
-            color: Styles.primaryColor,
-            fontFamily: 'PoetsenOne',
+        Center(
+          child: Container(
+            width: width,
+            child: const Text(
+              'Utilidades',
+              style: TextStyle(
+                fontSize: 20,
+                color: Styles.primaryColor,
+                fontFamily: 'PoetsenOne',
+              ),
+              textAlign: TextAlign.left,
+            ),
           ),
-          textAlign: TextAlign.left,
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         Obx(() {
           if (herramientasController.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
@@ -38,13 +43,17 @@ class Utilities extends StatelessWidget {
           final tools = herramientasController.tools;
 
           return Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
               tools.length,
               (index) {
                 final tool = tools[index];
 
-                return Expanded(
+                return Container(
+                  width: MediaQuery.of(context).size.width / 3.7,
                   child: ToolWidget(
+                    index: index,
                     imagePath: "$DOMAIN_URL/${tool.image}",
                     title: tool.name,
                     audioUrl: tool.audio,
@@ -82,13 +91,14 @@ class ToolWidget extends StatelessWidget {
   final String title;
   final String audioUrl;
   final VoidCallback onError;
-
+  final int index;
   const ToolWidget({
     Key? key,
     required this.imagePath,
     required this.title,
     required this.audioUrl,
     required this.onError,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -102,8 +112,8 @@ class ToolWidget extends StatelessWidget {
         }
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 6),
-        height: 93,
+        height: 94,
+        width: 94,
         decoration: BoxDecoration(
           color: Styles.fiveColor,
           borderRadius: BorderRadius.circular(10),

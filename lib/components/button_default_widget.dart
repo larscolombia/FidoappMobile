@@ -22,10 +22,11 @@ class ButtonDefaultWidget extends StatelessWidget {
   const ButtonDefaultWidget({
     super.key,
     this.widthButtom,
-    this.heigthButtom = 56,
+    this.heigthButtom = 54,
     required this.title,
     this.callback,
-    this.defaultColor = Styles.primaryColor, // Color de fondo predeterminado
+    this.defaultColor =
+        const Color(0xffFF4931), // Color de fondo predeterminado
     this.color,
     this.textColor = Styles.whiteColor, // Color del texto predeterminado
     this.border, // Borde del botón

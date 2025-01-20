@@ -46,10 +46,15 @@ class Resources extends StatelessWidget {
               },
             );
           }
-          return Text(
-            'Recursos',
-            style: Styles.titulorecursos,
-            textAlign: TextAlign.left,
+          return Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                'Recursos',
+                style: Styles.titulorecursos,
+                textAlign: TextAlign.left,
+              ),
+            ),
           );
         }),
 

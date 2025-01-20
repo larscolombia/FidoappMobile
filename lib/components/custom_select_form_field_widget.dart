@@ -4,7 +4,7 @@ import 'package:pawlly/styles/styles.dart';
 
 class CustomSelectFormFieldWidget extends StatefulWidget {
   final String placeholder;
-  final String icon;
+  final String? icon; // Ahora icon es opcional (puede ser null)
   final TextEditingController? controller;
   final List<String>? items;
   final bool? enabled;
@@ -14,11 +14,11 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
   final Color? filcolorCustom;
   final Color? textColor;
   final Color? borderColor; // Nueva propiedad para el color del borde
-
+  final String? label;
   const CustomSelectFormFieldWidget({
     super.key,
     required this.placeholder,
-    required this.icon,
+    this.icon, // Hacer el icono opcional
     required this.controller,
     this.items,
     this.enabled,
@@ -29,6 +29,7 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
     this.filcolorCustom,
     this.textColor,
     this.borderColor, // Inicialización de borderColor
+    this.label,
   });
 
   @override
@@ -89,112 +90,131 @@ class _CustomSelectFormFieldWidgetState
 
     return CompositedTransformTarget(
       link: _layerLink,
-      child: GestureDetector(
-        onTap: () {
-          if (isEnabled) {
-            if (_overlayEntry == null) {
-              _overlayEntry = _createOverlayEntry();
-              Overlay.of(context).insert(_overlayEntry!);
-            } else {
-              _removeOverlay();
-            }
-          }
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InputDecorator(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: hasText || _selectedValue != null
-                    ? Colors.white
-                    : widget.filcolorCustom ??
-                        const Color.fromRGBO(252, 186, 103, 1),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                    color: widget.borderColor ??
-                        (hasText || _selectedValue != null
-                            ? Styles.iconColorBack
-                            : Colors.transparent),
-                    width: 1.0,
-                  ),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                    color: isEnabled
-                        ? (widget.borderColor ??
-                            (hasText || _selectedValue != null
-                                ? Styles.iconColorBack
-                                : Colors.transparent))
-                        : Colors.grey,
-                    width: .5,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
-                    color: widget.borderColor ?? Styles.iconColorBack,
-                    width: 1.0,
-                  ),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                ),
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    widget.icon,
-                    width: 20,
-                    height: 20,
-                  ),
-                ),
-                labelText: _selectedValue != null ? null : widget.placeholder,
-                labelStyle: TextStyle(
-                  color: widget.textColor ?? Colors.black,
-                  fontFamily:
-                      'Lato', // Forzamos la fuente Lato para el placeholder
+      child: Column(
+        children: [
+          if (widget.label != null)
+            Container(
+              padding: EdgeInsets.only(left: 5),
+              width: double.infinity,
+              child: Text(
+                'Categoria del evento',
+                style: TextStyle(
                   fontSize: 14,
+                  color: Colors.black,
+                  fontFamily: 'lato',
+                  fontWeight: FontWeight.w400,
                 ),
-                errorText: errorText, // Mostrar mensaje de error si existe
-              ),
-              isEmpty: _selectedValue == null,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    _selectedValue ?? '',
-                    style: TextStyle(
-                      color: isEnabled ? Colors.black : Colors.grey,
-                      fontFamily:
-                          'Lato', // Forzamos la fuente Lato para el texto ingresado
-                    ),
-                  ),
-                  Icon(
-                    Icons.arrow_drop_down,
-                    color: isEnabled ? Styles.iconColorBack : Colors.grey,
-                  ),
-                ],
               ),
             ),
-            if (errorText != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8, left: 12),
-                child: Text(
-                  errorText,
-                  style: const TextStyle(
-                    color: Colors.red,
-                    fontSize: 12.0,
+          if (widget.label != null) const SizedBox(height: 8),
+          GestureDetector(
+            onTap: () {
+              if (isEnabled) {
+                if (_overlayEntry == null) {
+                  _overlayEntry = _createOverlayEntry();
+                  Overlay.of(context).insert(_overlayEntry!);
+                } else {
+                  _removeOverlay();
+                }
+              }
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InputDecorator(
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+                    filled: true,
+                    fillColor: hasText || _selectedValue != null
+                        ? Colors.white
+                        : widget.filcolorCustom ??
+                            const Color.fromRGBO(252, 186, 103, 1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(
+                        color: widget.borderColor ??
+                            (hasText || _selectedValue != null
+                                ? Styles.iconColorBack
+                                : Colors.transparent),
+                        width: 1.0,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(
+                        color: isEnabled
+                            ? (widget.borderColor ??
+                                (hasText || _selectedValue != null
+                                    ? Styles.iconColorBack
+                                    : Colors.transparent))
+                            : Colors.grey,
+                        width: .5,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(
+                        color: widget.borderColor ?? Styles.iconColorBack,
+                        width: 1.0,
+                      ),
+                    ),
+                    disabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(
+                        color: Colors.grey,
+                        width: 1.0,
+                      ),
+                    ),
+                    // Condicionar el prefixIcon si el icon es proporcionado
+                    prefixIcon: widget.icon != null
+                        ? Image.asset(
+                            widget.icon!,
+                            width: 20,
+                            height: 20,
+                          )
+                        : null, // Si no se pasa icono, no mostramos nada
+                    labelText:
+                        _selectedValue != null ? null : widget.placeholder,
+
+                    labelStyle: TextStyle(
+                      color: widget.textColor ?? Colors.black,
+                      fontFamily:
+                          'Lato', // Forzamos la fuente Lato para el placeholder
+                      fontSize: 14,
+                    ),
+                    errorText: errorText, // Mostrar mensaje de error si existe
+                  ),
+                  isEmpty: _selectedValue == null,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        _selectedValue ?? '',
+                        style: TextStyle(
+                          color: isEnabled ? Colors.black : Colors.grey,
+                          fontFamily:
+                              'Lato', // Forzamos la fuente Lato para el texto ingresado
+                        ),
+                      ),
+                      Image.asset('assets/icons/flecha_select.png'),
+                    ],
                   ),
                 ),
-              ),
-          ],
-        ),
+                if (errorText != null)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 12),
+                    child: Text(
+                      errorText,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

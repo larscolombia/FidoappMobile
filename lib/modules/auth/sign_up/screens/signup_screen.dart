@@ -24,6 +24,8 @@ class SignUpScreen extends GetView<SignUpController> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return AppScaffold(
+      automaticallyImplyLeading: false,
+      hideAppBar: true,
       body: Container(
         padding: Styles.paddingAll,
         child: SizedBox(
@@ -40,12 +42,13 @@ class SignUpScreen extends GetView<SignUpController> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      const SizedBox(height: 100),
                       Text(
                         locale.value.register,
                         style: const TextStyle(
                           color: Color.fromRGBO(255, 73, 49, 1),
                           fontSize: 34,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                       Form(
@@ -74,7 +77,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de apellido
                             Container(
-                              margin: const EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 16),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.lastNameCont,
                                 placeholder: locale.value.lastName,
@@ -88,11 +91,11 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de correo electrónico
                             Container(
-                              margin: const EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 16),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.emailCont,
                                 placeholder: locale.value.email,
-                                icon: 'assets/icons/email.png',
+                                icon: 'assets/icons/sms.png',
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)
                                       ? 'El correo es requerido'
@@ -105,7 +108,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de género
                             Container(
-                              margin: const EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 16),
                               child: CustomSelectFormFieldWidget(
                                 controller: controller.genCont,
                                 placeholder: locale.value.gender,
@@ -125,7 +128,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de contraseña
                             Container(
-                              margin: const EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 16),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.passwordCont,
                                 placeholder: locale.value.password,
@@ -144,7 +147,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de confirmar contraseña
                             Container(
-                              margin: const EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 16),
                               child: CustomTextFormFieldWidget(
                                 controller: controller.password2Cont,
                                 placeholder: locale.value.confirmPassword,
@@ -160,7 +163,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de tipo de usuario
                             Container(
-                              margin: const EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 16),
                               child: CustomSelectFormFieldWidget(
                                 controller: controller.userTypeCont,
                                 placeholder: locale.value.userType,
@@ -255,7 +258,7 @@ class SignUpScreen extends GetView<SignUpController> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 16),
                       // Botón de registro
                       Obx(() {
                         if (controller.isLoading.value) {

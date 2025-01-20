@@ -22,16 +22,21 @@ class Training extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // El título cambia según el índice seleccionado
-        Text(
-          controller.selectedIndex.value == 0
-              ? 'Entrenamientos'
-              : controller.selectedIndex.value == 3
-                  ? 'Seguir Viendo'
-                  : 'Cursos y Programas de Entrenamiento',
-          style: const TextStyle(
-            fontSize: 20,
-            color: Styles.primaryColor,
-            fontFamily: Styles.fuente2,
+        Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            child: Text(
+              controller.selectedIndex.value == 0
+                  ? 'Entrenamientos'
+                  : controller.selectedIndex.value == 3
+                      ? 'Seguir Viendo'
+                      : 'Cursos y Programas de Entrenamiento',
+              style: const TextStyle(
+                fontSize: 20,
+                color: Styles.primaryColor,
+                fontFamily: Styles.fuente2,
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 10),

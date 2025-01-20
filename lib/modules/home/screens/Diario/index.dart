@@ -130,7 +130,7 @@ class _DiarioMascotasState extends State<DiarioMascotas> {
                           callback: () {
                             controller.getActivityById(actividad.id);
                             print('actividad ${actividad}');
-                            Get.to(DetallesDiario());
+                            Get.to(() => DetallesDiario());
                           },
                         ),
                       ),

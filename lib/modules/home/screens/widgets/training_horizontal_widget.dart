@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/models/training_model.dart';
+import 'package:pawlly/modules/components/baner_entrenamiento.dart';
 import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
 import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
@@ -29,162 +30,35 @@ class TrainingHorizontal extends StatelessWidget {
               double.tryParse(trainingModel.progress.toString()) ?? 0.0;
           final double normalizedProgress =
               rawProgress > 1 ? rawProgress / 100 : rawProgress;
-          return GestureDetector(
-            onTap: () {},
-            child: Container(
-              margin: const EdgeInsets.only(right: 16),
-              padding: const EdgeInsets.all(12),
-              width: MediaQuery.of(context).size.width * 0.8,
-              decoration: BoxDecoration(
-                color: Styles.whiteColor,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: Styles.greyTextColor.withOpacity(0.2),
-                  width: 1,
-                ),
-              ),
-              child: Row(
-                children: [
-                  // Imagen del curso
-                  Flexible(
-                    flex: 1,
-                    child: Container(
-                      width: 134,
-                      height: 118,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: trainingModel.image != null
-                            ? Image.network(
-                                trainingModel.image,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset(
-                                    'assets/images/petcare_1.png',
-                                    fit: BoxFit.cover,
-                                  );
-                                },
-                              )
-                            : Image.asset(
-                                'assets/images/petcare_1.png',
-                                fit: BoxFit.cover,
-                              ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  // Contenido del curso
-                  Expanded(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 120,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            controller.dificultad(trainingModel.difficulty),
-                            style: const TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              color: Styles.iconColorBack,
-                            ),
-                          ),
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            width: 316,
+            child: BanerEntrenamiento(
+              imagen: trainingModel.image ?? '',
+              nombre: trainingModel.name,
+              dificultad: trainingModel.difficulty,
+              normalizedProgress: normalizedProgress,
+              callback: () {
+                Get.to(() =>
+                    CursosDetalles(cursoId: "${trainingModel.id.toString()}"));
 
-                          SizedBox(
-                            height: 40,
-                            child: Text(
-                              trainingModel.name,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontFamily: 'Lato',
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
+                var video = controller.findVideoById(
+                    courseId: trainingModel.id,
+                    videoId: trainingModel.id.toString());
 
-                          Text(
-                            'Progreso: ',
-                            style: TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),
-                          ),
-
-                          // Barra de progreso
-                          // Dentro del build o donde uses el componente, define las variables de progreso:
-
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                    12.0, // Ajusta el radio de las esquinas según lo necesites
-                                  ),
-                                  child: LinearProgressIndicator(
-                                    value:
-                                        normalizedProgress, // Se usa el valor normalizado
-                                    backgroundColor:
-                                        Styles.greyTextColor.withOpacity(0.2),
-                                    color: Styles.iconColorBack,
-                                    minHeight: 6,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                // Se formatea el porcentaje correctamente, mostrando 25% en lugar de 0.25%
-                                '${(normalizedProgress * 100).toStringAsFixed(0)}%',
-                                style: const TextStyle(
-                                  fontFamily: 'Lato',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w800,
-                                  color: Styles.iconColorBack,
-                                ),
-                              ),
-                            ],
-                          ),
-
-                          SizedBox(
-                            height: 26,
-                            child: ButtonDefaultWidget(
-                              callback: () {
-                                Get.to(CursosDetalles(
-                                    cursoId: "${trainingModel.id.toString()}"));
-                                /**
-                                var video = controller.findVideoById(
-                                    courseId: trainingModel.id,
-                                    videoId: trainingModel.id.toString());
-                                Get.to(CursoVideo(
-                                  videoId: video?.url ?? '',
-                                  cursoId: trainingModel.id.toString(),
-                                  name: trainingModel.name,
-                                  description: trainingModel.description,
-                                  image: trainingModel.image,
-                                  duration: trainingModel.duration,
-                                  price: trainingModel.price,
-                                  difficulty: trainingModel.difficulty,
-                                  videoUrl: video?.url ?? '',
-                                  tipovideo: 'video',
-                                )); */
-                              },
-                              title: 'Seguir viendo',
-                              textSize: 9,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                Get.to(() => CursoVideo(
+                      videoId: video?.url ?? '',
+                      cursoId: trainingModel.id.toString(),
+                      name: trainingModel.name,
+                      description: trainingModel.description,
+                      image: trainingModel.image,
+                      duration: trainingModel.duration,
+                      price: trainingModel.price,
+                      difficulty: trainingModel.difficulty,
+                      videoUrl: video?.url ?? '',
+                      tipovideo: 'video',
+                    ));
+              },
             ),
           );
         }).toList(),

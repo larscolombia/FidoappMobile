@@ -20,7 +20,7 @@ class UserCard extends StatelessWidget {
         var users = user.profile;
         print('users ${users?.id}');
         if (users?.id != null) {
-          Get.to(PetOwnerProfileScreen(id: '${user.id}'));
+          Get.to(() => PetOwnerProfileScreen(id: '${user.id}'));
         } else {}
       },
       child: Container(

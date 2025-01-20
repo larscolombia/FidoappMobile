@@ -70,7 +70,7 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(16.0),
           borderSide: const BorderSide(
             color: Styles.iconColorBack,
             width: 1.0,
@@ -81,12 +81,12 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
           borderSide: const BorderSide(color: Colors.red, width: 1.0),
         ),
         focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(16.0),
           borderSide: const BorderSide(color: Colors.red, width: 1.0),
         ),
         prefixIcon: widget.icon != null
             ? Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 20.0, right: 20),
                 child: Image.asset(
                   widget.icon!,
                   width: 20,
@@ -96,22 +96,25 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
             : null, // Si `icon` es null, no se muestra nada
         labelText: hasText ? null : widget.placeholder,
         labelStyle: const TextStyle(
-          color: Colors.black,
+          color: Color(0xff383838),
           fontSize: 14,
           fontFamily: 'Lato',
           fontWeight: FontWeight.w500,
         ),
         suffixIcon: widget.obscureText == true
-            ? IconButton(
-                icon: Icon(
-                  _isObscure ? Icons.visibility_off : Icons.visibility,
-                  color: Styles.iconColorBack,
+            ? Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: IconButton(
+                  icon: Icon(
+                    _isObscure ? Icons.visibility_off : Icons.visibility,
+                    color: Styles.iconColorBack,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isObscure = !_isObscure;
+                    });
+                  },
                 ),
-                onPressed: () {
-                  setState(() {
-                    _isObscure = !_isObscure;
-                  });
-                },
               )
             : null,
       ),

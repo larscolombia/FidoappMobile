@@ -201,7 +201,7 @@ class CalendarController extends GetxController {
               getEventos();
               userController.fetchUsers();
               homeController.selectedIndex.value = 1;
-              Get.to(HomeScreen());
+              Get.to(() => HomeScreen());
             },
           ),
           barrierDismissible: true,

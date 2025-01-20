@@ -38,19 +38,19 @@ class EntertainmentBlogs extends StatelessWidget {
               children: blogController.filteredBlogPosts.map((video) {
                 return GestureDetector(
                   onTap: () {
-                    Get.to(CursoVideo(
-                      videoId: "",
-                      cursoId: video.id.toString(),
-                      name: video.name,
-                      description: video.description,
-                      image: video.blogImage,
-                      duration: "",
-                      price: "",
-                      difficulty: "blogs",
-                      videoUrl: video.url_video ?? "",
-                      tipovideo: 'blogs',
-                      dateCreated: video.createdAt.toString(),
-                    ));
+                    Get.to(() => CursoVideo(
+                          videoId: "",
+                          cursoId: video.id.toString(),
+                          name: video.name,
+                          description: video.description,
+                          image: video.blogImage,
+                          duration: "",
+                          price: "",
+                          difficulty: "blogs",
+                          videoUrl: video.url_video ?? "",
+                          tipovideo: 'blogs',
+                          dateCreated: video.createdAt.toString(),
+                        ));
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 16),

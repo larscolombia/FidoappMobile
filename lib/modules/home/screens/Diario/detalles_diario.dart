@@ -103,7 +103,7 @@ class DetallesDiario extends StatelessWidget {
                                     controller.activitiesOne.value!.image ?? "",
                                   );
                                   //print(controller.diario);
-                                  Get.to(FormularioDiario(isEdit: true));
+                                  Get.to(() => FormularioDiario(isEdit: true));
                                 },
                                 child: Image.asset(
                                   'assets/icons/edit-2.png',

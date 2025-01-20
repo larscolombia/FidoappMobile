@@ -59,7 +59,7 @@ class _CreateEventState extends State<CreateEvent> {
   Widget build(BuildContext context) {
     final ancho = MediaQuery.of(context).size.width - 100;
     var doubleHeight = 10.00;
-    var margen = 10.00;
+    var margen = 16.00;
     return Scaffold(
       backgroundColor: Styles.colorContainer,
       body: Column(
@@ -109,6 +109,9 @@ class _CreateEventState extends State<CreateEvent> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const SizedBox(
+                      height: 25,
+                    ),
                     SizedBox(
                       width: ancho,
                       child: BarraBack(
@@ -118,7 +121,9 @@ class _CreateEventState extends State<CreateEvent> {
                         },
                       ),
                     ),
-                    SizedBox(height: doubleHeight),
+                    const SizedBox(
+                      height: 25,
+                    ),
                     Container(
                       width: ancho,
                       child: InputText(
@@ -136,7 +141,7 @@ class _CreateEventState extends State<CreateEvent> {
                         },
                       ),
                     ),
-                    SizedBox(height: doubleHeight),
+                    SizedBox(height: margen),
                     Container(
                       width: ancho,
                       child: InputText(
@@ -153,49 +158,34 @@ class _CreateEventState extends State<CreateEvent> {
                       width: ancho,
                       child: InputText(
                         label: 'Ubicación',
-                        placeholder: '',
+                        placeholder: 'Ubicación',
                         onChanged: (value) {
                           calendarController.updateField('location', value);
                         },
                       ),
                     ),
-                    SizedBox(height: doubleHeight),
+                    SizedBox(height: margen),
                     SizedBox(
                       width: ancho,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Categoria del evento',
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                                fontFamily: 'lato',
-                                fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 10),
-                          CustomSelectFormFieldWidget(
-                            onChange: (value) {
-                              calendarController.updateField('tipo', value);
-                              userController.type.value =
-                                  value == 'medico' ? 'vet' : 'trainer';
-                              userController
-                                  .fetchUsers(); // Esta llamada se actualizará, pero sigue siendo necesaria si cambia el tipo
-                            },
-                            items: const [
-                              'evento',
-                              'medico',
-                              'entrenamiento',
-                            ],
-                            icon: "assets/icons/paginas.png",
-                            controller: null,
-                            placeholder: 'Tipo de evento ',
-                            filcolorCustom: Styles.colorContainer,
-                          ),
+                      child: CustomSelectFormFieldWidget(
+                        label: 'Categoria del evento',
+                        onChange: (value) {
+                          calendarController.updateField('tipo', value);
+                          userController.type.value =
+                              value == 'medico' ? 'vet' : 'trainer';
+                          userController
+                              .fetchUsers(); // Esta llamada se actualizará, pero sigue siendo necesaria si cambia el tipo
+                        },
+                        items: const [
+                          'evento',
+                          'medico',
+                          'entrenamiento',
                         ],
+                        controller: null,
+                        placeholder: 'Tipo de evento ',
+                        filcolorCustom: Styles.colorContainer,
                       ),
                     ),
-                    SizedBox(height: doubleHeight),
                     Obx(() {
                       if (calendarController.event['tipo'] != 'medico') {
                         return const SizedBox();
@@ -203,46 +193,52 @@ class _CreateEventState extends State<CreateEvent> {
                       if (categoryController.isLoading.value) {
                         return const Center(child: CircularProgressIndicator());
                       }
-                      return SizedBox(
-                        width: ancho,
-                        child: InputSelect(
-                          label: 'Servicio de evento medico',
-                          placeholder: calendarController.cateogoryName.value,
-                          TextColor: Colors.black,
-                          onChanged: (value) {
-                            calendarController.cateogoryName.value =
-                                value ?? "";
-                            final selectedCategory =
-                                categoryController.categories.firstWhere(
-                              (category) => category.id.toString() == value,
-                              orElse: () => Category(
-                                id: 0,
-                                name: 'Unknown',
-                                slug: '',
-                                status: 1,
-                                categoryImage: '',
-                                createdAt: '',
-                                updatedAt: '',
-                              ),
-                            );
-                            calendarController.cateogoryName.value =
-                                selectedCategory.name;
-                            calendarController.updateField(
-                                'category_id', value);
-                            calendarController.updateField('service_id', value);
-                            categoryController.fetchprecio(
-                                value ?? "", context);
-                          },
-                          items: categoryController.categories
-                              .map((category) => DropdownMenuItem<String>(
-                                    value: category.id.toString(),
-                                    child: Text(category.name),
-                                  ))
-                              .toList(),
-                        ),
+                      return Column(
+                        children: [
+                          SizedBox(height: margen),
+                          SizedBox(
+                            width: ancho,
+                            child: InputSelect(
+                              label: 'Servicio de evento medico',
+                              placeholder:
+                                  calendarController.cateogoryName.value,
+                              TextColor: Colors.black,
+                              onChanged: (value) {
+                                calendarController.cateogoryName.value =
+                                    value ?? "";
+                                final selectedCategory =
+                                    categoryController.categories.firstWhere(
+                                  (category) => category.id.toString() == value,
+                                  orElse: () => Category(
+                                    id: 0,
+                                    name: 'Unknown',
+                                    slug: '',
+                                    status: 1,
+                                    categoryImage: '',
+                                    createdAt: '',
+                                    updatedAt: '',
+                                  ),
+                                );
+                                calendarController.cateogoryName.value =
+                                    selectedCategory.name;
+                                calendarController.updateField(
+                                    'category_id', value);
+                                calendarController.updateField(
+                                    'service_id', value);
+                                categoryController.fetchprecio(
+                                    value ?? "", context);
+                              },
+                              items: categoryController.categories
+                                  .map((category) => DropdownMenuItem<String>(
+                                        value: category.id.toString(),
+                                        child: Text(category.name),
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                        ],
                       );
                     }),
-                    SizedBox(height: doubleHeight),
                     Obx(() {
                       if (calendarController.event['tipo'] != 'entrenamiento') {
                         return const SizedBox();
@@ -250,44 +246,51 @@ class _CreateEventState extends State<CreateEvent> {
                       if (serviceController.isLoading.value) {
                         return const CircularProgressIndicator();
                       }
-                      return SizedBox(
-                        width: ancho,
-                        child: InputSelect(
-                          label: 'Servicio del entrenamiento',
-                          placeholder: calendarController.cateogoryName.value,
-                          TextColor: Colors.black,
-                          onChanged: (value) {
-                            final selectedCategory =
-                                categoryController.categories.firstWhere(
-                              (category) => category.id.toString() == value,
-                              orElse: () => Category(
-                                id: 0,
-                                name: 'Unknown',
-                                slug: '',
-                                status: 1,
-                                categoryImage: '',
-                                createdAt: '',
-                                updatedAt: '',
-                              ),
-                            );
-                            calendarController.cateogoryName.value =
-                                selectedCategory.name;
-                            calendarController.updateField(
-                                'training_id', value);
-                            calendarController.updateField(
-                                'duration_id', value);
-                            serviceController.fetchprecio(
-                                value.toString(), context);
-                          },
-                          items: serviceController.services
-                              .map((category) => DropdownMenuItem<String>(
-                                    value: category.id.toString(),
-                                    child: Text(category.name),
-                                  ))
-                              .toList(),
-                        ),
+                      return Column(
+                        children: [
+                          SizedBox(height: margen),
+                          SizedBox(
+                            width: ancho,
+                            child: InputSelect(
+                              label: 'Servicio del entrenamiento',
+                              placeholder:
+                                  calendarController.cateogoryName.value,
+                              TextColor: Colors.black,
+                              onChanged: (value) {
+                                final selectedCategory =
+                                    categoryController.categories.firstWhere(
+                                  (category) => category.id.toString() == value,
+                                  orElse: () => Category(
+                                    id: 0,
+                                    name: 'Unknown',
+                                    slug: '',
+                                    status: 1,
+                                    categoryImage: '',
+                                    createdAt: '',
+                                    updatedAt: '',
+                                  ),
+                                );
+                                calendarController.cateogoryName.value =
+                                    selectedCategory.name;
+                                calendarController.updateField(
+                                    'training_id', value);
+                                calendarController.updateField(
+                                    'duration_id', value);
+                                serviceController.fetchprecio(
+                                    value.toString(), context);
+                              },
+                              items: serviceController.services
+                                  .map((category) => DropdownMenuItem<String>(
+                                        value: category.id.toString(),
+                                        child: Text(category.name),
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                        ],
                       );
                     }),
+                    SizedBox(height: margen),
                     SizedBox(
                       width: ancho,
                       child: InputText(
@@ -300,17 +303,13 @@ class _CreateEventState extends State<CreateEvent> {
                           calendarController.updateField(
                               'date', value.replaceAll('/', '-').toString());
                         },
-                        suffixIcon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: Styles.iconColor,
-                        ),
-                        prefiIcon: const Icon(
-                          Icons.calendar_today,
-                          color: Styles.iconColor,
-                        ),
+                        suffixIcon:
+                            Image.asset('assets/icons/flecha_select.png'),
+                        placeholderImage:
+                            Image.asset('assets/icons/calendar2.png'),
                       ),
                     ),
-                    SizedBox(height: doubleHeight),
+                    SizedBox(height: margen),
                     Container(
                       width: ancho,
                       child: InputText(
@@ -320,17 +319,12 @@ class _CreateEventState extends State<CreateEvent> {
                         onChanged: (value) {
                           calendarController.updateField('event_time', value);
                         },
-                        suffixIcon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: Styles.fiveColor,
-                        ),
-                        prefiIcon: const Icon(
-                          Icons.access_time_filled,
-                          color: Styles.fiveColor,
-                        ),
+                        suffixIcon:
+                            Image.asset('assets/icons/flecha_select.png'),
+                        placeholderImage: Image.asset('assets/icons/time.png'),
                       ),
                     ),
-                    SizedBox(height: doubleHeight),
+                    SizedBox(height: margen),
                     SizedBox(
                       width: ancho,
                       child: InputText(
@@ -341,17 +335,13 @@ class _CreateEventState extends State<CreateEvent> {
                           calendarController.updateField('end_date',
                               value.replaceAll('/', '-').toString());
                         },
-                        suffixIcon: const Icon(
-                          Icons.arrow_drop_down,
-                          color: Styles.iconColor,
-                        ),
-                        prefiIcon: const Icon(
-                          Icons.calendar_today,
-                          color: Styles.iconColor,
-                        ),
+                        suffixIcon:
+                            Image.asset('assets/icons/flecha_select.png'),
+                        placeholderImage:
+                            Image.asset('assets/icons/calendar2.png'),
                       ),
                     ),
-                    SizedBox(height: doubleHeight),
+                    SizedBox(height: margen),
                     SizedBox(
                       width: ancho,
                       child: const Text(

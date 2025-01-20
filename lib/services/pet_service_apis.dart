@@ -224,7 +224,7 @@ class PetService {
                 Get.back();
                 // final HomeController homeController = Get.put(HomeController());
                 // homeController.fetchProfiles();
-                Get.to(HomeScreen());
+                Get.to(() => HomeScreen());
               },
             ),
             barrierDismissible: false,

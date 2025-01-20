@@ -108,5 +108,5 @@ class Cursos extends StatelessWidget {
 }
 
 void callback() {
-  Get.to(const CursoShow());
+  Get.to(() => CursoShow());
 }

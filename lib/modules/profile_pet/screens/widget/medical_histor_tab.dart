@@ -213,7 +213,7 @@ class MedicalHistoryTab extends StatelessWidget {
                       medicalHistoryController.isEditing.value = true;
 
                       Get.to(
-                        ConfirmarFormulario(
+                        () => ConfirmarFormulario(
                           isEdit: true,
                           historialClinico: history,
                         ),

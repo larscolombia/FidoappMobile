@@ -40,6 +40,7 @@ import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/provider/push_provider.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -196,83 +197,92 @@ class HomeScreen extends StatelessWidget {
   // Funciones que devuelven el contenido basado en el selectedIndex
 
   Widget _buildCase1Content(context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (AuthServiceApis.dataCurrentUser.userType != 'user') ProfilesDogs(),
-        if (AuthServiceApis.dataCurrentUser.userType == 'user')
-          Container(
-            child: Row(
-              children: [
-                // Widget del 70%
-                Flexible(
-                  flex: 8,
-                  child: Container(
-                    child:
-                        ProfilesDogs(), // Asegúrate de que ProfilesDogs sea completamente responsivo.
-                  ),
-                ),
-                // Widget del 30%
-                SizedBox(width: 15),
-                Flexible(
-                  flex: 2,
-                  child: GestureDetector(
-                    onTap: () {
-                      Get.to(Profecionales());
-                    },
-                    child: Column(
-                      children: [
-                        Container(
-                          width: 64,
-                          height: 47,
-                          decoration: BoxDecoration(
-                            color: Styles.iconColorBack,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Center(
-                            child:
-                                Image.asset('assets/icons/profecionales.png'),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          'Profesionales',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: "Lato",
-                              fontSize: 9,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+    return Container(
+      decoration: BoxDecoration(
+          // border: Border.all(color: Colors.grey, width: 1), //lienso pisa papel
+          ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (AuthServiceApis.dataCurrentUser.userType != 'user')
+            ProfilesDogs(),
+          if (AuthServiceApis.dataCurrentUser.userType == 'user')
+            Container(
+              child: Row(
+                children: [
+                  // Widget del 70%
+                  Flexible(
+                    flex: 9,
+                    child: Container(
+                      child:
+                          ProfilesDogs(), // Asegúrate de que ProfilesDogs sea completamente responsivo.
                     ),
                   ),
-                ),
-              ],
+                  // Widget del 30%
+                  SizedBox(width: 15),
+                  Flexible(
+                    flex: 3,
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.to(() => Profecionales());
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 64,
+                            height: 47,
+                            decoration: BoxDecoration(
+                              color: Recursos.ColorPrimario,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Center(
+                              child:
+                                  Image.asset('assets/icons/profecionales.png'),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          const Text(
+                            'Profesionales',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Lato",
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        const SizedBox(height: 16),
-        Resources(),
-        const SizedBox(height: 16),
-        const Explore(),
-        const SizedBox(height: 16),
-        if (calendarController.filteredCalendars.isNotEmpty)
-          const Text(
-            'Próximos Eventos',
-            style: TextStyle(
-              color: Styles.primaryColor,
-              fontFamily: Styles.fuente2,
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
+          const SizedBox(height: 16),
+          Resources(),
+          const SizedBox(height: 16),
+          const Explore(),
+          const SizedBox(height: 16),
+          if (calendarController.filteredCalendars.isNotEmpty)
+            const Text(
+              'Próximos Eventos',
+              style: TextStyle(
+                color: Styles.primaryColor,
+                fontFamily: Styles.fuente2,
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+              ),
             ),
-          ),
-        const SizedBox(height: 16),
-        if (calendarController.filteredCalendars.isNotEmpty)
-          EventosProximos(calendarController: calendarController),
-        Utilities(),
-        const SizedBox(height: 16),
-        Training(),
-        const SizedBox(height: 100),
-      ],
+          const SizedBox(height: 16),
+          if (calendarController.filteredCalendars.isNotEmpty)
+            EventosProximos(calendarController: calendarController),
+          Utilities(),
+          const SizedBox(height: 16),
+          Training(),
+          const SizedBox(height: 200),
+        ],
+      ),
     );
   }
 

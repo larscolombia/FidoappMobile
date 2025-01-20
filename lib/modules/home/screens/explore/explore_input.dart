@@ -64,7 +64,7 @@ class ExploreInput extends StatelessWidget {
                     print('libro id ${libro.id}');
                     controller.selectEBookById("${libro.id}");
 
-                    Get.to(LibroDetalles());
+                    Get.to(() => LibroDetalles());
                     print('object');
                   },
                   child: Container(

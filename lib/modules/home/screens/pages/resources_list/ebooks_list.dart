@@ -73,7 +73,7 @@ class EbooksList extends StatelessWidget {
                           onTap: () {
                             controller.selectEBookById("${book.id}");
 
-                            Get.to(LibroDetalles());
+                            Get.to(() => LibroDetalles());
                           },
                           child: BooksComponents(ebook: book),
                         );

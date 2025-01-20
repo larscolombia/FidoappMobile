@@ -13,7 +13,7 @@ class Styles {
   static const fuente2 = 'PoetsenOne';
   static const greyTextColor = Color.fromRGBO(85, 85, 85, 1);
   static const greyDivider = Color.fromRGBO(234, 234, 234, 1);
-  static const iconColorBack = Color.fromRGBO(252, 146, 20, 1);
+  static const iconColorBack = Color(0xFFFCBA67);
   static const whiteColor = Colors.white;
   static const blackColor = Colors.black;
   static double tamano(context) {
@@ -96,6 +96,7 @@ class Styles {
     fontSize: 12,
     color: whiteColor,
   );
+
   static final homeBoxTextSubTitle = TextStyle(
     fontFamily: 'Lato',
     fontSize: 14,

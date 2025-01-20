@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
+import 'package:pawlly/modules/cursos/cursos_entrenamiento.dart';
 import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_model.dart';
+import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class TrainingPrograms extends StatelessWidget {
   final CourseController cursosController = Get.put(CourseController());
 
-  TrainingPrograms({super.key});
-
+  TrainingPrograms({super.key, this.vermas = true});
+  final bool? vermas;
   @override
   Widget build(BuildContext context) {
     //cursosController.fetchCourses();
@@ -124,7 +126,7 @@ class TrainingPrograms extends StatelessWidget {
                                   ElevatedButton(
                                     onPressed: () {
                                       // Acción para ver detalles
-                                      Get.to(CursosDetalles(
+                                      Get.to(() => CursosDetalles(
                                           cursoId: "${course.id}"));
 
                                       //Get.to(CourseDetailPage(course: course));
@@ -172,13 +174,28 @@ class TrainingPrograms extends StatelessWidget {
             );
           }
         }),
-        Center(
-          child: RecargaComponente(
-            callback: () {
-              cursosController.fetchCourses();
-            },
+        if (vermas == true)
+          Container(
+            width: double.infinity,
+            child: GestureDetector(
+              onTap: () {
+                Get.to(() => CursosEntrenamiento());
+              },
+              child: Container(
+                width: double.infinity,
+                child: const Text(
+                  'Ver más de esta sección >',
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Recursos.ColorPrimario,
+                    fontFamily: Recursos.fuente1,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
       ],
     );
   }

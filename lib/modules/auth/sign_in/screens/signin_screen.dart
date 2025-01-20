@@ -8,6 +8,7 @@ import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/controllers/sign_in_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
+import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
 import '../../../../components/app_scaffold.dart';
@@ -65,7 +66,7 @@ class SignInScreen extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 16),
                               child: CustomTextFormFieldWidget(
                                 controller: signInController.passwordCont,
                                 placeholder:
@@ -75,7 +76,7 @@ class SignInScreen extends StatelessWidget {
                               ),
                             ),
                             Container(
-                              margin: const EdgeInsets.only(top: 20),
+                              margin: const EdgeInsets.only(top: 16),
                               child: ButtonDefaultWidget(
                                 title: locale.value.signIn,
                                 callback: () {
@@ -103,14 +104,14 @@ class SignInScreen extends StatelessWidget {
                                     locale.value.resetPassword,
                                     style: const TextStyle(
                                       fontSize: 14,
-                                      color: Color.fromRGBO(83, 82, 81, 1),
-                                      fontFamily: 'Lato',
-                                      fontWeight: FontWeight.w800,
+                                      color: Color(0xff535251),
+                                      fontFamily: Recursos.fuente1,
+                                      fontWeight: FontWeight.w900,
                                     ),
                                   ),
                                 ),
                               ],
-                            ).paddingTop(8),
+                            ).paddingTop(16),
                           ],
                         ),
                       ).paddingTop(42),
@@ -129,7 +130,7 @@ class SignInScreen extends StatelessWidget {
                                 color: Colors.black,
                                 fontSize: 14,
                                 fontFamily: 'Lato',
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w900,
                               )).paddingSymmetric(horizontal: 20),
                           Container(
                             margin: const EdgeInsets.only(right: 10.0),
@@ -141,12 +142,12 @@ class SignInScreen extends StatelessWidget {
                           ).expand(),
                         ],
                       ),
+                      const SizedBox(height: 16),
                       Column(
                         children: [
                           Container(
-                            width: 300,
+                            width: MediaQuery.of(context).size.width,
                             height: 54,
-                            margin: const EdgeInsets.only(bottom: 20, top: 20),
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color: const Color.fromRGBO(255, 73, 49, 1)),
@@ -160,9 +161,10 @@ class SignInScreen extends StatelessWidget {
                                 label: Text(
                                   locale.value.signInWithGoogle,
                                   style: const TextStyle(
-                                      color: Colors.black,
-                                      fontFamily: 'Lato',
-                                      fontSize: 14),
+                                    color: Colors.black,
+                                    fontFamily: 'Lato',
+                                    fontSize: 14,
+                                  ),
                                 )),
                           ),
                         ],
@@ -179,7 +181,7 @@ class SignInScreen extends StatelessWidget {
                                 fontSize: 14,
                                 fontFamily: 'Lato',
                                 fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                                color: Color(0xff383838),
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -195,10 +197,11 @@ class SignInScreen extends StatelessWidget {
                               child: Text(
                                 locale.value.signUp,
                                 style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w800,
-                                    fontFamily: 'Lato',
-                                    color: Color.fromRGBO(83, 82, 81, 1)),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w900,
+                                  fontFamily: Recursos.fuente1,
+                                  color: Recursos.TextColorBlackMedium,
+                                ),
                                 textAlign: TextAlign.center,
                               ),
                             ),
