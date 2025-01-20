@@ -17,6 +17,7 @@ class TrainingPrograms extends StatelessWidget {
   Widget build(BuildContext context) {
     //cursosController.fetchCourses();
     final double imageWidth = MediaQuery.of(context).size.width * 0.35;
+    var margin = 4.00;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -40,136 +41,143 @@ class TrainingPrograms extends StatelessWidget {
           } else {
             return Column(
               children: cursosController.filteredCourses.map((course) {
-                return GestureDetector(
-                  onTap: () {
-                    // Acción cuando se toca el curso
-                    //Get.to(CourseDetailPage(course: course));
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Styles.whiteColor,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Styles.greyTextColor.withOpacity(0.2),
-                        width: 1,
-                      ),
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.all(18),
+                  decoration: BoxDecoration(
+                    color: Styles.whiteColor,
+                    borderRadius: BorderRadius.circular(8.42),
+                    border: Border.all(
+                      color: Color(0xffEAEAEA),
+                      width: 1,
                     ),
-                    child: Row(
-                      children: [
-                        // Imagen del curso
-                        Flexible(
-                          flex: 1,
-                          child: Container(
-                            width: imageWidth,
-                            height: 100,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: course.image.isNotEmpty
-                                  ? Image.network(
-                                      course.image,
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                        return Image.asset(
-                                          'assets/images/default_course.png',
-                                          fit: BoxFit.cover,
-                                        );
-                                      },
-                                    )
-                                  : Image.asset(
-                                      'assets/images/default_course.png',
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        width: 104,
+                        height: 116,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(
+                              10), // Aquí le damos el borderRadius
+                          child: Image.network(
+                            course.image,
+                            fit: BoxFit
+                                .cover, // Para que la imagen ocupe todo el contenedor
+                            width: 104,
+                            height: 116,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          (loadingProgress.expectedTotalBytes ??
+                                              1)
+                                      : null,
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/404.jpg', // Imagen de error
+                                fit: BoxFit.cover,
+                              );
+                            },
                           ),
                         ),
-                        const SizedBox(width: 12),
-                        // Contenido del curso
-                        Expanded(
-                          flex: 2,
+                      ),
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 12),
+                          height: 116,
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Nivel del curso
-                              Text(
-                                cursosController.dificultad(course.difficulty),
-                                style: TextStyle(
-                                  fontFamily: 'Lato',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Styles.iconColorBack,
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  cursosController
+                                      .dificultad(course.difficulty),
+                                  style: const TextStyle(
+                                    fontFamily: 'Lato',
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Styles.iconColorBack,
+                                  ),
                                 ),
                               ),
-                              const SizedBox(height: 4),
-                              // Título del curso (máximo 3 líneas)
-                              Text(
-                                course.name,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontFamily: 'Lato',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                  color: Styles.greyTextColor,
+                              SizedBox(height: margin),
+                              Expanded(
+                                flex: 4,
+                                child: Text(
+                                  course.name,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontFamily: 'Lato',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    color: Styles.greyTextColor,
+                                  ),
                                 ),
                               ),
-                              const SizedBox(height: 8),
-                              // Botón "Ver detalles"
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      // Acción para ver detalles
-                                      Get.to(() => CursosDetalles(
-                                          cursoId: "${course.id}"));
-
-                                      //Get.to(CourseDetailPage(course: course));
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Styles.primaryColor,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 35,
-                                        vertical: 2,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
+                              SizedBox(height: margin),
+                              Expanded(
+                                flex: 2,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    // Acción para ver detalles
+                                    Get.to(() => CursosDetalles(
+                                        cursoId: "${course.id}"));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Styles.primaryColor,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 35,
+                                      vertical: 2,
                                     ),
-                                    child: const Row(
-                                      children: [
-                                        Text(
-                                          'Ver detalles',
-                                          style: TextStyle(
-                                            fontFamily: 'Lato',
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w700,
-                                            color: Styles.whiteColor,
-                                          ),
-                                        ),
-                                        SizedBox(width: 10),
-                                        Icon(
-                                          Icons.arrow_forward_ios,
-                                          size: 13,
-                                          color: Styles.whiteColor,
-                                        ),
-                                      ],
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
                                     ),
                                   ),
-                                ],
-                              ),
+                                  child: const Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Ver detalles',
+                                        style: TextStyle(
+                                          fontFamily: 'Lato',
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: Color(0xffFFFFFF),
+                                        ),
+                                      ),
+                                      SizedBox(width: 4),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: 8,
+                                        color: Styles.whiteColor,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 );
+                ;
               }).toList(),
             );
           }
