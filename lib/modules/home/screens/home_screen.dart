@@ -28,6 +28,7 @@ import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dar
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
+import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_controller.dart';
 
@@ -315,6 +316,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildCase4Content() {
+    final CourseController cursosController = Get.put(CourseController());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -329,7 +331,7 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 16),
         EntertainmentBlogs(),
         const SizedBox(height: 16),
-        TrainingPrograms(),
+        TrainingPrograms(cursosController: cursosController),
         const SizedBox(height: 220),
       ],
     );

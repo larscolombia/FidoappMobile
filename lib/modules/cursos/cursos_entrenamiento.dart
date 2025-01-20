@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/input_busqueda.dart';
+import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/home/screens/explore/explore_input.dart';
 import 'package:pawlly/modules/home/screens/explore/training_programs.dart';
 import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/widgets/training_vertical_widget.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
+import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 
 import '../home/screens/widgets/training_horizontal_widget.dart';
 
 class CursosEntrenamiento extends StatelessWidget {
   CursosEntrenamiento({super.key});
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
+  final CourseController cursosController = Get.put(CourseController());
+
   @override
   Widget build(BuildContext context) {
     final ancho = MediaQuery.of(context).size.width - 50;
@@ -51,22 +57,30 @@ class CursosEntrenamiento extends StatelessWidget {
                         },
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: ancho,
                       child:
                           TrainingHorizontal(trainingList: miscursos.courses),
                     ),
                     SizedBox(height: margen),
                     SizedBox(
+                        width: ancho,
+                        child: InputBusqueda(
+                          onChanged: (velue) =>
+                              cursosController.filterCoursesByName(velue),
+                        )),
+                    SizedBox(height: margen),
+                    SizedBox(
                       width: ancho,
                       child: TrainingPrograms(
+                        cursosController: cursosController,
                         vermas: false,
                       ),
                     ),
                     SizedBox(height: margen),
                     RecargaComponente(
                       callback: () {
-                        miscursos.fetchCourses();
+                        cursosController.fetchCourses();
                       },
                     ),
                     SizedBox(height: margen),

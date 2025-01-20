@@ -9,9 +9,10 @@ import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class TrainingPrograms extends StatelessWidget {
-  final CourseController cursosController = Get.put(CourseController());
+  final CourseController cursosController;
 
-  TrainingPrograms({super.key, this.vermas = true});
+  TrainingPrograms(
+      {super.key, this.vermas = true, required this.cursosController});
   final bool? vermas;
   @override
   Widget build(BuildContext context) {

@@ -153,10 +153,16 @@ class _InputTextState extends State<InputText> {
                             ), // Ahora puede ser un Widget (Icono o Imagen)
                   prefixIcon: widget.prefiIcon ??
                       (widget.placeholderImage != null
-                          ? SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: widget.placeholderImage,
+                          ? Padding(
+                              padding: const EdgeInsets.only(
+                                left: 20,
+                                right: 12,
+                              ),
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: widget.placeholderImage,
+                              ),
                             )
                           : null),
                 ),
