@@ -88,7 +88,8 @@ class _CreateEventState extends State<CreateEvent> {
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.black,
-                      fontFamily: 'PoetsenOne',
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

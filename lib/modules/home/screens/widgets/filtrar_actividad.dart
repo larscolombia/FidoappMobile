@@ -26,7 +26,7 @@ class FiltrarActividad extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Filtrar por',
                     style: TextStyle(
                       fontSize: 20,

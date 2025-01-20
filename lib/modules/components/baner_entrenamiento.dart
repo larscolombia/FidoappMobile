@@ -100,13 +100,13 @@ class BanerEntrenamiento extends StatelessWidget {
                       SizedBox(height: margin - 3),
                       // Aquí se fuerza el espacio para que el título ocupe dos líneas.
                       SizedBox(
-                        height: 36,
+                        height: 38,
                         child: Text(
                           nombre,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontSize: 15,
                             fontWeight: FontWeight.bold,
                             color: Recursos.ColorTextoTitulo,
                             fontFamily: Recursos.fuente1,
@@ -157,7 +157,7 @@ class BanerEntrenamiento extends StatelessWidget {
                         child: ButtonDefaultWidget(
                           callback: callback,
                           title: 'Seguir viendo',
-                          textSize: 9,
+                          textSize: 12,
                         ),
                       ),
                     ],

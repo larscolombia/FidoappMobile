@@ -41,8 +41,9 @@ class Registro extends StatelessWidget {
             child: Text(
               titulo ?? '',
               style: TextStyle(
-                fontSize: width > 600 ? 18 : 16,
+                fontSize: width > 600 ? 18 : 18,
                 fontFamily: 'Lato',
+                height: 1.2,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),

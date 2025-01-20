@@ -68,11 +68,12 @@ class Explore extends StatelessWidget {
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 16,
-                          fontWeight: FontWeight.w700,
+                          height: 1.2,
+                          fontWeight: FontWeight.bold,
                           color: Styles.whiteColor,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       // Subtítulo
                       const Text(
                         'Consejos y recursos útiles',
@@ -86,11 +87,14 @@ class Explore extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       // Botón para explorar
-                      ButtonDefaultWidget(
-                        title: 'Explorar',
-                        callback: () {},
-                        widthButtom: 97,
-                        heigthButtom: 40,
+                      Container(
+                        width: 97,
+                        height: 34,
+                        child: ButtonDefaultWidget(
+                          textSize: 13,
+                          title: 'Explorar >',
+                          callback: () {},
+                        ),
                       ),
                     ],
                   ),

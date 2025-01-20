@@ -68,7 +68,7 @@ class Diario extends StatelessWidget {
                         child: Row(
                           children: [
                             Expanded(
-                              flex: 8,
+                              flex: 11,
                               child: InputBusqueda(
                                 onChanged: (value) => historialClinicoController
                                     .searchActivities(value),
@@ -84,6 +84,7 @@ class Diario extends StatelessWidget {
                                       context, historialClinicoController);
                                 },
                                 style: ElevatedButton.styleFrom(
+                                  elevation: 0,
                                   padding: EdgeInsets.zero,
                                   backgroundColor: Styles.fiveColor,
                                   shape: RoundedRectangleBorder(

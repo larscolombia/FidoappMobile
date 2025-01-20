@@ -68,8 +68,8 @@ class ExploreInput extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.only(right: 16),
                     padding: const EdgeInsets.all(12),
-                    height: 290,
-                    width: MediaQuery.of(context).size.width * 0.35,
+                    width: 125,
+                    height: 229,
                     decoration: BoxDecoration(
                       color: Styles.whiteColor,
                       borderRadius: BorderRadius.circular(10),
@@ -84,7 +84,7 @@ class ExploreInput extends StatelessWidget {
                         // Imagen del producto
                         Container(
                           padding: const EdgeInsets.only(left: 10, right: 10),
-                          height: 150,
+                          height: 124,
                           child: ClipRRect(
                             child: libro.coverImage != null
                                 ? Image.network(
@@ -120,24 +120,6 @@ class ExploreInput extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         // Precio y tipo de producto (libro o artículo)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                'Precio',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontFamily: 'Lato',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Styles.iconColorBack,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                   ),

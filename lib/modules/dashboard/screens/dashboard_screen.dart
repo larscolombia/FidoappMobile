@@ -68,15 +68,21 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ),
                 // Nombre del Usuario
+
                 Container(
                   height: imageSize,
-                  width: double.infinity,
+                  width: 250,
                   alignment: Alignment.bottomCenter,
-                  child: Obx(() => Text(
-                        controller
-                            .name.value, // Acceder al valor de name con .value
-                        style: Styles.dashboardTitle24,
-                      )),
+                  child: Obx(
+                    () => Text(
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      textAlign: TextAlign.center,
+                      controller
+                          .name.value, // Acceder al valor de name con .value
+                      style: Styles.dashboardTitle24,
+                    ),
+                  ),
                 ),
               ],
             ),
