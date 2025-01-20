@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/explore/libro_detalles.dart';
@@ -18,7 +17,6 @@ class ExploreInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //controller.fetchEBooks();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -70,8 +68,8 @@ class ExploreInput extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.only(right: 16),
                     padding: const EdgeInsets.all(12),
-                    width: MediaQuery.of(context).size.width *
-                        0.35, // Ancho más pequeño
+                    height: 290,
+                    width: MediaQuery.of(context).size.width * 0.35,
                     decoration: BoxDecoration(
                       color: Styles.whiteColor,
                       borderRadius: BorderRadius.circular(10),
@@ -85,12 +83,9 @@ class ExploreInput extends StatelessWidget {
                       children: [
                         // Imagen del producto
                         Container(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
                           height: 150,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
                             child: libro.coverImage != null
                                 ? Image.network(
                                     libro.coverImage!,
@@ -110,11 +105,10 @@ class ExploreInput extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         // Nombre del producto (máximo 3 líneas)
-                        Container(
-                          height: 74,
+                        Flexible(
                           child: Text(
                             libro.title!,
-                            maxLines: 3,
+                            maxLines: 4,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontFamily: 'Lato',
@@ -129,8 +123,7 @@ class ExploreInput extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
-                              width: 60,
+                            Flexible(
                               child: Text(
                                 'Precio',
                                 maxLines: 1,

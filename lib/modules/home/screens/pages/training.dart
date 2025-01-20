@@ -53,11 +53,11 @@ class Training extends StatelessWidget {
           }
 
           // Renderizado según el índice seleccionado
-          if (controller.selectedIndex.value == 0) {
+          if (controller.selectedIndex.value == 0 ||
+              controller.selectedIndex.value == 3) {
             // Mostrar entrenamientos en vista vertical
             return TrainingVertical(cursoslista: miscursos.courses);
-          } else if (controller.selectedIndex.value == 2 ||
-              controller.selectedIndex.value == 3) {
+          } else if (controller.selectedIndex.value == 2) {
             // Mostrar entrenamientos en vista horizontal para ambos casos (2 y 3)
             return TrainingHorizontal(trainingList: miscursos.courses);
           }

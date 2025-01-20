@@ -5,16 +5,15 @@ import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
 import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
-import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class EntertainmentBlogs extends StatelessWidget {
   EntertainmentBlogs({super.key});
   final BlogController blogController = Get.put(BlogController());
   final HomeController homeController = Get.find<HomeController>();
+
   @override
   Widget build(BuildContext context) {
-    //blogController.fetchBlogPosts();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -54,9 +53,9 @@ class EntertainmentBlogs extends StatelessWidget {
                   },
                   child: Container(
                     margin: const EdgeInsets.only(right: 16),
-                    padding: const EdgeInsets.all(12),
-                    width: MediaQuery.of(context).size.width * 0.6,
-                    height: 400,
+                    padding: const EdgeInsets.all(18),
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    height: 260,
                     decoration: BoxDecoration(
                       color: Styles.whiteColor,
                       borderRadius: BorderRadius.circular(10),
@@ -72,7 +71,8 @@ class EntertainmentBlogs extends StatelessWidget {
                         Stack(
                           children: [
                             Container(
-                              height: 200,
+                              height: 139,
+                              width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -103,7 +103,7 @@ class EntertainmentBlogs extends StatelessWidget {
                                 child: Icon(
                                   Icons.play_circle_fill,
                                   color: Colors.white.withOpacity(0.8),
-                                  size: 60,
+                                  size: 35,
                                 ),
                               ),
                             ),
@@ -134,7 +134,7 @@ class EntertainmentBlogs extends StatelessWidget {
                         const SizedBox(height: 8),
                         // Tema del video
                         SizedBox(
-                          height: 40,
+                          height: 14,
                           child: Text(
                             video.tags ?? 'Videos de Entrenamiento',
                             style: const TextStyle(
@@ -147,29 +147,37 @@ class EntertainmentBlogs extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         // Fecha y cantidad de visualizaciones
-                        Text(
-                          video.createdAt.toString(),
-                          style: const TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Styles.greyTextColor,
-                          ),
+                        Row(
+                          children: [
+                            Text(
+                              video.createdAt.toString(),
+                              style: const TextStyle(
+                                fontFamily: 'Lato',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Styles.greyTextColor,
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              width: 1,
+                              height: 14,
+                              color: Styles.greyTextColor,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              '1',
+                              style: TextStyle(
+                                fontFamily: 'Lato',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w400,
+                                color: Styles.greyTextColor,
+                              ),
+                            ),
+                          ],
                         ),
-                        const Text(
-                          '1',
-                          style: TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Styles.greyTextColor,
-                          ),
-                        ),
-
                         // Título del video (máximo 2 líneas)
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          height: 74,
+                        Expanded(
                           child: Text(
                             video.name,
                             maxLines: 2,
