@@ -14,7 +14,12 @@ class CourseController extends GetxController {
   var url = "$DOMAIN_URL/api/course-platform";
   var filteredCourses = <Course>[].obs;
   get jsonData => null;
-
+  var selectedButton = 'Principiante'.obs;
+  var selectButton = {
+    '1': 'Principiante',
+    '2': 'Intermedio',
+    '3': 'Avanzado',
+  };
   @override
   void onInit() {
     super.onInit();
@@ -28,9 +33,9 @@ class CourseController extends GetxController {
   String dificultad(String dificultad) {
     switch (dificultad) {
       case '1':
-        return 'Fácil';
+        return 'Principiante';
       case '2':
-        return 'Media';
+        return 'Intermedio';
       case '3':
         return 'Difícil';
       default:
@@ -100,6 +105,19 @@ class CourseController extends GetxController {
           .where((course) =>
               course.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
+      filteredCourses.assignAll(filteredList);
+    }
+  }
+
+  void filterCoursesByDificultad() {
+    if (selectedButton.value.isEmpty) {
+      filteredCourses.assignAll(courses);
+    } else {
+      var difficultyFilter = selectedButton.value;
+      var filteredList = courses.where((course) {
+        // Compara la dificultad del curso con la dificultad seleccionada
+        return course.difficulty == difficultyFilter;
+      }).toList();
       filteredCourses.assignAll(filteredList);
     }
   }

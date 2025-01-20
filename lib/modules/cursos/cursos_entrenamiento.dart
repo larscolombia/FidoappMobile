@@ -8,6 +8,7 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/screens/explore/explore_input.dart';
 import 'package:pawlly/modules/home/screens/explore/training_programs.dart';
 import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
+import 'package:pawlly/modules/home/screens/profecionales/profecionales.dart';
 import 'package:pawlly/modules/home/screens/widgets/training_vertical_widget.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
@@ -61,6 +62,34 @@ class CursosEntrenamiento extends StatelessWidget {
                       width: ancho,
                       child:
                           TrainingHorizontal(trainingList: miscursos.courses),
+                    ),
+                    SizedBox(height: margen),
+                    Container(
+                      width: ancho,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:
+                            cursosController.selectButton.entries.map((entry) {
+                          // entry.key es la clave (1, 2, 3), entry.value es el valor (Principiante, Intermedio, Avanzado)
+                          return Expanded(
+                            child: Obx(() => Selecboton(
+                                  titulo: entry
+                                      .value, // Usamos entry.value para mostrar el nombre de la dificultad
+                                  callback: () {
+                                    print('dificultad ${entry.key}');
+                                    // Cuando se selecciona un botón, se establece la clave correspondiente
+                                    cursosController.selectedButton.value =
+                                        entry.key;
+                                    cursosController
+                                        .filterCoursesByDificultad();
+                                  },
+                                  selected:
+                                      cursosController.selectedButton.value ==
+                                          entry.key, // Comparamos con entry.key
+                                )),
+                          );
+                        }).toList(),
+                      ),
                     ),
                     SizedBox(height: margen),
                     SizedBox(

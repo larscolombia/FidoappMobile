@@ -5,92 +5,97 @@ import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/Diario/detalles_diario.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
+import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class DiarioMascotas extends StatefulWidget {
-  DiarioMascotas({super.key});
+  // Recibe el PetActivityController como parámetro
+  final PetActivityController controller;
+  final HomeController homeController;
+  DiarioMascotas(
+      {super.key, required this.controller, required this.homeController});
 
   @override
   State<DiarioMascotas> createState() => _DiarioMascotasState();
 }
 
 class _DiarioMascotasState extends State<DiarioMascotas> {
-  final PetActivityController controller = Get.put(PetActivityController());
-
-  final HomeController homeController = Get.find<HomeController>();
-
   @override
   void initState() {
     super.initState();
-    if (homeController.selectedProfile.value != null) {
-      controller.fetchPetActivities(
-          homeController.selectedProfile.value!.id.toString());
+    // Ahora no es necesario llamar a fetchPetActivities aquí,
+    // ya que el controlador ya debería tener los datos o puede ser llamado externamente.
+    if (widget.homeController.selectedProfile.value != null &&
+        widget.controller.filteredActivities.isEmpty) {
+      widget.controller.fetchPetActivities(
+          widget.homeController.selectedProfile.value!.id.toString());
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
-
+    // Usamos el controlador pasado a través del widget
     return Obx(() {
-      if (controller.isLoading.value) {
-        // Muestra un indicador de carga mientras se están obteniendo los datos
+      // Solo vuelve a cargar las actividades si están vacías
+      if (widget.controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
 
-      // Si el array está vacío, muestra un mensaje adecuado
-      if (controller.filteredActivities.isEmpty) {
+      if (widget.controller.filteredActivities.isEmpty) {
         return const Center(child: Text('No hay actividades disponibles.'));
       }
 
       return SingleChildScrollView(
         child: GridView.builder(
-          shrinkWrap:
-              true, // Hace que el GridView ocupe solo el espacio necesario
-          physics:
-              const NeverScrollableScrollPhysics(), // Desactiva el desplazamiento en el GridView
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           padding: const EdgeInsets.all(8.0),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 5.0,
             mainAxisSpacing: 4.0,
-            childAspectRatio: 0.70, // Ajusta este valor según sea necesario
+            childAspectRatio: 0.66,
           ),
-          itemCount: controller.filteredActivities.length,
+          itemCount: widget.controller.filteredActivities.length,
           itemBuilder: (context, index) {
-            final actividad = controller.filteredActivities[index];
+            final actividad = widget.controller.filteredActivities[index];
 
             return Container(
-              width: MediaQuery.of(context).size.width,
-              height: 230,
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              padding: const EdgeInsets.all(12),
+              width: 200,
+              height: 200,
+              padding: const EdgeInsets.only(
+                top: 26,
+                left: 26,
+                right: 26,
+                bottom: 20,
+              ),
               decoration: BoxDecoration(
                 color: Styles.whiteColor,
-                borderRadius: BorderRadius.circular(10),
-                border: controller.diario['actividadId'] == actividad.id
+                borderRadius: BorderRadius.circular(16),
+                border: widget.controller.diario['actividadId'] == actividad.id
                     ? Border.all(color: Styles.primaryColor, width: 1)
-                    : Border.all(color: Colors.black, width: .2),
+                    : Border.all(color: Recursos.ColorBorderSuave, width: 1),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  SizedBox(
+                    height: 83,
                     child: Text(
-                      actividad.actividad,
+                      actividad.actividad ?? '',
                       style: const TextStyle(
                         fontSize: 18,
                         fontFamily: 'Lato',
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
-                      maxLines: 2,
+                      maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Text(
                     actividad.categoryName,
-                    maxLines: 2,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 12,
@@ -105,20 +110,21 @@ class _DiarioMascotasState extends State<DiarioMascotas> {
                       fontSize: 12,
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w500,
-                      color: Color.fromARGB(255, 139, 137, 132),
+                      color: Color(0xff959595),
                     ),
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     'Registro Nro. ${actividad.id}',
                     style: const TextStyle(
                       fontSize: 12,
                       fontFamily: 'Lato',
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w500,
                       color: Color.fromARGB(255, 0, 0, 0),
                     ),
                   ),
                   const Spacer(),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   Center(
                     child: SizedBox(
                       height: 35,
@@ -128,8 +134,7 @@ class _DiarioMascotasState extends State<DiarioMascotas> {
                         child: ButtonDefaultWidget(
                           title: 'Abrir >',
                           callback: () {
-                            controller.getActivityById(actividad.id);
-                            print('actividad ${actividad}');
+                            widget.controller.getActivityById(actividad.id);
                             Get.to(() => DetallesDiario());
                           },
                         ),

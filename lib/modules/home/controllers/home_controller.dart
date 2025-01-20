@@ -67,7 +67,7 @@ class HomeController extends GetxController {
         // Get.toNamed(Routes.TRAINING);
         break;
       case 4:
-        Get.to(DiarioMascotas());
+        //   Get.to(DiarioMascotas());
         break;
     }
   }

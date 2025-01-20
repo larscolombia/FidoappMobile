@@ -164,7 +164,7 @@ class HomeScreen extends StatelessWidget {
                         case 3:
                           return _buildCase4Content();
                         case 4:
-                          return _buildCase5Content(context);
+                          return Text('s'); //_buildCase5Content(context);
                         case 5:
                           return __Ebooks();
                         case 6:
@@ -336,7 +336,7 @@ class HomeScreen extends StatelessWidget {
       ],
     );
   }
-
+  /** 
   Widget _buildCase5Content(BuildContext context) {
     final ancho = MediaQuery.of(context).size.width - 100;
     var doubleHeight = 10.00;
@@ -436,7 +436,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ],
     );
-  }
+  }*/
 
   Widget __Ebooks() {
     return Column(

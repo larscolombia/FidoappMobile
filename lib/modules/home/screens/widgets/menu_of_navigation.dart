@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -91,6 +93,11 @@ class MenuOfNavigation extends GetView<HomeController> {
     return GestureDetector(
       onTap: () {
         controller.updateIndex(index);
+        if (controller.selectedIndex.value == 4) {
+          Get.to(() => Diario());
+        } else {
+          Get.to(() => HomeScreen());
+        }
         // Aquí puedes agregar lógica adicional de navegación si fuese necesario.
       },
       child: Expanded(
