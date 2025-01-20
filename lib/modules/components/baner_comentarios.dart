@@ -95,24 +95,21 @@ class Estadisticas extends StatelessWidget {
       decoration: BoxDecoration(
         color: Styles.colorContainer,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Styles.fiveColor, width: 1),
+        border: Border.all(color: Styles.fiveColor, width: .5),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(26),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Text('Resumen de Calificación:',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 14,
                   color: Colors.black,
                   fontFamily: 'Lato',
-                  fontWeight: FontWeight.w800,
+                  fontWeight: FontWeight.bold,
                 )),
-            const SizedBox(
-              height: 10,
-            ),
             Row(
               children: [
                 RatingBar.builder(
@@ -157,7 +154,7 @@ class Estadisticas extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width / 2,
+                  width: 125,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     color: Styles.fiveColor,

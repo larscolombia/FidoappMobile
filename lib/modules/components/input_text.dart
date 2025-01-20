@@ -70,7 +70,7 @@ class _InputTextState extends State<InputText> {
         children: [
           if (widget.label != null)
             Padding(
-              padding: const EdgeInsets.only(left: 5),
+              padding: const EdgeInsets.only(left: 5, bottom: 8),
               child: Text(
                 widget.label ?? 'label',
                 style: TextStyle(

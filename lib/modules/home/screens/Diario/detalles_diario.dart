@@ -51,6 +51,9 @@ class DetallesDiario extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
                       width: MediaQuery.of(context).size.width - 90,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,7 +64,7 @@ class DetallesDiario extends StatelessWidget {
                             child: BarraBack(
                               titulo: 'Sobre este Registro',
                               callback: () {
-                                Get.off(HomeScreen());
+                                Get.back();
                               },
                             ),
                           ),
@@ -151,18 +154,21 @@ class DetallesDiario extends StatelessWidget {
                           Obx(() {
                             return Text(
                               controller.activitiesOne.value!.notas,
-                              textAlign: TextAlign.center,
+                              textAlign: TextAlign.start,
                               style: Styles.AvatarComentario,
                             );
                           }),
                           const SizedBox(
-                            height: 10,
+                            height: 26,
                           ),
                           Obx(() {
                             return Text(
                               'Fecha: ${controller.activitiesOne.value!.date}',
                             );
                           }),
+                          const SizedBox(
+                            height: 26,
+                          ),
                           Obx(() {
                             if (controller.activitiesOne.value!.image == null) {
                               return Center(
@@ -174,7 +180,7 @@ class DetallesDiario extends StatelessWidget {
                               );
                             }
                             return Container(
-                              width: 302,
+                              width: MediaQuery.of(context).size.width,
                               height: 200,
                               decoration: BoxDecoration(
                                 image: DecorationImage(

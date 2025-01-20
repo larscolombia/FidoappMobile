@@ -103,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                             ? 1.0
                             : 0.0,
                     duration:
-                        Duration(milliseconds: 300), // Duración de la animación
+                        Duration(milliseconds: 0), // Duración de la animación
                     child: AuthServiceApis.dataCurrentUser.deviceToken == 'null'
                         ? Center(
                             child: Container(

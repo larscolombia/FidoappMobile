@@ -89,7 +89,7 @@ class ProfilePetScreen extends StatelessWidget {
                               width: MediaQuery.of(context).size.width - 100,
                               child: BarraBack(
                                 titulo: "Perfil de la Mascota",
-                                callback: () => Get.off(HomeScreen()),
+                                callback: () => Get.back(),
                               ),
                             ),
                             if (AuthServiceApis.dataCurrentUser.userType ==

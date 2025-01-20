@@ -10,11 +10,13 @@ import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/integracion/controller/especialidades_controller/epeciality_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/perfil_publico.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/styles/recursos.dart';
 
 class FormularioVerificacion extends StatefulWidget {
   const FormularioVerificacion({super.key});
@@ -26,7 +28,9 @@ class FormularioVerificacion extends StatefulWidget {
 class _FormularioVerificacionState extends State<FormularioVerificacion> {
   final UserProfileController controller = Get.put(UserProfileController());
   final ProfileController profileController = Get.put(ProfileController());
-  var margin = 20.00;
+  final SpecialityController specialityController =
+      Get.put(SpecialityController());
+  var margin = 16.00;
   final Map<String, String> expertos = {
     "Comportamiento": "Comportamiento",
     "Cardiología": "Cardiología",
@@ -41,6 +45,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
     super.initState();
     // Llamamos al fetchUserData sólo aquí, para que no se repita en cada build
     controller.fetchUserData("${AuthServiceApis.dataCurrentUser.id}");
+    specialityController.fetchSpecialities();
   }
 
   @override
@@ -87,7 +92,6 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                             },
                           ),
                         ),
-                      SizedBox(height: margin),
                       Center(
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
@@ -153,8 +157,15 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                         ),
                       ),
                       SizedBox(height: margin),
-                      Center(
-                        child: SizedBox(
+                      Obx(() {
+                        if (specialityController.isLoading.value) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        return Center(
+                          child: SizedBox(
                             width: MediaQuery.of(context).size.width - 100,
                             child: InputSelect(
                               onChanged: (value) {
@@ -166,10 +177,13 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                   controller.user.value.profile?.expert,
                               TextColor: Colors.black,
                               prefiIcon: 'assets/icons/user-octagon.png',
-                              items: expertos.entries.map((entry) {
+                              items: specialityController.specialities
+                                  .map((entry) {
                                 return DropdownMenuItem(
-                                  value: entry.key,
-                                  child: Text(entry.value,
+                                  value: entry.description,
+                                  child: Text(entry.description,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         fontFamily: "Lato",
                                         fontSize: 14,
@@ -177,19 +191,19 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                       )),
                                 );
                               }).toList(),
-                            )),
-                      ),
+                            ),
+                          ),
+                        );
+                      }),
                       SizedBox(height: margin),
                       Center(
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
                           child: const Divider(
-                            thickness: .2,
-                            color: Color.fromRGBO(167, 157, 157, 1),
-                          ),
+                              thickness: 1, color: Recursos.ColorBorderSuave),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: margin),
                       Obx(() {
                         return Center(
                           child: SizedBox(

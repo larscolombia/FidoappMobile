@@ -21,7 +21,7 @@ class ComentariosLibros extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: const Color(0xFFFC9214),
-              width: 1.0,
+              width: 0.4,
             ),
           ),
           child: Obx(() {
@@ -35,7 +35,7 @@ class ComentariosLibros extends StatelessWidget {
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontFamily: 'lato',
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
                 const SizedBox(height: 10),

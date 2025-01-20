@@ -95,7 +95,7 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     // Sección del Dashboard
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.only(left: 16, top: 26),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -111,30 +111,18 @@ class DashboardScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    // Divider con espacio
-                    const Padding(
-                      padding: EdgeInsets.only(top: 10, bottom: 0),
-                      child: Divider(height: 10, thickness: 1),
-                    ),
-                    // Lista de Ítems
+
                     Expanded(
                       child: ListView.builder(
                         itemCount: 7,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              // Navegar a la vista correspondiente
-
                               _onItemTap(index,
                                   context); // Llama al nuevo método que maneja el modal y la navegación
                             },
                             child: Container(
-                              margin: const EdgeInsets.only(bottom: 5),
-                              padding: const EdgeInsets.all(16.0),
-                              decoration: BoxDecoration(
-                                color: Styles.whiteColor,
-                                borderRadius: BorderRadius.circular(15),
-                              ),
+                              padding: const EdgeInsets.all(10.0),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -142,6 +130,8 @@ class DashboardScreen extends StatelessWidget {
                                   Row(
                                     children: [
                                       Container(
+                                        width: 44,
+                                        height: 44,
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
                                           color: Styles
@@ -149,10 +139,9 @@ class DashboardScreen extends StatelessWidget {
                                           borderRadius: BorderRadius.circular(
                                               15), // Bordes redondeados
                                         ),
-                                        child: Icon(
-                                          _getItemIcon(
-                                              index), // Icono específico para cada ítem
-                                          color: Styles.iconColorBack,
+                                        child: Container(
+                                          child:
+                                              Image.asset(_getItemIcon(index)),
                                         ),
                                       ),
                                       const SizedBox(width: 16),
@@ -291,24 +280,24 @@ class DashboardScreen extends StatelessWidget {
   }
 
   // Método auxiliar para obtener el icono del ítem
-  IconData _getItemIcon(int index) {
+  String _getItemIcon(int index) {
     switch (index) {
       case 0:
-        return Icons.person;
+        return 'assets/icons/profile.png';
       case 1:
-        return Icons.pets;
+        return 'assets/icons/pacientes.png';
       case 2:
-        return Icons.description;
+        return 'assets/icons/terminos.png';
       case 3:
-        return Icons.lock;
+        return 'assets/icons/book.png';
       case 4:
-        return Icons.info;
+        return 'assets/icons/info-circle.png';
       case 5:
-        return Icons.monetization_on;
+        return 'assets/icons/info-circle.png';
       case 6:
-        return Icons.exit_to_app;
+        return 'assets/icons/logout.png';
       default:
-        return Icons.help;
+        return 'assets/icons/logout.png';
     }
   }
 }

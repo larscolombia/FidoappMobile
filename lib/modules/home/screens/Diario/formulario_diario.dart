@@ -273,8 +273,6 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                         : 'Finalizar',
                                 callback: () {
                                   if (widget.isEdit) {
-                                    print(controller.diario);
-                                    print('imagen ${__imageFile}');
                                     controller.editPetActivity2(
                                       "${controller.activitiesOne.value!.id}",
                                       __imageFile,
@@ -285,7 +283,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                       homeController.selectedProfile.value!.id
                                           .toString(),
                                     );
-                                    print(controller.diario);
+
                                     controller.addPetActivity(__imageFile);
                                   }
                                 },

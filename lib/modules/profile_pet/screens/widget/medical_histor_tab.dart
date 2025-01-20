@@ -8,6 +8,7 @@ import 'package:pawlly/modules/components/historia_componente.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
+import 'package:pawlly/modules/components/registro.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
@@ -201,17 +202,13 @@ class MedicalHistoryTab extends StatelessWidget {
                 itemCount: historial.length,
                 itemBuilder: (context, index) {
                   final history = historial[index];
-                  return HistoriaMascotaComponent(
-                    reportName: history.reportName,
-                    categoryName: history.categoryName,
-                    applicationDate: history.createdAt,
-                    id: history.id.toString(),
+                  return Registro(
+                    titulo: history.reportName ?? '',
+                    subtitulo: history.categoryName ?? '',
+                    fecha: history.createdAt.toString(),
+                    registroId: history.id.toString(),
                     callback: () {
-                      // aqui historia clinica
-                      print('callback ${history}');
-
                       medicalHistoryController.isEditing.value = true;
-
                       Get.to(
                         () => ConfirmarFormulario(
                           isEdit: true,

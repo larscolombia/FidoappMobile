@@ -45,6 +45,7 @@ class InputSelect extends StatelessWidget {
                 MediaQuery.of(context).size.width, // Ajusta al ancho disponible
           ),
           child: DropdownButtonFormField<String>(
+            icon: null,
             isExpanded: true, // Asegura que los elementos se ajusten al ancho
             decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -53,7 +54,10 @@ class InputSelect extends StatelessWidget {
               ),
               filled: true,
               fillColor: color ?? Styles.colorContainer,
-              suffixIcon: suffixIcon,
+              suffixIcon: SizedBox(
+                width: 40,
+                child: Image.asset('assets/icons/flecha_select.png'),
+              ),
               prefixIcon: prefiIcon != null ? Image.asset("$prefiIcon") : null,
             ),
             hint: Text(

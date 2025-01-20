@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/model/diario/actividad_mascota_modal.dart';
@@ -153,7 +154,7 @@ class PetActivityController extends GetxController {
             description: 'El Diario ha sido creado exitosamente.',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
-              Get.off(HomeScreen());
+              Get.off(() => Diario());
             },
           ),
           barrierDismissible: false,
@@ -219,7 +220,7 @@ class PetActivityController extends GetxController {
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
               Get.back();
-              Get.off(HomeScreen());
+              Get.off(() => Diario());
               fetchPetActivities(diario['pet_id']);
               getActivityById(diario['actividadId']);
               Get.back();
