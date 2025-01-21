@@ -67,7 +67,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                   BarraBack(
                     titulo: 'Balance',
                     callback: () {
-                      Get.off(DashboardScreen());
+                      Get.off(() => DashboardScreen());
                     },
                   ),
                   // Input sin bordes

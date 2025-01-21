@@ -39,6 +39,7 @@ class Commands extends StatelessWidget {
           height: 10,
         ),
         FloatingActionButton(
+          elevation: 0,
           onPressed: () {
             Get.to(() => CrearComando());
           },

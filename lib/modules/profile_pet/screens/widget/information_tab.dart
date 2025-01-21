@@ -28,6 +28,8 @@ class InformationTab extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
   InformationTab({super.key, required this.controller});
 
+  final UserProfileController profileController =
+      Get.put(UserProfileController());
   @override
   Widget build(BuildContext context) {
     var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
@@ -302,6 +304,7 @@ class InformationTab extends StatelessWidget {
                           person['profile_image'];
                       // Navegar a la ruta 'PETOWNERPROFILE' y pasar los datos del perfil si es necesario
                       //Get.toNamed(Routes.PETOWNERPROFILE, arguments: person);
+                      profileController.fetchUserData(person['id'].toString());
                       Get.to(
                         PetOwnerProfileScreen(id: person['id'].toString()),
                       );

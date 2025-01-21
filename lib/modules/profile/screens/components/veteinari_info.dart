@@ -18,7 +18,7 @@ class VeterinarianInfo extends StatelessWidget {
       return Obx(() {
         if (controller.veterinarianLinked.value) {
           return Container(
-            height: 64,
+            height: 54,
             width: 302,
             margin: const EdgeInsets.symmetric(vertical: 10.0),
             padding: const EdgeInsets.all(10.0),
@@ -39,10 +39,11 @@ class VeterinarianInfo extends StatelessWidget {
                   profileController.user.value.userType == 'vet'
                       ? 'Veterinario Calificado'
                       : "Entrenador Calificado",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF19A02F),
                     fontWeight: FontWeight.bold,
                     fontFamily: 'lato',
+                    fontSize: 16,
                   ),
                 ),
               ],

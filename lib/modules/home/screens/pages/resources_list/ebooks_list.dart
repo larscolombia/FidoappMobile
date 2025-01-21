@@ -6,6 +6,7 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/screens/explore/libro_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
 import 'package:pawlly/modules/integracion/model/libros/libros_model.dart';
+import 'package:pawlly/styles/recursos.dart';
 
 class EbooksList extends StatelessWidget {
   EbooksList({super.key});
@@ -57,22 +58,20 @@ class EbooksList extends StatelessWidget {
                     GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, // Dos columnas
                         crossAxisSpacing:
                             16, // Espacio horizontal entre elementos
-                        mainAxisSpacing: 16, // Espacio vertical entre filas
+                        mainAxisSpacing: 10, // Espacio vertical entre filas
                         childAspectRatio:
-                            0.5, // Ajuste de la proporción de los elementos
+                            0.7, // Ajuste de la proporción de los elementos
                       ),
                       itemCount: controller.filteredEBooks.length,
                       itemBuilder: (context, index) {
-                        final book = controller.ebooks[index];
+                        final book = controller.filteredEBooks[index];
                         return GestureDetector(
                           onTap: () {
                             controller.selectEBookById("${book.id}");
-
                             Get.to(() => LibroDetalles());
                           },
                           child: BooksComponents(ebook: book),
@@ -109,27 +108,27 @@ class BooksComponents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      height: 278, // Altura original
+      height: 240, // Ajusta la altura del contenedor
+      width: 125,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
-          color: const Color.fromARGB(255, 102, 95, 95),
-          width: 0.2,
+          color: Recursos.ColorBorderSuave,
+          width: 1,
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Imagen del producto
           Center(
             child: Container(
-              height: 150,
+              height: 124,
+              width: 80,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
                 child: ebook.coverImage != null
                     ? Image.network(
                         ebook.coverImage!,
@@ -149,14 +148,13 @@ class BooksComponents extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          // Nombre del producto (máximo 3 líneas)
-          SizedBox(
-            height: 70,
+          Expanded(
             child: Text(
               ebook.title!,
-              maxLines: 3,
+              maxLines: 4,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
+                height: 1.2,
                 fontFamily: 'Lato',
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
@@ -165,7 +163,7 @@ class BooksComponents extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          // Precio y tipo de producto (libro o artículo)
+          // Añadir cualquier otro contenido aquí
         ],
       ),
     );

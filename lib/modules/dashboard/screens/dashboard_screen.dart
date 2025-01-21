@@ -43,7 +43,7 @@ class DashboardScreen extends StatelessWidget {
                 // Imagen Circular con Borde
                 Container(
                   width: 100,
-                  height: 100,
+                  height: 120,
                   padding: const EdgeInsets.all(
                       4), // Espacio entre la imagen y el borde
                   decoration: BoxDecoration(
@@ -68,9 +68,9 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ),
                 // Nombre del Usuario
-
+                const SizedBox(height: 20),
                 Container(
-                  height: imageSize,
+                  height: imageSize + 20,
                   width: 250,
                   alignment: Alignment.bottomCenter,
                   child: Obx(
@@ -110,7 +110,7 @@ class DashboardScreen extends StatelessWidget {
                             child: BarraBack(
                               titulo: 'Dashboard',
                               callback: () {
-                                Get.off(HomeScreen());
+                                Get.back();
                               },
                             ),
                           ),
@@ -124,10 +124,12 @@ class DashboardScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
+                              print('jqpwoijskpqowkspq');
                               _onItemTap(index,
                                   context); // Llama al nuevo método que maneja el modal y la navegación
                             },
                             child: Container(
+                              margin: const EdgeInsets.only(bottom: 2),
                               padding: const EdgeInsets.all(10.0),
                               child: Row(
                                 mainAxisAlignment:

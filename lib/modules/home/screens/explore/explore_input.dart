@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/input_busqueda.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/explore/libro_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
+import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ExploreInput extends StatelessWidget {
@@ -23,12 +25,7 @@ class ExploreInput extends StatelessWidget {
         // Input de búsqueda con lupa
         SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: InputText(
-            fondoColor: Colors.white,
-            placeholderImage: Image.asset('assets/icons/busqueda.png'),
-            placeholderFontFamily: 'lato',
-            borderColor: const Color.fromARGB(255, 117, 113, 113),
-            placeholder: 'Realiza tu búsqueda',
+          child: InputBusqueda(
             onChanged: (value) {
               controller.filterEBooks(value);
               blogController.getBlogPostsByName(value);
@@ -69,12 +66,12 @@ class ExploreInput extends StatelessWidget {
                     margin: const EdgeInsets.only(right: 16),
                     padding: const EdgeInsets.all(12),
                     width: 125,
-                    height: 229,
+                    height: 249,
                     decoration: BoxDecoration(
                       color: Styles.whiteColor,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: Styles.greyTextColor.withOpacity(0.2),
+                        color: Recursos.ColorBorderSuave,
                         width: 1,
                       ),
                     ),
@@ -111,6 +108,7 @@ class ExploreInput extends StatelessWidget {
                             maxLines: 4,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
+                              height: 1.2,
                               fontFamily: 'Lato',
                               fontSize: 14,
                               fontWeight: FontWeight.w700,

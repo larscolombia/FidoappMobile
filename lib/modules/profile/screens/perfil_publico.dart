@@ -43,10 +43,8 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (comentariosController.comments.value.isEmpty) {
-      comentariosController.fetchComments(
-          '${AuthServiceApis.dataCurrentUser.id}', "user");
-    }
+    comentariosController.fetchComments(
+        '${AuthServiceApis.dataCurrentUser.id}', "user");
     return Scaffold(
       backgroundColor: Styles.whiteColor,
       body: Container(
@@ -87,16 +85,11 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
               const SizedBox(
                 height: 20,
               ),
-              Estadisticas(
-                comentarios: '${comentariosController.comments.value.length}',
-                calificacion:
-                    '${comentariosController.calculateAverageRating()}',
-              ),
               CommentsSection(
                 id: '${AuthServiceApis.dataCurrentUser.id}',
                 expert: false,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
             ],
           ),
         ),

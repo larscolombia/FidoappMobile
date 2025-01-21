@@ -184,6 +184,7 @@ class CursoVideo extends StatelessWidget {
                                 '${_commentController.comments.length} ',
                             calificacion:
                                 "${_commentController.calculateAverageRating().toStringAsFixed(2)}",
+                            avatars: _commentController.getTopAvatars(),
                           ),
                           const SizedBox(height: 20),
                           BanerComentarios(

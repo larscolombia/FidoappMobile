@@ -62,11 +62,11 @@ class AvatarComentarios extends StatelessWidget {
                             allowHalfRating: true,
                             itemCount: 5,
                             itemPadding:
-                                const EdgeInsets.symmetric(horizontal: 3.0),
-                            itemSize: 15,
+                                const EdgeInsets.symmetric(horizontal: 1.0),
+                            itemSize: 20,
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
-                              color: Colors.amber,
+                              color: Styles.fiveColor,
                             ),
                             onRatingUpdate: (value) {},
                           ),

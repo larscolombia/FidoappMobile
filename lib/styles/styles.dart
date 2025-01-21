@@ -120,6 +120,7 @@ class Styles {
     fontSize: 24,
     fontWeight: FontWeight.w400,
     color: primaryColor,
+    height: 1.2,
   );
   static const dashboardTitle20 = TextStyle(
     fontFamily: 'PoetsenOne',

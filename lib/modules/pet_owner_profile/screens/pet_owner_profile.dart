@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
@@ -8,6 +10,7 @@ import 'package:pawlly/modules/profile/screens/components/profile_details.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_header.dart';
 import 'package:pawlly/modules/profile/screens/components/sobremi.dart';
 import 'package:pawlly/modules/profile/screens/components/veteinari_info.dart';
+import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -24,7 +27,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final headerHeight = size.height / 8;
-    profileController.fetchUserData(id);
+
     return Scaffold(
       backgroundColor: Styles.whiteColor,
       body: Container(
@@ -49,8 +52,8 @@ class PetOwnerProfileScreen extends StatelessWidget {
                 width: 302,
                 height: 20,
                 child: Divider(
-                  thickness: .2,
-                  color: Color.fromARGB(255, 170, 165, 157),
+                  thickness: 1,
+                  color: Recursos.ColorBorderSuave,
                 ),
               ),
               const SizedBox(height: 20),
@@ -63,7 +66,7 @@ class PetOwnerProfileScreen extends StatelessWidget {
               ProfileActions(
                   controller: controller, profileController: profileController),
               const SizedBox(height: 20),
-              CommentsSection(id: '${profileController.user.value.id}'),
+              CommentsSection(id: '$id'),
             ],
           ),
         ),

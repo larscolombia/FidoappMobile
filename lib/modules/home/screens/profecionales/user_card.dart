@@ -1,16 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/model/user_type/user_model.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
 class UserCard extends StatelessWidget {
   final User user;
 
-  const UserCard({Key? key, required this.user}) : super(key: key);
-
+  UserCard({Key? key, required this.user}) : super(key: key);
+  final UserProfileController profileController =
+      Get.find<UserProfileController>();
   @override
   Widget build(BuildContext context) {
     double rating = double.parse(user.rating.toString());
@@ -18,7 +22,10 @@ class UserCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         var users = user.profile;
-        print('users ${users?.id}');
+
+        profileController
+            .fetchUserData('${user.id}'); // Obtener los datos del usuario
+        print('perfil usuario ${jsonEncode(profileController.user.value)}');
         if (users?.id != null) {
           Get.to(() => PetOwnerProfileScreen(id: '${user.id}'));
         } else {}
@@ -90,7 +97,7 @@ class UserCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.star,
                         color: Colors.orange,
                         size: 16,
@@ -112,7 +119,7 @@ class UserCard extends StatelessWidget {
                           user.profile?.expert ?? '',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontFamily: 'Lato',
                             color: Colors.grey,

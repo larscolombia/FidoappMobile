@@ -1,102 +1,136 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:pawlly/modules/components/avatar_comentario.dart';
 import 'package:pawlly/modules/components/baner_comentarios.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
-import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/styles/recursos.dart';
 
-class CommentsSection extends StatelessWidget {
+class CommentsSection extends StatefulWidget {
   final String id;
   final bool expert;
-  final PetOwnerProfileController controller =
-      Get.put(PetOwnerProfileController());
+
+  const CommentsSection({super.key, required this.id, this.expert = true});
+
+  @override
+  _CommentsSectionState createState() => _CommentsSectionState();
+}
+
+class _CommentsSectionState extends State<CommentsSection> {
   final CommentController comentariosController = Get.put(CommentController());
-  CommentsSection({super.key, required this.id, this.expert = true});
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Cargar comentarios
+    comentariosController.fetchComments(widget.id, "user").then((_) {
+      setState(() {}); // Actualizar la UI después de cargar los datos
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    comentariosController.fetchComments(id, "user"); // pisa papel comentarios
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (expert)
-          Center(
-            child: BanerComentarios(
-              eventTextChanged: (value) {
-                comentariosController.updateField('review_msg', value);
-              },
-              titulo: 'Tu experiencia',
-              onRatingUpdate: (rating) {
-                comentariosController.updateField('rating', rating);
-              },
-              onEvento: () {
-                comentariosController.updateField('employee_id', id);
+    return Obx(() {
+      // Mostrar un indicador de carga mientras se obtienen los comentarios
+      if (comentariosController.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-                comentariosController.postComment('user', context);
-              },
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Mostrar estadísticas solo cuando haya comentarios
+          if (comentariosController.comments.isNotEmpty)
+            Center(
+              child: Estadisticas(
+                comentarios: comentariosController.comments.length.toString(),
+                calificacion:
+                    '${comentariosController.calculateAverageRating()}',
+                avatars: comentariosController.getTopAvatars(),
+              ),
             ),
-          ),
-        const SizedBox(height: 20), // Espaciado entre secciones
-        // Sección de comentarios lista
-        Center(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width - 100,
-            child: const Text(
-              'Comentarios',
-              style: TextStyle(
-                color: Styles.primaryColor,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'PoetsenOne',
-                fontSize: 20,
+          const SizedBox(height: 20),
+          if (widget.expert)
+            Center(
+              child: BanerComentarios(
+                eventTextChanged: (value) {
+                  comentariosController.updateField('review_msg', value);
+                },
+                titulo: 'Tu experiencia',
+                onRatingUpdate: (rating) {
+                  comentariosController.updateField('rating', rating);
+                },
+                onEvento: () {
+                  comentariosController.updateField('employee_id', widget.id);
+                  comentariosController.postComment('user', context);
+                },
+              ),
+            ),
+          const SizedBox(height: 20),
+          Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width - 100,
+              child: const Text(
+                'Comentarios',
+                style: TextStyle(
+                  color: Styles.primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'PoetsenOne',
+                  fontSize: 20,
+                ),
               ),
             ),
           ),
-        ),
-        Center(
-          child: Container(
+          const SizedBox(height: 20),
+          Center(
+            child: Container(
               width: MediaQuery.of(context).size.width - 100,
-              child: const Divider(color: Colors.grey, thickness: .3)),
-        ),
-        Center(
-          child: RecargaComponente(
-            callback: () {
-              comentariosController.fetchComments(id, "user");
-            },
+              child:
+                  const Divider(color: Recursos.ColorBorderSuave, thickness: 1),
+            ),
           ),
-        ),
-        Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width - 100,
-            child: Obx(() {
-              if (comentariosController.isLoading.value) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width - 100,
+              child: Obx(() {
+                if (comentariosController.isLoading.value) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return SingleChildScrollView(
+                  child: Column(
+                    children: comentariosController.comments.map((value) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width - 100,
+                        child: AvatarComentarios(
+                          avatar: value.userAvatar ??
+                              "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg",
+                          name: value.userFullName ?? '',
+                          date: "Fecha",
+                          comment: value.reviewMsg,
+                          rating: double.parse(value.rating.toString()),
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 );
-              }
-              return SingleChildScrollView(
-                child: Column(
-                  children: comentariosController.comments.map((value) {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width - 100,
-                      child: AvatarComentarios(
-                        avatar: value.userAvatar ??
-                            "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg",
-                        name: value.userFullName ?? '',
-                        date: "Fecha",
-                        comment: value.reviewMsg,
-                        rating: double.parse(value.rating.toString()),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              );
-            }),
+              }),
+            ),
           ),
-        ),
-      ],
-    );
+          const SizedBox(height: 40),
+          Center(
+            child: RecargaComponente(
+              callback: () {
+                comentariosController.fetchComments(widget.id, "user");
+              },
+            ),
+          ),
+          const SizedBox(height: 40),
+        ],
+      );
+    });
   }
 }

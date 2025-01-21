@@ -54,6 +54,7 @@ class UserProfileController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body)['data'];
+        print('perfil usuario ${data}');
         user.value =
             UserData.fromJson(data); // Actualiza el modelo con la respuesta.
       } else {

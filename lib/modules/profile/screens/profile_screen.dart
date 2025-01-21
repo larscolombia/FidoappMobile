@@ -109,10 +109,14 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   // Nombre del Usuario
                   Positioned(
-                    bottom: 16,
-                    child: Text(
-                      '${controller.user['first_name'].toString()}',
-                      style: Styles.dashboardTitle24,
+                    bottom: -5,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width - 120,
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        '${controller.user['first_name'].toString()}',
+                        style: Styles.dashboardTitle24,
+                      ),
                     ),
                   ),
                 ],

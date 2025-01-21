@@ -147,4 +147,9 @@ class CommentController extends GetxController {
       isComentarioPosrLoading(false);
     }
   }
+
+  List<String> getTopAvatars() {
+    // Devuelve un máximo de 5 avatares de la lista de comentarios
+    return comments.take(5).map((comment) => comment.userAvatar ?? '').toList();
+  }
 }

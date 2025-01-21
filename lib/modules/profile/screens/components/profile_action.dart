@@ -18,7 +18,8 @@ class ProfileActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('profile controller ${jsonEncode(profileController.user.value)}');
+    print(
+        'profile controller ${jsonEncode(profileController.user.value.profile?.tags)}');
     return Column(
       children: [
         Container(

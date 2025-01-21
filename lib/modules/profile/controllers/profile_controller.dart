@@ -183,10 +183,9 @@ class ProfileController extends GetxController {
         Get.dialog(
           //pisa papel
           CustomAlertDialog(
-            icon: Icons.check_circle_outline,
-            title: 'Información Enviada',
-            description:
-                'Te enviaremos un correo electrónico pronto para darte una respuesta acerca de tu verificación',
+            assetImage: 'assets/icons/shield-tick.png',
+            title: 'Acción Realizada Exitosamente',
+            description: '',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
               profileController

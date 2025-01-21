@@ -4,7 +4,8 @@ import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class CustomAlertDialog extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon; // Icono opcional
+  final String? assetImage; // Imagen desde assets opcional
   final String title;
   final String description;
   final String? primaryButtonText; // Texto del primer botón (opcional)
@@ -15,9 +16,11 @@ class CustomAlertDialog extends StatelessWidget {
       onSecondaryButtonPressed; // Acción del segundo botón (opcional)
   final bool buttonCancelar; // Propiedad para mostrar el botón de cerrar modal
   final bool? isSelect;
+
   const CustomAlertDialog({
     super.key,
-    required this.icon,
+    this.icon,
+    this.assetImage,
     required this.title,
     required this.description,
     this.primaryButtonText,
@@ -35,10 +38,22 @@ class CustomAlertDialog extends StatelessWidget {
       contentPadding: const EdgeInsets.all(20),
       title: Column(
         children: [
-          Icon(icon,
+          if (icon != null) ...[
+            Icon(
+              icon,
               size: 80,
-              color: Styles.primaryColor), // Usar el icono proporcionado
-          const SizedBox(height: 10),
+              color: Styles.primaryColor,
+            ),
+            const SizedBox(height: 10),
+          ] else if (assetImage != null) ...[
+            Image.asset(
+              assetImage!,
+              height: 80,
+              width: 80,
+              fit: BoxFit.contain,
+            ),
+            const SizedBox(height: 10),
+          ],
           Text(
             title,
             textAlign: TextAlign.center,

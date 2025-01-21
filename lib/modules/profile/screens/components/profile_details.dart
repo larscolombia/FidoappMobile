@@ -28,23 +28,40 @@ class ProfileDetails extends StatelessWidget {
           }
           return SizedBox(
             width: MediaQuery.of(context).size.width - 100,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Stack(
               children: [
-                const Icon(
-                  Icons.location_on,
-                  color: Styles.primaryColor,
-                  size: 20,
-                ),
-                Text(
-                  profileController.user.value.address ?? "",
-                  style: const TextStyle(
-                    color: Styles.primaryColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Lato',
+                Positioned(
+                  child: GestureDetector(
+                    onTap: () {
+                      // Lógica para ir al perfil de usuario
+                      Get.back();
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Styles.iconColorBack,
+                      size: 20,
+                    ),
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.location_on,
+                      color: Styles.primaryColor,
+                      size: 20,
+                    ),
+                    Text(
+                      profileController.user.value.address ?? "",
+                      style: const TextStyle(
+                        color: Styles.primaryColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Lato',
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           );

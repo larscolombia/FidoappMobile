@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/components/circular_avatar_row.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/style.dart';
 
@@ -19,20 +20,23 @@ class BanerComentarios extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 209,
       width: 305,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(13),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            width: 1.0,
-            color: Styles.primaryColor,
+            width: 0.5,
+            color: Styles.iconColorBack,
           )),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.only(
+          left: 13.0,
+          right: 13.0,
+          top: 16.0,
+          bottom: 16.0,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 10),
             const Text(
               '¿Quieres dejar una reseña?',
               style: TextStyle(
@@ -50,10 +54,11 @@ class BanerComentarios extends StatelessWidget {
               itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
               itemBuilder: (context, _) => const Icon(
                 Icons.star,
-                color: Colors.amber,
+                color: Color(0xffFC9214),
               ),
               onRatingUpdate: onRatingUpdate,
             ),
+            const SizedBox(height: 20),
             SizedBox(
               height: 66,
               width: 276,
@@ -62,7 +67,7 @@ class BanerComentarios extends StatelessWidget {
                 placeholder: titulo ?? 'Describe tu experiencia',
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             SizedBox(
               width: 276,
               height: 42,
@@ -81,17 +86,19 @@ class BanerComentarios extends StatelessWidget {
 class Estadisticas extends StatelessWidget {
   final String comentarios;
   final String calificacion;
+  final List<String>? avatars;
   const Estadisticas({
     super.key,
     required this.comentarios,
     required this.calificacion,
+    this.avatars,
   });
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
       width: 305,
-      height: 150,
+      height: 155,
       decoration: BoxDecoration(
         color: Styles.colorContainer,
         borderRadius: BorderRadius.circular(16),
@@ -153,22 +160,31 @@ class Estadisticas extends StatelessWidget {
             ),
             Row(
               children: [
-                Container(
-                  width: 125,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: Styles.fiveColor,
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Styles.fiveColor,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('$comentarios comentarios',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w800,
+                          )),
+                    ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('$comentarios comentarios',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.white,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w800,
-                        )),
+                ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: Container(
+                    child: CircularAvatarsRow(
+                      imageUrls: avatars ?? [],
+                    ),
                   ),
                 ),
               ],
