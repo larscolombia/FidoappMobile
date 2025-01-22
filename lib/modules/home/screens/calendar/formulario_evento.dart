@@ -37,7 +37,9 @@ class _CreateEventState extends State<CreateEvent> {
   final CalendarController calendarController = Get.put(CalendarController());
   final PetControllerv2 mascotas = Get.put(PetControllerv2());
   final HomeController homeController = Get.put(HomeController());
-  final UserController userController = Get.put(UserController());
+  final UserController userController =
+      Get.put(UserController(), permanent: true);
+
   final CategoryControllerVet categoryController =
       Get.put(CategoryControllerVet());
   final ServiceEntrenadorController serviceController =
@@ -384,17 +386,13 @@ class _CreateEventState extends State<CreateEvent> {
                               fontFamily: 'PoetsenOne',
                             ),
                           ),
-                          Positioned(
-                            bottom: 100,
-                            right: 16,
-                            child: FloatingActionButton(
-                              elevation: 5,
-                              onPressed: () {
-                                _showMyDialog(context);
-                              },
-                              backgroundColor: Styles.fiveColor,
-                              child: const Icon(Icons.add, color: Colors.white),
-                            ),
+                          FloatingActionButton(
+                            elevation: 0,
+                            onPressed: () {
+                              _showMyDialog(context);
+                            },
+                            backgroundColor: Styles.fiveColor,
+                            child: const Icon(Icons.add, color: Colors.white),
                           )
                         ],
                       ),

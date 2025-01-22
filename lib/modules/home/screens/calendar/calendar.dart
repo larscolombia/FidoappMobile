@@ -45,6 +45,7 @@ class Calendar extends StatelessWidget {
                 ),
               ),
               child: TableCalendar(
+                daysOfWeekHeight: 70,
                 firstDay: DateTime.utc(2022, 1, 1),
                 lastDay: DateTime.utc(2030, 12, 31),
                 locale: 'es_ES',

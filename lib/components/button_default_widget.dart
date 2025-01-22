@@ -4,20 +4,18 @@ import 'package:pawlly/styles/styles.dart';
 
 class ButtonDefaultWidget extends StatelessWidget {
   final String title;
-  final VoidCallback? callback; // Asegurarse de que el callback pueda ser null
-  final Color defaultColor; // Color de fondo predeterminado
-  final WidgetStateProperty<Color>?
-      color; // Permitir sobreescribir el color de fondo
-  final Color textColor; // Color del texto
-  final BorderSide? border; // Borde del botón
+  final VoidCallback? callback;
+  final Color defaultColor;
+  final WidgetStateProperty<Color>? color;
+  final Color textColor;
+  final BorderSide? border;
   final double heigthButtom;
   final double? widthButtom;
   final double? textSize;
   final double? borderSize;
-  final IconData? icon; // Icono opcional
-  final bool
-      iconAfterText; // Posición del icono: verdadero para después del texto, falso para antes
-  final bool isLoading; // Estado de carga del botón
+  final IconData? icon;
+  final bool iconAfterText;
+  final bool isLoading;
 
   const ButtonDefaultWidget({
     super.key,
@@ -25,16 +23,15 @@ class ButtonDefaultWidget extends StatelessWidget {
     this.heigthButtom = 54,
     required this.title,
     this.callback,
-    this.defaultColor =
-        const Color(0xffFF4931), // Color de fondo predeterminado
+    this.defaultColor = const Color(0xffFF4931),
     this.color,
-    this.textColor = Styles.whiteColor, // Color del texto predeterminado
-    this.border, // Borde del botón
+    this.textColor = Styles.whiteColor,
+    this.border,
     this.textSize,
     this.borderSize,
-    this.icon, // Icono opcional
-    this.iconAfterText = true, // Por defecto, el icono está después del texto
-    this.isLoading = false, // Por defecto, no está en estado de carga
+    this.icon,
+    this.iconAfterText = true,
+    this.isLoading = false,
   });
 
   @override
@@ -43,29 +40,38 @@ class ButtonDefaultWidget extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xffFF4931)
+                .withOpacity(0.1), // Sombra del color predeterminado
+            spreadRadius: 1,
+            blurRadius: 12,
+            offset: const Offset(0, 4), // Desplazamiento de la sombra
+          ),
+        ],
+      ),
       child: SizedBox(
         width: widthButtom ?? width,
         height: heigthButtom,
         child: TextButton(
           style: ButtonStyle(
+            elevation: MaterialStateProperty.all(1),
             backgroundColor: resolvedColor,
             side: border != null
                 ? WidgetStateProperty.all(border)
                 : WidgetStateProperty.all(
-                    BorderSide.none), // Configurar el borde
+                    BorderSide.none,
+                  ),
             shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(
-                    borderSize ?? 16), // Bordes redondeados
+                borderRadius: BorderRadius.circular(borderSize ?? 16),
               ),
             ),
           ),
-          onPressed: isLoading
-              ? null
-              : callback, // Desactivar botón si está en estado de carga
+          onPressed: isLoading ? null : callback,
           child: isLoading
               ? CircularProgressIndicator(
-                  // Mostrar indicador de carga
                   valueColor: AlwaysStoppedAnimation<Color>(textColor),
                 )
               : icon == null
@@ -89,8 +95,7 @@ class ButtonDefaultWidget extends StatelessWidget {
                                   color: textColor,
                                 ),
                               ),
-                              const SizedBox(
-                                  width: 8), // Espacio entre texto e icono
+                              const SizedBox(width: 8),
                               Icon(
                                 icon,
                                 color: textColor,
@@ -101,8 +106,7 @@ class ButtonDefaultWidget extends StatelessWidget {
                                 icon,
                                 color: textColor,
                               ),
-                              const SizedBox(
-                                  width: 8), // Espacio entre icono y texto
+                              const SizedBox(width: 8),
                               Text(
                                 title,
                                 style: GoogleFonts.poppins(

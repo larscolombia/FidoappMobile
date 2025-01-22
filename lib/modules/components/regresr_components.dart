@@ -9,22 +9,24 @@ class BarraBack extends StatelessWidget {
     this.color = Styles.primaryColor,
     this.subtitle,
     this.ColorSubtitle,
+    this.size = 18.00,
   });
 
   final String titulo;
   final Color color;
   final String? subtitle;
   final Color? ColorSubtitle;
+  final double size;
   final void Function()? callback;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        GestureDetector(
-          onTap: callback,
-          child: const SizedBox(
+    return GestureDetector(
+      onTap: callback,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(
             width: 30,
             height: 30,
             child: Center(
@@ -35,39 +37,39 @@ class BarraBack extends StatelessWidget {
               ),
             ),
           ),
-        ),
-        const SizedBox(width: 8), // Separación fija para evitar apilamientos
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                titulo,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: 'PoetsenOne',
-                  color: color,
-                ),
-              ),
-              if (subtitle != null)
+          const SizedBox(width: 8), // Separación fija para evitar apilamientos
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                  subtitle!,
+                  titulo,
                   overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
+                  maxLines: 1,
                   style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Lato',
-                    color: ColorSubtitle ?? Styles.fiveColor,
+                    fontSize: size,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'PoetsenOne',
+                    color: color,
                   ),
                 ),
-            ],
+                if (subtitle != null)
+                  Text(
+                    subtitle!,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Lato',
+                      color: ColorSubtitle ?? Styles.fiveColor,
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

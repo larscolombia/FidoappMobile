@@ -18,22 +18,35 @@ import 'package:pawlly/modules/integracion/controller/comentarios/ranting_contro
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
 import 'package:pawlly/modules/integracion/model/balance/producto_pay_model.dart';
 
-class LibroDetalles extends StatelessWidget {
+class LibroDetalles extends StatefulWidget {
+  LibroDetalles({super.key});
+
+  @override
+  State<LibroDetalles> createState() => _LibroDetallesState();
+}
+
+class _LibroDetallesState extends State<LibroDetalles> {
   final EBookController econtroller = Get.put(EBookController());
+
   final CommentController commentController = Get.put(CommentController());
+
   final UserBalanceController balanceController =
       Get.put(UserBalanceController());
+
   final ProductoPayController productController =
       Get.put(ProductoPayController());
-  LibroDetalles({super.key});
+
+  @override
+  void initState() {
+    super.initState();
+    var id = econtroller.idLibro.value;
+    commentController.fetchComments(id, "books");
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     var id = econtroller.idLibro.value;
-
-    commentController.fetchComments(id, "books");
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(slivers: [
@@ -152,15 +165,17 @@ class LibroDetalles extends StatelessWidget {
                                   direction: Axis.horizontal,
                                   allowHalfRating: true,
                                   itemCount: 5,
+                                  itemSize: 19,
                                   itemPadding: const EdgeInsets.symmetric(
-                                      horizontal: 4.0),
+                                      horizontal: 1.0),
                                   itemBuilder: (context, _) => const Icon(
                                     Icons.star,
-                                    color: Colors.amber,
+                                    color: Styles.iconColorBack,
                                   ),
                                   onRatingUpdate: (value) {},
                                 ),
                               ),
+                              const SizedBox(width: 4),
                               SizedBox(
                                 width: 45,
                                 child: Text(
@@ -300,22 +315,41 @@ class LibroDetalles extends StatelessWidget {
                           if (commentController.isComentarioPosrLoading.value) {
                             return const Text('cargando');
                           }
-                          return BanerComentarios(
-                            eventTextChanged: (value) {
-                              commentController.updateField(
-                                  'review_msg', value);
-                            },
-                            titulo: 'Tu experiencia',
-                            onRatingUpdate: (rating) {
-                              commentController.updateField('rating', rating);
-                            },
-                            onEvento: () {
-                              commentController.updateField('e_book_id', id);
-                              if (commentController.comentario.isNotEmpty) {
-                                commentController.postComment('books', context);
-                                commentController.fetchComments(id, "books");
-                              }
-                            },
+                          return Column(
+                            children: [
+                              Estadisticas(
+                                comentarios: commentController.comments.length
+                                    .toString(),
+                                calificacion:
+                                    '${commentController.calculateAverageRating()}',
+                                avatars: commentController.getTopAvatars(),
+                              ),
+                              const SizedBox(height: 20),
+                              BanerComentarios(
+                                eventTextChanged: (value) {
+                                  commentController.updateField(
+                                      'review_msg', value);
+                                },
+                                titulo: 'Tu experiencia',
+                                onRatingUpdate: (rating) {
+                                  commentController.updateField(
+                                      'rating', rating);
+                                },
+                                onEvento: () {
+                                  commentController.updateField(
+                                      'e_book_id', id);
+                                  if (commentController.comentario.isNotEmpty) {
+                                    commentController.postComment(
+                                        'books', context);
+
+                                    setState(() {
+                                      commentController.fetchComments(
+                                          id, "books");
+                                    });
+                                  }
+                                },
+                              ),
+                            ],
                           );
                         }),
                         const SizedBox(height: 20),

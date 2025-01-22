@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 
 import 'package:pawlly/modules/components/border_redondiado.dart';
@@ -8,6 +9,7 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/fideo_coin/recarga_controller.dart';
+import 'package:pawlly/styles/recursos.dart';
 
 class RecargarSaldoScreen extends StatefulWidget {
   RecargarSaldoScreen({super.key});
@@ -54,8 +56,38 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
             decoration: const BoxDecoration(
               color: Styles.colorContainer,
             ),
-            child: const Stack(
-              children: [BorderRedondiado(top: 180)],
+            child: Stack(
+              children: [
+                Center(
+                  child: Container(
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Completa la información',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: Recursos.fuente2,
+                          ),
+                        ),
+                        Text(
+                          'Digita la cantidad que deseas recargar',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: Recursos.fuente1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                BorderRedondiado(top: 180)
+              ],
             ),
           ),
           Expanded(
@@ -65,11 +97,13 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   BarraBack(
-                    titulo: 'Balance',
+                    size: 20,
+                    titulo: 'Recarga',
                     callback: () {
                       Get.off(() => DashboardScreen());
                     },
                   ),
+                  const SizedBox(height: 20),
                   // Input sin bordes
                   Container(
                     height: 60,
@@ -118,10 +152,6 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
-                              side: const BorderSide(
-                                color: Styles.fiveColor,
-                                width: .5,
-                              ),
                             ),
                             backgroundColor: Styles.colorContainer,
                           ),
@@ -139,8 +169,9 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                     ),
                   ),
                   // Botón Confirmar
-                  GestureDetector(
-                    onTap: () {
+                  ButtonDefaultWidget(
+                    title: 'Confirmar',
+                    callback: () {
                       Get.dialog(
                         //pisa papel
                         CustomAlertDialog(
@@ -163,26 +194,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
 
                       // _confirmarTransaccion();
                     },
-                    child: Container(
-                      height: 50,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                        color: Styles.primaryColor,
-                      ),
-                      child: const Text(
-                        'Confirmar',
-                        style: TextStyle(
-                          fontSize: 24,
-                          letterSpacing: 2,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
+                  )
                 ],
               ),
             ),

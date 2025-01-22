@@ -153,9 +153,10 @@ class UserBalanceController extends GetxController {
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
-                          fontSize: 12,
-                          fontFamily: 'Roboto',
+                          fontSize: 14,
+                          fontFamily: 'Lato',
                           color: Colors.black,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                     ),
@@ -182,7 +183,7 @@ class UserBalanceController extends GetxController {
                           Expanded(
                             child: Container(
                               padding: const EdgeInsets.all(16),
-                              height: 150,
+                              height: MediaQuery.of(context).size.height * 0.2,
                               decoration: const BoxDecoration(
                                 color: Styles.colorContainer,
                                 borderRadius:
@@ -198,14 +199,15 @@ class UserBalanceController extends GetxController {
                                             .nombreProducto,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 18,
                                             fontFamily: 'Leto',
                                             fontWeight: FontWeight.w700),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
+                                    SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.01),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width,
                                       child: Text(
@@ -213,7 +215,7 @@ class UserBalanceController extends GetxController {
                                             .selectedProduct.value.precio,
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 22,
                                             fontWeight: FontWeight.bold,
                                             color: Styles.primaryColor),
                                       ),

@@ -92,7 +92,9 @@ class CommentController extends GetxController {
       return sum + rating;
     });
 
-    return sum / comments.length;
+    double average = sum / comments.length;
+    return double.parse(
+        average.toStringAsFixed(1)); // Redondear a una cifra decimal
   }
 
   var comentario = {

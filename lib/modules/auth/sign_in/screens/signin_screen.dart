@@ -78,7 +78,7 @@ class SignInScreen extends StatelessWidget {
                             Container(
                               margin: const EdgeInsets.only(top: 16),
                               child: ButtonDefaultWidget(
-                                title: locale.value.signIn,
+                                title: 'Inicia Sesión',
                                 callback: () {
                                   // Get.to(Inicio());
                                   print('login');
@@ -194,9 +194,9 @@ class SignInScreen extends StatelessWidget {
                                   Routes.SIGNUP,
                                 );
                               },
-                              child: Text(
-                                locale.value.signUp,
-                                style: const TextStyle(
+                              child: const Text(
+                                'Regístrate',
+                                style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w900,
                                   fontFamily: Recursos.fuente1,

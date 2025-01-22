@@ -22,10 +22,19 @@ class ComandoController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    // Escucha los cambios en el perfil seleccionado dinámicamente
+    ever(homeController.selectedProfile, (profile) {
+      if (profile != null) {
+        fetchComandos(profile.id.toString());
+      } else {
+        comandoList.clear(); // Limpia la lista si no hay perfil seleccionado
+      }
+    });
+
+    // Llama a fetchComandos si ya hay un perfil seleccionado al inicio
     if (homeController.selectedProfile.value != null) {
-      fetchComandos(
-        homeController.selectedProfile.value!.id.toString() ?? "0",
-      );
+      fetchComandos(homeController.selectedProfile.value!.id.toString());
     }
   }
 

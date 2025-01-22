@@ -16,6 +16,7 @@ import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/formulario_verificacion.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:pawlly/styles/recursos.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());
@@ -96,11 +97,10 @@ class ProfileScreen extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
-                                color: Styles.iconColorBack,
+                                color: Styles.fiveColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: const Icon(Icons.edit,
-                                  color: Colors.white, size: 24),
+                              child: Image.asset('assets/icons/edit-2.png'),
                             ),
                           ),
                         ],
@@ -129,7 +129,7 @@ class ProfileScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(25)),
+                      const BorderRadius.vertical(top: Radius.circular(40)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,27 +209,32 @@ class ProfileScreen extends StatelessWidget {
                             fondoColor: controller.isEditing.value == false
                                 ? Colors.white
                                 : Styles.fiveColor,
+                            borderColor: Styles.iconColorBack,
+                          );
+                        }),
+                        const SizedBox(height: 20),
+                        Obx(() {
+                          return Container(
+                            child: InputText(
+                              borderColor: Styles.iconColorBack,
+                              onChanged: (value) =>
+                                  controller.user['last_name'] = value,
+                              initialValue:
+                                  controller.user['last_name'].toString(),
+                              placeholder: '',
+                              placeholderImage:
+                                  Image.asset('assets/icons/profile.png'),
+                              readOnly: !controller.isEditing.value,
+                              fondoColor: controller.isEditing.value == false
+                                  ? Colors.white
+                                  : Styles.fiveColor,
+                            ),
                           );
                         }),
                         const SizedBox(height: 20),
                         Obx(() {
                           return InputText(
-                            onChanged: (value) =>
-                                controller.user['last_name'] = value,
-                            initialValue:
-                                controller.user['last_name'].toString(),
-                            placeholder: '',
-                            placeholderImage:
-                                Image.asset('assets/icons/profile.png'),
-                            readOnly: !controller.isEditing.value,
-                            fondoColor: controller.isEditing.value == false
-                                ? Colors.white
-                                : Styles.fiveColor,
-                          );
-                        }),
-                        const SizedBox(height: 20),
-                        Obx(() {
-                          return InputText(
+                            borderColor: Styles.iconColorBack,
                             onChanged: (value) =>
                                 controller.user['email'] = value,
                             initialValue: controller.user['email'].toString(),

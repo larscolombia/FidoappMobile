@@ -191,8 +191,8 @@ class ProfileController extends GetxController {
               profileController
                   .fetchUserData("${AuthServiceApis.dataCurrentUser.id}");
               currentUser.profileImage = data['data']['profile_image'];
-              userGenCont.value.text = data['data']['gender'].toLowerCase();
-              currentUser.gender = data['data']['gender'].toLowerCase();
+              //userGenCont.value.text = data['data']['gender';
+              //   currentUser.gender = data['data']['gender'].toLowerCase();
               user['lastName'] = data['data']['last_name'];
               currentUser.lastName = data['data']['last_name'];
               Get.back();

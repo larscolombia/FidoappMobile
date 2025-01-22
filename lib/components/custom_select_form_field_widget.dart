@@ -94,9 +94,9 @@ class _CustomSelectFormFieldWidgetState
         children: [
           if (widget.label != null)
             Container(
-              padding: EdgeInsets.only(left: 5),
+              padding: const EdgeInsets.only(left: 5),
               width: double.infinity,
-              child: Text(
+              child: const Text(
                 'Categoria del evento',
                 style: TextStyle(
                   fontSize: 14,
@@ -123,7 +123,6 @@ class _CustomSelectFormFieldWidgetState
               children: [
                 InputDecorator(
                   decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 20),
                     filled: true,
                     fillColor: hasText || _selectedValue != null
                         ? Colors.white
@@ -141,13 +140,8 @@ class _CustomSelectFormFieldWidgetState
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(
-                        color: isEnabled
-                            ? (widget.borderColor ??
-                                (hasText || _selectedValue != null
-                                    ? Styles.iconColorBack
-                                    : Colors.transparent))
-                            : Colors.grey,
+                      borderSide: const BorderSide(
+                        color: Styles.iconColorBack,
                         width: .5,
                       ),
                     ),
@@ -167,10 +161,13 @@ class _CustomSelectFormFieldWidgetState
                     ),
                     // Condicionar el prefixIcon si el icon es proporcionado
                     prefixIcon: widget.icon != null
-                        ? Image.asset(
-                            widget.icon!,
-                            width: 20,
-                            height: 20,
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Image.asset(
+                              widget.icon!,
+                              width: 20,
+                              height: 20,
+                            ),
                           )
                         : null, // Si no se pasa icono, no mostramos nada
                     labelText:
@@ -196,7 +193,13 @@ class _CustomSelectFormFieldWidgetState
                               'Lato', // Forzamos la fuente Lato para el texto ingresado
                         ),
                       ),
-                      Image.asset('assets/icons/flecha_select.png'),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: SizedBox(
+                            width: 20,
+                            child:
+                                Image.asset('assets/icons/flecha_select.png')),
+                      ),
                     ],
                   ),
                 ),
@@ -237,17 +240,18 @@ class _CustomSelectFormFieldWidgetState
             borderRadius: BorderRadius.circular(16),
             child: ConstrainedBox(
               constraints: const BoxConstraints(
-                maxHeight: 200, // Limitar la altura máxima a 200px
+                maxHeight: 170, // Limitar la altura máxima a 200px
               ),
               child: Container(
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   border: Border.all(
                       color: widget.borderColor ?? Styles.iconColorBack),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: ListView(
                   padding: EdgeInsets.zero,
-                  shrinkWrap: true,
+                  shrinkWrap: false,
                   children: widget.items!.map((item) {
                     return Container(
                       decoration: const BoxDecoration(
@@ -259,6 +263,7 @@ class _CustomSelectFormFieldWidgetState
                         ),
                       ),
                       child: ListTile(
+                        focusColor: Colors.white,
                         title: Text(
                           item,
                           style: const TextStyle(

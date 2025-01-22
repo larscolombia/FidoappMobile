@@ -84,7 +84,7 @@ class PetActivityController extends GetxController {
 
   Future<void> fetchPetActivities(String petId) async {
     try {
-      isLoading(true);
+      // isLoading(true);
       final response = await http.get(
         Uri.parse('$url?pet_id=$petId'),
         headers: {
@@ -111,7 +111,7 @@ class PetActivityController extends GetxController {
     } catch (e) {
       print('Excepción capturada en actividad_mascota_controller linea 82: $e');
     } finally {
-      isLoading(false);
+      // isLoading(false);
     }
   }
 

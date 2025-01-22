@@ -2,13 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/modules/components/border_redondiado.dart';
-import 'package:pawlly/modules/components/input_text.dart';
-import 'package:pawlly/modules/components/recarga_componente.dart';
-import 'package:pawlly/modules/components/regresr_components.dart';
+import 'package:pawlly/modules/diario/diario.dart';
+
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
-import 'package:pawlly/modules/home/screens/Diario/formulario_diario.dart';
-import 'package:pawlly/modules/home/screens/Diario/index.dart';
+
 import 'package:pawlly/modules/home/screens/calendar/activity_list.dart';
 import 'package:pawlly/modules/home/screens/calendar/calendar.dart';
 import 'package:pawlly/modules/home/screens/explore/entretaiment_blogs.dart';
@@ -21,7 +18,6 @@ import 'package:pawlly/modules/home/screens/pages/training.dart';
 import 'package:pawlly/modules/home/screens/pages/utilities.dart';
 import 'package:pawlly/modules/home/screens/profecionales/profecionales.dart';
 import 'package:pawlly/modules/home/screens/training/commands.dart';
-import 'package:pawlly/modules/home/screens/widgets/filtrar_actividad.dart';
 import 'package:pawlly/modules/home/screens/widgets/menu_of_navigation.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
@@ -94,8 +90,7 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Positioned(
-                      top: 0, left: 0, right: 0, child: HeaderNotification()),
+                  HeaderNotification(),
                   // Agregar animación para mostrar/ocultar el contenedor de notificaciones
                   AnimatedOpacity(
                     opacity:
@@ -127,7 +122,7 @@ class HomeScreen extends StatelessWidget {
                                         pushProvider.isLoading.value
                                             ? "Cargando..."
                                             : 'Activar Notificaciones aquí',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
                                           fontWeight: FontWeight.bold,
@@ -140,7 +135,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ),
                           )
-                        : SizedBox
+                        : const SizedBox
                             .shrink(), // Si el token es 'null', no muestra nada
                   ),
                   Container(
@@ -163,8 +158,7 @@ class HomeScreen extends StatelessWidget {
                           return _buildCase3Content();
                         case 3:
                           return _buildCase4Content();
-                        case 4:
-                          return Text('s'); //_buildCase5Content(context);
+
                         case 5:
                           return __Ebooks();
                         case 6:

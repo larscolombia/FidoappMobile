@@ -25,6 +25,7 @@ class SignUpScreen extends GetView<SignUpController> {
     final height = MediaQuery.of(context).size.height;
     return AppScaffold(
       automaticallyImplyLeading: false,
+      scaffoldBackgroundColor: Colors.white,
       hideAppBar: true,
       body: Container(
         padding: Styles.paddingAll,
@@ -108,6 +109,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             ),
                             // Campo de género
                             Container(
+                              height: 54,
                               margin: const EdgeInsets.only(top: 16),
                               child: CustomSelectFormFieldWidget(
                                 controller: controller.genCont,

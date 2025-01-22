@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/generated/config.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/welcome/controllers/welcome_controller.dart';
@@ -10,13 +9,13 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 class Slide extends StatelessWidget {
   final WelcomeController welcomeController = Get.put(WelcomeController());
 
-  late String img1;
-  late String img2;
-  late String img4;
-  late String img5;
-  late String title1;
-  late String title2;
-  late String subtitle;
+  late final String img1;
+  late final String img2;
+  late final String img4;
+  late final String img5;
+  late final String title1;
+  late final String title2;
+  late final String subtitle;
 
   Slide({
     super.key,
@@ -38,73 +37,94 @@ class Slide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    return SizedBox(
-        width: width,
-        child: Column(
-          children: [
-            Center(
-              child: Stack(children: [
-                Positioned(
-                  height: 263,
-                  width: 210,
-                  child: Image.asset(img1),
-                ),
-                SizedBox(
-                  height: 263,
-                  width: 210,
-                  child: Image.asset(img2),
-                ),
-                SizedBox(
-                  height: 263,
-                  width: 210,
-                  child: Image.asset(img4),
-                ),
-                Positioned(
-                  height: 263,
-                  width: 210,
-                  child: Image.asset(img5),
-                ),
-              ]),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 20, bottom: 20),
-              child: Obx(() => AnimatedSmoothIndicator(
-                    activeIndex: welcomeController.currentIndex.value,
-                    count: 3,
-                    effect: const ExpandingDotsEffect(
-                      activeDotColor: Styles.primaryColor,
-                      dotColor: Color.fromARGB(255, 238, 129, 96),
-                      dotHeight: 8,
-                      dotWidth: 8,
-                      spacing: 8,
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          // Stack de imágenes
+          Center(
+            child: SizedBox(
+              height: 263,
+              width: 210,
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Image.asset(
+                      img1,
+                      fit: BoxFit.contain,
                     ),
-                    onDotClicked: welcomeController.onDotClicked,
-                  )),
-            ),
-            Text(
-              title1,
-              style: Styles.welcomeTitle,
-            ),
-            Text(
-              title2,
-              style: Styles.welcomeTitle,
-            ),
-            Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.only(top: 10),
-              child: Center(
-                child: Text(
-                  subtitle,
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.lato(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Styles.greyTextColor,
                   ),
-                ),
+                  Positioned.fill(
+                    child: Image.asset(
+                      img2,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Image.asset(
+                      img4,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  Positioned.fill(
+                    child: Image.asset(
+                      img5,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ],
               ),
-            )
-          ],
-        ));
+            ),
+          ),
+
+          // Indicador de página
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 20),
+            child: Obx(() => AnimatedSmoothIndicator(
+                  activeIndex: welcomeController.currentIndex.value,
+                  count: 3,
+                  effect: const ExpandingDotsEffect(
+                    activeDotColor: Styles.primaryColor,
+                    dotColor: Color.fromARGB(255, 238, 129, 96),
+                    dotHeight: 8,
+                    dotWidth: 8,
+                    spacing: 8,
+                  ),
+                  onDotClicked: welcomeController.onDotClicked,
+                )),
+          ),
+
+          // Títulos
+          Text(
+            title1,
+            style: Styles.welcomeTitle,
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            title2,
+            style: Styles.welcomeTitle,
+            textAlign: TextAlign.center,
+          ),
+
+          // Subtítulo
+          Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.symmetric(
+                horizontal: 20), // Ajuste para pantallas pequeñas
+            child: Text(
+              subtitle,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 16,
+                color: Color(0xff383838),
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

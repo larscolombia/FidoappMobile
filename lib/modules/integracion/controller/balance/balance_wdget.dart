@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/fideo_coin/Recarga.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
@@ -24,50 +25,9 @@ class BalanceWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-            flex: 2,
             child: Balance(controller: controller),
           ),
           const SizedBox(width: 10),
-          Expanded(
-            flex: 1,
-            child: GestureDetector(
-              onTap: () {
-                Get.off(RecargarSaldoScreen());
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Styles.colorContainer,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                height: screenHeight * 0.2, // 20% del alto de la pantalla
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Get.to(RecargarSaldoScreen());
-                      },
-                      child: Text(
-                        'Recargar FidoCoins',
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.035, // 3.5% del ancho
-                          fontFamily: 'Leto',
-                          fontWeight: FontWeight.w700,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.01), // 1% del alto
-                    Icon(
-                      Icons.add_circle,
-                      color: Colors.green,
-                      size: screenWidth * 0.08, // 8% del ancho
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -107,13 +67,16 @@ class Balance extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'FidoCoins Disponibles',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: screenWidth * 0.03, // 3% del ancho
-                fontFamily: 'Leto',
-                fontWeight: FontWeight.w700,
+            SizedBox(
+              width: 130,
+              child: Text(
+                'FidoCoins Disponibles',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18, // 3% del ancho
+                  fontFamily: 'Leto',
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             SizedBox(height: screenHeight * 0.01), // 1% del alto
@@ -121,18 +84,41 @@ class Balance extends StatelessWidget {
               '${controller.userBalance.value.balance}ƒ',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: screenWidth * 0.05, // 5% del ancho
+                fontSize: 18, // 5% del ancho
                 fontWeight: FontWeight.bold,
                 color: Styles.primaryColor,
               ),
             ),
             SizedBox(height: screenHeight * 0.02), // 2% del alto
             if (recarga)
-              RecargaComponente(
-                callback: () {
-                  controller.fetchUserBalance();
-                },
-                titulo: 'Actualizar Saldo',
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 140,
+                    height: 46,
+                    child: ButtonDefaultWidget(
+                      textSize: 12,
+                      callback: () {
+                        controller.fetchUserBalance();
+                      },
+                      title: 'Actulizar Saldo',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 140,
+                    height: 46,
+                    child: ButtonDefaultWidget(
+                      textSize: 12,
+                      defaultColor: Color(0xff37AE4D),
+                      callback: () {
+                        Get.off(RecargarSaldoScreen());
+                      },
+                      title: 'Recargar Saldo',
+                    ),
+                  ),
+                ],
               ),
           ],
         ),

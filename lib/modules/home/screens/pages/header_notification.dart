@@ -12,7 +12,12 @@ import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class HeaderNotification extends StatelessWidget {
-  HeaderNotification({super.key});
+  final String? titulo;
+  final String? subtitulo;
+  HeaderNotification(
+      {super.key,
+      this.titulo = 'Bienvenido de vuelta',
+      this.subtitulo = '¿Qué haremos hoy?'});
 
   final HomeController controller = Get.put(HomeController());
 
@@ -31,6 +36,8 @@ class HeaderNotification extends StatelessWidget {
             width: width,
             notificationController: notificationController,
             controller: controller,
+            titulo: titulo,
+            subtitulo: subtitulo,
           ),
           Positioned(
             top: 120,
@@ -60,8 +67,11 @@ class HeaderWiget extends StatelessWidget {
     required this.width,
     required this.notificationController,
     required this.controller,
+    this.titulo = 'Bienvenido de vuelta',
+    this.subtitulo = '¿Qué haremos hoy?',
   });
-
+  final String? titulo;
+  final String? subtitulo;
   final double width;
   final NotificationController notificationController;
   final HomeController controller;
@@ -81,28 +91,37 @@ class HeaderWiget extends StatelessWidget {
             alignment: Alignment
                 .bottomCenter, // Alinea el contenido en la parte inferior
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment
                     .end, // Alinea los hijos al final de la Row
                 children: [
                   LongPressButton(),
-                  Column(
-                    mainAxisSize: MainAxisSize
-                        .min, // Reduce el tamaño de la columna al contenido
-                    crossAxisAlignment: CrossAxisAlignment
-                        .start, // Alinea el texto a la izquierda
-                    children: [
-                      Text(
-                        'Bienvenido de vuelta',
-                        style: Styles.textTitleHome,
-                      ),
-                      Text(
-                        '¿Qué haremos hoy?',
-                        style: Styles.textSubTitleHome,
-                      ),
-                    ],
+                  Obx(
+                    () => Column(
+                      mainAxisSize: MainAxisSize
+                          .min, // Reduce el tamaño de la columna al contenido
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment
+                          .start, // Alinea el texto a la izquierda
+                      children: [
+                        Container(
+                          width: 161,
+                          child: Text(
+                            controller.titulo.value ?? "Bienvenido de vuelta",
+                            style: Styles.textTitleHome,
+                          ),
+                        ),
+                        Container(
+                          width: 161,
+                          child: Text(
+                            controller.subtitle.value ?? "¿Qué haremos hoy?",
+                            style: Styles.textSubTitleHome,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Row(
                     children: [

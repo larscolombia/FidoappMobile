@@ -2,26 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/input_text.dart';
-
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/comandos/comandos_controller.dart';
-import 'package:pawlly/modules/integracion/model/comandos_model/comandos_model.dart';
+import 'package:pawlly/styles/recursos.dart';
 
 class CrearComando extends StatelessWidget {
   CrearComando({super.key});
-  final ComandoController controller = Get.put(ComandoController());
+
+  // Busca los controladores ya existentes en lugar de inicializarlos nuevamente
+  final ComandoController controller = Get.find<ComandoController>();
   final HomeController homeController = Get.find<HomeController>();
+
   @override
   Widget build(BuildContext context) {
+    const double margen = 16.0;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // Primer contenedor (fondo o header)
+          // Header o Fondo
           Container(
             height: 120,
             decoration: const BoxDecoration(
@@ -29,10 +33,10 @@ class CrearComando extends StatelessWidget {
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
-              ), // Cambia el color según tu diseño
+              ),
             ),
           ),
-          // Segundo contenedor (superpuesto con scroll)
+          // Contenido
           Expanded(
             child: Container(
               width: double.infinity,
@@ -49,7 +53,8 @@ class CrearComando extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
+                      // Barra de Navegación
                       SizedBox(
                         width: 305,
                         child: BarraBack(
@@ -60,80 +65,80 @@ class CrearComando extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
+                      // Selección de Mascota
                       const SizedBox(
-                        width: 305,
-                        child: Text("Selecciona la mascota",
-                            style: TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0XFF383838),
-                            )),
+                        width: 300,
+                        child: Text(
+                          "Selecciona la mascota",
+                          style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0XFF383838),
+                          ),
+                        ),
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
+                      const SizedBox(height: margen),
                       SizedBox(
                         width: 305,
                         child: ProfilesDogs(),
                       ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 305,
-                        child: InputText(
-                          label: 'Nombre del Comando',
-                          placeholder: 'Nombre del Comando',
-                          onChanged: (value) =>
-                              controller.updateField('name', value),
-                        ),
+                      const SizedBox(height: margen),
+                      // Campos de Entrada para el Comando
+                      InputField(
+                        label: 'Nombre del Comando',
+                        placeholder: 'Nombre del Comando',
+                        onChanged: (value) =>
+                            controller.updateField('name', value),
                       ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 305,
-                        child: InputText(
-                          label: 'Descripción del Comando',
-                          placeholder: 'Descripción del Comando',
-                          onChanged: (value) =>
-                              controller.updateField('description', value),
-                        ),
+                      const SizedBox(height: margen),
+                      InputField(
+                        label: 'Descripción del Comando',
+                        placeholder: 'Descripción del Comando',
+                        onChanged: (value) =>
+                            controller.updateField('description', value),
                       ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 305,
-                        child: InputText(
-                          label: 'Voz del Comando',
-                          placeholder: 'Voz del Comando',
-                          onChanged: (value) =>
-                              controller.updateField('voz_comando', value),
-                        ),
+                      const SizedBox(height: margen),
+                      InputField(
+                        label: 'Voz del Comando',
+                        placeholder: 'Voz del Comando',
+                        onChanged: (value) =>
+                            controller.updateField('voz_comando', value),
                       ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: 305,
-                        child: InputText(
-                          label: 'Instrucciones del Comando',
-                          placeholder: 'Instrucciones del Comando',
-                          onChanged: (value) =>
-                              controller.updateField('instructions', value),
-                        ),
+                      const SizedBox(height: margen),
+                      InputField(
+                        label: 'Instrucciones del Comando',
+                        placeholder: 'Instrucciones del Comando',
+                        onChanged: (value) =>
+                            controller.updateField('instructions', value),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: margen),
+                      // Botón de Crear
                       Obx(() {
                         return SizedBox(
                           width: 302,
                           child: ButtonDefaultWidget(
-                              title: controller.isLoading.value
-                                  ? 'Creando...'
-                                  : 'Crear comando',
-                              callback: () {
-                                controller.updateField(
-                                  'pet_id',
-                                  homeController.selectedProfile.value!.id,
-                                );
-                                controller.postCommand(controller.dataComando);
-                              }),
+                            title: controller.isLoading.value
+                                ? 'Creando...'
+                                : 'Crear comando',
+                            callback: controller.isLoading.value
+                                ? null // Desactiva el botón mientras se carga
+                                : () {
+                                    // Actualizar el ID de la mascota seleccionada
+                                    controller.updateField(
+                                      'pet_id',
+                                      homeController
+                                              .selectedProfile.value?.id ??
+                                          '',
+                                    );
+
+                                    // Llamar a la API para crear el comando
+                                    controller
+                                        .postCommand(controller.dataComando);
+                                  },
+                          ),
                         );
-                      })
+                      }),
                     ],
                   ),
                 ),
@@ -141,6 +146,34 @@ class CrearComando extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// Widget Auxiliar para los Campos de Entrada
+class InputField extends StatelessWidget {
+  final String label;
+  final String placeholder;
+  final Function(String) onChanged;
+
+  const InputField({
+    super.key,
+    required this.label,
+    required this.placeholder,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 305,
+      child: InputText(
+        fondoColor: Colors.white,
+        borderColor: Recursos.ColorBorderSuave,
+        label: label,
+        placeholder: placeholder,
+        onChanged: onChanged,
       ),
     );
   }

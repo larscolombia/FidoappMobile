@@ -121,7 +121,15 @@ class ToolWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.network(imagePath),
+            Image.network(imagePath,
+                loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Container(
+                width: 24,
+                height: 24,
+                color: Colors.grey, // Imagen gris de respaldo
+              );
+            }),
             const SizedBox(height: 8),
             Text(
               title,

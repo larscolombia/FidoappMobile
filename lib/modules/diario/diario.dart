@@ -4,7 +4,6 @@ import 'package:pawlly/components/input_busqueda.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
-
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/Diario/formulario_diario.dart';
 import 'package:pawlly/modules/home/screens/Diario/index.dart';
@@ -20,134 +19,143 @@ class Diario extends StatelessWidget {
   final HomeController homeController = Get.find<HomeController>();
   final PetActivityController historialClinicoController =
       Get.put(PetActivityController());
+
   @override
   Widget build(BuildContext context) {
     var margen = 16.00;
     var ancho = MediaQuery.of(context).size.width - 50;
+
+    // Asegurarse de no llamar a métodos que alteren el estado durante la construcción
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (homeController.selectedProfile.value != null) {
+        historialClinicoController.fetchPetActivities(
+            "${homeController.selectedProfile.value?.id ?? '-1'}");
+      }
+    });
+
     return Scaffold(
-      body: Stack(children: [
-        Column(
-          children: [
-            Container(
-              width: double.infinity,
-              height: 148,
-              decoration: const BoxDecoration(
-                color: Styles.blackColor,
-              ),
-              child: HeaderNotification(),
-            ),
-            Expanded(
-              child: Container(
+      body: Stack(
+        children: [
+          Column(
+            children: [
+              Container(
                 width: double.infinity,
+                height: 148,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Styles.blackColor,
                 ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      SizedBox(width: ancho, child: ProfilesDogs()),
-                      SizedBox(
-                        height: margen + 10,
-                      ),
-                      SizedBox(
-                        width: ancho,
-                        child: BarraBack(
-                          titulo: 'Registros en el Diario',
-                          callback: () {
-                            Get.back();
-                          },
+                child: HeaderNotification(),
+              ),
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 5),
+                        SizedBox(width: ancho, child: ProfilesDogs()),
+                        SizedBox(height: margen + 10),
+                        SizedBox(
+                          width: ancho,
+                          child: BarraBack(
+                            titulo: 'Registros en el Diario',
+                            callback: () {
+                              Get.back();
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(height: margen + 10),
-                      SizedBox(
-                        width: ancho,
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 11,
-                              child: InputBusqueda(
-                                onChanged: (value) => historialClinicoController
-                                    .searchActivities(value),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              flex: 2,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  // FilterDialog.show(context, medicalHistoryController);
-                                  FiltrarActividad.show(
-                                      context, historialClinicoController);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  padding: EdgeInsets.zero,
-                                  backgroundColor: Styles.fiveColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  minimumSize: const Size(48, 48),
+                        SizedBox(height: margen + 10),
+                        SizedBox(
+                          width: ancho,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 11,
+                                child: InputBusqueda(
+                                  onChanged: (value) =>
+                                      historialClinicoController
+                                          .searchActivities(value),
                                 ),
-                                child: Image.asset('assets/icons/filtro.png'),
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 10),
+                              Expanded(
+                                flex: 2,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    FiltrarActividad.show(
+                                        context, historialClinicoController);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    padding: EdgeInsets.zero,
+                                    backgroundColor: Styles.fiveColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    minimumSize: const Size(48, 48),
+                                  ),
+                                  child: Image.asset('assets/icons/filtro.png'),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: margen + 10),
-                      SizedBox(
+                        SizedBox(height: margen + 10),
+                        SizedBox(
                           width: ancho,
                           child: DiarioMascotas(
                             homeController: homeController,
                             controller: historialClinicoController,
-                          )),
-                      RecargaComponente(
-                        callback: () {
-                          historialClinicoController.fetchPetActivities(
-                              "${homeController.selectedProfile.value!.id ?? '-1'}");
-                        },
-                      ),
-                      SizedBox(height: margen + 100),
-                    ],
+                          ),
+                        ),
+                        RecargaComponente(
+                          callback: () {
+                            historialClinicoController.fetchPetActivities(
+                                "${homeController.selectedProfile.value?.id ?? '-1'}");
+                          },
+                        ),
+                        SizedBox(height: margen + 100),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-        Positioned(
-          bottom: 120,
-          right: 30,
-          child: FloatingActionButton(
-            onPressed: () {
-              Get.to(() => FormularioDiario());
-            },
-            elevation: 0,
-            shape: const CircleBorder(),
-            backgroundColor: Styles.primaryColor,
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
+            ],
+          ),
+          Positioned(
+            bottom: 120,
+            right: 30,
+            child: FloatingActionButton(
+              onPressed: () {
+                Get.to(() => FormularioDiario());
+              },
+              elevation: 0,
+              shape: const CircleBorder(),
+              backgroundColor: Styles.primaryColor,
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
             ),
           ),
-        ),
-        Obx(() {
-          if (homeController.selectedIndex.value == 5 ||
-              homeController.selectedIndex.value == 6) {
-            return const SizedBox(height: 100);
-          }
-          return Positioned(
-            left: 25,
-            right: 25,
-            bottom: 30,
-            child: MenuOfNavigation(),
-          );
-        }),
-      ]),
+          Obx(() {
+            if (homeController.selectedIndex.value == 5 ||
+                homeController.selectedIndex.value == 6) {
+              return const SizedBox(height: 100);
+            }
+            return Positioned(
+              left: 25,
+              right: 25,
+              bottom: 30,
+              child: MenuOfNavigation(),
+            );
+          }),
+        ],
+      ),
     );
   }
 }

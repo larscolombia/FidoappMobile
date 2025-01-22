@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pawlly/modules/components/style.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io'; // Para manejar los archivos de imagen
+import 'dart:io';
+
+import 'package:pawlly/modules/components/style.dart';
 
 class InputText extends StatefulWidget {
   const InputText({
@@ -16,7 +17,7 @@ class InputText extends StatefulWidget {
     this.isDateField = false,
     this.isFilePicker = false,
     this.isImagePicker = false,
-    this.suffixIcon, // Ahora acepta un Widget en lugar de solo un Icon
+    this.suffixIcon,
     this.prefiIcon,
     this.isTimeField = false,
     this.readOnly = false,
@@ -37,7 +38,7 @@ class InputText extends StatefulWidget {
   final bool isFilePicker;
   final bool isImagePicker;
   final ValueChanged<String> onChanged;
-  final Widget? suffixIcon; // Cambiado a Widget para permitir una imagen
+  final Widget? suffixIcon;
   final Icon? prefiIcon;
   final bool isTimeField;
   final bool readOnly;
@@ -53,12 +54,21 @@ class InputText extends StatefulWidget {
 
 class _InputTextState extends State<InputText> {
   late TextEditingController _textController;
+  late FocusNode _focusNode;
   File? _imageFile;
 
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: widget.initialValue ?? "");
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -82,13 +92,17 @@ class _InputTextState extends State<InputText> {
               ),
             ),
           GestureDetector(
-            onTap: widget.isDateField
-                ? () => _selectDate(context)
-                : (widget.isTimeField
-                    ? () => _selectTime(context)
-                    : (widget.isFilePicker
-                        ? () => _pickFile()
-                        : (widget.isImagePicker ? () => _pickImage() : null))),
+            onTap: () {
+              if (widget.isDateField) {
+                _selectDate(context);
+              } else if (widget.isTimeField) {
+                _selectTime(context);
+              } else if (widget.isFilePicker) {
+                _pickFile();
+              } else if (widget.isImagePicker) {
+                _pickImage();
+              }
+            },
             child: AbsorbPointer(
               absorbing: widget.readOnly ||
                   widget.isDateField ||
@@ -97,8 +111,9 @@ class _InputTextState extends State<InputText> {
                   widget.isImagePicker,
               child: TextFormField(
                 controller: _textController,
+                focusNode: _focusNode,
                 maxLines: widget.isTextArea ? null : 1,
-                minLines: widget.isTextArea ? 3 : 1,
+                minLines: widget.isTextArea ? 5 : 1,
                 style: const TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 14,
@@ -126,7 +141,8 @@ class _InputTextState extends State<InputText> {
                   alignLabelWithHint: widget.isTextArea,
                   contentPadding: widget.isTextArea
                       ? const EdgeInsets.symmetric(vertical: 20, horizontal: 20)
-                      : const EdgeInsets.symmetric(horizontal: 20),
+                      : const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide(
@@ -143,20 +159,16 @@ class _InputTextState extends State<InputText> {
                   ),
                   filled: true,
                   fillColor: widget.fondoColor,
-                  suffixIcon: widget.isFilePicker
-                      ? const Icon(Icons.attach_file)
-                      : widget.isImagePicker
-                          ? const Icon(Icons.image)
-                          : Container(
-                              width: 24,
-                              child: widget.suffixIcon,
-                            ), // Ahora puede ser un Widget (Icono o Imagen)
+                  suffixIcon: Container(
+                      padding: const EdgeInsets.only(right: 15),
+                      width: 30,
+                      child: widget.suffixIcon),
                   prefixIcon: widget.prefiIcon ??
                       (widget.placeholderImage != null
                           ? Padding(
                               padding: const EdgeInsets.only(
                                 left: 20,
-                                right: 12,
+                                right: 5,
                               ),
                               child: SizedBox(
                                 width: 24,
@@ -166,7 +178,11 @@ class _InputTextState extends State<InputText> {
                             )
                           : null),
                 ),
-                onChanged: widget.onChanged,
+                onChanged: (value) {
+                  Future.delayed(const Duration(milliseconds: 300), () {
+                    widget.onChanged(value); // Debounce aplicado
+                  });
+                },
                 readOnly: widget.readOnly,
               ),
             ),
@@ -199,6 +215,9 @@ class _InputTextState extends State<InputText> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    // Remueve el foco para evitar que el teclado aparezca
+    _focusNode.unfocus();
+
     final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -206,20 +225,31 @@ class _InputTextState extends State<InputText> {
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
+
     if (picked != null) {
-      widget.onChanged(dateFormat.format(picked));
-      _textController.text = dateFormat.format(picked);
+      final formattedDate = dateFormat.format(picked);
+      widget.onChanged(formattedDate); // Notifica el cambio
+      setState(() {
+        _textController.text = formattedDate; // Actualiza el controlador
+      });
     }
   }
 
   Future<void> _selectTime(BuildContext context) async {
+    // Remueve el foco para evitar que el teclado aparezca
+    _focusNode.unfocus();
+
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
+
     if (picked != null) {
-      widget.onChanged(picked.format(context));
-      _textController.text = picked.format(context);
+      final formattedTime = picked.format(context);
+      widget.onChanged(formattedTime); // Notifica el cambio
+      setState(() {
+        _textController.text = formattedTime; // Actualiza el controlador
+      });
     }
   }
 

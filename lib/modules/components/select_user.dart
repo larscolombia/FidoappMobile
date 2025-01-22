@@ -33,9 +33,17 @@ class SelectedAvatar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 10),
                   Text(
                     nombre ?? "",
-                    style: Styles.AvatarName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                   const Text(''),
                 ],

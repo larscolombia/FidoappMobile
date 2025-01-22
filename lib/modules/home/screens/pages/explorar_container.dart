@@ -87,7 +87,7 @@ class Explore extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       // Botón para explorar
-                      Container(
+                      SizedBox(
                         width: 97,
                         height: 34,
                         child: ButtonDefaultWidget(

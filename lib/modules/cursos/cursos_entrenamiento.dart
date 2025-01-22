@@ -58,6 +58,7 @@ class CursosEntrenamiento extends StatelessWidget {
                         },
                       ),
                     ),
+                    SizedBox(height: margen),
                     SizedBox(
                       width: ancho,
                       child:

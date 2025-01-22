@@ -18,7 +18,8 @@ class HomeController extends GetxController {
   var selectedIndex = 0.obs;
   var profiles = <PetData>[].obs; // Lista de perfiles usando el modelo
   var filterPet = <PetData>[].obs; // Lista de resultados filtrados
-
+  var titulo = "Bienvedio de vuelta".obs;
+  var subtitle = "¿Qué haremos hoy?".obs;
   var selectedProfile =
       Rxn<PetData>(); // Perfil seleccionado, inicialmente null
 

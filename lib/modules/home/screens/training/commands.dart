@@ -7,103 +7,88 @@ import 'package:pawlly/styles/styles.dart';
 
 class Commands extends StatelessWidget {
   Commands({super.key});
+
   final ComandoController controller = Get.put(ComandoController());
   final HomeController homeController = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
+    // Escuchar cambios en `selectedProfile` para actualizar comandos
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (homeController.selectedProfile.value != null) {
         controller
             .fetchComandos(homeController.selectedProfile.value!.id.toString());
-        print(
-            'id de la mascota ${homeController.selectedProfile.value!.id.toString()}');
       }
     });
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width - 100,
-          child: Text(
-            'Comandos de Entrenamiento',
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 20,
-              color: Styles.primaryColor,
-              fontFamily: 'PoetsenOne',
+
+    return Obx(() {
+      // Mostrar indicador de carga si los comandos están cargándose
+      if (controller.isLoading.value) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+      // Mostrar mensaje si no hay comandos disponibles
+      if (controller.comandoList.isEmpty) {
+        return const Center(
+          child: Text('No hay comandos disponibles.'),
+        );
+      }
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Título
+          Container(
+            width: MediaQuery.of(context).size.width - 100,
+            child: const Text(
+              'Comandos de Entrenamiento',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 20,
+                color: Styles.primaryColor,
+                fontFamily: 'PoetsenOne',
+              ),
+              textAlign: TextAlign.left,
             ),
-            textAlign: TextAlign.left,
           ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        FloatingActionButton(
-          elevation: 0,
-          onPressed: () {
-            Get.to(() => CrearComando());
-          },
-          clipBehavior: Clip.antiAlias,
-          backgroundColor: Styles.primaryColor,
-          shape: const CircleBorder(),
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        const SizedBox(height: 10),
-        Container(
-          height: 400,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: const Color.fromRGBO(255, 255, 255, 1),
-            border: Border.all(
-              color: const Color.fromRGBO(255, 218, 174, 1),
-              width: 1,
+          const SizedBox(height: 10),
+          // Botón para crear nuevo comando
+          FloatingActionButton(
+            elevation: 0,
+            onPressed: () {
+              Get.to(() => CrearComando());
+            },
+            clipBehavior: Clip.antiAlias,
+            backgroundColor: Styles.primaryColor,
+            shape: const CircleBorder(),
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
             ),
-            borderRadius: BorderRadius.circular(8),
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+          const SizedBox(height: 20),
+          // Tabla de comandos
+          Container(
+            height: 400,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(
+                color: const Color.fromRGBO(255, 218, 174, 1),
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
               child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Obx(() {
-                  if (controller.comandoList.isEmpty) {
-                    return const Center(
-                      child: Text('No hay comandos'),
-                    );
-                  }
-
-                  if (controller.isLoading.value) {
-                    return const Center(
-                      child: Text('Cargando...'),
-                    );
-                  }
-
-                  final List<Map<String, String>> dummyData =
-                      controller.comandoList.map((comando) {
-                    return {
-                      "Comando": comando.name,
-                      "Acción": comando.description,
-                      "Aprendido": comando.isFavorite ? "Sí" : "No",
-                      "Comando personalizado": comando.vozComando
-                    };
-                  }).toList();
-
-                  final List<String> columnHeaders = [
-                    "Comando",
-                    "Acción",
-                    "Aprendido",
-                    "Comando personalizado"
-                  ];
-
-                  return DataTable(
-                    headingRowColor: WidgetStateProperty.all(
+                scrollDirection: Axis.horizontal,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: DataTable(
+                    headingRowColor: MaterialStateProperty.all(
                       const Color.fromRGBO(254, 247, 229, 1),
                     ),
                     headingTextStyle: const TextStyle(
@@ -113,7 +98,7 @@ class Commands extends StatelessWidget {
                       color: Color.fromRGBO(56, 56, 56, 1),
                     ),
                     dividerThickness: 1,
-                    dataRowColor: WidgetStateProperty.all(
+                    dataRowColor: MaterialStateProperty.all(
                       const Color.fromRGBO(255, 255, 255, 1),
                     ),
                     border: const TableBorder(
@@ -130,105 +115,79 @@ class Commands extends StatelessWidget {
                         width: 1,
                       ),
                     ),
-                    columns: columnHeaders.map((header) {
-                      return DataColumn(
-                        label: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          child: Text(
-                            header,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                    rows: dummyData.map((rowData) {
+                    columns: const [
+                      DataColumn(label: Text('Comando')),
+                      DataColumn(label: Text('Acción')),
+                      DataColumn(label: Text('Aprendido')),
+                      DataColumn(label: Text('Comando personalizado')),
+                    ],
+                    rows: controller.comandoList.map((comando) {
                       return DataRow(
-                        cells: rowData.entries.map((entry) {
-                          if (entry.key == "Comando personalizado" &&
-                              entry.value.isEmpty) {
-                            return DataCell(
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextFormField(
-                                      style: const TextStyle(
-                                        fontFamily: 'Lato',
-                                        fontSize: 14,
-                                        color: Color.fromRGBO(56, 56, 56, 1),
-                                      ),
-                                      decoration: const InputDecoration(
-                                        hintText: 'Escribe un comando',
-                                        hintStyle: TextStyle(
-                                          fontFamily: 'Lato',
-                                          fontSize: 14,
-                                          color: Color.fromRGBO(56, 56, 56, 1),
+                        cells: [
+                          DataCell(Text(comando.name)),
+                          DataCell(Text(comando.description)),
+                          DataCell(Text(comando.isFavorite ? 'Sí' : 'No')),
+                          DataCell(
+                            comando.vozComando.isEmpty
+                                ? Row(
+                                    children: [
+                                      Expanded(
+                                        child: TextFormField(
+                                          decoration: const InputDecoration(
+                                            hintText: 'Escribe un comando',
+                                            border: InputBorder.none,
+                                          ),
+                                          onChanged: (value) {
+                                            comando.vozComando = value;
+                                          },
                                         ),
-                                        border: InputBorder.none,
                                       ),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit,
-                                        color: Styles.iconColorBack),
-                                    onPressed: () {
-                                      print('Editando comando personalizado');
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          } else {
-                            return DataCell(
-                              Container(
-                                width: double.infinity,
-                                color: const Color.fromRGBO(255, 255, 255, 1),
-                                padding: const EdgeInsets.all(8),
-                                child: Text(
-                                  entry.value,
-                                  style: const TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontSize: 14,
-                                    color: Color.fromRGBO(56, 56, 56, 1),
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                        }).toList(),
+                                      IconButton(
+                                        icon: const Icon(
+                                          Icons.edit,
+                                          color: Styles.iconColorBack,
+                                        ),
+                                        onPressed: () {
+                                          controller.updateComando(comando);
+                                        },
+                                      ),
+                                    ],
+                                  )
+                                : Text(comando.vozComando),
+                          ),
+                        ],
                         onSelectChanged: (isSelected) {
-                          if (isSelected != null && isSelected) {
-                            final comando = controller.comandoList.firstWhere(
-                                (com) => com.name == rowData["Comando"]);
+                          if (isSelected ?? false) {
                             controller.selectComando(comando);
                           }
                         },
-                        selected: controller.selectedComando.value?.name ==
-                            rowData["Comando"],
+                        selected: controller.selectedComando.value == comando,
                       );
                     }).toList(),
-                  );
-                }),
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(height: 60),
-        Obx(() {
-          if (controller.selectedComando.value != null) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                  'Comando seleccionado: ${controller.selectedComando.value!.name}'),
-            );
-          } else {
-            return const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text('No hay comando seleccionado'),
-            );
-          }
-        }),
-      ],
-    );
+          const SizedBox(height: 60),
+          // Mostrar comando seleccionado
+          Obx(() {
+            if (controller.selectedComando.value != null) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Comando seleccionado: ${controller.selectedComando.value!.name}',
+                ),
+              );
+            } else {
+              return const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text('No hay comando seleccionado'),
+              );
+            }
+          }),
+        ],
+      );
+    });
   }
 }

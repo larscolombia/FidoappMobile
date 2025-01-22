@@ -19,6 +19,8 @@ class TermsConditions extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return AppScaffold(
+      appBarbackgroundColor: Colors.white,
+      scaffoldBackgroundColor: Colors.white,
       body: Container(
         padding: Styles.paddingAll,
         width: width,

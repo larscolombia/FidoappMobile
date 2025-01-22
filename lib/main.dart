@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -13,7 +12,6 @@ import 'package:pawlly/configs.dart';
 import 'package:pawlly/locale/app_localizations.dart';
 import 'package:pawlly/locale/language_en.dart';
 import 'package:pawlly/locale/languages.dart';
-import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/modules/provider/push_provider.dart';
 import 'package:pawlly/modules/splash/splash_screen.dart';
 import 'package:pawlly/modules/welcome/controllers/welcome_controller.dart';
@@ -21,15 +19,8 @@ import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/utils/app_common.dart';
 import 'package:pawlly/utils/common_base.dart';
 import 'package:pawlly/utils/local_storage.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 Rx<BaseLanguage> locale = LanguageEn().obs;
-
-/// Handler para mensajes en background
-/// DEBE estar definido fuera de cualquier clase
-Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('aqui se ejecuta la accion : ${message.messageId}');
-}
 
 Future<void> main() async {
   // Registra el controller de notificaciones
@@ -50,11 +41,11 @@ Future<void> main() async {
 
   // Inicializa PushProvider: se solicita permisos, se obtiene el token
   // y se deben registrar los listeners para los callbacks
-  final pushNotificaciones = new PushProvider();
+  final pushNotificaciones = PushProvider();
   await pushNotificaciones.setupFCM();
   await pushNotificaciones
       .initNorification(); // IMPORTANTE: registra los listeners de mensajes
-  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  //FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   // Inicializa otros servicios necesarios después de Firebase
   await initialize(aLocaleLanguageList: languageList());
   selectedLanguageCode(
@@ -65,7 +56,11 @@ Future<void> main() async {
   locale = temp.obs;
   locale.value =
       await const AppLocalizations().load(Locale(selectedLanguageCode.value));
-
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.presentError(details);
+    // También puedes enviar el error a un servicio externo si lo necesitas.
+    print('Flutter Error: ${details.exception}');
+  };
   // Ejecuta la app
   runApp(MyApp());
 }

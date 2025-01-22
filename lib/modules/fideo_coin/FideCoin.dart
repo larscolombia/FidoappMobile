@@ -6,8 +6,6 @@ import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_wdget.dart';
 import 'package:pawlly/modules/integracion/controller/transaccion/transaction_controller.dart';
 
-import '../components/border_redondiado.dart';
-
 class FideCoin extends StatelessWidget {
   FideCoin({super.key});
   final TransactionController controller = Get.put(TransactionController());
@@ -111,7 +109,7 @@ class Movimientos extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(4),
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16),
       width: MediaQuery.of(context).size.width - 30,
       decoration: BoxDecoration(
         border: Border.all(
@@ -130,17 +128,13 @@ class Movimientos extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: Styles.primaryColor,
+                  color: Styles.fiveColor,
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: const Center(
-                    child: Text(
-                  'ƒ',
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                )),
+                child: Image.asset(
+                  'assets/icons/moneda.png',
+                  width: 40,
+                ),
               ),
               const SizedBox(
                 width: 10,

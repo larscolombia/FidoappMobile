@@ -40,6 +40,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
     final height = MediaQuery.of(context).size.height;
     return AppScaffold(
       hideAppBar: true,
+      scaffoldBackgroundColor: Colors.white,
       body: Container(
         margin: const EdgeInsets.only(top: 50),
         padding: Styles.paddingAll,
@@ -86,7 +87,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ButtonDefaultWidget(
-                            title: locale.value.signIn,
+                            title: "Inicia Sesión",
                             callback: () {
                               Get.toNamed(
                                 'signin',
@@ -96,18 +97,19 @@ class WelcomeScreen extends GetView<WelcomeController> {
                           height: 16,
                         ),
                         ButtonDefaultWidget(
-                            title: locale.value.signUp,
-                            defaultColor:
-                                const Color.fromARGB(255, 255, 255, 255),
-                            border: const BorderSide(
-                              color: Styles.primaryColor,
-                            ),
-                            textColor: Styles.blackColor,
-                            callback: () {
-                              Get.toNamed(
-                                '/signup',
-                              );
-                            }),
+                          title: 'Regístrate',
+                          defaultColor:
+                              const Color.fromARGB(255, 255, 255, 255),
+                          border: const BorderSide(
+                            color: Styles.primaryColor,
+                          ),
+                          textColor: Styles.blackColor,
+                          callback: () {
+                            Get.toNamed(
+                              '/signup',
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),

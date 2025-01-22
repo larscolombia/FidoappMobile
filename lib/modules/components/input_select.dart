@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class InputSelect extends StatelessWidget {
@@ -21,8 +20,8 @@ class InputSelect extends StatelessWidget {
   final List<DropdownMenuItem<String>> items; // Elementos del dropdown
   final Color? TextColor;
   final Color? color;
-  final Icon? suffixIcon; // Definir el icono opcional
-  final String? prefiIcon; // Definir el icono opcional
+  final Icon? suffixIcon; // Definir el ícono opcional
+  final String? prefiIcon; // Definir el ícono opcional
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class InputSelect extends StatelessWidget {
                 MediaQuery.of(context).size.width, // Ajusta al ancho disponible
           ),
           child: DropdownButtonFormField<String>(
-            icon: null,
+            icon: const SizedBox.shrink(), // Elimina la flecha desplegable
             isExpanded: true, // Asegura que los elementos se ajusten al ancho
             decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -54,21 +53,41 @@ class InputSelect extends StatelessWidget {
               ),
               filled: true,
               fillColor: color ?? Styles.colorContainer,
+              prefixIcon: prefiIcon != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: Image.asset(
+                        prefiIcon!,
+                        width: 24,
+                        height: 24,
+                      ),
+                    )
+                  : null,
               suffixIcon: SizedBox(
-                width: 40,
-                child: Image.asset('assets/icons/flecha_select.png'),
+                width: 30,
+                child: suffixIcon ?? // Usa el sufijo proporcionado
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Image.asset(
+                        'assets/icons/flecha_select.png',
+                        width: 24,
+                        height: 24,
+                      ),
+                    ),
               ),
-              prefixIcon: prefiIcon != null ? Image.asset("$prefiIcon") : null,
             ),
-            hint: Text(
-              placeholder ?? 'placeholder',
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: TextColor ?? const Color.fromARGB(255, 252, 252, 252),
-                fontFamily: 'Lato-Regular',
-                fontWeight: FontWeight.w600,
-                fontSize: 12,
+            hint: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                placeholder ?? 'placeholder',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: TextColor ?? const Color.fromARGB(255, 252, 252, 252),
+                  fontFamily: 'Lato-Regular',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                ),
               ),
             ),
             items: items,

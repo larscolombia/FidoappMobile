@@ -15,7 +15,11 @@ class PrivacyPolicy extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+
     return AppScaffold(
+      scaffoldBackgroundColor: Theme.of(context).colorScheme.primary,
+      appBarbackgroundColor: Theme.of(context).colorScheme.primary,
+      hideAppBar: true,
       body: Container(
         padding: Styles.paddingAll,
         width: width,
@@ -23,6 +27,9 @@ class PrivacyPolicy extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              const SizedBox(
+                height: 80,
+              ),
               Text(
                 locale.value.privacyPolicy,
                 style: Styles.joinTitle,

@@ -64,7 +64,7 @@ class BanerComentarios extends StatelessWidget {
               width: 276,
               child: InputText(
                 onChanged: eventTextChanged,
-                placeholder: titulo ?? 'Describe tu experiencia',
+                placeholder: 'Describe tu experiencia',
               ),
             ),
             const SizedBox(height: 20),

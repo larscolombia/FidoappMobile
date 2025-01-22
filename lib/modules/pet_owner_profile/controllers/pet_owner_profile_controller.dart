@@ -57,18 +57,9 @@ class UserProfileController extends GetxController {
         print('perfil usuario ${data}');
         user.value =
             UserData.fromJson(data); // Actualiza el modelo con la respuesta.
-      } else {
-        Get.snackbar(
-          "Error",
-          "Error al obtener datos del usuario",
-        );
-      }
+      } else {}
     } catch (e) {
       print('Error al obtener datos del usuario: $e');
-      Get.snackbar(
-        "Error",
-        "Error al obtener datos del usuario 500",
-      );
     } finally {
       isLoading(false);
     }

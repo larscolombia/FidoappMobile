@@ -21,7 +21,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:http/http.dart' as http;
 
 // CursoVideo
-class CursoVideo extends StatelessWidget {
+class CursoVideo extends StatefulWidget {
   final String videoId;
   final String cursoId;
   final String name;
@@ -49,31 +49,42 @@ class CursoVideo extends StatelessWidget {
     this.dateCreated,
   });
 
+  @override
+  State<CursoVideo> createState() => _CursoVideoState();
+}
+
+class _CursoVideoState extends State<CursoVideo> {
   final CommentController _commentController = Get.put(CommentController());
+
   var cursoController = Get.put(CursoUsuarioController());
+
+  @override
+  void initState() {
+    if (widget.tipovideo == "blogs") {
+      _commentController.fetchComments(widget.cursoId, "blog");
+      _commentController.updateField('blog_id', widget.cursoId);
+    } else if (widget.tipovideo == "video") {
+      _commentController.fetchComments(widget.cursoId, "video");
+      _commentController.updateField(
+          'course_platform_video_id', widget.cursoId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Llamamos a la función fetchComments solo después de que el widget se haya construido
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (tipovideo == "blogs") {
-        _commentController.fetchComments(cursoId, "blog");
-        _commentController.updateField('blog_id', cursoId);
-      } else if (tipovideo == "video") {
-        _commentController.fetchComments(cursoId, "video");
-        _commentController.updateField('course_platform_video_id', cursoId);
-      }
-    });
-    print('videourl $videoId');
+
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           // Contenedor para el video
           Container(
-            height: 400,
+            height: 300,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(color: Colors.white),
             child: VideoPlayerScreen(
-              videoUrl: videoUrl,
+              videoUrl: widget.videoUrl,
             ),
           ),
           Expanded(
@@ -83,21 +94,27 @@ class CursoVideo extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Barra de regreso y título
+                    const SizedBox(
+                      height: 30,
+                    ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width - 50,
                       child: BarraBack(
-                        titulo: name,
+                        titulo: widget.name,
                         color: Colors.black,
                         callback: () {
                           Get.back();
                         },
                       ),
                     ),
+                    const SizedBox(
+                      height: 30,
+                    ),
                     // Fecha de creación
                     SizedBox(
                       width: 305,
                       child: Text(
-                        dateCreated ?? '',
+                        widget.dateCreated ?? '',
                         style: const TextStyle(
                           fontSize: 12,
                           color: Colors.grey,
@@ -123,7 +140,8 @@ class CursoVideo extends StatelessWidget {
                     const SizedBox(height: 10),
                     SizedBox(
                       width: 305,
-                      child: Text(description, style: Styles.textDescription),
+                      child: Text(widget.description,
+                          style: Styles.textDescription),
                     ),
                     const SizedBox(height: 20),
                     // Botón de compartir
@@ -133,7 +151,7 @@ class CursoVideo extends StatelessWidget {
                         modo: "compartir",
                         onCompartir: () {
                           Share.share(
-                            '¡Hola! Este es un buen video ${videoUrl}.',
+                            '¡Hola! Este es un buen video ${widget.videoUrl}.',
                             subject: 'Compartir Mensaje',
                           );
                         },
@@ -142,16 +160,18 @@ class CursoVideo extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // Comentario (InputTextWithIcon) solo envuelto en Obx si es necesario
-                    if (tipovideo == "video")
+                    if (widget.tipovideo == "video")
                       Container(
                         width: MediaQuery.of(context).size.width - 100,
                         child: GestureDetector(
                             onTap: () {
-                              print('tipo de video ${tipovideo} :: $videoId');
+                              print(
+                                  'tipo de video ${widget.tipovideo} :: ${widget.videoId}');
                               cursoController.updateVideoAsWatched(
                                 userId: AuthServiceApis.dataCurrentUser.id,
-                                coursePlatformId: int.parse(cursoId),
-                                coursePlatformVideoId: int.parse(cursoId),
+                                coursePlatformId: int.parse(widget.cursoId),
+                                coursePlatformVideoId:
+                                    int.parse(widget.cursoId),
                                 watched: true,
                               );
                             },
@@ -198,13 +218,28 @@ class CursoVideo extends StatelessWidget {
                             },
                             onEvento: () {
                               _commentController.updateField(
-                                  'course_platform_video_id', cursoId);
-                              if (tipovideo == 'video') {
+                                  'course_platform_video_id', widget.cursoId);
+                              if (widget.tipovideo == 'video') {
                                 _commentController.postComment(
                                     'video', context);
                               } else {
                                 _commentController.postComment('blog', context);
                               }
+
+                              setState(() {
+                                if (widget.tipovideo == "blogs") {
+                                  _commentController.fetchComments(
+                                      widget.cursoId, "blog");
+                                  _commentController.updateField(
+                                      'blog_id', widget.cursoId);
+                                } else if (widget.tipovideo == "video") {
+                                  _commentController.fetchComments(
+                                      widget.cursoId, "video");
+                                  _commentController.updateField(
+                                      'course_platform_video_id',
+                                      widget.cursoId);
+                                }
+                              });
                             },
                           ),
                           /** 
@@ -273,11 +308,13 @@ class CursoVideo extends StatelessWidget {
                     // Componente para recargar comentarios
                     RecargaComponente(
                       callback: () {
-                        if (tipovideo == "blogs") {
-                          _commentController.fetchComments(cursoId, "blog");
+                        if (widget.tipovideo == "blogs") {
+                          _commentController.fetchComments(
+                              widget.cursoId, "blog");
                         }
-                        if (tipovideo == "video") {
-                          _commentController.fetchComments(cursoId, "video");
+                        if (widget.tipovideo == "video") {
+                          _commentController.fetchComments(
+                              widget.cursoId, "video");
                         }
                       },
                     ),

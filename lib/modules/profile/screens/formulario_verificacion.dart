@@ -184,7 +184,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                   child: Text(entry.description,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontFamily: "Lato",
                                         fontSize: 14,
                                         fontWeight: FontWeight.w800,
@@ -253,7 +253,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                               },
                               label: 'Dirección de vivienda',
                               placeholder: "",
-                              prefiIcon: Icon(
+                              prefiIcon: const Icon(
                                 Icons.location_on,
                                 color: Styles.primaryColor,
                               ),
@@ -263,7 +263,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                       }),
                       SizedBox(height: margin),
                       Center(
-                        child: Container(
+                        child: SizedBox(
                           width: MediaQuery.of(context).size.width - 100,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,7 +279,6 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                               TagInputWidget(
                                 initialTags: profile?.tags ?? [],
                                 onChanged: (value) {
-                                  print("tagas $value");
                                   List<String> tags = List<String>.from(value);
                                   profileController.user['tags'] = tags;
                                 },
