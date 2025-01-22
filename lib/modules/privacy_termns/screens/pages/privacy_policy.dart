@@ -17,8 +17,8 @@ class PrivacyPolicy extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
 
     return AppScaffold(
-      scaffoldBackgroundColor: Theme.of(context).colorScheme.primary,
-      appBarbackgroundColor: Theme.of(context).colorScheme.primary,
+      appBarbackgroundColor: Colors.white,
+      scaffoldBackgroundColor: Colors.white,
       hideAppBar: true,
       body: Container(
         padding: Styles.paddingAll,

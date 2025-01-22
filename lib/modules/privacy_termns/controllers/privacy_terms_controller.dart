@@ -9,7 +9,7 @@ class PrivacyTermsController extends GetxController {
 
   final List<NumTitleData> privacyPolicyContent = [
     NumTitleData(
-      title: '¡Políticas de Privacidad de ${Config.NameApp}',
+      title: '¡Políticas de Privacidad de ${Config.NameApp}!',
       description: '',
     ),
     NumTitleData(
