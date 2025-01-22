@@ -127,6 +127,7 @@ class ChangePasswordScreen extends StatelessWidget {
                             // toast(locale.value.pleaseFillAllFields);
                           }
                         },
+                        showDecoration: true,
                       )),
                 ),
               ],

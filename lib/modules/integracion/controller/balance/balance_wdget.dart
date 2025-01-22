@@ -58,7 +58,7 @@ class Balance extends StatelessWidget {
 
       return Container(
         padding: EdgeInsets.all(screenWidth * 0.04), // 4% del ancho
-        height: screenHeight * 0.2, // 20% del alto de la pantalla
+        height: screenHeight * 0.23, // 20% del alto de la pantalla
         decoration: BoxDecoration(
           color: Styles.colorContainer,
           borderRadius: BorderRadius.circular(10),

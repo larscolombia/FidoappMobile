@@ -25,7 +25,6 @@ class SignUpScreen extends GetView<SignUpController> {
     final height = MediaQuery.of(context).size.height;
     return AppScaffold(
       automaticallyImplyLeading: false,
-      scaffoldBackgroundColor: Colors.white,
       hideAppBar: true,
       body: Container(
         padding: Styles.paddingAll,
@@ -280,6 +279,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               }
                             },
                             title: locale.value.signUp,
+                            showDecoration: true,
                           ),
                         );
                       }),

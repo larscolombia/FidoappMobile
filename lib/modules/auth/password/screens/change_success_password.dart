@@ -72,6 +72,7 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                   ButtonDefaultWidget(
                     title: locale.value.sendLink,
                     callback: calbak,
+                    showDecoration: true,
                   ),
                   Container(
                     margin: const EdgeInsets.only(top: 20),

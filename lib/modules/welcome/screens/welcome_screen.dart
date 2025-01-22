@@ -40,7 +40,6 @@ class WelcomeScreen extends GetView<WelcomeController> {
     final height = MediaQuery.of(context).size.height;
     return AppScaffold(
       hideAppBar: true,
-      scaffoldBackgroundColor: Colors.white,
       body: Container(
         margin: const EdgeInsets.only(top: 50),
         padding: Styles.paddingAll,
@@ -87,12 +86,14 @@ class WelcomeScreen extends GetView<WelcomeController> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ButtonDefaultWidget(
-                            title: "Inicia Sesión",
-                            callback: () {
-                              Get.toNamed(
-                                'signin',
-                              );
-                            }),
+                          title: "Inicia Sesión",
+                          callback: () {
+                            Get.toNamed(
+                              'signin',
+                            );
+                          },
+                          showDecoration: true,
+                        ),
                         const SizedBox(
                           height: 16,
                         ),
@@ -109,6 +110,7 @@ class WelcomeScreen extends GetView<WelcomeController> {
                               '/signup',
                             );
                           },
+                          showDecoration: true,
                         ),
                       ],
                     ),

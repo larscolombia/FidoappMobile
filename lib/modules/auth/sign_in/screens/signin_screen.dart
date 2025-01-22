@@ -89,6 +89,7 @@ class SignInScreen extends StatelessWidget {
                                     // Get.toNamed(Routes.HOME);
                                   }
                                 },
+                                showDecoration: true,
                               ),
                             ),
                             Row(

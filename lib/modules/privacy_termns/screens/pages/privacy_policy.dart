@@ -17,9 +17,6 @@ class PrivacyPolicy extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
 
     return AppScaffold(
-      appBarbackgroundColor: Colors.white,
-      scaffoldBackgroundColor: Colors.white,
-      hideAppBar: true,
       body: Container(
         padding: Styles.paddingAll,
         width: width,
@@ -27,9 +24,6 @@ class PrivacyPolicy extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(
-                height: 80,
-              ),
               Text(
                 locale.value.privacyPolicy,
                 style: Styles.joinTitle,
@@ -111,6 +105,7 @@ class PrivacyPolicy extends StatelessWidget {
                     child: const ButtonDefaultWidget(
                       title: 'Regresar',
                       callback: callabak,
+                      showDecoration: true,
                     ),
                   )
                 ],

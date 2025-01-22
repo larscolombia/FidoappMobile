@@ -65,8 +65,7 @@ class AppScaffold extends StatelessWidget {
               child: AppBar(
                 elevation: appBarelevation,
                 automaticallyImplyLeading: automaticallyImplyLeading,
-                backgroundColor:
-                    appBarbackgroundColor ?? context.scaffoldBackgroundColor,
+                backgroundColor: appBarbackgroundColor ?? Colors.white,
                 centerTitle: isCenterTitle,
                 titleSpacing: 2,
                 title: appBarTitle ??
@@ -79,8 +78,7 @@ class AppScaffold extends StatelessWidget {
                     leadingWidget ?? (hasLeadingWidget ? backButton() : null),
               ).paddingTop(10),
             ),
-      backgroundColor:
-          scaffoldBackgroundColor ?? context.scaffoldBackgroundColor,
+      backgroundColor: scaffoldBackgroundColor ?? Colors.white,
       body: Body(
         isLoading: isLoading ?? false.obs,
         child: body,

@@ -110,6 +110,7 @@ class PrivacyTermsScreen extends StatelessWidget {
                 child: ButtonDefaultWidget(
                   title: 'Regresar',
                   callback: () => Get.back(),
+                  showDecoration: true,
                 ),
               ),
             ],

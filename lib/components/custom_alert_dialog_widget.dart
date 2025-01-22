@@ -99,6 +99,7 @@ class CustomAlertDialog extends StatelessWidget {
                       textColor: Styles.whiteColor, // Color del texto del botón
                       heigthButtom: 48, // Altura del botón
                       borderSize: 12, // Tamaño del borde
+                      showDecoration: true, // Mostrar decoración
                     ),
                   ),
                 if (secondaryButtonText != null) ...[

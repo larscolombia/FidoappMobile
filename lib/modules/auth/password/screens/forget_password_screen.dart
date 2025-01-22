@@ -84,15 +84,17 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                           height: 20,
                         ),
                         ButtonDefaultWidget(
-                            title: locale.value.sendLink,
-                            callback: () {
-                              if (_forgotPassFormKey.currentState!.validate()) {
-                                _forgotPassFormKey.currentState!.save();
-                                controller.saveForm();
-                              }
-                              // Get.toNamed(Routes.CHANGESUCCESSPASSWORD);
-                              /* Get.to(() => OtpScreen()); */
-                            }),
+                          title: locale.value.sendLink,
+                          callback: () {
+                            if (_forgotPassFormKey.currentState!.validate()) {
+                              _forgotPassFormKey.currentState!.save();
+                              controller.saveForm();
+                            }
+                            // Get.toNamed(Routes.CHANGESUCCESSPASSWORD);
+                            /* Get.to(() => OtpScreen()); */
+                          },
+                          showDecoration: true,
+                        ),
                         Container(
                           margin: const EdgeInsets.only(top: 20),
                           child: Row(

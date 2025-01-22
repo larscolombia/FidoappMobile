@@ -19,8 +19,6 @@ class TermsConditions extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return AppScaffold(
-      appBarbackgroundColor: Colors.white,
-      scaffoldBackgroundColor: Colors.white,
       body: Container(
         padding: Styles.paddingAll,
         width: width,
@@ -88,11 +86,13 @@ class TermsConditions extends StatelessWidget {
                 height: 30,
               ),
               Container(
-                  margin: const EdgeInsets.only(bottom: 20),
-                  child: const ButtonDefaultWidget(
-                    title: 'Regresar',
-                    callback: callabak,
-                  )),
+                margin: const EdgeInsets.only(bottom: 20),
+                child: const ButtonDefaultWidget(
+                  title: 'Regresar',
+                  callback: callabak,
+                  showDecoration: true,
+                ),
+              ),
             ],
           ),
         ),

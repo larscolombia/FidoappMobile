@@ -179,7 +179,7 @@ class InformationTab extends StatelessWidget {
                       elevation: 0.0,
                       child: ListTile(
                         leading: const Icon(
-                          Icons.line_weight,
+                          Icons.fitness_center,
                           color: Styles.iconColorBack,
                         ),
                         title: Text(
@@ -188,7 +188,7 @@ class InformationTab extends StatelessWidget {
                         ),
                         subtitle: Text(
                           '${controller.petProfile.weight}${controller.petProfile.weightUnit}',
-                          style: Styles.textProfile14w800,
+                          style: Styles.textProfile13w800,
                         ),
                       ),
                     ),
@@ -199,7 +199,7 @@ class InformationTab extends StatelessWidget {
                       elevation: 0.0,
                       child: ListTile(
                         leading: const Icon(
-                          Icons.female,
+                          Icons.favorite,
                           color: Styles.iconColorBack,
                         ),
                         title: Text(
@@ -210,7 +210,7 @@ class InformationTab extends StatelessWidget {
                           controller.petGender.value == "female"
                               ? 'Femenino'
                               : 'Masculino',
-                          style: Styles.textProfile14w800,
+                          style: Styles.textProfile13w800,
                         ),
                       ),
                     ),
@@ -227,7 +227,7 @@ class InformationTab extends StatelessWidget {
 
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(30),
+                padding: const EdgeInsets.all(20), // Reducir el padding
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   shape: BoxShape.rectangle,
@@ -238,7 +238,7 @@ class InformationTab extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: AspectRatio(
-                  aspectRatio: 1,
+                  aspectRatio: 0.9, // Ajustar el aspect ratio
                   child: FadeInImage.assetNetwork(
                     placeholder:
                         'assets/images/404.jpg', // Imagen de respaldo (colócala en la carpeta assets)

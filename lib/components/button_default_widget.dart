@@ -16,6 +16,8 @@ class ButtonDefaultWidget extends StatelessWidget {
   final IconData? icon;
   final bool iconAfterText;
   final bool isLoading;
+  final List<BoxShadow>? boxShadow;
+  final bool showDecoration;
 
   const ButtonDefaultWidget({
     super.key,
@@ -32,6 +34,8 @@ class ButtonDefaultWidget extends StatelessWidget {
     this.icon,
     this.iconAfterText = true,
     this.isLoading = false,
+    this.boxShadow,
+    this.showDecoration = false,
   });
 
   @override
@@ -40,17 +44,20 @@ class ButtonDefaultWidget extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xffFF4931)
-                .withOpacity(0.1), // Sombra del color predeterminado
-            spreadRadius: 1,
-            blurRadius: 12,
-            offset: const Offset(0, 4), // Desplazamiento de la sombra
-          ),
-        ],
-      ),
+      decoration: showDecoration
+          ? BoxDecoration(
+              boxShadow: boxShadow ??
+                  [
+                    BoxShadow(
+                      color: Color(0xffFF4931)
+                          .withOpacity(0.1), // Sombra del color predeterminado
+                      spreadRadius: 1,
+                      blurRadius: 12,
+                      offset: const Offset(0, 4), // Desplazamiento de la sombra
+                    ),
+                  ],
+            )
+          : null,
       child: SizedBox(
         width: widthButtom ?? width,
         height: heigthButtom,

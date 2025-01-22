@@ -131,7 +131,7 @@ class ProfilePetScreen extends StatelessWidget {
                                 (MediaQuery.of(context).size.width / 2) - 30,
                             defaultColor: controller.selectedTab.value == 0
                                 ? Styles.iconColorBack
-                                : Colors.transparent,
+                                : Colors.white,
                             textColor: controller.selectedTab.value == 0
                                 ? Styles.whiteColor
                                 : Colors.black,
@@ -150,7 +150,7 @@ class ProfilePetScreen extends StatelessWidget {
                                 (MediaQuery.of(context).size.width / 2) - 30,
                             defaultColor: controller.selectedTab.value == 1
                                 ? Styles.iconColorBack
-                                : Colors.transparent,
+                                : Colors.white,
                             textColor: controller.selectedTab.value == 1
                                 ? Styles.whiteColor
                                 : Colors.black,

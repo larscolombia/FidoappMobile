@@ -124,7 +124,7 @@ class DashboardScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              print('jqpwoijskpqowkspq');
+                              // print('jqpwoijskpqowkspq');
                               _onItemTap(index,
                                   context); // Llama al nuevo método que maneja el modal y la navegación
                             },
