@@ -66,6 +66,12 @@ class Styles {
     color: blackColor,
   );
 
+  static final textProfile13w800 = GoogleFonts.lato(
+    fontWeight: FontWeight.w800,
+    fontSize: 13,
+    color: blackColor,
+  );
+
   static final textProfile12w400 = GoogleFonts.lato(
     fontWeight: FontWeight.w400,
     fontSize: 12,
