@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -25,7 +26,7 @@ import '../../../utils/local_storage.dart';
 class AuthServiceApis {
   static ValueNotifier<LoginResponse?> currentUser = ValueNotifier(null);
   static UserData dataCurrentUser = UserData();
-
+  RxString deviceToken = 'null'.obs;
   static Future<RegUserResp> createUser({required Map request}) async {
     return RegUserResp.fromJson(await handleResponse(await buildHttpResponse(
         APIEndPoints.register,

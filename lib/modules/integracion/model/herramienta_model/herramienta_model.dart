@@ -4,12 +4,11 @@ class Herramienta {
   String description;
   int typeId;
   String image;
-  int progress;
-  String audio;
+  int? progress; // Campo opcional
+  String? audio; // Campo opcional
   String status;
   DateTime createdAt;
   DateTime updatedAt;
-  ToolType type;
 
   Herramienta({
     required this.id,
@@ -17,12 +16,11 @@ class Herramienta {
     required this.description,
     required this.typeId,
     required this.image,
-    required this.progress,
-    required this.audio,
+    this.progress, // Opcional
+    this.audio, // Opcional
     required this.status,
     required this.createdAt,
     required this.updatedAt,
-    required this.type,
   });
 
   factory Herramienta.fromJson(Map<String, dynamic> json) {
@@ -32,22 +30,21 @@ class Herramienta {
       description: json['description'],
       typeId: json['type_id'],
       image: json['image'],
-      progress: json['progress'],
+      progress: json['progress'] != null ? json['progress'] as int? : null,
       audio: json['audio'],
       status: json['status'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
-      type: ToolType.fromJson(json['type']),
     );
   }
 }
 
 class ToolType {
-  int id;
-  String type;
-  String icon;
-  DateTime createdAt;
-  DateTime updatedAt;
+  final int id;
+  final String type;
+  final String icon;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   ToolType({
     required this.id,

@@ -13,7 +13,7 @@ class HerramientasController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchTools();
+    fetchTools(); // Llama a la función para cargar las herramientas al inicializar
   }
 
   // Método para obtener las herramientas desde la API
@@ -28,13 +28,14 @@ class HerramientasController extends GetxController {
         'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
         'Content-Type': 'application/json',
       });
-
+      print('data tools ${response.statusCode}');
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body);
-        print('url sonido $data');
+        print('data tools ${data['data']}');
         tools.value = (data['data'] as List)
             .map((toolJson) => Herramienta.fromJson(toolJson))
             .toList();
+        print('tools ${tools.value.length}');
       } else {
         errorMessage('Error ${response.statusCode}: ${response.reasonPhrase}');
       }

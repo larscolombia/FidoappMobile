@@ -54,9 +54,6 @@ class HomeScreen extends StatelessWidget {
   final BlogController blogController = Get.put(BlogController());
   //eventos del calendario
   final CalendarController calendarController = Get.put(CalendarController());
-  //herramientas
-  final HerramientasController _herramientasController =
-      Get.put(HerramientasController());
 
   final UserBalanceController userBalanceController =
       Get.put(UserBalanceController());

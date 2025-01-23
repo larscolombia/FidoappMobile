@@ -5,12 +5,21 @@ import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_
 import 'package:pawlly/modules/integracion/controller/soun/soun_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class Utilities extends StatelessWidget {
+class Utilities extends StatefulWidget {
   Utilities({Key? key}) : super(key: key);
 
+  @override
+  State<Utilities> createState() => _UtilitiesState();
+}
+
+class _UtilitiesState extends State<Utilities> {
   final SounController sounController = Get.put(SounController());
   final HerramientasController herramientasController =
       Get.put(HerramientasController());
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +50,7 @@ class Utilities extends StatelessWidget {
 
           // Lista de herramientas (puedes agregar más elementos aquí)
           final tools = herramientasController.tools;
-
+          print('tools ${tools.length}');
           return Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -56,7 +65,7 @@ class Utilities extends StatelessWidget {
                     index: index,
                     imagePath: "$DOMAIN_URL/${tool.image}",
                     title: tool.name,
-                    audioUrl: tool.audio,
+                    audioUrl: tool.audio ?? "",
                     onError: () => Get.snackbar(
                       "Error",
                       "No se encontró el sonido",
@@ -81,7 +90,7 @@ class Utilities extends StatelessWidget {
       case 2:
         return 'assets/icons/tecontador.png';
       default:
-        return 'assets/icons/default.png';
+        return 'assets/icons/silbar.png';
     }
   }
 }
