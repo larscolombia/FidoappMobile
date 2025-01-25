@@ -217,13 +217,6 @@ class VerPasaporteMascota extends StatelessWidget {
                           style: Styles.TextTitulo,
                         ),
                       ),
-                      const SizedBox(
-                        width: 305,
-                        child: Text(
-                          'Datos de Vacunación y Tratamientos',
-                          style: Styles.TextTitulo,
-                        ),
-                      ),
 
                       //gridView
                       Container(
