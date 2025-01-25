@@ -264,7 +264,11 @@ class ProfileModal extends StatelessWidget {
                                           title: 'Ver perfil >',
                                           textSize: 12,
                                           callback: () {
+                                            print(
+                                                'info pert 2 ${jsonEncode(profile.id)}');
+
                                             controller.updateProfile(profile);
+
                                             medicalHistoryController
                                                 .updateField("pet_id",
                                                     profile.id.toString());

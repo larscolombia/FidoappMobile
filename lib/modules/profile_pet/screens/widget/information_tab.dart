@@ -33,7 +33,8 @@ class InformationTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
-    print('info pert ${(pet)}');
+
+    print('info pert ${(jsonEncode(controller.petProfile))}');
     return Obx(() {
       return SingleChildScrollView(
         child: Container(
@@ -57,7 +58,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         Text(
-                          controller.petName.value,
+                          homeController.selectedProfile.value!.name,
                           style: Styles.dashboardTitle20,
                         ),
                       ],
@@ -117,7 +118,7 @@ class InformationTab extends StatelessWidget {
                     style: Styles.textProfile14w400,
                   ),
                   subtitle: Text(
-                    controller.petBreed.value,
+                    homeController.selectedProfile.value!.breed,
                     style: Styles.textProfile14w800,
                   ),
                 ),
@@ -127,12 +128,12 @@ class InformationTab extends StatelessWidget {
               SizedBox(
                 width: 305,
                 child: Text(
-                  'Sobre ${controller.petName.value}',
+                  'Sobre ${homeController.selectedProfile.value!.name}',
                   style: Styles.textProfile15w700,
                 ),
               ),
               Text(
-                controller.petProfile.description ?? "no lo ha colocado aún",
+                homeController.selectedProfile.value!.description ?? "",
                 style: Styles.textProfile15w400,
               ),
               const SizedBox(height: 20),
@@ -150,8 +151,7 @@ class InformationTab extends StatelessWidget {
                     style: Styles.textProfile14w400,
                   ),
                   subtitle: Text(
-                    homeController.selectedProfile.value!.age ??
-                        "no lo ha colocado aún",
+                    homeController.selectedProfile.value!.age ?? "",
                     style: Styles.textProfile14w800,
                   ),
                   trailing: Column(
@@ -187,7 +187,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          '${controller.petProfile.weight}${controller.petProfile.weightUnit}',
+                          '${homeController.selectedProfile.value!.weight}${homeController.selectedProfile.value!.weightUnit}',
                           style: Styles.textProfile13w800,
                         ),
                       ),
@@ -207,7 +207,8 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          controller.petGender.value == "female"
+                          homeController.selectedProfile.value!.gender ==
+                                  "female"
                               ? 'Femenino'
                               : 'Masculino',
                           style: Styles.textProfile13w800,
@@ -242,7 +243,7 @@ class InformationTab extends StatelessWidget {
                   child: FadeInImage.assetNetwork(
                     placeholder:
                         'assets/images/404.jpg', // Imagen de respaldo (colócala en la carpeta assets)
-                    image: controller.petProfile.qrCode ??
+                    image: homeController.selectedProfile.value!.qrCode ??
                         'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
                     width: double.infinity,
                     height: double.infinity,

@@ -57,7 +57,6 @@ class ProfilePetController extends GetxController {
     petAge.value = petProfile.age;
     petGender.value = petProfile.gender;
     profileImagePath.value = petProfile.petImage ?? '';
-
     // Puedes agregar más inicializaciones según los datos disponibles en PetData
   }
 

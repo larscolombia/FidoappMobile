@@ -72,12 +72,27 @@ class PetControllerv2 extends GetxController {
   }
 
   //actilizar mascota
-
+  var metatdat = {
+    "name": "",
+    "additional_info": "",
+    "date_of_birth": "",
+    "breed_name": "",
+    "gender": "",
+    "weight": "",
+    "eweightUnit": "",
+    "heheightUnit": "",
+    "height": "",
+    "user_id": "",
+    "age": "",
+    "pet_fur": "",
+    "chip": "",
+    "size": "",
+  }.obs;
   // Método para actualizar la información de una mascota
   Future<void> updatePet(int id, Map<String, dynamic> body) async {
     try {
       succesApdate(false);
-
+      isLoading(true);
       final url = Uri.parse('${BASE_URL}pets/$id');
       print('URL completa: $url');
       print('Cuerpo de la solicitud (JSON): ${jsonEncode(body)}');
@@ -110,6 +125,11 @@ class PetControllerv2 extends GetxController {
       } else {
         print('Error en la solicitud: ${response.statusCode}');
         print('Respuesta: ${response.body}');
+        Get.snackbar(
+          'Advertencia',
+          'verifique todos los campos',
+          backgroundColor: Colors.green,
+        );
       }
     } catch (e) {
       print('Error al actualizar la mascota: $e');

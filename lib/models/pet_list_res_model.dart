@@ -41,7 +41,7 @@ class PetData {
   String gender;
   num weight;
   String weightUnit;
-  num height;
+  String height;
   String heightUnit;
   int userId;
   int status;
@@ -93,7 +93,7 @@ class PetData {
         gender: json['gender'] ?? "",
         weight: json['weight'] ?? 0,
         weightUnit: json['weight_unit'] ?? "",
-        height: json['height'] ?? 0,
+        height: json['height'].toString() ?? "0",
         heightUnit: json['height_unit'] ?? "",
         userId: json['user_id'] ?? -1,
         status: json['status'] ?? -1,
@@ -101,7 +101,7 @@ class PetData {
         createdBy: json['created_by'],
         updatedBy: json['updated_by'],
         deletedBy: json['deleted_by'],
-        description: json['additional_info'],
+        description: json['description'],
         petFur: json['pet_fur'],
         chip: json['chip']);
   }
@@ -126,6 +126,7 @@ class PetData {
       'user_id': userId,
       'status': status,
       'qr_code': qrCode,
+      'description': description,
       'created_by': createdBy,
       'updated_by': updatedBy,
       'deleted_by': deletedBy,

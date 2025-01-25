@@ -33,6 +33,7 @@ class VerPasaporteMascota extends StatelessWidget {
     //historiaClinicaController
     //  .fetchHistorialClinico(_homeController.selectedProfile.value!.id);
     print('date  ${jsonEncode(_homeController.selectedProfile.value!)}');
+    var mascota = _homeController.selectedProfile.value!;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -61,9 +62,11 @@ class VerPasaporteMascota extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 20),
                       SizedBox(
                         width: MediaQuery.of(context).size.width -
                             100, // Ajusta el margen
+
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -162,25 +165,22 @@ class VerPasaporteMascota extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Container(
-                        child: const Text(
-                          'Información del Perro',
-                          style: Styles.TextTitulo,
-                        ),
+                      const Text(
+                        'Información del Perro',
+                        style: Styles.TextTitulo,
                       ),
                       const SizedBox(height: 20),
                       InfoMascota(
                         titulo: 'Nombre',
-                        value: _homeController.selectedProfile.value!.name,
+                        value: mascota.name,
                       ),
-                      InfoMascota(
+                      const InfoMascota(
                         titulo: 'Especie',
                         value: 'Canino',
                       ),
                       InfoMascota(
                         titulo: 'Sexo',
-                        value: _homeController.selectedProfile.value!.gender ==
-                                "female"
+                        value: mascota.gender == "female"
                             ? 'Femenino'
                             : 'Masculino',
                       ),
@@ -200,14 +200,26 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       InfoMascota(
                         titulo: 'Altura',
-                        value: _homeController.selectedProfile.value!.height
-                                .toString() ??
-                            "n/A",
+                        value:
+                            '${mascota.height ?? ""}${mascota.heightUnit ?? ""}',
+                      ),
+
+                      InfoMascota(
+                        titulo: 'Descripción',
+                        value: mascota.description ??
+                            "No se ha definido una descripción",
                       ),
                       const SizedBox(height: 20),
-                      SizedBox(
+                      const SizedBox(
                         width: 305,
-                        child: const Text(
+                        child: Text(
+                          'Datos de Vacunación y Tratamientos',
+                          style: Styles.TextTitulo,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 305,
+                        child: Text(
                           'Datos de Vacunación y Tratamientos',
                           style: Styles.TextTitulo,
                         ),

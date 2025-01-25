@@ -7,6 +7,7 @@ import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/event_model.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
@@ -20,7 +21,7 @@ import 'package:pawlly/styles/styles.dart';
 
 class ProfilePetScreen extends StatelessWidget {
   final ProfilePetController controller = Get.put(ProfilePetController());
-
+  final HomeController homeController = Get.find<HomeController>();
   ProfilePetScreen({super.key});
   //final PetControllerv2 petController = Get.put(PetControllerv2());
 
@@ -28,9 +29,11 @@ class ProfilePetScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final imageSize = size.height / 4;
+    var pet = homeController.selectedProfile.value!;
+    print('valor sobre la mascota ${pet.name}');
     // ignore: unused_local_variable
     //petController.showPet();
-    print(' que esta pasando ?${controller.profileImagePath.value.isNotEmpty}');
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(

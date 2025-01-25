@@ -75,6 +75,8 @@ class HomeController extends GetxController {
 
   // Método para actualizar el perfil seleccionado
   void updateProfile(PetData profile) {
+    print('info pert 3 ${(jsonEncode(profile.name))}');
+
     if (profiles.value.isNotEmpty) {
       selectedProfile.value = profile;
     } else {
@@ -192,7 +194,7 @@ class HomeController extends GetxController {
         gender: '',
         weight: 0.0,
         weightUnit: '',
-        height: 0,
+        height: '0',
         heightUnit: '',
         userId: 0,
         status: -1,
