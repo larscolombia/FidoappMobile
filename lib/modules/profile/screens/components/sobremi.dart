@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
@@ -17,43 +16,32 @@ class Sobremi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(children: [
-        Obx(
-          () {
-            if (profileController.isLoading.value) {
-              return const SizedBox(
-                child: Text('cargando ...'),
-              );
-            }
-            return Container(
-              width: MediaQuery.of(context).size.width - 100,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Sobre ${profileController.user.value.firstName}',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'lato',
-                    ),
+    return Obx(() {
+      if (profileController.isLoading.value) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      return Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width - 100,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Sobre ${profileController.user.value.firstName}',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'lato',
                   ),
                 ),
               ),
-            );
-          },
-        ),
-        Obx(() {
-          if (profileController.isLoading.value) {
-            return const SizedBox(
-              child: Center(
-                child: Text('cargando ...'),
-              ),
-            );
-          }
-          return SizedBox(
+            ),
+          ),
+          SizedBox(
             width: MediaQuery.of(context).size.width - 100,
             child: Padding(
               padding: const EdgeInsets.only(bottom: 16.0),
@@ -66,9 +54,9 @@ class Sobremi extends StatelessWidget {
                 ),
               ),
             ),
-          );
-        }),
-      ]),
-    );
+          ),
+        ],
+      );
+    });
   }
 }

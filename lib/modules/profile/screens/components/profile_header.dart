@@ -45,10 +45,8 @@ class ProfileHeader extends StatelessWidget {
             child: Obx(
               () {
                 if (profileController.isLoading.value) {
-                  return const SizedBox(
-                    child: Center(
-                      child: Text('cargando ...'),
-                    ),
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
                 }
                 return CircleAvatar(

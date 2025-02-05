@@ -106,205 +106,208 @@ class UserBalanceController extends GetxController {
           return Stack(
             children: [
               // Contenido principal desplazable
-              SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Indicador visual en la parte superior
-                    Container(
-                      height: 5,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Styles.primaryColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Realizar compra ${productController.selectedProduct.value.slug}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'Roboto',
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    // Imagen del producto
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 150,
-                      height: 250,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Image.network(
-                          productController.selectedProduct.value.imagen,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: 200,
+              if (!loading)
+                SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Indicador visual en la parte superior
+                      Container(
+                        height: 5,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          color: Styles.primaryColor,
+                          borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    // Descripción del producto
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Text(
-                        productController.selectedProduct.value.descripcion,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
+                      const SizedBox(height: 16),
+                      Text(
+                        'Realizar compra ${productController.selectedProduct.value.slug}',
                         style: const TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Lato',
-                          color: Colors.black,
-                          fontWeight: FontWeight.w900,
+                          fontSize: 18,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    // Contenedor con Balance y detalles del producto
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Widget que muestra el balance del usuario
-                          Balance(
-                              controller: userBalanceController,
-                              recarga: false),
-                          const SizedBox(
-                            width: 50,
-                            child: Icon(
-                              Icons.party_mode,
-                              color: Styles.primaryColor,
-                            ),
+                      const SizedBox(height: 16),
+                      // Imagen del producto
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 150,
+                        height: 250,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            productController.selectedProduct.value.imagen,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: 200,
                           ),
-                          Expanded(
-                            child: Container(
-                              padding: const EdgeInsets.all(16),
-                              height: MediaQuery.of(context).size.height * 0.2,
-                              decoration: const BoxDecoration(
-                                color: Styles.colorContainer,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      // Descripción del producto
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Text(
+                          productController.selectedProduct.value.descripcion,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Lato',
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      // Contenedor con Balance y detalles del producto
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Widget que muestra el balance del usuario
+                            Balance(
+                                controller: userBalanceController,
+                                recarga: false),
+                            const SizedBox(
+                              width: 50,
+                              child: Icon(
+                                Icons.party_mode,
+                                color: Styles.primaryColor,
                               ),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      child: Text(
-                                        productController.selectedProduct.value
-                                            .nombreProducto,
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontFamily: 'Leto',
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.01),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Text(
-                                        productController
-                                            .selectedProduct.value.precio,
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold,
-                                            color: Styles.primaryColor),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                  ]),
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(16),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.2,
+                                decoration: const BoxDecoration(
+                                  color: Styles.colorContainer,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        child: Text(
+                                          productController.selectedProduct
+                                              .value.nombreProducto,
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: 'Leto',
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.01),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Text(
+                                          productController
+                                              .selectedProduct.value.precio,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.bold,
+                                              color: Styles.primaryColor),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                    ]),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: MediaQuery.of(context).size.height / 10),
-                    // Botón de compra, deshabilitado si se está en estado de carga
-                    ButtonDefaultWidget(
-                      callback: loading
-                          ? null
-                          : () {
-                              if (productController
-                                  .selectedProduct.value.precio.isEmpty) {
-                                Get.snackbar(
-                                  'Error',
-                                  'El precio es requerido',
-                                  snackPosition: SnackPosition.BOTTOM,
-                                );
-                                return;
-                              }
+                      SizedBox(height: MediaQuery.of(context).size.height / 10),
+                      // Botón de compra, deshabilitado si se está en estado de carga
+                      ButtonDefaultWidget(
+                        callback: loading
+                            ? null
+                            : () {
+                                if (productController
+                                    .selectedProduct.value.precio.isEmpty) {
+                                  Get.snackbar(
+                                    'Error',
+                                    'El precio es requerido',
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  );
+                                  return;
+                                }
 
-                              // Validación de fondos insuficientes
-                              if (double.parse(userBalanceController
-                                      .userBalance.value.balance) <
-                                  double.parse(productController
-                                      .selectedProduct.value.precio
-                                      .split('ƒ')[0])) {
-                                Get.dialog(
-                                  CustomAlertDialog(
-                                    icon: Icons.close,
-                                    title: 'Error',
-                                    description: 'Fondos insuficientes',
-                                    primaryButtonText: 'Aceptar',
-                                    onPrimaryButtonPressed: () => Get.back(),
-                                  ),
-                                  barrierDismissible: false,
-                                );
-                              } else {
-                                Get.dialog(
-                                  CustomAlertDialog(
-                                    icon: Icons.account_balance_wallet,
-                                    title: 'Advertencia',
-                                    description: 'Confirmar transacción',
-                                    primaryButtonText: 'Aceptar',
-                                    onPrimaryButtonPressed: () {
-                                      switch (productController
-                                          .selectedProduct.value.slug) {
-                                        case 'curso':
-                                          cursoController.subscribeToCourse(
-                                            productController
-                                                .selectedProduct.value.id,
-                                          );
-                                          break;
-                                        case 'servicio':
-                                          calendarController.postEvent();
-                                          break;
-                                        default:
-                                          print(
-                                              'Tipo de producto no reconocido');
-                                      }
-                                      Get.back();
-                                    },
-                                  ),
-                                  barrierDismissible: false,
-                                );
-                              }
-                            },
-                      title: loading
-                          ? 'Cargando...'
-                          : 'Comprar ${productController.selectedProduct.value.slug}',
-                    ),
-                    const SizedBox(height: 8),
-                  ],
+                                // Validación de fondos insuficientes
+                                if (double.parse(userBalanceController
+                                        .userBalance.value.balance) <
+                                    double.parse(productController
+                                        .selectedProduct.value.precio
+                                        .split('ƒ')[0])) {
+                                  Get.dialog(
+                                    CustomAlertDialog(
+                                      icon: Icons.close,
+                                      title: 'Error',
+                                      description: 'Fondos insuficientes',
+                                      primaryButtonText: 'Aceptar',
+                                      onPrimaryButtonPressed: () => Get.back(),
+                                    ),
+                                    barrierDismissible: false,
+                                  );
+                                } else {
+                                  Get.dialog(
+                                    CustomAlertDialog(
+                                      icon: Icons.account_balance_wallet,
+                                      title: 'Advertencia',
+                                      description: 'Confirmar transacción',
+                                      primaryButtonText: 'Aceptar',
+                                      onPrimaryButtonPressed: () {
+                                        switch (productController
+                                            .selectedProduct.value.slug) {
+                                          case 'curso':
+                                            cursoController.subscribeToCourse(
+                                              productController
+                                                  .selectedProduct.value.id,
+                                            );
+                                            break;
+                                          case 'servicio':
+                                            calendarController.postEvent();
+                                            break;
+                                          default:
+                                            print(
+                                                'Tipo de producto no reconocido');
+                                        }
+                                        Get.back();
+                                      },
+                                    ),
+                                    barrierDismissible: false,
+                                  );
+                                }
+                              },
+                        title: loading
+                            ? 'Cargando...'
+                            : 'Comprar ${productController.selectedProduct.value.slug}',
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
                 ),
-              ),
               // Overlay de carga
               if (loading)
-                Container(
-                  color: Colors.white.withOpacity(0.8),
-                  alignment: Alignment.center,
-                  child: const CircularProgressIndicator(),
+                Center(
+                  child: CircularProgressIndicator(),
                 ),
             ],
           );

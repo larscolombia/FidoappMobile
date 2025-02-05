@@ -126,8 +126,8 @@ class NotificationsScreen extends StatelessWidget {
             //margin: const EdgeInsets.symmetric(vertical: 1.0), //margen notificaciones
             decoration: BoxDecoration(
               color: notification.isRead == 0
-                  ? Styles.whiteColor
-                  : Styles.fiveColor,
+                  ? Styles.fiveColor
+                  : Styles.whiteColor,
             ),
             child: Row(
               children: [
