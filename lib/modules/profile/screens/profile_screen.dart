@@ -1,14 +1,13 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nb_utils/nb_utils.dart';
+
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/components/custom_text_form_field_widget.dart';
+
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
-import 'package:pawlly/modules/components/input_select.dart';
+
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
@@ -16,7 +15,6 @@ import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/formulario_verificacion.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
-import 'package:pawlly/styles/recursos.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());

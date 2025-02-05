@@ -237,10 +237,13 @@ class HomeScreen extends StatelessWidget {
                           const SizedBox(height: 5),
                           const Text(
                             'Profesionales',
+                            maxLines: 1, // Limita el texto a una sola línea
+                            overflow: TextOverflow
+                                .ellipsis, // Muestra "..." si el texto se desborda
                             style: TextStyle(
                               color: Colors.black,
                               fontFamily: "Lato",
-                              fontSize: 12,
+                              fontSize: 11,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

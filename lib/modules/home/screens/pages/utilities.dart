@@ -28,18 +28,19 @@ class _UtilitiesState extends State<Utilities> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: Container(
-            width: width,
-            child: const Text(
-              'Utilidades',
-              style: TextStyle(
-                fontSize: 20,
-                color: Styles.primaryColor,
-                fontFamily: 'PoetsenOne',
-              ),
-              textAlign: TextAlign.left,
+        // Eliminamos el Center para evitar centrar el contenedor completo
+        Container(
+          width: width,
+          // Aseguramos la alineación del contenido a la izquierda
+          alignment: Alignment.centerLeft,
+          child: const Text(
+            'Utilidades',
+            style: TextStyle(
+              fontSize: 20,
+              color: Styles.primaryColor,
+              fontFamily: 'PoetsenOne',
             ),
+            textAlign: TextAlign.left,
           ),
         ),
         const SizedBox(height: 16),
@@ -130,23 +131,28 @@ class ToolWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.network(imagePath,
-                loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Container(
-                width: 24,
-                height: 24,
-                color: Colors.grey, // Imagen gris de respaldo
-              );
-            }),
+            Container(
+              height: 50,
+              child: Image.network(imagePath,
+                  loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  width: 24,
+                  height: 24,
+                  color: Colors.grey, // Imagen gris de respaldo
+                );
+              }),
+            ),
             const SizedBox(height: 8),
-            Text(
-              title,
-              style: const TextStyle(
-                fontFamily: 'Lato',
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Styles.greyTextColor,
+            Container(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontFamily: 'Lato',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Styles.greyTextColor,
+                ),
               ),
             ),
           ],

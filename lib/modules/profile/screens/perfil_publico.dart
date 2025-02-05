@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/modules/components/baner_comentarios.dart';
-import 'package:pawlly/modules/components/border_redondiado.dart';
-import 'package:pawlly/modules/components/boton_compartir.dart';
-import 'package:pawlly/modules/components/input_text.dart';
+
 import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/widgets/comments_section.dart';

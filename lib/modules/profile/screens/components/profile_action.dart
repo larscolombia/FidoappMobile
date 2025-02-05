@@ -17,8 +17,6 @@ class ProfileActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        'profile controller ${jsonEncode(profileController.user.value.profile?.tags)}');
     return Obx(() {
       if (profileController.isLoading.value) {
         return const Center(

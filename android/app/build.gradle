@@ -30,6 +30,7 @@ android {
         targetSdkVersion 34
         versionCode 17
         versionName "1.5.0"
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -68,6 +69,13 @@ dependencies {
 
     // Otros paquetes
     implementation 'phonepe.intentsdk.android.release:IntentSDK:2.3.0'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
+configurations {
+    all {
+        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
+    }
+}
