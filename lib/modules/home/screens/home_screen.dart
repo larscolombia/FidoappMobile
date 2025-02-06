@@ -155,7 +155,6 @@ class HomeScreen extends StatelessWidget {
                           return _buildCase3Content();
                         case 3:
                           return _buildCase4Content();
-
                         case 5:
                           return __Ebooks();
                         case 6:

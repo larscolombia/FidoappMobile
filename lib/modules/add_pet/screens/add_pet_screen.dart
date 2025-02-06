@@ -270,7 +270,7 @@ class AddPetScreen extends StatelessWidget {
                                                   'male'
                                               ? Styles.iconColorBack
                                               : Colors.transparent),
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(16),
                                     ),
                                     child: const Center(
                                       child: Text(

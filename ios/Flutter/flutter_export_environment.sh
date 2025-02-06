@@ -3,6 +3,7 @@
 export "FLUTTER_ROOT=D:\flutterSDK\flutter-3.22.1"
 export "FLUTTER_APPLICATION_PATH=C:\Users\Admin\Documents\lars\fido_app_customer"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
+export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"
 export "FLUTTER_BUILD_NUMBER=1"

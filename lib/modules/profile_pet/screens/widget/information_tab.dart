@@ -363,7 +363,7 @@ class InformationTab extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               // Botón de eliminar mascota
-              /** 
+              /**  */
               Center(
                 child: TextButton(
                   onPressed: controller
@@ -373,7 +373,7 @@ class InformationTab extends StatelessWidget {
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
-              ),*/
+              ),
               const SizedBox(height: 20),
             ],
           ),
