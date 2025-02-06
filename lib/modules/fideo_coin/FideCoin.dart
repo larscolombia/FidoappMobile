@@ -36,7 +36,7 @@ class FideCoin extends StatelessWidget {
                   delegate: SliverChildListDelegate([
                     Container(
                       margin: const EdgeInsets.only(left: 16),
-                      width: MediaQuery.of(context).size.width - 100,
+                      width: MediaQuery.of(context).size.width,
                       child: BarraBack(
                         callback: () {
                           Get.back();

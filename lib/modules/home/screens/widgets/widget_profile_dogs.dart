@@ -136,7 +136,7 @@ class ProfileModal extends StatelessWidget {
                   );
                 } else {
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: ListView.builder(
                       itemCount: controller.profiles.length,
                       itemBuilder: (context, index) {

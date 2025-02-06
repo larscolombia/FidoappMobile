@@ -30,47 +30,58 @@ class PetOwnerProfileScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Styles.whiteColor,
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(36),
-            topRight: Radius.circular(36),
+      body: Obx(() {
+        if (profileController.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(36),
+              topRight: Radius.circular(36),
+            ),
           ),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ProfileHeader(
-                profileController: profileController,
-                headerHeight: MediaQuery.of(context).size.height / 8,
-              ),
-              const SizedBox(height: 20),
-              ProfileDetails(
-                  controller: controller, profileController: profileController),
-              const SizedBox(
-                width: 302,
-                height: 20,
-                child: Divider(
-                  thickness: 1,
-                  color: Recursos.ColorBorderSuave,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ProfileHeader(
+                  profileController: profileController,
+                  headerHeight: MediaQuery.of(context).size.height / 8,
                 ),
-              ),
-              const SizedBox(height: 20),
-              VeterinarianInfo(
-                  controller: controller, profileController: profileController),
-              const SizedBox(height: 10),
-              Sobremi(
-                  profileController: profileController, controller: controller),
-              const SizedBox(height: 20),
-              ProfileActions(
-                  controller: controller, profileController: profileController),
-              const SizedBox(height: 20),
-              CommentsSection(id: '$id'),
-            ],
+                const SizedBox(height: 20),
+                ProfileDetails(
+                    controller: controller,
+                    profileController: profileController),
+                const SizedBox(
+                  width: 302,
+                  height: 20,
+                  child: Divider(
+                    thickness: 1,
+                    color: Recursos.ColorBorderSuave,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                VeterinarianInfo(
+                    controller: controller,
+                    profileController: profileController),
+                const SizedBox(height: 10),
+                Sobremi(
+                    profileController: profileController,
+                    controller: controller),
+                const SizedBox(height: 20),
+                ProfileActions(
+                    controller: controller,
+                    profileController: profileController),
+                const SizedBox(height: 20),
+                CommentsSection(id: '$id'),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

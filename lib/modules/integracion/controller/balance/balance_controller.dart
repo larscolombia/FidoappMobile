@@ -12,7 +12,7 @@ import 'package:pawlly/modules/integracion/controller/balance/producto_pay_contr
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
 import 'package:pawlly/modules/integracion/model/balance/balance_model.dart';
-import 'package:pawlly/services/auth_service_apis.dart'; // Asegúrate de que este archivo y clase existan
+import 'package:pawlly/services/auth_service_apis.dart';
 
 class UserBalanceController extends GetxController {
   final ProductoPayController productController =
@@ -89,7 +89,7 @@ class UserBalanceController extends GetxController {
       Container(
         height: MediaQuery.of(context).size.height / 1.2,
         width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.all(16),
+        padding: Styles.paddingAll,
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -170,10 +170,58 @@ class UserBalanceController extends GetxController {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            // Widget que muestra el balance del usuario
-                            Balance(
-                                controller: userBalanceController,
-                                recarga: false),
+                            Flexible(
+                              flex: 1,
+                              child: Container(
+                                padding: const EdgeInsets.all(14),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.23,
+                                decoration: const BoxDecoration(
+                                  color: Styles.colorContainer,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      child: Text(
+                                        productController.selectedProduct.value
+                                            .nombreProducto,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontFamily: 'Leto',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.01,
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: Text(
+                                        productController
+                                            .selectedProduct.value.precio,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold,
+                                          color: Styles.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                             const SizedBox(
                               width: 50,
                               child: Icon(
@@ -181,60 +229,27 @@ class UserBalanceController extends GetxController {
                                 color: Styles.primaryColor,
                               ),
                             ),
-                            Expanded(
+                            Flexible(
+                              flex: 1,
                               child: Container(
-                                padding: const EdgeInsets.all(16),
+                                padding: const EdgeInsets.all(14),
                                 height:
-                                    MediaQuery.of(context).size.height * 0.2,
+                                    MediaQuery.of(context).size.height * 0.23,
                                 decoration: const BoxDecoration(
                                   color: Styles.colorContainer,
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                 ),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        child: Text(
-                                          productController.selectedProduct
-                                              .value.nombreProducto,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontFamily: 'Leto',
-                                              fontWeight: FontWeight.w700),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.01),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Text(
-                                          productController
-                                              .selectedProduct.value.precio,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              fontSize: 22,
-                                              fontWeight: FontWeight.bold,
-                                              color: Styles.primaryColor),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                    ]),
+                                child: Balance(
+                                  controller: userBalanceController,
+                                  recarga: false,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height / 10),
+                      SizedBox(height: MediaQuery.of(context).size.height / 15),
                       // Botón de compra, deshabilitado si se está en estado de carga
                       ButtonDefaultWidget(
                         callback: loading

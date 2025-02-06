@@ -72,43 +72,47 @@ class ProfileDetails extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          Text(
-            profileController.user.value.userType == "vet"
-                ? "Veterinario"
-                : "Entrenador",
-            style: const TextStyle(
-              color: Color(0xff555555),
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Lato',
-            ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RatingBar.builder(
-                initialRating: controller.rating.value,
-                minRating: 1,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
-                itemSize: 20.0,
-                itemBuilder: (context, _) => const Icon(
-                  Icons.star,
-                  color: Styles.iconColorBack,
+          profileController.user.value.userType == "user"
+              ? SizedBox.shrink()
+              : Text(
+                  profileController.user.value.userType == "vet"
+                      ? "Veterinario"
+                      : "Entrenador",
+                  style: const TextStyle(
+                    color: Color(0xff555555),
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Lato',
+                  ),
                 ),
-                onRatingUpdate: (rating) {},
-                ignoreGestures: true,
-              ),
-              const SizedBox(width: 8),
-              Text(
-                controller.rating.value.toString(),
-                style: Styles.secondTextTitle,
-              ),
-            ],
-          ),
+          const SizedBox(height: 10),
+          profileController.user.value.userType == "user"
+              ? SizedBox.shrink()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RatingBar.builder(
+                      initialRating: controller.rating.value,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                      itemSize: 20.0,
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Styles.iconColorBack,
+                      ),
+                      onRatingUpdate: (rating) {},
+                      ignoreGestures: true,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      controller.rating.value.toString(),
+                      style: Styles.secondTextTitle,
+                    ),
+                  ],
+                ),
         ],
       );
     });

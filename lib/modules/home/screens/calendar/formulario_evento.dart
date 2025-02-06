@@ -59,7 +59,7 @@ class _CreateEventState extends State<CreateEvent> {
 
   @override
   Widget build(BuildContext context) {
-    final ancho = MediaQuery.of(context).size.width - 100;
+    final ancho = MediaQuery.of(context).size.width;
     var doubleHeight = 10.00;
     var margen = 16.00;
     return Scaffold(
@@ -101,6 +101,7 @@ class _CreateEventState extends State<CreateEvent> {
           Expanded(
             child: Container(
               width: double.infinity,
+              padding: EdgeInsets.only(left: 25, right: 25),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
