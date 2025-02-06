@@ -31,7 +31,7 @@ class Sobremi extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Sobre ${profileController.user.value.firstName}',
+                  'Sobre ${profileController.user.value.fullName}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -41,20 +41,67 @@ class Sobremi extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width - 100,
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 16.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  profileController.user.value.profile?.aboutSelf ?? "",
-                  style: Styles.secondTextTitle,
-                  textAlign: TextAlign.left,
+          profileController.user.value.userType != 'user'
+              ? Column(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 100,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            profileController.user.value.address ?? "",
+                            style: Styles.secondTextTitle,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 100,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            profileController.user.value.email ?? "",
+                            style: Styles.secondTextTitle,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 100,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            profileController.user.value.gender ?? "",
+                            style: Styles.secondTextTitle,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : SizedBox(
+                  width: MediaQuery.of(context).size.width - 100,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        profileController.user.value.profile?.aboutSelf ?? "",
+                        style: Styles.secondTextTitle,
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
         ],
       );
     });

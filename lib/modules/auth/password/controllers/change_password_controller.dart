@@ -29,31 +29,39 @@ class ChangePasswordController extends GetxController {
     print('change Pass Controller join');
 
     isLoading(true);
-    if (getValueFromLocal(SharedPreferenceConst.USER_PASSWORD) !=
-        oldPasswordCont.text.trim()) {
-      return toast(locale.value.yourOldPasswordDoesnT);
-    } else if (newpasswordCont.text.trim() != confirmPasswordCont.text.trim()) {
-      return toast(locale.value.yourNewPasswordDoesnT);
-    } else if ((oldPasswordCont.text.trim() == newpasswordCont.text.trim()) &&
-        oldPasswordCont.text.trim() == confirmPasswordCont.text.trim()) {
-      return toast(locale.value.oldAndNewPassword);
-    }
-    hideKeyBoardWithoutContext();
+    try {
+      if (getValueFromLocal(SharedPreferenceConst.USER_PASSWORD) !=
+          oldPasswordCont.text.trim()) {
+        toast(locale.value.yourOldPasswordDoesnT);
+        return;
+      } else if (newpasswordCont.text.trim() !=
+          confirmPasswordCont.text.trim()) {
+        toast(locale.value.yourNewPasswordDoesnT);
+        return;
+      } else if ((oldPasswordCont.text.trim() == newpasswordCont.text.trim()) &&
+          oldPasswordCont.text.trim() == confirmPasswordCont.text.trim()) {
+        toast(locale.value.oldAndNewPassword);
+        return;
+      }
+      hideKeyBoardWithoutContext();
 
-    Map<String, dynamic> req = {
-      'old_password': getValueFromLocal(SharedPreferenceConst.USER_PASSWORD),
-      'new_password': confirmPasswordCont.text.trim(),
-    };
+      Map<String, dynamic> req = {
+        'old_password': getValueFromLocal(SharedPreferenceConst.USER_PASSWORD),
+        'new_password': confirmPasswordCont.text.trim(),
+      };
 
-    await AuthServiceApis.changePasswordAPI(request: req).then((value) async {
-      isLoading(false);
-      setValueToLocal(
-          SharedPreferenceConst.USER_PASSWORD, confirmPasswordCont.text.trim());
-      loginUserData.value.apiToken = value.data.apiToken;
-      Get.to(() => const PasswordSetSuccess());
-    }).catchError((e) {
-      isLoading(false);
+      await AuthServiceApis.changePasswordAPI(request: req).then((value) async {
+        setValueToLocal(SharedPreferenceConst.USER_PASSWORD,
+            confirmPasswordCont.text.trim());
+        loginUserData.value.apiToken = value.data.apiToken;
+        Get.to(() => const PasswordSetSuccess());
+      }).catchError((e) {
+        toast(e.toString(), print: true);
+      });
+    } catch (e) {
       toast(e.toString(), print: true);
-    });
+    } finally {
+      isLoading(false);
+    }
   }
 }

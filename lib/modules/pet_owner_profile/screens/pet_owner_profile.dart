@@ -76,7 +76,9 @@ class PetOwnerProfileScreen extends StatelessWidget {
                     controller: controller,
                     profileController: profileController),
                 const SizedBox(height: 20),
-                CommentsSection(id: '$id'),
+                profileController.user.value.userType == "user"
+                    ? SizedBox.shrink()
+                    : CommentsSection(id: '$id'),
               ],
             ),
           ),
