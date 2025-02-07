@@ -19,9 +19,10 @@ class BotonCompartir extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        // Primer Expanded: botón "Adquirido" si se compró, o un contenedor vacío en caso contrario
-        Expanded(
+        // Primer Flexible: botón "Adquirido" si se compró, o un contenedor vacío en caso contrario
+        Flexible(
           child: (compra ?? false)
               ? Container(
                   height: 32,
@@ -59,12 +60,13 @@ class BotonCompartir extends StatelessWidget {
               : Container(), // Contenedor vacío para ocupar el espacio
         ),
         const SizedBox(width: 8),
-        // Segundo Expanded: siempre muestra el botón "Compartir"
-        Expanded(
+        // Segundo Flexible: siempre muestra el botón "Compartir"
+        Flexible(
           child: GestureDetector(
             onTap: onCompartir,
             child: Container(
               height: 32,
+              padding: const EdgeInsets.symmetric(horizontal: 12.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 color: const Color.fromARGB(255, 245, 245, 245),
@@ -75,6 +77,7 @@ class BotonCompartir extends StatelessWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Flexible(
                     child: Text(

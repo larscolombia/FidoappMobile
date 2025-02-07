@@ -93,8 +93,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           ),
                         ),
                       Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
+                        child: Container(
+                          padding: Styles.paddingAll,
+                          width: MediaQuery.of(context).size.width,
                           child: BarraBack(
                             titulo: 'Verificación Profesional',
                             subtitle: 'Añade tu información profesional',
@@ -107,8 +108,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                       ),
                       SizedBox(height: margin),
                       Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
+                        child: Container(
+                          padding: Styles.paddingAll,
+                          width: MediaQuery.of(context).size.width,
                           child: InputText(
                             onChanged: (value) =>
                                 profileController.user['first_name'] = value,
@@ -126,8 +128,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                       ),
                       SizedBox(height: margin),
                       Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
+                        child: Container(
+                          padding: Styles.paddingAll,
+                          width: MediaQuery.of(context).size.width,
                           child: InputText(
                             onChanged: (value) =>
                                 profileController.user['lastName'] = value,
@@ -144,8 +147,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                       ),
                       SizedBox(height: margin),
                       Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
+                        child: Container(
+                          padding: Styles.paddingAll,
+                          width: MediaQuery.of(context).size.width,
                           child: InputText(
                             onChanged: (value) =>
                                 profileController.user['about_self'] = value,
@@ -165,8 +169,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                         }
 
                         return Center(
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
+                          child: Container(
+                            padding: Styles.paddingAll,
+                            width: MediaQuery.of(context).size.width,
                             child: InputSelect(
                               onChanged: (value) {
                                 profileController.user['expert'] =
@@ -197,8 +202,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                       }),
                       SizedBox(height: margin),
                       Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
+                        child: Container(
+                          padding: Styles.paddingAll,
+                          width: MediaQuery.of(context).size.width,
                           child: const Divider(
                               thickness: 1, color: Recursos.ColorBorderSuave),
                         ),
@@ -206,8 +212,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                       SizedBox(height: margin),
                       Obx(() {
                         return Center(
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
+                          child: Container(
+                            padding: Styles.paddingAll,
+                            width: MediaQuery.of(context).size.width,
                             child: InputText(
                               initialValue: controller.user.value.address ?? '',
                               onChanged: (value) {},
@@ -223,8 +230,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                       SizedBox(height: margin),
                       Obx(() {
                         return Center(
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
+                          child: Container(
+                            padding: Styles.paddingAll,
+                            width: MediaQuery.of(context).size.width,
                             child: InputText(
                               initialValue: controller
                                       .user.value.profile?.validationNumber ??
@@ -244,8 +252,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                       SizedBox(height: margin),
                       Obx(() {
                         return Center(
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
+                          child: Container(
+                            padding: Styles.paddingAll,
+                            width: MediaQuery.of(context).size.width,
                             child: InputText(
                               initialValue: controller.user.value.address,
                               onChanged: (value) {
@@ -263,8 +272,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                       }),
                       SizedBox(height: margin),
                       Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
+                        child: Container(
+                          padding: Styles.paddingAll,
+                          width: MediaQuery.of(context).size.width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -291,8 +301,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                       Column(
                         children: [
                           Center(
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width - 100,
+                            child: Container(
+                              padding: Styles.paddingAll,
+                              width: MediaQuery.of(context).size.width,
                               child: ButtonDefaultWidget(
                                 callback: () {
                                   Get.to(PublicProfilePage());
@@ -305,8 +316,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           SizedBox(height: margin),
                           Obx(
                             () => Center(
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width - 100,
+                              child: Container(
+                                padding: Styles.paddingAll,
+                                width: MediaQuery.of(context).size.width,
                                 child: ButtonDefaultWidget(
                                   callback: () {
                                     profileController.updateProfile();

@@ -24,8 +24,9 @@ class ProfileDetails extends StatelessWidget {
       }
       return Column(
         children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width - 100,
+          Container(
+            padding: Styles.paddingAll,
+            width: MediaQuery.of(context).size.width,
             child: Stack(
               children: [
                 Positioned(
@@ -64,8 +65,9 @@ class ProfileDetails extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          SizedBox(
-            width: MediaQuery.of(context).size.width - 100,
+          Container(
+            padding: Styles.paddingAll,
+            width: MediaQuery.of(context).size.width,
             child: Text(
               profileController.user.value.firstName ?? "",
               style: Styles.dashboardTitle20,

@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/widgets/comments_section.dart';
+import 'package:pawlly/modules/pet_owner_profile/screens/widgets/list_pet.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_action.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_details.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_header.dart';
@@ -15,13 +15,25 @@ import 'package:pawlly/styles/styles.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 //perfil del usuario
-class PetOwnerProfileScreen extends StatelessWidget {
+class PetOwnerProfileScreen extends StatefulWidget {
   final String id;
+  PetOwnerProfileScreen({super.key, required this.id});
+
+  @override
+  _PetOwnerProfileScreenState createState() => _PetOwnerProfileScreenState();
+}
+
+class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
   final PetOwnerProfileController controller =
       Get.put(PetOwnerProfileController());
   final UserProfileController profileController =
       Get.put(UserProfileController());
-  PetOwnerProfileScreen({super.key, required this.id});
+
+  @override
+  void initState() {
+    super.initState();
+    profileController.fetchUserData(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +89,9 @@ class PetOwnerProfileScreen extends StatelessWidget {
                     profileController: profileController),
                 const SizedBox(height: 20),
                 profileController.user.value.userType == "user"
-                    ? SizedBox.shrink()
-                    : CommentsSection(id: '$id'),
+                    ? ListPet(pets: profileController.user.value.pets ?? [])
+                    : CommentsSection(id: '${widget.id}'),
+                const SizedBox(height: 20),
               ],
             ),
           ),

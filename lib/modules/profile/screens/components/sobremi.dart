@@ -25,7 +25,8 @@ class Sobremi extends StatelessWidget {
       return Column(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width - 100,
+            padding: Styles.paddingAll,
+            width: MediaQuery.of(context).size.width,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Align(
@@ -44,8 +45,9 @@ class Sobremi extends StatelessWidget {
           profileController.user.value.userType != 'user'
               ? Column(
                   children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 100,
+                    Container(
+                      padding: Styles.paddingAll,
+                      width: MediaQuery.of(context).size.width,
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Align(
@@ -58,8 +60,9 @@ class Sobremi extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 100,
+                    Container(
+                      padding: Styles.paddingAll,
+                      width: MediaQuery.of(context).size.width,
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Align(
@@ -72,8 +75,9 @@ class Sobremi extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 100,
+                    Container(
+                      padding: Styles.paddingAll,
+                      width: MediaQuery.of(context).size.width,
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: Align(
@@ -88,8 +92,9 @@ class Sobremi extends StatelessWidget {
                     ),
                   ],
                 )
-              : SizedBox(
-                  width: MediaQuery.of(context).size.width - 100,
+              : Container(
+                  padding: Styles.paddingAll,
+                  width: MediaQuery.of(context).size.width,
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: Align(

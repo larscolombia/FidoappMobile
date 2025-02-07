@@ -49,6 +49,7 @@ class UserData {
   String? fullName;
   String? profileImage;
   Profile? profile;
+  List<Pets>? pets;
 
   UserData({
     this.id,
@@ -80,6 +81,7 @@ class UserData {
     this.fullName,
     this.profileImage,
     this.profile,
+    this.pets,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -112,6 +114,9 @@ class UserData {
       profileImage: json['profile_image'],
       profile:
           json['profile'] != null ? Profile.fromJson(json['profile']) : null,
+      pets: json['pets'] != null
+          ? List<Pets>.from(json['pets'].map((x) => Pets.fromJson(x)))
+          : null,
     );
   }
 
@@ -146,6 +151,9 @@ class UserData {
       'full_name': fullName,
       'profile_image': profileImage,
       'profile': profile?.toJson(),
+      'pets': pets != null
+          ? List<dynamic>.from(pets!.map((x) => x.toJson()))
+          : null,
     };
   }
 }
@@ -221,6 +229,114 @@ class Profile {
       'validation_number': validationNumber,
       'profecional_title': profecionalTitle,
       'tags': tags,
+    };
+  }
+}
+
+class Pets {
+  int? id;
+  String? name;
+  String? slug;
+  String? passport;
+  int? pettypeId;
+  int? breedId;
+  String? size;
+  String? petFur;
+  String? dateOfBirth;
+  String? age;
+  String? petImage;
+  String? gender;
+  int? weight;
+  int? height;
+  String? weightUnit;
+  String? heightUnit;
+  int? userId;
+  String? additionalInfo;
+  int? status;
+  int? lost;
+  String? lostDate;
+  String? qrCode;
+  String? pet_public_profile;
+
+  Pets({
+    this.id,
+    this.name,
+    this.slug,
+    this.passport,
+    this.pettypeId,
+    this.breedId,
+    this.size,
+    this.petFur,
+    this.dateOfBirth,
+    this.age,
+    this.petImage,
+    this.gender,
+    this.weight,
+    this.height,
+    this.weightUnit,
+    this.heightUnit,
+    this.userId,
+    this.additionalInfo,
+    this.status,
+    this.lost,
+    this.lostDate,
+    this.qrCode,
+    this.pet_public_profile,
+  });
+
+  factory Pets.fromJson(Map<String, dynamic> json) {
+    return Pets(
+      id: json['id'],
+      name: json['name'],
+      slug: json['slug'],
+      passport: json['passport'],
+      pettypeId: json['pettype_id'],
+      breedId: json['breed_id'],
+      size: json['size'],
+      petFur: json['pet_fur'],
+      dateOfBirth: json['date_of_birth'],
+      age: json['age'],
+      petImage: json['pet_image'],
+      gender: json['gender'],
+      weight: json['weight'],
+      height: json['height'],
+      weightUnit: json['weight_unit'],
+      heightUnit: json['height_unit'],
+      userId: json['user_id'],
+      additionalInfo: json['additional_info'],
+      status: json['status'],
+      lost: json['lost'],
+      lostDate: json['lost_date'],
+      qrCode: json['qr_code'],
+      pet_public_profile: json['pet_public_profile'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'slug': slug,
+      'passport': passport,
+      'pettype_id': pettypeId,
+      'breed_id': breedId,
+      'size': size,
+      'pet_fur': petFur,
+      'date_of_birth': dateOfBirth,
+      'age': age,
+      'pet_image': petImage,
+      'gender': gender,
+      'weight': weight,
+      'height': height,
+      'weight_unit': weightUnit,
+      'height_unit': heightUnit,
+      'user_id': userId,
+      'additional_info': additionalInfo,
+      'status': status,
+      'lost': lost,
+      'lost_date': lostDate,
+      'qr_code': qrCode,
+      'pet_public_profile': pet_public_profile,
     };
   }
 }

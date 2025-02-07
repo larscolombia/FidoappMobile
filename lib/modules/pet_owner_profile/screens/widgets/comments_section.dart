@@ -70,8 +70,9 @@ class _CommentsSectionState extends State<CommentsSection> {
             ),
           const SizedBox(height: 20),
           Center(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width - 100,
+            child: Container(
+              padding: Styles.paddingAll,
+              width: MediaQuery.of(context).size.width,
               child: const Text(
                 'Comentarios',
                 style: TextStyle(
@@ -86,14 +87,16 @@ class _CommentsSectionState extends State<CommentsSection> {
           const SizedBox(height: 20),
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width - 100,
+              padding: Styles.paddingAll,
+              width: MediaQuery.of(context).size.width,
               child:
                   const Divider(color: Recursos.ColorBorderSuave, thickness: 1),
             ),
           ),
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width - 100,
+              padding: Styles.paddingAll,
+              width: MediaQuery.of(context).size.width,
               child: Obx(() {
                 if (comentariosController.isLoading.value) {
                   return const Center(
@@ -103,8 +106,9 @@ class _CommentsSectionState extends State<CommentsSection> {
                 return SingleChildScrollView(
                   child: Column(
                     children: comentariosController.comments.map((value) {
-                      return SizedBox(
-                        width: MediaQuery.of(context).size.width - 100,
+                      return Container(
+                        padding: Styles.paddingAll,
+                        width: MediaQuery.of(context).size.width,
                         child: AvatarComentarios(
                           avatar: value.userAvatar ??
                               "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg",
