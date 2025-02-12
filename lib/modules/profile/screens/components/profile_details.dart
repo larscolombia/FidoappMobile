@@ -42,25 +42,27 @@ class ProfileDetails extends StatelessWidget {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.location_on,
-                      color: Styles.primaryColor,
-                      size: 20,
-                    ),
-                    Text(
-                      profileController.user.value.address ?? "",
-                      style: const TextStyle(
+                if (profileController.user.value.address != null &&
+                    profileController.user.value.address!.isNotEmpty)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.location_on,
                         color: Styles.primaryColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Lato',
+                        size: 20,
                       ),
-                    ),
-                  ],
-                )
+                      Text(
+                        profileController.user.value.address!,
+                        style: const TextStyle(
+                          color: Styles.primaryColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Lato',
+                        ),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),

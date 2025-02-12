@@ -56,14 +56,31 @@ class CourseController extends GetxController {
         },
       );
       print('Solicitud a: ${Uri.parse(url)}');
-      print('Respuesta HTTP: $response');
+      print('Respuesta HTTP: ${response.statusCode}');
+      print('Cuerpo de la respuesta: ${response.body}');
 
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
+        print('Datos JSON decodificados: $jsonData');
+
         var coursesData = jsonData['data']['courses'] as List;
-        var coursesList =
-            coursesData.map((course) => Course.fromJson(course)).toList();
-        courses.assignAll(coursesList);
+        print('Datos de los cursos: $coursesData');
+
+        var coursesList = coursesData
+            .map((course) {
+              try {
+                return Course.fromJson(course);
+              } catch (e) {
+                print('Error al convertir el curso: $e');
+                print('Datos del curso problemático: $course');
+                return null;
+              }
+            })
+            .where((course) => course != null)
+            .toList();
+        print('Lista de cursos: $coursesList');
+
+        courses.assignAll(coursesList.cast<Course>());
       } else {
         Get.snackbar('Error', 'No se pudieron recuperar los cursos');
       }

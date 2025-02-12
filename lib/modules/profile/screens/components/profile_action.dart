@@ -5,6 +5,7 @@ import 'package:pawlly/modules/components/boton_compartir.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileActions extends StatelessWidget {
   final PetOwnerProfileController controller;
@@ -38,8 +39,21 @@ class ProfileActions extends StatelessWidget {
                     child: BotonCompartir(
                       modo: 'compartir',
                       title: 'Compartir perfil',
-                      onCompartir: () {
-                        // Lógica para compartir perfil
+                      onCompartir: () async {
+                        final String? publicProfileUrl =
+                            profileController.user.value.publicProfile;
+                        if (publicProfileUrl != null &&
+                            publicProfileUrl.isNotEmpty) {
+                          // Lógica para redirigir a la URL
+                          if (await canLaunch(publicProfileUrl)) {
+                            await launch(publicProfileUrl);
+                          } else {
+                            print('No se pudo lanzar la URL $publicProfileUrl');
+                          }
+                        } else {
+                          // Manejar el caso en que no haya URL disponible
+                          print('No hay URL de perfil público disponible');
+                        }
                       },
                     ),
                   ),

@@ -52,58 +52,63 @@ class PetData {
   String? petFur;
   String? description;
   String? chip;
-  PetData(
-      {required this.id,
-      required this.name,
-      required this.slug,
-      required this.pettype,
-      required this.breed,
-      required this.breedId,
-      this.size,
-      this.petImage,
-      this.dateOfBirth,
-      required this.age,
-      required this.gender,
-      required this.weight,
-      required this.weightUnit,
-      required this.height,
-      required this.heightUnit,
-      required this.userId,
-      required this.status,
-      this.description,
-      this.qrCode,
-      this.createdBy,
-      this.updatedBy,
-      this.deletedBy,
-      this.petFur,
-      this.chip});
+
+  PetData({
+    required this.id,
+    required this.name,
+    required this.slug,
+    required this.pettype,
+    required this.breed,
+    required this.breedId,
+    this.size,
+    this.petImage,
+    this.dateOfBirth,
+    required this.age,
+    required this.gender,
+    required this.weight,
+    required this.weightUnit,
+    required this.height,
+    required this.heightUnit,
+    required this.userId,
+    required this.status,
+    this.description,
+    this.qrCode,
+    this.createdBy,
+    this.updatedBy,
+    this.deletedBy,
+    this.petFur,
+    this.chip,
+  });
 
   factory PetData.fromJson(Map<String, dynamic> json) {
     return PetData(
-        id: json['id'] ?? -1,
-        name: json['name'] ?? "",
-        slug: json['slug'] ?? "",
-        pettype: json['pettype'] ?? "",
-        breed: json['breed'] ?? "no se pudo encontrar",
-        breedId: json['breed_id'] ?? -1,
-        size: json['size'],
-        petImage: json['pet_image'],
-        dateOfBirth: json['date_of_birth'],
-        age: json['age'] ?? "",
-        gender: json['gender'] ?? "",
-        weight: json['weight'] ?? 0,
-        weightUnit: json['weight_unit'] ?? "",
-        height: json['height'].toString() ?? "0",
-        heightUnit: json['height_unit'] ?? "",
-        userId: json['user_id'] ?? -1,
-        status: json['status'] ?? -1,
-        qrCode: json['qr_code'],
-        createdBy: json['created_by'],
-        updatedBy: json['updated_by'],
-        deletedBy: json['deleted_by'],
-        description: json['description'],
-        petFur: json['pet_fur'],
-        chip: json['chip']);
+      id: json['id'] ?? -1,
+      name: json['name'] ?? "",
+      slug: json['slug'] ?? "",
+      pettype: json['pettype'] ?? "",
+      breed: json['breed'] ?? "no se pudo encontrar",
+      breedId: json['breed_id'] ?? -1,
+      size: json['size'],
+      petImage: json['pet_image'],
+      dateOfBirth: json['date_of_birth'],
+      age: json['age'] ?? "",
+      gender: json['gender'] ?? "",
+      weight: json['weight'] is String
+          ? num.tryParse(json['weight']) ?? 0
+          : json['weight'] ?? 0,
+      weightUnit: json['weight_unit'] ?? "",
+      height: json['height']?.toString() ?? "0",
+      heightUnit: json['height_unit'] ?? "",
+      userId: json['user_id'] ?? -1,
+      status: json['status'] ?? -1,
+      qrCode: json['qr_code'],
+      createdBy: json['created_by'],
+      updatedBy: json['updated_by'],
+      deletedBy: json['deleted_by'],
+      description: json['description'],
+      petFur: json['pet_fur'],
+      chip: json['chip'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -133,57 +138,3 @@ class PetData {
     };
   }
 }
-
-
-
-/*
-
-class PetData {
-  final String name;
-  final String slug;
-  final String userId;
-  final int breedId;
-  final int petTypeId;
-  final int updatedBy;
-  final int createdBy;
-  final String createdAt;
-  final String updatedAt;
-  final int id;
-  final String petImage;
-  final List<dynamic> media;
-
-  PetData({
-    required this.name,
-    required this.slug,
-    required this.userId,
-    required this.breedId,
-    required this.petTypeId,
-    required this.updatedBy,
-    required this.createdBy,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.id,
-    required this.petImage,
-    required this.media,
-  });
-
-  factory PetData.fromJson(Map<String, dynamic> json) {
-    return PetData(
-      name: json['name'],
-      slug: json['slug'],
-      userId: json['user_id'],
-      breedId: json['breed_id'],
-      petTypeId: json['pettype_id'],
-      updatedBy: json['updated_by'],
-      createdBy: json['created_by'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      id: json['id'],
-      petImage: json['pet_image'],
-      media: json['media'] ?? [],
-    );
-  }
-}
-
-
-*/

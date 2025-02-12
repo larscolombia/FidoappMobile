@@ -84,10 +84,14 @@ class CalendarController extends GetxController {
 
   List<CalendarModel> getEventsForDay(DateTime day) {
     return allCalendars.where((event) {
-      // Convertir la fecha del evento (string) a DateTime
-      final eventDate =
-          DateTime.parse(event.date.split('-').reversed.join('-'));
-      return isSameDay(eventDate, day); // Comparar con el día actual
+      try {
+        // Convertir la fecha del evento (string) a DateTime
+        final eventDate = DateFormat('dd-MM-yyyy HH:mm:ss').parse(event.date);
+        return isSameDay(eventDate, day); // Comparar con el día actual
+      } catch (e) {
+        print('Error al analizar la fecha: $e');
+        return false;
+      }
     }).toList();
   }
 
@@ -239,7 +243,7 @@ class CalendarController extends GetxController {
   }
 
   //editar evento
-  Future<void> updateEvento(event) async {
+  Future<void> updateEvento(CalendarModel event) async {
     if (isLoading.value) return; // Evita llamadas simultáneas
 
     isLoading.value = true;
@@ -258,7 +262,25 @@ class CalendarController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 204) {
         final data = json.decode(response.body);
         print('data calendario actualizado: $data');
+
         // Actualizar el evento en la lista local
+        int index = allCalendars.indexWhere((e) => e.id == event.id);
+        if (index != -1) {
+          allCalendars[index] = CalendarModel.fromJson(data['data']['event']);
+          allCalendars.refresh();
+        }
+
+        // Actualizar la lista filtrada si es necesario
+        int filteredIndex =
+            filteredCalendars.indexWhere((e) => e.id == event.id);
+        if (filteredIndex != -1) {
+          filteredCalendars[filteredIndex] =
+              CalendarModel.fromJson(data['data']['event']);
+          filteredCalendars.refresh();
+        }
+
+        // Desactivar el modo de edición
+        isEdit.value = false;
 
         Get.snackbar("Éxito", "Evento actualizado correctamente",
             backgroundColor: Colors.green);

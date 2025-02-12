@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class BlogPost {
   final int id;
   final String description;
@@ -31,6 +33,7 @@ class BlogPost {
 
   // Método para crear una instancia de BlogPost desde un JSON
   factory BlogPost.fromJson(Map<String, dynamic> json) {
+    final dateFormat = DateFormat('dd-MM-yyyy');
     return BlogPost(
       id: json['id'] ?? 0, // Asegurar que no sea nulo
       description: json['description'] ?? '',
@@ -42,10 +45,10 @@ class BlogPost {
       updatedBy: json['updated_by'] ?? 0, // Asegurar que no sea nulo
       deletedBy: json['deleted_by'], // Asegurar que permita nulos
       url_video: json['url_video'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      createdAt: dateFormat.parse(json['created_at']),
+      updatedAt: dateFormat.parse(json['updated_at']),
       deletedAt: json['deleted_at'] != null
-          ? DateTime.parse(json['deleted_at'])
+          ? dateFormat.parse(json['deleted_at'])
           : null, // Permitir nulos
     );
   }

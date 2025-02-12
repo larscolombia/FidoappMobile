@@ -29,15 +29,22 @@ class BlogController extends GetxController {
         },
       );
 
+      print('Solicitud a: ${Uri.parse(url)}');
+      print('Respuesta HTTP: ${response.statusCode}');
+      print('Cuerpo de la respuesta: ${response.body}');
+
       var jsonResponse = json.decode(response.body);
+      print('Datos JSON decodificados: $jsonResponse');
 
       if (response.statusCode == 200) {
         if (jsonResponse['status']) {
           List<dynamic> data = jsonResponse['data'];
+          print('Datos de los blogs: $data');
 
           blogPosts.value =
               data.map((post) => BlogPost.fromJson(post)).toList();
           filteredBlogPosts.value = blogPosts;
+          print('Lista de blogs asignada: ${blogPosts.value}');
         } else {
           // Manejar el caso en que el estado no sea verdadero
           print(

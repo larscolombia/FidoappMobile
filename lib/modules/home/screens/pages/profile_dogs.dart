@@ -10,19 +10,24 @@ import 'package:pawlly/styles/styles.dart';
 
 class ProfilesDogs extends StatelessWidget {
   ProfilesDogs(
-      {super.key, this.isSelect = false}); // Añadir el parámetro opcional
+      {super.key,
+      this.isSelect = false,
+      this.isTapEnabled = true}); // Añadir el parámetro opcional
 
   // Instancia del controlador para manejar el estado
   final HomeController controller = Get.put(HomeController());
   final bool isSelect; // Declarar el campo
+  final bool isTapEnabled; // Declarar el campo opcional
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     return PerfilMascotas(
-        controller: controller,
-        width: width,
-        isSelect: isSelect); // Pasar el campo
+      controller: controller,
+      width: width,
+      isSelect: isSelect,
+      isTapEnabled: isTapEnabled, // Pasar el campo
+    );
   }
 }
 
@@ -33,26 +38,30 @@ class PerfilMascotas extends StatelessWidget {
     required this.width,
     this.formulario = false,
     this.isSelect = false, // Campo opcional con valor predeterminado
+    this.isTapEnabled = true, // Campo opcional con valor predeterminado
   });
 
   final HomeController controller;
   final double width;
   final bool formulario;
   final bool isSelect; // Campo opcional
+  final bool isTapEnabled; // Campo opcional
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-          builder: (BuildContext context) {
-            return ProfileModal();
-          },
-        );
-      },
+      onTap: isTapEnabled
+          ? () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (BuildContext context) {
+                  return ProfileModal();
+                },
+              );
+            }
+          : null, // Deshabilitar onTap si isTapEnabled es false
       child: Container(
         height: 72,
         padding: const EdgeInsets.symmetric(horizontal: 10),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
@@ -30,7 +29,9 @@ class EventoDestalles extends StatelessWidget {
     final event = Get.arguments as CalendarModel?;
     homeController.updateProfile(petData);
 
-    userController.filterUsers('${eventos.owners.first.email}');
+    if (eventos.owners.isNotEmpty) {
+      userController.filterUsers(eventos.owners.first.email);
+    }
 
     print('evento en la pantalla ${json.encode(event)}');
     return Scaffold(
@@ -70,49 +71,48 @@ class EventoDestalles extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: BarraBack(
-                              titulo: 'Sobre este Evento',
-                              callback: () {
-                                Get.back();
-                              },
-                            ),
+                  Container(
+                    padding: Styles.paddingAll,
+                    width: MediaQuery.of(context).size.width,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: BarraBack(
+                            titulo: 'Sobre este Evento',
+                            callback: () {
+                              Get.back();
+                            },
                           ),
-                          Obx(() {
-                            return Editar(
-                              coloredit: !calendarController.isEdit.value
-                                  ? const Color.fromARGB(255, 107, 106, 106)
-                                  : Styles.colorContainer,
-                              callback: () {
-                                userController.filterUsers(
-                                    '${eventos.owners.first.email}');
-
-                                calendarController.setEdit();
-                              },
-                            );
-                          })
-                        ],
-                      ),
+                        ),
+                        Obx(() {
+                          return Editar(
+                            coloredit: !calendarController.isEdit.value
+                                ? const Color.fromARGB(255, 107, 106, 106)
+                                : Styles.colorContainer,
+                            callback: () {
+                              if (eventos.owners.isNotEmpty) {
+                                userController
+                                    .filterUsers(eventos.owners.first.email);
+                              }
+                              calendarController.setEdit();
+                            },
+                          );
+                        })
+                      ],
                     ),
                   ),
                   const SizedBox(height: 40),
                   Obx(() {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width - 100,
+                    return Container(
+                      padding: Styles.paddingAll,
+                      width: MediaQuery.of(context).size.width,
                       child: Column(
                         children: [
                           InputText(
                             placeholder: '',
                             onChanged: (value) => event?.name = value,
-                            initialValue: event?.name ?? "w",
+                            initialValue: event?.name ?? "",
                             label: 'Nombre del Evento',
                             readOnly: !calendarController.isEdit.value,
                           ),
@@ -133,7 +133,7 @@ class EventoDestalles extends StatelessWidget {
                             ),
                             placeholder: '',
                             isDateField: true,
-                            onChanged: (value) => event?.startDate = value,
+                            onChanged: (value) => event?.date = value,
                             initialValue: event?.date ?? "",
                             label: 'Fecha del evento',
                             readOnly: !calendarController.isEdit.value,
@@ -161,12 +161,12 @@ class EventoDestalles extends StatelessWidget {
                             isDateField: true,
                             onChanged: (value) => event?.endDate = value,
                             initialValue: event?.endDate ?? "",
-                            label: 'Fecha del evento',
+                            label: 'Fecha final del evento',
                             readOnly: !calendarController.isEdit.value,
                           ),
                           const SizedBox(height: 20),
                           SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
+                            width: MediaQuery.of(context).size.width,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -174,7 +174,9 @@ class EventoDestalles extends StatelessWidget {
                                   'Mascota selecionada:',
                                   style: Styles.AvatarComentario,
                                 ),
-                                ProfilesDogs(),
+                                ProfilesDogs(
+                                  isTapEnabled: false,
+                                ),
                               ],
                             ),
                           ),
@@ -228,16 +230,30 @@ class EventoDestalles extends StatelessWidget {
                           const SizedBox(height: 30),
                           if (calendarController.isEdit.value)
                             SizedBox(
-                              width: MediaQuery.of(context).size.width - 80,
+                              width: MediaQuery.of(context).size.width,
                               height: 50,
-                              child: ButtonDefaultWidget(
-                                title: calendarController.isLoading.value
-                                    ? 'cargando ... '
-                                    : 'editar',
-                                callback: () {
-                                  print('evento editr  ${json.encode(event)}');
-                                  calendarController.updateEvento(event);
-                                },
+                              child: Stack(
+                                children: [
+                                  ButtonDefaultWidget(
+                                    title: 'editar',
+                                    callback: calendarController.isLoading.value
+                                        ? null // Deshabilitar el botón cuando está cargando
+                                        : () {
+                                            print(
+                                                'evento editr  ${json.encode(event)}');
+                                            calendarController
+                                                .updateEvento(event!);
+                                          },
+                                  ),
+                                  if (calendarController.isLoading.value)
+                                    Positioned.fill(
+                                      child: Container(
+                                        child: const Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
                             ),
                           const SizedBox(height: 20),
