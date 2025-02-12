@@ -48,7 +48,6 @@ class UserData {
   String? longitude;
   String? fullName;
   String? profileImage;
-  String? publicProfile; // Nuevo campo agregado
   Profile? profile;
   List<Pets>? pets;
 
@@ -81,7 +80,6 @@ class UserData {
     this.longitude,
     this.fullName,
     this.profileImage,
-    this.publicProfile, // Nuevo campo agregado
     this.profile,
     this.pets,
   });
@@ -114,7 +112,6 @@ class UserData {
       longitude: json['longitude'],
       fullName: json['full_name'],
       profileImage: json['profile_image'],
-      publicProfile: json['public_profile'], // Nuevo campo agregado
       profile:
           json['profile'] != null ? Profile.fromJson(json['profile']) : null,
       pets: json['pets'] != null
@@ -153,7 +150,6 @@ class UserData {
       'longitude': longitude,
       'full_name': fullName,
       'profile_image': profileImage,
-      'public_profile': publicProfile, // Nuevo campo agregado
       'profile': profile?.toJson(),
       'pets': pets != null
           ? List<dynamic>.from(pets!.map((x) => x.toJson()))

@@ -188,10 +188,8 @@ class ProfileController extends GetxController {
             description: '',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
-              if (profileController.user.value.profile == null) {
-                profileController
-                    .fetchUserData('${AuthServiceApis.dataCurrentUser.id}');
-              }
+              profileController
+                  .fetchUserData("${AuthServiceApis.dataCurrentUser.id}");
               currentUser.profileImage = data['data']['profile_image'];
               //userGenCont.value.text = data['data']['gender';
               //   currentUser.gender = data['data']['gender'].toLowerCase();

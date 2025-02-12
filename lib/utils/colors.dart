@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-const primaryColor = Color.fromARGB(255, 255, 234, 231);
+const primaryColor = Color(0xFF9D67EF);
 const secondaryColor = Color(0xFFFD866E);
 const lightPrimaryColor = Color(0xFFF6F0FF);
 const lightSecondaryColor = Color.fromARGB(255, 255, 234, 231);

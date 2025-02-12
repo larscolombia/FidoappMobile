@@ -23,11 +23,9 @@ class UserCard extends StatelessWidget {
       onTap: () {
         var users = user.profile;
 
-        if (profileController.user.value.profile == null) {
-          profileController
-              .fetchUserData('${AuthServiceApis.dataCurrentUser.id}');
-        }
-        // print('perfil usuario ${jsonEncode(profileController.user.value)}');
+        profileController
+            .fetchUserData('${user.id}'); // Obtener los datos del usuario
+        print('perfil usuario ${jsonEncode(profileController.user.value)}');
         if (users?.id != null) {
           Get.to(() => PetOwnerProfileScreen(id: '${user.id}'));
         } else {}
