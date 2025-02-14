@@ -123,5 +123,9 @@ flutter:
     
 flutter_icons:
   android: true
-  ios: true
+  
+  image_path: "assets/icon/fidoapp.png"
+
+flutter_launcher_icons:
+  android: true
   image_path: "assets/icon/fidoapp.png"

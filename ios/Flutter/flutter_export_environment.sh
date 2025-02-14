@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=D:\flutterSDK\flutter-3.22.1"
-export "FLUTTER_APPLICATION_PATH=C:\Users\Admin\Documents\lars\fido_app_customer"
+export "FLUTTER_ROOT=C:\Users\user\fvm\versions\3.22.1"
+export "FLUTTER_APPLICATION_PATH=C:\Users\user\Desktop\Miguel\balance-dog-customer-app"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
