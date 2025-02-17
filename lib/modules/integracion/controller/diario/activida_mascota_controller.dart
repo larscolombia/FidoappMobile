@@ -355,7 +355,7 @@ class PetActivityController extends GetxController {
     print('Filtrado: ${jsonEncode(filteredActivities.value)}');
   }
 
-  //actulizar historial
+  //Actualizar historial
   void filterPetActivities(String? reportName) {
     List<PetActivity> filtered =
         List<PetActivity>.from(activities); // Convertir a List<PetActivity>

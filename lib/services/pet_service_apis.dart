@@ -393,7 +393,7 @@ class PetService {
     });
   }
 
-  //actulizar mascota
+  //Actualizar mascota
 
   // Método para actualizar la información de una mascota
 }

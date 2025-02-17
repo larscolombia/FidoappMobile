@@ -48,6 +48,7 @@ class UserData {
   String? longitude;
   String? fullName;
   String? profileImage;
+  String? publicProfile;
   Profile? profile;
   List<Pets>? pets;
 
@@ -80,6 +81,7 @@ class UserData {
     this.longitude,
     this.fullName,
     this.profileImage,
+    this.publicProfile,
     this.profile,
     this.pets,
   });
@@ -112,6 +114,7 @@ class UserData {
       longitude: json['longitude'],
       fullName: json['full_name'],
       profileImage: json['profile_image'],
+      publicProfile: json['public_profile'],
       profile:
           json['profile'] != null ? Profile.fromJson(json['profile']) : null,
       pets: json['pets'] != null
@@ -150,6 +153,7 @@ class UserData {
       'longitude': longitude,
       'full_name': fullName,
       'profile_image': profileImage,
+      'public_profile': publicProfile,
       'profile': profile?.toJson(),
       'pets': pets != null
           ? List<dynamic>.from(pets!.map((x) => x.toJson()))

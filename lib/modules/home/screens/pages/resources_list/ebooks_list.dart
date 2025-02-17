@@ -108,7 +108,7 @@ class BooksComponents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      height: 240, // Ajusta la altura del contenedor
+      height: 250, // Ajusta la altura del contenedor
       width: 125,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -123,7 +123,7 @@ class BooksComponents extends StatelessWidget {
         children: [
           Center(
             child: Container(
-              height: 124,
+              height: 114,
               width: 80,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),

@@ -97,13 +97,13 @@ class _LibroDetallesState extends State<LibroDetalles> {
                             );
                           }
                           return FadeInImage.assetNetwork(
-                            placeholder: 'assets/images/loading.gif',
+                            placeholder: 'assets/images/default_book.png',
                             image: econtroller.selectedEBook.value.coverImage ??
                                 'https://via.placeholder.com/200x300',
                             fit: BoxFit.cover,
                             imageErrorBuilder: (context, error, stackTrace) {
                               return Image.asset(
-                                'assets/images/404.jpg',
+                                'assets/images/default_book.png',
                                 fit: BoxFit.cover,
                               );
                             },

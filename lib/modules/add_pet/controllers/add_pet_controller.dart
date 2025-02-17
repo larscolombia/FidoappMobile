@@ -132,7 +132,7 @@ class AddPetController extends GetxController {
       }
     }
   }
-  //actulizar mascota
+  //Actualizar mascota
 
   @override
   void onClose() {

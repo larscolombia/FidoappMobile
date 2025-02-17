@@ -5,6 +5,7 @@ import 'package:pawlly/modules/components/boton_compartir.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileActions extends StatelessWidget {
   final PetOwnerProfileController controller;
@@ -19,11 +20,6 @@ class ProfileActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (profileController.isLoading.value) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
       return Container(
         padding: Styles.paddingAll,
         width: MediaQuery.of(context).size.width,
@@ -38,8 +34,21 @@ class ProfileActions extends StatelessWidget {
                     child: BotonCompartir(
                       modo: 'compartir',
                       title: 'Compartir perfil',
-                      onCompartir: () {
-                        // Lógica para compartir perfil
+                      onCompartir: () async {
+                        final String? publicProfileUrl =
+                            profileController.user.value.publicProfile;
+                        if (publicProfileUrl != null &&
+                            publicProfileUrl.isNotEmpty) {
+                          // Lógica para redirigir a la URL
+                          if (await canLaunch(publicProfileUrl)) {
+                            await launch(publicProfileUrl);
+                          } else {
+                            print('No se pudo lanzar la URL $publicProfileUrl');
+                          }
+                        } else {
+                          // Manejar el caso en que no haya URL disponible
+                          print('No hay URL de perfil público disponible');
+                        }
                       },
                     ),
                   ),
@@ -47,9 +56,9 @@ class ProfileActions extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            if (profileController.user.value.userType != 'user')
+            if (profileController.user.value.userType != 'user' &&
+                (profileController.user.value.profile?.expert ?? "").isNotEmpty)
               Container(
-                padding: Styles.paddingAll,
                 width: MediaQuery.of(context).size.width,
                 child: InputText(
                   placeholder: "",
@@ -62,12 +71,13 @@ class ProfileActions extends StatelessWidget {
                   onChanged: (value) {
                     controller.specializationArea.value = value;
                   },
+                  readOnly: true, // Hacer que el campo sea solo de lectura
                 ),
               ),
             const SizedBox(height: 20),
-            if (profileController.user.value.userType != 'user')
+            if (profileController.user.value.userType != 'user' &&
+                (profileController.user.value.profile?.tags ?? []).isNotEmpty)
               Container(
-                padding: Styles.paddingAll,
                 width: MediaQuery.of(context).size.width,
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -84,34 +94,34 @@ class ProfileActions extends StatelessWidget {
                   ),
                 ),
               ),
-            Container(
-              padding: Styles.paddingAll,
-              width: MediaQuery.of(context).size.width,
-              child: Wrap(
-                spacing: 8.0,
-                runSpacing: 8.0,
-                children: (profileController.user.value.profile?.tags ?? [])
-                    .map((area) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 26.0),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFEF7E5),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      area,
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFFFC9214),
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'lato',
+            if ((profileController.user.value.profile?.tags ?? []).isNotEmpty)
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: (profileController.user.value.profile?.tags ?? [])
+                      .map((area) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 26.0),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFEF7E5),
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    ),
-                  );
-                }).toList(),
+                      child: Text(
+                        area,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFFFC9214),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'lato',
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
           ],
         ),
       );

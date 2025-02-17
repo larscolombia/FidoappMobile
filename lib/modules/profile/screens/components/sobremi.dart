@@ -17,98 +17,56 @@ class Sobremi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      if (profileController.isLoading.value) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
       return Column(
         children: [
-          Container(
-            padding: Styles.paddingAll,
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Sobre ${profileController.user.value.fullName}',
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'lato',
-                  ),
-                ),
-              ),
-            ),
-          ),
-          profileController.user.value.userType != 'user'
-              ? Column(
-                  children: [
-                    Container(
-                      padding: Styles.paddingAll,
-                      width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            profileController.user.value.address ?? "",
-                            style: Styles.secondTextTitle,
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: Styles.paddingAll,
-                      width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            profileController.user.value.email ?? "",
-                            style: Styles.secondTextTitle,
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: Styles.paddingAll,
-                      width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            profileController.user.value.gender ?? "",
-                            style: Styles.secondTextTitle,
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : Container(
-                  padding: Styles.paddingAll,
-                  width: MediaQuery.of(context).size.width,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        profileController.user.value.profile?.aboutSelf ?? "",
-                        style: Styles.secondTextTitle,
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                  ),
-                ),
+          _buildSectionTitle(
+              context, 'Sobre ${profileController.user.value.fullName}'),
+          _buildInfoRow(context, profileController.user.value.address ?? ""),
+          _buildInfoRow(context, profileController.user.value.email ?? ""),
+          _buildInfoRow(context, profileController.user.value.gender ?? ""),
+          _buildInfoRow(
+              context, profileController.user.value.profile?.aboutSelf ?? ""),
         ],
       );
     });
+  }
+
+  Widget _buildSectionTitle(BuildContext context, String title) {
+    return Container(
+      padding: Styles.paddingAll,
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            title,
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'lato',
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(BuildContext context, String info) {
+    return Container(
+      padding: Styles.paddingAll,
+      width: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            info,
+            style: Styles.secondTextTitle,
+            textAlign: TextAlign.left,
+          ),
+        ),
+      ),
+    );
   }
 }

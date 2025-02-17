@@ -151,7 +151,7 @@ class NotificationController extends GetxController {
     }
   }
 
-  //actulizar notificaciones
+  //Actualizar notificaciones
 
   Future<void> updateNotification(int? notificationId) async {
     final url =

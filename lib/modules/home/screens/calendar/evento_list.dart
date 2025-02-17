@@ -30,227 +30,247 @@ class EventoDestalles extends StatelessWidget {
     final event = Get.arguments as CalendarModel?;
     homeController.updateProfile(petData);
 
-    userController.filterUsers('${eventos.owners.first.email}');
+    if (eventos.owners.isNotEmpty) {
+      userController.filterUsers(eventos.owners.first.email);
+    }
 
     print('evento en la pantalla ${json.encode(event)}');
     return Scaffold(
       backgroundColor: Colors.white,
-      body: CustomScrollView(slivers: [
-        SliverList(
-          delegate: SliverChildListDelegate([
-            Container(
-              height: 180,
-              decoration: const BoxDecoration(
-                color: Styles.colorContainer,
-              ),
-              child: Stack(
-                children: [
-                  const BorderRedondiado(top: 160),
-                  Positioned(
-                    top: 100,
-                    left: 0,
-                    right: 0,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 100,
-                      child: const Text(
-                        textAlign: TextAlign.center,
-                        'Completa la Información',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: BarraBack(
-                              titulo: 'Sobre este Evento',
-                              callback: () {
-                                Get.back();
-                              },
-                            ),
-                          ),
-                          Obx(() {
-                            return Editar(
-                              coloredit: !calendarController.isEdit.value
-                                  ? const Color.fromARGB(255, 107, 106, 106)
-                                  : Styles.colorContainer,
-                              callback: () {
-                                userController.filterUsers(
-                                    '${eventos.owners.first.email}');
-
-                                calendarController.setEdit();
-                              },
-                            );
-                          })
-                        ],
-                      ),
-                    ),
+      body: Stack(
+        children: [
+          CustomScrollView(slivers: [
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Container(
+                  height: 180,
+                  decoration: const BoxDecoration(
+                    color: Styles.colorContainer,
                   ),
-                  const SizedBox(height: 40),
-                  Obx(() {
-                    return SizedBox(
-                      width: MediaQuery.of(context).size.width - 100,
-                      child: Column(
-                        children: [
-                          InputText(
-                            placeholder: '',
-                            onChanged: (value) => event?.name = value,
-                            initialValue: event?.name ?? "w",
-                            label: 'Nombre del Evento',
-                            readOnly: !calendarController.isEdit.value,
+                  child: Stack(
+                    children: [
+                      const BorderRedondiado(top: 160),
+                      Positioned(
+                        top: 100,
+                        left: 0,
+                        right: 0,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: 100,
+                          child: const Text(
+                            textAlign: TextAlign.center,
+                            'Completa la Información',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 20),
-                          InputText(
-                            isTextArea: true,
-                            placeholder: '',
-                            onChanged: (value) => event?.description = value,
-                            initialValue: event?.description ?? "",
-                            label: 'Descripción del evento',
-                            readOnly: !calendarController.isEdit.value,
-                          ),
-                          const SizedBox(height: 20),
-                          InputText(
-                            prefiIcon: const Icon(
-                              Icons.calendar_today,
-                              color: Styles.iconColor,
-                            ),
-                            placeholder: '',
-                            isDateField: true,
-                            onChanged: (value) => event?.startDate = value,
-                            initialValue: event?.date ?? "",
-                            label: 'Fecha del evento',
-                            readOnly: !calendarController.isEdit.value,
-                          ),
-                          const SizedBox(height: 20),
-                          InputText(
-                            prefiIcon: const Icon(
-                              Icons.timer,
-                              color: Styles.iconColor,
-                            ),
-                            placeholder: '',
-                            isTimeField: true,
-                            onChanged: (value) => event?.eventime = value,
-                            initialValue: event?.eventime ?? "",
-                            label: 'Hora del evento',
-                            readOnly: !calendarController.isEdit.value,
-                          ),
-                          const SizedBox(height: 20),
-                          InputText(
-                            prefiIcon: const Icon(
-                              Icons.calendar_today,
-                              color: Styles.iconColor,
-                            ),
-                            placeholder: '',
-                            isDateField: true,
-                            onChanged: (value) => event?.endDate = value,
-                            initialValue: event?.endDate ?? "",
-                            label: 'Fecha del evento',
-                            readOnly: !calendarController.isEdit.value,
-                          ),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Mascota selecionada:',
-                                  style: Styles.AvatarComentario,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: Styles.paddingAll,
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width - 100,
+                                child: BarraBack(
+                                  titulo: 'Sobre este Evento',
+                                  callback: () {
+                                    Get.back();
+                                  },
                                 ),
-                                ProfilesDogs(),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Usuario Seleccionado',
-                                  style: Styles.AvatarComentario,
-                                ),
-                                const SizedBox(height: 10),
-                                UserEventoSeleccionado(),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            width: 302,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  child: const Text(
-                                    'Cambiar Evento',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontFamily: 'PoetsenOne',
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  bottom: 100,
-                                  right: 16,
-                                  child: FloatingActionButton(
-                                    elevation: 5,
-                                    onPressed: () {
-                                      // Acción al presionar el botón flotante
-                                      _showMyDialog(context);
-                                    },
-                                    backgroundColor: Styles.fiveColor,
-                                    child: const Icon(Icons.add,
-                                        color: Colors.white),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 30),
-                          if (calendarController.isEdit.value)
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 80,
-                              height: 50,
-                              child: ButtonDefaultWidget(
-                                title: calendarController.isLoading.value
-                                    ? 'cargando ... '
-                                    : 'editar',
-                                callback: () {
-                                  print('evento editr  ${json.encode(event)}');
-                                  calendarController.updateEvento(event);
-                                },
                               ),
-                            ),
-                          const SizedBox(height: 20),
-                        ],
+                              Obx(() {
+                                return Editar(
+                                  coloredit: !calendarController.isEdit.value
+                                      ? const Color.fromARGB(255, 107, 106, 106)
+                                      : Styles.colorContainer,
+                                  callback: () {
+                                    userController.filterUsers(
+                                        '${eventos.owners.first.email}');
+
+                                    calendarController.setEdit();
+                                  },
+                                );
+                              })
+                            ],
+                          ),
+                        ),
                       ),
-                    );
-                  }),
-                ],
-              ),
+                      const SizedBox(height: 40),
+                      Obx(() {
+                        return Container(
+                          padding: Styles.paddingAll,
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: [
+                              InputText(
+                                placeholder: '',
+                                onChanged: (value) => event?.name = value,
+                                initialValue: event?.name ?? "w",
+                                label: 'Nombre del Evento',
+                                readOnly: !calendarController.isEdit.value,
+                              ),
+                              const SizedBox(height: 20),
+                              InputText(
+                                isTextArea: true,
+                                placeholder: '',
+                                onChanged: (value) =>
+                                    event?.description = value,
+                                initialValue: event?.description ?? "",
+                                label: 'Descripción del evento',
+                                readOnly: !calendarController.isEdit.value,
+                              ),
+                              const SizedBox(height: 20),
+                              InputText(
+                                prefiIcon: const Icon(
+                                  Icons.calendar_today,
+                                  color: Styles.iconColor,
+                                ),
+                                placeholder: '',
+                                isDateField: true,
+                                onChanged: (value) => event?.startDate = value,
+                                initialValue: event?.date ?? "",
+                                label: 'Fecha del evento',
+                                readOnly: !calendarController.isEdit.value,
+                              ),
+                              const SizedBox(height: 20),
+                              InputText(
+                                prefiIcon: const Icon(
+                                  Icons.timer,
+                                  color: Styles.iconColor,
+                                ),
+                                placeholder: '',
+                                isTimeField: true,
+                                onChanged: (value) => event?.eventime = value,
+                                initialValue: event?.eventime ?? "",
+                                label: 'Hora del evento',
+                                readOnly: !calendarController.isEdit.value,
+                              ),
+                              const SizedBox(height: 20),
+                              InputText(
+                                prefiIcon: const Icon(
+                                  Icons.calendar_today,
+                                  color: Styles.iconColor,
+                                ),
+                                placeholder: '',
+                                isDateField: true,
+                                onChanged: (value) => event?.endDate = value,
+                                initialValue: event?.endDate ?? "",
+                                label: 'Fecha del evento',
+                                readOnly: !calendarController.isEdit.value,
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Mascota selecionada:',
+                                      style: Styles.AvatarComentario,
+                                    ),
+                                    ProfilesDogs(disableTap: true),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Usuario Seleccionado',
+                                      style: Styles.AvatarComentario,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    UserEventoSeleccionado(),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                width: 302,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      child: const Text(
+                                        'Cambiar Evento',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontFamily: 'PoetsenOne',
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 100,
+                                      right: 16,
+                                      child: FloatingActionButton(
+                                        elevation: 5,
+                                        onPressed: () {
+                                          // Acción al presionar el botón flotante
+                                          _showMyDialog(context);
+                                        },
+                                        backgroundColor: Styles.fiveColor,
+                                        child: const Icon(Icons.add,
+                                            color: Colors.white),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 30),
+                              if (calendarController.isEdit.value)
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width - 80,
+                                  height: 50,
+                                  child: ButtonDefaultWidget(
+                                    title: 'editar',
+                                    callback: () {
+                                      print(
+                                          'evento editr  ${json.encode(event)}');
+                                      calendarController.updateEvento(event!);
+                                    },
+                                  ),
+                                ),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+                        );
+                      }),
+                    ],
+                  ),
+                ),
+              ]),
             ),
           ]),
-        ),
-      ]),
+          Obx(() {
+            if (calendarController.isLoading.value) {
+              return Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          }),
+        ],
+      ),
     );
   }
 

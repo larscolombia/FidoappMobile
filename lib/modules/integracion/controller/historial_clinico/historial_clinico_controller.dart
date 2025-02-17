@@ -278,7 +278,7 @@ class HistorialClinicoController extends GetxController {
     return history;
   }
 
-  //actulizar historial
+  //Actualizar historial
   Future<void> updateReport(HistorialClinico historialClinico) async {
     isLoading.value = true;
 

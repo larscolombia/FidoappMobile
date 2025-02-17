@@ -37,66 +37,81 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final headerHeight = size.height / 8;
-
     return Scaffold(
       backgroundColor: Styles.whiteColor,
-      body: Obx(() {
-        if (profileController.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(36),
-              topRight: Radius.circular(36),
-            ),
-          ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ProfileHeader(
-                  profileController: profileController,
-                  headerHeight: MediaQuery.of(context).size.height / 8,
+      body: Stack(
+        children: [
+          Obx(() {
+            if (profileController.isLoading.value) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(36),
+                  topRight: Radius.circular(36),
                 ),
-                const SizedBox(height: 20),
-                ProfileDetails(
-                    controller: controller,
-                    profileController: profileController),
-                const SizedBox(
-                  width: 302,
-                  height: 20,
-                  child: Divider(
-                    thickness: 1,
-                    color: Recursos.ColorBorderSuave,
-                  ),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ProfileHeader(
+                      profileController: profileController,
+                      headerHeight: MediaQuery.of(context).size.height / 8,
+                    ),
+                    const SizedBox(height: 20),
+                    ProfileDetails(
+                      controller: controller,
+                      profileController: profileController,
+                      id: '${widget.id}',
+                    ),
+                    const SizedBox(
+                      width: 302,
+                      height: 20,
+                      child: Divider(
+                        thickness: 1,
+                        color: Recursos.ColorBorderSuave,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    VeterinarianInfo(
+                        controller: controller,
+                        profileController: profileController),
+                    const SizedBox(height: 10),
+                    Sobremi(
+                        profileController: profileController,
+                        controller: controller),
+                    const SizedBox(height: 20),
+                    ProfileActions(
+                        controller: controller,
+                        profileController: profileController),
+                    const SizedBox(height: 20),
+                    profileController.user.value.userType == "user"
+                        ? ListPet(pets: profileController.user.value.pets ?? [])
+                        : CommentsSection(id: '${widget.id}'),
+                    const SizedBox(height: 20),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                VeterinarianInfo(
-                    controller: controller,
-                    profileController: profileController),
-                const SizedBox(height: 10),
-                Sobremi(
-                    profileController: profileController,
-                    controller: controller),
-                const SizedBox(height: 20),
-                ProfileActions(
-                    controller: controller,
-                    profileController: profileController),
-                const SizedBox(height: 20),
-                profileController.user.value.userType == "user"
-                    ? ListPet(pets: profileController.user.value.pets ?? [])
-                    : CommentsSection(id: '${widget.id}'),
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-        );
-      }),
+              ),
+            );
+          }),
+          Obx(() {
+            if (profileController.isLoading.value) {
+              return Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          }),
+        ],
+      ),
     );
   }
 }

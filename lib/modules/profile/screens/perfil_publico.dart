@@ -59,7 +59,10 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
               ),
               const SizedBox(height: 20),
               ProfileDetails(
-                  controller: controller, profileController: profileController),
+                controller: controller,
+                profileController: profileController,
+                id: AuthServiceApis.dataCurrentUser.id.toString(),
+              ),
               const SizedBox(height: 20),
               const SizedBox(
                 height: 20,

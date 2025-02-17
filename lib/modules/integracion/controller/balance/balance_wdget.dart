@@ -103,7 +103,7 @@ class Balance extends StatelessWidget {
                       callback: () {
                         controller.fetchUserBalance();
                       },
-                      title: 'Actulizar Saldo',
+                      title: 'Actualizar Saldo',
                     ),
                   ),
                   SizedBox(

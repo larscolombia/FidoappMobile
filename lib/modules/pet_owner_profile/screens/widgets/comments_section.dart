@@ -33,11 +33,6 @@ class _CommentsSectionState extends State<CommentsSection> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      // Mostrar un indicador de carga mientras se obtienen los comentarios
-      if (comentariosController.isLoading.value) {
-        return const Center(child: CircularProgressIndicator());
-      }
-
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -107,7 +102,6 @@ class _CommentsSectionState extends State<CommentsSection> {
                   child: Column(
                     children: comentariosController.comments.map((value) {
                       return Container(
-                        padding: Styles.paddingAll,
                         width: MediaQuery.of(context).size.width,
                         child: AvatarComentarios(
                           avatar: value.userAvatar ??
