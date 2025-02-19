@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
@@ -14,11 +15,17 @@ import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
+  DashboardScreen({super.key});
+
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
   final DashboardController controller = Get.put(DashboardController());
   final RoleUser roleUser = Get.put(RoleUser());
 
-  DashboardScreen({super.key});
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -124,7 +131,6 @@ class DashboardScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              // print('jqpwoijskpqowkspq');
                               _onItemTap(index,
                                   context); // Llama al nuevo método que maneja el modal y la navegación
                             },
@@ -147,9 +153,11 @@ class DashboardScreen extends StatelessWidget {
                                           borderRadius: BorderRadius.circular(
                                               15), // Bordes redondeados
                                         ),
-                                        child: Container(
-                                          child:
-                                              Image.asset(_getItemIcon(index)),
+                                        child: SvgPicture.asset(
+                                          _getItemIcon(index),
+                                          width: 24,
+                                          height: 24,
+                                          color: Styles.iconColorBack,
                                         ),
                                       ),
                                       const SizedBox(width: 16),
@@ -291,21 +299,21 @@ class DashboardScreen extends StatelessWidget {
   String _getItemIcon(int index) {
     switch (index) {
       case 0:
-        return 'assets/icons/profile.png';
+        return 'assets/icons/svg/frame.svg';
       case 1:
-        return 'assets/icons/pacientes.png';
+        return 'assets/icons/svg/dashicons_pets.svg';
       case 2:
-        return 'assets/icons/terminos.png';
+        return 'assets/icons/svg/note-2.svg';
       case 3:
-        return 'assets/icons/book.png';
+        return 'assets/icons/svg/book.svg';
       case 4:
-        return 'assets/icons/info-circle.png';
+        return 'assets/icons/svg/info-circle.svg';
       case 5:
-        return 'assets/icons/info-circle.png';
+        return 'assets/icons/svg/info-circle.svg';
       case 6:
-        return 'assets/icons/logout.png';
+        return 'assets/icons/svg/logout.svg';
       default:
-        return 'assets/icons/logout.png';
+        return 'assets/icons/svg/logout.svg';
     }
   }
 }

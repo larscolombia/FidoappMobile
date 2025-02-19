@@ -173,7 +173,7 @@ class UserBalanceController extends GetxController {
                             Flexible(
                               flex: 1,
                               child: Container(
-                                padding: const EdgeInsets.all(14),
+                                padding: const EdgeInsets.all(5),
                                 height:
                                     MediaQuery.of(context).size.height * 0.23,
                                 decoration: const BoxDecoration(
@@ -191,7 +191,7 @@ class UserBalanceController extends GetxController {
                                             .nombreProducto,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: 16,
                                           fontFamily: 'Leto',
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -209,7 +209,7 @@ class UserBalanceController extends GetxController {
                                             .selectedProduct.value.precio,
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
-                                          fontSize: 22,
+                                          fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                           color: Styles.primaryColor,
                                         ),

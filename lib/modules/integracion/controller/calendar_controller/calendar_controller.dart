@@ -67,6 +67,8 @@ class CalendarController extends GetxController {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        // print(
+        //    "Respuesta del servidor: $data"); // Imprimir la respuesta completa
 
         allCalendars.value = (data['data'] as List)
             .map((item) => CalendarModel.fromJson(item))

@@ -57,7 +57,7 @@ class Balance extends StatelessWidget {
       }
 
       return Container(
-        padding: EdgeInsets.all(screenWidth * 0.04), // 4% del ancho
+        padding: EdgeInsets.all(5), // 4% del ancho
         height: screenHeight * 0.23, // 20% del alto de la pantalla
         decoration: BoxDecoration(
           color: Styles.colorContainer,
@@ -73,7 +73,7 @@ class Balance extends StatelessWidget {
                 'FidoCoins Disponibles',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 18, // 3% del ancho
+                  fontSize: 16, // 3% del ancho
                   fontFamily: 'Leto',
                   fontWeight: FontWeight.w700,
                 ),
@@ -84,7 +84,7 @@ class Balance extends StatelessWidget {
               '${controller.userBalance.value.balance}ƒ',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 18, // 5% del ancho
+                fontSize: 16, // 5% del ancho
                 fontWeight: FontWeight.bold,
                 color: Styles.primaryColor,
               ),

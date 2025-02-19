@@ -16,12 +16,23 @@ import 'package:pawlly/modules/integracion/controller/calendar_controller/calend
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
 
-class EventoDestalles extends StatelessWidget {
+class EventoDestalles extends StatefulWidget {
+  EventoDestalles({super.key});
+
+  @override
+  _EventoDestallesState createState() => _EventoDestallesState();
+}
+
+class _EventoDestallesState extends State<EventoDestalles> {
   final calendarController = Get.find<CalendarController>();
   final HomeController homeController = Get.find<HomeController>();
   final UserController userController = Get.put(UserController());
 
-  EventoDestalles({super.key});
+  @override
+  void initState() {
+    super.initState();
+    calendarController.getEventos(); // Cargar eventos al iniciar
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,19 +101,22 @@ class EventoDestalles extends StatelessWidget {
                                   },
                                 ),
                               ),
-                              Obx(() {
-                                return Editar(
-                                  coloredit: !calendarController.isEdit.value
-                                      ? const Color.fromARGB(255, 107, 106, 106)
-                                      : Styles.colorContainer,
-                                  callback: () {
-                                    userController.filterUsers(
-                                        '${eventos.owners.first.email}');
+                              if (event?.invited !=
+                                  true) // Verificar si no es invitado
+                                Obx(() {
+                                  return Editar(
+                                    coloredit: !calendarController.isEdit.value
+                                        ? const Color.fromARGB(
+                                            255, 107, 106, 106)
+                                        : Styles.colorContainer,
+                                    callback: () {
+                                      userController.filterUsers(
+                                          '${eventos.owners.first.email}');
 
-                                    calendarController.setEdit();
-                                  },
-                                );
-                              })
+                                      calendarController.setEdit();
+                                    },
+                                  );
+                                })
                             ],
                           ),
                         ),
@@ -199,43 +213,46 @@ class EventoDestalles extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              SizedBox(
-                                width: 302,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                      child: const Text(
-                                        'Cambiar Evento',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black,
-                                          fontFamily: 'PoetsenOne',
+                              if (event?.invited !=
+                                  true) // Verificar si no es invitado
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 60,
+                                  child: Stack(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'Cambiar Evento',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontFamily: 'PoetsenOne',
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Positioned(
-                                      bottom: 100,
-                                      right: 16,
-                                      child: FloatingActionButton(
-                                        elevation: 5,
-                                        onPressed: () {
-                                          // Acción al presionar el botón flotante
-                                          _showMyDialog(context);
-                                        },
-                                        backgroundColor: Styles.fiveColor,
-                                        child: const Icon(Icons.add,
-                                            color: Colors.white),
-                                      ),
-                                    )
-                                  ],
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: FloatingActionButton(
+                                          elevation: 5,
+                                          onPressed: () {
+                                            // Acción al presionar el botón flotante
+                                            _showMyDialog(context);
+                                          },
+                                          backgroundColor: Styles.fiveColor,
+                                          child: const Icon(Icons.add,
+                                              color: Colors.white),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
                               const SizedBox(height: 30),
-                              if (calendarController.isEdit.value)
+                              if (calendarController.isEdit.value &&
+                                  event?.invited !=
+                                      true) // Verificar si no es invitado
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width - 80,
+                                  width: MediaQuery.of(context).size.width,
                                   height: 50,
                                   child: ButtonDefaultWidget(
                                     title: 'editar',

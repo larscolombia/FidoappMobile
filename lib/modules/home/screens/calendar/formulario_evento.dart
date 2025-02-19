@@ -375,7 +375,7 @@ class _CreateEventState extends State<CreateEvent> {
                     ),
                     SizedBox(height: doubleHeight),
                     SizedBox(
-                      width: 302,
+                      width: ancho,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -401,11 +401,11 @@ class _CreateEventState extends State<CreateEvent> {
                     SizedBox(height: doubleHeight),
                     Center(
                         child: SizedBox(
-                            width: 302, child: UserEventoSeleccionado())),
+                            width: ancho, child: UserEventoSeleccionado())),
                     const SizedBox(height: 30),
                     Obx(() {
                       return SizedBox(
-                        width: 302,
+                        width: ancho,
                         child: ButtonDefaultWidget(
                           title: calendarController.isLoading.value
                               ? 'Guardando...'

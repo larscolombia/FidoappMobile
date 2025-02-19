@@ -42,11 +42,6 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
       body: Stack(
         children: [
           Obx(() {
-            if (profileController.isLoading.value) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
             return Container(
               decoration: const BoxDecoration(
                 color: Colors.white,

@@ -150,7 +150,7 @@ class VideoList extends StatelessWidget {
                           const SizedBox(height: 4),
                           // Fecha y cantidad de visualizaciones
                           Text(
-                            video.createdAt.toString(),
+                            video.createdAt,
                             style: const TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 12,

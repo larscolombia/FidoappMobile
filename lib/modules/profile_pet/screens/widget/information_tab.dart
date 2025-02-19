@@ -69,7 +69,7 @@ class InformationTab extends StatelessWidget {
                         callback: () {
                           // Lógica para compartir
                           Share.share(
-                            'Esta es mi mascota muy hermoza : ${homeController.selectedProfile.value!.petImage}',
+                            'Esta es mi mascota: ${homeController.selectedProfile.value!.petImage}',
                             subject: AuthServiceApis.dataCurrentUser.userName,
                           );
                         },

@@ -33,100 +33,114 @@ class _CommentsSectionState extends State<CommentsSection> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      return Stack(
         children: [
-          // Mostrar estadísticas solo cuando haya comentarios
-          if (comentariosController.comments.isNotEmpty)
-            Center(
-              child: Estadisticas(
-                comentarios: comentariosController.comments.length.toString(),
-                calificacion:
-                    '${comentariosController.calculateAverageRating()}',
-                avatars: comentariosController.getTopAvatars(),
-              ),
-            ),
-          const SizedBox(height: 20),
-          if (widget.expert)
-            Center(
-              child: BanerComentarios(
-                eventTextChanged: (value) {
-                  comentariosController.updateField('review_msg', value);
-                },
-                titulo: 'Tu experiencia',
-                onRatingUpdate: (rating) {
-                  comentariosController.updateField('rating', rating);
-                },
-                onEvento: () {
-                  comentariosController.updateField('employee_id', widget.id);
-                  comentariosController.postComment('user', context);
-                },
-              ),
-            ),
-          const SizedBox(height: 20),
-          Center(
-            child: Container(
-              padding: Styles.paddingAll,
-              width: MediaQuery.of(context).size.width,
-              child: const Text(
-                'Comentarios',
-                style: TextStyle(
-                  color: Styles.primaryColor,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'PoetsenOne',
-                  fontSize: 20,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Mostrar estadísticas solo cuando haya comentarios
+              if (comentariosController.comments.isNotEmpty)
+                Center(
+                  child: Estadisticas(
+                    comentarios:
+                        comentariosController.comments.length.toString(),
+                    calificacion:
+                        '${comentariosController.calculateAverageRating()}',
+                    avatars: comentariosController.getTopAvatars(),
+                  ),
+                ),
+              const SizedBox(height: 20),
+              if (widget.expert)
+                Center(
+                  child: BanerComentarios(
+                    eventTextChanged: (value) {
+                      comentariosController.updateField('review_msg', value);
+                    },
+                    titulo: 'Tu experiencia',
+                    onRatingUpdate: (rating) {
+                      comentariosController.updateField('rating', rating);
+                    },
+                    onEvento: () {
+                      comentariosController.updateField(
+                          'employee_id', widget.id);
+                      comentariosController.postComment('user', context);
+                      comentariosController.fetchComments(widget.id, "user");
+                    },
+                  ),
+                ),
+              const SizedBox(height: 20),
+              Center(
+                child: Container(
+                  padding: Styles.paddingAll,
+                  width: MediaQuery.of(context).size.width,
+                  child: const Text(
+                    'Comentarios',
+                    style: TextStyle(
+                      color: Styles.primaryColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'PoetsenOne',
+                      fontSize: 20,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Center(
-            child: Container(
-              padding: Styles.paddingAll,
-              width: MediaQuery.of(context).size.width,
-              child:
-                  const Divider(color: Recursos.ColorBorderSuave, thickness: 1),
-            ),
-          ),
-          Center(
-            child: Container(
-              padding: Styles.paddingAll,
-              width: MediaQuery.of(context).size.width,
-              child: Obx(() {
-                if (comentariosController.isLoading.value) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return SingleChildScrollView(
-                  child: Column(
-                    children: comentariosController.comments.map((value) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: AvatarComentarios(
-                          avatar: value.userAvatar ??
-                              "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg",
-                          name: value.userFullName ?? '',
-                          date: "Fecha",
-                          comment: value.reviewMsg,
-                          rating: double.parse(value.rating.toString()),
-                        ),
+              const SizedBox(height: 20),
+              Center(
+                child: Container(
+                  padding: Styles.paddingAll,
+                  width: MediaQuery.of(context).size.width,
+                  child: const Divider(
+                      color: Recursos.ColorBorderSuave, thickness: 1),
+                ),
+              ),
+              Center(
+                child: Container(
+                  padding: Styles.paddingAll,
+                  width: MediaQuery.of(context).size.width,
+                  child: Obx(() {
+                    if (comentariosController.isLoading.value) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
-                    }).toList(),
-                  ),
-                );
-              }),
-            ),
+                    }
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: comentariosController.comments.map((value) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: AvatarComentarios(
+                              avatar: value.userAvatar ??
+                                  "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg",
+                              name: value.userFullName ?? '',
+                              date: "Fecha",
+                              comment: value.reviewMsg,
+                              rating: double.parse(value.rating.toString()),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+              const SizedBox(height: 40),
+              Center(
+                child: RecargaComponente(
+                  callback: () {
+                    comentariosController.fetchComments(widget.id, "user");
+                  },
+                ),
+              ),
+              const SizedBox(height: 40),
+            ],
           ),
-          const SizedBox(height: 40),
-          Center(
-            child: RecargaComponente(
-              callback: () {
-                comentariosController.fetchComments(widget.id, "user");
-              },
+          if (comentariosController.isLoading.value)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
-          const SizedBox(height: 40),
         ],
       );
     });

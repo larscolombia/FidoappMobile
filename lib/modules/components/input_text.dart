@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,6 +13,7 @@ class InputText extends StatefulWidget {
     this.label,
     this.placeholder,
     this.placeholderImage,
+    this.placeholderSvg,
     this.placeholderFontFamily,
     required this.onChanged,
     this.isDateField = false,
@@ -34,6 +36,7 @@ class InputText extends StatefulWidget {
   final String? label;
   final String? placeholderFontFamily;
   final Image? placeholderImage;
+  final String? placeholderSvg;
   final bool isDateField;
   final bool isFilePicker;
   final bool isImagePicker;
@@ -164,7 +167,7 @@ class _InputTextState extends State<InputText> {
                       width: 30,
                       child: widget.suffixIcon),
                   prefixIcon: widget.prefiIcon ??
-                      (widget.placeholderImage != null
+                      (widget.placeholderSvg != null
                           ? Padding(
                               padding: const EdgeInsets.only(
                                 left: 20,
@@ -173,10 +176,22 @@ class _InputTextState extends State<InputText> {
                               child: SizedBox(
                                 width: 24,
                                 height: 24,
-                                child: widget.placeholderImage,
+                                child: SvgPicture.asset(widget.placeholderSvg!),
                               ),
                             )
-                          : null),
+                          : widget.placeholderImage != null
+                              ? Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 20,
+                                    right: 5,
+                                  ),
+                                  child: SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: widget.placeholderImage,
+                                  ),
+                                )
+                              : null),
                 ),
                 onChanged: (value) {
                   Future.delayed(const Duration(milliseconds: 300), () {

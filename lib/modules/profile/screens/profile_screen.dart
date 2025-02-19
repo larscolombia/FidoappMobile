@@ -1,13 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import 'package:pawlly/components/button_default_widget.dart';
-
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
-
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
@@ -98,7 +97,8 @@ class ProfileScreen extends StatelessWidget {
                                 color: Styles.fiveColor,
                                 borderRadius: BorderRadius.circular(10),
                               ),
-                              child: Image.asset('assets/icons/edit-2.png'),
+                              child: SvgPicture.asset(
+                                  'assets/icons/svg/edit-2.svg'),
                             ),
                           ),
                         ],
@@ -168,8 +168,8 @@ class ProfileScreen extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(10),
                                         ),
-                                        child: Image.asset(
-                                            'assets/icons/edit-2.png')),
+                                        child: SvgPicture.asset(
+                                            'assets/icons/svg/edit-2.svg')),
                                   );
                                 }),
                               ],
@@ -200,8 +200,7 @@ class ProfileScreen extends StatelessWidget {
                                 controller.user['first_name'] = value,
                             initialValue:
                                 controller.user['first_name'].toString(),
-                            placeholderImage:
-                                Image.asset('assets/icons/profile.png'),
+                            placeholderSvg: 'assets/icons/svg/profile.svg',
                             placeholder: '',
                             readOnly: !controller.isEditing.value,
                             fondoColor: controller.isEditing.value == false
@@ -220,8 +219,7 @@ class ProfileScreen extends StatelessWidget {
                               initialValue:
                                   controller.user['last_name'].toString(),
                               placeholder: '',
-                              placeholderImage:
-                                  Image.asset('assets/icons/profile.png'),
+                              placeholderSvg: 'assets/icons/svg/profile.svg',
                               readOnly: !controller.isEditing.value,
                               fondoColor: controller.isEditing.value == false
                                   ? Colors.white
@@ -237,8 +235,7 @@ class ProfileScreen extends StatelessWidget {
                                 controller.user['email'] = value,
                             initialValue: controller.user['email'].toString(),
                             placeholder: '',
-                            placeholderImage:
-                                Image.asset('assets/icons/sms.png'),
+                            placeholderSvg: 'assets/icons/svg/sms.svg',
                             readOnly: !controller.isEditing.value,
                             fondoColor: controller.isEditing.value == false
                                 ? Colors.white
@@ -280,7 +277,7 @@ class ProfileScreen extends StatelessWidget {
                                     value.toString().toLowerCase();
                               },
                               placeholder: 'Género',
-                              icon: 'assets/icons/tag-user.png',
+                              icon: 'assets/icons/svg/tag-user.svg',
                               items: const [
                                 'Femenino',
                                 'Masculino',
@@ -289,43 +286,6 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        /**
-                        Obx(
-                          () => Container(
-                            margin: const EdgeInsets.only(top: 20, bottom: 20),
-                            child: CustomTextFormFieldWidget(
-                              controller: controller.passwordController.value,
-                              callback: (value) {
-                                controller.user['password'] = value.toString();
-                              },
-                              enabled: false,
-                              obscureText: true,
-                              placeholder: 'Contraseña',
-                              icon: 'assets/icons/key.png',
-                            ),
-                          ),
-                        ),
-                         */
-
-                        /** 
-                        Obx(
-                          () => Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            child: CustomSelectFormFieldWidget(
-                              enabled: controller.isEditing.value,
-                              controller: controller.userTypeCont.value,
-                              placeholder: 'Tipo de Usuario',
-                              icon: 'assets/icons/tag-user.png',
-                              onChange: (value) {
-                                controller.user['userType'] = value.toString();
-                              },
-                              items: const [
-                                'Dueño de mascota',
-                                'Invitado de mascota',
-                              ],
-                            ),
-                          ),
-                        ),*/
                         const SizedBox(height: 20),
                         Obx(
                           () => controller.isEditing.value == true

@@ -28,6 +28,7 @@ class CalendarModel {
   String? updatedAt;
   String? deletedAt;
   String? eventImage;
+  bool? invited; // Nuevo campo
 
   CalendarModel({
     this.id,
@@ -49,6 +50,7 @@ class CalendarModel {
     this.updatedAt,
     this.deletedAt,
     this.eventImage,
+    this.invited, // Nuevo campo
   });
 
   factory CalendarModel.fromJson(Map<String, dynamic> json) {
@@ -74,6 +76,7 @@ class CalendarModel {
       updatedAt: json['updated_at']?.toString(),
       deletedAt: json['deleted_at']?.toString(),
       eventImage: json['event_image'],
+      invited: json['invited'], // Nuevo campo
     );
   }
 
@@ -99,6 +102,7 @@ class CalendarModel {
         "updated_at": updatedAt,
         "deleted_at": deletedAt,
         "event_image": eventImage,
+        "invited": invited, // Nuevo campo
       };
 }
 

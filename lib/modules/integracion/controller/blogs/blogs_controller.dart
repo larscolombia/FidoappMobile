@@ -38,6 +38,9 @@ class BlogController extends GetxController {
           blogPosts.value =
               data.map((post) => BlogPost.fromJson(post)).toList();
           filteredBlogPosts.value = blogPosts;
+          print('Blogs cargados con éxito: ${filteredBlogPosts}');
+          print(
+              'Blogs cargados con éxito: ${jsonEncode(filteredBlogPosts.map((post) => post.toJson()).toList())}');
         } else {
           // Manejar el caso en que el estado no sea verdadero
           print(
