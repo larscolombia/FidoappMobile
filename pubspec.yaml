@@ -58,7 +58,7 @@ dependencies:
   flutter_inappwebview: ^6.0.0
   firebase_messaging: ^15.1.6
   pusher_channels_flutter: ^2.2.1
-  audioplayers: ^6.1.0
+  audioplayers: ^6.2.0
   flutter_local_notifications: ^18.0.1
   flutter_localizations:
     sdk: flutter
