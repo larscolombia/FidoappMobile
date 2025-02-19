@@ -1,12 +1,12 @@
-buildscript{
-     ext.kotlin_version = '1.9.0'
+buildscript {
+    ext.kotlin_version = '1.9.0' // Asegúrate de que esta sea la versión correcta
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.5.0'
+        classpath 'com.android.tools.build:gradle:8.5.0' // Versión de Gradle
         classpath 'com.google.gms:google-services:4.3.15'  // Versión más reciente
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -29,8 +29,8 @@ allprojects {
                     }
                 }
             }
-   }
-}
+        }
+    }
 }
 
 rootProject.buildDir = "../build"
