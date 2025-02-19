@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_controller.dart';
@@ -17,8 +18,8 @@ class Resources extends StatelessWidget {
 
     // Lista de recursos (ahora fija, no dinámica)
     final List<Map<String, dynamic>> resources = [
-      {'id': 5, 'icon': 'assets/icons/ebook_icon.png', 'label': 'Libros'},
-      {'id': 6, 'icon': 'assets/icons/youtue_icon.png', 'label': 'YouTube'},
+      {'id': 5, 'icon': 'assets/icons/svg/mascotas1.svg', 'label': 'Libros'},
+      {'id': 6, 'icon': 'assets/icons/svg/youtube1.svg', 'label': 'YouTube'},
     ];
 
     return Column(
@@ -94,7 +95,11 @@ class Resources extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Ícono antes del texto
-                      Image.asset(resources[index]['icon']!),
+                      SvgPicture.asset(
+                        '${resources[index]['icon']}',
+                        width: 24,
+                        height: 24,
+                      ),
                       const SizedBox(
                           width: 5), // Espacio entre el ícono y el texto
                       Text(

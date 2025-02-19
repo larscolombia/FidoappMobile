@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:get/get.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
@@ -62,7 +63,7 @@ class SignInScreen extends StatelessWidget {
                                 controller: signInController.emailCont,
                                 placeholder:
                                     "Correo Electrónico", //locale.value.email,
-                                icon: 'assets/icons/sms.png',
+                                placeholderSvg: 'assets/icons/svg/sms.svg',
                               ),
                             ),
                             Container(
@@ -72,7 +73,7 @@ class SignInScreen extends StatelessWidget {
                                 placeholder:
                                     "Contraseña", //locale.value.password,
                                 obscureText: true,
-                                icon: 'assets/icons/key.png',
+                                placeholderSvg: 'assets/icons/svg/key.svg',
                               ),
                             ),
                             Container(
@@ -158,7 +159,8 @@ class SignInScreen extends StatelessWidget {
                                 onPressed: () {
                                   signInController.googleSignIn(context);
                                 },
-                                icon: Image.asset('assets/icons/google.png'),
+                                icon: SvgPicture.asset(
+                                    'assets/icons/svg/google.svg'),
                                 label: Text(
                                   locale.value.signInWithGoogle,
                                   style: const TextStyle(

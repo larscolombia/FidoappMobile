@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/event_model.dart';
@@ -103,16 +104,15 @@ class ProfilePetScreen extends StatelessWidget {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.zero,
-                                  backgroundColor: Styles.iconColorBack,
+                                  backgroundColor: Styles.fiveColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                   minimumSize: const Size(48, 48),
                                 ),
-                                child: const Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                  size: 24,
+                                child: SvgPicture.asset(
+                                  'assets/icons/svg/edit-2.svg',
+                                  // color: Styles.iconColorBack,
                                 ),
                               )
                           ],

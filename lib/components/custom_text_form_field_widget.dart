@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class CustomTextFormFieldWidget extends StatefulWidget {
   final String placeholder;
   final String? icon; // El icono ahora es opcional
+  final String? placeholderSvg; // El SVG ahora es opcional
   final TextEditingController? controller;
   final bool? enabled;
   final bool? obscureText;
@@ -17,6 +19,7 @@ class CustomTextFormFieldWidget extends StatefulWidget {
     super.key,
     required this.placeholder,
     this.icon, // Elimina el `required`
+    this.placeholderSvg, // Elimina el `required`
     required this.controller,
     this.enabled,
     this.obscureText = false,
@@ -84,16 +87,25 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
           borderRadius: BorderRadius.circular(16.0),
           borderSide: const BorderSide(color: Colors.red, width: 1.0),
         ),
-        prefixIcon: widget.icon != null
+        prefixIcon: widget.placeholderSvg != null
             ? Padding(
                 padding: const EdgeInsets.only(left: 20.0, right: 20),
-                child: Image.asset(
-                  widget.icon!,
+                child: SvgPicture.asset(
+                  widget.placeholderSvg!,
                   width: 20,
                   height: 20,
                 ),
               )
-            : null, // Si `icon` es null, no se muestra nada
+            : widget.icon != null
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 20.0, right: 20),
+                    child: Image.asset(
+                      widget.icon!,
+                      width: 20,
+                      height: 20,
+                    ),
+                  )
+                : null, // Si `placeholderSvg` y `icon` son null, no se muestra nada
         labelText: hasText ? null : widget.placeholder,
         labelStyle: const TextStyle(
           color: Color(0xff383838),

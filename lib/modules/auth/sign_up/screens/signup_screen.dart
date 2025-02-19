@@ -95,7 +95,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               child: CustomTextFormFieldWidget(
                                 controller: controller.emailCont,
                                 placeholder: locale.value.email,
-                                icon: 'assets/icons/sms.png',
+                                placeholderSvg: 'assets/icons/svg/sms.svg',
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)
                                       ? 'El correo es requerido'
@@ -113,7 +113,7 @@ class SignUpScreen extends GetView<SignUpController> {
                               child: CustomSelectFormFieldWidget(
                                 controller: controller.genCont,
                                 placeholder: locale.value.gender,
-                                icon: 'assets/icons/tag-user.png',
+                                placeholderSvg: 'assets/icons/svg/tag-user.svg',
                                 filcolorCustom: Styles.fiveColor,
                                 items: const [
                                   'Mujer',
@@ -134,7 +134,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                 controller: controller.passwordCont,
                                 placeholder: locale.value.password,
                                 obscureText: true,
-                                icon: 'assets/icons/key.png',
+                                placeholderSvg: 'assets/icons/svg/key.svg',
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)
                                       ? 'La contraseña es requerida'
@@ -153,7 +153,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                 controller: controller.password2Cont,
                                 placeholder: locale.value.confirmPassword,
                                 obscureText: true,
-                                icon: 'assets/icons/key.png',
+                                placeholderSvg: 'assets/icons/svg/key.svg',
                                 validators: [
                                   (value) =>
                                       (value != controller.passwordCont.text)
@@ -169,7 +169,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                 controller: controller.userTypeCont,
                                 placeholder: locale.value.userType,
                                 filcolorCustom: Styles.fiveColor,
-                                icon: 'assets/icons/tag-user.png',
+                                placeholderSvg: 'assets/icons/svg/tag-user.svg',
                                 items: const [
                                   'Entrenador',
                                   'Veterinario',

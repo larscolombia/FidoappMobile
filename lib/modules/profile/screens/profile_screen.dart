@@ -277,7 +277,7 @@ class ProfileScreen extends StatelessWidget {
                                     value.toString().toLowerCase();
                               },
                               placeholder: 'Género',
-                              icon: 'assets/icons/svg/tag-user.svg',
+                              placeholderSvg: 'assets/icons/svg/tag-user.svg',
                               items: const [
                                 'Femenino',
                                 'Masculino',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
@@ -144,7 +145,11 @@ class NotificationsScreen extends StatelessWidget {
                         width: 1.0, // Grosor del borde
                       ),
                     ),
-                    child: Image.asset('assets/icons/garrita.png'),
+                    child: SvgPicture.asset(
+                      'assets/icons/svg/Vector1.svg',
+                      width: 25,
+                      height: 25,
+                    ),
                   ),
                 if (notification.type != 'fidocoin')
                   CircleAvatar(

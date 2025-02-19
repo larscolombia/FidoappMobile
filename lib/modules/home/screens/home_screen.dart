@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/diario/diario.dart';
 
@@ -229,8 +230,10 @@ class HomeScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Center(
-                              child:
-                                  Image.asset('assets/icons/profecionales.png'),
+                              child: SvgPicture.asset(
+                                'assets/icons/svg/Group 1000003093.svg',
+                              ),
+                              // plus-user,
                             ),
                           ),
                           const SizedBox(height: 5),

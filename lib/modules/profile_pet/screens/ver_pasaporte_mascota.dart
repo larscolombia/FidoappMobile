@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/modules/components/historia_componente.dart';
@@ -85,13 +86,9 @@ class VerPasaporteMascota extends StatelessWidget {
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(left: 10),
-                                child: Image.asset(
-                                  'assets/icons/edit-2.png',
-                                  width:
-                                      24, // Tamaño ajustado para mantener proporción
-                                  height: 24,
-                                  fit: BoxFit
-                                      .contain, // Asegura que no se deforme
+                                child: SvgPicture.asset(
+                                  'assets/icons/svg/edit-2.svg',
+                                  // color: Styles.iconColorBack,
                                 ),
                               ),
                             ),
@@ -137,10 +134,9 @@ class VerPasaporteMascota extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
-                            Image.asset(
-                              'assets/icons/codigo_mascota.png',
-                              width: 20,
-                              height: 20,
+                            SvgPicture.asset(
+                              'assets/icons/svg/code-pet.svg',
+                              // color: Styles.iconColorBack,
                             ),
                             const SizedBox(width: 10),
                             const Column(

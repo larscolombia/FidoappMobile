@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/generated/assets.dart';
@@ -143,11 +144,8 @@ class HeaderWiget extends StatelessWidget {
                                   .countUnreadNotifications();
                               return Stack(
                                 children: [
-                                  Image.asset(
-                                    fit: BoxFit.cover,
-                                    unreadCount > 0
-                                        ? 'assets/icons/notificaiones_active.png'
-                                        : 'assets/icons/notificaiones_active.png',
+                                  SvgPicture.asset(
+                                    'assets/icons/svg/notification.svg',
                                     width: 24,
                                     height: 24,
                                   ),

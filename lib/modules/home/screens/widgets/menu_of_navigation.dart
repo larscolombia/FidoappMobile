@@ -1,6 +1,5 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
@@ -28,19 +27,19 @@ class MenuOfNavigation extends GetView<HomeController> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _buildNavItem(
-              path: 'assets/icons/inicio.png',
+              path: 'assets/icons/svg/Vector.svg',
               label: 'Inicio',
               index: 0,
               controller: controller,
             ),
             _buildNavItem(
-              path: 'assets/icons/calendario.png',
+              path: 'assets/icons/svg/Union.svg',
               label: 'Agenda',
               index: 1,
               controller: controller,
             ),
             _buildNavItem(
-              path: 'assets/icons/diario.png',
+              path: 'assets/icons/svg/Group 1000003098.svg',
               label: 'Diario',
               index: 4,
               controller: controller,
@@ -48,13 +47,13 @@ class MenuOfNavigation extends GetView<HomeController> {
             if (roleUser.roleUser.value == roleUser.tipoUsuario('user') ||
                 roleUser.roleUser.value == roleUser.tipoUsuario('entrenador'))
               _buildNavItem(
-                path: 'assets/icons/entrenos.png',
+                path: 'assets/icons/svg/Vector1.svg',
                 label: 'Entrenamientos',
                 index: 2,
                 controller: controller,
               ),
             _buildNavItem(
-              path: 'assets/icons/explorar.png',
+              path: 'assets/icons/svg/Group 1000003080.svg',
               label: 'Explorar',
               index: 3,
               controller: controller,
@@ -128,7 +127,7 @@ class MenuOfNavigation extends GetView<HomeController> {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Ícono
-            Image.asset(
+            SvgPicture.asset(
               path,
               width: 24,
               height: 24,

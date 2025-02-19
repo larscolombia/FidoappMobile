@@ -76,7 +76,7 @@ class AssociatedPersonsModal extends StatelessWidget {
                   // Aquí se asume que el widget CustomSelectFormFieldWidget maneja internamente el controlador.
                   controller: controller.userTypeCont.value,
                   placeholder: 'Rol',
-                  icon: 'assets/icons/tag-user.png',
+                  placeholderSvg: 'assets/icons/svg/tag-user.svg',
                   filcolorCustom: Styles.fiveColor,
                   borderColor: Styles.iconColorBack,
                   onChange: (value) {

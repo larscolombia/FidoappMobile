@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_controller.dart';
@@ -64,7 +65,7 @@ class _UtilitiesState extends State<Utilities> {
                   width: MediaQuery.of(context).size.width / 3.7,
                   child: ToolWidget(
                     index: index,
-                    imagePath: "$DOMAIN_URL/${tool.image}",
+                    imagePath: _getImageForTool(index),
                     title: tool.name,
                     audioUrl: tool.audio ?? "",
                     onError: () => Get.snackbar(
@@ -85,13 +86,13 @@ class _UtilitiesState extends State<Utilities> {
   String _getImageForTool(int index) {
     switch (index) {
       case 0:
-        return 'assets/icons/silbar.png';
+        return 'assets/icons/svg/Silbar.svg';
       case 1:
-        return 'assets/icons/Correa.png';
+        return 'assets/icons/svg/Correa.svg';
       case 2:
-        return 'assets/icons/tecontador.png';
+        return 'assets/icons/svg/Tecontador.svg';
       default:
-        return 'assets/icons/silbar.png';
+        return 'assets/icons/svg/Silbar.svg';
     }
   }
 }
@@ -133,15 +134,21 @@ class ToolWidget extends StatelessWidget {
           children: [
             Container(
               height: 50,
-              child: Image.network(imagePath,
-                  loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
+              child: SvgPicture.asset(
+                imagePath,
+                placeholderBuilder: (context) => Container(
                   width: 24,
                   height: 24,
                   color: Colors.grey, // Imagen gris de respaldo
-                );
-              }),
+                ),
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.error,
+                    color: Colors.red,
+                    size: 24,
+                  );
+                },
+              ),
             ),
             const SizedBox(height: 8),
             Container(

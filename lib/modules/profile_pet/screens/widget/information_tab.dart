@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
@@ -94,7 +95,9 @@ class InformationTab extends StatelessWidget {
                   child: SizedBox(
                     height: 54,
                     child: ButtonDefaultWidget(
+                      iconAfterText: false,
                       title: 'Pasaporte',
+                      svgIconPath: 'assets/icons/svg/mdi_passport.svg',
                       callback: () {
                         Get.to(
                           VerPasaporteMascota(),
@@ -109,9 +112,9 @@ class InformationTab extends StatelessWidget {
                 color: Styles.fiveColor,
                 elevation: 0.0,
                 child: ListTile(
-                  leading: const Icon(
-                    Icons.pets,
-                    color: Styles.iconColorBack,
+                  leading: SvgPicture.asset(
+                    'assets/icons/svg/task-square.svg',
+                    // color: Styles.iconColorBack,
                   ),
                   title: Text(
                     'Raza:',
@@ -142,9 +145,9 @@ class InformationTab extends StatelessWidget {
                 color: Styles.fiveColor,
                 elevation: 0.0,
                 child: ListTile(
-                  leading: const Icon(
-                    Icons.cake,
-                    color: Styles.iconColorBack,
+                  leading: SvgPicture.asset(
+                    'assets/icons/svg/mdi_cake-variant.svg',
+                    // color: Styles.iconColorBack,
                   ),
                   title: Text(
                     'Edad:',
@@ -178,9 +181,11 @@ class InformationTab extends StatelessWidget {
                       color: Styles.fiveColor,
                       elevation: 0.0,
                       child: ListTile(
-                        leading: const Icon(
-                          Icons.fitness_center,
-                          color: Styles.iconColorBack,
+                        leading: SvgPicture.asset(
+                          'assets/icons/svg/weight.svg',
+                          // color: Styles.iconColorBack,
+                          width: 24,
+                          height: 24,
                         ),
                         title: Text(
                           'Peso: ',
@@ -198,9 +203,11 @@ class InformationTab extends StatelessWidget {
                       color: Styles.fiveColor,
                       elevation: 0.0,
                       child: ListTile(
-                        leading: const Icon(
-                          Icons.favorite,
-                          color: Styles.iconColorBack,
+                        leading: SvgPicture.asset(
+                          'assets/icons/svg/ph_heart-fill.svg',
+                          // color: Styles.iconColorBack,
+                          width: 24,
+                          height: 24,
                         ),
                         title: Text(
                           'Sexo:',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -14,6 +15,7 @@ class ButtonDefaultWidget extends StatelessWidget {
   final double? textSize;
   final double? borderSize;
   final IconData? icon;
+  final String? svgIconPath;
   final bool iconAfterText;
   final bool isLoading;
   final List<BoxShadow>? boxShadow;
@@ -32,6 +34,7 @@ class ButtonDefaultWidget extends StatelessWidget {
     this.textSize,
     this.borderSize,
     this.icon,
+    this.svgIconPath,
     this.iconAfterText = true,
     this.isLoading = false,
     this.boxShadow,
@@ -46,16 +49,14 @@ class ButtonDefaultWidget extends StatelessWidget {
     return Container(
       decoration: showDecoration
           ? BoxDecoration(
-              boxShadow: boxShadow ??
-                  [
-                    BoxShadow(
-                      color: Color(0xffFF4931)
-                          .withOpacity(0.1), // Sombra del color predeterminado
-                      spreadRadius: 1,
-                      blurRadius: 12,
-                      offset: const Offset(0, 4), // Desplazamiento de la sombra
-                    ),
-                  ],
+              boxShadow: boxShadow ?? [
+                BoxShadow(
+                  color: Color(0xffFF4931).withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             )
           : null,
       child: SizedBox(
@@ -67,9 +68,7 @@ class ButtonDefaultWidget extends StatelessWidget {
             backgroundColor: resolvedColor,
             side: border != null
                 ? WidgetStateProperty.all(border)
-                : WidgetStateProperty.all(
-                    BorderSide.none,
-                  ),
+                : WidgetStateProperty.all(BorderSide.none),
             shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(borderSize ?? 16),
@@ -81,49 +80,56 @@ class ButtonDefaultWidget extends StatelessWidget {
               ? CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(textColor),
                 )
-              : icon == null
-                  ? Text(
-                      title,
-                      style: GoogleFonts.poppins(
-                        fontSize: textSize ?? 16,
-                        fontWeight: FontWeight.w500,
-                        color: textColor,
-                      ),
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: iconAfterText
-                          ? [
-                              Text(
-                                title,
-                                style: GoogleFonts.poppins(
-                                  fontSize: textSize ?? 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: textColor,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Icon(
-                                icon,
-                                color: textColor,
-                              ),
-                            ]
-                          : [
-                              Icon(
-                                icon,
-                                color: textColor,
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                title,
-                                style: GoogleFonts.poppins(
-                                  fontSize: textSize ?? 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: textColor,
-                                ),
-                              ),
-                            ],
-                    ),
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: iconAfterText
+                      ? [
+                          Text(
+                            title,
+                            style: GoogleFonts.poppins(
+                              fontSize: textSize ?? 16,
+                              fontWeight: FontWeight.w500,
+                              color: textColor,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          if (svgIconPath != null)
+                            SvgPicture.asset(
+                              svgIconPath!,
+                              color: textColor,
+                              width: 24,
+                              height: 24,
+                            )
+                          else if (icon != null)
+                            Icon(
+                              icon,
+                              color: textColor,
+                            ),
+                        ]
+                      : [
+                          if (svgIconPath != null)
+                            SvgPicture.asset(
+                              svgIconPath!,
+                              color: textColor,
+                              width: 24,
+                              height: 24,
+                            )
+                          else if (icon != null)
+                            Icon(
+                              icon,
+                              color: textColor,
+                            ),
+                          const SizedBox(width: 8),
+                          Text(
+                            title,
+                            style: GoogleFonts.poppins(
+                              fontSize: textSize ?? 16,
+                              fontWeight: FontWeight.w500,
+                              color: textColor,
+                            ),
+                          ),
+                        ],
+                ),
         ),
       ),
     );

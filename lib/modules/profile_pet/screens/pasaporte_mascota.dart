@@ -20,7 +20,7 @@ class PasaporteMascota extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pet = _homeController.selectedProfile.value!;
-    var ancho = MediaQuery.of(context).size.width - 100;
+    var ancho = MediaQuery.of(context).size.width;
     var peso = pet.weight.toString().obs;
     final TextEditingController dateController = TextEditingController();
 
@@ -72,6 +72,7 @@ class PasaporteMascota extends StatelessWidget {
             bottom: 0,
             child: SingleChildScrollView(
               child: Container(
+                padding: Styles.paddingAll,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(

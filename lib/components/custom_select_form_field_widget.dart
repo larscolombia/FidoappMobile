@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomSelectFormFieldWidget extends StatefulWidget {
   final String placeholder;
   final String? icon; // Ahora icon es opcional (puede ser null)
+  final String? placeholderSvg;
   final TextEditingController? controller;
   final List<String>? items;
   final bool? enabled;
@@ -15,10 +17,12 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
   final Color? textColor;
   final Color? borderColor; // Nueva propiedad para el color del borde
   final String? label;
+
   const CustomSelectFormFieldWidget({
     super.key,
     required this.placeholder,
     this.icon, // Hacer el icono opcional
+    this.placeholderSvg,
     required this.controller,
     this.items,
     this.enabled,
@@ -160,16 +164,29 @@ class _CustomSelectFormFieldWidgetState
                       ),
                     ),
                     // Condicionar el prefixIcon si el icon es proporcionado
-                    prefixIcon: widget.icon != null
+                    prefixIcon: widget.placeholderSvg != null
                         ? Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                            child: Image.asset(
-                              widget.icon!,
-                              width: 20,
-                              height: 20,
+                            padding: const EdgeInsets.only(
+                              left: 20,
+                              right: 5,
+                            ),
+                            child: SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: SvgPicture.asset(widget.placeholderSvg!),
                             ),
                           )
-                        : null, // Si no se pasa icono, no mostramos nada
+                        : widget.icon != null
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
+                                child: Image.asset(
+                                  widget.icon!,
+                                  width: 20,
+                                  height: 20,
+                                ),
+                              )
+                            : null, // Si no se pasa icono, no mostramos nada
                     labelText:
                         _selectedValue != null ? null : widget.placeholder,
 
