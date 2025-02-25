@@ -1,7 +1,5 @@
-package com.fidoapp.newcustomer
+package com.example.fido_app_customer
 
 import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity: FlutterFragmentActivity() {
-}
+class MainActivity: FlutterActivity()

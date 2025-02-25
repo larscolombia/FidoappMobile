@@ -1,3 +1,9 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services'
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -9,12 +15,18 @@ if (flutterRoot == null) {
     throw GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.google.gms.google-services'
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1'
+}
+
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-// Cargar las propiedades del archivo key.properties
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -58,29 +70,12 @@ android {
     }
 }
 
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+}
+
 flutter {
     source = "../.."
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // Cambiado a kotlin_version
-    implementation 'com.google.firebase:firebase-analytics'
-    
-    // Agregar Firebase Messaging
-    implementation 'com.google.firebase:firebase-messaging:23.1.0'  // Asegúrate de usar la versión más reciente
-
-    // Usa la última BOM disponible para manejar las versiones de Firebase
-    implementation platform('com.google.firebase:firebase-bom:31.2.0') 
-
-    // Otros paquetes
-    implementation 'phonepe.intentsdk.android.release:IntentSDK:2.3.0'
-
-    implementation 'androidx.multidex:multidex:2.0.1'
-}
-
-apply plugin: 'com.google.gms.google-services'
-configurations {
-    all {
-        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
-    }
 }
