@@ -40,6 +40,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true // Agrega esta línea
     }
 
     defaultConfig {
@@ -72,8 +73,8 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3' // Asegúrate de incluir esta línea
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
 }
 
 flutter {
