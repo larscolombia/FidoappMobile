@@ -83,7 +83,7 @@ class _InputTextState extends State<InputText> {
         children: [
           if (widget.label != null)
             Padding(
-              padding: const EdgeInsets.only(left: 5, bottom: 8),
+              padding: const EdgeInsets.only(left: 8, bottom: 8, top: 8),
               child: Text(
                 widget.label ?? 'label',
                 style: TextStyle(
@@ -145,7 +145,7 @@ class _InputTextState extends State<InputText> {
                   contentPadding: widget.isTextArea
                       ? const EdgeInsets.symmetric(vertical: 20, horizontal: 20)
                       : const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                          horizontal: 20, vertical: 20),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide(

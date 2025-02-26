@@ -108,7 +108,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   // Nombre del Usuario
                   Positioned(
-                    bottom: -5,
+                    bottom: 20,
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width - 120,
                       child: Text(
@@ -153,6 +153,8 @@ class ProfileScreen extends StatelessWidget {
                                       MediaQuery.of(context).size.width - 120,
                                   child: BarraBack(
                                       titulo: "Perfil de Usuario",
+                                      size: 20,
+                                      color: const Color(0xFFFF4931),
                                       callback: () {
                                         Navigator.pop(context);
                                       }),
