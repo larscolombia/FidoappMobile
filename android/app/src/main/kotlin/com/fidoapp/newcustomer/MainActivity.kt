@@ -1,5 +1,5 @@
-package com.example.fido_app_customer
+package com.fidoapp.newcustomer
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity()
+class MainActivity: FlutterActivity() {}

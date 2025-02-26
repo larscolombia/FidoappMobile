@@ -75,13 +75,14 @@ class ProfileScreen extends StatelessWidget {
                                                 .startsWith('http')
                                             ? NetworkImage(controller
                                                 .profileImagePath
-                                                .value) // Imagen desde URL
-                                            : FileImage(File(controller
-                                                .profileImagePath
-                                                .value))) // Imagen local
+                                                .value) as ImageProvider<Object>
+                                            : FileImage(
+                                                    File(controller.profileImagePath.value))
+                                                as ImageProvider<Object>)
                                         : const AssetImage(
                                                 'assets/images/avatar.png')
-                                            as ImageProvider, // Imagen predeterminada
+                                            as ImageProvider<Object>,
+                                    // Imagen predeterminada
                                     fit: BoxFit.cover,
                                   ),
                                 ),
