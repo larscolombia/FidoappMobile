@@ -31,7 +31,7 @@ class _UtilitiesState extends State<Utilities> {
       children: [
         // Eliminamos el Center para evitar centrar el contenedor completo
         Container(
-          width: width,
+          width: MediaQuery.of(context).size.width,
           // Aseguramos la alineación del contenido a la izquierda
           alignment: Alignment.centerLeft,
           child: const Text(

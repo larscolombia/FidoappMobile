@@ -5,9 +5,13 @@ import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pacientes.dart';
 import 'package:pawlly/modules/dashboard/screens/pages.dart';
+import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/Diario/index.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
+import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
 import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
@@ -199,14 +203,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ? 'Pacientes'
             : 'Mascotas';
       case 2:
-        return 'Términos y Condiciones';
+        return 'Diario de Mascotas';
       case 3:
-        return 'Políticas de Privacidad';
+        return 'Términos y Condiciones';
       case 4:
-        return 'Sobre la App';
+        return 'Políticas de Privacidad';
       case 5:
-        return 'FidoCoins';
+        return 'Sobre la App';
       case 6:
+        return 'FidoCoins';
+      case 7:
         return 'Cerrar Sesión';
       default:
         return '';
@@ -214,7 +220,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _onItemTap(int index, BuildContext context) {
-    if (index == 6) {
+    if (index == 7) {
       // Get.to(Pacientes());
     }
     if (index == 1) {
@@ -231,7 +237,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           },
         );
       }
-    } else if (index == 6) {
+    } else if (index == 7) {
       // Mostrar el diálogo de confirmación para cerrar sesión
       _showLogoutConfirmationDialog(context);
     } else {
@@ -275,20 +281,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Object _getPageForIndex(int index) {
+    final HomeController homeController = Get.find<HomeController>();
+    final PetActivityController historialClinicoController =
+        Get.put(PetActivityController());
     switch (index) {
       case 0:
         return Routes.PROFILE;
       case 1:
-        return ''; // Devuelve una cadena vacía o cualquier valor que indique que no se debe navegar
+        return '';
+      // Devuelve una cadena vacía o cualquier valor que indique que no se debe navegar
       case 2:
-        return Routes.TERMSCONDITIONS;
+        return Diario();
       case 3:
-        return Routes.PRIVACYPOLICY;
+        return Routes.TERMSCONDITIONS;
       case 4:
-        return SobreAppPage();
+        return Routes.PRIVACYPOLICY;
       case 5:
-        return FideCoin();
+        return SobreAppPage();
       case 6:
+        return FideCoin();
+      case 7:
         return "";
       default:
         return Container();
@@ -303,14 +315,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 1:
         return 'assets/icons/svg/dashicons_pets.svg';
       case 2:
-        return 'assets/icons/svg/note-2.svg';
+        return 'assets/icons/svg/archive-book.svg';
       case 3:
-        return 'assets/icons/svg/book.svg';
+        return 'assets/icons/svg/note-2.svg';
       case 4:
-        return 'assets/icons/svg/info-circle.svg';
+        return 'assets/icons/svg/book.svg';
       case 5:
         return 'assets/icons/svg/info-circle.svg';
       case 6:
+        return 'assets/icons/svg/info-circle.svg';
+      case 7:
         return 'assets/icons/svg/logout.svg';
       default:
         return 'assets/icons/svg/logout.svg';

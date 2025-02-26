@@ -25,7 +25,9 @@ class PrivacyTermsScreen extends StatelessWidget {
           child: Column(
             children: [
               Obx(() => Text(
-                    controller.title.value,
+                    controller.title.value == 'Políticas de Privacidad'
+                        ? 'Políticas de \n Privacidad'
+                        : controller.title.value,
                     style: Styles.joinTitle,
                     textAlign: TextAlign.center,
                   )),
@@ -33,32 +35,6 @@ class PrivacyTermsScreen extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Obx(
-                    () => Container(
-                      margin: const EdgeInsets.only(bottom: 20),
-                      child: ButtonDefaultWidget(
-                        title: locale.value.privacyPolicy,
-                        callback: () => controller.changeTab(0),
-                        widthButtom:
-                            width - 40, // Ajusta el ancho según sea necesario
-                        defaultColor: controller.selectedTab.value == 0
-                            ? const Color.fromARGB(255, 252, 146,
-                                20) // Color para la pestaña seleccionada
-                            : const Color.fromARGB(255, 255, 255,
-                                255), // Color para la pestaña no seleccionada
-                        border: controller.selectedTab.value == 0
-                            ? null
-                            : const BorderSide(
-                                color: Color.fromARGB(255, 247, 133,
-                                    28)), // Borde para la pestaña no seleccionada
-                        textColor: controller.selectedTab.value == 0
-                            ? Colors.white
-                            : Styles
-                                .blackColor, // Color del texto para la pestaña no seleccionada
-                        textSize: 14,
-                      ),
-                    ),
-                  ),
                   Obx(
                     () => Container(
                       margin: const EdgeInsets.only(bottom: 20),
@@ -82,6 +58,32 @@ class PrivacyTermsScreen extends StatelessWidget {
                             ? Colors.white
                             : Styles.blackColor,
                         // Color del texto para la pestaña no seleccionada
+                        textSize: 14,
+                      ),
+                    ),
+                  ),
+                  Obx(
+                    () => Container(
+                      margin: const EdgeInsets.only(bottom: 20),
+                      child: ButtonDefaultWidget(
+                        title: locale.value.privacyPolicy,
+                        callback: () => controller.changeTab(0),
+                        widthButtom:
+                            width - 40, // Ajusta el ancho según sea necesario
+                        defaultColor: controller.selectedTab.value == 0
+                            ? const Color.fromARGB(255, 252, 146,
+                                20) // Color para la pestaña seleccionada
+                            : const Color.fromARGB(255, 255, 255,
+                                255), // Color para la pestaña no seleccionada
+                        border: controller.selectedTab.value == 0
+                            ? null
+                            : const BorderSide(
+                                color: Color.fromARGB(255, 247, 133,
+                                    28)), // Borde para la pestaña no seleccionada
+                        textColor: controller.selectedTab.value == 0
+                            ? Colors.white
+                            : Styles
+                                .blackColor, // Color del texto para la pestaña no seleccionada
                         textSize: 14,
                       ),
                     ),

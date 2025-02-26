@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/custom_checkbox.dart';
@@ -56,7 +57,13 @@ class ProfileModal extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () => Navigator.pop(context),
-                        child: Image.asset('assets/icons/x.png'),
+                        child: SvgPicture.asset(
+                          'assets/icons/svg/x.svg',
+                          width: 24, // Ajusta el tamaño si es necesario
+                          height: 24,
+                          colorFilter: ColorFilter.mode(Color(0XFFBEBEBE),
+                              BlendMode.srcIn), // Aplica color rojo
+                        ),
                       ),
                     ],
                   ),
@@ -71,17 +78,15 @@ class ProfileModal extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  controller.SelectType == 1
-                      ? const Text(
-                          'Seleccionar el perfil de la mascota la cual quieres ver la información',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      : const SizedBox(),
+                  const Text(
+                    'Seleccionar el perfil de la mascota la cual quieres ver la información',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
@@ -96,7 +101,7 @@ class ProfileModal extends StatelessWidget {
                           fontSize: 14,
                           color: Styles.primaryColor,
                           fontFamily: 'Lato',
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ],

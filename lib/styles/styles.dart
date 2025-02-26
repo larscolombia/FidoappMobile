@@ -13,7 +13,7 @@ class Styles {
   static const fuente2 = 'PoetsenOne';
   static const greyTextColor = Color.fromRGBO(85, 85, 85, 1);
   static const greyDivider = Color.fromRGBO(234, 234, 234, 1);
-  static const iconColorBack = Color(0xFFFCBA67);
+  static const iconColorBack = Color(0xFFFC9214);
   static const whiteColor = Colors.white;
   static const blackColor = Colors.black;
   static double tamano(context) {
@@ -109,10 +109,11 @@ class Styles {
     color: Color(0xFF383838),
     fontWeight: FontWeight.w500,
   );
+
   static final boxTitleDashboard = GoogleFonts.lato(
     fontWeight: FontWeight.w700,
     fontSize: 14,
-    color: greyTextColor,
+    color: const Color(0xFF383838),
   );
 
   static final textRed = GoogleFonts.poppins(
@@ -134,10 +135,10 @@ class Styles {
     fontWeight: FontWeight.w400,
     color: primaryColor,
   );
-  static TextStyle titulorecursos = TextStyle(
+  static TextStyle titulorecursos = const TextStyle(
     fontFamily: 'PoetsenOne',
     fontSize: 20,
-    fontWeight: FontWeight.w800,
+    fontWeight: FontWeight.w400,
     color: Color(0xFFFF4931),
   );
 
