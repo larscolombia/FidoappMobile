@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -109,6 +110,8 @@ class SignInScreen extends StatelessWidget {
                                       color: Color(0xff535251),
                                       fontFamily: Recursos.fuente1,
                                       fontWeight: FontWeight.w900,
+                                      height: 18 /
+                                          14, // Ajusta el lineHeight a 18px manteniendo el fontSize en 14px
                                     ),
                                   ),
                                 ),
@@ -122,24 +125,25 @@ class SignInScreen extends StatelessWidget {
                           Container(
                             margin: const EdgeInsets.only(left: 10.0),
                             child: const Divider(
-                              color: borderColor,
-                              indent: .2,
-                              thickness: .5,
+                              height: 12,
+                              color: Styles.greyDivider,
+                              thickness: 1,
                             ),
                           ).expand(),
                           const Text('O',
                               style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
+                                color: Recursos.TextColorBlackMedium,
+                                fontSize: 16,
                                 fontFamily: 'Lato',
-                                fontWeight: FontWeight.w900,
+                                fontWeight: FontWeight.w400,
+                                height: 18 / 14,
                               )).paddingSymmetric(horizontal: 20),
                           Container(
                             margin: const EdgeInsets.only(right: 10.0),
                             child: const Divider(
-                              indent: .2,
-                              thickness: .5,
-                              color: borderColor,
+                              height: 12,
+                              color: Styles.greyDivider,
+                              thickness: 1,
                             ),
                           ).expand(),
                         ],
@@ -149,7 +153,7 @@ class SignInScreen extends StatelessWidget {
                         children: [
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            height: 54,
+                            height: 58,
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color: const Color.fromRGBO(255, 73, 49, 1)),
@@ -164,9 +168,10 @@ class SignInScreen extends StatelessWidget {
                                 label: Text(
                                   locale.value.signInWithGoogle,
                                   style: const TextStyle(
-                                    color: Colors.black,
+                                    color: Color(0xFF535251),
                                     fontFamily: 'Lato',
                                     fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 )),
                           ),
@@ -183,14 +188,17 @@ class SignInScreen extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontFamily: 'Lato',
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w500,
+                                height: 18 /
+                                    14, // Ajusta el lineHeight a 18px manteniendo el fontSize en 14px
                                 color: Color(0xff383838),
                               ),
                               textAlign: TextAlign.center,
                             ),
                           ),
                           Container(
-                            margin: const EdgeInsets.only(top: 5.0),
+                            margin:
+                                const EdgeInsets.only(top: 5.0, bottom: 15.0),
                             child: GestureDetector(
                               onTap: () {
                                 Get.toNamed(
@@ -201,9 +209,11 @@ class SignInScreen extends StatelessWidget {
                                 'Regístrate',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w900,
+                                  fontWeight: FontWeight.w800,
                                   fontFamily: Recursos.fuente1,
                                   color: Recursos.TextColorBlackMedium,
+                                  height: 18 /
+                                      14, // Ajusta el lineHeight a 18px manteniendo el fontSize en 14px
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -215,7 +225,7 @@ class SignInScreen extends StatelessWidget {
                             thickness: 1,
                           ),
                           Container(
-                            padding: Styles.paddingT10B10,
+                            padding: const EdgeInsets.only(right: 10),
                             child: ButtonBack(
                               text: locale.value.home,
                             ),

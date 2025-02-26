@@ -69,7 +69,7 @@ class Assets {
   static const String iconsIcLock = 'assets/icons/ic_lock.png';
   static const String iconsIcLogin = 'assets/icons/ic_login.png';
   static const String iconsIcMail = 'assets/icons/ic_mail.png';
-  static const String flechita = 'assets/images/flechita.png';
+  static const String flechita = 'assets/images/flechita.svg';
 
   static const String iconsIcMyAddress = 'assets/icons/ic_my_address.png';
   static const String iconsIcNavigate = 'assets/icons/ic_navigate.png';

@@ -186,7 +186,7 @@ class SignUpScreen extends GetView<SignUpController> {
                             Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Obx(
                                       () => Container(
@@ -214,7 +214,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                                       BorderRadius.all(
                                                           Radius.circular(5))),
                                           side: const BorderSide(
-                                              color: secondaryTextColor,
+                                              color: Color(0XFFBEBEBE),
                                               width: 1.5),
                                           title: RichTextWidget(
                                             list: [
@@ -222,20 +222,20 @@ class SignUpScreen extends GetView<SignUpController> {
                                                 text:
                                                     '${locale.value.iAcceptThe} ',
                                                 style: const TextStyle(
-                                                    fontSize: 14,
-                                                    fontFamily: "Lato",
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Color.fromRGBO(
-                                                        83, 82, 81, 1)),
+                                                  fontSize: 14,
+                                                  fontFamily: "Lato",
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Color(0XFF535251),
+                                                ),
                                               ),
                                               TextSpan(
                                                 text: locale
                                                     .value.termsAndConditions,
                                                 style: const TextStyle(
+                                                  fontSize: 14,
                                                   fontFamily: 'Lato',
                                                   fontWeight: FontWeight.w700,
-                                                  color: Color.fromRGBO(
-                                                      255, 73, 49, 1),
+                                                  color: Color(0XFFFF4831),
                                                 ),
                                                 recognizer:
                                                     TapGestureRecognizer()

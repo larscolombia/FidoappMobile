@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/generated/assets.dart';
@@ -13,15 +14,16 @@ class ButtonBack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SizedBox(
+       SizedBox(
           height: 65,
-          child: Image.asset(
-            Assets.flechita,
+          child: SvgPicture.asset(
+            Assets
+                .flechita, // Asegúrate de que 'flechita' sea un archivo SVG en tu carpeta de assets
             height: 20,
             width: 16,
             fit: BoxFit.contain,
-            errorBuilder: (context, error, stackTrace) =>
-                const Icon(Icons.g_mobiledata_rounded),
+            placeholderBuilder: (context) => const Icon(Icons
+                .g_mobiledata_rounded), // Usamos un icono mientras se carga
           ),
         ),
         SizedBox(
@@ -34,7 +36,7 @@ class ButtonBack extends StatelessWidget {
               text,
               textAlign: TextAlign.start,
               style: GoogleFonts.lato(
-                color: Styles.greyTextColor,
+                color: const Color(0XFF383838),
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
