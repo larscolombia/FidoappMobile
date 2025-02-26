@@ -131,7 +131,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                     Expanded(
                       child: ListView.builder(
-                        itemCount: 7,
+                        itemCount: 8,
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {

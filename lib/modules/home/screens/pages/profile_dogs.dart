@@ -63,7 +63,7 @@ class PerfilMascotas extends StatelessWidget {
               );
             },
       child: Container(
-        height: 72,
+        height: 62,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           color: Styles.fiveColor,
