@@ -29,7 +29,7 @@ class AssociatedPersonsModal extends StatelessWidget {
     return FractionallySizedBox(
       heightFactor: 0.7, // Ocupa el 70% de la pantalla
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(30),
         decoration: const BoxDecoration(
           color: Styles.whiteColor, // Fondo del modal
           borderRadius: BorderRadius.only(
@@ -38,22 +38,23 @@ class AssociatedPersonsModal extends StatelessWidget {
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Título
             const Text(
-              "Asociar Persona a esta Mascota",
+              "Personas Asociadas a\nesta Mascota",
               style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
                 fontFamily: 'lato',
+                color: Colors.black,
               ),
             ),
 
             // Input de correo electrónico (sin Obx ya que no se utiliza ninguna variable reactiva aquí)
             Center(
               child: Container(
-                width: MediaQuery.of(context).size.width - 100,
+                width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.only(top: 20),
                 child: InputText(
                   placeholderImage: Image.asset('assets/icons/email.png'),
@@ -68,7 +69,7 @@ class AssociatedPersonsModal extends StatelessWidget {
             // Selector del rol
             Center(
               child: Container(
-                width: tamano,
+                width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.only(top: 20),
                 child: CustomSelectFormFieldWidget(
                   // Si controller.userTypeCont es reactivo y deseas que el widget se actualice al cambiar su valor,
@@ -111,7 +112,7 @@ class AssociatedPersonsModal extends StatelessWidget {
             // Título: "Invitados:"
             Center(
               child: SizedBox(
-                width: tamano,
+                width: MediaQuery.of(context).size.width,
                 child: const Text(
                   "Invitados:",
                   style: TextStyle(
@@ -143,7 +144,7 @@ class AssociatedPersonsModal extends StatelessWidget {
                 }
                 return Center(
                   child: Container(
-                    width: tamano,
+                    width: MediaQuery.of(context).size.width,
                     child: ListView(
                       children: userController.filteredUsers.map((person) {
                         return Card(

@@ -264,41 +264,54 @@ class InformationTab extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 22),
               // Personas asociadas a la mascota
               Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      'Personas Asociadas a esta Mascota',
-                      style: Styles.textTitleHome,
-                    ),
+                    child: Text('Personas Asociadas a\nesta Mascota',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontFamily: 'Lato',
+                          height: 1.3,
+                        )),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
+                  SizedBox(
+                    width: 44, // Ancho fijo
+                    height: 44, // Alto fijo
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
                           ),
+                          builder: (context) {
+                            return AssociatedPersonsModal(
+                                controller: controller);
+                          },
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFFC9214),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        builder: (context) {
-                          return AssociatedPersonsModal(controller: controller);
-                        },
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Styles.iconColorBack,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                        padding: EdgeInsets.zero,
+                        shadowColor: Colors.transparent, // Elimina la sombra
+                        elevation: 0, // Evita cualquier sombra residual
                       ),
+                      child: const Icon(Icons.add,
+                          color: Colors.white, size: 24), // Centrado
                     ),
-                    child: const Icon(Icons.add, color: Colors.white),
                   ),
                 ],
               ),
+
               const SizedBox(height: 10),
 
               Column(
@@ -352,13 +365,25 @@ class InformationTab extends StatelessWidget {
                           ),
                           title: Text(
                             person['name'] ?? '',
-                            style: Styles.textProfile14w700,
+                            style: TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black,
+                            ),
                           ),
                           subtitle: Text(
                             person['relation'] ?? '',
-                            style: Styles.textProfile12w400,
+                            style: TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0XFFFF4931),
+                            ),
                           ),
                           trailing: const Icon(
+                            size: 15,
+                            weight: 50,
                             Icons.arrow_forward_ios,
                             color: Styles.iconColorBack,
                           ),
