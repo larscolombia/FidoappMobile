@@ -89,7 +89,7 @@ class Styles {
   static final secondTextTitle = GoogleFonts.lato(
     fontWeight: FontWeight.w400,
     fontSize: 14,
-    color: greyTextColor,
+    color: Color(0XFF383838),
   );
 
   static final boxTextTitleHome = GoogleFonts.lato(

@@ -51,11 +51,17 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                       children: [
                         Text(
                           locale.value.passwordRecovery,
-                          style: Styles.joinTitle,
+                          style: const TextStyle(
+                            fontFamily: 'PoetsenOne',
+                            fontSize: 32,
+                            fontWeight: FontWeight.w400,
+                            height: 1.2,
+                            color: Color(0xFFFF4931),
+                          ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(
-                          height: 26,
+                          height: 22,
                         ),
                         SizedBox(
                           width: width * 0.8,
@@ -65,10 +71,12 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        32.height,
+                        const SizedBox(
+                          height: 10,
+                        ),
                         const Divider(
                           height: 16,
-                          color: Styles.greyDivider,
+                          color: Color(0XFFDFDFDF),
                           thickness: 1,
                         ),
                         const SizedBox(
@@ -76,9 +84,11 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                         ),
                         Container(
                           child: CustomTextFormFieldWidget(
-                              controller: controller.emailCont,
-                              placeholder: locale.value.email,
-                              icon: 'assets/icons/email.png'),
+                            controller: controller.emailCont,
+                            placeholder: locale.value.email,
+                            placeholderSvg: 'assets/icons/svg/sms.svg',
+                            colorSVG: Color(0xFFFCBA67),
+                          ),
                         ),
                         const SizedBox(
                           height: 20,
@@ -101,51 +111,62 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                '${locale.value.returnTo} ',
+                                locale.value
+                                    .returnTo, // Eliminado el espacio extra
                                 style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Color.fromRGBO(83, 82, 81, 1),
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w400),
+                                  fontSize: 14,
+                                  color: Color(0xFF383838),
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                               TextButton(
+                                style: TextButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+
+                                  tapTargetSize: MaterialTapTargetSize
+                                      .shrinkWrap, // Reduce el área táctil
+                                ),
                                 onPressed: () {
                                   Get.back();
                                 },
                                 child: Text(
                                   locale.value.signIn,
                                   style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color.fromRGBO(83, 82, 81, 1),
-                                      fontFamily: 'Lato',
-                                      fontWeight: FontWeight.w800),
+                                    fontSize: 14,
+                                    color: Color(0xFF383838),
+                                    fontFamily: 'Lato',
+                                    fontWeight: FontWeight.w800,
+                                  ),
                                 ),
                               ),
+                              SizedBox(
+                                width: 2,
+                              ),
                               Container(
-                                width: 1, // Grosor de la línea
-                                height: 10, // Altura de la línea
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 6), // Espacio en los lados
-                                color: Styles.greyColor, // Color de la línea
+                                width: 2, // Grosor de la línea
+                                height: 14, // Altura de la línea
+                                color: Color(0xFFDFDFDF), // Color de la línea
                               ),
                               TextButton(
                                 onPressed: () {
                                   Get.toNamed(Routes.SIGNUP);
                                 },
                                 child: Text(
-                                  locale.value.signUp,
+                                  'Registrate',
                                   style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color.fromRGBO(83, 82, 81, 1),
-                                      fontFamily: 'Lato',
-                                      fontWeight: FontWeight.w800),
+                                    fontSize: 14,
+                                    color: Color(0xFF383838),
+                                    fontFamily: 'Lato',
+                                    fontWeight: FontWeight.w800,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
                         const Divider(
-                          height: 16,
+                          height: 18,
                           color: Styles.greyDivider,
                           thickness: 1,
                         ),
