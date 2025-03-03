@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/input_busqueda.dart';
 import 'package:pawlly/modules/components/input_text.dart';
@@ -65,6 +66,20 @@ class CursosEntrenamiento extends StatelessWidget {
                           TrainingHorizontal(trainingList: miscursos.courses),
                     ),
                     SizedBox(height: margen),
+                    Container(
+                      width: ancho,
+                      child: const Text(
+                        'Cursos y Programas de Entrenamiento',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Styles.primaryColor,
+                          fontWeight: FontWeight.w400,
+                          height: 1.1, // Ajusta la altura de la línea
+                          fontFamily: 'PoetsenOne',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
                     Container(
                       width: ancho,
                       child: Row(

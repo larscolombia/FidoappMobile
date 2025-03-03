@@ -16,7 +16,7 @@ class VideoList extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            width: 305,
+            width: Styles.widh_pantalla,
             child: InputTextWithIcon(
               hintText: 'Realiza tu búsqueda',
               iconPath: 'assets/icons/search.png',
@@ -61,7 +61,7 @@ class VideoList extends StatelessWidget {
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 16),
                       padding: const EdgeInsets.all(12),
-                      width: 300,
+                      width: Styles.widh_pantalla,
                       decoration: BoxDecoration(
                         color: Styles.whiteColor,
                         borderRadius: BorderRadius.circular(10),

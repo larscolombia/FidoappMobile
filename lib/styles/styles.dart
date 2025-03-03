@@ -16,6 +16,7 @@ class Styles {
   static const iconColorBack = Color(0xFFFC9214);
   static const whiteColor = Colors.white;
   static const blackColor = Colors.black;
+  static const widh_pantalla = 380.00;
   static double tamano(context) {
     return MediaQuery.of(context).size.width - 100;
   }

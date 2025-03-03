@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/input_busqueda.dart';
 import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -16,22 +17,16 @@ class EbooksList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SizedBox(
-        width: 350,
+        width: 380,
         child: Column(
           children: [
             SizedBox(
-              width: 350,
-              child: InputTextWithIcon(
-                hintText: 'Realiza tu búsqueda',
-                iconPath: 'assets/icons/search.png',
-                iconPosition: IconPosition.left,
-                height: 60.0, // Altura personalizada
-                onChanged: (value) {
-                  controller.filterEBooks(value);
+              width: 380,
+              child: InputBusqueda(onChanged: (value) {
+                controller.filterEBooks(value);
 
-                  print('search: $value');
-                },
-              ),
+                print('search: $value');
+              }),
             ),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -61,7 +56,7 @@ class EbooksList extends StatelessWidget {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, // Dos columnas
                         crossAxisSpacing:
-                            16, // Espacio horizontal entre elementos
+                            15, // Espacio horizontal entre elementos
                         mainAxisSpacing: 10, // Espacio vertical entre filas
                         childAspectRatio:
                             0.7, // Ajuste de la proporción de los elementos
@@ -108,8 +103,8 @@ class BooksComponents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
-      height: 250, // Ajusta la altura del contenedor
-      width: 125,
+      height: 278, // Ajusta la altura del contenedor
+      width: 148,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
@@ -123,8 +118,8 @@ class BooksComponents extends StatelessWidget {
         children: [
           Center(
             child: Container(
-              height: 114,
-              width: 80,
+              height: 146,
+              width: 95,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -156,9 +151,9 @@ class BooksComponents extends StatelessWidget {
               style: const TextStyle(
                 height: 1.2,
                 fontFamily: 'Lato',
-                fontSize: 14,
+                fontSize: 14.14,
                 fontWeight: FontWeight.w700,
-                color: Colors.black,
+                color: Color(0XFF383838),
               ),
             ),
           ),

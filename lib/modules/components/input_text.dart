@@ -12,6 +12,7 @@ class InputText extends StatefulWidget {
     super.key,
     this.label,
     this.placeholder,
+    this.placeHolderColor = false,
     this.placeholderImage,
     this.placeholderSvg,
     this.placeholderFontFamily,
@@ -33,6 +34,7 @@ class InputText extends StatefulWidget {
 
   final FontWeight? fw;
   final String? placeholder;
+  final bool placeHolderColor;
   final String? label;
   final String? placeholderFontFamily;
   final Image? placeholderImage;
@@ -135,11 +137,13 @@ class _InputTextState extends State<InputText> {
                     fontFamily: 'Lato',
                     fontWeight: FontWeight.w400,
                   ),
-                  labelStyle: const TextStyle(
+                  labelStyle: TextStyle(
                     fontSize: 14,
-                    color: Colors.black,
+                    color: widget.placeHolderColor == true
+                        ? const Color(0XFF959595)
+                        : Colors.black,
                     fontFamily: 'Lato',
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w500,
                   ),
                   alignLabelWithHint: widget.isTextArea,
                   contentPadding: widget.isTextArea

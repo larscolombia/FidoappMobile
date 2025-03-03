@@ -227,15 +227,15 @@ class Selecboton extends StatelessWidget {
         height: 34,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: selected ? Styles.fiveColor : Colors.white,
+          color: selected ? Color(0XFFFC9214) : Colors.white,
         ),
         child: Center(
           child: Text(
             titulo,
             style: TextStyle(
               color: selected ? Colors.white : Colors.black,
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
               fontFamily: 'Lato',
             ),
           ),

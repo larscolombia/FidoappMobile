@@ -24,6 +24,7 @@ class EntertainmentBlogs extends StatelessWidget {
             fontSize: 20,
             color: Styles.primaryColor,
             fontFamily: 'PoetsenOne',
+            fontWeight: FontWeight.w400,
           ),
           textAlign: TextAlign.left,
         ),
@@ -136,7 +137,8 @@ class EntertainmentBlogs extends StatelessWidget {
                         SizedBox(
                           height: 14,
                           child: Text(
-                            video.tags ?? 'Videos de Entrenamiento',
+                            _capitalizeFirstLetter(
+                                video.tags ?? 'Videos de Entrenamiento'),
                             style: const TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 12,
@@ -145,6 +147,7 @@ class EntertainmentBlogs extends StatelessWidget {
                             ),
                           ),
                         ),
+
                         const SizedBox(height: 4),
                         // Fecha y cantidad de visualizaciones
                         Row(
@@ -154,8 +157,8 @@ class EntertainmentBlogs extends StatelessWidget {
                               style: const TextStyle(
                                 fontFamily: 'Lato',
                                 fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Styles.greyTextColor,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0XFF959595),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -170,8 +173,8 @@ class EntertainmentBlogs extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: 'Lato',
                                 fontSize: 12,
-                                fontWeight: FontWeight.w400,
-                                color: Styles.greyTextColor,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0XFF959595),
                               ),
                             ),
                           ],
@@ -184,9 +187,9 @@ class EntertainmentBlogs extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontFamily: 'Lato',
-                              fontSize: 14,
+                              fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: Styles.greyTextColor,
+                              color: Color(0XFF383838),
                             ),
                           ),
                         ),
@@ -216,7 +219,7 @@ class EntertainmentBlogs extends StatelessWidget {
                   style: TextStyle(
                     fontFamily: 'Lato',
                     fontSize: 14,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w500,
                     color: Styles.iconColorBack,
                   ),
                 ),
@@ -224,7 +227,7 @@ class EntertainmentBlogs extends StatelessWidget {
               const SizedBox(width: 5),
               const Icon(
                 Icons.arrow_forward_ios,
-                size: 16,
+                size: 12,
                 color: Styles.iconColorBack,
               ),
             ],
@@ -232,5 +235,10 @@ class EntertainmentBlogs extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1);
   }
 }

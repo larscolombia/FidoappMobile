@@ -114,7 +114,7 @@ class _LongPressButtonState extends State<LongPressButton> {
               decoration: BoxDecoration(
                 color: _isPressed
                     ? const Color(0xFFFF7A66)
-                    : Colors.white, // Rojo más suave al presionar
+                    : const Color(0xFFFC9214), // Rojo más suave al presionar
                 border: Border.all(
                   color: Styles.iconColorBack,
                   width: 0.5,
@@ -134,7 +134,7 @@ class _LongPressButtonState extends State<LongPressButton> {
               child: const Center(
                 child: Icon(
                   Icons.report,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ),

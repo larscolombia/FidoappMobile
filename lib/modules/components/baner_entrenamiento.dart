@@ -11,6 +11,7 @@ class BanerEntrenamiento extends StatelessWidget {
     this.normalizedProgress = 0.0,
     required this.nombre,
     this.dificultad,
+    this.ishorizontal = false,
     required this.callback,
   });
 
@@ -18,6 +19,7 @@ class BanerEntrenamiento extends StatelessWidget {
   final String nombre;
   final String? dificultad;
   final double normalizedProgress;
+  final bool ishorizontal;
   final void Function()? callback;
 
   String dificultadValue(String dificultad) {
@@ -35,9 +37,22 @@ class BanerEntrenamiento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double imageWidth = this.ishorizontal ? screenWidth * 0.30 : screenWidth * 0.35; // Ajuste dinámico
+    final double imageHeight =
+        imageWidth * (122 / 131); // Mantiene la proporción
+
+    double aspectRatio = 118 / 131;
+    double minWidth = 100; // Define un mínimo
+    double maxWidth = 300; // Define un máximo
+
+    double width =
+        (MediaQuery.of(context).size.width * 0.33).clamp(minWidth, maxWidth);
+    double height = width / aspectRatio;
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(18),
+      margin: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Styles.whiteColor,
         borderRadius: BorderRadius.circular(8.42),
@@ -48,15 +63,15 @@ class BanerEntrenamiento extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Imagen
+          // Imagen con proporción dinámica
           Container(
+            width: imageWidth,
+            height: imageHeight,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
             ),
-            width: 104,
-            height: 127,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(7.72),
               child: Image.network(
                 imagen,
                 fit: BoxFit.cover,
@@ -73,7 +88,7 @@ class BanerEntrenamiento extends StatelessWidget {
                 },
                 errorBuilder: (context, error, stackTrace) {
                   return Image.asset(
-                    'assets/images/404.jpg', // Imagen de error
+                    'assets/images/404.jpg',
                     fit: BoxFit.cover,
                   );
                 },
@@ -84,7 +99,7 @@ class BanerEntrenamiento extends StatelessWidget {
           Expanded(
             child: Container(
               margin: const EdgeInsets.only(left: 12),
-              height: 127,
+              height: imageHeight + 9, // Ajuste dinámico
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,24 +110,22 @@ class BanerEntrenamiento extends StatelessWidget {
                     style: const TextStyle(
                       fontFamily: 'Lato',
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w400,
                       color: Styles.iconColorBack,
                     ),
                   ),
                   const SizedBox(height: 1),
                   // Nombre del curso
-                  SizedBox(
-                    height: 35,
+                  Flexible(
                     child: Text(
                       nombre,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         fontFamily: 'Lato',
-                        height: 1.2,
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
-                        color: Styles.greyTextColor,
+                        color: Color(0xFF383838),
                       ),
                     ),
                   ),
@@ -121,7 +134,7 @@ class BanerEntrenamiento extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
-                      color: Recursos.ColorTextoTitulo,
+                      color: Color(0xFF383838),
                       fontFamily: Recursos.fuente1,
                     ),
                   ),
@@ -131,15 +144,15 @@ class BanerEntrenamiento extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 101,
+                        width: imageWidth * 0.8, // Ajuste dinámico
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12.0),
+                          borderRadius: BorderRadius.circular(27.0),
                           child: LinearProgressIndicator(
                             value: normalizedProgress,
-                            backgroundColor:
-                                Styles.greyTextColor.withOpacity(0.2),
+                            backgroundColor: const Color(0XFFECECEC),
                             color: Styles.iconColorBack,
                             minHeight: 6,
+                            borderRadius: BorderRadius.circular(27.0),
                           ),
                         ),
                       ),
@@ -148,13 +161,14 @@ class BanerEntrenamiento extends StatelessWidget {
                         style: const TextStyle(
                           fontFamily: 'Lato',
                           fontSize: 12,
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w800,
                           color: Styles.iconColorBack,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: height * 0.10),
+
                   SizedBox(
                     height: 32,
                     child: ElevatedButton(
@@ -165,28 +179,20 @@ class BanerEntrenamiento extends StatelessWidget {
                           horizontal: 35,
                           vertical: 8,
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
+                        elevation: 0,
                       ),
                       child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Ver detalles',
+                            'Seguir viendo',
                             style: TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 12,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w400,
                               color: Color(0xffFFFFFF),
                             ),
-                          ),
-                          SizedBox(width: 4),
-                          Icon(
-                            Icons.arrow_forward_ios,
-                            size: 8,
-                            color: Styles.whiteColor,
                           ),
                         ],
                       ),

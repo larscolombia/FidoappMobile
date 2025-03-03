@@ -20,6 +20,8 @@ class TrainingHorizontal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double imageWidth = MediaQuery.of(context).size.width * 0.5;
+    final double cardSliderWidth = MediaQuery.of(context).size.width * 0.80;
+
     final CourseController controller = Get.put(CourseController());
 
     return SingleChildScrollView(
@@ -32,12 +34,13 @@ class TrainingHorizontal extends StatelessWidget {
               rawProgress > 1 ? rawProgress / 100 : rawProgress;
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 8),
-            width: 316,
+            width: cardSliderWidth,
             child: BanerEntrenamiento(
               imagen: trainingModel.image ?? '',
               nombre: trainingModel.name,
               dificultad: trainingModel.difficulty,
               normalizedProgress: normalizedProgress,
+              ishorizontal: true,
               callback: () {
                 Get.to(() =>
                     CursosDetalles(cursoId: "${trainingModel.id.toString()}"));
