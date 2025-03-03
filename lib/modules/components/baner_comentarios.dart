@@ -40,10 +40,11 @@ class BanerComentarios extends StatelessWidget {
             const Text(
               '¿Quieres dejar una reseña?',
               style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
-                  fontFamily: 'Lato',
-                  fontWeight: FontWeight.w800),
+                fontSize: 14,
+                color: Colors.black,
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.w700,
+              ),
             ),
             RatingBar.builder(
               initialRating: 0,
@@ -52,6 +53,7 @@ class BanerComentarios extends StatelessWidget {
               allowHalfRating: true,
               itemCount: 5,
               itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+              itemSize: 30,
               itemBuilder: (context, _) => const Icon(
                 Icons.star,
                 color: Color(0xffFC9214),
@@ -59,12 +61,17 @@ class BanerComentarios extends StatelessWidget {
               onRatingUpdate: onRatingUpdate,
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              height: 66,
-              width: 276,
-              child: InputText(
-                onChanged: eventTextChanged,
-                placeholder: 'Describe tu experiencia',
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 276,
+                child: InputText(
+                  onChanged: eventTextChanged,
+                  placeholder: 'Describe tu experiencia',
+                  labelColor: Color(0XFF383838),
+                  height: 36,
+                  fondoColor: Color(0XFFFeF7E5),
+                  borderColor: Color(0XFFFC9214),
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -98,11 +105,11 @@ class Estadisticas extends StatelessWidget {
     // TODO: implement build
     return Container(
       width: 305,
-      height: 155,
+      height: 160,
       decoration: BoxDecoration(
-        color: Styles.colorContainer,
+        color: Color(0XFFFeF7e5),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Styles.fiveColor, width: .5),
+        border: Border.all(color: Color(0XFFFC9214), width: .4),
       ),
       child: Padding(
         padding: const EdgeInsets.all(26),
@@ -115,35 +122,55 @@ class Estadisticas extends StatelessWidget {
                   fontSize: 14,
                   color: Colors.black,
                   fontFamily: 'Lato',
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                 )),
             Row(
               children: [
                 RatingBar.builder(
                   initialRating: double.parse(calificacion ?? '0'),
                   minRating: 1,
-                  itemSize: 18,
+                  itemSize: 20,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   itemCount: 5,
                   itemBuilder: (context, _) => const Icon(
                     Icons.star,
-                    color: Colors.amber,
+                    color: Color(0XFFFc9214),
                   ),
                   onRatingUpdate: (val) {},
                 ),
                 const SizedBox(width: 10),
-                Text(
-                  '${double.parse(calificacion).toStringAsFixed(1)} Calificación',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.black,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
+                Row(
+                  children: [
+                    Text(
+                      '${double.parse(calificacion).toStringAsFixed(1)}',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0XFF383838),
+                        fontFamily: 'Lato',
+                        fontWeight:
+                            FontWeight.w800, // Puntaje con fontWeight 800
+                      ),
+                    ),
+                    const SizedBox(
+                        width:
+                            4), // Espacio entre el puntaje y la palabra "Calificación"
+                    Text(
+                      'Calificación',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0XFF383838),
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight
+                            .w400, // Texto "Calificación" con fontWeight 400
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
             Container(
@@ -164,23 +191,26 @@ class Estadisticas extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
-                      color: Styles.fiveColor,
+                      color: Color(0xFFFC9214),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('$comentarios comentarios',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                            fontFamily: 'Lato',
-                            fontWeight: FontWeight.w800,
-                          )),
+                      child: Text(
+                        '$comentarios comentarios',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 15),
-                Expanded(
+                Flexible(
+                  // Usamos Flexible en lugar de Expanded
                   child: Container(
                     child: CircularAvatarsRow(
                       imageUrls: avatars ?? [],
@@ -188,7 +218,7 @@ class Estadisticas extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
+            )
           ],
         ),
       ),

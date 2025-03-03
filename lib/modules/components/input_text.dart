@@ -27,6 +27,9 @@ class InputText extends StatefulWidget {
     this.initialValue,
     this.fondoColor = Styles.colorContainer,
     this.borderColor = Colors.transparent,
+    this.labelColor = null,
+    this.labelFontSize = null,
+    this.height = null,
     this.onImagePicked,
     this.isTextArea = false,
     this.fw,
@@ -50,6 +53,9 @@ class InputText extends StatefulWidget {
   final String? initialValue;
   final Color? fondoColor;
   final Color borderColor;
+  final Color? labelColor;
+  final double? labelFontSize;
+  final double? height;
   final ValueChanged<File>? onImagePicked;
   final bool isTextArea;
 
@@ -89,8 +95,8 @@ class _InputTextState extends State<InputText> {
               child: Text(
                 widget.label ?? 'label',
                 style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black,
+                  fontSize: widget.labelFontSize ?? 14,
+                  color: widget.labelColor ?? Colors.black,
                   fontFamily: 'Lato',
                   fontWeight: widget.fw ?? FontWeight.w500,
                 ),
@@ -121,8 +127,8 @@ class _InputTextState extends State<InputText> {
                 minLines: widget.isTextArea ? 5 : 1,
                 style: const TextStyle(
                   fontFamily: 'Lato',
-                  fontSize: 14,
-                  color: Colors.black,
+                  fontSize: 13,
+                  color: Color(0XFF383838),
                 ),
                 decoration: InputDecoration(
                   labelText: widget.isTextArea

@@ -197,7 +197,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   String _getItemTitle(int index) {
     switch (index) {
       case 0:
-        return 'Mi Perfil';
+        return 'Mi perfil';
       case 1:
         return roleUser.roleUser() == roleUser.tipoUsuario('vet')
             ? 'Pacientes'
@@ -207,9 +207,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 3:
         return 'Términos y Condiciones';
       case 4:
-        return 'Políticas de Privacidad';
+        return 'Políticas de privacidad';
       case 5:
-        return 'Sobre la App';
+        return 'Sobre la app';
       case 6:
         return 'FidoCoins';
       case 7:
