@@ -49,14 +49,15 @@ class ButtonDefaultWidget extends StatelessWidget {
     return Container(
       decoration: showDecoration
           ? BoxDecoration(
-              boxShadow: boxShadow ?? [
-                BoxShadow(
-                  color: Color(0xffFF4931).withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+              boxShadow: boxShadow ??
+                  [
+                    BoxShadow(
+                      color: Color(0xffFF4931).withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
             )
           : null,
       child: SizedBox(
@@ -96,7 +97,7 @@ class ButtonDefaultWidget extends StatelessWidget {
                           if (svgIconPath != null)
                             SvgPicture.asset(
                               svgIconPath!,
-                              color: textColor,
+                              color: Styles.iconColorBack,
                               width: 24,
                               height: 24,
                             )

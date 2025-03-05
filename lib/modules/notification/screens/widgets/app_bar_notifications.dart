@@ -31,43 +31,54 @@ class AppBarNotifications extends StatelessWidget
                     .center, // Alinea verticalmente los elementos en el centro
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context); // Acción de retroceso
-                    },
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          'assets/icons/back.png',
-                        ),
-                        const SizedBox(
-                            width: 24), // Espacio entre la flecha y el texto
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment
-                              .center, // Centra el texto verticalmente
-                          children: [
-                            Text(
-                              'Notificaciones',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'PoetsenOne',
-                                color: Styles.primaryColor,
-                              ),
+                      onTap: () {
+                        Navigator.pop(context); // Acción de retroceso
+                      },
+                      child: Material(
+                        color: Colors
+                            .transparent, // Para que el Material no oculte el fondo
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pop(context); // Acción de retroceso
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10), // Añadir padding horizontal
+                            child: Row(
+                              children: [
+                                Image.asset('assets/icons/back.png'),
+                                const SizedBox(
+                                    width:
+                                        24), // Espacio entre la flecha y el texto
+                                const Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .center, // Centra el texto verticalmente
+                                  children: [
+                                    Text(
+                                      'Notificaciones',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'PoetsenOne',
+                                        color: Styles.primaryColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Buzón',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Lato',
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            Text(
-                              'Buzón',
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: 'Lato',
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
+                      )),
                   Container(
                     width: 65, // Tamaño del contenedor que contiene la imagen
                     height: 65,

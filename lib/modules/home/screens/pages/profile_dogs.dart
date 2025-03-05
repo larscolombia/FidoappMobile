@@ -66,10 +66,12 @@ class PerfilMascotas extends StatelessWidget {
         height: 72,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-          color: Styles.fiveColor,
+          color: disableTap ? Colors.white : Styles.fiveColor,
           borderRadius: const BorderRadius.all(Radius.circular(25)),
           border: Border.all(
-            color: Styles.iconColorBack, // Borde con color específico
+            color: disableTap
+                ? Colors.transparent
+                : Styles.iconColorBack, // Borde con color específico
           ),
         ),
         child: Obx(() {

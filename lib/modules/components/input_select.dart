@@ -17,11 +17,11 @@ class InputSelect extends StatelessWidget {
   final String? placeholder;
   final String? label;
   final ValueChanged<String?> onChanged;
-  final List<DropdownMenuItem<String>> items; // Elementos del dropdown
+  final List<DropdownMenuItem<String>> items;
   final Color? TextColor;
   final Color? color;
-  final Icon? suffixIcon; // Definir el ícono opcional
-  final String? prefiIcon; // Definir el ícono opcional
+  final Icon? suffixIcon;
+  final String? prefiIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -40,58 +40,80 @@ class InputSelect extends StatelessWidget {
         const SizedBox(height: 8),
         ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth:
-                MediaQuery.of(context).size.width, // Ajusta al ancho disponible
+            maxWidth: MediaQuery.of(context).size.width,
           ),
-          child: DropdownButtonFormField<String>(
-            icon: const SizedBox.shrink(), // Elimina la flecha desplegable
-            isExpanded: true, // Asegura que los elementos se ajusten al ancho
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-                borderSide: BorderSide.none,
-              ),
-              filled: true,
-              fillColor: color ?? Styles.colorContainer,
-              prefixIcon: prefiIcon != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Image.asset(
-                        prefiIcon!,
-                        width: 24,
-                        height: 24,
-                      ),
-                    )
-                  : null,
-              suffixIcon: SizedBox(
-                width: 30,
-                child: suffixIcon ?? // Usa el sufijo proporcionado
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Image.asset(
-                        'assets/icons/flecha_select.png',
-                        width: 24,
-                        height: 24,
+          // Envolvemos el DropdownButtonFormField en un Theme para modificar el estilo del modal
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              canvasColor: Colors.white,
+              // Usamos menuStyle para definir la forma del menú desplegable
+              dropdownMenuTheme: DropdownMenuThemeData(
+                menuStyle: MenuStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      side: const BorderSide(
+                        color: Styles.iconColorBack,
+                        width: 0.5,
                       ),
                     ),
-              ),
-            ),
-            hint: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                placeholder ?? 'placeholder',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: TextColor ?? const Color.fromARGB(255, 252, 252, 252),
-                  fontFamily: 'Lato-Regular',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
+                  ),
                 ),
               ),
             ),
-            items: items,
-            onChanged: onChanged,
+            child: DropdownButtonFormField<String>(
+              icon: const SizedBox.shrink(), // Elimina la flecha desplegable
+              isExpanded: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none,
+                ),
+                filled: true,
+                fillColor: color ?? Styles.colorContainer,
+                prefixIcon: prefiIcon != null
+                    ? Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Image.asset(
+                          prefiIcon!,
+                          width: 24,
+                          height: 24,
+                        ),
+                      )
+                    : null,
+                suffixIcon: SizedBox(
+                  width: 30,
+                  child: suffixIcon ??
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Image.asset(
+                          'assets/icons/flecha_select.png',
+                          width: 24,
+                          height: 24,
+                        ),
+                      ),
+                ),
+              ),
+              hint: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text(
+                  placeholder ?? 'placeholder',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color:
+                        TextColor ?? const Color.fromARGB(255, 252, 252, 252),
+                    fontFamily: 'Lato-Regular',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              items: items,
+              onChanged: onChanged,
+              dropdownColor: Colors.white,
+              elevation: 4,
+            ),
           ),
         ),
       ],

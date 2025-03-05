@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Styles {
+  static const padding = 26.0;
   static const Color primaryColor = Color.fromRGBO(255, 73, 49, 1);
   static const Color secondaryColor = Color.fromRGBO(255, 73, 49, 1);
   static const Color whiteColor = Colors.white;
@@ -14,7 +15,7 @@ class Styles {
   static const colorContainer = Color.fromRGBO(252, 246, 229, 1);
   static const Color ColorText1 = Color.fromRGBO(56, 56, 56, 1.0);
   static const Color iconColor = Color.fromRGBO(252, 186, 103, 1);
-
+  static const Color ColorError = Color.fromRGBO(255, 0, 0, 1);
   static const paddingAll = EdgeInsets.only(left: 25, right: 25);
 
   static const TextStyle textProfile14w700 = TextStyle(

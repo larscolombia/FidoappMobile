@@ -146,7 +146,7 @@ class _CustomSelectFormFieldWidgetState
                       borderRadius: BorderRadius.circular(16),
                       borderSide: const BorderSide(
                         color: Styles.iconColorBack,
-                        width: .5,
+                        width: 1,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(

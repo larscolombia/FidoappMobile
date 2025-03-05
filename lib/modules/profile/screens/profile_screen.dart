@@ -9,6 +9,7 @@ import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/formulario_verificacion.dart';
@@ -23,8 +24,8 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final imageSize = size.height / 4;
-
+    final imageSize = 260.0;
+    var margin = Helper.margenDefault;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -108,7 +109,7 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   // Nombre del Usuario
                   Positioned(
-                    bottom: 20,
+                    bottom: 0,
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width - 120,
                       child: Text(
@@ -125,10 +126,9 @@ class ProfileScreen extends StatelessWidget {
               Container(
                 padding: Styles.paddingAll,
                 margin: const EdgeInsets.only(top: 16),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(40)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,21 +136,18 @@ class ProfileScreen extends StatelessWidget {
                     // Sección del Perfil
                     Container(
                       padding: const EdgeInsets.only(
-                        top: 20,
+                        top: 37,
                       ),
                       alignment: Alignment.center,
                       child: Column(
                         children: [
                           Container(
-                            padding: const EdgeInsets.only(
-                              bottom: 20,
-                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   width:
-                                      MediaQuery.of(context).size.width - 120,
+                                      MediaQuery.of(context).size.width - 130,
                                   child: BarraBack(
                                       titulo: "Perfil de Usuario",
                                       size: 20,
@@ -212,7 +209,7 @@ class ProfileScreen extends StatelessWidget {
                             borderColor: Styles.iconColorBack,
                           );
                         }),
-                        const SizedBox(height: 20),
+                        SizedBox(height: margin),
                         Obx(() {
                           return Container(
                             child: InputText(
@@ -230,7 +227,7 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           );
                         }),
-                        const SizedBox(height: 20),
+                        SizedBox(height: margin),
                         Obx(() {
                           return InputText(
                             borderColor: Styles.iconColorBack,
@@ -245,30 +242,11 @@ class ProfileScreen extends StatelessWidget {
                                 : Styles.fiveColor,
                           );
                         }),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            // Navegar a la página de cambiar contraseña
-                            Get.to(() => ChangePasswordScreen());
-                          },
-                          child: const Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              'Cambiar Contraseña  >',
-                              style: TextStyle(
-                                color: Styles.primaryColor,
-                                fontFamily: 'Lato',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                          ),
+                        SizedBox(
+                          height: margin,
                         ),
                         Obx(
                           () => Container(
-                            margin: const EdgeInsets.only(top: 20),
                             child: CustomSelectFormFieldWidget(
                               enabled: controller.isEditing.value,
                               controller: controller.userGenCont.value,
@@ -289,7 +267,59 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: margin),
+                        Obx(() {
+                          return InputText(
+                            borderColor: Styles.iconColorBack,
+                            onChanged: (value) =>
+                                controller.user['password'] = value,
+                            initialValue: "********",
+                            placeholder: '',
+                            placeholderSvg: 'assets/icons/svg/key.svg',
+                            readOnly: !controller.isEditing.value,
+                            fondoColor: controller.isEditing.value == false
+                                ? Colors.white
+                                : Styles.fiveColor,
+                          );
+                        }),
+                        SizedBox(height: margin),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: GestureDetector(
+                            onTap: () {
+                              // Navegar a la página de cambiar contraseña
+                              Get.to(() => ChangePasswordScreen());
+                            },
+                            child: const Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                'Cambiar Contraseña  >',
+                                style: TextStyle(
+                                  color: Styles.primaryColor,
+                                  fontFamily: 'Lato',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: margin),
+                        Obx(() {
+                          return InputText(
+                            borderColor: Styles.iconColorBack,
+                            onChanged: (value) =>
+                                controller.user['email'] = value,
+                            initialValue: controller.user['email'].toString(),
+                            placeholder: '',
+                            placeholderSvg: 'assets/icons/svg/sms.svg',
+                            readOnly: !controller.isEditing.value,
+                            fondoColor: controller.isEditing.value == false
+                                ? Colors.white
+                                : Styles.fiveColor,
+                          );
+                        }),
+                        SizedBox(height: margin),
                         Obx(
                           () => controller.isEditing.value == true
                               ? SizedBox(
@@ -306,7 +336,7 @@ class ProfileScreen extends StatelessWidget {
                                 )
                               : const SizedBox(),
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: margin),
                         Align(
                           alignment: Alignment.center,
                           child: TextButton(

@@ -121,7 +121,8 @@ flutter:
     - assets/icons/upi_payment/
     - assets/images/brand/
     - assets/lottie/
-    
+    - assets/icons/svg/mascotas.svg
+    - assets/icons/svg/google_1.svg
 flutter_icons:
   android: true
   

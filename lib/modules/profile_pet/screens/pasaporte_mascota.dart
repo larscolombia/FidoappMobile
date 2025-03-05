@@ -7,6 +7,7 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
@@ -21,9 +22,10 @@ class PasaporteMascota extends StatelessWidget {
   Widget build(BuildContext context) {
     var pet = _homeController.selectedProfile.value!;
     var ancho = MediaQuery.of(context).size.width;
+    var altoInput = 107.0;
     var peso = pet.weight.toString().obs;
     final TextEditingController dateController = TextEditingController();
-
+    var margin = Helper.margenDefault;
     if (pet.dateOfBirth != null) {
       dateController.text = pet.dateOfBirth!;
     }
@@ -92,54 +94,55 @@ class PasaporteMascota extends StatelessWidget {
                         titulo: 'Información del Perro',
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: margin),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
-                        placeholder: pet.name,
+                        placeholder: '',
                         label: 'Nombre',
                         initialValue: pet.name,
                         onChanged: (value) => pet.name = value,
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
-                        placeholder: pet.pettype,
+                        placeholder: '',
                         label: 'Especie',
                         initialValue: pet.pettype ?? "",
                         onChanged: (value) => pet.pettype = value,
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         label: 'Sexo',
                         initialValue:
                             pet.gender == 'female' ? 'Mujer' : 'Hombre',
-                        placeholder: pet.gender,
+                        placeholder: '',
                         onChanged: (value) => pet.gender = value,
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         label: 'Raza',
-                        placeholder: pet.breed,
+                        placeholder: '',
                         initialValue: pet.breed ?? "",
                         onChanged: (value) => pet.petFur = value,
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         isDateField: true,
                         label: 'Fecha de nacimiento',
-                        placeholder: pet.dateOfBirth,
+                        placeholder: '',
                         onChanged: (value) {
                           pet.dateOfBirth = value;
                           print(
@@ -147,38 +150,38 @@ class PasaporteMascota extends StatelessWidget {
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         label: 'Color del pelaje',
-                        placeholder: 'Color del pelaje',
+                        placeholder: '',
                         initialValue: pet.petFur ?? "",
                         onChanged: (value) => pet.petFur = value,
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         label: 'Edad',
-                        placeholder: 'Edad',
+                        placeholder: '',
                         initialValue: pet.age ?? "",
                         onChanged: (value) => pet.age = value,
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                           label: 'Altura',
                           placeholder: "Altura",
                           initialValue: pet.height.toString(),
                           onChanged: (value) => pet.height = value),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         label: 'Unidad de la Altura',
                         placeholder: "m/cm",
@@ -188,9 +191,9 @@ class PasaporteMascota extends StatelessWidget {
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         label: 'Peso',
                         placeholder: "Peso",
@@ -201,9 +204,9 @@ class PasaporteMascota extends StatelessWidget {
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         label: 'Unidad de Peso',
                         placeholder: "Peso",
@@ -213,33 +216,33 @@ class PasaporteMascota extends StatelessWidget {
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         label: 'Tamaño',
-                        placeholder: "Tamaño",
+                        placeholder: "",
                         initialValue: pet.size.toString(),
                         onChanged: (value) {
                           pet.size = value;
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         label: 'Descripción',
-                        placeholder: "descripción",
+                        placeholder: "",
                         initialValue: pet.description,
                         onChanged: (value) {
                           pet.description = value;
                         },
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         prefiIcon: const Icon(
                           Icons.archive_outlined,
@@ -251,9 +254,9 @@ class PasaporteMascota extends StatelessWidget {
                         onChanged: (value) {},
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
+                      height: altoInput,
                       child: InputText(
                         prefiIcon: const Icon(
                           Icons.person_outline,
@@ -265,10 +268,8 @@ class PasaporteMascota extends StatelessWidget {
                         onChanged: (value) {},
                       ),
                     ),
-                    const SizedBox(height: 20),
                     SizedBox(
                       width: ancho,
-                      height: 50,
                       child: Obx(() {
                         if (petController.isLoading.value) {
                           return ButtonDefaultWidget(

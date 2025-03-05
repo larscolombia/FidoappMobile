@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/components/select_user.dart';
+import 'package:pawlly/modules/diario/diario.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
@@ -34,21 +37,18 @@ class InformationTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
-
-    print('info pert ${(jsonEncode(controller.petProfile))}');
+    var ancho = MediaQuery.of(context).size.width;
+    var margen = Helper.margenDefault;
     return Obx(() {
       return SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.only(
-            left: 30,
-            right: 30,
-          ),
+          padding: const EdgeInsets.all(Helper.paddingDefault),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Nombre de la mascota y botón de compartir
               SizedBox(
-                width: 305,
+                width: ancho,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -83,12 +83,13 @@ class InformationTab extends StatelessWidget {
                         textSize: 14,
                         borderSize: 25,
                         heigthButtom: 40,
+                        svgIconPath: 'assets/icons/svg/compartir2.svg',
                       ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: margen,
               ),
               if (AuthServiceApis.dataCurrentUser.userType == 'user')
                 Center(
@@ -106,9 +107,65 @@ class InformationTab extends StatelessWidget {
                     ),
                   ),
                 ),
-              const SizedBox(height: 20),
+              SizedBox(height: margen),
               // Card de la raza
+
+              SizedBox(
+                width: ancho,
+                child: Text(
+                  'Sobre ${homeController.selectedProfile.value!.name}',
+                  style: Styles.textProfile15w700,
+                  textAlign: TextAlign.start,
+                ),
+              ),
+
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Text(
+                  homeController.selectedProfile.value!.description ?? "",
+                  style: Styles.textProfile15w400,
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              SizedBox(height: margen),
+
+              SizedBox(
+                width: ancho,
+                child: ButtonDefaultWidget(
+                  iconAfterText: false,
+                  title: 'Diario de Actividad',
+                  defaultColor: Styles.iconColorBack,
+                  svgIconPath: 'assets/icons/svg/archive-book.svg',
+                  callback: () {
+                    Get.to(
+                      Diario(),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: margen),
+              SizedBox(
+                width: ancho,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'ID del Microchip:',
+                      style: Styles.textProfile14w700,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      homeController.selectedProfile.value!.chip ?? "",
+                      style: Styles.chiptitle,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: margen),
               Card(
+                margin: const EdgeInsets.only(top: 0),
                 color: Styles.fiveColor,
                 elevation: 0.0,
                 child: ListTile(
@@ -126,22 +183,9 @@ class InformationTab extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              // Sección sobre la mascota
-              SizedBox(
-                width: 305,
-                child: Text(
-                  'Sobre ${homeController.selectedProfile.value!.name}',
-                  style: Styles.textProfile15w700,
-                ),
-              ),
-              Text(
-                homeController.selectedProfile.value!.description ?? "",
-                style: Styles.textProfile15w400,
-              ),
-              const SizedBox(height: 20),
-              // Card de cumpleaños y fecha de nacimiento
+              SizedBox(height: margen),
               Card(
+                margin: const EdgeInsets.only(top: 0),
                 color: Styles.fiveColor,
                 elevation: 0.0,
                 child: ListTile(
@@ -172,12 +216,12 @@ class InformationTab extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              // Cards de peso y sexo
+              SizedBox(height: margen),
               Row(
                 children: [
                   Expanded(
                     child: Card(
+                      margin: const EdgeInsets.only(top: 0),
                       color: Styles.fiveColor,
                       elevation: 0.0,
                       child: ListTile(
@@ -198,8 +242,10 @@ class InformationTab extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: Card(
+                      margin: const EdgeInsets.only(top: 0),
                       color: Styles.fiveColor,
                       elevation: 0.0,
                       child: ListTile(
@@ -225,17 +271,21 @@ class InformationTab extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: margen),
               // Sección de compartir QR
-              Text(
-                'Comparte este perfil con este QR:',
-                style: Styles.textProfile14w700,
+              SizedBox(
+                width: ancho,
+                child: Text(
+                  'Comparte este perfil con este QR:',
+                  style: Styles.textProfile14w700,
+                  textAlign: TextAlign.start,
+                ),
               ),
               const SizedBox(height: 10),
 
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20), // Reducir el padding
+                padding: const EdgeInsets.all(28),
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                   shape: BoxShape.rectangle,
@@ -248,34 +298,39 @@ class InformationTab extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 0.9, // Ajustar el aspect ratio
                   child: FadeInImage.assetNetwork(
-                    placeholder:
-                        'assets/images/404.jpg', // Imagen de respaldo (colócala en la carpeta assets)
+                    placeholder: 'assets/images/404.jpg', // Imagen de respaldo
                     image: homeController.selectedProfile.value!.qrCode ??
                         'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
                     width: double.infinity,
                     height: double.infinity,
+                    fit: BoxFit
+                        .contain, // Ajusta la imagen para cubrir todo el contenedor
                     imageErrorBuilder: (context, error, stackTrace) {
                       return Image.asset(
                         'assets/images/pop_up_design.png', // Imagen a mostrar si ocurre un error
                         width: double.infinity,
                         height: double.infinity,
+                        fit: BoxFit
+                            .cover, // Asegúrate de que la imagen de error también cubra el contenedor
                       );
                     },
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: margen),
               // Personas asociadas a la mascota
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
+                  SizedBox(
+                    width: 157,
                     child: Text(
                       'Personas Asociadas a esta Mascota',
                       style: Styles.textTitleHome,
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       showModalBottomSheet(
                         context: context,
                         isScrollControlled: true,
@@ -289,17 +344,23 @@ class InformationTab extends StatelessWidget {
                         },
                       );
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Styles.iconColorBack,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                    child: Container(
+                      width: 44,
+                      height: 44,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Styles.iconColorBack,
+                        border: Border.all(
+                          color: Styles.iconColorBack.withOpacity(0.5),
+                          width: 1,
+                        ),
                       ),
+                      child: const Icon(Icons.add, color: Colors.white),
                     ),
-                    child: const Icon(Icons.add, color: Colors.white),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: margen),
 
               Column(
                 children: petcontroller.associatedPersons.map((person) {
@@ -317,58 +378,25 @@ class InformationTab extends StatelessWidget {
                         PetOwnerProfileScreen(id: person['id'].toString()),
                       );
                     },
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 16),
-                      decoration: BoxDecoration(
+                    child: Card(
+                      elevation: 0.0, // Quita la elevación (sombra)
+                      shadowColor: Colors
+                          .transparent, // Opcional: asegura que no se muestre sombra
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                            width: 1, color: const Color(0xffEFEFEF)),
                       ),
-                      child: Card(
-                        elevation: 0.0, // Quita la elevación (sombra)
-                        shadowColor: Colors
-                            .transparent, // Opcional: asegura que no se muestre sombra
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
 
-                        color: Colors.white,
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            radius: 30,
-                            backgroundImage: NetworkImage(
-                              person['imageUrl'] ??
-                                  'https://via.placeholder.com/150', // Cambiar por la URL de la persona
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  color: Styles.iconColorBack,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                          title: Text(
-                            person['name'] ?? '',
-                            style: Styles.textProfile14w700,
-                          ),
-                          subtitle: Text(
-                            person['relation'] ?? '',
-                            style: Styles.textProfile12w400,
-                          ),
-                          trailing: const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Styles.iconColorBack,
-                          ),
-                        ),
+                      color: Colors.white,
+                      child: SelectedAvatar(
+                        imageUrl: person['profile_image'],
+                        nombre: person['name'],
+                        profesion: person['relation'],
                       ),
                     ),
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: margen),
               // Botón de eliminar mascota
               /**  */
               Center(

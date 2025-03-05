@@ -54,7 +54,7 @@ class CalendarController extends GetxController {
   Future<void> getEventos() async {
     if (isLoading.value) return; // Evita llamadas simultáneas
 
-    isLoading.value = true;
+    // isLoading.value = true;
 
     try {
       final response = await http.get(
@@ -80,7 +80,7 @@ class CalendarController extends GetxController {
     } catch (e) {
       print("data calendario : $e");
     } finally {
-      isLoading.value = false;
+      // isLoading.value = false;
     }
   }
 
@@ -139,9 +139,23 @@ class CalendarController extends GetxController {
     'location': "",
     'tipo': "salud",
     'status': true,
-    'pet_id': '',
+    'pet_id': '0',
     'owner_id': [],
   }.obs;
+
+  Map<String, bool> validate = {
+    'name': false,
+    'date': false,
+    'end_date': false,
+    'event_time': false,
+    "start_date": false,
+    'slug': false,
+    'description': false,
+    'location': false,
+    'tipo': false,
+    'pet_id': false,
+  }.obs;
+
   //resetea el formulario
   void ResetEvent() {
     event.value = {
@@ -283,15 +297,25 @@ class CalendarController extends GetxController {
         // Desactivar el modo de edición
         isEdit.value = false;
 
-        Get.snackbar("Éxito", "Evento actualizado correctamente",
-            backgroundColor: Colors.green);
+        Get.snackbar(
+          "Éxito",
+          "Evento actualizado correctamente",
+          snackPosition: SnackPosition.BOTTOM,
+        );
       } else {
-        Get.snackbar("Error", "Error al actualizar el evento");
+        Get.snackbar(
+          "Error",
+          "Error al actualizar el evento",
+          snackPosition: SnackPosition.BOTTOM,
+        );
       }
     } catch (e) {
       print("Error al actualizar el evento: $e");
-      Get.snackbar("Error", "Error al actualizar el evento",
-          backgroundColor: Colors.red);
+      Get.snackbar(
+        "Error",
+        "Error al actualizar el evento",
+        snackPosition: SnackPosition.BOTTOM,
+      );
     } finally {
       isLoading.value = false;
     }

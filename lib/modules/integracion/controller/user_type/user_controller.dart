@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/integracion/model/user_type/user_datails.dart';
 import 'dart:convert';
 
 import 'package:pawlly/modules/integracion/model/user_type/user_model.dart';
@@ -13,6 +14,8 @@ class UserController extends GetxController {
   var selecterUser = <User>[].obs;
   var url = "$DOMAIN_URL/api/get-user-by-type?user_type=training";
   var isLoading = false.obs;
+  var usersDetails = <User>[].obs;
+
   var selectedButton = 'Veterinarios'.obs;
   var selectedUser =
       Rxn<User>(); // Variable observable para el usuario seleccionado
@@ -62,6 +65,54 @@ class UserController extends GetxController {
     }
   }
 
+  Future<void> fetchMultipleOwners(List<int> ownerIds) async {
+    usersDetails.clear();
+    isLoading.value = true;
+
+    try {
+      for (var id in ownerIds) {
+        final user =
+            await fetchUserById(id); // Llama la función para un solo usuario
+        if (user != null) {
+          usersDetails.add(user); // Acumula cada usuario en la lista
+        }
+      }
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<User?> fetchUserById(int id) async {
+    try {
+      final url = '${DOMAIN_URL}/api/user-detail?id=$id';
+
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+
+        if (jsonResponse["status"] == true && jsonResponse["data"] != null) {
+          return User.fromJson(jsonResponse["data"]);
+        } else {
+          Get.snackbar("Error", "Usuario con id $id no encontrado");
+        }
+      } else {
+        Get.snackbar(
+            "Error", "Error al obtener usuario $id: ${response.statusCode}");
+      }
+    } catch (e) {
+      Get.snackbar("Error", "Excepción al obtener usuario $id: $e");
+    }
+
+    return null; // En caso de error, retorna null
+  }
+
   final User defaultUser = User(
     id: 0,
     profileImage: '',
@@ -80,6 +131,26 @@ class UserController extends GetxController {
               (user) => user.email.toLowerCase().contains(query.toLowerCase()))
           .toList();
       filteredUsers.value = foundUsers.isEmpty ? [] : foundUsers;
+    }
+  }
+
+  void filterUsersId(String? query) {
+    if (query == null || query.isEmpty) {
+      filteredUsers.value =
+          []; // Si no hay búsqueda o está vacía, no mostrar nada
+    } else {
+      // Intentamos convertir la consulta a un entero para filtrar por ID
+      int? queryId = int.tryParse(query);
+
+      if (queryId != null) {
+        // Filtramos solo por ID si la conversión fue exitosa
+        var foundUsers = users.where((user) => user.id == queryId).toList();
+        print('resultado de la busqueda ${foundUsers}');
+        filteredUsers.value = foundUsers.isEmpty ? [] : foundUsers;
+      } else {
+        // Si la consulta no es un número, no mostramos resultados
+        filteredUsers.value = [];
+      }
     }
   }
 
@@ -117,7 +188,6 @@ class UserController extends GetxController {
   }
 
   Future<void> getSharedOwnersWithEmail(String petId, String email) async {
-    // Reemplaza 'https://example.com' por tu URL base real.
     final url = Uri.parse('${BASE_URL}pets/$petId/shared-owners-with-email');
     isLoading.value = true;
 
@@ -143,7 +213,6 @@ class UserController extends GetxController {
         Get.snackbar(
           'Éxito',
           'Persona agregada exitosamente',
-          backgroundColor: Colors.green,
         );
 
         // Aquí puedes retornar o manipular la data obtenida
@@ -153,14 +222,12 @@ class UserController extends GetxController {
         Get.snackbar(
           'Error',
           'Hubo un error al agregar la persona',
-          backgroundColor: Colors.red,
         );
       }
     } catch (error) {
       Get.snackbar(
         'Error',
         'Error del servidor',
-        backgroundColor: Colors.red,
       );
       print('Error de conexión: $error');
     } finally {

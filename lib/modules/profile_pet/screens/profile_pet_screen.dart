@@ -5,17 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/configs.dart';
-import 'package:pawlly/models/event_model.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
-import 'package:pawlly/modules/home/screens/home_screen.dart';
-import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/pasaporte_mascota.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/information_tab.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/medical_histor_tab.dart';
-import 'package:pawlly/modules/profile_pet/screens/widget/pet_info_modal.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
 import 'package:pawlly/styles/styles.dart';
@@ -32,7 +27,7 @@ class ProfilePetScreen extends StatelessWidget {
     final imageSize = size.height / 4;
     var pet = homeController.selectedProfile.value!;
     print('valor sobre la mascota ${pet.name}');
-    // ignore: unused_local_variable
+    //ignore: unused_local_variable
     //petController.showPet();
 
     return Scaffold(
@@ -103,6 +98,7 @@ class ProfilePetScreen extends StatelessWidget {
                                   Get.to(PasaporteMascota());
                                 },
                                 style: ElevatedButton.styleFrom(
+                                  elevation: 0,
                                   padding: EdgeInsets.zero,
                                   backgroundColor: Styles.fiveColor,
                                   shape: RoundedRectangleBorder(
@@ -112,7 +108,6 @@ class ProfilePetScreen extends StatelessWidget {
                                 ),
                                 child: SvgPicture.asset(
                                   'assets/icons/svg/edit-2.svg',
-                                  // color: Styles.iconColorBack,
                                 ),
                               )
                           ],

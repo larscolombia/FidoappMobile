@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
-import 'package:pawlly/models/pet_profile_model.dart';
-import 'package:pawlly/modules/auth/model/employee_model.dart';
-import 'package:pawlly/modules/components/fabrica_seleccion_perfil.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
@@ -17,10 +13,8 @@ import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'package:pawlly/modules/integracion/controller/balance/producto_pay_controller.dart';
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
-import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/modules/integracion/controller/lista_categoria_servicio/category_controller.dart';
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
-import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/modules/integracion/controller/servicio_entrenador_categoria/servicio_entrenador_categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 import 'package:pawlly/modules/integracion/model/balance/producto_pay_model.dart';
@@ -39,36 +33,163 @@ class _CreateEventState extends State<CreateEvent> {
   final HomeController homeController = Get.put(HomeController());
   final UserController userController =
       Get.put(UserController(), permanent: true);
-
   final CategoryControllerVet categoryController =
       Get.put(CategoryControllerVet());
   final ServiceEntrenadorController serviceController =
       Get.put(ServiceEntrenadorController());
   final UserBalanceController balanceController =
       Get.put(UserBalanceController());
-  ProductoPayController payController = Get.put(ProductoPayController());
-
+  final ProductoPayController payController = Get.put(ProductoPayController());
+  Map<String, bool> validate = {
+    'name': false,
+    'date': false,
+    'end_date': false,
+    'event_time': false,
+    "start_date": false,
+    'slug': false,
+    'description': false,
+    'location': false,
+    'tipo': false,
+    'pet_id': false,
+  };
   @override
   void initState() {
     super.initState();
-    // Llamamos a fetchUsers una sola vez cuando se inicie el widget
+    // Llamamos a fetchUsers una sola vez al iniciar el widget
+    validate = {
+      'name': false,
+      'date': false,
+      'end_date': false,
+      'event_time': false,
+      "start_date": false,
+      'slug': false,
+      'description': false,
+      'location': false,
+      'tipo': false,
+      'pet_id': false,
+    };
+
     userController.fetchUsers();
-    // Si requieres llamar a otros métodos (por ejemplo, homeController.fetchProfiles()),
-    // también puedes hacerlo aquí.
+  }
+
+  // Widget para mostrar el servicio de evento médico
+  Widget _buildMedicoCategory(double inputWidth, double defaultMargin) {
+    return Obx(() {
+      if (calendarController.event['tipo'] != 'medico') return const SizedBox();
+      if (categoryController.isLoading.value) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      return Column(
+        children: [
+          SizedBox(height: defaultMargin),
+          SizedBox(
+            width: inputWidth,
+            child: InputSelect(
+              label: 'Servicio de evento medico',
+              placeholder: calendarController.cateogoryName.value,
+              TextColor: Colors.black,
+              onChanged: (value) {
+                calendarController.cateogoryName.value = value ?? "";
+                final selectedCategory =
+                    categoryController.categories.firstWhere(
+                  (category) => category.id.toString() == value,
+                  orElse: () => Category(
+                    id: 0,
+                    name: 'Unknown',
+                    slug: '',
+                    status: 1,
+                    categoryImage: '',
+                    createdAt: '',
+                    updatedAt: '',
+                  ),
+                );
+                calendarController.cateogoryName.value = selectedCategory.name;
+                calendarController.updateField('category_id', value);
+                calendarController.updateField('service_id', value);
+                categoryController.fetchprecio(value ?? "", context);
+              },
+              items: categoryController.categories
+                  .map(
+                    (category) => DropdownMenuItem<String>(
+                      value: category.id.toString(),
+                      child: Text(category.name),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        ],
+      );
+    });
+  }
+
+  // Widget para mostrar el servicio de entrenamiento
+  Widget _buildEntrenamientoCategory(double inputWidth, double defaultMargin) {
+    return Obx(() {
+      if (calendarController.event['tipo'] != 'entrenamiento')
+        return const SizedBox();
+      if (serviceController.isLoading.value)
+        return const CircularProgressIndicator();
+      return Column(
+        children: [
+          SizedBox(height: defaultMargin),
+          SizedBox(
+            width: inputWidth,
+            child: InputSelect(
+              label: 'Servicio del entrenamiento',
+              placeholder: calendarController.cateogoryName.value,
+              TextColor: Colors.black,
+              onChanged: (value) {
+                final selectedCategory =
+                    categoryController.categories.firstWhere(
+                  (category) => category.id.toString() == value,
+                  orElse: () => Category(
+                    id: 0,
+                    name: 'Unknown',
+                    slug: '',
+                    status: 1,
+                    categoryImage: '',
+                    createdAt: '',
+                    updatedAt: '',
+                  ),
+                );
+                calendarController.cateogoryName.value = selectedCategory.name;
+                calendarController.updateField('training_id', value);
+                calendarController.updateField('duration_id', value);
+                serviceController.fetchprecio(value.toString(), context);
+              },
+              items: serviceController.services
+                  .map(
+                    (category) => DropdownMenuItem<String>(
+                      value: category.id.toString(),
+                      child: Text(category.name),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        ],
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final ancho = MediaQuery.of(context).size.width;
-    var doubleHeight = 10.00;
-    var margen = 16.00;
+    // Variables globales para padding, margen y ancho de los inputs
+    final double ancho = MediaQuery.of(context).size.width;
+    final EdgeInsets defaultPadding =
+        const EdgeInsets.symmetric(horizontal: 26.0);
+    final double inputWidth = ancho - defaultPadding.horizontal;
+    const double defaultMargin = 1.0;
+    const alto = 100.0;
     return Scaffold(
       backgroundColor: Styles.colorContainer,
       body: Column(
         children: [
+          // Cabecera
           Container(
             width: double.infinity,
-            height: 168,
+            height: 140,
             decoration: const BoxDecoration(
               color: Styles.colorContainer,
             ),
@@ -98,10 +219,11 @@ class _CreateEventState extends State<CreateEvent> {
               ),
             ),
           ),
+          // Contenido principal
           Expanded(
             child: Container(
               width: double.infinity,
-              padding: EdgeInsets.only(left: 25, right: 25),
+              padding: defaultPadding,
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -111,243 +233,179 @@ class _CreateEventState extends State<CreateEvent> {
               ),
               child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      height: 25,
-                    ),
+                    SizedBox(height: 34),
                     SizedBox(
-                      width: ancho,
+                      width: inputWidth,
                       child: BarraBack(
                         titulo: 'Evento Nuevo',
-                        callback: () {
-                          Get.back();
-                        },
+                        callback: () => Get.back(),
                       ),
                     ),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    Container(
-                      width: ancho,
+                    SizedBox(height: 26),
+
+                    SizedBox(
+                      width: inputWidth,
+                      height: alto,
                       child: InputText(
                         label: 'Nombre del Evento',
-                        placeholder: 'Nombre del Evento',
+                        placeholder: (validate['name'] ?? false)
+                            ? 'campo requerido'
+                            : '',
+                        errorPadding: (validate['name'] ?? false),
+                        errorText: (validate['name'] ?? false)
+                            ? 'campo requerido'
+                            : '', // Mensaje de error
                         onChanged: (value) {
                           calendarController.updateField(
-                            'name',
-                            value.toString(),
-                          );
-                          calendarController.updateField(
-                            'slug',
-                            calendarController.Slug(value.toString()),
-                          );
+                              'name', value.toString());
+                          calendarController.updateField('slug',
+                              calendarController.Slug(value.toString()));
+                          if (value.isNotEmpty) {
+                            setState(() {
+                              validate['name'] = false;
+                            });
+                          }
                         },
                       ),
                     ),
-                    SizedBox(height: margen),
-                    Container(
-                      width: ancho,
-                      child: InputText(
-                        isTextArea: true,
-                        label: 'Descripción del evento ',
-                        placeholder: 'Describe el evento',
-                        onChanged: (value) {
-                          calendarController.updateField('description', value);
-                        },
-                      ),
-                    ),
-                    SizedBox(height: doubleHeight),
-                    Container(
-                      width: ancho,
-                      child: InputText(
-                        label: 'Ubicación',
-                        placeholder: 'Ubicación',
-                        onChanged: (value) {
-                          calendarController.updateField('location', value);
-                        },
-                      ),
-                    ),
-                    SizedBox(height: margen),
+                    SizedBox(height: defaultMargin),
+                    // Descripción del evento
                     SizedBox(
-                      width: ancho,
+                      width: inputWidth,
+                      child: InputText(
+                          isTextArea: true,
+                          label: 'Descripción del evento ',
+                          errorPadding: (validate['description'] ?? false),
+                          errorText: (validate['description'] ?? false)
+                              ? 'campo requerido'
+                              : '', // Mensaje de error
+                          placeholder: 'Describe el evento',
+                          onChanged: (value) {
+                            calendarController.updateField(
+                                'description', value);
+                            if (value.isNotEmpty) {
+                              setState(() {
+                                validate['description'] = false;
+                              });
+                            }
+                          }),
+                    ),
+                    SizedBox(height: defaultMargin),
+                    // Ubicación
+                    SizedBox(
+                      width: inputWidth,
+                      height: alto,
+                      child: InputText(
+                          label: 'Ubicación',
+                          placeholder: '',
+                          errorPadding: (validate['location'] ?? false),
+                          errorText: (validate['location'] ?? false)
+                              ? 'campo requerido'
+                              : '', // Mensaje de error
+                          onChanged: (value) {
+                            calendarController.updateField('location', value);
+                            if (value.isNotEmpty) {
+                              setState(() {
+                                validate['location'] = false;
+                              });
+                            }
+                          }),
+                    ),
+                    SizedBox(height: defaultMargin + 10),
+                    // Selección de categoria del evento
+                    SizedBox(
+                      width: inputWidth,
+                      height: alto,
                       child: CustomSelectFormFieldWidget(
                         label: 'Categoria del evento',
-                        onChange: (value) {
-                          calendarController.updateField('tipo', value);
-                          userController.type.value =
-                              value == 'medico' ? 'vet' : 'trainer';
-                          userController
-                              .fetchUsers(); // Esta llamada se actualizará, pero sigue siendo necesaria si cambia el tipo
-                        },
+                        placeholder: 'Tipo de evento ',
+                        filcolorCustom: Styles.colorContainer,
+                        controller: null,
                         items: const [
                           'evento',
                           'medico',
                           'entrenamiento',
                         ],
-                        controller: null,
-                        placeholder: 'Tipo de evento ',
-                        filcolorCustom: Styles.colorContainer,
+                        onChange: (value) {
+                          calendarController.updateField('tipo', value);
+                          userController.type.value =
+                              value == 'medico' ? 'vet' : 'trainer';
+                          userController.fetchUsers();
+                        },
                       ),
                     ),
-                    Obx(() {
-                      if (calendarController.event['tipo'] != 'medico') {
-                        return const SizedBox();
-                      }
-                      if (categoryController.isLoading.value) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      return Column(
-                        children: [
-                          SizedBox(height: margen),
-                          SizedBox(
-                            width: ancho,
-                            child: InputSelect(
-                              label: 'Servicio de evento medico',
-                              placeholder:
-                                  calendarController.cateogoryName.value,
-                              TextColor: Colors.black,
-                              onChanged: (value) {
-                                calendarController.cateogoryName.value =
-                                    value ?? "";
-                                final selectedCategory =
-                                    categoryController.categories.firstWhere(
-                                  (category) => category.id.toString() == value,
-                                  orElse: () => Category(
-                                    id: 0,
-                                    name: 'Unknown',
-                                    slug: '',
-                                    status: 1,
-                                    categoryImage: '',
-                                    createdAt: '',
-                                    updatedAt: '',
-                                  ),
-                                );
-                                calendarController.cateogoryName.value =
-                                    selectedCategory.name;
-                                calendarController.updateField(
-                                    'category_id', value);
-                                calendarController.updateField(
-                                    'service_id', value);
-                                categoryController.fetchprecio(
-                                    value ?? "", context);
-                              },
-                              items: categoryController.categories
-                                  .map((category) => DropdownMenuItem<String>(
-                                        value: category.id.toString(),
-                                        child: Text(category.name),
-                                      ))
-                                  .toList(),
-                            ),
-                          ),
-                        ],
-                      );
-                    }),
-                    Obx(() {
-                      if (calendarController.event['tipo'] != 'entrenamiento') {
-                        return const SizedBox();
-                      }
-                      if (serviceController.isLoading.value) {
-                        return const CircularProgressIndicator();
-                      }
-                      return Column(
-                        children: [
-                          SizedBox(height: margen),
-                          SizedBox(
-                            width: ancho,
-                            child: InputSelect(
-                              label: 'Servicio del entrenamiento',
-                              placeholder:
-                                  calendarController.cateogoryName.value,
-                              TextColor: Colors.black,
-                              onChanged: (value) {
-                                final selectedCategory =
-                                    categoryController.categories.firstWhere(
-                                  (category) => category.id.toString() == value,
-                                  orElse: () => Category(
-                                    id: 0,
-                                    name: 'Unknown',
-                                    slug: '',
-                                    status: 1,
-                                    categoryImage: '',
-                                    createdAt: '',
-                                    updatedAt: '',
-                                  ),
-                                );
-                                calendarController.cateogoryName.value =
-                                    selectedCategory.name;
-                                calendarController.updateField(
-                                    'training_id', value);
-                                calendarController.updateField(
-                                    'duration_id', value);
-                                serviceController.fetchprecio(
-                                    value.toString(), context);
-                              },
-                              items: serviceController.services
-                                  .map((category) => DropdownMenuItem<String>(
-                                        value: category.id.toString(),
-                                        child: Text(category.name),
-                                      ))
-                                  .toList(),
-                            ),
-                          ),
-                        ],
-                      );
-                    }),
-                    SizedBox(height: margen),
+                    const SizedBox(height: defaultMargin),
+                    // Servicio para evento médico (si aplica)
+                    _buildMedicoCategory(inputWidth, defaultMargin),
+                    // Servicio para entrenamiento (si aplica)
+                    const SizedBox(height: defaultMargin),
+                    _buildEntrenamientoCategory(inputWidth, defaultMargin),
+                    const SizedBox(height: defaultMargin),
+                    // Fecha del evento
                     SizedBox(
-                      width: ancho,
+                      width: inputWidth,
+                      height: alto,
                       child: InputText(
                         label: 'Fecha del evento',
-                        placeholder: 'Fecha del evento',
+                        placeholder: '',
                         isDateField: true,
-                        onChanged: (value) {
-                          calendarController.updateField('start_date',
-                              value.replaceAll('/', '-').toString());
-                          calendarController.updateField(
-                              'date', value.replaceAll('/', '-').toString());
-                        },
+                        errorPadding: (validate['start_date'] ?? false),
+                        errorText: (validate['start_date'] ?? false)
+                            ? 'campo requerido'
+                            : '', // Mensaje de error
                         suffixIcon:
                             Image.asset('assets/icons/flecha_select.png'),
                         placeholderImage:
                             Image.asset('assets/icons/calendar2.png'),
-                      ),
-                    ),
-                    SizedBox(height: margen),
-                    Container(
-                      width: ancho,
-                      child: InputText(
-                        label: 'Hora del evento',
-                        placeholder: 'Hora del evento',
-                        isTimeField: true,
                         onChanged: (value) {
-                          calendarController.updateField('event_time', value);
-                        },
-                        suffixIcon:
-                            Image.asset('assets/icons/flecha_select.png'),
-                        placeholderImage: Image.asset('assets/icons/time.png'),
-                      ),
-                    ),
-                    SizedBox(height: margen),
-                    SizedBox(
-                      width: ancho,
-                      child: InputText(
-                        label: 'Fecha final del evento',
-                        placeholder: 'Fecha final del evento',
-                        isDateField: true,
-                        onChanged: (value) {
+                          final formattedDate =
+                              value.replaceAll('/', '-').toString();
+                          calendarController.updateField(
+                              'start_date', formattedDate);
+                          calendarController.updateField('date', formattedDate);
+                          //para no mandar campos vacios
                           calendarController.updateField('end_date',
                               value.replaceAll('/', '-').toString());
+
+                          if (value.isNotEmpty) {
+                            setState(() {
+                              validate['start_date'] = false;
+                            });
+                          }
                         },
-                        suffixIcon:
-                            Image.asset('assets/icons/flecha_select.png'),
-                        placeholderImage:
-                            Image.asset('assets/icons/calendar2.png'),
                       ),
                     ),
-                    SizedBox(height: margen),
+                    SizedBox(height: defaultMargin),
+
                     SizedBox(
-                      width: ancho,
+                      width: inputWidth,
+                      height: alto,
+                      child: InputText(
+                          label: 'Hora del evento',
+                          placeholder: '',
+                          errorText: (validate['event_time'] ?? false)
+                              ? 'campo requerido'
+                              : "",
+                          isTimeField: true,
+                          errorPadding: (validate['event_time'] ?? false),
+                          suffixIcon:
+                              Image.asset('assets/icons/flecha_select.png'),
+                          placeholderImage:
+                              Image.asset('assets/icons/time.png'),
+                          onChanged: (value) {
+                            calendarController.updateField('event_time', value);
+                            if (value.isNotEmpty) {
+                              setState(() {
+                                validate['event_time'] = false;
+                              });
+                            }
+                          }),
+                    ),
+                    SizedBox(height: defaultMargin + 10),
+                    // Texto para selección de mascota vinculada
+                    SizedBox(
+                      width: inputWidth,
                       child: const Text(
                         'Selecciona la mascota vinculada a este evento',
                         style: TextStyle(
@@ -358,24 +416,26 @@ class _CreateEventState extends State<CreateEvent> {
                         ),
                       ),
                     ),
-                    SizedBox(height: doubleHeight),
+                    SizedBox(height: defaultMargin + 10),
+                    // Perfiles de mascotas
                     Container(
-                      width: ancho,
+                      width: inputWidth,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: ProfilesDogs(),
                     ),
-                    const SizedBox(
-                      width: 302,
-                      child: Divider(
+                    SizedBox(
+                      width: inputWidth,
+                      child: const Divider(
                         color: Colors.grey,
                         thickness: 0.2,
                       ),
                     ),
-                    SizedBox(height: doubleHeight),
+                    SizedBox(height: defaultMargin),
+                    // Invitación de personas
                     SizedBox(
-                      width: ancho,
+                      width: inputWidth,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -389,72 +449,96 @@ class _CreateEventState extends State<CreateEvent> {
                           ),
                           FloatingActionButton(
                             elevation: 0,
-                            onPressed: () {
-                              _showMyDialog(context);
-                            },
                             backgroundColor: Styles.fiveColor,
+                            onPressed: () =>
+                                _showMyDialog(context, userController),
                             child: const Icon(Icons.add, color: Colors.white),
                           )
                         ],
                       ),
                     ),
-                    SizedBox(height: doubleHeight),
+                    SizedBox(height: defaultMargin + 10),
                     Center(
-                        child: SizedBox(
-                            width: ancho, child: UserEventoSeleccionado())),
-                    const SizedBox(height: 30),
+                      child: SizedBox(
+                        width: inputWidth,
+                        child: UserEventoSeleccionado(),
+                      ),
+                    ),
+                    SizedBox(height: defaultMargin + 10),
+                    // Botón Finalizar o Guardando
                     Obx(() {
                       return SizedBox(
-                        width: ancho,
+                        width: inputWidth,
                         child: ButtonDefaultWidget(
                           title: calendarController.isLoading.value
                               ? 'Guardando...'
                               : 'Finalizar',
                           callback: () async {
-                            calendarController.updateField("pet_id",
-                                homeController.selectedProfile.value!.id);
-                            if (calendarController.event.value['pet_id'] ==
-                                null) {
+                            if (homeController.selectedProfile.value == null) {
                               Get.snackbar("Error", "Seleccione una mascota");
                               return;
                             }
-                            if (calendarController
-                                .validateEvent(calendarController.event)) {
-                              if (calendarController.event.value['tipo'] !=
-                                  'evento') {
-                                payController.setProduct(
-                                  ProductoPayModel(
-                                    precio: calendarController.event['tipo'] ==
-                                            "medico"
-                                        ? categoryController.totalAmount.value
-                                        : serviceController.totalAmount.value,
-                                    nombreProducto: "Servicio",
-                                    imagen: calendarController
-                                                .event.value['tipo'] ==
-                                            'medico'
-                                        ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTDsiOSLQ5UvO73L2AtydpiTYHYvox0FBXUA&s"
-                                        : "https://d3puay5pkxu9s4.cloudfront.net/curso/2136/800_imagen.jpg",
-                                    descripcion: "Servicio",
-                                    slug: "servicio",
-                                    id: 1,
-                                  ),
-                                );
-                                balanceController.showPurchaseModal(context);
-                              } else {
-                                calendarController.postEvent();
+                            var petId =
+                                homeController.selectedProfile.value!.id ?? '0';
+                            calendarController.updateField("pet_id", petId);
+                            if (calendarController.event.value['pet_id'] ==
+                                    '0' ||
+                                calendarController.event.value['name'] == "" ||
+                                calendarController.event.value['date'] == "" ||
+                                calendarController.event.value['end_date'] ==
+                                    "" ||
+                                calendarController.event.value['event_time'] ==
+                                    "" ||
+                                calendarController.event.value['description'] ==
+                                    "") {
+                              if (calendarController.event.value['pet_id'] ==
+                                  '0') {
+                                Get.snackbar("Error", "Seleccione una mascota");
+                                return;
                               }
-                            } else {
-                              Get.snackbar(
-                                "Campos incompletos",
-                                "Por favor, rellene todos los campos.",
-                                snackPosition: SnackPosition.BOTTOM,
+
+                              setState(() {
+                                validate['name'] = true;
+                                validate['date'] = true;
+                                validate['start_date'] = true;
+                                validate['event_time'] = true;
+                                validate['description'] = true;
+                                validate['location'] = true;
+                              });
+
+                              Get.snackbar("Campos Incompletos",
+                                  "Por favor, rellene todos los campos requeridos.");
+                              return;
+                            }
+
+                            if (calendarController.event.value['tipo'] !=
+                                'evento') {
+                              payController.setProduct(
+                                ProductoPayModel(
+                                  precio: calendarController.event['tipo'] ==
+                                          "medico"
+                                      ? categoryController.totalAmount.value
+                                      : serviceController.totalAmount.value,
+                                  nombreProducto: "Servicio",
+                                  imagen: calendarController
+                                              .event.value['tipo'] ==
+                                          'medico'
+                                      ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTDsiOSLQ5UvO73L2AtydpiTYHYvox0FBXUA&s"
+                                      : "https://d3puay5pkxu9s4.cloudfront.net/curso/2136/800_imagen.jpg",
+                                  descripcion: "Servicio",
+                                  slug: "servicio",
+                                  id: 1,
+                                ),
                               );
+                              balanceController.showPurchaseModal(context);
+                            } else {
+                              calendarController.postEvent();
                             }
                           },
                         ),
                       );
                     }),
-                    SizedBox(height: doubleHeight),
+                    SizedBox(height: defaultMargin + 30),
                   ],
                 ),
               ),
@@ -465,33 +549,35 @@ class _CreateEventState extends State<CreateEvent> {
     );
   }
 
-  Future<void> _showMyDialog(BuildContext context) async {
+  Future<void> _showMyDialog(
+      BuildContext context, UserController controller) async {
+    controller.type.value = 'vet';
+    controller.fetchUsers();
     return showDialog<void>(
       context: context,
       barrierDismissible:
           false, // El usuario debe presionar un botón para cerrar el modal
       builder: (BuildContext context) {
         return SizedBox(
-          width: 302, // Ancho del modal
-          height: 396, // Alto del modal
+          width: 302,
+          height: 396,
           child: AlertDialog(
             title: const Text('Invita una persona'),
             content: SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: 302,
                 height: 396,
-                decoration: const BoxDecoration(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InputText(
+                      label: '',
+                      placeholder: 'Correo Electrónico',
                       suffixIcon: const Icon(
                         Icons.email,
                         color: Styles.fiveColor,
                         size: 24,
                       ),
-                      label: '',
-                      placeholder: 'Correo Electrónico',
                       onChanged: (value) => userController.filterUsers(value),
                     ),
                     const SizedBox(height: 20),
@@ -502,14 +588,11 @@ class _CreateEventState extends State<CreateEvent> {
                       }
                       return Column(
                         children: [
-                          if (filteredUsers.isNotEmpty)
-                            SelectedAvatar(
-                              nombre: filteredUsers.first.firstName,
-                              imageUrl: filteredUsers.first.profileImage,
-                            ),
-                          const SizedBox(
-                            height: 20,
+                          SelectedAvatar(
+                            nombre: filteredUsers.first.firstName,
+                            imageUrl: filteredUsers.first.profileImage,
                           ),
+                          const SizedBox(height: 20),
                         ],
                       );
                     }),
@@ -520,8 +603,10 @@ class _CreateEventState extends State<CreateEvent> {
                         title: 'Invitar Persona',
                         callback: () {
                           if (userController.filteredUsers.isNotEmpty) {
-                            calendarController.updateField('owner_id',
-                                [userController.filteredUsers.first.id]);
+                            calendarController.updateField(
+                              'owner_id',
+                              [userController.filteredUsers.first.id],
+                            );
                             userController.deselectUser();
                             userController
                                 .selectUser(userController.filteredUsers.first);
@@ -544,9 +629,7 @@ class _CreateEventState extends State<CreateEvent> {
             actions: <Widget>[
               TextButton(
                 child: const Text('CLOSE'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+                onPressed: () => Navigator.of(context).pop(),
               ),
             ],
           ),

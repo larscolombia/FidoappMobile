@@ -4,14 +4,15 @@ import 'package:pawlly/modules/components/style.dart';
 class SelectedAvatar extends StatelessWidget {
   final String? nombre;
   final String? imageUrl;
-  const SelectedAvatar({super.key, this.imageUrl, this.nombre});
+  final String? profesion;
+  const SelectedAvatar({super.key, this.imageUrl, this.nombre, this.profesion});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 270,
-      height: 75,
-      padding: const EdgeInsets.all(10),
+      width: MediaQuery.of(context).size.width,
+      height: 81,
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
@@ -28,26 +29,39 @@ class SelectedAvatar extends StatelessWidget {
                 backgroundImage: NetworkImage(imageUrl ??
                     'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg'),
               ),
-              const SizedBox(width: 2),
+              const SizedBox(width: 12),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 10),
+                  SizedBox(
+                    width: 164.0,
+                    child: Text(
+                      nombre ?? "",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
                   Text(
-                    nombre ?? "",
+                    profesion ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 14,
-                      color: Colors.black,
+                      color: Styles.primaryColor,
                       fontFamily: 'Lato',
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                  const Text(''),
                 ],
-              )
+              ),
             ],
           ),
           Container(

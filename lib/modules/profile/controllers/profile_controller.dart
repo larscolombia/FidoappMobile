@@ -7,6 +7,7 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/auth/model/login_response_model.dart';
+import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'dart:io';
@@ -205,7 +206,8 @@ class ProfileController extends GetxController {
         Get.snackbar(
           'Error',
           'No se pudo actualizar el perfil. Por favor, inténtalo nuevamente.',
-          backgroundColor: Colors.red,
+          backgroundColor: Styles.ColorError,
+          snackPosition: SnackPosition.BOTTOM,
         );
       }
     } catch (e) {
@@ -213,7 +215,8 @@ class ProfileController extends GetxController {
       Get.snackbar(
         'Error',
         'Ocurrió un error al actualizar el perfil: $e',
-        backgroundColor: Colors.red,
+        backgroundColor: Styles.ColorError,
+        snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
       isLoading.value = false;
@@ -243,6 +246,8 @@ class ProfileController extends GetxController {
         Get.snackbar(
           "Error",
           "Error al obtener datos del usuario",
+          backgroundColor: Styles.ColorError,
+          snackPosition: SnackPosition.BOTTOM,
         );
       }
     } catch (e) {
@@ -250,6 +255,8 @@ class ProfileController extends GetxController {
       Get.snackbar(
         "Error",
         "Error al obtener datos del usuario 500",
+        backgroundColor: Styles.ColorError,
+        snackPosition: SnackPosition.BOTTOM,
       );
     } finally {
       isLoading(false);

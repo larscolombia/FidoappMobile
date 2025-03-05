@@ -16,11 +16,13 @@ class Styles {
   static const iconColorBack = Color(0xFFFC9214);
   static const whiteColor = Colors.white;
   static const blackColor = Colors.black;
+  static const colorError = Colors.red;
+
   static double tamano(context) {
     return MediaQuery.of(context).size.width - 100;
   }
 
-  static const paddingAll = EdgeInsets.only(left: 25, right: 25);
+  static const paddingAll = EdgeInsets.only(left: 26, right: 26);
   static const paddingT10B10 = EdgeInsets.only(left: 10, right: 10);
 
   static final joinLogin = GoogleFonts.poppins(
@@ -154,6 +156,13 @@ class Styles {
     fontSize: 32,
     fontWeight: FontWeight.w400,
     color: primaryColor,
+  );
+
+  static const chiptitle = TextStyle(
+    fontFamily: 'Lato',
+    fontSize: 15,
+    fontWeight: FontWeight.bold,
+    color: iconColorBack,
   );
 
 /*

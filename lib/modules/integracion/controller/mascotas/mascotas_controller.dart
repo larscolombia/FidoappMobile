@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 
@@ -115,20 +116,27 @@ class PetControllerv2 extends GetxController {
       print('Respuesta completa: ${response.body}');
 
       if (response.statusCode == 200) {
-        print('Mascota actualizada con éxito');
-        Get.snackbar(
-          'exito',
-          'Mascota actualizada con éxito',
-          backgroundColor: Colors.green,
+        Get.dialog(
+          //pisa papel
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Acción Realizada Exitosamente',
+            description: 'Felicidades ¡Tu cuenta ha sido creada!',
+            primaryButtonText: 'Continuar',
+            onPrimaryButtonPressed: () {
+              Get.back();
+            },
+          ),
+          barrierDismissible: true,
         );
-        succesApdate(true);
       } else {
         print('Error en la solicitud: ${response.statusCode}');
         print('Respuesta: ${response.body}');
         Get.snackbar(
           'Advertencia',
           'verifique todos los campos',
-          backgroundColor: Colors.green,
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
         );
       }
     } catch (e) {

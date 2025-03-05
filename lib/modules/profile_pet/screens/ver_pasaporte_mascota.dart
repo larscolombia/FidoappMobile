@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:pawlly/modules/components/historia_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
@@ -35,6 +36,9 @@ class VerPasaporteMascota extends StatelessWidget {
     //  .fetchHistorialClinico(_homeController.selectedProfile.value!.id);
     print('date  ${jsonEncode(_homeController.selectedProfile.value!)}');
     var mascota = _homeController.selectedProfile.value!;
+    var padding = Helper.paddingDefault;
+    var margen = Helper.margenDefault;
+    var ancho = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -58,15 +62,17 @@ class VerPasaporteMascota extends StatelessWidget {
                 ),
               ),
               child: SingleChildScrollView(
-                child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(Helper.paddingDefault),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width -
-                            100, // Ajusta el margen
+                        width: MediaQuery.of(context)
+                            .size
+                            .width, // Ajusta el margen
 
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -95,14 +101,14 @@ class VerPasaporteMascota extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: margen),
                       Container(
-                        width: 305,
+                        width: ancho,
                         height: 200,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
-                          color: Colors.black,
                         ),
+                        clipBehavior: Clip.hardEdge, // Agregar esta línea
                         child: Obx(() {
                           final imageUrl =
                               _homeController.selectedProfile.value!.petImage ??
@@ -110,23 +116,23 @@ class VerPasaporteMascota extends StatelessWidget {
 
                           return CachedNetworkImage(
                             imageUrl: imageUrl,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                             placeholder: (context, url) => const Center(
                               child: CircularProgressIndicator(),
                             ),
                             errorWidget: (context, url, error) {
-                              // Imagen predeterminada si falla la carga
                               return Image.asset(
-                                'assets/images/404.jpg', // Ruta de la imagen predeterminada
+                                'assets/images/404.jpg',
                                 fit: BoxFit.cover,
                               );
                             },
                           );
                         }),
                       ),
-                      const SizedBox(height: 20),
+
+                      SizedBox(height: margen),
                       Container(
-                        width: 304,
+                        width: ancho,
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: Styles.colorContainer,
@@ -139,16 +145,17 @@ class VerPasaporteMascota extends StatelessWidget {
                               // color: Styles.iconColorBack,
                             ),
                             const SizedBox(width: 10),
-                            const Column(
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Codigó de Mascota',
+                                const Text(
+                                  'ID del Microchip:',
                                   style: Styles.descripcion,
                                 ),
                                 Text(
-                                  'Encuentra toda la información aquí',
-                                  style: TextStyle(
+                                  _homeController.selectedProfile.value!.chip ??
+                                      "",
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     color: Styles.iconColorBack,
                                     fontFamily: 'Lato',
@@ -160,12 +167,12 @@ class VerPasaporteMascota extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: margen),
                       const Text(
                         'Información del Perro',
                         style: Styles.TextTitulo,
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: margen),
                       InfoMascota(
                         titulo: 'Nombre',
                         value: mascota.name,
@@ -217,9 +224,9 @@ class VerPasaporteMascota extends StatelessWidget {
                       //gridView
                       Container(
                         width:
-                            305, // Puedes ajustar el ancho del Container según lo que necesites
-                        padding: const EdgeInsets.all(
-                            16), // Espaciado interno si lo deseas
+                            ancho, // Puedes ajustar el ancho del Container según lo que necesites
+                        padding: EdgeInsets.all(Helper
+                            .paddingDefault), // Espaciado interno si lo deseas
 
                         child: Obx(() {
                           final historial =
@@ -292,7 +299,7 @@ class InfoMascota extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 302,
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
         border: Border.all(color: const Color(0xffEFEFEF), width: .5),
