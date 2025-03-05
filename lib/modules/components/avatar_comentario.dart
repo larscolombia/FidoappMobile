@@ -16,6 +16,7 @@ class AvatarComentarios extends StatelessWidget {
   final String? date;
   final String? comment;
   final double? rating;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,10 +27,22 @@ class AvatarComentarios extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 22,
-                backgroundImage: NetworkImage(avatar ??
-                    "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg"),
+              Container(
+                width:
+                    46, // Ajusta el tamaño del contenedor según el tamaño del avatar
+                height: 46,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Color(0xFFEAEAEA), // Color del borde
+                    width: 2, // Ancho del borde
+                  ),
+                ),
+                child: CircleAvatar(
+                  radius: 22,
+                  backgroundImage: NetworkImage(avatar ??
+                      "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg"),
+                ),
               ),
               const SizedBox(width: 2),
               Container(
@@ -43,9 +56,9 @@ class AvatarComentarios extends StatelessWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         name ?? "",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
                           fontFamily: 'Lato',
                           color: Colors.black,
                         ),
@@ -63,12 +76,17 @@ class AvatarComentarios extends StatelessWidget {
                             itemCount: 5,
                             itemPadding:
                                 const EdgeInsets.symmetric(horizontal: 1.0),
-                            itemSize: 20,
+                            itemSize: 16,
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
-                              color: Styles.fiveColor,
+                              color: Color(0XFFFC9214),
                             ),
                             onRatingUpdate: (value) {},
+                          ),
+                          Container(
+                            height: 14,
+                            width: 1,
+                            color: Color(0XFFEAEAEA),
                           ),
                           const SizedBox(width: 10),
                           SizedBox(
@@ -77,9 +95,9 @@ class AvatarComentarios extends StatelessWidget {
                               '${rating ?? 0.0}',
                               style: TextStyle(
                                 fontSize: 14,
-                                color: Colors.black,
+                                color: Color(0XFF383838),
                                 fontFamily: 'Lato',
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w800,
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,

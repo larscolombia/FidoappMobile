@@ -317,50 +317,56 @@ class InformationTab extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: margen),
+              const SizedBox(height: 22),
               // Personas asociadas a la mascota
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: 157,
-                    child: Text(
-                      'Personas Asociadas a esta Mascota',
-                      style: Styles.textTitleHome,
-                    ),
+                  Expanded(
+                    child: Text('Personas Asociadas a\nesta Mascota',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontFamily: 'Lato',
+                          height: 1.3,
+                        )),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
+                  SizedBox(
+                    width: 44, // Ancho fijo
+                    height: 44, // Alto fijo
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(20)),
                           ),
+                          builder: (context) {
+                            return AssociatedPersonsModal(
+                                controller: controller);
+                          },
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFFFC9214),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        builder: (context) {
-                          return AssociatedPersonsModal(controller: controller);
-                        },
-                      );
-                    },
-                    child: Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Styles.iconColorBack,
-                        border: Border.all(
-                          color: Styles.iconColorBack.withOpacity(0.5),
-                          width: 1,
-                        ),
+                        padding: EdgeInsets.zero,
+                        shadowColor: Colors.transparent, // Elimina la sombra
+                        elevation: 0, // Evita cualquier sombra residual
                       ),
-                      child: const Icon(Icons.add, color: Colors.white),
+                      child: const Icon(Icons.add,
+                          color: Colors.white, size: 24), // Centrado
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: margen),
+
+              const SizedBox(height: 10),
 
               Column(
                 children: petcontroller.associatedPersons.map((person) {
@@ -387,10 +393,47 @@ class InformationTab extends StatelessWidget {
                       ),
 
                       color: Colors.white,
-                      child: SelectedAvatar(
-                        imageUrl: person['profile_image'],
-                        nombre: person['name'],
-                        profesion: person['relation'],
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(
+                            person['imageUrl'] ??
+                                'https://via.placeholder.com/150', // Cambiar por la URL de la persona
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Styles.iconColorBack,
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                        title: Text(
+                          person['name'] ?? '',
+                          style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
+                        ),
+                        subtitle: Text(
+                          person['relation'] ?? '',
+                          style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0XFFFF4931),
+                          ),
+                        ),
+                        trailing: const Icon(
+                          size: 15,
+                          weight: 50,
+                          Icons.arrow_forward_ios,
+                          color: Styles.iconColorBack,
+                        ),
                       ),
                     ),
                   );
@@ -404,8 +447,8 @@ class InformationTab extends StatelessWidget {
                   onPressed: controller
                       .deletePet, // Llamar a la función para mostrar el modal
                   child: const Text(
-                    'Eliminar mascota',
-                    style: TextStyle(color: Colors.red),
+                    'Eliminar animal',
+                    style: TextStyle(color: Colors.red, fontFamily: "Lato"),
                   ),
                 ),
               ),

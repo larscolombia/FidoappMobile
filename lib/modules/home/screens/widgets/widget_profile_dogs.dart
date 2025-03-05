@@ -24,6 +24,14 @@ class ProfileModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //controller.fetchProfiles();
+    double aspectRatio = 123 / 113;
+    double minWidth = 100; // Define un mínimo
+    double maxWidth = 300; // Define un máximo
+
+    double width =
+        (MediaQuery.of(context).size.width * 0.33).clamp(minWidth, maxWidth);
+    double height = width / aspectRatio;
+
     return FractionallySizedBox(
       heightFactor: 0.7, // Ocupa el 60% de la pantalla
       child: Container(
@@ -159,7 +167,7 @@ class ProfileModal extends StatelessWidget {
                           },
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 16),
-                            padding: const EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? Styles.fiveColor
@@ -172,13 +180,12 @@ class ProfileModal extends StatelessWidget {
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 // Imagen del perfil
                                 Container(
-                                  width: MediaQuery.of(context).size.width *
-                                      0.3, // 30% del ancho de pantalla
-                                  height: MediaQuery.of(context).size.width *
-                                      0.25, // Relación de aspecto
+                                  width: width,
+                                  height: height,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                   ),
@@ -221,7 +228,7 @@ class ProfileModal extends StatelessWidget {
                                               maxLines: 1,
                                               style: const TextStyle(
                                                 fontFamily: 'Lato',
-                                                fontSize: 16,
+                                                fontSize: 18,
                                                 fontWeight: FontWeight.bold,
                                                 color: Styles.blackColor,
                                               ),
@@ -242,7 +249,7 @@ class ProfileModal extends StatelessWidget {
                                         profile.age,
                                         style: const TextStyle(
                                           fontFamily: 'Lato',
-                                          fontSize: 12,
+                                          fontSize: 14,
                                           fontWeight: FontWeight.w400,
                                           color: Styles.blackColor,
                                         ),
@@ -254,11 +261,11 @@ class ProfileModal extends StatelessWidget {
                                         style: const TextStyle(
                                           fontFamily: 'Lato',
                                           fontSize: 12,
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.w500,
                                           color: Styles.iconColorBack,
                                         ),
                                       ),
-                                      const SizedBox(height: 12),
+                                      SizedBox(height: height * 0.19),
                                       SizedBox(
                                         width: double
                                             .infinity, // Ocupa todo el ancho disponible

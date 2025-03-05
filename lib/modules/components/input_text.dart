@@ -12,6 +12,7 @@ class InputText extends StatefulWidget {
     super.key,
     this.label,
     this.placeholder,
+    this.placeHolderColor = false,
     this.placeholderImage,
     this.placeholderSvg,
     this.placeholderFontFamily,
@@ -26,6 +27,9 @@ class InputText extends StatefulWidget {
     this.initialValue,
     this.fondoColor = Styles.colorContainer,
     this.borderColor = Colors.transparent,
+    this.labelColor = null,
+    this.labelFontSize = null,
+    this.height = null,
     this.onImagePicked,
     this.isTextArea = false,
     this.fw,
@@ -37,6 +41,7 @@ class InputText extends StatefulWidget {
 
   final FontWeight? fw;
   final String? placeholder;
+  final bool placeHolderColor;
   final String? label;
   final String? placeholderFontFamily;
   final Image? placeholderImage;
@@ -52,6 +57,9 @@ class InputText extends StatefulWidget {
   final String? initialValue;
   final Color? fondoColor;
   final Color borderColor;
+  final Color? labelColor;
+  final double? labelFontSize;
+  final double? height;
   final ValueChanged<File>? onImagePicked;
   final bool isTextArea;
   final TextEditingController? controller;
@@ -154,8 +162,8 @@ class _InputTextState extends State<InputText> {
                 minLines: widget.isTextArea ? 3 : 1,
                 style: const TextStyle(
                   fontFamily: 'Lato',
-                  fontSize: 14,
-                  color: Colors.black,
+                  fontSize: 13,
+                  color: Color(0XFF383838),
                 ),
                 decoration: InputDecoration(
                   labelText: widget.isTextArea
@@ -170,11 +178,13 @@ class _InputTextState extends State<InputText> {
                     fontFamily: 'Lato',
                     fontWeight: FontWeight.w400,
                   ),
-                  labelStyle: const TextStyle(
+                  labelStyle: TextStyle(
                     fontSize: 14,
-                    color: Colors.black,
+                    color: widget.placeHolderColor == true
+                        ? const Color(0XFF959595)
+                        : Colors.black,
                     fontFamily: 'Lato',
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w500,
                   ),
                   alignLabelWithHint: widget.isTextArea,
                   contentPadding: widget.isTextArea

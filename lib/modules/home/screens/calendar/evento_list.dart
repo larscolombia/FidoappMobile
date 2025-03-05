@@ -244,29 +244,15 @@ class _EventoDestallesState extends State<EventoDestalles> {
                               SizedBox(height: margen),
                               SizedBox(
                                 width: MediaQuery.of(context).size.width,
-                                height: height,
-                                child: InputText(
-                                  prefiIcon: const Icon(
-                                    Icons.calendar_today,
-                                    color: Styles.iconColor,
-                                  ),
-                                  placeholder: '',
-                                  isDateField: true,
-                                  onChanged: (value) => event?.endDate = value,
-                                  initialValue: event?.endDate ?? "",
-                                  label: 'Fecha del evento',
-                                  readOnly: !calendarController.isEdit.value,
-                                ),
-                              ),
-                              SizedBox(height: margen),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Mascota selecionada:',
-                                      style: Styles.AvatarComentario,
+                                    const SizedBox(
+                                      width: 200,
+                                      child: Text(
+                                        'Selecciona la mascota vinculada a este evento',
+                                        style: Styles.AvatarComentario,
+                                      ),
                                     ),
                                     const SizedBox(height: 10),
                                     ProfilesDogs(disableTap: true),
@@ -393,11 +379,16 @@ class _EventoDestallesState extends State<EventoDestalles> {
           height: 396, // Alto del modal
 
           child: AlertDialog(
-            title: const Text('Invita una persona'),
+            title: const Text('Invita una persona',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Styles.fiveColor,
+                  fontFamily: 'Lato',
+                )),
             content: SingleChildScrollView(
               child: Container(
                   width: 302,
-                  height: 396,
+                  height: 300,
                   decoration: const BoxDecoration(),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

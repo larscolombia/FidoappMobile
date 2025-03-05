@@ -7,6 +7,7 @@ class CustomTextFormFieldWidget extends StatefulWidget {
   final String placeholder;
   final String? icon; // El icono ahora es opcional
   final String? placeholderSvg; // El SVG ahora es opcional
+  final Color? colorSVG;
   final TextEditingController? controller;
   final bool? enabled;
   final bool? obscureText;
@@ -20,6 +21,7 @@ class CustomTextFormFieldWidget extends StatefulWidget {
     required this.placeholder,
     this.icon, // Elimina el `required`
     this.placeholderSvg, // Elimina el `required`
+    this.colorSVG,
     required this.controller,
     this.enabled,
     this.obscureText = false,
@@ -94,6 +96,7 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
                   widget.placeholderSvg!,
                   width: 20,
                   height: 20,
+                  color: widget.colorSVG,
                 ),
               )
             : widget.icon != null

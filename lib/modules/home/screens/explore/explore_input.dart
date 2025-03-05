@@ -66,7 +66,7 @@ class ExploreInput extends StatelessWidget {
                     margin: const EdgeInsets.only(right: 16),
                     padding: const EdgeInsets.all(12),
                     width: 125,
-                    height: 249,
+                    height: 229,
                     decoration: BoxDecoration(
                       color: Styles.whiteColor,
                       borderRadius: BorderRadius.circular(10),
@@ -110,9 +110,9 @@ class ExploreInput extends StatelessWidget {
                             style: const TextStyle(
                               height: 1.2,
                               fontFamily: 'Lato',
-                              fontSize: 14,
+                              fontSize: 12,
                               fontWeight: FontWeight.w700,
-                              color: Styles.greyTextColor,
+                              color: Color(0XFF383838),
                             ),
                           ),
                         ),
@@ -141,14 +141,14 @@ class ExploreInput extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 14,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w500,
                   color: Styles.iconColorBack,
                 ),
               ),
               SizedBox(width: 5),
               Icon(
                 Icons.arrow_forward_ios,
-                size: 16,
+                size: 12,
                 color: Styles.iconColorBack,
               ),
             ],

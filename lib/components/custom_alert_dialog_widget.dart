@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -42,7 +43,9 @@ class CustomAlertDialog extends StatelessWidget {
             Icon(
               icon,
               size: 80,
-              color: Styles.primaryColor,
+              color: title == 'Éxito'
+                  ? Color.fromARGB(255, 5, 158, 31)
+                  : const Color(0xFFFF4931),
             ),
             const SizedBox(height: 10),
           ] else if (assetImage != null) ...[
@@ -54,16 +57,27 @@ class CustomAlertDialog extends StatelessWidget {
             ),
             const SizedBox(height: 10),
           ],
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Lato',
-              color: Styles.primaryColor,
+          if (title != 'Éxito')
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Lato',
+                color: const Color(0xFFFF4931),
+              ),
             ),
-          ),
+          if (title == 'Éxito')
+            Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Lato',
+                  color: Color.fromARGB(255, 5, 158, 31)),
+            ),
         ],
       ),
       content: Column(
@@ -80,6 +94,7 @@ class CustomAlertDialog extends StatelessWidget {
               fontSize: 16,
               fontFamily: 'Lato',
               color: Colors.black,
+              fontWeight: FontWeight.w400,
             ),
           ),
           if (primaryButtonText != null || secondaryButtonText != null) ...[
@@ -124,9 +139,7 @@ class CustomAlertDialog extends StatelessWidget {
                       callback: () {
                         Navigator.of(context).pop();
                       },
-
-                      defaultColor:
-                          Colors.red, // Color de fondo del botón de cerrar
+                      defaultColor: const Color(0xFFFF4931),
                       textColor: Styles.whiteColor, // Color del texto del botón
                       heigthButtom: 48, // Altura del botón
                       borderSize: 12, // Tamaño del borde

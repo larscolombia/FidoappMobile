@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'dart:async';
@@ -17,29 +18,54 @@ class LongPressButton extends StatefulWidget {
 class _LongPressButtonState extends State<LongPressButton> {
   double _progress = 0.0;
   Timer? _timer;
+  Timer? _vibrationTimer;
+  bool _isPressed = false;
   final MascotaPerdida _mascotaPerdida = Get.put(MascotaPerdida());
   final HomeController _homeController = Get.put(HomeController());
+
   void _startProgress() {
-    const duration = Duration(milliseconds: 50); // Intervalo de tiempo
+    setState(() {
+      _isPressed = true;
+    });
+
+    _startVibration();
+
+    const duration = Duration(milliseconds: 50);
     _timer = Timer.periodic(duration, (timer) {
       setState(() {
-        _progress += 0.01; // Incrementa el progreso en cada tick
+        _progress += 0.01;
       });
 
       if (_progress >= 1.0) {
         timer.cancel();
+        _stopVibration();
         _showAlert();
       }
     });
   }
 
   void _stopProgress() {
-    if (_timer != null) {
-      _timer!.cancel();
-    }
+    _timer?.cancel();
+    _stopVibration();
     setState(() {
-      _progress = 0.0; // Resetea el progreso
+      _progress = 0.0;
+      _isPressed = false;
     });
+  }
+
+  void _startVibration() {
+    _vibrationTimer =
+        Timer.periodic(const Duration(milliseconds: 300), (timer) {
+      if (!_isPressed) {
+        timer.cancel();
+        return;
+      }
+      HapticFeedback.mediumImpact();
+    });
+  }
+
+  void _stopVibration() {
+    _vibrationTimer?.cancel();
   }
 
   void _showAlert() {
@@ -55,43 +81,19 @@ class _LongPressButtonState extends State<LongPressButton> {
         onPrimaryButtonPressed: () {
           print('Acción confirmada');
           _mascotaPerdida.reportarMascotaPerdida();
+          _resetButton();
           Navigator.of(context).pop();
         },
       ),
-      barrierDismissible: true, // No permite cerrar el diálogo tocando fuera
-    );
-    /** 
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Confirmación'),
-        content: Text(
-            '¿Estás seguro de marcar a ${_homeController.selectedProfile.value!.name} como extraviado?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              _resetButton();
-            },
-            child: Text('Cancelar'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              print('Acción confirmada');
-              _mascotaPerdida.reportarMascotaPerdida();
-              //  _resetButton();
-            },
-            child: Text('Aceptar'),
-          ),
-        ],
-      ),
-    );*/
+      barrierDismissible: true,
+    ).then((_) => _resetButton()); // Resetea cuando el modal se cierra
   }
 
   void _resetButton() {
+    _stopVibration();
     setState(() {
-      _progress = 0.0; // Restablece el progreso después de la alerta
+      _progress = 0.0;
+      _isPressed = false;
     });
   }
 
@@ -100,46 +102,56 @@ class _LongPressButtonState extends State<LongPressButton> {
     return GestureDetector(
       onLongPressStart: (_) => _startProgress(),
       onLongPressEnd: (_) => _stopProgress(),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Botón principal
-          Container(
-            height: 40,
-            width: 40,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: Styles.iconColorBack,
-                width: .5,
+      child: AnimatedScale(
+        scale: _isPressed ? 1.2 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                color: _isPressed
+                    ? const Color(0xFFFF7A66)
+                    : const Color(0xFFFC9214), // Rojo más suave al presionar
+                border: Border.all(
+                  color: Styles.iconColorBack,
+                  width: 0.5,
+                ),
+                borderRadius: BorderRadius.circular(40),
+                boxShadow: _isPressed
+                    ? [
+                        BoxShadow(
+                          color: const Color(0xFFFF4931)
+                              .withOpacity(0.7), // Efecto más suave
+                          blurRadius: 15,
+                          spreadRadius: 2,
+                        ),
+                      ]
+                    : [],
               ),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(40),
-                topRight: Radius.circular(40),
-              ),
-            ),
-            child: const Center(
+              child: const Center(
                 child: Icon(
-              Icons.report,
-              color: Colors.black,
-            )),
-          ),
-
-          // Barra de progreso
-
-          // Indicador de progreso
-          if (_progress > 0 && _progress < 1.0)
-            Positioned.fill(
-              child: Container(
-                color: Colors.black.withOpacity(0.3),
-                child: Center(
-                  child: CircularProgressIndicator(
-                    value: _progress,
-                    color: Styles.fiveColor,
-                  ),
+                  Icons.report,
+                  color: Colors.white,
                 ),
               ),
             ),
-        ],
+            if (_progress > 0 && _progress < 1.0)
+              Positioned.fill(
+                child: Container(
+                  color: Colors.black.withOpacity(0.3),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      value: _progress,
+                      color: Styles.fiveColor,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

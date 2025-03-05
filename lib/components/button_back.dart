@@ -14,13 +14,15 @@ class ButtonBack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-       SizedBox(
+        SizedBox(
           height: 65,
           child: SvgPicture.asset(
             Assets
                 .flechita, // Asegúrate de que 'flechita' sea un archivo SVG en tu carpeta de assets
-            height: 20,
+            height: 16,
             width: 16,
+            color: Color(0xFF383838),
+            
             fit: BoxFit.contain,
             placeholderBuilder: (context) => const Icon(Icons
                 .g_mobiledata_rounded), // Usamos un icono mientras se carga

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/cursos/cursos_entrenamiento.dart';
+import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
 import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_model.dart';
@@ -14,24 +15,43 @@ class TrainingPrograms extends StatelessWidget {
   TrainingPrograms(
       {super.key, this.vermas = true, required this.cursosController});
   final bool? vermas;
+
+  String dificultadValue(String dificultad) {
+    switch (dificultad) {
+      case '1':
+        return 'Fácil';
+      case '2':
+        return 'Media';
+      case '3':
+        return 'Difícil';
+      default:
+        return 'Difícil';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     //cursosController.fetchCourses();
-    final double imageWidth = MediaQuery.of(context).size.width * 0.35;
     var margin = 4.00;
+
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double imageWidth = screenWidth * 0.35; // Ajuste dinámico
+    final double imageHeight =
+        imageWidth * (118 / 131); // Mantiene la proporción
+
+    double aspectRatio = 118 / 131;
+    double minWidth = 100; // Define un mínimo
+    double maxWidth = 300; // Define un máximo
+
+    double width =
+        (MediaQuery.of(context).size.width * 0.33).clamp(minWidth, maxWidth);
+    double height = width / aspectRatio;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Título de la sección
-        const Text(
-          'Cursos y Programas de Entrenamiento',
-          style: TextStyle(
-            fontSize: 20,
-            color: Styles.primaryColor,
-            fontFamily: 'PoetsenOne',
-          ),
-        ),
-        const SizedBox(height: 16),
+       
 
         // Lista de cursos
         Obx(() {
@@ -43,33 +63,30 @@ class TrainingPrograms extends StatelessWidget {
             return Column(
               children: cursosController.filteredCourses.map((course) {
                 return Container(
-                  margin: const EdgeInsets.only(bottom: 16),
-                  padding: const EdgeInsets.all(18),
+                  margin: const EdgeInsets.only(bottom: 5),
+                  padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color: Styles.whiteColor,
                     borderRadius: BorderRadius.circular(8.42),
                     border: Border.all(
-                      color: Color(0xffEAEAEA),
+                      color: const Color(0xffEAEAEA),
                       width: 1,
                     ),
                   ),
                   child: Row(
                     children: [
+                      // Imagen con proporción dinámica
                       Container(
+                        width: imageWidth,
+                        height: imageHeight,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        width: 104,
-                        height: 116,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(
-                              10), // Aquí le damos el borderRadius
+                          borderRadius: BorderRadius.circular(7.72),
                           child: Image.network(
                             course.image,
-                            fit: BoxFit
-                                .cover, // Para que la imagen ocupe todo el contenedor
-                            width: 104,
-                            height: 116,
+                            fit: BoxFit.cover,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
                               return Center(
@@ -85,67 +102,82 @@ class TrainingPrograms extends StatelessWidget {
                             },
                             errorBuilder: (context, error, stackTrace) {
                               return Image.asset(
-                                'assets/images/404.jpg', // Imagen de error
+                                'assets/images/404.jpg',
                                 fit: BoxFit.cover,
                               );
                             },
                           ),
                         ),
                       ),
+                      // Información del curso
                       Expanded(
                         child: Container(
                           margin: const EdgeInsets.only(left: 12),
-                          height: 116,
+                          height: imageHeight + 9, // Ajuste dinámico
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  cursosController
-                                      .dificultad(course.difficulty),
-                                  style: const TextStyle(
-                                    fontFamily: 'Lato',
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                    color: Styles.iconColorBack,
-                                  ),
+                              // Dificultad
+                              Text(
+                                dificultadValue(course.difficulty ?? ''),
+                                style: const TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: Styles.iconColorBack,
                                 ),
                               ),
-                              SizedBox(height: margin),
-                              Expanded(
-                                flex: 4,
+                              const SizedBox(height: 1),
+                              // Nombre del curso
+                              Flexible(
                                 child: Text(
                                   course.name,
-                                  maxLines: 3,
+                                  maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     fontFamily: 'Lato',
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
-                                    color: Styles.greyTextColor,
+                                    color: Color(0xFF383838),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: margin),
-                              Expanded(
-                                flex: 2,
+                              SizedBox(height: height * 0.30),
+
+                              SizedBox(
+                                height: 32,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    // Acción para ver detalles
+                                    // Navegar a detalles del curso
                                     Get.to(() => CursosDetalles(
-                                        cursoId: "${course.id}"));
+                                          cursoId: "${course.id.toString()}",
+                                        ));
+                                    // Navegar a video del curso
+                                    var video = cursosController.findVideoById(
+                                      courseId: course.id,
+                                      videoId: course.id.toString(),
+                                    );
+                                    Get.to(() => CursoVideo(
+                                          videoId: video?.url ?? '',
+                                          cursoId: course.id.toString(),
+                                          name: course.name,
+                                          description: course.description,
+                                          image: course.image,
+                                          duration: course.duration,
+                                          price: course.price,
+                                          difficulty: course.difficulty,
+                                          videoUrl: video?.url ?? '',
+                                          tipovideo: 'video',
+                                        ));
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Styles.primaryColor,
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 35,
-                                      vertical: 2,
+                                      vertical: 8,
                                     ),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
+                                    elevation: 0,
                                   ),
                                   child: const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -170,19 +202,19 @@ class TrainingPrograms extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 );
-                ;
               }).toList(),
             );
           }
         }),
+        if (vermas == true) SizedBox(height: height * 0.15),
         if (vermas == true)
           Container(
             width: double.infinity,
@@ -190,18 +222,25 @@ class TrainingPrograms extends StatelessWidget {
               onTap: () {
                 Get.to(() => CursosEntrenamiento());
               },
-              child: Container(
-                width: double.infinity,
-                child: const Text(
-                  'Ver más de esta sección >',
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Recursos.ColorPrimario,
-                    fontFamily: Recursos.fuente1,
-                    fontWeight: FontWeight.w500,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Ver más de esta sección ',
+                    style: TextStyle(
+                      fontFamily: 'Lato',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0XFFFC9214),
+                    ),
                   ),
-                ),
+                  SizedBox(width: 4),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    size: 12,
+                    color: Color(0XFFFC9214),
+                  ),
+                ],
               ),
             ),
           ),

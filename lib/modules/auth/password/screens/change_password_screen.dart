@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/main.dart';
@@ -35,37 +36,58 @@ class ChangePasswordScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
-                  locale.value.changePassword,
-                  style: Styles.joinTitle,
+                const Text(
+                  "Cambiar\nContraseña",
+                  style: TextStyle(
+                    fontFamily: 'PoetsenOne',
+                    fontSize: 32,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFFFF4931),
+                    height: 1.2,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+
+                const Text(
+                  "Ingresa tu nueva contraseña",
+                  style: TextStyle(
+                    fontFamily: 'Lato',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF383838),
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 26),
 
                 // Campo de contraseña actual
-                Container(
-                  margin: const EdgeInsets.only(top: 20, bottom: 20),
-                  child: CustomTextFormFieldWidget(
-                    controller: controller.oldPasswordCont,
-                    enabled: true,
-                    obscureText: true,
-                    placeholder: locale.value.currentPassword,
-                    icon: 'assets/icons/key.png',
-                    validators: [
-                      (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Ingrea tu contraseña';
-                          // return locale.value.enterYourCurrentPassword;
+                Visibility(
+                  visible:
+                      false, // Oculta el widget pero sigue existiendo en el árbol de widgets
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: CustomTextFormFieldWidget(
+                      controller: controller.oldPasswordCont,
+                      enabled: true,
+                      obscureText: true,
+                      placeholder: locale.value.currentPassword,
+                      icon: 'assets/icons/key.png',
+                      validators: [
+                        (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Ingresa tu contraseña';
+                          }
+                          return null;
                         }
-                        return null;
-                      }
-                    ],
+                      ],
+                    ),
                   ),
                 ),
 
                 // Campo de nueva contraseña
                 Container(
-                  margin: const EdgeInsets.only(top: 20, bottom: 20),
+                  margin: const EdgeInsets.only(top: 10, bottom: 10),
                   child: CustomTextFormFieldWidget(
                     controller: controller.newpasswordCont,
                     enabled: true,
@@ -89,7 +111,7 @@ class ChangePasswordScreen extends StatelessWidget {
 
                 // Campo de confirmación de nueva contraseña
                 Container(
-                  margin: const EdgeInsets.only(top: 20, bottom: 20),
+                  margin: const EdgeInsets.only(top: 10, bottom: 10),
                   child: CustomTextFormFieldWidget(
                     controller: controller.confirmPasswordCont,
                     enabled: true,
@@ -129,6 +151,18 @@ class ChangePasswordScreen extends StatelessWidget {
                         },
                         showDecoration: true,
                       )),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Divider(
+                  height: 18,
+                  color: Styles.greyDivider,
+                  thickness: 1,
+                ),
+                Container(
+                  padding: Styles.paddingT10B10,
+                  child: const ButtonBack(text: 'Regresar'),
                 ),
               ],
             ),

@@ -60,7 +60,7 @@ class BarraBack extends StatelessWidget {
                     maxLines: 2,
                     style: TextStyle(
                       fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontFamily: 'Lato',
                       color: ColorSubtitle ?? Styles.fiveColor,
                     ),

@@ -190,9 +190,6 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildCase1Content(context) {
     return Container(
-      decoration: BoxDecoration(
-          // border: Border.all(color: Colors.grey, width: 1), //lienso pisa papel
-          ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -201,6 +198,7 @@ class HomeScreen extends StatelessWidget {
           if (AuthServiceApis.dataCurrentUser.userType == 'user')
             Container(
               child: Row(
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   // Widget del 70%
                   Flexible(
@@ -211,7 +209,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   // Widget del 30%
-                  SizedBox(width: 15),
+                  SizedBox(width: 10),
                   Flexible(
                     flex: 3,
                     child: GestureDetector(
@@ -236,17 +234,19 @@ class HomeScreen extends StatelessWidget {
                               // plus-user,
                             ),
                           ),
-                          const SizedBox(height: 5),
-                          const Text(
-                            'Profesionales',
-                            maxLines: 1, // Limita el texto a una sola línea
-                            overflow: TextOverflow
-                                .ellipsis, // Muestra "..." si el texto se desborda
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: "Lato",
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
+                          const Padding(
+                            padding: EdgeInsets.only(top: 4),
+                            child: Text(
+                              'Profesionales',
+                              maxLines: 1, // Limita el texto a una sola línea
+                              overflow: TextOverflow
+                                  .ellipsis, // Muestra "..." si el texto se desborda
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: "Lato",
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ],
@@ -274,6 +274,8 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(height: 16),
           if (calendarController.filteredCalendars.isNotEmpty)
             EventosProximos(calendarController: calendarController),
+          if (calendarController.filteredCalendars.isNotEmpty)
+            const SizedBox(height: 16),
           Utilities(),
           const SizedBox(height: 16),
           Training(),
@@ -496,15 +498,15 @@ class EventosProximos extends StatelessWidget {
                       color: Styles.fiveColor,
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    margin: const EdgeInsets.symmetric(vertical: 10.0),
+                    margin: const EdgeInsets.symmetric(vertical: 5.0),
                     child: Center(
                       child: Container(
-                        width: 263,
+                        width: 300,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Styles.fiveColor,
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
                         margin: const EdgeInsets.symmetric(vertical: 10.0),
                         child: SizedBox(
                           width: Styles.tamano(context),
@@ -519,7 +521,7 @@ class EventosProximos extends StatelessWidget {
                                   event.name,
                                   style: const TextStyle(
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w900,
+                                    fontWeight: FontWeight.w800,
                                     fontFamily: Styles.fuente1,
                                     color: Colors.black,
                                   ),
@@ -545,7 +547,7 @@ class EventosProximos extends StatelessWidget {
                                         : TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w400,
                                       fontFamily: Styles.fuente1,
                                       color: Colors.black,
                                     ),
@@ -574,10 +576,13 @@ class EventosProximos extends StatelessWidget {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       fontFamily: Styles.fuente1,
-                                      color: Styles.iconColorBack,
+                                      color: Color(0XFFFc9214),
                                     ),
-                                  )
+                                  ),
                                 ],
+                              ),
+                              const SizedBox(
+                                height: 10,
                               ),
                             ],
                           ),

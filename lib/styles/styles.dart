@@ -18,6 +18,7 @@ class Styles {
   static const blackColor = Colors.black;
   static const colorError = Colors.red;
 
+  static const widh_pantalla = 380.00;
   static double tamano(context) {
     return MediaQuery.of(context).size.width - 100;
   }
@@ -90,7 +91,7 @@ class Styles {
   static final secondTextTitle = GoogleFonts.lato(
     fontWeight: FontWeight.w400,
     fontSize: 14,
-    color: greyTextColor,
+    color: Color(0XFF383838),
   );
 
   static final boxTextTitleHome = GoogleFonts.lato(
