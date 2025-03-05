@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/modules/diario/diario.dart';
 
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 
@@ -27,7 +24,6 @@ import 'package:pawlly/modules/integracion/controller/calendar_controller/calend
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
-import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_controller.dart';
 
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 

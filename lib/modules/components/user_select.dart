@@ -14,9 +14,14 @@ class UserEventoSeleccionado extends StatelessWidget {
     return Obx(() {
       var user = userController.selectedUser;
       if (user.value == null) {
-        return const SizedBox(
-          width: 302,
-          child: Text('No hay usuario seleccionado para este evento'),
+        return Text(
+          'Aún no hay personas invitadas a este evento',
+          style: TextStyle(
+              color: Color(0xFF959595),
+              fontSize: 14,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
         );
       }
 

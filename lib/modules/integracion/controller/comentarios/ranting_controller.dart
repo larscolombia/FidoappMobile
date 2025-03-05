@@ -12,7 +12,7 @@ class CommentController extends GetxController {
       <Comment>[].obs; // Usamos un RxList para almacenar los comentarios
   var isLoading = false.obs;
   var isFirstLoad = true.obs; // Variable para controlar si es la primera carga.
-
+  var visualizacion = 0.obs;
   final String baseUrl = "$DOMAIN_URL/api";
   final isComentarioPosrLoading = false.obs;
   String getEndpoint(String tipo, String itemId) {
@@ -72,6 +72,37 @@ class CommentController extends GetxController {
       isLoading(false);
     }
     isFirstLoad.value = false; // Cambiamos el flag para evitar cargas futuras.
+  }
+
+  Future<void> visualizaciones(String blogId) async {
+    final url = Uri.parse('${baseUrl}/blogs/$blogId/visualization');
+
+    try {
+      final response = await http.put(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Éxito
+        final Map<String, dynamic> data = json.decode(response.body);
+        print('Respuesta visualizacion: $data');
+        print(data[
+            'message']); //Imprimira "Visualización actualizada correctamente"
+        visualizacion.value = data['visualizations'];
+      } else {
+        // Error
+        print(
+            'Error al actualizar la visualización. Código de estado: ${response.statusCode}');
+        print('Cuerpo de respuesta: ${response.body}');
+      }
+    } catch (e) {
+      // Error de conexión u otro error
+      print('Error: $e');
+    }
   }
 
   double calculateAverageRating() {

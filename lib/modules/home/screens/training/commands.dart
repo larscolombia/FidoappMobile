@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/pages/utilities.dart';
 import 'package:pawlly/modules/home/screens/training/crear_comando.dart';
 import 'package:pawlly/modules/integracion/controller/comandos/comandos_controller.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -29,16 +30,22 @@ class Commands extends StatelessWidget {
         );
       }
 
-      // Mostrar mensaje si no hay comandos disponibles
-      if (controller.comandoList.isEmpty) {
-        return const Center(
-          child: Text('No hay comandos disponibles.'),
-        );
-      }
-
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          FloatingActionButton(
+            elevation: 0,
+            onPressed: () {
+              Get.to(() => CrearComando());
+            },
+            clipBehavior: Clip.antiAlias,
+            backgroundColor: Styles.primaryColor,
+            shape: const CircleBorder(),
+            child: const Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+          ),
           // Título
           Container(
             width: MediaQuery.of(context).size.width - 100,
@@ -54,24 +61,10 @@ class Commands extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          // Botón para crear nuevo comando
-          FloatingActionButton(
-            elevation: 0,
-            onPressed: () {
-              Get.to(() => CrearComando());
-            },
-            clipBehavior: Clip.antiAlias,
-            backgroundColor: Styles.primaryColor,
-            shape: const CircleBorder(),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
-          const SizedBox(height: 20),
+
           // Tabla de comandos
           Container(
-            height: 400,
+            height: 166,
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -169,15 +162,12 @@ class Commands extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 60),
+
           // Mostrar comando seleccionado
           Obx(() {
             if (controller.selectedComando.value != null) {
-              return Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Comando seleccionado: ${controller.selectedComando.value!.name}',
-                ),
+              return Text(
+                'Comando seleccionado: ${controller.selectedComando.value!.name}',
               );
             } else {
               return const Padding(
@@ -186,6 +176,10 @@ class Commands extends StatelessWidget {
               );
             }
           }),
+          Utilities(),
+          const SizedBox(
+            height: 120,
+          )
         ],
       );
     });

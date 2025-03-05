@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_select_form_field_widget.dart';
+import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/helper/helper.dart';
@@ -184,38 +187,80 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               SizedBox(height: margen),
+
               Card(
                 margin: const EdgeInsets.only(top: 0),
                 color: Styles.fiveColor,
                 elevation: 0.0,
-                child: ListTile(
-                  leading: SvgPicture.asset(
-                    'assets/icons/svg/mdi_cake-variant.svg',
-                    // color: Styles.iconColorBack,
-                  ),
-                  title: Text(
-                    'Edad:',
-                    style: Styles.textProfile14w400,
-                  ),
-                  subtitle: Text(
-                    homeController.selectedProfile.value!.age ?? "",
-                    style: Styles.textProfile14w800,
-                  ),
-                  trailing: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment
+                        .spaceBetween, // Distribuir los elementos
                     children: [
-                      Text(
-                        'Fecha de nacimiento:',
-                        style: Styles.textProfile14w400,
+                      /// Sección de Edad
+                      Row(
+                        children: [
+                          SvgPicture.asset(
+                            'assets/icons/svg/mdi_cake-variant.svg',
+                            width: 20,
+                            height: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Edad:',
+                            style: Styles.textProfile14w400,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            homeController.selectedProfile.value!.age ?? "",
+                            style: Styles.textProfile14w800,
+                          ),
+                        ],
                       ),
-                      Text(
-                        homeController.selectedProfile.value!.dateOfBirth ?? "",
-                        style: Styles.textProfile14w800,
+                      const SizedBox(width: 10),
+
+                      /// Línea Divisora
+                      Container(
+                        height: 30, // Ajustar la altura de la línea divisora
+                        width: 1, // Grosor de la línea
+                        color: Styles.iconColorBack,
+                      ),
+
+                      /// Sección de Fecha de Nacimiento
+                      Expanded(
+                        child: Row(
+                          children: [
+                            const SizedBox(
+                                width: 10), // Espacio después de la línea
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .start, // Alineación izquierda
+                              children: [
+                                Text(
+                                  'Fecha de nacimiento:',
+                                  style: Styles.textProfile14w400,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  Helper.formatDateToSpanish(homeController
+                                          .selectedProfile
+                                          .value!
+                                          .dateOfBirth) ??
+                                      "",
+                                  style: Styles.textProfile14w800,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
+
               SizedBox(height: margen),
               Row(
                 children: [
@@ -282,7 +327,58 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 180,
+                        child: CustomSelectFormFieldWidget(
+                          placeholder: 'Permisología',
+                          controller: null,
+                          filcolorCustom: Colors.white,
+                          borderColor: Colors.grey,
+                          items: const [
+                            'Datos médicos',
+                            'Entrenamientos',
+                            'Administrador',
+                            'Visualizar perfil'
+                          ],
+                          onChange: (value) {},
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: CustomSelectFormFieldWidget(
+                          placeholder: 'Caducidad',
+                          controller: null,
+                          borderColor: Colors.grey,
+                          filcolorCustom: Colors.white,
+                          items: const [
+                            '2 días',
+                            '5 días',
+                            '1 semana',
+                            '2 semanas'
+                          ],
+                          onChange: (value) {},
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Antes de compartir el perfil de tu perro elige que datos quieres mostrarle a los demás y la fecha de caducidad del enlace',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      fontFamily: 'Lato',
+                      color: Color(0xFF959595),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(28),
@@ -322,15 +418,17 @@ class InformationTab extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Text('Personas Asociadas a\nesta Mascota',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontFamily: 'Lato',
-                          height: 1.3,
-                        )),
+                  const Expanded(
+                    child: Text(
+                      'Personas Asociadas a\nesta Mascota',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontFamily: 'Lato',
+                        height: 1.3,
+                      ),
+                    ),
                   ),
                   SizedBox(
                     width: 44, // Ancho fijo
@@ -384,57 +482,10 @@ class InformationTab extends StatelessWidget {
                         PetOwnerProfileScreen(id: person['id'].toString()),
                       );
                     },
-                    child: Card(
-                      elevation: 0.0, // Quita la elevación (sombra)
-                      shadowColor: Colors
-                          .transparent, // Opcional: asegura que no se muestre sombra
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-
-                      color: Colors.white,
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: NetworkImage(
-                            person['imageUrl'] ??
-                                'https://via.placeholder.com/150', // Cambiar por la URL de la persona
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Styles.iconColorBack,
-                                width: 1.0,
-                              ),
-                            ),
-                          ),
-                        ),
-                        title: Text(
-                          person['name'] ?? '',
-                          style: TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black,
-                          ),
-                        ),
-                        subtitle: Text(
-                          person['relation'] ?? '',
-                          style: TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0XFFFF4931),
-                          ),
-                        ),
-                        trailing: const Icon(
-                          size: 15,
-                          weight: 50,
-                          Icons.arrow_forward_ios,
-                          color: Styles.iconColorBack,
-                        ),
-                      ),
+                    child: SelectedAvatar(
+                      imageUrl: person['profile_image'],
+                      nombre: person['name'],
+                      profesion: person['relation'],
                     ),
                   );
                 }).toList(),

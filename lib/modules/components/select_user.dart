@@ -5,12 +5,14 @@ class SelectedAvatar extends StatelessWidget {
   final String? nombre;
   final String? imageUrl;
   final String? profesion;
-  const SelectedAvatar({super.key, this.imageUrl, this.nombre, this.profesion});
+  final double? width;
+  const SelectedAvatar(
+      {super.key, this.imageUrl, this.nombre, this.profesion, this.width});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: width ?? MediaQuery.of(context).size.width,
       height: 81,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(

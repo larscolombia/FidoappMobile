@@ -25,7 +25,7 @@ class Styles {
     color: blackColor,
   );
   static const TextStyle textDescription = TextStyle(
-    fontSize: 14,
+    fontSize: 15,
     color: Colors.black,
     fontFamily: "lato",
     fontWeight: FontWeight.w400,
@@ -43,10 +43,11 @@ class Styles {
     fontWeight: FontWeight.w400,
   );
   static const TextStyle TextTitulo = TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.w700,
-      fontFamily: 'PoetsenOne',
-      color: primaryColor);
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    fontFamily: 'PoetsenOne',
+    color: primaryColor,
+  );
   static const TextStyle TextTituloBlack = TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.w700,

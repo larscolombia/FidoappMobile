@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/historia_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -45,9 +46,19 @@ class VerPasaporteMascota extends StatelessWidget {
         children: [
           // Primer contenedor (fondo o header)
           Container(
-            height: 120,
+            height: 130,
+            width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               color: Styles.colorContainer, // Cambia el color según tu diseño
+            ),
+            child: const Stack(
+              children: [
+                Positioned(
+                    bottom: 0,
+                    child: BorderRedondiado(
+                      top: 110,
+                    )),
+              ],
             ),
           ),
           // Segundo contenedor (superpuesto con scroll)
@@ -90,11 +101,19 @@ class VerPasaporteMascota extends StatelessWidget {
                               onTap: () {
                                 Get.to(() => PasaporteMascota());
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: SvgPicture.asset(
-                                  'assets/icons/svg/edit-2.svg',
-                                  // color: Styles.iconColorBack,
+                              child: Container(
+                                width: 42.4,
+                                height: 42.4,
+                                decoration: BoxDecoration(
+                                  color: Styles.colorContainer,
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    'assets/icons/svg/edit-2.svg',
+                                    width: 24,
+                                    height: 24,
+                                  ),
                                 ),
                               ),
                             ),
@@ -131,42 +150,44 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
 
                       SizedBox(height: margen),
-                      Container(
-                        width: ancho,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Styles.colorContainer,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/svg/code-pet.svg',
-                              // color: Styles.iconColorBack,
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'ID del Microchip:',
-                                  style: Styles.descripcion,
-                                ),
-                                Text(
-                                  _homeController.selectedProfile.value!.chip ??
-                                      "",
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Styles.iconColorBack,
-                                    fontFamily: 'Lato',
-                                    fontWeight: FontWeight.w900,
+                      if (_homeController.selectedProfile.value!.chip != null)
+                        Container(
+                          width: ancho,
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: Styles.colorContainer,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Row(
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/svg/code-pet.svg',
+                                // color: Styles.iconColorBack,
+                              ),
+                              const SizedBox(width: 10),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'ID del Microchip:',
+                                    style: Styles.descripcion,
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
+                                  Text(
+                                    _homeController
+                                            .selectedProfile.value!.chip ??
+                                        "",
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Styles.iconColorBack,
+                                      fontFamily: 'Lato',
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
                       SizedBox(height: margen),
                       const Text(
                         'Información del Perro',
@@ -208,7 +229,7 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
 
                       InfoMascota(
-                        titulo: 'Descripción',
+                        titulo: 'Marcas distintivas',
                         value: mascota.description ??
                             "No se ha definido una descripción",
                       ),
@@ -301,9 +322,13 @@ class InfoMascota extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xffEFEFEF), width: .5),
-      ),
+      decoration: const BoxDecoration(
+          border: Border(
+        bottom: BorderSide(
+          color: Color(0xffEFEFEF),
+          width: .5,
+        ),
+      )),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

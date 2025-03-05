@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
@@ -8,6 +9,7 @@ import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/components/user_select.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
@@ -444,14 +446,15 @@ class _CreateEventState extends State<CreateEvent> {
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
-                              fontFamily: 'PoetsenOne',
+                              fontFamily: 'Lato',
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           FloatingActionButton(
                             elevation: 0,
                             backgroundColor: Styles.fiveColor,
                             onPressed: () =>
-                                _showMyDialog(context, userController),
+                                Helper.showMyDialog(context, userController),
                             child: const Icon(Icons.add, color: Colors.white),
                           )
                         ],
@@ -507,7 +510,8 @@ class _CreateEventState extends State<CreateEvent> {
                               });
 
                               Get.snackbar("Campos Incompletos",
-                                  "Por favor, rellene todos los campos requeridos.");
+                                  "Por favor, rellene todos los campos requeridos.",
+                                  backgroundColor: Styles.ColorError);
                               return;
                             }
 
@@ -546,95 +550,6 @@ class _CreateEventState extends State<CreateEvent> {
           ),
         ],
       ),
-    );
-  }
-
-  Future<void> _showMyDialog(
-      BuildContext context, UserController controller) async {
-    controller.type.value = 'vet';
-    controller.fetchUsers();
-    return showDialog<void>(
-      context: context,
-      barrierDismissible:
-          false, // El usuario debe presionar un botón para cerrar el modal
-      builder: (BuildContext context) {
-        return SizedBox(
-          width: 302,
-          height: 396,
-          child: AlertDialog(
-            title: const Text('Invita una persona'),
-            content: SingleChildScrollView(
-              child: SizedBox(
-                width: 302,
-                height: 396,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    InputText(
-                      label: '',
-                      placeholder: 'Correo Electrónico',
-                      suffixIcon: const Icon(
-                        Icons.email,
-                        color: Styles.fiveColor,
-                        size: 24,
-                      ),
-                      onChanged: (value) => userController.filterUsers(value),
-                    ),
-                    const SizedBox(height: 20),
-                    Obx(() {
-                      var filteredUsers = userController.filteredUsers;
-                      if (filteredUsers.isEmpty) {
-                        return const Text("No se encontraron usuarios");
-                      }
-                      return Column(
-                        children: [
-                          SelectedAvatar(
-                            nombre: filteredUsers.first.firstName,
-                            imageUrl: filteredUsers.first.profileImage,
-                          ),
-                          const SizedBox(height: 20),
-                        ],
-                      );
-                    }),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: 300,
-                      child: ButtonDefaultWidget(
-                        title: 'Invitar Persona',
-                        callback: () {
-                          if (userController.filteredUsers.isNotEmpty) {
-                            calendarController.updateField(
-                              'owner_id',
-                              [userController.filteredUsers.first.id],
-                            );
-                            userController.deselectUser();
-                            userController
-                                .selectUser(userController.filteredUsers.first);
-                            Navigator.of(context).pop();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(
-                                    'No hay usuarios disponibles para invitar'),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('CLOSE'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

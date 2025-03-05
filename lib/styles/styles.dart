@@ -166,6 +166,12 @@ class Styles {
     color: iconColorBack,
   );
 
+  static final TextClaro = TextStyle(
+    fontWeight: FontWeight.w400,
+    fontSize: 14,
+    height: 1.6,
+    color: Color(0xFF959595),
+  );
 /*
   static final inputText = GoogleFonts.poppins(
     color: Styles.blackColor,

@@ -42,16 +42,6 @@ class Training extends StatelessWidget {
         const SizedBox(height: 10),
         // Se usa un Obx para actualizar dinámicamente el contenido según el índice seleccionado
         Obx(() {
-          if (miscursos.courses.isEmpty) {
-            // Mostrar mensaje cuando no hay entrenamientos disponibles
-            return const Center(
-              child: Text(
-                'No hay entrenamientos disponibles',
-                style: TextStyle(fontSize: 16, color: Styles.greyTextColor),
-              ),
-            );
-          }
-
           // Renderizado según el índice seleccionado
           if (controller.selectedIndex.value == 0 ||
               controller.selectedIndex.value == 3) {

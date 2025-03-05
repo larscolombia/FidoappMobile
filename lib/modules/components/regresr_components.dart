@@ -10,6 +10,7 @@ class BarraBack extends StatelessWidget {
     this.subtitle,
     this.ColorSubtitle,
     this.size = 18.00,
+    this.fontFamily, // Nuevo parámetro para la fuente
   });
 
   final String titulo;
@@ -17,6 +18,7 @@ class BarraBack extends StatelessWidget {
   final String? subtitle;
   final Color? ColorSubtitle;
   final double size;
+  final String? fontFamily; // Nuevo parámetro para la fuente
   final void Function()? callback;
 
   @override
@@ -49,7 +51,8 @@ class BarraBack extends StatelessWidget {
                   style: TextStyle(
                     fontSize: size,
                     fontWeight: FontWeight.w400,
-                    fontFamily: 'PoetsenOne',
+                    fontFamily: fontFamily ??
+                        'PoetsenOne', // Usa el parámetro o 'Lato' por defecto
                     color: color,
                   ),
                 ),
@@ -61,7 +64,8 @@ class BarraBack extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      fontFamily: 'Lato',
+                      fontFamily: fontFamily ??
+                          'Lato', // Usa el parámetro o 'Lato' por defecto
                       color: ColorSubtitle ?? Styles.fiveColor,
                     ),
                   ),

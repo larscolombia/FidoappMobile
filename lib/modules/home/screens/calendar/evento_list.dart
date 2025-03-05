@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/editar.dart';
 import 'package:pawlly/modules/components/input_text.dart';
@@ -181,17 +182,20 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                       ),
                                     ),
                                     SizedBox(height: margen - 8),
-                                    SelectedAvatar(
-                                      nombre: AuthServiceApis
-                                              .dataCurrentUser.firstName ??
-                                          '',
-                                      imageUrl: AuthServiceApis
-                                              .dataCurrentUser.profileImage ??
-                                          '',
-                                      profesion: Helper.tipoUsuario(
-                                          AuthServiceApis
-                                                  .dataCurrentUser.userType ??
-                                              ''),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      child: SelectedAvatar(
+                                        nombre: AuthServiceApis
+                                                .dataCurrentUser.firstName ??
+                                            '',
+                                        imageUrl: AuthServiceApis
+                                                .dataCurrentUser.profileImage ??
+                                            '',
+                                        profesion: Helper.tipoUsuario(
+                                            AuthServiceApis
+                                                    .dataCurrentUser.userType ??
+                                                ''),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -211,10 +215,8 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                 width: MediaQuery.of(context).size.width,
                                 height: height,
                                 child: InputText(
-                                  prefiIcon: const Icon(
-                                    Icons.calendar_today,
-                                    color: Styles.iconColor,
-                                  ),
+                                  placeholderSvg:
+                                      'assets/icons/svg/calendar.svg',
                                   placeholder: '',
                                   isDateField: true,
                                   onChanged: (value) =>
@@ -229,10 +231,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                 width: MediaQuery.of(context).size.width,
                                 height: height,
                                 child: InputText(
-                                  prefiIcon: const Icon(
-                                    Icons.timer,
-                                    color: Styles.iconColor,
-                                  ),
+                                  placeholderSvg: 'assets/icons/svg/hora.svg',
                                   placeholder: '',
                                   isTimeField: true,
                                   onChanged: (value) => event?.eventime = value,
@@ -248,14 +247,30 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const SizedBox(
-                                      width: 200,
+                                      width: 226,
                                       child: Text(
                                         'Selecciona la mascota vinculada a este evento',
                                         style: Styles.AvatarComentario,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
-                                    ProfilesDogs(disableTap: true),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(
+                                          color: const Color(0xFFEFEFEF),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: ProfilesDogs(
+                                        disableTap: true,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Divider(
+                                      thickness: 1,
+                                      color: const Color(0xFFEFEFEF),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -284,7 +299,8 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                           elevation: 0,
                                           onPressed: () {
                                             // Acción al presionar el botón flotante
-                                            _showMyDialog(context);
+                                            Helper.showMyDialog(
+                                                context, userController);
                                           },
                                           backgroundColor: Styles.fiveColor,
                                           child: const Icon(Icons.add,
@@ -294,7 +310,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                     ],
                                   ),
                                 ),
-                              Container(
+                              SizedBox(
                                 width: MediaQuery.of(context).size.width,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -365,90 +381,6 @@ class _EventoDestallesState extends State<EventoDestalles> {
           }),
         ],
       ),
-    );
-  }
-
-  Future<void> _showMyDialog(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible:
-          false, // El usuario debe presionar un botón para cerrar el modal
-      builder: (BuildContext context) {
-        return SizedBox(
-          width: 302, // Ancho del modal
-          height: 396, // Alto del modal
-
-          child: AlertDialog(
-            title: const Text('Invita una persona',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Styles.fiveColor,
-                  fontFamily: 'Lato',
-                )),
-            content: SingleChildScrollView(
-              child: Container(
-                  width: 302,
-                  height: 300,
-                  decoration: const BoxDecoration(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      InputText(
-                        suffixIcon: const Icon(
-                          Icons.email,
-                          color: Styles.fiveColor,
-                          size: 24,
-                        ),
-                        label: '',
-                        placeholder: 'Correo Electrónico',
-                        onChanged: (value) => userController.filterUsers(value),
-                      ),
-                      const SizedBox(height: 20),
-                      Obx(() {
-                        var user = userController.filteredUsers;
-                        if (user.isEmpty) {
-                          return const Text("Seleccione un usuario");
-                        }
-
-                        return SelectedAvatar(
-                          nombre: userController.filteredUsers.first.firstName,
-                          imageUrl:
-                              userController.filteredUsers.first.profileImage,
-                        );
-                      }),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        width: 300,
-                        child: ButtonDefaultWidget(
-                          title: 'Invitar Persona',
-                          callback: () {
-                            calendarController.updateField('owner_id',
-                                [userController.filteredUsers.first.id]);
-                            userController.deselectUser();
-                            userController.selectedUser(
-                                userController.filteredUsers.first);
-                            calendarController.updateField('owner_id',
-                                [userController.filteredUsers.first.id ?? -1]);
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      )
-                    ],
-                  )),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('CLOSE'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

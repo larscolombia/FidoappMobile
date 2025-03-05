@@ -1,38 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
-import 'package:pawlly/styles/styles.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomSelectFormFieldWidget extends StatefulWidget {
   final String placeholder;
-  final String? icon; // Ahora icon es opcional (puede ser null)
+  final String? icon; // Icono opcional
   final String? placeholderSvg;
   final TextEditingController? controller;
   final List<String>? items;
   final bool? enabled;
   final List<String? Function(String?)>? validators;
-  final AutovalidateMode autovalidateMode; // Nueva propiedad
-  final void Function(String?)? onChange; // Parámetro opcional
+  final AutovalidateMode autovalidateMode;
+  final void Function(String?)? onChange;
   final Color? filcolorCustom;
   final Color? textColor;
-  final Color? borderColor; // Nueva propiedad para el color del borde
+  final Color? borderColor; // Color del borde
   final String? label;
 
   const CustomSelectFormFieldWidget({
     super.key,
     required this.placeholder,
-    this.icon, // Hacer el icono opcional
+    this.icon,
     this.placeholderSvg,
     required this.controller,
     this.items,
     this.enabled,
     this.validators,
-    this.autovalidateMode =
-        AutovalidateMode.disabled, // Inicializar nueva propiedad
-    this.onChange, // Inicializar el parámetro opcional
+    this.autovalidateMode = AutovalidateMode.disabled,
+    this.onChange,
     this.filcolorCustom,
     this.textColor,
-    this.borderColor, // Inicialización de borderColor
+    this.borderColor,
     this.label,
   });
 
@@ -54,11 +51,10 @@ class _CustomSelectFormFieldWidgetState
         ? widget.controller?.text
         : null;
 
-    // Si autovalidateMode es always o onUserInteraction, validamos inmediatamente al iniciar
     if (widget.autovalidateMode == AutovalidateMode.always ||
         widget.autovalidateMode == AutovalidateMode.onUserInteraction) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() {}); // Dispara la validación inicial
+        setState(() {});
       });
     }
   }
@@ -85,7 +81,6 @@ class _CustomSelectFormFieldWidgetState
     bool hasText = widget.controller?.text.isNotEmpty ?? false;
     String? errorText;
 
-    // Si autovalidateMode es always o onUserInteraction, obtenemos el error
     if (widget.autovalidateMode == AutovalidateMode.always ||
         (widget.autovalidateMode == AutovalidateMode.onUserInteraction &&
             _selectedValue != null)) {
@@ -100,12 +95,12 @@ class _CustomSelectFormFieldWidgetState
             Container(
               padding: const EdgeInsets.only(left: 5),
               width: double.infinity,
-              child: const Text(
-                'Categoria del evento',
-                style: TextStyle(
+              child: Text(
+                widget.label!,
+                style: const TextStyle(
                   fontSize: 14,
                   color: Colors.black,
-                  fontFamily: 'lato',
+                  fontFamily: 'Lato',
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -135,41 +130,34 @@ class _CustomSelectFormFieldWidgetState
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide(
-                        color: widget.borderColor ??
-                            (hasText || _selectedValue != null
-                                ? Styles.iconColorBack
-                                : Colors.transparent),
+                        color: widget.borderColor ?? Colors.grey,
                         width: 1.0,
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: const BorderSide(
-                        color: Styles.iconColorBack,
-                        width: 1,
+                      borderSide: BorderSide(
+                        color: widget.borderColor ?? Colors.grey,
+                        width: 1.0,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide(
-                        color: widget.borderColor ?? Styles.iconColorBack,
-                        width: 1.0,
+                        color: widget.borderColor ?? Colors.blue,
+                        width: 1.5,
                       ),
                     ),
                     disabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: const BorderSide(
-                        color: Colors.grey,
+                      borderSide: BorderSide(
+                        color: widget.borderColor ?? Colors.grey,
                         width: 1.0,
                       ),
                     ),
-                    // Condicionar el prefixIcon si el icon es proporcionado
                     prefixIcon: widget.placeholderSvg != null
                         ? Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20,
-                              right: 5,
-                            ),
+                            padding: const EdgeInsets.only(left: 20, right: 5),
                             child: SizedBox(
                               width: 24,
                               height: 24,
@@ -186,17 +174,15 @@ class _CustomSelectFormFieldWidgetState
                                   height: 20,
                                 ),
                               )
-                            : null, // Si no se pasa icono, no mostramos nada
+                            : null,
                     labelText:
                         _selectedValue != null ? null : widget.placeholder,
-
                     labelStyle: TextStyle(
                       color: widget.textColor ?? Colors.black,
-                      fontFamily:
-                          'Lato', // Forzamos la fuente Lato para el placeholder
+                      fontFamily: 'Lato',
                       fontSize: 14,
                     ),
-                    errorText: errorText, // Mostrar mensaje de error si existe
+                    errorText: errorText,
                   ),
                   isEmpty: _selectedValue == null,
                   child: Row(
@@ -206,8 +192,7 @@ class _CustomSelectFormFieldWidgetState
                         _selectedValue ?? '',
                         style: TextStyle(
                           color: isEnabled ? Colors.black : Colors.grey,
-                          fontFamily:
-                              'Lato', // Forzamos la fuente Lato para el texto ingresado
+                          fontFamily: 'Lato',
                         ),
                       ),
                       Padding(
@@ -255,59 +240,31 @@ class _CustomSelectFormFieldWidgetState
           child: Material(
             elevation: 4.0,
             borderRadius: BorderRadius.circular(16),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxHeight: 170, // Limitar la altura máxima a 200px
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: widget.borderColor ?? Colors.grey),
+                borderRadius: BorderRadius.circular(16),
               ),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                      color: widget.borderColor ?? Styles.iconColorBack),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: false,
-                  children: widget.items!.map((item) {
-                    return Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Styles.iconColorBack,
-                            width: 0.5,
-                          ),
-                        ),
-                      ),
-                      child: ListTile(
-                        focusColor: Colors.white,
-                        title: Text(
-                          item,
-                          style: const TextStyle(
-                            fontFamily: 'Lato', // Utiliza Lato para los items
-                          ),
-                        ),
-                        onTap: () {
-                          setState(() {
-                            _selectedValue = item;
-                            widget.controller?.text = item;
-                            _removeOverlay();
-                          });
+              child: ListView(
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                children: widget.items!.map((item) {
+                  return ListTile(
+                    title: Text(item),
+                    onTap: () {
+                      setState(() {
+                        _selectedValue = item;
+                        widget.controller?.text = item;
+                        _removeOverlay();
+                      });
 
-                          if (widget.autovalidateMode ==
-                              AutovalidateMode.onUserInteraction) {
-                            setState(() {});
-                          }
-
-                          // Llamar a onChange si no es null
-                          if (widget.onChange != null) {
-                            widget.onChange!(_selectedValue);
-                          }
-                        },
-                      ),
-                    );
-                  }).toList(),
-                ),
+                      if (widget.onChange != null) {
+                        widget.onChange!(_selectedValue);
+                      }
+                    },
+                  );
+                }).toList(),
               ),
             ),
           ),

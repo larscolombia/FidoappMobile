@@ -67,7 +67,7 @@ class PerfilMascotas extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           color: disableTap ? Colors.white : Styles.fiveColor,
-          borderRadius: const BorderRadius.all(Radius.circular(25)),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
           border: Border.all(
             color: disableTap
                 ? Colors.transparent
@@ -145,7 +145,9 @@ class PerfilMascotas extends StatelessWidget {
                       SizedBox(
                         width: width / 2.5,
                         child: Text(
-                          'Perfil de ${profile.name}',
+                          disableTap == false
+                              ? 'Perfil de ${profile.name}'
+                              : '${profile.age}',
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
