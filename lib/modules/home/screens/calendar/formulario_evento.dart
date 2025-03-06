@@ -191,7 +191,7 @@ class _CreateEventState extends State<CreateEvent> {
           // Cabecera
           Container(
             width: double.infinity,
-            height: 140,
+            height: 170,
             decoration: const BoxDecoration(
               color: Styles.colorContainer,
             ),
@@ -199,19 +199,21 @@ class _CreateEventState extends State<CreateEvent> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 30),
                   Text(
                     'Completa la Información',
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,
                       fontFamily: 'PoetsenOne',
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                   SizedBox(height: 1),
                   Text(
                     'Añade los datos del evento',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 14,
                       color: Colors.black,
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w500,
@@ -242,7 +244,6 @@ class _CreateEventState extends State<CreateEvent> {
                       child: BarraBack(
                         titulo: 'Evento Nuevo',
                         size: 20,
-                        
                         callback: () => Get.back(),
                       ),
                     ),
@@ -368,8 +369,7 @@ class _CreateEventState extends State<CreateEvent> {
                             : '', // Mensaje de error
                         suffixIcon:
                             Image.asset('assets/icons/flecha_select.png'),
-                        placeholderImage:
-                            Image.asset('assets/icons/calendar2.png'),
+                        placeholderSvg: 'assets/icons/svg/calendar.svg',
                         onChanged: (value) {
                           final formattedDate =
                               value.replaceAll('/', '-').toString();
@@ -405,8 +405,7 @@ class _CreateEventState extends State<CreateEvent> {
                           errorPadding: (validate['event_time'] ?? false),
                           suffixIcon:
                               Image.asset('assets/icons/flecha_select.png'),
-                          placeholderImage:
-                              Image.asset('assets/icons/time.png'),
+                          placeholderSvg: 'assets/icons/svg/time.svg',
                           onChanged: (value) {
                             calendarController.updateField('event_time', value);
                             if (value.isNotEmpty) {
