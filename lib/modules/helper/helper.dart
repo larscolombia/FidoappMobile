@@ -16,6 +16,9 @@ class Helper extends GetX {
 
   static const margenDefault = 16.0;
   static const paddingDefault = 26.0;
+  static const String funte1 = 'Lato';
+  static const Color dividerColor = Color(0xFFEAEAEA);
+
   static String tipoUsuario(String userType) {
     switch (userType) {
       case 'vet':
@@ -49,6 +52,18 @@ class Helper extends GetX {
     } catch (e) {
       return "Fecha inválida";
     }
+  }
+
+  static Widget closeButton(BuildContext context) {
+    return GestureDetector(
+      onTap: () => Navigator.pop(context),
+      child: SvgPicture.asset(
+        'assets/icons/svg/x.svg',
+        width: 24,
+        height: 24,
+        colorFilter: const ColorFilter.mode(Color(0XFFBEBEBE), BlendMode.srcIn),
+      ),
+    );
   }
 
   static Future<void> showMyDialog(

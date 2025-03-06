@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nb_utils/nb_utils.dart';
-import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/components/checkbox2.dart';
+import 'package:pawlly/modules/components/custom_checkbox.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 
 class FiltrarActividad extends StatefulWidget {
@@ -10,9 +11,6 @@ class FiltrarActividad extends StatefulWidget {
 
   const FiltrarActividad({Key? key, required this.controller})
       : super(key: key);
-
-  @override
-  State<FiltrarActividad> createState() => _FiltrarActividadState();
 
   static void show(BuildContext context, PetActivityController controller) {
     showDialog(
@@ -22,15 +20,15 @@ class FiltrarActividad extends StatefulWidget {
       },
     );
   }
+
+  @override
+  State<FiltrarActividad> createState() => _FiltrarActividadState();
 }
 
 class _FiltrarActividadState extends State<FiltrarActividad> {
   /// Opciones de orden
-  final List<String> sortingOptions = ["Más recientes", "A - Z", "Z - A"];
+  final List<String> sortingOptions = ["Más recientes", "A-Z", "Z-A"];
   String? selectedSorting;
-
-  /// Control de "ver más" en Categoría
-  bool showMoreCategories = false;
 
   /// Opciones de fecha (chips)
   final List<String> dateChips = [
@@ -40,10 +38,16 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
   ];
   String? selectedDateChip;
 
+  /// Para "Ver más" en Categoría
+  bool showMoreCategories = false;
+
+  /// Categoría seleccionada
+  String? selectedCategory;
+
   @override
   void initState() {
     super.initState();
-    // Si tienes un valor inicial para sorting, asígalo aquí
+    // Si quieres un valor por defecto, puedes asignarlo aquí
     // selectedSorting = "Más recientes";
   }
 
@@ -56,11 +60,13 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
       backgroundColor: Colors.white,
       contentPadding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(28),
       ),
       content: Container(
-        width: 300, // Ajusta el ancho del popup
-        padding: const EdgeInsets.all(16),
+        width: 302, // Ajusta ancho del popup
+        height: 581,
+        padding: const EdgeInsets.all(Helper.paddingDefault),
+
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,65 +78,61 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
                   const Text(
                     'Filtrar por',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                       fontFamily: 'Lato',
                     ),
                   ),
-                  InkWell(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Image.asset(
-                      'assets/icons/x.png',
-                      width: 20,
-                      height: 20,
-                    ),
-                  ),
+                  Helper.closeButton(context),
                 ],
               ),
 
-              const SizedBox(height: 8),
-              const Divider(thickness: 0.5, color: Colors.grey),
+              const SizedBox(height: 5),
+              const Divider(thickness: 0.5, color: Helper.dividerColor),
 
-              /// Sección Orden
-              const SizedBox(height: 8),
-              const Text(
-                'Ordenar',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                  fontFamily: 'Lato',
-                ),
-              ),
-              const SizedBox(height: 8),
               Column(
                 children: sortingOptions.map((option) {
-                  return Row(
-                    children: [
-                      Radio<String>(
-                        value: option,
-                        groupValue: selectedSorting,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedSorting = value;
-                          });
-                          // Lógica para filtrar o actualizar algo...
-                        },
-                        activeColor: Styles.primaryColor,
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      Text(option),
-                    ],
+                  bool isSelected = (selectedSorting == option);
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: Row(
+                      // Usamos Row para alinear el checkbox y el texto
+                      children: [
+                        CustomCheckbox(
+                          // Usamos tu CustomCheckbox con padding interno
+                          isChecked:
+                              isSelected, // Cambiamos 'value' por 'isChecked'
+                          onChanged: (bool newValue) {
+                            // Cambiamos 'bool? newValue' por 'bool newValue'
+                            setState(() {
+                              if (newValue == true) {
+                                selectedSorting = option;
+                              } else {
+                                selectedSorting = null;
+                              }
+                            });
+                          },
+                        ),
+                        SizedBox(
+                            width: 8), // Espacio entre el checkbox y el texto
+                        Text(
+                          option,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontFamily: 'Lato',
+                          ),
+                        ), // Texto al lado del checkbox
+                      ],
+                    ),
                   );
                 }).toList(),
               ),
 
-              const SizedBox(height: 16),
-              const Divider(thickness: 0.5, color: Colors.grey),
-
               /// Sección Categoría
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               const Text(
                 'Categoría',
                 style: TextStyle(
@@ -141,77 +143,86 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
                 ),
               ),
               const SizedBox(height: 8),
-              Obx(
-                () {
-                  // Mostramos solo algunas categorías si no está en "ver más"
-                  final maxToShow = showMoreCategories
-                      ? controller.categories.length
-                      : 4; // 4 es un ejemplo
-                  final categoriesToShow =
-                      controller.categories.take(maxToShow).toList();
+              Obx(() {
+                // Podrías mostrar solo 3 o 4 categorías si no está en "ver más"
+                final maxToShow =
+                    showMoreCategories ? controller.categories.length : 3;
+                final categoriesToShow =
+                    controller.categories.take(maxToShow).toList();
 
-                  return Column(
-                    children: [
-                      ...categoriesToShow.map((category) {
-                        return Row(
+                return Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        children: [
+                          CustomCheckbox(
+                            isChecked: false,
+                            onChanged: (bool newValue) {},
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'Informe médico',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Lato',
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    ...categoriesToShow.map((category) {
+                      bool isSelected = (selectedCategory == category);
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 8, left: 14.00),
+                        child: Row(
                           children: [
-                            Checkbox(
-                              value:
-                                  controller.diario['category_id'] == category,
-                              onChanged: (bool? value) {
-                                if (value == true) {
-                                  controller.updateField(
-                                      'category_id', category);
-                                } else {
-                                  controller.updateField('category_id', '');
+                            CustomCheckbox(
+                              isChecked: isSelected,
+                              onChanged: (bool newValue) {
+                                if (newValue) {
+                                  setState(() {
+                                    selectedCategory = category;
+                                  });
+                                } else if (selectedCategory == category) {
+                                  setState(() {
+                                    selectedCategory = null;
+                                  });
                                 }
-                                // Lógica interna
-                                controller.buscarIdCategoria(
-                                  controller.categoria_value(category),
-                                );
-                                // Si quieres cerrar el modal al seleccionar:
-                                // Navigator.of(context).pop();
-                                setState(() {});
                               },
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                              checkColor: Styles.colorContainer,
-                              activeColor: Styles.primaryColor,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              visualDensity: VisualDensity.compact,
                             ),
                             const SizedBox(width: 8),
-                            Text(category),
+                            Text(
+                              category,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontFamily: 'Lato',
+                                color: Colors.black,
+                              ),
+                            ),
                           ],
-                        );
-                      }).toList(),
-
-                      // Botón "Ver más / Ver menos"
-                      if (controller.categories.length > 4)
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: TextButton(
-                            onPressed: () {
-                              setState(() {
-                                showMoreCategories = !showMoreCategories;
-                              });
-                            },
-                            child: Text(
-                                showMoreCategories ? 'Ver menos' : 'Ver más'),
-                          ),
                         ),
-                    ],
-                  );
-                },
-              ),
+                      );
+                    }).toList(),
+                    if (controller.categories.length > 3)
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextButton(
+                          onPressed: () {
+                            setState(() {
+                              showMoreCategories = !showMoreCategories;
+                            });
+                          },
+                          child: Text(
+                              showMoreCategories ? 'Ver menos' : 'Ver más'),
+                        ),
+                      ),
+                  ],
+                );
+              }),
 
-              const SizedBox(height: 16),
-              const Divider(thickness: 0.5, color: Colors.grey),
-
-              /// Sección Fecha
-              const SizedBox(height: 8),
               const Text(
                 'Fecha',
                 style: TextStyle(
@@ -231,17 +242,29 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
                     return ChoiceChip(
                       label: Text(dateLabel),
                       selected: isSelected,
-                      selectedColor: Styles.primaryColor,
+                      selectedColor: Colors.grey,
                       onSelected: (bool selected) {
                         setState(() {
                           selectedDateChip = selected ? dateLabel : null;
                         });
-                        // Lógica para filtrar por fecha
                       },
-                      backgroundColor: const Color.fromARGB(255, 245, 245, 245),
+                      backgroundColor:
+                          isSelected ? Colors.grey : Styles.colorContainer,
                       labelStyle: TextStyle(
-                        color: isSelected ? Colors.white : Colors.black,
+                        fontFamily: Helper.funte1,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: isSelected ? Colors.white : Styles.iconColor,
                       ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        side: BorderSide(
+                          color:
+                              isSelected ? Colors.white : Styles.colorContainer,
+                          width: .5,
+                        ),
+                      ),
+                      showCheckmark: false, // Quitamos la palomita
                     );
                   }),
                 ],
@@ -262,8 +285,14 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                     onPressed: () {
-                      // Aplica la lógica de filtrar
-                      // y cierra el diálogo
+                      // 1. Llamamos a applyFilters en el controlador
+                      widget.controller.applyFilters(
+                        categoryName: selectedCategory,
+                        sortType: selectedSorting,
+                        dateLabel: selectedDateChip,
+                      );
+
+                      // 2. Cerrar el diálogo
                       Navigator.of(context).pop();
                     },
                     child: const Text(

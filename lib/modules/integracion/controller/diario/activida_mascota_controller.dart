@@ -398,4 +398,60 @@ class PetActivityController extends GetxController {
     }
     return date; // Si el formato no es el esperado, retorna la fecha original.
   }
+
+  void applyFilters({
+    String? categoryName,
+    String? sortType, // "Más recientes", "A-Z", "Z-A"
+    String? dateLabel, // Por ejemplo: "Hace 1 año", "Hace 2 meses", etc.
+  }) {
+    // Partimos de todas las actividades
+    List<PetActivity> result = List.from(activities);
+
+    // 1. Filtrar por categoría
+    if (categoryName != null && categoryName.isNotEmpty) {
+      // Convertimos el nombre de categoría a su ID
+      final catId = categoria_value(categoryName);
+      // Filtramos
+      result =
+          result.where((act) => act.categoryId == int.tryParse(catId)).toList();
+    }
+
+    // 2. Filtrar por fecha (opcional: tu lógica para cada rango)
+    // Aquí puedes hacer parse de la fecha en 'act.date' y compararlo
+    // con la fecha actual según el "dateLabel".
+    if (dateLabel != null && dateLabel.isNotEmpty) {
+      // Ejemplo simplificado: si es "Hace 1 año", filtramos las actividades
+      // con fecha en el último año. Ajusta según tu formato real de fecha.
+      if (dateLabel == "Hace 1 año") {
+        final hoy = DateTime.now();
+        final haceUnAnio = DateTime(hoy.year - 1, hoy.month, hoy.day);
+        result = result.where((act) {
+          final actDate = DateTime.parse(convertDateFormat(act.date));
+          return actDate.isAfter(haceUnAnio);
+        }).toList();
+      }
+      // Agrega más condiciones para "Hace 2 meses", "Hace 1 semana", etc.
+    }
+
+    // 3. Ordenar
+    if (sortType == "Más recientes") {
+      // Orden descendente por fecha (más recientes primero)
+      result.sort((a, b) {
+        final dateA = DateTime.parse(convertDateFormat(a.date));
+        final dateB = DateTime.parse(convertDateFormat(b.date));
+        return dateB.compareTo(dateA);
+      });
+    } else if (sortType == "A-Z") {
+      // Orden alfabético ascendente
+      result.sort((a, b) =>
+          a.actividad.toLowerCase().compareTo(b.actividad.toLowerCase()));
+    } else if (sortType == "Z-A") {
+      // Orden alfabético descendente
+      result.sort((b, a) =>
+          a.actividad.toLowerCase().compareTo(b.actividad.toLowerCase()));
+    }
+    print('filtro ${jsonEncode(result)}');
+    // Asignamos a filteredActivities
+    filteredActivities.value = result;
+  }
 }
