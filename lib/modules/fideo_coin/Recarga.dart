@@ -92,7 +92,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: Styles.paddingAll,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -172,29 +172,39 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                   ButtonDefaultWidget(
                     title: 'Confirmar',
                     callback: () {
+                      if (_input.isEmpty ||
+                          double.tryParse(_input.replaceAll(',', '')) == 0) {
+                        Get.snackbar(
+                          'Error',
+                          'Debe ingresar un monto mayor a 0',
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                        );
+                        return;
+                      }
+
                       Get.dialog(
-                        //pisa papel
                         CustomAlertDialog(
                           icon: Icons.check_circle_outline,
                           title: 'Confirmación',
                           buttonCancelar: true,
                           description: controller.isLoading.value == true
                               ? "cargando ..."
-                              : 'Estas a punto de comprar ${_formattedInput(_input)}ƒ',
+                              : 'Estas a punto de comprar ${_formattedInput(_input)} ƒ',
                           primaryButtonText: 'Continuar',
                           onPrimaryButtonPressed: () async {
-                            // 2. Muestra una pantalla de carga
-
                             controller.GetUrlPayment(
                                 _formattedInput(_input), context);
                           },
                         ),
                         barrierDismissible: true,
                       );
-
-                      // _confirmarTransaccion();
                     },
-                  )
+                  ),
+
+                  SizedBox(
+                    height: 20,
+                  ),
                 ],
               ),
             ),

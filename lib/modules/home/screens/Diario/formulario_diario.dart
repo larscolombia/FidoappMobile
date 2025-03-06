@@ -71,8 +71,8 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'PoetsenOne',
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     Text(
@@ -83,7 +83,10 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
-                    )
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                   ],
                 ),
               ),
@@ -117,6 +120,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                         children: [
                           BarraBack(
                             titulo: 'Nuevo Registro',
+                            size: 20,
                             callback: () {
                               Get.back();
                             },
@@ -141,9 +145,9 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                           SizedBox(
                             width: width,
                             child: InputSelect(
-                              TextColor: Colors.black,
+                              TextColor: Color(0xFF383838),
                               label: 'Categoría',
-                              placeholder: "Selecciona una categoría",
+                              placeholder: "Categoría del registro",
                               onChanged: (value) {
                                 controller.updateField('category_id', value);
                               },
@@ -174,6 +178,8 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               placeholder: 'Fecha del evento',
                               isDateField: true,
                               placeholderSvg: 'assets/icons/svg/calendar.svg',
+                              placeholderSuffixSvg:
+                                  'assets/icons/svg/flecha_select.svg',
                               suffixIcon: const Icon(
                                 Icons.arrow_drop_down_sharp,
                                 color: Styles.iconColorBack,
@@ -207,7 +213,8 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               label: 'Adjuntar imagen',
                               placeholderSvg: 'assets/icons/svg/imagen2.svg',
                               placeholder: 'Añadir imagen .pdf',
-
+                              placeholderSuffixSvg:
+                                  'assets/icons/svg/vector_select_images.svg',
                               isImagePicker:
                                   true, // Habilita la selección de imagen
                               onChanged: (value) {

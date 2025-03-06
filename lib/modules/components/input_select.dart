@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class InputSelect extends StatelessWidget {
@@ -32,9 +33,9 @@ class InputSelect extends StatelessWidget {
           label ?? '',
           style: TextStyle(
             fontSize: 14,
-            color: TextColor ?? const Color.fromARGB(255, 252, 252, 252),
+            color: Color(0xFF383838),
             fontFamily: 'Lato',
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
           ),
         ),
         const SizedBox(height: 8),
@@ -42,19 +43,17 @@ class InputSelect extends StatelessWidget {
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width,
           ),
-          // Envolvemos el DropdownButtonFormField en un Theme para modificar el estilo del modal
           child: Theme(
             data: Theme.of(context).copyWith(
               canvasColor: Colors.white,
-              // Usamos menuStyle para definir la forma del menú desplegable
               dropdownMenuTheme: DropdownMenuThemeData(
                 menuStyle: MenuStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                       side: const BorderSide(
-                        color: Styles.iconColorBack,
-                        width: 0.5,
+                        color: Color(0xFFFCBA67),
+                        width: 1,
                       ),
                     ),
                   ),
@@ -67,7 +66,26 @@ class InputSelect extends StatelessWidget {
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
+                  borderSide: const BorderSide(
+                    color: Color(0xFFFCBA67), // Color del borde
+                    width: 1, // Grosor del borde
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(
+                    color: Color(
+                        0xFFFCBA67), // Color del borde cuando no está seleccionado
+                    width: 1,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: const BorderSide(
+                    color: Color(
+                        0xFFFCBA67), // Color del borde cuando está seleccionado
+                    width: 1,
+                  ),
                 ),
                 filled: true,
                 fillColor: color ?? Styles.colorContainer,
@@ -85,9 +103,10 @@ class InputSelect extends StatelessWidget {
                   width: 30,
                   child: suffixIcon ??
                       Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Image.asset(
-                          'assets/icons/flecha_select.png',
+                        padding: const EdgeInsets.only(
+                            left: 18, right: 18, top: 18, bottom: 18),
+                        child: SvgPicture.asset(
+                          'assets/icons/svg/flecha_select.svg',
                           width: 24,
                           height: 24,
                         ),

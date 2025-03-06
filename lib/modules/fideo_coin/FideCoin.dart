@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -17,6 +18,9 @@ class FideCoin extends StatelessWidget {
       body: Column(
         children: [
           HeaderNotification(),
+          const SizedBox(
+            height: 10,
+          ),
           Expanded(
             child: CustomScrollView(
               slivers: [
@@ -39,8 +43,7 @@ class FideCoin extends StatelessWidget {
                     ),
                     BalanceWidget(),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 20),
+                      padding: Styles.paddingAll,
                       child: const Text(
                         'Mis Movimientos',
                         style: TextStyle(
@@ -140,9 +143,9 @@ class Movimientos extends StatelessWidget {
                   color: Styles.fiveColor,
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: Image.asset(
-                  'assets/icons/moneda.png',
-                  width: 40,
+                child: SvgPicture.asset(
+                  'assets/icons/svg/moneda.svg',
+                  width: 30,
                 ),
               ),
               const SizedBox(width: 10),
@@ -153,14 +156,19 @@ class Movimientos extends StatelessWidget {
                   children: [
                     Text(
                       description ?? "Movimiento",
-                      style: Styles.textDescription,
+                      style: TextStyle(
+                        fontFamily: 'Lato',
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Fecha: $date',
                       style: TextStyle(
                         fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w400,
                         color: Color.fromARGB(255, 78, 75, 75),
                         fontFamily: 'Lato',
                       ),
@@ -171,8 +179,13 @@ class Movimientos extends StatelessWidget {
             ],
           ),
           Text(
-            '$amountƒ',
-            style: Styles.textDescription,
+            '$amount ƒ',
+            style: TextStyle(
+              fontFamily: 'Lato',
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: Colors.black,
+            ),
           ),
         ],
       ),
