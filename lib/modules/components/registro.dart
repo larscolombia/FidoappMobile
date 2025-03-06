@@ -25,73 +25,81 @@ class Registro extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
+    // Estilos constantes para los textos
+    final TextStyle tituloStyle = TextStyle(
+      fontSize: 18,
+      fontFamily: 'Lato',
+      fontWeight: FontWeight.w700,
+      color: const Color(0xFF383838),
+    );
+
+    final TextStyle subtituloStyle = TextStyle(
+      fontSize: 12,
+      fontFamily: 'Lato',
+      fontWeight: FontWeight.w700,
+      color: const Color(0xFFFC9214),
+    );
+
+    final TextStyle fechaStyle = TextStyle(
+      fontSize: 12,
+      fontFamily: 'Lato',
+      fontWeight: FontWeight.w500,
+      color: const Color(0xff959595),
+    );
+
+    final TextStyle registroIdStyle = TextStyle(
+      fontSize: 12,
+      fontFamily: 'Lato',
+      fontWeight: FontWeight.w400,
+      color: const Color.fromARGB(255, 0, 0, 0),
+    );
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(
+          vertical: 12, horizontal: 16), // Reducido el padding
       decoration: BoxDecoration(
         color: Styles.whiteColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Recursos.ColorBorderSuave, width: 1),
+        border: Border.all(color: Color(0xFFE8E8E8), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Título de la actividad
-          Expanded(
-            flex: 5,
-            child: Text(
-              titulo ?? '',
-              style: TextStyle(
-                fontSize: width > 600 ? 18 : 18,
-                fontFamily: 'Lato',
-                height: 1.2,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
+          Text(
+            titulo,
+            style: tituloStyle,
+            maxLines: 2, // Reducido el espacio del título con maxLines
+            overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 8),
+
           // Categoría y fecha
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  subtitulo,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: width > 600 ? 14 : 12,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w700,
-                    color: Styles.iconColorBack,
-                  ),
-                ),
-                Text(
-                  fecha,
-                  style: TextStyle(
-                    fontSize: width > 600 ? 14 : 12,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xff959595),
-                  ),
-                ),
-                Text(
-                  'Registro Nro. ${registroId}',
-                  style: TextStyle(
-                    fontSize: width > 600 ? 14 : 12,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w500,
-                    color: const Color.fromARGB(255, 0, 0, 0),
-                  ),
-                ),
-              ],
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                subtitulo,
+                maxLines:
+                    2, // Reducido el subtitulo para que ocupe menos espacio
+                overflow: TextOverflow.ellipsis,
+                style: subtituloStyle,
+              ),
+              Text(
+                fecha,
+                style: fechaStyle,
+              ),
+              Text(
+                'Registro Nro. $registroId',
+                style: registroIdStyle,
+              ),
+            ],
           ),
-          const Spacer(),
-          const SizedBox(height: 8),
+
+          // Ajuste del espacio entre la muestra de datos y el botón
+          SizedBox(
+            height: 20, // Menor espacio entre los datos y el botón
+          ),
+
           // Botón de acción
           SizedBox(
             height: width > 600

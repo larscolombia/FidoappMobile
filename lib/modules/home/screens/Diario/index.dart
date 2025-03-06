@@ -49,12 +49,14 @@ class _DiarioMascotasState extends State<DiarioMascotas> {
             child: GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
-                crossAxisSpacing: 7.0,
+                crossAxisSpacing: 5.0,
                 mainAxisSpacing: 5.0,
-                childAspectRatio: constraints.maxWidth > 600 ? 0.7 : 0.66,
+                childAspectRatio: constraints.maxWidth > 600
+                    ? 0.700
+                    : 0.900, // Ajustar aquí el valor
               ),
               itemCount: widget.controller.filteredActivities.length,
               itemBuilder: (context, index) {
