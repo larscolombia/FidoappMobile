@@ -207,8 +207,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               label: 'Adjuntar imagen',
                               placeholderSvg: 'assets/icons/svg/imagen2.svg',
                               placeholder: 'Añadir imagen .pdf',
-                              borderType: CustomBorderType
-                                  .dotted, // Esto aplicará el borde punteado
+
                               isImagePicker:
                                   true, // Habilita la selección de imagen
                               onChanged: (value) {

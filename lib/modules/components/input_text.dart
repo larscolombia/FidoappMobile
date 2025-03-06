@@ -3,13 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pawlly/modules/components/deshedborder.dart';
+import 'package:pawlly/app_theme.dart';
 import 'dart:io';
 
 import 'package:pawlly/modules/components/style.dart';
-
-/// Enum para definir el tipo de borde
-enum CustomBorderType { solid, dotted }
 
 class InputText extends StatefulWidget {
   const InputText({
@@ -31,18 +28,16 @@ class InputText extends StatefulWidget {
     this.initialValue,
     this.fondoColor = Styles.colorContainer,
     this.borderColor = Colors.transparent,
-    this.labelColor,
-    this.labelFontSize,
-    this.height,
+    this.labelColor = null,
+    this.labelFontSize = null,
+    this.height = null,
     this.onImagePicked,
     this.isTextArea = false,
     this.fw,
     this.controller,
     this.isRequired = false,
-    this.errorText, // Mensaje de error externo
+    this.errorText, // Nuevo parámetro para mensajes de error
     this.errorPadding = false,
-    this.borderType =
-        CustomBorderType.solid, // Propiedad para definir el tipo de borde
   });
 
   final FontWeight? fw;
@@ -72,8 +67,6 @@ class InputText extends StatefulWidget {
   final bool isRequired;
   final String? errorText; // Mensaje de error externo
   final bool errorPadding;
-  final CustomBorderType borderType; // Nuevo parámetro para el estilo del borde
-
   @override
   _InputTextState createState() => _InputTextState();
 }
@@ -108,141 +101,11 @@ class _InputTextState extends State<InputText> {
 
   @override
   Widget build(BuildContext context) {
-    // Definir la decoración base para el TextFormField.
-    final inputDecoration = InputDecoration(
-      labelText:
-          widget.isTextArea ? null : (widget.placeholder ?? 'placeholder'),
-      hintText:
-          widget.isTextArea ? (widget.placeholder ?? 'placeholder') : null,
-      hintStyle: const TextStyle(
-        fontSize: 14,
-        color: Colors.grey,
-        fontFamily: 'Lato',
-        fontWeight: FontWeight.w400,
-      ),
-      labelStyle: TextStyle(
-        fontSize: 14,
-        color: widget.placeHolderColor ? const Color(0XFF959595) : Colors.black,
-        fontFamily: 'Lato',
-        fontWeight: FontWeight.w500,
-      ),
-      alignLabelWithHint: widget.isTextArea,
-      contentPadding: widget.isTextArea
-          ? const EdgeInsets.symmetric(vertical: 20, horizontal: 20)
-          : const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      border: widget.borderType == CustomBorderType.dotted
-          ? InputBorder.none
-          : OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
-                color: widget.errorText != null
-                    ? widget.borderColor
-                    : widget.borderColor,
-                width: 1,
-              ),
-            ),
-      enabledBorder: widget.borderType == CustomBorderType.dotted
-          ? InputBorder.none
-          : OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
-                color: widget.errorPadding ? Colors.red : widget.borderColor,
-                width: 1,
-              ),
-            ),
-      focusedBorder: widget.borderType == CustomBorderType.dotted
-          ? InputBorder.none
-          : OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
-                color: widget.borderColor,
-                width: 1.5,
-              ),
-            ),
-      disabledBorder: widget.borderType == CustomBorderType.dotted
-          ? InputBorder.none
-          : OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(
-                color: widget.borderColor,
-                width: 1,
-              ),
-            ),
-      filled: true,
-      fillColor: widget.fondoColor,
-      suffixIcon: Container(
-        padding: const EdgeInsets.only(right: 15),
-        width: 30,
-        child: widget.suffixIcon,
-      ),
-      prefixIcon: widget.prefiIcon ??
-          (widget.placeholderSvg != null
-              ? Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 5),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: SvgPicture.asset(widget.placeholderSvg!),
-                  ),
-                )
-              : widget.placeholderImage != null
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 5),
-                      child: SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: widget.placeholderImage,
-                      ),
-                    )
-                  : null),
-    );
-
-    // Construir el TextFormField base
-    final textFormField = AbsorbPointer(
-      absorbing: widget.readOnly ||
-          widget.isDateField ||
-          widget.isTimeField ||
-          widget.isFilePicker ||
-          widget.isImagePicker,
-      child: TextFormField(
-        controller: _textController,
-        focusNode: _focusNode,
-        maxLines: widget.isTextArea ? null : 1,
-        minLines: widget.isTextArea ? 3 : 1,
-        style: const TextStyle(
-          fontFamily: 'Lato',
-          fontSize: 15,
-          color: Color(0XFF383838),
-          fontWeight: FontWeight.w400,
-        ),
-        decoration: inputDecoration,
-        onChanged: (value) {
-          widget.onChanged(value);
-        },
-        readOnly: widget.readOnly,
-      ),
-    );
-
-    // Si el borde es de tipo dotted, lo envolvemos en un DashedBorder
-    Widget fieldWidget;
-    if (widget.borderType == CustomBorderType.dotted) {
-      fieldWidget = DashedBorder(
-        strokeWidth: 1,
-        color: widget.borderColor,
-        dashPattern: const [8, 4],
-        radius: const Radius.circular(16),
-        child: textFormField,
-      );
-    } else {
-      fieldWidget = textFormField;
-    }
-
     return Container(
       width: widget.isTextArea ? double.infinity : 302,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Etiqueta y mensaje de error
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -253,7 +116,7 @@ class _InputTextState extends State<InputText> {
                     widget.label ?? 'label',
                     style: TextStyle(
                       fontSize: 14,
-                      color: const Color(0xFF383838),
+                      color: Color(0xFF383838),
                       fontFamily: 'Lato',
                       fontWeight: widget.fw ?? FontWeight.w500,
                     ),
@@ -274,7 +137,7 @@ class _InputTextState extends State<InputText> {
                 ),
             ],
           ),
-          // Campo de entrada
+
           GestureDetector(
             onTap: () {
               if (widget.isDateField) {
@@ -287,14 +150,113 @@ class _InputTextState extends State<InputText> {
                 _pickImage();
               }
             },
-            child: fieldWidget,
+            child: AbsorbPointer(
+              absorbing: widget.readOnly ||
+                  widget.isDateField ||
+                  widget.isTimeField ||
+                  widget.isFilePicker ||
+                  widget.isImagePicker,
+              child: TextFormField(
+                controller: _textController,
+                focusNode: _focusNode,
+                maxLines: widget.isTextArea ? null : 1,
+                minLines: widget.isTextArea ? 3 : 1,
+                style: const TextStyle(
+                  fontFamily: 'Lato',
+                  fontSize: 15,
+                  color: Color(0XFF383838),
+                  fontWeight: FontWeight.w400,
+                ),
+                decoration: InputDecoration(
+                  labelText: widget.isTextArea
+                      ? null
+                      : (widget.placeholder ?? 'placeholder'),
+                  hintText: widget.isTextArea
+                      ? (widget.placeholder ?? 'placeholder')
+                      : null,
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w400,
+                  ),
+                  labelStyle: TextStyle(
+                    fontSize: 14,
+                    color: widget.placeHolderColor == true
+                        ? const Color(0XFF959595)
+                        : Colors.black,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w500,
+                  ),
+                  alignLabelWithHint: widget.isTextArea,
+                  contentPadding: widget.isTextArea
+                      ? const EdgeInsets.symmetric(vertical: 20, horizontal: 20)
+                      : const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color: widget.errorText != null
+                          ? widget.borderColor // Borde rojo si hay error
+                          : widget.borderColor,
+                      width: 1,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color:
+                          widget.errorPadding ? Colors.red : widget.borderColor,
+                      width: 1,
+                    ),
+                  ),
+                  filled: true,
+                  fillColor: widget.fondoColor,
+                  suffixIcon: Container(
+                    padding: const EdgeInsets.only(right: 15),
+                    width: 30,
+                    child: widget.suffixIcon,
+                  ),
+                  prefixIcon: widget.prefiIcon ??
+                      (widget.placeholderSvg != null
+                          ? Padding(
+                              padding: const EdgeInsets.only(
+                                left: 20,
+                                right: 10,
+                              ),
+                              child: SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: SvgPicture.asset(widget.placeholderSvg!),
+                              ),
+                            )
+                          : widget.placeholderImage != null
+                              ? Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 25,
+                                    right: 5,
+                                  ),
+                                  child: SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: widget.placeholderImage,
+                                  ),
+                                )
+                              : null),
+                ),
+                onChanged: (value) {
+                  widget.onChanged(value);
+                },
+                readOnly: widget.readOnly,
+              ),
+            ),
           ),
-          // Vista previa de imagen si se ha seleccionado alguna
+          // Mensaje de error
+
           if (_imageFile != null)
             Container(
               height: 220,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
                     height: 20,
@@ -302,17 +264,11 @@ class _InputTextState extends State<InputText> {
                   ),
                   SizedBox(
                     height: 200,
-                    child: DashedBorder(
-                      strokeWidth: 1,
-                      color: Colors.grey,
-                      radius: const Radius.circular(8),
-                      dashPattern: const [8, 4],
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.file(
-                          _imageFile!,
-                          fit: BoxFit.cover,
-                        ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.file(
+                        _imageFile!,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -324,6 +280,7 @@ class _InputTextState extends State<InputText> {
     );
   }
 
+  // Métodos para selectores de fecha/hora/archivo...
   Future<void> _selectDate(BuildContext context) async {
     _focusNode.unfocus();
     final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
@@ -332,6 +289,8 @@ class _InputTextState extends State<InputText> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
+      cancelText: 'Cancelar',
+      confirmText: 'Aceptar',
     );
     if (picked != null) {
       final formattedDate = dateFormat.format(picked);
@@ -345,6 +304,8 @@ class _InputTextState extends State<InputText> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      cancelText: 'Cancelar',
+      confirmText: 'Aceptar',
     );
     if (picked != null) {
       final formattedTime = picked.format(context);
