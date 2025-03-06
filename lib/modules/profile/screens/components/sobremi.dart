@@ -21,9 +21,6 @@ class Sobremi extends StatelessWidget {
         children: [
           _buildSectionTitle(
               context, 'Sobre ${profileController.user.value.fullName}'),
-          _buildInfoRow(context, profileController.user.value.address ?? ""),
-          _buildInfoRow(context, profileController.user.value.email ?? ""),
-          _buildInfoRow(context, profileController.user.value.gender ?? ""),
           _buildInfoRow(
               context, profileController.user.value.profile?.aboutSelf ?? ""),
         ],

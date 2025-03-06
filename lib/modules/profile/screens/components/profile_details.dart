@@ -118,7 +118,6 @@ class _ProfileDetailsState extends State<ProfileDetails> {
               ],
             ),
           ),
-          const SizedBox(height: 10),
           widget.profileController.user.value.userType == "user"
               ? SizedBox.shrink()
               : Text(
@@ -156,7 +155,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      widget.controller.rating.value.toString(),
+                      comentariosController.calculateAverageRating().toString(),
                       style: Styles.secondTextTitle,
                     ),
                   ],

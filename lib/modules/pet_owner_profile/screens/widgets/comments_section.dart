@@ -39,8 +39,10 @@ class _CommentsSectionState extends State<CommentsSection> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Mostrar estadísticas solo cuando haya comentarios
-              if (comentariosController.comments.isNotEmpty)
-                Center(
+
+              Padding(
+                padding: Styles.paddingAll,
+                child: Center(
                   child: Estadisticas(
                     comentarios:
                         comentariosController.comments.length.toString(),
@@ -49,9 +51,11 @@ class _CommentsSectionState extends State<CommentsSection> {
                     avatars: comentariosController.getTopAvatars(),
                   ),
                 ),
-              const SizedBox(height: 20),
+              ),
+              const SizedBox(height: 10),
               if (widget.expert)
-                Center(
+                Padding(
+                  padding: Styles.paddingAll,
                   child: BanerComentarios(
                     eventTextChanged: (value) {
                       comentariosController.updateField('review_msg', value);
@@ -64,11 +68,13 @@ class _CommentsSectionState extends State<CommentsSection> {
                       comentariosController.updateField(
                           'employee_id', widget.id);
                       comentariosController.postComment('user', context);
-                      comentariosController.fetchComments(widget.id, "user");
+                      Future.delayed(Duration(seconds: 5), () {
+                        comentariosController.fetchComments(widget.id, "user");
+                      });
                     },
                   ),
                 ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               Center(
                 child: Container(
                   padding: Styles.paddingAll,
@@ -84,7 +90,7 @@ class _CommentsSectionState extends State<CommentsSection> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 5),
               Center(
                 child: Container(
                   padding: Styles.paddingAll,

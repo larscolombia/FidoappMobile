@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/modules/auth/model/employee_model.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/widgets/comments_section.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/widgets/list_pet.dart';
@@ -63,18 +65,29 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
                       profileController: profileController,
                       id: '${widget.id}',
                     ),
-                    const SizedBox(
-                      width: 302,
-                      height: 20,
-                      child: Divider(
-                        thickness: 1,
-                        color: Recursos.ColorBorderSuave,
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: Helper.paddingDefault,
+                          right: Helper.paddingDefault),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: 20,
+                        child: Divider(
+                          thickness: 1,
+                          color: Recursos.ColorBorderSuave,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    VeterinarianInfo(
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: Helper.paddingDefault,
+                          right: Helper.paddingDefault),
+                      child: VeterinarianInfo(
                         controller: controller,
-                        profileController: profileController),
+                        profileController: profileController,
+                      ),
+                    ),
                     const SizedBox(height: 10),
                     Sobremi(
                         profileController: profileController,

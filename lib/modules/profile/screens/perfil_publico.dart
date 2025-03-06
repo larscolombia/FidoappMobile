@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 
 import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
@@ -22,15 +23,14 @@ class PublicProfilePage extends StatefulWidget {
 class _PublicProfilePageState extends State<PublicProfilePage> {
   final UserProfileController profileController =
       Get.put(UserProfileController());
-
   final PetOwnerProfileController controller =
       Get.put(PetOwnerProfileController());
-
   final CommentController comentariosController = Get.put(CommentController());
+
   @override
   void initState() {
     super.initState();
-    // Llamamos al fetchUserData sólo aquí, para que no se repita en cada build
+    // Llamamos a fetchUserData y fetchComments solo en initState
     profileController.fetchUserData('${AuthServiceApis.dataCurrentUser.id}');
     comentariosController.fetchComments(
         '${AuthServiceApis.dataCurrentUser.id}', "user");
@@ -38,8 +38,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    comentariosController.fetchComments(
-        '${AuthServiceApis.dataCurrentUser.id}', "user");
+    // Eliminamos la llamada repetida a fetchComments en build
     return Scaffold(
       backgroundColor: Styles.whiteColor,
       body: Container(
@@ -63,26 +62,36 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                 profileController: profileController,
                 id: AuthServiceApis.dataCurrentUser.id.toString(),
               ),
-              const SizedBox(height: 20),
-              const SizedBox(
-                height: 20,
-                child: Divider(
-                  thickness: .2,
-                  color: Color.fromARGB(255, 170, 165, 157),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: Helper.paddingDefault, right: Helper.paddingDefault),
+                child: const SizedBox(
+                  height: 20,
+                  child: Divider(
+                    thickness: .2,
+                    color: Color.fromARGB(255, 170, 165, 157),
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
-              VeterinarianInfo(
-                  controller: controller, profileController: profileController),
+              const SizedBox(height: 10),
+              Padding(
+                padding: Styles.paddingAll,
+                child: VeterinarianInfo(
+                  controller: controller,
+                  profileController: profileController,
+                ),
+              ),
               const SizedBox(height: 10),
               Sobremi(
-                  profileController: profileController, controller: controller),
+                profileController: profileController,
+                controller: controller,
+              ),
               const SizedBox(height: 20),
               ProfileActions(
-                  controller: controller, profileController: profileController),
-              const SizedBox(
-                height: 20,
+                controller: controller,
+                profileController: profileController,
               ),
+              const SizedBox(height: 20),
               CommentsSection(
                 id: '${AuthServiceApis.dataCurrentUser.id}',
                 expert: false,
