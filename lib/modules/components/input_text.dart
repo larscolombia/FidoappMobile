@@ -22,6 +22,7 @@ class InputText extends StatefulWidget {
     this.isFilePicker = false,
     this.isImagePicker = false,
     this.suffixIcon,
+    this.placeholderSuffixSvg,
     this.prefiIcon,
     this.isTimeField = false,
     this.readOnly = false,
@@ -47,6 +48,7 @@ class InputText extends StatefulWidget {
   final String? placeholderFontFamily;
   final Image? placeholderImage;
   final String? placeholderSvg;
+  final String? placeholderSuffixSvg;
   final bool isDateField;
   final bool isFilePicker;
   final bool isImagePicker;
@@ -193,30 +195,72 @@ class _InputTextState extends State<InputText> {
                       ? const EdgeInsets.symmetric(vertical: 20, horizontal: 20)
                       : const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(
-                      color: widget.errorText != null
-                          ? widget.borderColor // Borde rojo si hay error
-                          : widget.borderColor,
-                      width: 1,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(
-                      color:
-                          widget.errorPadding ? Colors.red : widget.borderColor,
-                      width: 1,
-                    ),
-                  ),
+                  border: widget.isImagePicker || widget.isDateField
+                      ? OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: const BorderSide(
+                            color: Color(0xFFFC9214), // Color del borde
+                            width: 1, // Grosor del borde
+                          ),
+                        )
+                      : OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: BorderSide(
+                            color: widget.errorText != null
+                                ? widget.borderColor // Borde rojo si hay error
+                                : widget.borderColor,
+                            width: 1,
+                          ),
+                        ),
+                  enabledBorder: widget.isImagePicker || widget.isDateField
+                      ? OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          borderSide: const BorderSide(
+                            color:
+                                Color(0xFFFC9214), // Color del borde punteado
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                        )
+                      : widget.isFilePicker
+                          ? OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: const BorderSide(
+                                color: Color(
+                                    0xFFFCBA67), // Color del borde cuando no está seleccionado
+                                width: 1,
+                              ),
+                            )
+                          : OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide(
+                                color: widget.errorPadding
+                                    ? Colors.red
+                                    : widget.borderColor,
+                                width: 1,
+                              ),
+                            ),
                   filled: true,
                   fillColor: widget.fondoColor,
-                  suffixIcon: Container(
-                    padding: const EdgeInsets.only(right: 15),
-                    width: 30,
-                    child: widget.suffixIcon,
-                  ),
+                  suffixIcon: widget.placeholderSuffixSvg != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(
+                              left: 18, right: 18, top: 18, bottom: 18),
+                          child: SizedBox(
+                            width: 0.001,
+                            height: 0.001,
+                            child: SvgPicture.asset(
+                              widget.placeholderSuffixSvg!,
+                              width: 0.001,
+                              height: 0.001,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.only(right: 15),
+                          width: 30,
+                          child: widget.suffixIcon,
+                        ),
                   prefixIcon: widget.prefiIcon ??
                       (widget.placeholderSvg != null
                           ? Padding(
@@ -257,24 +301,26 @@ class _InputTextState extends State<InputText> {
             Container(
               height: 220,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 20,
-                    child: Text('Imagen Seleccionada'),
-                  ),
                   SizedBox(
                     height: 200,
+                    width: double
+                        .infinity, // Para que ocupe todo el ancho disponible
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.file(
                         _imageFile!,
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
+                        alignment: Alignment
+                            .center, // Asegura que la imagen esté centrada
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
+            )
         ],
       ),
     );
@@ -333,9 +379,7 @@ class _InputTextState extends State<InputText> {
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
-        _textController.text = pickedFile.name;
       });
-      widget.onChanged(pickedFile.path);
       widget.onImagePicked?.call(_imageFile!);
     }
   }
