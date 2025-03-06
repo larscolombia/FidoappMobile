@@ -86,7 +86,7 @@ class Helper extends GetX {
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w800,
                               fontFamily: 'Lato',
                             ),
                           ),
@@ -107,11 +107,7 @@ class Helper extends GetX {
                   InputText(
                     label: '',
                     placeholder: 'Correo Electrónico',
-                    prefiIcon: const Icon(
-                      Icons.email,
-                      color: Styles.fiveColor,
-                      size: 24,
-                    ),
+                    placeholderSvg: 'assets/icons/svg/sms.svg',
                     onChanged: (value) => userController.filterUsers(value),
                   ),
                   Obx(() {
