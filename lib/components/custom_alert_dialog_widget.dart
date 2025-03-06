@@ -139,7 +139,9 @@ class CustomAlertDialog extends StatelessWidget {
                       callback: () {
                         Navigator.of(context).pop();
                       },
-                      defaultColor: const Color(0xFFFF4931),
+                      defaultColor:
+                          Styles.primaryColor, // Color de fondo del botón
+
                       textColor: Styles.whiteColor, // Color del texto del botón
                       heigthButtom: 48, // Altura del botón
                       borderSize: 12, // Tamaño del borde

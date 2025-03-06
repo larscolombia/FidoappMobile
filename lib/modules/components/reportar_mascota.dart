@@ -74,7 +74,7 @@ class _LongPressButtonState extends State<LongPressButton> {
         isSelect: true,
         icon: Icons.crisis_alert,
         buttonCancelar: true,
-        title: 'Alerta de mascota extraviado',
+        title: 'Alerta de mascota extraviada',
         description:
             '¿Estás seguro de marcar a ${_homeController.selectedProfile.value!.name} como extraviado?',
         primaryButtonText: 'Aceptar',

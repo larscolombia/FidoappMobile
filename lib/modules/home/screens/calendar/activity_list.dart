@@ -34,7 +34,12 @@ class ActivityListScreen extends StatelessWidget {
             return const Center(
               child: Text(
                 'No hay actividades disponibles.',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(
+                    color: Color(0xFF959595),
+                    fontSize: 16,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
               ),
             );
           }

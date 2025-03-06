@@ -44,7 +44,16 @@ class PushProvider extends GetxController {
       print(response.body);
       if (response.statusCode == 200) {
         print('Token actualizado exitosamente');
-        Get.snackbar('exito', 'Vinculado', backgroundColor: Styles.iconColor);
+        Get.snackbar(
+          '¡Éxito!',
+          'Las notificaciones se han activado correctamente.',
+          backgroundColor: Styles.iconColorBack,
+          snackPosition: SnackPosition.BOTTOM,
+          duration: Duration(seconds: 3),
+          margin: EdgeInsets.all(10),
+          colorText: Styles.whiteColor,
+          borderRadius: 10,
+        );
         var data = json.decode(response.body);
         AuthServiceApis.dataCurrentUser.deviceToken =
             data['data']['device_token'];

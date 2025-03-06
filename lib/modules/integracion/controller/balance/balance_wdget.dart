@@ -20,7 +20,7 @@ class BalanceWidget extends StatelessWidget {
 
     return Container(
       width: screenWidth,
-      padding: EdgeInsets.all(screenWidth * 0.04), // 4% del ancho como padding
+      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -57,7 +57,8 @@ class Balance extends StatelessWidget {
       }
 
       return Container(
-        padding: EdgeInsets.all(5), // 4% del ancho
+        padding:
+            EdgeInsets.symmetric(vertical: 10, horizontal: 15), // 4% del ancho
         height: screenHeight * 0.23, // 20% del alto de la pantalla
         decoration: BoxDecoration(
           color: Styles.colorContainer,
@@ -84,8 +85,8 @@ class Balance extends StatelessWidget {
               '${controller.userBalance.value.balance}ƒ',
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16, // 5% del ancho
-                fontWeight: FontWeight.bold,
+                fontSize: 18, // 5% del ancho
+                fontWeight: FontWeight.w800,
                 color: Styles.primaryColor,
               ),
             ),
