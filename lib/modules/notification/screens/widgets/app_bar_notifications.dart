@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
+import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:get/get.dart';
 
 class AppBarNotifications extends StatelessWidget
     implements PreferredSizeWidget {
@@ -46,7 +50,11 @@ class AppBarNotifications extends StatelessWidget
                                 horizontal: 10), // Añadir padding horizontal
                             child: Row(
                               children: [
-                                Image.asset('assets/icons/back.png'),
+                                SvgPicture.asset(
+                                  'assets/icons/svg/arrow_back.svg',
+                                  width: 15,
+                                  height: 15,
+                                ),
                                 const SizedBox(
                                     width:
                                         24), // Espacio entre la flecha y el texto
@@ -70,6 +78,7 @@ class AppBarNotifications extends StatelessWidget
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                         fontFamily: 'Lato',
+                                        color: Color(0xFF555555),
                                       ),
                                     ),
                                   ],
@@ -79,25 +88,33 @@ class AppBarNotifications extends StatelessWidget
                           ),
                         ),
                       )),
-                  Container(
-                    width: 65, // Tamaño del contenedor que contiene la imagen
-                    height: 65,
-                    padding: const EdgeInsets.all(
-                        2), // Espacio entre la imagen y el borde
-                    decoration: BoxDecoration(
-                      color: Styles.fiveColor,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Styles.iconColorBack, // Color del borde
-                        width: 2.0, // Grosor del borde
+                  GestureDetector(
+                    onTap: () {
+                      // Navegar a la vista de Dashboard
+                      Get.toNamed(Routes.DASHBOARD);
+                    },
+                    child: Container(
+                      width: 50, // Tamaño del contenedor que contiene la imagen
+                      height: 50,
+                      padding: const EdgeInsets.all(
+                          2), // Espacio entre la imagen y el borde
+                      decoration: BoxDecoration(
+                        color: Styles.fiveColor,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Styles.iconColorBack, // Color del borde
+                          width: 2.0, // Grosor del borde
+                        ),
                       ),
-                    ),
-                    child: CircleAvatar(
-                      radius: 22, // Tamaño de la imagen de perfil
-                      backgroundImage: NetworkImage(
-                          "${AuthServiceApis.dataCurrentUser.profileImage}"), // URL de la imagen de perfil
-                      backgroundColor: Colors
-                          .transparent, // Fondo transparente si la imagen no se carga
+                      child: CircleAvatar(
+                        radius:
+                            46, // Ajustar el radio para que la imagen se adapte mejor al contenedor
+                        backgroundImage: NetworkImage(
+                          "${AuthServiceApis.dataCurrentUser.profileImage}",
+                        ), // Imagen predeterminada si la URL está vacía
+                        backgroundColor:
+                            Colors.transparent, // Fondo transparente
+                      ),
                     ),
                   ),
                 ],

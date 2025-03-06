@@ -75,10 +75,11 @@ class NotificationsScreen extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: title == "Hoy" ? Colors.orange : Styles.fiveColor,
-                    borderRadius: BorderRadius.circular(32),
+                    borderRadius: BorderRadius.horizontal(
+                        left: Radius.circular(50), right: Radius.circular(50)),
                   ),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Center(
                     child: Text(
                       title,
@@ -87,7 +88,7 @@ class NotificationsScreen extends StatelessWidget {
                             ? Colors.white
                             : Styles.iconColorBack,
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                         fontFamily: 'Lato',
                       ),
                     ),
@@ -175,10 +176,10 @@ class NotificationsScreen extends StatelessWidget {
                       Text(
                         notification.title ?? '',
                         style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontFamily: 'Lato',
-                          fontSize: 14,
-                        ),
+                            fontWeight: FontWeight.w700,
+                            fontFamily: 'Lato',
+                            fontSize: 14,
+                            color: Color(0xFF000000)),
                       ),
                       const SizedBox(height: 4.0),
                       Row(
@@ -187,9 +188,9 @@ class NotificationsScreen extends StatelessWidget {
                           Text(
                             notification.type ?? '',
                             style: const TextStyle(
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w400,
                               fontFamily: 'Lato',
-                              fontSize: 14,
+                              fontSize: 12,
                               color: Styles.primaryColor,
                             ),
                           ),
@@ -203,7 +204,7 @@ class NotificationsScreen extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Lato',
                               fontSize: 12,
-                              color: Styles.greyTextColor,
+                              color: Color(0xFF383838),
                             ),
                           ),
                         ],
@@ -259,30 +260,44 @@ class NotificationsScreen extends StatelessWidget {
                     Center(
                       child: Text(
                         textAlign: TextAlign.center,
-                        notification.type ?? 'Sin descripción',
+                        notification.title ?? 'Sin descripción',
                         style: Styles.welcomeTitle,
                       ),
                     ),
                     const SizedBox(height: 16.0),
+                    // Etiqueta "Tipo"
                     Text(
-                      'Tipo: ${notification.type ?? 'Desconocido'}',
-                      style: const TextStyle(
+                      'Tipo: ',
+                      style: TextStyle(
+                        fontFamily: 'Lato',
+                        fontSize: 14,
+                        color: Styles.primaryColor, // Estilo de etiqueta
+                        fontWeight: FontWeight.w700,
+                        // Aumentar el peso de la etiqueta
+                      ),
+                    ),
+                    // Texto del tipo
+                    Text(
+                      notification.type ?? 'Desconocido',
+                      style: TextStyle(
                         fontFamily: 'Lato',
                         fontSize: 14,
                         color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 16.0),
+                    // Etiqueta "Descripción"
                     const Text(
                       'Descripción:',
                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         color: Styles.primaryColor,
                         fontSize: 16,
                         fontFamily: 'Lato',
                       ),
                     ),
                     const SizedBox(height: 8.0),
+                    // Texto de la descripción
                     Text(
                       notification.description ?? '',
                       style: const TextStyle(
@@ -290,25 +305,47 @@ class NotificationsScreen extends StatelessWidget {
                         fontFamily: 'Lato',
                         color: Colors.black,
                       ),
+                      textAlign: TextAlign.justify,
                     ),
                     const SizedBox(height: 16.0),
-                    Text(
-                      'Fecha: ${DateFormat('dd MMM yyyy HH:mm').format(DateTime.parse(notification.createdAt!))}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: Colors.black,
-                        fontSize: 14,
+                    // Etiqueta "Fecha"
+                    const Text(
+                      'Fecha:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Styles.primaryColor,
+                        fontSize: 16,
                         fontFamily: 'Lato',
                       ),
                     ),
-                    const SizedBox(height: 16.0),
+                    // Texto de la fecha
                     Text(
-                      'Leída: ${notification.isRead}',
+                      DateFormat('dd MMM yyyy HH:mm')
+                          .format(DateTime.parse(notification.createdAt!)),
                       style: const TextStyle(
-                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
                         fontFamily: 'Lato',
                         color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 16.0),
+                    // Etiqueta "Leída"
+                    const Text(
+                      'Leída:',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Styles.primaryColor,
+                        fontSize: 16,
+                        fontFamily: 'Lato',
+                      ),
+                    ),
+                    // Texto del estado "Leída"
+                    Text(
+                      notification.isRead == 1 ? 'Sí' : 'No',
+                      style: const TextStyle(
                         fontSize: 14,
+                        fontFamily: 'Lato',
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 24.0),
@@ -320,55 +357,56 @@ class NotificationsScreen extends StatelessWidget {
                           if (notification.status == "pending")
                             Expanded(
                               child: ButtonDefaultWidget(
-                                  title: 'Aceptar',
-                                  callback: () {
-                                    Navigator.of(context).pop();
-                                    Get.dialog(
-                                      CustomAlertDialog(
-                                        icon: Icons.confirmation_num,
-                                        title: 'Confirmación',
-                                        description:
-                                            '¿Quieres Aceptar este Evento?',
-                                        primaryButtonText: 'Continuar',
-                                        secondaryButtonText: 'Cancelar',
-                                        onPrimaryButtonPressed: () {
-                                          notificationController.acceptBooking(
-                                              notification.eventId ?? "-1",
-                                              context);
-                                          Get.back();
-                                        },
-                                      ),
-                                      barrierDismissible: true,
-                                    );
-                                  }),
+                                title: 'Aceptar',
+                                callback: () {
+                                  Navigator.of(context).pop();
+                                  Get.dialog(
+                                    CustomAlertDialog(
+                                      icon: Icons.confirmation_num,
+                                      title: 'Confirmación',
+                                      description:
+                                          '¿Quieres Aceptar este Evento?',
+                                      primaryButtonText: 'Continuar',
+                                      secondaryButtonText: 'Cancelar',
+                                      onPrimaryButtonPressed: () {
+                                        notificationController.acceptBooking(
+                                            notification.eventId ?? "-1",
+                                            context);
+                                        Get.back();
+                                      },
+                                    ),
+                                    barrierDismissible: true,
+                                  );
+                                },
+                              ),
                             ),
                           const SizedBox(width: 8.0),
                           if (notification.status == "pending")
                             Expanded(
                               child: ButtonDefaultWidget(
-                                  title: 'Rechazar',
-                                  callback: () {
-                                    Navigator.of(context).pop();
-                                    Get.dialog(
-                                      CustomAlertDialog(
-                                        icon: Icons.confirmation_num,
-                                        title: 'Confirmación',
-                                        description:
-                                            '¿Quieres rechazar este evento?',
-                                        primaryButtonText: 'Continuar',
-                                        secondaryButtonText: 'Cancelar',
-                                        onPrimaryButtonPressed: () {
-                                          notificationController
-                                              .rechazarReserva(
-                                            notification.eventId ?? "-1",
-                                            context,
-                                          );
-                                          Get.back();
-                                        },
-                                      ),
-                                      barrierDismissible: true,
-                                    );
-                                  }),
+                                title: 'Rechazar',
+                                callback: () {
+                                  Navigator.of(context).pop();
+                                  Get.dialog(
+                                    CustomAlertDialog(
+                                      icon: Icons.confirmation_num,
+                                      title: 'Confirmación',
+                                      description:
+                                          '¿Quieres rechazar este evento?',
+                                      primaryButtonText: 'Continuar',
+                                      secondaryButtonText: 'Cancelar',
+                                      onPrimaryButtonPressed: () {
+                                        notificationController.rechazarReserva(
+                                          notification.eventId ?? "-1",
+                                          context,
+                                        );
+                                        Get.back();
+                                      },
+                                    ),
+                                    barrierDismissible: true,
+                                  );
+                                },
+                              ),
                             ),
                           const SizedBox(width: 8.0),
                         ],
