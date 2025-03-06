@@ -9,6 +9,7 @@ import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 
@@ -48,8 +49,8 @@ class _FormularioDiarioState extends State<FormularioDiario> {
 
   @override
   Widget build(BuildContext context) {
-    final ancho = MediaQuery.of(context).size.width - 100;
-
+    final width = MediaQuery.of(context).size.width;
+    final margen = 16.0;
     return Scaffold(
       body: Stack(
         children: [
@@ -106,34 +107,39 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                         30), // Redondear la parte superior derecha
                   ),
                 ),
-                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    BarraBack(
-                      titulo: 'Nuevo Registro',
-                      callback: () {
-                        Get.back();
-                      },
-                    ),
-                    const SizedBox(height: 20),
-                    Center(
+                    SizedBox(height: margen),
+                    Padding(
+                      padding: const EdgeInsets.all(Helper.paddingDefault),
                       child: Column(
                         children: [
-                          InputText(
-                            initialValue: widget.isEdit
-                                ? (controller.activitiesOne.value!.actividad ??
-                                    "")
-                                : "",
-                            label: 'Título del registro',
-                            placeholder: '',
-                            onChanged: (value) {
-                              controller.updateField('actividad', value);
+                          BarraBack(
+                            titulo: 'Nuevo Registro',
+                            callback: () {
+                              Get.back();
                             },
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: margen),
                           SizedBox(
-                            width: 302,
+                            width: width,
+                            child: InputText(
+                              initialValue: widget.isEdit
+                                  ? (controller
+                                          .activitiesOne.value!.actividad ??
+                                      "")
+                                  : "",
+                              label: 'Título del registro',
+                              placeholder: '',
+                              onChanged: (value) {
+                                controller.updateField('actividad', value);
+                              },
+                            ),
+                          ),
+                          SizedBox(height: margen),
+                          SizedBox(
+                            width: width,
                             child: InputSelect(
                               TextColor: Colors.black,
                               label: 'Categoría',
@@ -157,30 +163,30 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          InputText(
-                            initialValue: widget.isEdit
-                                ? controller.activitiesOne.value!.date
-                                : '',
-                            label: 'Fecha del registro',
-                            placeholder: 'Fecha del evento',
-                            isDateField: true,
-                            prefiIcon: const Icon(
-                              Icons.calendar_today,
-                              color: Styles.iconColorBack,
-                            ),
-                            suffixIcon: const Icon(
-                              Icons.arrow_drop_down_sharp,
-                              color: Styles.iconColorBack,
-                            ),
-                            onChanged: (value) {
-                              controller.updateField('date', value);
-                              print('Fecha del registro: $value');
-                            },
-                          ),
-                          const SizedBox(height: 20),
+                          SizedBox(height: margen),
                           SizedBox(
-                            width: 300,
+                            width: width,
+                            child: InputText(
+                              initialValue: widget.isEdit
+                                  ? controller.activitiesOne.value!.date
+                                  : '',
+                              label: 'Fecha del registro',
+                              placeholder: 'Fecha del evento',
+                              isDateField: true,
+                              placeholderSvg: 'assets/icons/svg/calendar.svg',
+                              suffixIcon: const Icon(
+                                Icons.arrow_drop_down_sharp,
+                                color: Styles.iconColorBack,
+                              ),
+                              onChanged: (value) {
+                                controller.updateField('date', value);
+                                print('Fecha del registro: $value');
+                              },
+                            ),
+                          ),
+                          SizedBox(height: margen),
+                          SizedBox(
+                            width: width,
                             child: InputText(
                               isTextArea: true,
                               initialValue: widget.isEdit
@@ -194,24 +200,30 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               },
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          InputText(
-                            label: 'Selecciona una Imagen',
-                            placeholder: 'Toca para elegir una imagen',
-                            isImagePicker:
-                                true, // Habilita la selección de imagen
-                            onChanged: (value) {
-                              setState(() {
-                                widget.cambio = false;
-                                _imagePath =
-                                    value; // Aquí obtienes la ruta de la imagen seleccionada
-                                controller.updateField('image', value);
-                                __imageFile = File(value);
-                              });
-                            },
+                          SizedBox(height: margen),
+                          SizedBox(
+                            width: width,
+                            child: InputText(
+                              label: 'Adjuntar imagen',
+                              placeholderSvg: 'assets/icons/svg/imagen2.svg',
+                              placeholder: 'Añadir imagen .pdf',
+                              borderType: CustomBorderType
+                                  .dotted, // Esto aplicará el borde punteado
+                              isImagePicker:
+                                  true, // Habilita la selección de imagen
+                              onChanged: (value) {
+                                setState(() {
+                                  widget.cambio = false;
+                                  _imagePath =
+                                      value; // Aquí obtienes la ruta de la imagen seleccionada
+                                  controller.updateField('image', value);
+                                  __imageFile = File(value);
+                                });
+                              },
+                            ),
                           ),
-                          const SizedBox(
-                            height: 10,
+                          SizedBox(
+                            height: margen,
                           ),
                           widget.isEdit == true && widget.cambio == false
                               ? Column(
@@ -221,7 +233,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                       Image.network(
                                         controller.activitiesOne.value!.image ??
                                             "", // URL de la imagen editada
-                                        width: 300,
+                                        width: width,
                                         height: 220,
                                         fit: BoxFit.cover,
                                         loadingBuilder:
@@ -258,9 +270,9 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                   ],
                                 )
                               : const SizedBox(),
-                          const SizedBox(height: 20),
+                          SizedBox(height: margen),
                           SizedBox(
-                            width: 302,
+                            width: width,
                             height: 54,
                             child: Obx(() {
                               return ButtonDefaultWidget(

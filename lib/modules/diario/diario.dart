@@ -4,6 +4,7 @@ import 'package:pawlly/components/input_busqueda.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/Diario/formulario_diario.dart';
 import 'package:pawlly/modules/home/screens/Diario/index.dart';
@@ -23,7 +24,7 @@ class Diario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var margen = 16.00;
-    var ancho = MediaQuery.of(context).size.width - 50;
+    var ancho = MediaQuery.of(context).size.width;
 
     // Asegurarse de no llamar a métodos que alteren el estado durante la construcción
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -34,6 +35,7 @@ class Diario extends StatelessWidget {
     });
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: [
           Column(
@@ -47,79 +49,83 @@ class Diario extends StatelessWidget {
                 child: HeaderNotification(),
               ),
               Expanded(
-                child: Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 5),
-                        SizedBox(width: ancho, child: ProfilesDogs()),
-                        SizedBox(height: margen + 10),
-                        SizedBox(
-                          width: ancho,
-                          child: BarraBack(
-                            titulo: 'Registros en el Diario',
+                child: Padding(
+                  padding: const EdgeInsets.all(Helper.paddingDefault),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 5),
+                          SizedBox(width: ancho, child: ProfilesDogs()),
+                          SizedBox(height: margen + 10),
+                          SizedBox(
+                            width: ancho,
+                            child: BarraBack(
+                              titulo: 'Registros en el Diario',
+                              callback: () {
+                                Get.back();
+                              },
+                            ),
+                          ),
+                          SizedBox(height: margen + 10),
+                          SizedBox(
+                            width: ancho,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 11,
+                                  child: InputBusqueda(
+                                    onChanged: (value) =>
+                                        historialClinicoController
+                                            .searchActivities(value),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  flex: 2,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      FiltrarActividad.show(
+                                          context, historialClinicoController);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0,
+                                      padding: EdgeInsets.zero,
+                                      backgroundColor: Styles.fiveColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      minimumSize: const Size(48, 48),
+                                    ),
+                                    child:
+                                        Image.asset('assets/icons/filtro.png'),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: margen + 10),
+                          SizedBox(
+                            width: ancho,
+                            child: DiarioMascotas(
+                              homeController: homeController,
+                              controller: historialClinicoController,
+                            ),
+                          ),
+                          RecargaComponente(
                             callback: () {
-                              Get.back();
+                              historialClinicoController.fetchPetActivities(
+                                  "${homeController.selectedProfile.value?.id ?? '-1'}");
                             },
                           ),
-                        ),
-                        SizedBox(height: margen + 10),
-                        SizedBox(
-                          width: ancho,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 11,
-                                child: InputBusqueda(
-                                  onChanged: (value) =>
-                                      historialClinicoController
-                                          .searchActivities(value),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                flex: 2,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    FiltrarActividad.show(
-                                        context, historialClinicoController);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    padding: EdgeInsets.zero,
-                                    backgroundColor: Styles.fiveColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    minimumSize: const Size(48, 48),
-                                  ),
-                                  child: Image.asset('assets/icons/filtro.png'),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: margen + 10),
-                        SizedBox(
-                          width: ancho,
-                          child: DiarioMascotas(
-                            homeController: homeController,
-                            controller: historialClinicoController,
-                          ),
-                        ),
-                        RecargaComponente(
-                          callback: () {
-                            historialClinicoController.fetchPetActivities(
-                                "${homeController.selectedProfile.value?.id ?? '-1'}");
-                          },
-                        ),
-                        SizedBox(height: margen + 100),
-                      ],
+                          SizedBox(height: margen + 100),
+                        ],
+                      ),
                     ),
                   ),
                 ),
