@@ -73,9 +73,9 @@ class Styles {
   );
 
   static const TextStyle AvatarComentario = TextStyle(
-    fontSize: 14.0,
+    fontSize: 15.0,
     fontWeight: FontWeight.w400,
-    color: ColorText1,
+    color: Color(0xFF383838),
     fontFamily: 'Lato',
   );
 

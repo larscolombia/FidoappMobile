@@ -33,32 +33,39 @@ class Commands extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          FloatingActionButton(
-            elevation: 0,
-            onPressed: () {
-              Get.to(() => CrearComando());
-            },
-            clipBehavior: Clip.antiAlias,
-            backgroundColor: Styles.primaryColor,
-            shape: const CircleBorder(),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
-          // Título
-          Container(
-            width: MediaQuery.of(context).size.width - 100,
-            child: const Text(
-              'Comandos de Entrenamiento',
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 20,
-                color: Styles.primaryColor,
-                fontFamily: 'PoetsenOne',
+          // Usamos un Row para poner el FloatingActionButton al lado del título
+          Row(
+            children: [
+              // Título
+              Container(
+                width: MediaQuery.of(context).size.width - 120,
+                child: const Text(
+                  'Comandos de Entrenamiento',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Styles.primaryColor,
+                    fontFamily: 'PoetsenOne',
+                  ),
+                  textAlign: TextAlign.left,
+                ),
               ),
-              textAlign: TextAlign.left,
-            ),
+              const SizedBox(width: 10), // Espacio entre el ícono y el texto
+
+              FloatingActionButton(
+                elevation: 0,
+                onPressed: () {
+                  Get.to(() => CrearComando());
+                },
+                clipBehavior: Clip.antiAlias,
+                backgroundColor: Styles.primaryColor,
+                shape: const CircleBorder(),
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 10),
 
