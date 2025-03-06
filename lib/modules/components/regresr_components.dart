@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class BarraBack extends StatelessWidget {
@@ -28,14 +29,16 @@ class BarraBack extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const SizedBox(
+          SizedBox(
             width: 30,
             height: 30,
             child: Center(
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: Styles.fiveColor,
-                size: 20,
+              child: SvgPicture.asset(
+                'assets/icons/svg/arrow_back.svg',
+                width: 15,
+                height: 15,
+                colorFilter: ColorFilter.mode(
+                    Styles.fiveColor, BlendMode.srcIn), // Aplica el color
               ),
             ),
           ),

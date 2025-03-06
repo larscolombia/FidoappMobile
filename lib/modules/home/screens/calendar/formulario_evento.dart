@@ -241,6 +241,8 @@ class _CreateEventState extends State<CreateEvent> {
                       width: inputWidth,
                       child: BarraBack(
                         titulo: 'Evento Nuevo',
+                        size: 20,
+                        
                         callback: () => Get.back(),
                       ),
                     ),
