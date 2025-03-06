@@ -9,33 +9,23 @@ import 'package:pawlly/modules/integracion/controller/transaccion/transaction_co
 class FideCoin extends StatelessWidget {
   FideCoin({super.key});
   final TransactionController controller = Get.put(TransactionController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height / 6.3,
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              color:
-                  Styles.colorContainer, // Cambia esto a Styles.colorContainer
-            ),
-            child: Stack(
-              children: [
-                // Asumo que HeaderNotification y BorderRedondiado están definidos en otros lugares
-                HeaderNotification(),
-              ],
-            ),
-          ),
+          HeaderNotification(),
           Expanded(
             child: CustomScrollView(
               slivers: [
                 SliverList(
                   delegate: SliverChildListDelegate([
+                    // Aumentando márgenes laterales
                     Container(
-                      margin: const EdgeInsets.only(left: 16),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 32), // Márgenes laterales más amplios
                       width: MediaQuery.of(context).size.width,
                       child: BarraBack(
                         callback: () {
@@ -44,17 +34,21 @@ class FideCoin extends StatelessWidget {
                         titulo: 'Balance',
                       ),
                     ),
+                    const SizedBox(
+                      height: 35,
+                    ),
                     BalanceWidget(),
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 20),
                       child: const Text(
                         'Mis Movimientos',
                         style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'PoetsenOne',
-                            fontWeight: FontWeight.w800,
-                            color: Styles
-                                .primaryColor), // Cambia esto a Styles.textDescription
+                          fontSize: 20,
+                          fontFamily: 'PoetsenOne',
+                          fontWeight: FontWeight.w400,
+                          color: Styles.primaryColor,
+                        ),
                       ),
                     ),
                   ]),
@@ -67,12 +61,25 @@ class FideCoin extends StatelessWidget {
                       ),
                     );
                   }
+                  // Verificar si la lista de transacciones está vacía
+                  if (controller.transactions.isEmpty) {
+                    return const SliverFillRemaining(
+                      child: Center(
+                        child: Text(
+                          'No tienes movimientos aún.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF959595),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
                         final transaction = controller.transactions[index];
-                        // Crea una lista de movimientos
-                        print('transacciones ${controller.transactions}');
                         return Center(
                           child: Movimientos(
                             amount: transaction.amount.toString(),
@@ -108,9 +115,11 @@ class Movimientos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(4),
+      margin: const EdgeInsets.symmetric(
+          horizontal: 24,
+          vertical: 8), // Márgenes laterales y verticales más amplios
       padding: const EdgeInsets.all(16),
-      width: MediaQuery.of(context).size.width - 30,
+      width: MediaQuery.of(context).size.width - 48, // Ajustar al nuevo margen
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
@@ -136,20 +145,15 @@ class Movimientos extends StatelessWidget {
                   width: 40,
                 ),
               ),
-              const SizedBox(
-                width: 10,
-              ),
+              const SizedBox(width: 10),
               SizedBox(
                 width: 200,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      child: Text(
-                        description ?? "Movimiento",
-                        style: Styles.textDescription,
-                      ),
+                    Text(
+                      description ?? "Movimiento",
+                      style: Styles.textDescription,
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -158,7 +162,7 @@ class Movimientos extends StatelessWidget {
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: Color.fromARGB(255, 78, 75, 75),
-                        fontFamily: 'Lato ',
+                        fontFamily: 'Lato',
                       ),
                     ),
                   ],
@@ -166,11 +170,9 @@ class Movimientos extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            child: Text(
-              '$amountƒ',
-              style: Styles.textDescription,
-            ),
+          Text(
+            '$amountƒ',
+            style: Styles.textDescription,
           ),
         ],
       ),
