@@ -50,8 +50,9 @@ class ProfileScreen extends StatelessWidget {
                       child: Stack(
                         children: [
                           Container(
-                            width: 100,
-                            height: 100,
+                            width: 124,
+                            height: 124,
+                            margin: EdgeInsets.only(top: 40),
                             padding: const EdgeInsets.all(
                                 4), // Espacio entre la imagen y el borde
                             decoration: BoxDecoration(
@@ -65,8 +66,8 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             child: ClipOval(
                               child: Container(
-                                width: 92, // Ajusta el ancho si es necesario
-                                height: 92, // Ajusta el alto si es necesario
+                                width: 124, // Ajusta el ancho si es necesario
+                                height: 124, // Ajusta el alto si es necesario
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
@@ -109,11 +110,14 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   // Nombre del Usuario
                   Positioned(
-                    bottom: 0,
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width - 120,
+                    bottom: -10,
+                    child: Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width - 100,
                       child: Text(
                         textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                         '${controller.user['first_name'].toString()}',
                         style: Styles.dashboardTitle24,
                       ),
@@ -177,14 +181,55 @@ class ProfileScreen extends StatelessWidget {
                           ),
                           if (AuthServiceApis.dataCurrentUser.userRole[0] !=
                               'user')
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 100,
-                              child: ButtonDefaultWidget(
-                                callback: () {
-                                  Get.to(FormularioVerificacion());
-                                },
-                                title: 'Verificación Profesional >',
-                              ),
+                            Column(
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: ButtonDefaultWidget(
+                                    callback: () {
+                                      Get.to(FormularioVerificacion());
+                                    },
+                                    title: 'Perfil público >',
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                SizedBox(
+                                  width: 260,
+                                  child: RichText(
+                                    textAlign: TextAlign.center,
+                                    text: const TextSpan(
+                                      style: TextStyle(
+                                        // Estilo base para todo el texto
+                                        fontSize: 14,
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: 'Solicitud Confirmada, ',
+                                          style: TextStyle(
+                                            color: Colors
+                                                .green, // Color verde para la primera parte
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text:
+                                              'visita tu perfil público para configurar cómo se verá',
+                                          style: TextStyle(
+                                            color: Colors
+                                                .black, // Color negro para la segunda parte
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                         ],
                       ),

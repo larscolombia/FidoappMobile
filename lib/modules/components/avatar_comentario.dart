@@ -114,11 +114,14 @@ class AvatarComentarios extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          SizedBox(
-            width: 304,
-            child: Text(
-              comment ?? "",
-              style: Styles.AvatarComentario,
+          Padding(
+            padding: const EdgeInsets.only(left: 5, right: 5),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                comment ?? "",
+                style: Styles.AvatarComentario,
+              ),
             ),
           ),
         ],

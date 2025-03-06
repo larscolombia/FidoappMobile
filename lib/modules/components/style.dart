@@ -7,7 +7,7 @@ class Styles {
   static const Color whiteColor = Colors.white;
   static const Color blackColor = Colors.black;
   static const Color greyColor = Colors.grey;
-  static const Color iconColorBack = Colors.orange;
+  static const Color iconColorBack = Color(0xFFFC9214);
   static const Color fiveColor = Colors.orange;
   static const Color cardColor = Colors.white;
   static const Color transparentColor = Colors.transparent;

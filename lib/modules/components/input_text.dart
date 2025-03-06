@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pawlly/app_theme.dart';
 import 'dart:io';
 
 import 'package:pawlly/modules/components/style.dart';
@@ -266,18 +265,18 @@ class _InputTextState extends State<InputText> {
                           ? Padding(
                               padding: const EdgeInsets.only(
                                 left: 20,
-                                right: 10,
+                                right: 5,
                               ),
                               child: SizedBox(
-                                width: 20,
-                                height: 20,
+                                width: 24,
+                                height: 24,
                                 child: SvgPicture.asset(widget.placeholderSvg!),
                               ),
                             )
                           : widget.placeholderImage != null
                               ? Padding(
                                   padding: const EdgeInsets.only(
-                                    left: 25,
+                                    left: 20,
                                     right: 5,
                                   ),
                                   child: SizedBox(
@@ -335,8 +334,6 @@ class _InputTextState extends State<InputText> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
-      cancelText: 'Cancelar',
-      confirmText: 'Aceptar',
     );
     if (picked != null) {
       final formattedDate = dateFormat.format(picked);
@@ -350,8 +347,6 @@ class _InputTextState extends State<InputText> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
-      cancelText: 'Cancelar',
-      confirmText: 'Aceptar',
     );
     if (picked != null) {
       final formattedTime = picked.format(context);

@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
@@ -10,9 +12,11 @@ import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/integracion/controller/especialidades_controller/epeciality_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
+import 'package:pawlly/modules/profile/screens/components/profile_header.dart';
 import 'package:pawlly/modules/profile/screens/perfil_publico.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/recursos.dart';
@@ -53,28 +57,23 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
     var profile = controller.user.value.profile;
 
     return Scaffold(
-      body: Stack(
-        children: [
+      backgroundColor: Styles.whiteColor,
+      body: Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(36),
+            topRight: Radius.circular(36),
+          ),
+        ),
+        child: Stack(children: [
           Column(
             children: [
-              Container(
-                height: 200,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Styles.colorContainer,
-                ),
-                child: const Stack(
-                  children: [
-                    BorderRedondiado(top: 160),
-                    Center(
-                      child: Text(
-                        'Formulario de Verificación',
-                        style: Styles.TextTituloBlack,
-                      ),
-                    )
-                  ],
-                ),
+              ProfileHeader(
+                profileController: controller,
+                headerHeight: MediaQuery.of(context).size.height / 8,
               ),
+              const SizedBox(height: 40),
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
@@ -99,8 +98,8 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                               padding: Styles.paddingAll,
                               width: MediaQuery.of(context).size.width,
                               child: BarraBack(
-                                titulo: 'Verificación Profesional',
-                                subtitle: 'Añade tu información profesional',
+                                titulo: 'Perfil de Usuario',
+                                subtitle: 'Completa la informmación',
                                 ColorSubtitle: Colors.black,
                                 callback: () {
                                   Get.back();
@@ -119,10 +118,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                 label: 'Nombre',
                                 placeholder: '',
                                 placeholderFontFamily: 'lato',
-                                prefiIcon: const Icon(
-                                  Icons.person,
-                                  color: Styles.iconColorBack,
-                                ),
+                                placeholderSvg: 'assets/icons/svg/profile.svg',
                                 initialValue:
                                     AuthServiceApis.dataCurrentUser.firstName,
                               ),
@@ -138,10 +134,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                     profileController.user['lastName'] = value,
                                 label: 'Apellido',
                                 placeholder: '',
-                                prefiIcon: const Icon(
-                                  Icons.person,
-                                  color: Styles.iconColorBack,
-                                ),
+                                placeholderSvg: 'assets/icons/svg/profile.svg',
                                 initialValue:
                                     AuthServiceApis.dataCurrentUser.lastName,
                               ),
@@ -162,7 +155,18 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                               ),
                             ),
                           ),
-                          SizedBox(height: margin),
+                          SizedBox(height: margin - 8),
+                          Center(
+                            child: Container(
+                              padding: Styles.paddingAll,
+                              width: MediaQuery.of(context).size.width,
+                              child: const Divider(
+                                thickness: 1,
+                                color: Helper.dividerColor,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: margin - 8),
                           Obx(() {
                             if (specialityController.isLoading.value) {
                               return const Center(
@@ -192,10 +196,9 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
-                                            fontFamily: "Lato",
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w800,
-                                          )),
+                                              fontFamily: "Lato",
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w800)),
                                     );
                                   }).toList(),
                                 ),
@@ -203,57 +206,48 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                             );
                           }),
                           SizedBox(height: margin),
-                          Center(
-                            child: Container(
-                              padding: Styles.paddingAll,
-                              width: MediaQuery.of(context).size.width,
-                              child: const Divider(
-                                  thickness: 1,
-                                  color: Recursos.ColorBorderSuave),
-                            ),
-                          ),
-                          SizedBox(height: margin),
-                          Obx(() {
-                            return Center(
-                              child: Container(
-                                padding: Styles.paddingAll,
-                                width: MediaQuery.of(context).size.width,
-                                child: InputText(
-                                  initialValue:
-                                      controller.user.value.address ?? '',
-                                  onChanged: (value) {},
-                                  label: 'Título o certificación profesional',
-                                  isFilePicker: true,
-                                  placeholder: "",
-                                  placeholderImage:
-                                      Image.asset('assets/icons/file.png'),
-                                ),
-                              ),
-                            );
-                          }),
-                          SizedBox(height: margin),
-                          Obx(() {
-                            return Center(
-                              child: Container(
-                                padding: Styles.paddingAll,
-                                width: MediaQuery.of(context).size.width,
-                                child: InputText(
-                                  initialValue: controller.user.value.profile
-                                          ?.validationNumber ??
-                                      '#',
-                                  onChanged: (value) {
-                                    profileController
-                                        .user['validation_number'] = value;
-                                  },
-                                  label: 'Nro. de validación del certificado',
-                                  placeholder: "",
-                                  placeholderImage: Image.asset(
-                                      'assets/icons/personalcard.png'),
-                                ),
-                              ),
-                            );
-                          }),
-                          SizedBox(height: margin),
+                          /**
+             Obx(() {
+             return Center(
+             child: Container(
+             padding: Styles.paddingAll,
+             width: MediaQuery.of(context).size.width,
+             child: InputText(
+             initialValue:
+             controller.user.value.address ?? '',
+             onChanged: (value) {},
+             label: 'Título o certificación profesional',
+             isFilePicker: true,
+             placeholder: "",
+             placeholderImage:
+             Image.asset('assets/icons/file.png'),
+             ),
+             ),
+             );
+             }),
+             SizedBox(height: margin),
+             Obx(() {
+             return Center(
+             child: Container(
+             padding: Styles.paddingAll,
+             width: MediaQuery.of(context).size.width,
+             child: InputText(
+             initialValue: controller.user.value.profile
+             ?.validationNumber ??
+             '#',
+             onChanged: (value) {
+             profileController
+             .user['validation_number'] = value;
+             },
+             label: 'Nro. de validación del certificado',
+             placeholder: "",
+             placeholderImage: Image.asset(
+             'assets/icons/personalcard.png'),
+             ),
+             ),
+             );
+             }),
+             */
                           Obx(() {
                             return Center(
                               child: Container(
@@ -287,7 +281,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                     style: TextStyle(
                                       fontFamily: "Lato",
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w800,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                   TagInputWidget(
@@ -302,7 +296,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                               ),
                             ),
                           ),
-                          SizedBox(height: margin),
+                          SizedBox(height: margin + 20),
                           Column(
                             children: [
                               Center(
@@ -358,19 +352,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
               ),
             ],
           ),
-          Obx(() {
-            if (profileController.isLoading.value) {
-              return Container(
-                color: Colors.black.withOpacity(0.5),
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          }),
-        ],
+        ]),
       ),
     );
   }

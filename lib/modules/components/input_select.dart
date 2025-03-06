@@ -114,7 +114,7 @@ class InputSelect extends StatelessWidget {
                 ),
               ),
               hint: Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 8),
                 child: Text(
                   placeholder ?? 'placeholder',
                   maxLines: 1,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -20,10 +21,9 @@ class ProfileHeader extends StatelessWidget {
       children: [
         Container(
           height: headerHeight + 80,
-          width: double.infinity,
+          width: MediaQuery.of(context).size.width,
           decoration: const BoxDecoration(
-            color: Styles.colorContainer,
-          ),
+              color: Styles.colorContainer, border: Border()),
           child: Stack(
             children: [BorderRedondiado(top: headerHeight + 50)],
           ),
@@ -31,8 +31,8 @@ class ProfileHeader extends StatelessWidget {
         Center(
           child: Container(
             margin: EdgeInsets.only(top: headerHeight),
-            width: 100,
-            height: 100,
+            width: 124,
+            height: 124,
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: Styles.whiteColor,
@@ -44,11 +44,6 @@ class ProfileHeader extends StatelessWidget {
             ),
             child: Obx(
               () {
-                if (profileController.isLoading.value) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
                 return CircleAvatar(
                   radius: 46,
                   backgroundImage: NetworkImage(
