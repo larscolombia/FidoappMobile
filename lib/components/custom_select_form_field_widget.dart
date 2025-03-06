@@ -5,6 +5,7 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
   final String placeholder;
   final String? icon; // Icono opcional
   final String? placeholderSvg;
+  final Color? placeholderSvgColor;
   final TextEditingController? controller;
   final List<String>? items;
   final bool? enabled;
@@ -21,6 +22,7 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
     required this.placeholder,
     this.icon,
     this.placeholderSvg,
+    this.placeholderSvgColor,
     required this.controller,
     this.items,
     this.enabled,
@@ -157,11 +159,18 @@ class _CustomSelectFormFieldWidgetState
                     ),
                     prefixIcon: widget.placeholderSvg != null
                         ? Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 5),
+                            padding: const EdgeInsets.only(left: 20, right: 15),
                             child: SizedBox(
                               width: 24,
                               height: 24,
-                              child: SvgPicture.asset(widget.placeholderSvg!),
+                              child: SvgPicture.asset(
+                                widget.placeholderSvg!,
+                                colorFilter: widget.placeholderSvgColor != null
+                                    ? ColorFilter.mode(
+                                        widget.placeholderSvgColor!,
+                                        BlendMode.srcIn)
+                                    : null, // Si es null, se mantiene el color original del SVG
+                              ),
                             ),
                           )
                         : widget.icon != null
@@ -181,6 +190,7 @@ class _CustomSelectFormFieldWidgetState
                       color: widget.textColor ?? Colors.black,
                       fontFamily: 'Lato',
                       fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
                     errorText: errorText,
                   ),

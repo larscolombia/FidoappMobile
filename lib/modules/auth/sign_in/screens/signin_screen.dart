@@ -49,7 +49,7 @@ class SignInScreen extends StatelessWidget {
                         style: const TextStyle(
                             color: Color.fromRGBO(255, 73, 49, 1),
                             fontSize: 32,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w400,
                             fontFamily: "PoetsenOne"),
                       ).paddingTop(80),
                       Form(
@@ -211,7 +211,7 @@ class SignInScreen extends StatelessWidget {
                                   fontSize: 14,
                                   fontWeight: FontWeight.w800,
                                   fontFamily: Recursos.fuente1,
-                                  color: Recursos.TextColorBlackMedium,
+                                  color: Color(0xff383838),
                                   height: 18 /
                                       14, // Ajusta el lineHeight a 18px manteniendo el fontSize en 14px
                                 ),

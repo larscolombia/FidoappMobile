@@ -67,7 +67,8 @@ class SignUpScreen extends GetView<SignUpController> {
                               child: CustomTextFormFieldWidget(
                                 controller: controller.fisrtNameCont,
                                 placeholder: locale.value.firstName,
-                                icon: 'assets/icons/profile.png',
+                                placeholderSvg: 'assets/icons/svg/profile.svg',
+                                colorSVG: Color(0xFFFCBA67),
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)
                                       ? 'El nombre es requerido'
@@ -81,7 +82,8 @@ class SignUpScreen extends GetView<SignUpController> {
                               child: CustomTextFormFieldWidget(
                                 controller: controller.lastNameCont,
                                 placeholder: locale.value.lastName,
-                                icon: 'assets/icons/profile.png',
+                                placeholderSvg: 'assets/icons/svg/profile.svg',
+                                colorSVG: Color(0xFFFCBA67),
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)
                                       ? 'El apellido es requerido'
@@ -96,6 +98,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                 controller: controller.emailCont,
                                 placeholder: locale.value.email,
                                 placeholderSvg: 'assets/icons/svg/sms.svg',
+                                colorSVG: Color(0xFFFCBA67),
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)
                                       ? 'El correo es requerido'
@@ -114,7 +117,10 @@ class SignUpScreen extends GetView<SignUpController> {
                                 controller: controller.genCont,
                                 placeholder: locale.value.gender,
                                 placeholderSvg: 'assets/icons/svg/tag-user.svg',
+                                placeholderSvgColor: Color(0xFFFCBA67),
                                 filcolorCustom: Styles.fiveColor,
+                                textColor: Color(0xFF383838),
+                                borderColor: Color(0xFFFCBA67),
                                 items: const [
                                   'Mujer',
                                   'Hombre',
@@ -135,6 +141,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholder: locale.value.password,
                                 obscureText: true,
                                 placeholderSvg: 'assets/icons/svg/key.svg',
+                                colorSVG: Color(0xFFFCBA67),
                                 validators: [
                                   (value) => (value?.isEmpty ?? true)
                                       ? 'La contraseña es requerida'
@@ -154,6 +161,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholder: locale.value.confirmPassword,
                                 obscureText: true,
                                 placeholderSvg: 'assets/icons/svg/key.svg',
+                                colorSVG: Color(0xFFFCBA67),
                                 validators: [
                                   (value) =>
                                       (value != controller.passwordCont.text)
@@ -170,6 +178,9 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholder: locale.value.userType,
                                 filcolorCustom: Styles.fiveColor,
                                 placeholderSvg: 'assets/icons/svg/tag-user.svg',
+                                placeholderSvgColor: Color(0xFFFCBA67),
+                                textColor: Color(0xFF383838),
+                                borderColor: Color(0xFFFCBA67),
                                 items: const [
                                   'Entrenador',
                                   'Veterinario',
