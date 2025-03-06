@@ -137,7 +137,6 @@ class DetallesDiario extends StatelessWidget {
                       }),
                       const SizedBox(height: 10),
                       SizedBox(
-                        width: 305,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
