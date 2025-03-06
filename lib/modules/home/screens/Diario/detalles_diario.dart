@@ -15,6 +15,7 @@ class DetallesDiario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(controller.activitiesOne.value!.image);
     return Scaffold(
       body: Stack(
         children: [
@@ -47,29 +48,30 @@ class DetallesDiario extends StatelessWidget {
                 color: Colors.white,
               ),
               child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width - 90,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 130,
-                            child: BarraBack(
-                              titulo: 'Sobre este Registro',
-                              callback: () {
-                                Get.back();
-                              },
+                child: Padding(
+                  padding: Styles.paddingAll,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width - 130,
+                              child: BarraBack(
+                                titulo: 'Sobre este Registro',
+                                callback: () {
+                                  Get.back();
+                                },
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: Container(
+                            Container(
                               width: 40,
                               height: 40,
                               padding: const EdgeInsets.all(10),
@@ -113,93 +115,107 @@ class DetallesDiario extends StatelessWidget {
                                   width: 24,
                                 ),
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Obx(() {
-                      return SizedBox(
-                        width: 250,
-                        child: Text(
-                          controller.activitiesOne.value!.actividad,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontFamily: 'PoetsenOne',
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
+                            )
+                          ],
                         ),
-                      );
-                    }),
-                    const SizedBox(
-                      height: 100,
-                    ),
-                    SizedBox(
-                      width: 305,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Obx(() {
-                            return Text(
-                              'Sobre ${homeController.selectedProfile.value!.name}',
-                            );
-                          }),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Obx(() {
-                            return Text(
-                              controller.activitiesOne.value!.notas,
-                              textAlign: TextAlign.start,
-                              style: Styles.AvatarComentario,
-                            );
-                          }),
-                          const SizedBox(
-                            height: 26,
-                          ),
-                          Obx(() {
-                            return Text(
-                              'Fecha: ${controller.activitiesOne.value!.date}',
-                            );
-                          }),
-                          const SizedBox(
-                            height: 26,
-                          ),
-                          Obx(() {
-                            if (controller.activitiesOne.value!.image == null) {
-                              return Center(
-                                child: SizedBox(
-                                    width: 302,
-                                    height: 200,
-                                    child: Image.asset(
-                                        'assets/images/actividad.jpg')),
-                              );
-                            }
-                            return Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 200,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                      controller.activitiesOne.value!.image ??
-                                          '',
-                                    )),
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            );
-                          }),
-                          const SizedBox(
-                            height: 50,
-                          ),
-                        ],
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20),
+                      Obx(() {
+                        return SizedBox(
+                          width: 250,
+                          child: Text(
+                            controller.activitiesOne.value!.actividad,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontFamily: 'PoetsenOne',
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        );
+                      }),
+                      const SizedBox(
+                        height: 100,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Obx(() {
+                              return Text(
+                                'Sobre ${homeController.selectedProfile.value!.name}',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            }),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Obx(() {
+                              return Text(
+                                controller.activitiesOne.value!.notas,
+                                textAlign: TextAlign.start,
+                                style: Styles.AvatarComentario,
+                              );
+                            }),
+                            const SizedBox(
+                              height: 26,
+                            ),
+                            Obx(() {
+                              return Text(
+                                'Fecha: ${controller.activitiesOne.value!.date}',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            }),
+                            const SizedBox(
+                              height: 26,
+                            ),
+                            Obx(() {
+                              if (controller.activitiesOne.value!.image ==
+                                  null) {
+                                return Center(
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 200,
+                                      child: Image.asset(controller
+                                              .activitiesOne.value!.image ??
+                                          'assets/images/actividad.jpg')),
+                                );
+                              }
+                              return Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                        controller.activitiesOne.value!.image ??
+                                            '',
+                                      )),
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                              );
+                            }),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
