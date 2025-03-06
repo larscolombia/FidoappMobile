@@ -251,6 +251,8 @@ class _CreateEventState extends State<CreateEvent> {
                       height: alto,
                       child: InputText(
                         label: 'Nombre del Evento',
+                        labelColor: Color(0xFF383838),
+
                         placeholder: (validate['name'] ?? false)
                             ? 'campo requerido'
                             : '',
@@ -278,6 +280,7 @@ class _CreateEventState extends State<CreateEvent> {
                       child: InputText(
                           isTextArea: true,
                           label: 'Descripción del evento ',
+                          labelColor: Color(0xFF383838),
                           errorPadding: (validate['description'] ?? false),
                           errorText: (validate['description'] ?? false)
                               ? 'campo requerido'
@@ -300,6 +303,7 @@ class _CreateEventState extends State<CreateEvent> {
                       height: alto,
                       child: InputText(
                           label: 'Ubicación',
+                          labelColor: Color(0xFF383838),
                           placeholder: '',
                           errorPadding: (validate['location'] ?? false),
                           errorText: (validate['location'] ?? false)
@@ -320,9 +324,10 @@ class _CreateEventState extends State<CreateEvent> {
                       width: inputWidth,
                       height: alto,
                       child: CustomSelectFormFieldWidget(
-                        label: 'Categoria del evento',
+                        label: 'Categoría del evento',
                         placeholder: 'Tipo de evento ',
                         filcolorCustom: Styles.colorContainer,
+                        borderColor: Color(0XFFFCBA67),
                         controller: null,
                         items: const [
                           'evento',
@@ -350,7 +355,10 @@ class _CreateEventState extends State<CreateEvent> {
                       height: alto,
                       child: InputText(
                         label: 'Fecha del evento',
-                        placeholder: '',
+                        placeholder: 'Fecha del evento',
+                        borderColor: Color(0XFFFCBA67),
+                        labelColor: Color(0xFF383838),
+
                         isDateField: true,
                         errorPadding: (validate['start_date'] ?? false),
                         errorText: (validate['start_date'] ?? false)
@@ -385,11 +393,13 @@ class _CreateEventState extends State<CreateEvent> {
                       height: alto,
                       child: InputText(
                           label: 'Hora del evento',
-                          placeholder: '',
+                          placeholder: 'Hora del evento',
+                          labelColor: Color(0xFF383838),
                           errorText: (validate['event_time'] ?? false)
                               ? 'campo requerido'
                               : "",
                           isTimeField: true,
+                          borderColor: Color(0XFFFCBA67),
                           errorPadding: (validate['event_time'] ?? false),
                           suffixIcon:
                               Image.asset('assets/icons/flecha_select.png'),
@@ -409,10 +419,10 @@ class _CreateEventState extends State<CreateEvent> {
                     SizedBox(
                       width: inputWidth,
                       child: const Text(
-                        'Selecciona la mascota vinculada a este evento',
+                        'Selecciona la mascota vinculada\na este evento',
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.black,
+                          color: Color(0xFF383838),
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.w600,
                         ),
@@ -447,7 +457,7 @@ class _CreateEventState extends State<CreateEvent> {
                               fontSize: 16,
                               color: Colors.black,
                               fontFamily: 'Lato',
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w800,
                             ),
                           ),
                           FloatingActionButton(
@@ -467,7 +477,7 @@ class _CreateEventState extends State<CreateEvent> {
                         child: UserEventoSeleccionado(),
                       ),
                     ),
-                    SizedBox(height: defaultMargin + 10),
+                    SizedBox(height: defaultMargin + 20),
                     // Botón Finalizar o Guardando
                     Obx(() {
                       return SizedBox(

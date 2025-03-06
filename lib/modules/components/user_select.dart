@@ -14,13 +14,13 @@ class UserEventoSeleccionado extends StatelessWidget {
     return Obx(() {
       var user = userController.selectedUser;
       if (user.value == null) {
-        return Text(
-          'Aún no hay personas invitadas a este evento',
+        return const Text(
+          'Aún no hay personas invitadas a\neste evento',
           style: TextStyle(
               color: Color(0xFF959595),
               fontSize: 14,
               fontFamily: 'Lato',
-              fontWeight: FontWeight.bold),
+              fontWeight: FontWeight.w500),
           textAlign: TextAlign.center,
         );
       }

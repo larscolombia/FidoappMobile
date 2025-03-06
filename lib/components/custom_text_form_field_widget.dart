@@ -122,7 +122,7 @@ class _CustomTextFormFieldWidgetState extends State<CustomTextFormFieldWidget> {
                 child: IconButton(
                   icon: Icon(
                     _isObscure ? Icons.visibility_off : Icons.visibility,
-                    color: Styles.iconColorBack,
+                    color: Color(0xFFFCBA67),
                   ),
                   onPressed: () {
                     setState(() {

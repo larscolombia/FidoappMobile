@@ -115,7 +115,7 @@ class _InputTextState extends State<InputText> {
                     widget.label ?? 'label',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Colors.black,
+                      color: Color(0xFF383838),
                       fontFamily: 'Lato',
                       fontWeight: widget.fw ?? FontWeight.w500,
                     ),
@@ -162,8 +162,9 @@ class _InputTextState extends State<InputText> {
                 minLines: widget.isTextArea ? 3 : 1,
                 style: const TextStyle(
                   fontFamily: 'Lato',
-                  fontSize: 13,
+                  fontSize: 15,
                   color: Color(0XFF383838),
+                  fontWeight: FontWeight.w400,
                 ),
                 decoration: InputDecoration(
                   labelText: widget.isTextArea

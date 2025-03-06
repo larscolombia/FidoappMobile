@@ -101,9 +101,9 @@ class _CustomSelectFormFieldWidgetState
                 widget.label!,
                 style: const TextStyle(
                   fontSize: 14,
-                  color: Colors.black,
+                  color: Color(0xFF383838),
                   fontFamily: 'Lato',
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
@@ -209,8 +209,9 @@ class _CustomSelectFormFieldWidgetState
                         padding: const EdgeInsets.only(right: 10),
                         child: SizedBox(
                             width: 20,
-                            child:
-                                Image.asset('assets/icons/flecha_select.png')),
+                            child: SvgPicture.asset(
+                              'assets/icons/svg/vector_flecha.svg',
+                            )),
                       ),
                     ],
                   ),
