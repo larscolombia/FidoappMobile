@@ -18,28 +18,32 @@ class Training extends StatelessWidget {
     if (miscursos.courses.isEmpty) {
       miscursos.fetchCourses();
     }
+
+    // Verificar si hay cursos disponibles antes de mostrar el título
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // El título cambia según el índice seleccionado
-        Center(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Text(
-              controller.selectedIndex.value == 0
-                  ? 'Entrenamientos'
-                  : controller.selectedIndex.value == 3
-                      ? 'Seguir Viendo'
-                      : 'Cursos y Programas de Entrenamiento',
-              style: const TextStyle(
-                fontSize: 20,
-                color: Styles.primaryColor,
-                fontFamily: Styles.fuente2,
+        // El título solo se muestra si hay cursos disponibles
+        if (miscursos.courses.isNotEmpty) ...[
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: Text(
+                controller.selectedIndex.value == 0
+                    ? 'Entrenamientos'
+                    : controller.selectedIndex.value == 3
+                        ? 'Seguir Viendo'
+                        : 'Cursos y Programas de Entrenamiento',
+                style: const TextStyle(
+                  fontSize: 20,
+                  color: Styles.primaryColor,
+                  fontFamily: Styles.fuente2,
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(height: 10),
+          const SizedBox(height: 10),
+        ],
         // Se usa un Obx para actualizar dinámicamente el contenido según el índice seleccionado
         Obx(() {
           // Renderizado según el índice seleccionado
