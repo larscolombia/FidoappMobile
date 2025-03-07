@@ -57,7 +57,7 @@ class ProfilePetScreen extends StatelessWidget {
                 );
               }),
             ),
-            pinned: true,
+            pinned: false,
             backgroundColor: Colors.transparent,
             elevation: 0,
           ),
@@ -68,7 +68,7 @@ class ProfilePetScreen extends StatelessWidget {
               padding: Styles.paddingAll,
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(90)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +123,6 @@ class ProfilePetScreen extends StatelessWidget {
                         Obx(
                           () => ButtonDefaultWidget(
                             title: 'Información',
-                            
                             callback: () => controller.changeTab(0),
                             widthButtom:
                                 (MediaQuery.of(context).size.width / 2) - 30,

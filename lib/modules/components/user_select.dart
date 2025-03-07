@@ -54,6 +54,7 @@ class UserEventoSeleccionado extends StatelessWidget {
                 ),
               ),
             ),
+         
         ],
       );
     });
