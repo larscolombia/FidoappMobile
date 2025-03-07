@@ -21,68 +21,65 @@ class VerPasaporteMascota extends StatelessWidget {
       Get.put(HistorialClinicoController());
 
   VerPasaporteMascota({super.key});
+
   String formatFecha(String fecha) {
-    // Convertir la fecha de String a DateTime
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
     DateTime dateTime = inputFormat.parse(fecha);
-
-    // Formatear la fecha al nuevo formato
     DateFormat outputFormat = DateFormat("d 'de' MMMM 'de' y", 'es_ES');
     return outputFormat.format(dateTime);
   }
 
   @override
   Widget build(BuildContext context) {
-    //historiaClinicaController
-    //  .fetchHistorialClinico(_homeController.selectedProfile.value!.id);
-    print('date  ${jsonEncode(_homeController.selectedProfile.value!)}');
     var mascota = _homeController.selectedProfile.value!;
     var padding = Helper.paddingDefault;
     var margen = Helper.margenDefault;
     var ancho = MediaQuery.of(context).size.width;
+
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           // Primer contenedor (fondo o header)
           Container(
-            height: 130,
+            height: 120, // Reducido el alto para reducir el espacio
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
-              color: Styles.colorContainer, // Cambia el color según tu diseño
+              color: Color(0xFFFEF7E5), // Color de fondo ajustado
             ),
             child: const Stack(
               children: [
                 Positioned(
                     bottom: 0,
                     child: BorderRedondiado(
-                      top: 110,
+                      top: 90,
                     )),
               ],
             ),
           ),
+
           // Segundo contenedor (superpuesto con scroll)
           Expanded(
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
+                  topLeft: Radius.circular(90),
+                  topRight: Radius.circular(90),
                 ),
               ),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(Helper.paddingDefault),
+                  padding: EdgeInsets.only(
+                    right: 26,
+                    left: 26,
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20),
                       SizedBox(
-                        width: MediaQuery.of(context)
-                            .size
-                            .width, // Ajusta el margen
-
+                        width: ancho, // Ajusta el margen
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,6 +87,7 @@ class VerPasaporteMascota extends StatelessWidget {
                             Expanded(
                               child: BarraBack(
                                 titulo: 'Pasaporte',
+                                size: 20,
                                 callback: () {
                                   Get.off(HomeScreen());
                                 },
@@ -118,14 +116,16 @@ class VerPasaporteMascota extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: margen),
+                      SizedBox(
+                          height:
+                              12), // Reducción del espacio debajo del "Pasaporte"
                       Container(
                         width: ancho,
                         height: 200,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        clipBehavior: Clip.hardEdge, // Agregar esta línea
+                        clipBehavior: Clip.hardEdge,
                         child: Obx(() {
                           final imageUrl =
                               _homeController.selectedProfile.value!.petImage ??
@@ -146,7 +146,6 @@ class VerPasaporteMascota extends StatelessWidget {
                           );
                         }),
                       ),
-
                       SizedBox(height: margen),
                       if (_homeController.selectedProfile.value!.chip != null)
                         Container(
@@ -160,7 +159,6 @@ class VerPasaporteMascota extends StatelessWidget {
                             children: [
                               SvgPicture.asset(
                                 'assets/icons/svg/code-pet.svg',
-                                // color: Styles.iconColorBack,
                               ),
                               const SizedBox(width: 10),
                               Column(
@@ -189,7 +187,12 @@ class VerPasaporteMascota extends StatelessWidget {
                       SizedBox(height: margen),
                       const Text(
                         'Información del Perro',
-                        style: Styles.TextTitulo,
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'PoetsenOne',
+                          color: Color(0xFFFF4931),
+                        ),
                       ),
                       SizedBox(height: margen),
                       InfoMascota(
@@ -210,7 +213,6 @@ class VerPasaporteMascota extends StatelessWidget {
                         titulo: 'Raza',
                         value: _homeController.selectedProfile.value!.breed,
                       ),
-
                       InfoMascota(
                         titulo: 'Fecha de nacimiento',
                         value:
@@ -225,7 +227,6 @@ class VerPasaporteMascota extends StatelessWidget {
                         value:
                             '${mascota.height ?? ""}${mascota.heightUnit ?? ""}',
                       ),
-
                       InfoMascota(
                         titulo: 'Marcas distintivas',
                         value: mascota.description ??
@@ -238,60 +239,6 @@ class VerPasaporteMascota extends StatelessWidget {
                           'Datos de Vacunación y Tratamientos',
                           style: Styles.TextTitulo,
                         ),
-                      ),
-
-                      //gridView
-                      Container(
-                        width:
-                            ancho, // Puedes ajustar el ancho del Container según lo que necesites
-                        padding: EdgeInsets.all(Helper
-                            .paddingDefault), // Espaciado interno si lo deseas
-
-                        child: Obx(() {
-                          final historial =
-                              historiaClinicaController.historialClinico;
-                          if (historiaClinicaController.isLoading.value) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-
-                          if (historial.value.isEmpty) {
-                            return const Center(
-                                child: Text('No hay datos disponibles.'));
-                          }
-                          return GridView.builder(
-                            shrinkWrap:
-                                true, // Permite que el GridView ocupe solo el espacio necesario
-                            physics:
-                                const NeverScrollableScrollPhysics(), // Desactiva el scroll para evitar conflictos con el ScrollView principal
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, // Número de elementos por fila
-                              crossAxisSpacing: 1, // Espacio entre columnas
-                              mainAxisSpacing: 1, // Espacio entre filas
-                              childAspectRatio:
-                                  0.5, // Proporción de cada celda, puedes ajustarlo según tu diseño
-                            ),
-                            itemCount: historial
-                                .length, // Número de elementos en el Grid
-                            itemBuilder: (context, index) {
-                              final history = historial[index];
-                              return SizedBox(
-                                height: 200,
-                                child: HistoriaMascotaComponent(
-                                  reportName: history.reportName,
-                                  categoryName: history.categoryName,
-                                  applicationDate: history.createdAt,
-                                  id: history.id.toString(),
-                                  callback: () {
-                                    print('Callback');
-                                  },
-                                ),
-                              );
-                            },
-                          );
-                        }),
                       ),
                     ],
                   ),
