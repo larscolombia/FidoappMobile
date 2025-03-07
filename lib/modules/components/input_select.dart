@@ -26,12 +26,63 @@ class InputSelect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<DropdownMenuItem<String>> formattedItems =
+        items.asMap().entries.map((entry) {
+      final int index = entry.key;
+      final DropdownMenuItem<String> item = entry.value;
+      final bool isFirst = index == 0;
+      final bool isLast = index == items.length - 1;
+
+      return DropdownMenuItem<String>(
+          value: item.value,
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white, // Fondo del primer ítem
+                  borderRadius: BorderRadius.vertical(
+                    top: isFirst ? const Radius.circular(16) : Radius.zero,
+                    bottom: isLast ? const Radius.circular(16) : Radius.zero,
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                ),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        item.child is Text
+                            ? (item.child as Text).data ?? ''
+                            : '',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Lato',
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (!isLast)
+                Divider(
+                  color: Colors.black.withOpacity(0.2),
+                  thickness: 1,
+                  height: 0,
+                ),
+            ],
+          ));
+    }).toList();
+
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(
           label ?? '',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 14,
             color: Color(0xFF383838),
             fontFamily: 'Lato',
@@ -41,49 +92,32 @@ class InputSelect extends StatelessWidget {
         const SizedBox(height: 8),
         ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
+            maxWidth: MediaQuery.of(context).size.width * 0.90,
           ),
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              canvasColor: Colors.white,
-              dropdownMenuTheme: DropdownMenuThemeData(
-                menuStyle: MenuStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      side: const BorderSide(
-                        color: Color(0xFFFCBA67),
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+          child: ButtonTheme(
+            alignedDropdown: true,
+            minWidth: 200, // Ajusta el ancho del menú desplegable
             child: DropdownButtonFormField<String>(
-              icon: const SizedBox.shrink(), // Elimina la flecha desplegable
-              isExpanded: true,
+              icon: const SizedBox.shrink(),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: const BorderSide(
-                    color: Color(0xFFFCBA67), // Color del borde
-                    width: 1, // Grosor del borde
+                    color: Color(0xFFFCBA67),
+                    width: 1,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: const BorderSide(
-                    color: Color(
-                        0xFFFCBA67), // Color del borde cuando no está seleccionado
+                    color: Color(0xFFFCBA67),
                     width: 1,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: const BorderSide(
-                    color: Color(
-                        0xFFFCBA67), // Color del borde cuando está seleccionado
+                    color: Color(0xFFFCBA67),
                     width: 1,
                   ),
                 ),
@@ -103,8 +137,7 @@ class InputSelect extends StatelessWidget {
                   width: 30,
                   child: suffixIcon ??
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 18, right: 18, top: 18, bottom: 18),
+                        padding: const EdgeInsets.all(18),
                         child: SvgPicture.asset(
                           'assets/icons/svg/flecha_select.svg',
                           width: 24,
@@ -113,25 +146,26 @@ class InputSelect extends StatelessWidget {
                       ),
                 ),
               ),
-              hint: Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(
-                  placeholder ?? 'placeholder',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color:
-                        TextColor ?? const Color.fromARGB(255, 252, 252, 252),
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-              items: items,
+              items: formattedItems,
               onChanged: onChanged,
               dropdownColor: Colors.white,
               elevation: 4,
+              selectedItemBuilder: (BuildContext context) {
+                return items.map((DropdownMenuItem<String> item) {
+                  return Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      item.child is Text ? (item.child as Text).data ?? '' : '',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'Lato',
+                        color: Colors.black,
+                      ),
+                    ),
+                  );
+                }).toList();
+              },
             ),
           ),
         ),

@@ -156,6 +156,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                   value: '1',
                                   child: Text('Actividad'),
                                 ),
+                                
                                 DropdownMenuItem(
                                   value: '2',
                                   child: Text('Informe médico'),
