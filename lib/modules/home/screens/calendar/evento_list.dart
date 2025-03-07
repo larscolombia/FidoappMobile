@@ -55,7 +55,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
 
     //print('evento en la pantalla ${json.encode(event)}');
     var margen = Helper.margenDefault;
-    var height = 97.0;
+    var height = 99.0;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(

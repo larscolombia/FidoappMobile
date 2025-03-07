@@ -13,7 +13,7 @@ class SelectedAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width ?? MediaQuery.of(context).size.width,
-      height: 81,
+      height: 82,
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),

@@ -390,7 +390,11 @@ class ProfileScreen extends StatelessWidget {
                             },
                             child: const Text(
                               'Eliminar cuenta',
-                              style: TextStyle(color: Styles.primaryColor),
+                              style: TextStyle(
+                                  color: Styles.primaryColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                  fontFamily: 'Lato'),
                             ),
                           ),
                         ),

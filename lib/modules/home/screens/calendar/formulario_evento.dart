@@ -471,13 +471,8 @@ class _CreateEventState extends State<CreateEvent> {
                         ],
                       ),
                     ),
-                    SizedBox(height: defaultMargin + 10),
-                    Center(
-                      child: SizedBox(
-                        width: inputWidth,
-                        child: UserEventoSeleccionado(),
-                      ),
-                    ),
+                    SizedBox(height: defaultMargin + 15),
+                    UserEventoSeleccionado(),
                     SizedBox(height: defaultMargin + 20),
                     // Botón Finalizar o Guardando
                     Obx(() {

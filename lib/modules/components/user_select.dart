@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 
 class UserEventoSeleccionado extends StatelessWidget {
   final UserController userController = Get.put(UserController());
-
-  UserEventoSeleccionado({super.key});
+  final bool? withDelete;
+  UserEventoSeleccionado({
+    super.key,
+    this.withDelete = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,20 +29,20 @@ class UserEventoSeleccionado extends StatelessWidget {
         );
       }
 
-      return SizedBox(
-        width: MediaQuery.of(context).size.width - 10,
-        child: Row(
-          children: [
-            SizedBox(
-              width: 240,
-              child: SelectedAvatar(
-                nombre: user.value!.firstName,
-                imageUrl: user.value!.profileImage,
-              ),
+      return Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: SelectedAvatar(
+              nombre: user.value!.firstName,
+              imageUrl: user.value!.profileImage,
+              profesion: Helper.tipoUsuario(user.value!.userType ?? ""),
             ),
-            const SizedBox(width: 10),
-            SizedBox(
-              width: 40,
+          ),
+          const SizedBox(width: 10),
+          if (withDelete!)
+            Expanded(
+              flex: 1,
               child: GestureDetector(
                 onTap: () {
                   userController.deselectUser();
@@ -50,8 +54,7 @@ class UserEventoSeleccionado extends StatelessWidget {
                 ),
               ),
             ),
-          ],
-        ),
+        ],
       );
     });
   }
