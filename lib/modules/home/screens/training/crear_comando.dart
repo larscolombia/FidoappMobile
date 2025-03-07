@@ -8,6 +8,7 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
+import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/comandos/comandos_controller.dart';
 import 'package:pawlly/styles/recursos.dart';
@@ -22,46 +23,81 @@ class CrearComando extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double margen = 16.0;
-    var width = MediaQuery.of(context).size.width;
-    var headerHeight = 140.00;
+    var headerHeight = 150.00;
+    final width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // Header o Fondo
           Container(
-            height: headerHeight,
+            width: double.infinity,
+            height: 148,
             decoration: const BoxDecoration(
               color: Styles.colorContainer,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
             ),
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: BorderRedondiado(
-                    top: headerHeight - 20,
+            child: Container(
+              color: Styles.colorContainer,
+              height: 140,
+              child: Stack(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        height: 120,
+                        width: width,
+                        padding: Styles.paddingAll,
+                        decoration: BoxDecoration(
+                          color: Styles.colorContainer,
+                        ),
+                        child: Align(
+                          alignment: Alignment
+                              .bottomCenter, // Alinea el contenido en la parte inferior
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .end, // Alinea los hijos al final de la Row
+                              children: [],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  Positioned(
+                    top: 120,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: 40,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(36),
+                          topRight: Radius.circular(36),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           // Contenido
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(Helper.paddingDefault),
+              padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 26),
               child: Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+                    topLeft: Radius.circular(90),
+                    topRight: Radius.circular(90),
                   ),
                 ),
                 child: SingleChildScrollView(
@@ -70,12 +106,12 @@ class CrearComando extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const SizedBox(height: 20),
                         // Barra de Navegación
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: BarraBack(
                             titulo: 'Crear Comando',
+                            size: 20,
                             callback: () {
                               Get.off(HomeScreen());
                             },
@@ -83,69 +119,69 @@ class CrearComando extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         // Selección de Mascota
-                        const SizedBox(
-                          width: 300,
-                          child: Text(
-                            "Selecciona la mascota",
-                            style: TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Color(0XFF383838),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: margen),
-                        SizedBox(
-                          width: width,
-                          child: ProfilesDogs(),
-                        ),
+
                         const SizedBox(height: margen),
                         // Campos de Entrada para el Comando
-                        SizedBox(
-                          width: width,
-                          child: InputField(
-                            label: 'Nombre del Comando',
-                            placeholder: 'Nombre del Comando',
-                            onChanged: (value) =>
-                                controller.updateField('name', value),
-                          ),
-                        ),
-                        const SizedBox(height: margen),
-                        SizedBox(
-                          width: width,
-                          child: InputField(
-                            label: 'Descripción del Comando',
-                            placeholder: 'Descripción del Comando',
-                            onChanged: (value) =>
-                                controller.updateField('description', value),
-                          ),
-                        ),
-                        const SizedBox(height: margen),
-                        SizedBox(
-                          width: width,
-                          child: InputField(
-                            label: 'Voz del Comando',
-                            placeholder: 'Voz del Comando',
-                            onChanged: (value) =>
-                                controller.updateField('voz_comando', value),
-                          ),
-                        ),
-                        const SizedBox(height: margen),
-                        SizedBox(
-                          width: width,
-                          child: InputField(
-                            label: 'Instrucciones del Comando',
-                            placeholder: 'Instrucciones del Comando',
-                            onChanged: (value) =>
-                                controller.updateField('instructions', value),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 1),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const SizedBox(
+                                width: double.infinity,
+                                child: Text(
+                                  "Selecciona la mascota",
+                                  style: TextStyle(
+                                    fontFamily: 'Lato',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0XFF383838),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ProfilesDogs(
+                                  showAge: true,
+                                ),
+                              ),
+                              const SizedBox(height: margen),
+                              InputField(
+                                label: 'Nombre del Comando',
+                                placeholder: 'Nombre del Comando',
+                                onChanged: (value) =>
+                                    controller.updateField('name', value),
+                              ),
+                              const SizedBox(height: margen),
+                              InputField(
+                                label: 'Descripción del Comando',
+                                placeholder: 'Descripción del Comando',
+                                onChanged: (value) => controller.updateField(
+                                    'description', value),
+                              ),
+                              const SizedBox(height: margen),
+                              InputField(
+                                label: 'Voz del Comando',
+                                placeholder: 'Voz del Comando',
+                                onChanged: (value) => controller.updateField(
+                                    'voz_comando', value),
+                              ),
+                              const SizedBox(height: margen),
+                              InputField(
+                                label: 'Instrucciones del Comando',
+                                placeholder: 'Instrucciones del Comando',
+                                onChanged: (value) => controller.updateField(
+                                    'instructions', value),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: margen),
                         // Botón de Crear
                         Obx(() {
                           return SizedBox(
-                            width: width,
+                            width: double.infinity,
                             child: ButtonDefaultWidget(
                               title: controller.isLoading.value
                                   ? 'Creando...'
@@ -196,15 +232,26 @@ class InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 305,
-      child: InputText(
-        fondoColor: Colors.white,
-        borderColor: Recursos.ColorBorderSuave,
-        label: label,
-        placeholder: placeholder,
-        onChanged: onChanged,
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontFamily: 'Lato',
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: Color(0XFF383838),
+          ),
+        ),
+        const SizedBox(height: 8),
+        InputText(
+          fondoColor: Colors.white,
+          borderColor: Recursos.ColorBorderSuave,
+          placeholder: placeholder,
+          onChanged: onChanged,
+        ),
+      ],
     );
   }
 }
