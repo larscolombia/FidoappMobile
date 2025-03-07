@@ -157,7 +157,7 @@ class UserBalanceController extends GetxController {
                             fontSize: 14,
                             fontFamily: 'Lato',
                             color: Colors.black,
-                            fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
@@ -189,7 +189,7 @@ class UserBalanceController extends GetxController {
                                       child: Text(
                                         productController.selectedProduct.value
                                             .nombreProducto,
-                                        textAlign: TextAlign.start,
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize: 16,
                                           fontFamily: 'Leto',
@@ -209,7 +209,7 @@ class UserBalanceController extends GetxController {
                                             .selectedProduct.value.precio,
                                         textAlign: TextAlign.center,
                                         style: const TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 24,
                                           fontWeight: FontWeight.bold,
                                           color: Styles.primaryColor,
                                         ),

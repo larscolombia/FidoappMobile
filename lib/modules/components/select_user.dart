@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class SelectedAvatar extends StatelessWidget {
@@ -67,8 +68,7 @@ class SelectedAvatar extends StatelessWidget {
             ],
           ),
           Container(
-            child: Image.asset('assets/icons/flecha_derecha.png'),
-          )
+              child: SvgPicture.asset('assets/icons/svg/flecha_derecha.svg'))
         ],
       ),
     );

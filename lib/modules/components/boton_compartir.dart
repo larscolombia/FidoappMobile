@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class BotonCompartir extends StatelessWidget {
   const BotonCompartir({
@@ -92,12 +93,11 @@ class BotonCompartir extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Image.asset(
-                    'assets/icons/send-2.png',
+                  SvgPicture.asset(
+                    'assets/icons/svg/send-2.svg',
                     width: 20,
                     height: 20,
-                    fit: BoxFit.contain,
-                  ),
+                  )
                 ],
               ),
             ),

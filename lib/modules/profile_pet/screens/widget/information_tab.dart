@@ -69,7 +69,7 @@ class InformationTab extends StatelessWidget {
                     ),
                     if (AuthServiceApis.dataCurrentUser.userType == 'user')
                       ButtonDefaultWidget(
-                        title: 'Compartir',
+                        title: 'Compartir perfil',
                         callback: () {
                           // Lógica para compartir
                           Share.share(
@@ -82,7 +82,7 @@ class InformationTab extends StatelessWidget {
                         textColor: Colors.black,
                         icon: Icons.share,
                         iconAfterText: true,
-                        widthButtom: 150,
+                        widthButtom: 190,
                         textSize: 14,
                         borderSize: 25,
                         heigthButtom: 40,
@@ -482,10 +482,13 @@ class InformationTab extends StatelessWidget {
                         PetOwnerProfileScreen(id: person['id'].toString()),
                       );
                     },
-                    child: SelectedAvatar(
-                      imageUrl: person['profile_image'],
-                      nombre: person['name'],
-                      profesion: person['relation'],
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: SelectedAvatar(
+                        imageUrl: person['profile_image'],
+                        nombre: person['name'],
+                        profesion: person['relation'],
+                      ),
                     ),
                   );
                 }).toList(),
