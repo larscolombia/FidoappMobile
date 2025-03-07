@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
+import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/pasaporte_mascota.dart';
@@ -11,173 +12,214 @@ import 'package:pawlly/modules/profile_pet/screens/widget/information_tab.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/medical_histor_tab.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
-import 'package:pawlly/styles/styles.dart';
-
 class ProfilePetScreen extends StatelessWidget {
-  final ProfilePetController controller = Get.put(ProfilePetController());
-  final HomeController homeController = Get.find<HomeController>();
   ProfilePetScreen({super.key});
-  //final PetControllerv2 petController = Get.put(PetControllerv2());
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
+    // Porcentaje de la pantalla que ocupará la imagen superior
+    final double topImageHeight = size.height * 0.35;
+
+    final ProfilePetController controller = Get.put(ProfilePetController());
+    final HomeController homeController = Get.find<HomeController>();
     final imageSize = size.height / 4;
     var pet = homeController.selectedProfile.value!;
     print('valor sobre la mascota ${pet.name}');
-    //ignore: unused_local_variable
-    //petController.showPet();
 
+    //final PetControllerv2 petController = Get.put(PetControllerv2());
     return Scaffold(
       backgroundColor: Colors.white,
-      body: CustomScrollView(
-        slivers: [
-          // Imagen de fondo
-          SliverAppBar(
-            expandedHeight: imageSize + 36,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Obx(() {
-                final imageUrl = controller.profileImagePath.value.isNotEmpty
-                    ? controller.profileImagePath.value
-                    : 'https://via.placeholder.com/600x400';
+      body: Stack(
+        children: [
+          /// 1) Imagen superior
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: topImageHeight,
+            child: Obx(() {
+              final imageUrl = controller.profileImagePath.value.isNotEmpty
+                  ? controller.profileImagePath.value
+                  : 'https://via.placeholder.com/600x400';
 
-                return CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  errorWidget: (context, url, error) {
-                    // Imagen predeterminada si falla la carga
-                    return Image.asset(
-                      'assets/images/404.jpg', // Ruta de la imagen predeterminada
-                      fit: BoxFit.cover,
-                    );
-                  },
-                );
-              }),
-            ),
-            pinned: true,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
+              return CachedNetworkImage(
+                imageUrl: imageUrl,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                errorWidget: (context, url, error) {
+                  // Imagen predeterminada si falla la carga
+                  return Image.asset(
+                    'assets/images/404.jpg', // Ruta de la imagen predeterminada
+                    fit: BoxFit.cover,
+                  );
+                },
+              );
+            }),
           ),
 
-          // Contenido del perfil
-          SliverToBoxAdapter(
+          /// 2) Contenedor blanco superpuesto
+          /// Se inicia un poco antes del final de la imagen (-40 px en lugar de -30)
+          Positioned(
+            top: topImageHeight - 40,
+            left: 0,
+            right: 0,
+            bottom: 0,
             child: Container(
-              padding: Styles.paddingAll,
+              // Color de fondo y bordes redondeados en la parte superior
               decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Sección del Perfil
-                  Container(
-                    padding: const EdgeInsets.only(top: 20),
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width - 100,
-                              child: BarraBack(
-                                titulo: "Perfil de la Mascota",
-                                size: 20,
-                                callback: () => Get.back(),
-                              ),
-                            ),
-                            if (AuthServiceApis.dataCurrentUser.userType ==
-                                'user')
-                              ElevatedButton(
-                                onPressed: () {
-                                  Get.to(PasaporteMascota());
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  padding: EdgeInsets.zero,
-                                  backgroundColor: Styles.fiveColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  minimumSize: const Size(48, 48),
-                                ),
-                                child: SvgPicture.asset(
-                                  'assets/icons/svg/edit-2.svg',
-                                ),
-                              )
-                          ],
-                        ),
-                      ],
-                    ),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
+                ),
+                // Pequeña sombra para que se note más el superpuesto
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset(0, -3),
+                    blurRadius: 8,
                   ),
-                  // Pestañas
-                  Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Obx(
-                          () => ButtonDefaultWidget(
-                            title: 'Información',
-                            
-                            callback: () => controller.changeTab(0),
-                            widthButtom:
-                                (MediaQuery.of(context).size.width / 2) - 30,
-                            defaultColor: controller.selectedTab.value == 0
-                                ? Styles.iconColorBack
-                                : Colors.white,
-                            textColor: controller.selectedTab.value == 0
-                                ? Styles.whiteColor
-                                : Colors.black,
-                            border: controller.selectedTab.value == 0
-                                ? null
-                                : const BorderSide(
-                                    color: Colors.grey, width: 1),
-                            textSize: 14,
-                          ),
-                        ),
-                        Obx(
-                          () => ButtonDefaultWidget(
-                            title: 'Historial Médico',
-                            callback: () => controller.changeTab(1),
-                            widthButtom:
-                                (MediaQuery.of(context).size.width / 2) - 30,
-                            defaultColor: controller.selectedTab.value == 1
-                                ? Styles.iconColorBack
-                                : Colors.white,
-                            textColor: controller.selectedTab.value == 1
-                                ? Styles.whiteColor
-                                : Colors.black,
-                            border: controller.selectedTab.value == 1
-                                ? null
-                                : const BorderSide(
-                                    color: Colors.grey, width: 1),
-                            textSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Divider(height: 40, thickness: .2),
                 ],
               ),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                Obx(() {
-                  if (controller.selectedTab.value == 0) {
-                    return InformationTab(controller: controller);
-                  } else {
-                    return MedicalHistoryTab(controller: controller);
-                  }
-                }),
-              ],
+              child: CustomScrollView(
+                slivers: [
+                  // Imagen de fondo
+
+                  // Contenido del perfil
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: Styles.paddingAll,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(40)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Sección del Perfil
+                          Container(
+                            padding: const EdgeInsets.only(top: 20),
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          100,
+                                      child: BarraBack(
+                                        titulo: "Perfil de la Mascota",
+                                        size: 20,
+                                        callback: () => Get.back(),
+                                      ),
+                                    ),
+                                    if (AuthServiceApis
+                                            .dataCurrentUser.userType ==
+                                        'user')
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          Get.to(PasaporteMascota());
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          elevation: 0,
+                                          padding: EdgeInsets.zero,
+                                          backgroundColor:
+                                              Styles.colorContainer,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          minimumSize: const Size(48, 48),
+                                        ),
+                                        child: SvgPicture.asset(
+                                          'assets/icons/svg/edit-2.svg',
+                                        ),
+                                      )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Pestañas
+                          Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Obx(
+                                  () => ButtonDefaultWidget(
+                                    title: 'Información',
+                                    callback: () => controller.changeTab(0),
+                                    widthButtom:
+                                        (MediaQuery.of(context).size.width /
+                                                2) -
+                                            30,
+                                    defaultColor:
+                                        controller.selectedTab.value == 0
+                                            ? Styles.iconColorBack
+                                            : Colors.white,
+                                    textColor: controller.selectedTab.value == 0
+                                        ? Styles.whiteColor
+                                        : Colors.black,
+                                    border: controller.selectedTab.value == 0
+                                        ? null
+                                        : const BorderSide(
+                                            color: Colors.grey, width: 1),
+                                    textSize: 14,
+                                  ),
+                                ),
+                                Obx(
+                                  () => ButtonDefaultWidget(
+                                    title: 'Historial Médico',
+                                    callback: () => controller.changeTab(1),
+                                    widthButtom:
+                                        (MediaQuery.of(context).size.width /
+                                                2) -
+                                            30,
+                                    defaultColor:
+                                        controller.selectedTab.value == 1
+                                            ? Styles.iconColorBack
+                                            : Colors.white,
+                                    textColor: controller.selectedTab.value == 1
+                                        ? Styles.whiteColor
+                                        : Colors.black,
+                                    border: controller.selectedTab.value == 1
+                                        ? null
+                                        : const BorderSide(
+                                            color: Colors.grey, width: 1),
+                                    textSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(height: 40, thickness: .2),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        Obx(() {
+                          if (controller.selectedTab.value == 0) {
+                            return InformationTab(controller: controller);
+                          } else {
+                            return MedicalHistoryTab(controller: controller);
+                          }
+                        }),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

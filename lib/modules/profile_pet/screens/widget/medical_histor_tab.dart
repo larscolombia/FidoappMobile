@@ -71,7 +71,9 @@ class MedicalHistoryTab extends StatelessWidget {
                               'report_name', reporType(value));
                           medicalHistoryController.updateField(
                               'report_type', int.parse(value ?? '1'));
-                          Get.off(FormularioRegistro());
+                          Get.to(
+                            () => FormularioRegistro(),
+                          );
                         },
                         TextColor: Colors.white,
                         color: Styles.primaryColor,

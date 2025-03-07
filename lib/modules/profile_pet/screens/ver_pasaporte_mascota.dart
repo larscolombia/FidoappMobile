@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/historia_componente.dart';
+import 'package:pawlly/modules/components/historia_grid.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
@@ -45,18 +46,16 @@ class VerPasaporteMascota extends StatelessWidget {
         children: [
           // Primer contenedor (fondo o header)
           Container(
-            height: 130,
+            height: 160,
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               color: Styles.colorContainer, // Cambia el color según tu diseño
             ),
             child: const Stack(
               children: [
-                Positioned(
-                    bottom: 0,
-                    child: BorderRedondiado(
-                      top: 110,
-                    )),
+                BorderRedondiado(
+                  top: 130,
+                ),
               ],
             ),
           ),
@@ -64,12 +63,7 @@ class VerPasaporteMascota extends StatelessWidget {
           Expanded(
             child: Container(
               width: double.infinity,
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                ),
-              ),
+              color: Colors.white,
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(Helper.paddingDefault),
@@ -146,7 +140,6 @@ class VerPasaporteMascota extends StatelessWidget {
                           );
                         }),
                       ),
-
                       SizedBox(height: margen),
                       if (_homeController.selectedProfile.value!.chip != null)
                         Container(
@@ -210,7 +203,6 @@ class VerPasaporteMascota extends StatelessWidget {
                         titulo: 'Raza',
                         value: _homeController.selectedProfile.value!.breed,
                       ),
-
                       InfoMascota(
                         titulo: 'Fecha de nacimiento',
                         value:
@@ -225,74 +217,18 @@ class VerPasaporteMascota extends StatelessWidget {
                         value:
                             '${mascota.height ?? ""}${mascota.heightUnit ?? ""}',
                       ),
-
                       InfoMascota(
                         titulo: 'Marcas distintivas',
                         value: mascota.description ??
                             "No se ha definido una descripción",
                       ),
                       const SizedBox(height: 20),
-                      const SizedBox(
-                        width: 305,
-                        child: Text(
-                          'Datos de Vacunación y Tratamientos',
-                          style: Styles.TextTitulo,
-                        ),
+                      Helper.titulo(
+                        'Datos de Vacunación y Tratamientos',
                       ),
-
-                      //gridView
-                      Container(
-                        width:
-                            ancho, // Puedes ajustar el ancho del Container según lo que necesites
-                        padding: EdgeInsets.all(Helper
-                            .paddingDefault), // Espaciado interno si lo deseas
-
-                        child: Obx(() {
-                          final historial =
-                              historiaClinicaController.historialClinico;
-                          if (historiaClinicaController.isLoading.value) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-
-                          if (historial.value.isEmpty) {
-                            return const Center(
-                                child: Text('No hay datos disponibles.'));
-                          }
-                          return GridView.builder(
-                            shrinkWrap:
-                                true, // Permite que el GridView ocupe solo el espacio necesario
-                            physics:
-                                const NeverScrollableScrollPhysics(), // Desactiva el scroll para evitar conflictos con el ScrollView principal
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, // Número de elementos por fila
-                              crossAxisSpacing: 1, // Espacio entre columnas
-                              mainAxisSpacing: 1, // Espacio entre filas
-                              childAspectRatio:
-                                  0.5, // Proporción de cada celda, puedes ajustarlo según tu diseño
-                            ),
-                            itemCount: historial
-                                .length, // Número de elementos en el Grid
-                            itemBuilder: (context, index) {
-                              final history = historial[index];
-                              return SizedBox(
-                                height: 200,
-                                child: HistoriaMascotaComponent(
-                                  reportName: history.reportName,
-                                  categoryName: history.categoryName,
-                                  applicationDate: history.createdAt,
-                                  id: history.id.toString(),
-                                  callback: () {
-                                    print('Callback');
-                                  },
-                                ),
-                              );
-                            },
-                          );
-                        }),
-                      ),
+                      SizedBox(height: margen),
+                      HistorialGrid(controller: historiaClinicaController),
+                      SizedBox(height: margen),
                     ],
                   ),
                 ),
