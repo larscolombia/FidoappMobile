@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Asegúrate de importar el paquete
 import 'package:pawlly/modules/components/style.dart';
 
 class RecargaComponente extends StatelessWidget {
@@ -9,13 +10,16 @@ class RecargaComponente extends StatelessWidget {
   });
   final VoidCallback? callback;
   final String titulo;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: callback,
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Image.asset(
-          "assets/icons/refresh.png",
+        SvgPicture.asset(
+          "assets/icons/svg/refresh-2.svg", // Ruta del archivo SVG
+          height: 18, // Puedes ajustar el tamaño si lo necesitas
+          width: 18,
         ),
         const SizedBox(
           width: 10,
@@ -25,10 +29,10 @@ class RecargaComponente extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: 16,
             fontFamily: 'Lato',
-            fontWeight: FontWeight.w600,
-            color: Styles.iconColorBack,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFFFC9214),
           ),
         ),
       ]),

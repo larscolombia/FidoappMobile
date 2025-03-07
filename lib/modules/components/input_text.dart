@@ -243,15 +243,15 @@ class _InputTextState extends State<InputText> {
                   fillColor: widget.fondoColor,
                   suffixIcon: widget.placeholderSuffixSvg != null
                       ? Padding(
-                          padding: const EdgeInsets.only(
-                              left: 18, right: 18, top: 18, bottom: 18),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 18, horizontal: 18),
                           child: SizedBox(
-                            width: 0.001,
-                            height: 0.001,
+                            width: 0.1,
+                            height: 0.1,
                             child: SvgPicture.asset(
                               widget.placeholderSuffixSvg!,
-                              width: 0.001,
-                              height: 0.001,
+                              width: 0.1,
+                              height: 0.1,
                             ),
                           ),
                         )

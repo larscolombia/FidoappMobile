@@ -264,7 +264,7 @@ class _LibroDetallesState extends State<LibroDetalles> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'Sobre este Libro',
+                                  'Sobre este Ebook',
                                   style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.bold,
@@ -436,18 +436,17 @@ class HeaderEbook extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 40),
-            Center(
-              child: SizedBox(
-                width: 345,
-                child: BarraBack(
-                  titulo: 'Sobre este Libro',
-                  subtitle: 'Encuentra toda la información aquí',
-                  ColorSubtitle: Colors.black,
-                  callback: () {
-                    Get.back();
-                    print('Regresar');
-                  },
-                ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: BarraBack(
+                titulo: 'Sobre este Ebook',
+                size: 20,
+                subtitle: 'Encuentra toda la información aquí',
+                ColorSubtitle: Colors.black,
+                callback: () {
+                  Get.back();
+                  print('Regresar');
+                },
               ),
             ),
           ],

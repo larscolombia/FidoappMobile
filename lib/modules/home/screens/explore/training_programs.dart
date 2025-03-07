@@ -13,8 +13,12 @@ class TrainingPrograms extends StatelessWidget {
   final CourseController cursosController;
 
   TrainingPrograms(
-      {super.key, this.vermas = true, required this.cursosController});
+      {super.key,
+      this.vermas = true,
+      this.showTitle = false,
+      required this.cursosController});
   final bool? vermas;
+  final bool showTitle;
 
   String dificultadValue(String dificultad) {
     switch (dificultad) {
@@ -51,7 +55,15 @@ class TrainingPrograms extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Título de la sección
-       
+        if (this.showTitle)
+          Text(
+            'Cursos y Programas de Entrenamiento',
+            style: const TextStyle(
+              fontSize: 20,
+              color: Styles.primaryColor,
+              fontFamily: Styles.fuente2,
+            ),
+          ),
 
         // Lista de cursos
         Obx(() {
@@ -158,17 +170,9 @@ class TrainingPrograms extends StatelessWidget {
                                       courseId: course.id,
                                       videoId: course.id.toString(),
                                     );
-                                    Get.to(() => CursoVideo(
-                                          videoId: video?.url ?? '',
+
+                                    Get.to(() => CursosDetalles(
                                           cursoId: course.id.toString(),
-                                          name: course.name,
-                                          description: course.description,
-                                          image: course.image,
-                                          duration: course.duration,
-                                          price: course.price,
-                                          difficulty: course.difficulty,
-                                          videoUrl: video?.url ?? '',
-                                          tipovideo: 'video',
                                         ));
                                   },
                                   style: ElevatedButton.styleFrom(

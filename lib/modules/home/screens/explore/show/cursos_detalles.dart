@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
@@ -84,13 +85,14 @@ class CursosDetalles extends StatelessWidget {
                 ),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: Styles.paddingAll,
                     child: Column(
                       children: [
                         const SizedBox(height: 50),
                         SizedBox(
                           child: BarraBack(
                             titulo: curso.name.toString(),
+                            size: 20,
                             subtitle: dificultad(curso.difficulty),
                             callback: () {
                               Get.off(HomeScreen());
@@ -98,22 +100,22 @@ class CursosDetalles extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        SizedBox(
-                          width: 302,
-                          child: Text(
-                            curso.description,
-                            textAlign: TextAlign.start,
-                            style: Styles.descripcion,
-                          ),
+                        Text(
+                          curso.description,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xFF383838)),
                         ),
                         const SizedBox(height: 20),
                         Center(
                           child: Container(
-                            width: 305,
                             height: 50,
                             decoration: BoxDecoration(
                               color: Styles.colorContainer,
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(15),
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -121,12 +123,17 @@ class CursosDetalles extends StatelessWidget {
                                 ElementoInfo(
                                   title: "Programa",
                                   velue: "${curso.videos.length} Leciones",
-                                  image: "assets/icons/calendar.png",
+                                  image: "assets/icons/svg/task.svg",
+                                ),
+                                Container(
+                                  height: 30,
+                                  width: 1,
+                                  color: Color(0XFFFc9214).withOpacity(0.40),
                                 ),
                                 ElementoInfo(
                                   title: "Tiempo",
                                   velue: curso.duration,
-                                  image: "assets/icons/timer-start.png",
+                                  image: "assets/icons/svg/timer-start.svg",
                                 ),
                               ],
                             ),
@@ -134,21 +141,14 @@ class CursosDetalles extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width - 100,
-                          child: cursoAdquirido
-                              ? BotonCompartir(
-                                  modo: "compartir",
-                                  compra: cursoAdquirido,
-                                  onCompartir: () {
-                                    print('comprando');
-                                  },
-                                )
-                              : BotonCompartir(
-                                  modo: "comprar",
-                                  onCompartir: () {
-                                    print('comprando');
-                                  },
-                                ),
+                          child: BotonCompartir(
+                            modo: "compartir",
+                            compra: cursoAdquirido,
+                            title: 'Compartir curso',
+                            onCompartir: () {
+                              print('comprando');
+                            },
+                          ),
                         ),
                         const SizedBox(height: 20),
                         if (!cursoAdquirido)
@@ -181,7 +181,6 @@ class CursosDetalles extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          width: 302,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -292,24 +291,33 @@ class BanerCompraPrecio extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: SizedBox(
-          width: 132,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 255, 254, 253),
-                  borderRadius: BorderRadius.circular(20),
+                  color: const Color(0xFFf4f4f4),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 width: 94,
                 height: 54,
-                child: Center(child: Text('$price')),
+                child: Center(
+                    child: Text(
+                  '$price',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w800,
+                  ),
+                )),
               ),
               SizedBox(
                 width: 190,
                 height: 54,
                 child: ButtonDefaultWidget(
                   title: 'Comprar Curso',
+                  textSize: 16,
                   callback: callback,
                 ),
               ),
@@ -339,10 +347,10 @@ class ElementoInfo extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            image ?? "assets/icons/calendar.png",
+          SvgPicture.asset(
+            image!, // Ruta del archivo SVG
+            height: 24, // Puedes ajustar el tamaño si lo necesitas
             width: 24,
-            height: 24,
           ),
           const SizedBox(
             width: 8,
@@ -354,18 +362,18 @@ class ElementoInfo extends StatelessWidget {
               Text(
                 title ?? 'Programa:',
                 style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.black,
-                ),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                    fontFamily: 'Lato'),
               ),
               Text(
                 velue ?? '10 Leciones',
                 style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                ),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.black,
+                    fontFamily: 'Lato'),
               ),
             ],
           )
@@ -391,7 +399,6 @@ class MediaCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(8.0),
-      padding: const EdgeInsets.all(12.0),
       height: 100,
       decoration: BoxDecoration(
         color: const Color.fromARGB(255, 255, 255, 255),
@@ -415,7 +422,7 @@ class MediaCard extends StatelessWidget {
           // Texto y detalles
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Container(
                   child: Text(
@@ -444,11 +451,7 @@ class MediaCard extends StatelessWidget {
             ),
           ),
           // Ícono de reproducción
-          Image.asset(
-            'assets/images/reproductor.png',
-            width: 32,
-            height: 32,
-          )
+          SvgPicture.asset('assets/icons/svg/play-cricle.svg')
         ],
       ),
     );

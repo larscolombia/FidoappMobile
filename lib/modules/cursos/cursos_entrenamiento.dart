@@ -53,7 +53,9 @@ class CursosEntrenamiento extends StatelessWidget {
                     SizedBox(
                       width: ancho,
                       child: BarraBack(
-                        titulo: 'Seguir Viendo',
+                        titulo: miscursos.courses.length == 0
+                            ? ''
+                            : 'Seguir Viendo',
                         callback: () {
                           Get.back();
                         },

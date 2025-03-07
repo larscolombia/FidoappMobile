@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/components/historia_componente.dart';
+import 'package:pawlly/modules/components/historia_grid.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/registro.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
@@ -45,17 +47,20 @@ class MedicalHistoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     medicalHistoryController.fetchHistorialClinico(controller.petProfile.id);
+    var ancho = MediaQuery.of(context).size.width;
+    var margen = Helper.margenDefault;
     return SingleChildScrollView(
       // Cambiamos a SingleChildScrollView para manejar el contenido desplazable
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (roleUser.roleUser.value == roleUser.tipoUsuario('vet'))
-            Center(
-              child: SizedBox(
-                width: 312,
+      child: Padding(
+        padding: Styles.paddingAll,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (roleUser.roleUser.value == roleUser.tipoUsuario('vet'))
+              SizedBox(
+                width: ancho,
                 child: SizedBox(
-                  width: 302,
+                  width: ancho,
                   child: Column(
                     children: [
                       InputSelect(
@@ -87,48 +92,19 @@ class MedicalHistoryTab extends StatelessWidget {
                           ),
                         ],
                       ),
-                      /** 
-                      CustomSelectFormFieldWidget(
-                        filcolorCustom: Styles.primaryColor,
-                        textColor: Colors.white,
-                        placeholder: 'Agregar nuevo informe',
-                        controller: null,
-                        items: const [
-                          'Vacunas',
-                          'Antiparasitante',
-                          'Antigarrapata',
-                        ],
-                        onChange: (value) {
-                          medicalHistoryController.reseterReportData();
-                          medicalHistoryController.isEditing.value = false;
-                          medicalHistoryController.updateField(
-                              'report_name', value);
-                          medicalHistoryController.updateField(
-                              'report_type', reporType(value));
-                          Get.off(FormularioRegistro());
-                        },
-                        icon: 'assets/icons/categori.png',
-                      ),*/
                     ],
                   ),
                 ),
               ),
-            ),
-          // Título
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text(
+            // Título
+            SizedBox(height: margen),
+            const Text(
               'Historia Clínica',
               style: Styles.dashboardTitle20,
             ),
-          ),
-          const SizedBox(height: 1),
-          // Barra de búsqueda y botón de filtro
-
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
+            const SizedBox(height: 16),
+            // Barra de búsqueda y botón de filtro
+            Row(
               children: [
                 Expanded(
                   child: InputTextWithIcon(
@@ -164,64 +140,17 @@ class MedicalHistoryTab extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: RecargaComponente(
+            HistorialGrid(controller: medicalHistoryController),
+            SizedBox(height: margen),
+            RecargaComponente(
               callback: () {
                 medicalHistoryController.fetchHistorialClinico(
                     homeController.selectedProfile.value!.id);
               },
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Obx(() {
-              final historial =
-                  medicalHistoryController.filteredHistorialClinico;
-              if (medicalHistoryController.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              // ignore: invalid_use_of_protected_member
-              if (historial.value.isEmpty) {
-                return const Center(child: Text('No hay datos disponibles.'));
-              }
-
-              return GridView.builder(
-                physics:
-                    const NeverScrollableScrollPhysics(), // Desactivar el scroll del GridView
-                shrinkWrap:
-                    true, // Permitir que el GridView se ajuste al contenido
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                  childAspectRatio: 0.70,
-                ),
-                itemCount: historial.length,
-                itemBuilder: (context, index) {
-                  final history = historial[index];
-                  return Registro(
-                    titulo: history.reportName ?? '',
-                    subtitulo: history.categoryName ?? '',
-                    fecha: history.createdAt.toString(),
-                    registroId: history.id.toString(),
-                    callback: () {
-                      medicalHistoryController.isEditing.value = true;
-                      Get.to(
-                        () => ConfirmarFormulario(
-                          isEdit: true,
-                          historialClinico: history,
-                        ),
-                      );
-                    },
-                  );
-                },
-              );
-            }),
-          ),
-        ],
+            SizedBox(height: margen * 3),
+          ],
+        ),
       ),
     );
   }

@@ -13,10 +13,12 @@ class InputSelect extends StatelessWidget {
     this.color,
     this.prefiIcon,
     this.TextColor,
+    this.value,
   });
 
   final String? placeholder;
   final String? label;
+  final String? value;
   final ValueChanged<String?> onChanged;
   final List<DropdownMenuItem<String>> items;
   final Color? TextColor;
@@ -26,66 +28,76 @@ class InputSelect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Etiqueta
-        Text(
-          label ?? '',
-          style: const TextStyle(
-            fontSize: 14,
-            color: Color(0xFF383838),
-            fontFamily: 'Lato',
-            fontWeight: FontWeight.w500,
+    // Creamos una lista formateada que añade padding y un divider inferior a cada item.
+    final List<DropdownMenuItem<String>> formattedItems = items.map((item) {
+      return DropdownMenuItem<String>(
+        value: item.value,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: const BoxDecoration(
+            border: Border(
+              bottom: BorderSide(color: Color(0xFFF0F0F0)),
+            ),
           ),
+          child: item.child,
         ),
-        const SizedBox(height: 8),
-        // Contenedor del Dropdown
-        ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width,
+      );
+    }).toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Etiqueta superior
+        if (label != null)
+          Text(
+            label ?? '',
+            style: const TextStyle(
+              fontSize: 14,
+              color: Color(0xFF383838),
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              // Color de fondo del menú desplegable
-              canvasColor: Colors.white,
-              // Aquí se configura el tema del menú desplegable para que tenga un borde sólido rojo
-              dropdownMenuTheme: DropdownMenuThemeData(
-                menuStyle: MenuStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                      side: const BorderSide(
-                        color: Colors.red, // Borde sólido rojo
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                ),
+        const SizedBox(height: 8),
+        Theme(
+          data: Theme.of(context).copyWith(
+            // Configuramos el tema para que el menú desplegable tenga un borde sólido (se puede ajustar aquí si se requiere)
+            popupMenuTheme: PopupMenuThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: const BorderSide(color: Colors.red, width: 1),
               ),
             ),
+          ),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width * 0.90,
+            ),
             child: DropdownButtonFormField<String>(
+              value: value,
               icon: const SizedBox.shrink(), // Oculta el ícono predeterminado
-              isExpanded: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(
-                    color: Color(0xFFFCBA67),
+                  borderSide: BorderSide(
+                    color:
+                        value != null ? Colors.blue : const Color(0xFFFCBA67),
                     width: 1,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(
-                    color: Color(0xFFFCBA67),
+                  borderSide: BorderSide(
+                    color:
+                        value != null ? Colors.blue : const Color(0xFFFCBA67),
                     width: 1,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: const BorderSide(
-                    color: Color(0xFFFCBA67),
+                  borderSide: BorderSide(
+                    color:
+                        value != null ? Colors.blue : const Color(0xFFFCBA67),
                     width: 1,
                   ),
                 ),
@@ -129,10 +141,20 @@ class InputSelect extends StatelessWidget {
                   ),
                 ),
               ),
-              items: items,
+              items: formattedItems,
               onChanged: onChanged,
               dropdownColor: Colors.white,
               elevation: 4,
+              // El selectedItemBuilder nos permite definir cómo se ve la opción seleccionada en el campo
+              selectedItemBuilder: (BuildContext context) {
+                return formattedItems.map((DropdownMenuItem<String> item) {
+                  // Usamos el contenido del item (su child) para mostrarlo alineado a la izquierda.
+                  return Align(
+                    alignment: Alignment.centerLeft,
+                    child: item.child,
+                  );
+                }).toList();
+              },
             ),
           ),
         ),

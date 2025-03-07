@@ -32,13 +32,13 @@ class Styles {
   );
   static const TextStyle textTituloLibros = TextStyle(
     fontSize: 18,
-    color: Colors.black,
+    color: Color(0xFF383838),
     fontFamily: "lato",
-    fontWeight: FontWeight.w800,
+    fontWeight: FontWeight.w700,
   );
   static const TextStyle textSubTituloLibros = TextStyle(
-    fontSize: 18,
-    color: Colors.black,
+    fontSize: 15,
+    color: Color(0xFF383838),
     fontFamily: "lato",
     fontWeight: FontWeight.w400,
   );

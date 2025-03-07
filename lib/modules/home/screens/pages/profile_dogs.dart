@@ -12,13 +12,14 @@ class ProfilesDogs extends StatelessWidget {
   ProfilesDogs(
       {super.key,
       this.isSelect = false,
-      this.disableTap = false}); // Añadir el parámetro opcional
+      this.disableTap = false,
+      this.showAge = false}); // Añadir el parámetro opcional
 
   // Instancia del controlador para manejar el estado
   final HomeController controller = Get.put(HomeController());
   final bool isSelect; // Declarar el campo
   final bool disableTap; // Declarar el campo opcional
-
+  final bool showAge;
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -26,26 +27,29 @@ class ProfilesDogs extends StatelessWidget {
       controller: controller,
       width: width,
       isSelect: isSelect,
-      disableTap: disableTap, // Pasar el campo
+      disableTap: disableTap,
+      showAge: showAge, // Pasar el campo
     );
   }
 }
 
 class PerfilMascotas extends StatelessWidget {
-  const PerfilMascotas({
-    super.key,
-    required this.controller,
-    required this.width,
-    this.formulario = false,
-    this.isSelect = false, // Campo opcional con valor predeterminado
-    this.disableTap = false, // Campo opcional con valor predeterminado
-  });
+  const PerfilMascotas(
+      {super.key,
+      required this.controller,
+      required this.width,
+      this.formulario = false,
+      this.isSelect = false, // Campo opcional con valor predeterminado
+      this.disableTap = false,
+      this.showAge = false // Campo opcional con valor predeterminado
+      });
 
   final HomeController controller;
   final double width;
   final bool formulario;
   final bool isSelect; // Campo opcional
-  final bool disableTap; // Campo opcional
+  final bool disableTap;
+  final bool showAge; // Campo opcional
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +149,7 @@ class PerfilMascotas extends StatelessWidget {
                       SizedBox(
                         width: width / 2.5,
                         child: Text(
-                          disableTap == false
+                          disableTap == false && showAge == false
                               ? 'Perfil de ${profile.name}'
                               : '${profile.age}',
                           textAlign: TextAlign.left,

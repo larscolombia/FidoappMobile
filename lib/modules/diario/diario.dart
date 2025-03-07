@@ -50,7 +50,11 @@ class Diario extends StatelessWidget {
               ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(Helper.paddingDefault),
+                  padding: const EdgeInsets.only(
+                    left: Helper.paddingDefault,
+                    right: Helper.paddingDefault,
+                    bottom: Helper.paddingDefault,
+                  ),
                   child: Container(
                     width: double.infinity,
                     decoration: const BoxDecoration(
@@ -60,13 +64,13 @@ class Diario extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 5),
-                          SizedBox(width: ancho, child: ProfilesDogs()),
+                          ProfilesDogs(),
                           SizedBox(height: margen + 10),
                           SizedBox(
                             width: ancho,
                             child: BarraBack(
                               titulo: 'Registros en el Diario',
+                              size: 20,
                               callback: () {
                                 Get.back();
                               },

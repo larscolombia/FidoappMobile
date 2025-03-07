@@ -244,12 +244,9 @@ class PasaporteMascota extends StatelessWidget {
                       width: ancho,
                       height: altoInput,
                       child: InputText(
-                        prefiIcon: const Icon(
-                          Icons.archive_outlined,
-                          color: Styles.fiveColor,
-                        ),
                         isFilePicker: true,
-                        placeholder: '',
+                        placeholderSvg: 'assets/icons/svg/imagen2.svg',
+                        placeholder: 'Añadir archivo .pdf',
                         label: 'Adjuntar archivo',
                         onChanged: (value) {},
                       ),
@@ -258,16 +255,16 @@ class PasaporteMascota extends StatelessWidget {
                       width: ancho,
                       height: altoInput,
                       child: InputText(
-                        prefiIcon: const Icon(
-                          Icons.person_outline,
-                          color: Styles.fiveColor,
-                        ),
+                        placeholderSvg: 'assets/icons/svg/imagen2.svg',
                         isFilePicker: true,
                         label: 'Adjuntar archivo',
-                        placeholder: '',
+                        placeholder: 'Añadir archivo .pdf',
                         onChanged: (value) {},
                       ),
                     ),
+                    const SizedBox(height: 10),
+                    Helper.titulo('Datos de Vacunación y Tratamientos'),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: ancho,
                       child: Obx(() {

@@ -41,7 +41,6 @@ class VerPasaporteMascota extends StatelessWidget {
     var margen = Helper.margenDefault;
     var ancho = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Column(
         children: [
           // Primer contenedor (fondo o header)
@@ -66,7 +65,6 @@ class VerPasaporteMascota extends StatelessWidget {
             child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(
-                color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
                   topRight: Radius.circular(30),

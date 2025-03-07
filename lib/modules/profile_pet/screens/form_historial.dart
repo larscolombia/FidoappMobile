@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/components/regresr_components.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
@@ -22,7 +24,8 @@ class FormularioRegistro extends StatelessWidget {
   FormularioRegistro({super.key});
   @override
   Widget build(BuildContext context) {
-    var ancho = MediaQuery.of(context).size.width - 80;
+    var ancho = MediaQuery.of(context).size.width;
+    var margen = Helper.margenDefault;
     controller.updateField("pet_id", homeController.selectedProfile.value!.id);
 
     return Scaffold(
@@ -51,6 +54,7 @@ class FormularioRegistro extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Container(
+                  padding: Styles.paddingAll,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     color: Colors.white,
@@ -62,46 +66,25 @@ class FormularioRegistro extends StatelessWidget {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Container(
-                          margin: const EdgeInsets.all(10),
-                          width: 302,
-                          child: GestureDetector(
-                            onTap: () {
+                        SizedBox(height: margen + margen),
+                        BarraBack(
+                            titulo: 'Informe Médico',
+                            callback: () {
                               Get.back();
+                            }),
+                        SizedBox(height: margen + margen),
+                        SizedBox(
+                          width: ancho,
+                          child: InputText(
+                            placeholder: 'Nombre del informe',
+                            onChanged: (value) {
+                              print('value $value');
+                              controller.updateField("name", value);
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  child: const Icon(
-                                    Icons.arrow_back_ios,
-                                    color: Styles.primaryColor,
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                const Text(
-                                  "Informe Médico",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Styles.primaryColor,
-                                    fontFamily: 'PoetsenOne',
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
                         ),
-                        InputText(
-                          label: '',
-                          placeholder: 'Nombre del informe',
-                          onChanged: (value) {
-                            print('value $value');
-                            controller.updateField("name", value);
-                          },
-                        ),
+                        SizedBox(height: margen - 8),
                         SizedBox(
-                          height: 90,
                           width: ancho,
                           child: Obx(() {
                             if (categoryController.categories.isEmpty) {
@@ -111,7 +94,7 @@ class FormularioRegistro extends StatelessWidget {
                             }
 
                             return InputSelect(
-                              label: '',
+                              prefiIcon: 'assets/icons/nota.png',
                               placeholder: 'Categoría del informe',
                               TextColor: Colors.black,
                               onChanged: (value) {
@@ -129,77 +112,66 @@ class FormularioRegistro extends StatelessWidget {
                             );
                           }),
                         ),
-                        InputText(
-                          label: '',
-                          placeholder: 'Fecha de Aplicación',
-                          isDateField: true,
-                          onChanged: (value) {
-                            controller.updateField("fecha_aplicacion", value);
-                          },
-                          suffixIcon: const Icon(
-                            Icons.arrow_drop_down,
-                            color: Styles.fiveColor,
-                          ),
-                          prefiIcon: const Icon(
-                            Icons.calendar_today,
-                            color: Color.fromRGBO(252, 186, 103, 1),
-                          ),
-                        ),
-                        InputText(
-                          label: '',
-                          placeholder: 'Fecha de refuerzo',
-                          isDateField: true,
-                          onChanged: (value) {
-                            controller.updateField("fecha_refuerzo", value);
-                          },
-                          suffixIcon: const Icon(
-                            Icons.arrow_drop_down,
-                            color: Color.fromRGBO(252, 186, 103, 1),
-                          ),
-                          prefiIcon: const Icon(
-                            Icons.calendar_today,
-                            color: Color.fromRGBO(252, 186, 103, 1),
+                        SizedBox(height: margen),
+                        SizedBox(
+                          width: ancho,
+                          child: InputText(
+                            placeholder: 'Fecha de Aplicación',
+                            isDateField: true,
+                            onChanged: (value) {
+                              controller.updateField("fecha_aplicacion", value);
+                              controller.updateField("fecha_refuerzo", value);
+                            },
+                            suffixIcon: const Icon(
+                              Icons.arrow_drop_down,
+                              color: Styles.fiveColor,
+                            ),
+                            placeholderSvg: 'assets/icons/svg/calendar.svg',
                           ),
                         ),
-                        InputText(
-                          label: '',
-                          placeholder: 'Notas adicionales',
-                          onChanged: (value) {
-                            controller.updateField("notes", value);
-                            controller.updateField("medical_conditions", value);
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        InputText(
-                          label: "Adjuntar imagen",
-                          placeholder: "Sube tu archivo",
-                          isFilePicker: true,
-                          prefiIcon: const Icon(
-                            Icons.file_copy,
-                            color: Color.fromRGBO(252, 186, 103, 1),
+                        SizedBox(height: margen),
+                        Container(
+                          child: InputText(
+                            isTextArea: true,
+                            placeholder: 'Notas adicionales',
+                            onChanged: (value) {
+                              controller.updateField("notes", value);
+                              controller.updateField(
+                                  "medical_conditions", value);
+                            },
                           ),
-                          onChanged: (filePath) {
-                            print("Archivo seleccionado: $filePath");
-                          },
                         ),
-                        const SizedBox(height: 10),
-                        InputText(
-                          label: "Adjuntar archivo",
-                          placeholder: "Sube tu archivo",
-                          isFilePicker: true,
-                          prefiIcon: const Icon(
-                            Icons.file_copy,
-                            color: Color.fromRGBO(252, 186, 103, 1),
+                        SizedBox(height: margen - 8),
+                        SizedBox(
+                          width: ancho,
+                          child: InputText(
+                            label: "Adjuntar imagen",
+                            placeholder: "Añadir imagen .pdf",
+                            isFilePicker: true,
+                            placeholderSvg: 'assets/icons/svg/imagen2.svg',
+                            onChanged: (filePath) {
+                              print("Archivo seleccionado: $filePath");
+                            },
                           ),
-                          onChanged: (filePath) {
-                            print("Archivo seleccionado: $filePath");
-                          },
                         ),
-                        const SizedBox(height: 20),
+                        SizedBox(height: margen - 8),
+                        SizedBox(
+                          width: ancho,
+                          child: InputText(
+                            label: "Adjuntar archivo",
+                            placeholder: "Añadir imagen .pdf",
+                            isFilePicker: true,
+                            placeholderSvg: 'assets/icons/svg/imagen2.svg',
+                            onChanged: (filePath) {
+                              print("Archivo seleccionado: $filePath");
+                            },
+                          ),
+                        ),
+                        SizedBox(height: margen),
                         Obx(() {
                           return Center(
                             child: SizedBox(
-                              width: 302,
+                              width: ancho,
                               child: ButtonDefaultWidget(
                                 title: controller.isEditing.value
                                     ? 'Guardando...'

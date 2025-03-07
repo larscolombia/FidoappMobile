@@ -86,6 +86,7 @@ class ProfilePetScreen extends StatelessWidget {
                               width: MediaQuery.of(context).size.width - 100,
                               child: BarraBack(
                                 titulo: "Perfil de la Mascota",
+                                size: 20,
                                 callback: () => Get.back(),
                               ),
                             ),
@@ -122,6 +123,7 @@ class ProfilePetScreen extends StatelessWidget {
                         Obx(
                           () => ButtonDefaultWidget(
                             title: 'Información',
+                            
                             callback: () => controller.changeTab(0),
                             widthButtom:
                                 (MediaQuery.of(context).size.width / 2) - 30,

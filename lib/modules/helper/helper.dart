@@ -192,4 +192,17 @@ class Helper extends GetX {
       },
     );
   }
+
+  static Widget titulo(title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        color: Styles.primaryColor,
+        fontSize: 20,
+        fontWeight: FontWeight.w800,
+        fontFamily: 'PoetsenOne',
+        height: 1.3,
+      ),
+    );
+  }
 }
