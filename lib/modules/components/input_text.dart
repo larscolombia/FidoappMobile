@@ -325,9 +325,10 @@ class _InputTextState extends State<InputText> {
     );
   }
 
-  // Métodos para selectores de fecha/hora/archivo...
   Future<void> _selectDate(BuildContext context) async {
+    // Remueve el foco para evitar que el teclado aparezca
     _focusNode.unfocus();
+
     final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -335,23 +336,31 @@ class _InputTextState extends State<InputText> {
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
+
     if (picked != null) {
       final formattedDate = dateFormat.format(picked);
-      widget.onChanged(formattedDate);
-      setState(() => _textController.text = formattedDate);
+      widget.onChanged(formattedDate); // Notifica el cambio
+      setState(() {
+        _textController.text = formattedDate; // Actualiza el controlador
+      });
     }
   }
 
   Future<void> _selectTime(BuildContext context) async {
+    // Remueve el foco para evitar que el teclado aparezca
     _focusNode.unfocus();
+
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
     );
+
     if (picked != null) {
       final formattedTime = picked.format(context);
-      widget.onChanged(formattedTime);
-      setState(() => _textController.text = formattedTime);
+      widget.onChanged(formattedTime); // Notifica el cambio
+      setState(() {
+        _textController.text = formattedTime; // Actualiza el controlador
+      });
     }
   }
 
@@ -363,7 +372,9 @@ class _InputTextState extends State<InputText> {
     if (result != null && result.files.single.path != null) {
       final filePath = result.files.single.path!;
       final fileName = result.files.single.name;
-      setState(() => _textController.text = fileName);
+      setState(() {
+        _textController.text = fileName;
+      });
       widget.onChanged(filePath);
     }
   }
@@ -374,8 +385,12 @@ class _InputTextState extends State<InputText> {
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
+        _textController.text = pickedFile.name;
       });
-      widget.onImagePicked?.call(_imageFile!);
+      widget.onChanged(pickedFile.path);
+      if (widget.onImagePicked != null) {
+        widget.onImagePicked!(_imageFile!);
+      }
     }
   }
 }
