@@ -1,6 +1,10 @@
 buildscript {
+<<<<<<< HEAD
     ext.kotlin_version = '1.8.20'
 
+=======
+    ext.kotlin_version = '1.9.10' // Asegúrate de que esta sea la versión correcta
+>>>>>>> e79cb2ffbbf2be477cda476507478dde18e3e744
     repositories {
         google()
         mavenCentral()
@@ -10,6 +14,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.15'
     classpath 'com.android.tools.build:gradle:8.3.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        
     }
 }
 
@@ -18,6 +23,7 @@ allprojects {
         google()
         mavenCentral()
     }
+<<<<<<< HEAD
 }
 
 subprojects {
@@ -26,6 +32,24 @@ subprojects {
             project.android {
                 if (namespace == null) {
                     namespace project.group
+=======
+
+    configurations.all {
+        resolutionStrategy {
+            force 'org.jetbrains.kotlin:kotlin-stdlib:1.9.0'
+            force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.0'
+            force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0'
+        }
+    }
+
+    subprojects {
+        afterEvaluate { project ->
+            if (project.hasProperty('android')) {
+                project.android {
+                    if (namespace == null) {
+                        namespace project.group
+                    }
+>>>>>>> e79cb2ffbbf2be477cda476507478dde18e3e744
                 }
             }
         }
