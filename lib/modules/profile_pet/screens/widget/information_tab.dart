@@ -69,7 +69,7 @@ class InformationTab extends StatelessWidget {
                     ),
                     if (AuthServiceApis.dataCurrentUser.userType == 'user')
                       ButtonDefaultWidget(
-                        title: 'Compartir',
+                        title: 'Compartir perfil',
                         callback: () {
                           // Lógica para compartir
                           Share.share(
@@ -82,7 +82,7 @@ class InformationTab extends StatelessWidget {
                         textColor: Colors.black,
                         icon: Icons.share,
                         iconAfterText: true,
-                        widthButtom: 150,
+                        widthButtom: 200,
                         textSize: 14,
                         borderSize: 25,
                         heigthButtom: 40,
@@ -327,6 +327,7 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
+              /** 
               Column(
                 children: [
                   Row(
@@ -378,6 +379,8 @@ class InformationTab extends StatelessWidget {
                   ),
                 ],
               ),
+             
+              */
               const SizedBox(height: 10),
               Container(
                 width: double.infinity,
@@ -469,25 +472,32 @@ class InformationTab extends StatelessWidget {
               Column(
                 children: petcontroller.associatedPersons.map((person) {
                   return GestureDetector(
-                    onTap: () {
-                      OnewrProfileController.ownerName.value = person['name'];
-                      OnewrProfileController.relation.value =
-                          person['relation'];
-                      OnewrProfileController.profileImagePath.value =
-                          person['profile_image'];
-                      // Navegar a la ruta 'PETOWNERPROFILE' y pasar los datos del perfil si es necesario
-                      //Get.toNamed(Routes.PETOWNERPROFILE, arguments: person);
-                      profileController.fetchUserData(person['id'].toString());
-                      Get.to(
-                        PetOwnerProfileScreen(id: person['id'].toString()),
-                      );
-                    },
-                    child: SelectedAvatar(
-                      imageUrl: person['profile_image'],
-                      nombre: person['name'],
-                      profesion: person['relation'],
-                    ),
-                  );
+                      onTap: () {
+                        OnewrProfileController.ownerName.value = person['name'];
+                        OnewrProfileController.relation.value =
+                            person['relation'];
+                        OnewrProfileController.profileImagePath.value =
+                            person['profile_image'];
+                        // Navegar a la ruta 'PETOWNERPROFILE' y pasar los datos del perfil si es necesario
+                        //Get.toNamed(Routes.PETOWNERPROFILE, arguments: person);
+                        profileController
+                            .fetchUserData(person['id'].toString());
+                        Get.to(
+                          PetOwnerProfileScreen(id: person['id'].toString()),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          SelectedAvatar(
+                            imageUrl: person['profile_image'],
+                            nombre: person['name'],
+                            profesion: person['relation'],
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                        ],
+                      ));
                 }).toList(),
               ),
               SizedBox(height: margen),

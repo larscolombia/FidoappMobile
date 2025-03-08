@@ -120,8 +120,8 @@ class EntertainmentBlogs extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: Text(
-                                  "${video.duration ?? ""}",
-                                  style: TextStyle(
+                                  "${video.duration ?? "0"}",
+                                  style: const TextStyle(
                                     fontFamily: 'Lato',
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,

@@ -327,7 +327,6 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 16),
         TrainingPrograms(
           cursosController: cursosController,
-          showTitle: true,
         ),
         const SizedBox(height: 220),
       ],

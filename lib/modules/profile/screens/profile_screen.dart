@@ -221,8 +221,7 @@ class ProfileScreen extends StatelessWidget {
                                           text:
                                               'visita tu perfil público para configurar cómo se verá',
                                           style: TextStyle(
-                                            color: Colors
-                                                .black, // Color negro para la segunda parte
+                                            color: Color(0xFF383838),
                                           ),
                                         ),
                                       ],
@@ -349,21 +348,6 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: margin),
-                        Obx(() {
-                          return InputText(
-                            borderColor: Styles.iconColorBack,
-                            onChanged: (value) =>
-                                controller.user['email'] = value,
-                            initialValue: controller.user['email'].toString(),
-                            placeholder: '',
-                            placeholderSvg: 'assets/icons/svg/sms.svg',
-                            readOnly: !controller.isEditing.value,
-                            fondoColor: controller.isEditing.value == false
-                                ? Colors.white
-                                : Styles.fiveColor,
-                          );
-                        }),
                         SizedBox(height: margin),
                         Obx(
                           () => controller.isEditing.value == true

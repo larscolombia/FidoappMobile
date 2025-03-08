@@ -12,6 +12,8 @@ abstract class Routes {
   static const FORGETPASSWORD = _Paths.FORGETPASSWORD;
   static const TERMSCONDITIONS = _Paths.TERMSCONDITIONS;
   static const PRIVACYPOLICY = _Paths.PRIVACYPOLICY;
+  static const SOBREAPP = _Paths.SOBREAPP;
+
   static const CHANGESUCCESSPASSWORD = _Paths.CHANGESUCCESSPASSWORD;
   static const APPRENTICESHIP = _Paths.APPRENTICESHIP;
   static const DASHBOARD = _Paths.DASHBOARD;
@@ -32,6 +34,7 @@ abstract class _Paths {
   static const FORGETPASSWORD = '/forget-password';
   static const TERMSCONDITIONS = '/terms-conditions';
   static const PRIVACYPOLICY = '/privacy-policy';
+  static const SOBREAPP = '/sobreapp';
   static const CHANGESUCCESSPASSWORD = '/change-success-password';
   static const APPRENTICESHIP = '/apprenticeship';
   static const DASHBOARD = '/dashboard';

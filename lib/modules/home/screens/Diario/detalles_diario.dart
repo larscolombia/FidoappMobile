@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -14,7 +16,7 @@ class DetallesDiario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(controller.activitiesOne.value!.image);
+    print("Detalles Diario  ${jsonEncode(controller.activitiesOne.value)}");
     return Scaffold(
       body: Stack(
         children: [
@@ -176,7 +178,7 @@ class DetallesDiario extends StatelessWidget {
                                   null) {
                                 return Center(
                                   child: SizedBox(
-                                    width: 302,
+                                    width: MediaQuery.of(context).size.width,
                                     height: 200,
                                     child: Image.asset(
                                         'assets/images/actividad.jpg'),

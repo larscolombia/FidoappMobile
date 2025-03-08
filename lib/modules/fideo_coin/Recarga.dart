@@ -7,7 +7,6 @@ import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
-import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/fideo_coin/recarga_controller.dart';
 import 'package:pawlly/styles/recursos.dart';
 

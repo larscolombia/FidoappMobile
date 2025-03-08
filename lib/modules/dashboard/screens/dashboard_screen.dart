@@ -4,17 +4,14 @@ import 'package:get/get.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pacientes.dart';
-import 'package:pawlly/modules/dashboard/screens/pages.dart';
 import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
-import 'package:pawlly/modules/home/screens/Diario/index.dart';
-import 'package:pawlly/modules/home/screens/home_screen.dart';
+
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
-import 'package:pawlly/modules/profile/screens/profile_screen.dart';
-import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
+
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -79,9 +76,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 // Nombre del Usuario
-                const SizedBox(height: 20),
                 Container(
-                  height: imageSize + 20,
+                  height: 220,
                   width: 250,
                   alignment: Alignment.bottomCenter,
                   child: Obx(
@@ -161,7 +157,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           _getItemIcon(index),
                                           width: 24,
                                           height: 24,
-                                          color: Styles.iconColorBack,
+                                          //color: Styles.iconColorBack,
                                         ),
                                       ),
                                       const SizedBox(width: 16),
@@ -173,7 +169,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ),
                                   const Icon(
                                     Icons.chevron_right,
-                                    color: Styles.greyTextColor,
+                                    color: Color(0xFF383838),
                                     size: 24,
                                   ),
                                 ],
@@ -297,7 +293,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 4:
         return Routes.PRIVACYPOLICY;
       case 5:
-        return SobreAppPage();
+        return Routes.SOBREAPP;
       case 6:
         return FideCoin();
       case 7:
@@ -323,7 +319,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 5:
         return 'assets/icons/svg/info-circle.svg';
       case 6:
-        return 'assets/icons/svg/info-circle.svg';
+        return 'assets/icons/svg/fidocoins.svg';
       case 7:
         return 'assets/icons/svg/logout.svg';
       default:

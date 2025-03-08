@@ -47,12 +47,14 @@ class ConfirmarFormulario extends StatelessWidget {
                   decoration: const BoxDecoration(
                     color: Styles.fiveColor,
                   ),
-                  child: const Text(
-                    'Registro de Historial',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                  child: const Center(
+                    child: Text(
+                      'Registro de Historial',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),
@@ -68,239 +70,260 @@ class ConfirmarFormulario extends StatelessWidget {
                       ),
                     ),
                     child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width - 90,
-                            child: BarraBack(
-                              titulo: isEdit == false
-                                  ? "Informe Médico"
-                                  : "${historialClinico!.categoryName}" ?? '',
-                              callback: () {
-                                Get.back();
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          if (isEdit == true)
+                      child: Container(
+                        padding: Styles.paddingAll,
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 30),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width - 90,
-                              child: InputSelect(
-                                onChanged: (value) {
-                                  historialClinico!.reportName =
-                                      medicalHistoryController.reporType(value);
-                                  historialClinico!.reportType = value;
+                              width: MediaQuery.of(context).size.width,
+                              child: BarraBack(
+                                titulo: isEdit == false
+                                    ? "Informe Médico"
+                                    : "${historialClinico!.categoryName}" ?? '',
+                                callback: () {
+                                  Get.back();
                                 },
-                                TextColor: Colors.white,
-                                color: Styles.primaryColor,
-                                placeholder: medicalHistoryController.reporType(
-                                    medicalHistoryController
-                                        .reportData['report_type']
-                                        .toString()),
-                                prefiIcon: 'assets/icons/categori.png',
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: '1',
-                                    child: Text('Vacunas'),
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            if (isEdit == true)
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: InputSelect(
+                                  onChanged: (value) {
+                                    historialClinico!.reportName =
+                                        medicalHistoryController
+                                            .reporType(value);
+                                    historialClinico!.reportType = value;
+                                  },
+                                  TextColor: Colors.white,
+                                  color: Styles.primaryColor,
+                                  placeholder: medicalHistoryController
+                                      .reporType(medicalHistoryController
+                                          .reportData['report_type']
+                                          .toString()),
+                                  prefiIcon: 'assets/icons/categori.png',
+                                  items: const [
+                                    DropdownMenuItem(
+                                      value: '1',
+                                      child: Text('Vacunas'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: '2',
+                                      child: Text('Antiparasitante'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: '3',
+                                      child: Text('Antigarrapata'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            const SizedBox(height: 16),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: InputText(
+                                label: 'Nombre del Informe',
+                                placeholder: '',
+                                initialValue:
+                                    historialClinico!.reportName.toString() ??
+                                        '',
+                                onChanged: (value) {
+                                  historialClinico!.reportName = value;
+                                },
+                                readOnly: isEdit == true ? false : true,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: InputText(
+                                isDateField: true,
+                                label: 'Fecha de aplicación',
+                                placeholder: '',
+                                initialValue: historialClinico.fechaAplicacion,
+                                prefiIcon: const Icon(
+                                  Icons.calendar_today,
+                                  color: Color.fromRGBO(252, 186, 103, 1),
+                                ),
+                                suffixIcon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Color.fromRGBO(252, 186, 103, 1),
+                                ),
+                                onChanged: (value) {
+                                  historialClinico!.applicationDate = value;
+                                },
+                                readOnly: isEdit! ? false : true,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: InputText(
+                                label: 'Fecha de refuerzo',
+                                placeholder: '',
+                                isDateField: true,
+                                initialValue:
+                                    historialClinico!.fechaRefuerzo.toString(),
+                                prefiIcon: const Icon(
+                                  Icons.calendar_today,
+                                  color: Color.fromRGBO(252, 186, 103, 1),
+                                ),
+                                suffixIcon: const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Color.fromRGBO(252, 186, 103, 1),
+                                ),
+                                onChanged: (value) {
+                                  historialClinico!.fechaRefuerzo = value;
+                                },
+                                readOnly: isEdit! ? false : true,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: InputText(
+                                label: 'notas',
+                                placeholder: '',
+                                initialValue: historialClinico!
+                                    .medicalConditions
+                                    .toString(),
+                                onChanged: (value) {
+                                  historialClinico!.medicalConditions = value;
+                                  historialClinico!.notes = value;
+                                },
+                                readOnly: isEdit! ? false : true,
+                              ),
+                            ),
+                            /** 
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Styles.fiveColor,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Styles.iconColorBack.withOpacity(0.5),
+                                  width: 1,
+                                ),
+                              ),
+                              width: 305,
+                              height: 200,
+                              child: TextField(
+                                expands: true,
+                                maxLines: null,
+                                readOnly: isEdit! ? false : true,
+                                keyboardType: TextInputType.multiline,
+                                onChanged: (value) => medicalHistoryController
+                                    .updateField('notes', value),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none, // Quitar el borde
+                                  hintText: historial.notes ?? '',
+                                ),
+                              ),
+                            ),*/
+                            const SizedBox(height: 20),
+                            const SizedBox(
+                              width: 302,
+                              child: Divider(height: 0, thickness: .4),
+                            ),
+                            const SizedBox(height: 20),
+                            isEdit == false
+                                ? SizedBox(
+                                    width: 302,
+                                    child: Text(
+                                      'Selecciona la mascota',
+                                      style: Styles.textProfile15w700,
+                                    ),
+                                  )
+                                : const SizedBox(),
+                            const SizedBox(height: 10),
+                            isEdit == false
+                                ? SizedBox(
+                                    width: 324,
+                                    child: ProfilesDogs(
+                                      isSelect: true,
+                                    ),
+                                  )
+                                : const SizedBox(),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              width: 302,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    medicalHistoryController.isEditing.value
+                                        ? "creado ${historialClinico!.createdAt}"
+                                        : "Sera creado : ${historialClinico!.createdAt}",
+                                    style: Styles.textProfile15w700,
                                   ),
-                                  DropdownMenuItem(
-                                    value: '2',
-                                    child: Text('Antiparasitante'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: '3',
-                                    child: Text('Antigarrapata'),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    medicalHistoryController.isEditing.value
+                                        ? "Editado por última vez el ${historialClinico!.updatedAt}"
+                                        : "",
+                                    style: Styles.textProfile15w700,
                                   ),
                                 ],
                               ),
                             ),
-                          const SizedBox(height: 20),
-                          InputText(
-                            label: 'Nombre del Informe',
-                            placeholder: '',
-                            initialValue:
-                                historialClinico!.reportName.toString() ?? '',
-                            onChanged: (value) {
-                              historialClinico!.reportName = value;
-                            },
-                            readOnly: isEdit == true ? false : true,
-                          ),
-                          const SizedBox(height: 20),
-                          InputText(
-                            isDateField: true,
-                            label: 'Fecha de aplicación',
-                            placeholder: '',
-                            initialValue: historialClinico.fechaAplicacion,
-                            prefiIcon: const Icon(
-                              Icons.calendar_today,
-                              color: Color.fromRGBO(252, 186, 103, 1),
-                            ),
-                            suffixIcon: const Icon(
-                              Icons.arrow_drop_down,
-                              color: Color.fromRGBO(252, 186, 103, 1),
-                            ),
-                            onChanged: (value) {
-                              historialClinico!.applicationDate = value;
-                            },
-                            readOnly: isEdit! ? false : true,
-                          ),
-                          const SizedBox(height: 20),
-                          InputText(
-                            label: 'Fecha de refuerzo',
-                            placeholder: '',
-                            isDateField: true,
-                            initialValue:
-                                historialClinico!.fechaRefuerzo.toString(),
-                            prefiIcon: const Icon(
-                              Icons.calendar_today,
-                              color: Color.fromRGBO(252, 186, 103, 1),
-                            ),
-                            suffixIcon: const Icon(
-                              Icons.arrow_drop_down,
-                              color: Color.fromRGBO(252, 186, 103, 1),
-                            ),
-                            onChanged: (value) {
-                              historialClinico!.fechaRefuerzo = value;
-                            },
-                            readOnly: isEdit! ? false : true,
-                          ),
-                          const SizedBox(height: 20),
-                          InputText(
-                            label: 'notas',
-                            placeholder: '',
-                            initialValue:
-                                historialClinico!.medicalConditions.toString(),
-                            onChanged: (value) {
-                              historialClinico!.medicalConditions = value;
-                              historialClinico!.notes = value;
-                            },
-                            readOnly: isEdit! ? false : true,
-                          ),
-                          /** 
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Styles.fiveColor,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Styles.iconColorBack.withOpacity(0.5),
-                                width: 1,
-                              ),
-                            ),
-                            width: 305,
-                            height: 200,
-                            child: TextField(
-                              expands: true,
-                              maxLines: null,
-                              readOnly: isEdit! ? false : true,
-                              keyboardType: TextInputType.multiline,
-                              onChanged: (value) => medicalHistoryController
-                                  .updateField('notes', value),
-                              decoration: InputDecoration(
-                                border: InputBorder.none, // Quitar el borde
-                                hintText: historial.notes ?? '',
-                              ),
-                            ),
-                          ),*/
-                          const SizedBox(height: 20),
-                          const SizedBox(
-                            width: 302,
-                            child: Divider(height: 0, thickness: .4),
-                          ),
-                          const SizedBox(height: 20),
-                          isEdit == false
-                              ? SizedBox(
-                                  width: 302,
-                                  child: Text(
-                                    'Selecciona la mascota',
-                                    style: Styles.textProfile15w700,
-                                  ),
-                                )
-                              : const SizedBox(),
-                          const SizedBox(height: 10),
-                          isEdit == false
-                              ? SizedBox(
-                                  width: 324,
-                                  child: ProfilesDogs(
-                                    isSelect: true,
-                                  ),
-                                )
-                              : const SizedBox(),
-                          const SizedBox(height: 20),
-                          SizedBox(
-                            width: 302,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  medicalHistoryController.isEditing.value
-                                      ? "creado ${historialClinico!.createdAt}"
-                                      : "Sera creado : ${historialClinico!.createdAt}",
-                                  style: Styles.textProfile15w700,
-                                ),
-                                const SizedBox(height: 5),
-                                Text(
-                                  medicalHistoryController.isEditing.value
-                                      ? "Editado por última vez el ${historialClinico!.updatedAt}"
-                                      : "",
-                                  style: Styles.textProfile15w700,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          if (AuthServiceApis.dataCurrentUser.userType !=
-                              'user')
-                            isEdit == true
-                                ? SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width - 80,
-                                    child: ButtonDefaultWidget(
-                                      title: medicalHistoryController
-                                              .isLoading.value
-                                          ? 'Cargando ...'
-                                          : 'Actualizar',
+                            const SizedBox(height: 20),
+                            if (AuthServiceApis.dataCurrentUser.userType !=
+                                'user')
+                              isEdit == true
+                                  ? SizedBox(
+                                      width: MediaQuery.of(context).size.width -
+                                          80,
+                                      child: ButtonDefaultWidget(
+                                        title: medicalHistoryController
+                                                .isLoading.value
+                                            ? 'Cargando ...'
+                                            : 'Actualizar',
+                                        callback: () {
+                                          medicalHistoryController
+                                              .updateReport(historialClinico);
+                                        },
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            SizedBox(
+                              width: 302,
+                              child: !medicalHistoryController.isEditing.value
+                                  ? ButtonDefaultWidget(
+                                      title: 'Terminar Informe  >',
                                       callback: () {
-                                        medicalHistoryController
-                                            .updateReport(historialClinico);
-                                      },
-                                    ),
-                                  )
-                                : const SizedBox(),
-                          SizedBox(
-                            width: 302,
-                            child: !medicalHistoryController.isEditing.value
-                                ? ButtonDefaultWidget(
-                                    title: 'Terminar Informe  >',
-                                    callback: () {
-                                      print(
-                                          'Informe medico ${jsonEncode(medicalHistoryController.reportData)}');
-
-                                      // Asegúrate de que selectedProfile no sea nulo antes de acceder a sus propiedades
-                                      if (petController.selectedProfile.value !=
-                                          null) {
-                                        // Accede al valor del perfil de la mascota correctamente
-                                        final petId = petController
-                                            .selectedProfile.value!.id
-                                            .toString();
-
-                                        // Actualiza el campo 'pet_id' en el controlador de historial médico
-                                        medicalHistoryController.updateField(
-                                            'pet_id', petId);
-
-                                        // Envía el informe
-                                        medicalHistoryController.submitReport();
-                                      } else {
-                                        // Si el perfil seleccionado es nulo, maneja el caso aquí (puedes mostrar un mensaje de error, por ejemplo)
                                         print(
-                                            'No se ha seleccionado un perfil de mascota.');
-                                      }
-                                    },
-                                  )
-                                : const SizedBox(),
-                          ),
-                          const SizedBox(height: 20),
-                        ],
+                                            'Informe medico ${jsonEncode(medicalHistoryController.reportData)}');
+
+                                        // Asegúrate de que selectedProfile no sea nulo antes de acceder a sus propiedades
+                                        if (petController
+                                                .selectedProfile.value !=
+                                            null) {
+                                          // Accede al valor del perfil de la mascota correctamente
+                                          final petId = petController
+                                              .selectedProfile.value!.id
+                                              .toString();
+
+                                          // Actualiza el campo 'pet_id' en el controlador de historial médico
+                                          medicalHistoryController.updateField(
+                                              'pet_id', petId);
+
+                                          // Envía el informe
+                                          medicalHistoryController
+                                              .submitReport();
+                                        } else {
+                                          // Si el perfil seleccionado es nulo, maneja el caso aquí (puedes mostrar un mensaje de error, por ejemplo)
+                                          print(
+                                              'No se ha seleccionado un perfil de mascota.');
+                                        }
+                                      },
+                                    )
+                                  : const SizedBox(),
+                            ),
+                            const SizedBox(height: 20),
+                          ],
+                        ),
                       ),
                     ),
                   ),

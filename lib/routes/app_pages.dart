@@ -30,6 +30,8 @@ import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
 import 'package:pawlly/modules/welcome/bindings/welcome_binding.dart';
 import 'package:pawlly/modules/welcome/screens/welcome_screen.dart';
 import 'package:pawlly/modules/privacy_termns/screens/pages/privacy_policy.dart';
+import 'package:pawlly/modules/privacy_termns/screens/pages/sobreapp.dart';
+
 import 'package:pawlly/modules/privacy_termns/screens/pages/terms_conditions.dart';
 
 part 'app_routes.dart';
@@ -82,6 +84,10 @@ class AppPages {
     GetPage(
       name: _Paths.PRIVACYPOLICY,
       page: () => const PrivacyPolicy(),
+    ),
+     GetPage(
+      name: _Paths.SOBREAPP,
+      page: () => const SobreApp(),
     ),
     GetPage(
       name: _Paths.APPRENTICESHIP,

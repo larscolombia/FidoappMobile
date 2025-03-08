@@ -20,7 +20,7 @@ class Resources extends StatelessWidget {
     // Lista de recursos (ahora fija, no dinámica)
     final List<Map<String, dynamic>> resources = [
       {'id': 5, 'icon': 'assets/icons/svg/mascotas.png', 'label': "Ebook's"},
-      {'id': 6, 'icon': 'assets/icons/svg/youtube.png', 'label': "Videos"},
+      {'id': 6, 'icon': 'assets/icons/svg/youtube.png', 'label': 'YouTube'},
     ];
 
     return Column(
