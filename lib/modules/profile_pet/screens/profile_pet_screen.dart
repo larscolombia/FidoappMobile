@@ -26,7 +26,6 @@ class ProfilePetScreen extends StatelessWidget {
     final HomeController homeController = Get.find<HomeController>();
     final imageSize = size.height / 4;
     var pet = homeController.selectedProfile.value!;
-    print('valor sobre la mascota ${pet.name}');
 
     //final PetControllerv2 petController = Get.put(PetControllerv2());
     return Scaffold(
@@ -77,13 +76,6 @@ class ProfilePetScreen extends StatelessWidget {
                   topRight: Radius.circular(25),
                 ),
                 // Pequeña sombra para que se note más el superpuesto
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset(0, -3),
-                    blurRadius: 8,
-                  ),
-                ],
               ),
               child: CustomScrollView(
                 slivers: [

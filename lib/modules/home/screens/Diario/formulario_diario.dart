@@ -156,7 +156,6 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                   value: '1',
                                   child: Text('Actividad'),
                                 ),
-                                
                                 DropdownMenuItem(
                                   value: '2',
                                   child: Text('Informe médico'),
@@ -225,6 +224,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                       value; // Aquí obtienes la ruta de la imagen seleccionada
                                   controller.updateField('image', value);
                                   __imageFile = File(value);
+                                  print('imagen $value');
                                 });
                               },
                             ),
@@ -291,6 +291,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                         ? 'Cargando ...'
                                         : 'Finalizar',
                                 callback: () {
+                                  print('imagen $__imageFile');
                                   if (widget.isEdit) {
                                     controller.editPetActivity2(
                                       "${controller.activitiesOne.value!.id}",

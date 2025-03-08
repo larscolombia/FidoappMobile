@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/modules/auth/model/employee_model.dart';
 import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/components/select_user.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
@@ -41,14 +44,29 @@ class AssociatedPersonsModal extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Título
-            const Text(
-              "Personas Asociadas a\nesta Mascota",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w800,
-                fontFamily: 'lato',
-                color: Colors.black,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Personas Asociadas a\nesta Mascota",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    fontFamily: 'lato',
+                    color: Colors.black,
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: SvgPicture.asset(
+                    'assets/icons/svg/x.svg',
+                    width: 24, // Ajusta el tamaño si es necesario
+                    height: 24,
+                    colorFilter: ColorFilter.mode(Color(0XFFBEBEBE),
+                        BlendMode.srcIn), // Aplica color rojo
+                  ),
+                ),
+              ],
             ),
 
             // Input de correo electrónico (sin Obx ya que no se utiliza ninguna variable reactiva aquí)
@@ -57,8 +75,8 @@ class AssociatedPersonsModal extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.only(top: 20),
                 child: InputText(
-                  placeholderImage: Image.asset('assets/icons/email.png'),
-                  placeholder: 'Correo',
+                  placeholderSvg: 'assets/icons/svg/sms.svg',
+                  placeholder: 'Correo electrónico',
                   onChanged: (value) {
                     userController.filterUsers(value);
                   },
@@ -117,7 +135,7 @@ class AssociatedPersonsModal extends StatelessWidget {
                   "Invitados:",
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontFamily: 'lato',
                   ),
                 ),
@@ -147,64 +165,16 @@ class AssociatedPersonsModal extends StatelessWidget {
                     width: MediaQuery.of(context).size.width,
                     child: ListView(
                       children: userController.filteredUsers.map((person) {
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              color: Colors.grey.withOpacity(0.2),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          color: Colors.white,
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              radius: 30,
-                              backgroundImage: NetworkImage(
-                                person.profileImage ??
-                                    'https://via.placeholder.com/150',
-                              ),
-                              backgroundColor: Colors.transparent,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Styles.iconColorBack,
-                                    width: 1.0,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            title: Text(
-                              person.firstName ?? '',
-                              style: Styles.textProfile14w700,
-                            ),
-                            subtitle: RichText(
-                              text: TextSpan(
-                                text: person.userType ?? '',
-                                style: Styles.textProfile12w400,
-                                children: const [
-                                  TextSpan(
-                                    text: ' | Pendiente',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            trailing: const Icon(
-                              Icons.arrow_forward_ios,
-                              color: Styles.iconColorBack,
-                            ),
-                            onTap: () {
-                              userController.getSharedOwnersWithEmail(
-                                homeController.selectedProfile.value!.id
-                                    .toString(),
-                                person.email,
-                              );
-                              petcontroller.fetchOwnersList(
-                                  homeController.selectedProfile.value!.id);
-                              print(homeController.selectedProfile.value!.id
-                                  .toString());
-                            },
+                        // Añadir un SizedBox con altura entre cada tarjeta
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              bottom:
+                                  10), // Espacio vertical entre las tarjetas
+                          child: SelectedAvatar(
+                            nombre: person.fullName ?? '',
+                            imageUrl: person.profileImage ?? '',
+                            profesion:
+                                Helper.tipoUsuario(person.userType ?? ''),
                           ),
                         );
                       }).toList(),

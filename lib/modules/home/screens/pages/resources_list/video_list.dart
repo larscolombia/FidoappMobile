@@ -123,9 +123,9 @@ class VideoList extends StatelessWidget {
                                     color: Colors.black.withOpacity(0.7),
                                     borderRadius: BorderRadius.circular(5),
                                   ),
-                                  child: const Text(
-                                    "Necesitamos la duración",
-                                    style: TextStyle(
+                                  child: Text(
+                                    "${video.duration ?? "0"}",
+                                    style: const TextStyle(
                                       fontFamily: 'Lato',
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,

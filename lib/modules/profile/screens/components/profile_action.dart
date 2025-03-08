@@ -63,6 +63,7 @@ class ProfileActions extends StatelessWidget {
                 child: InputText(
                   placeholder: "",
                   fw: FontWeight.bold,
+
                   placeholderImage: Image.asset('assets/icons/genero.png'),
                   placeholderFontFamily: "Lato",
                   label: 'Área de especialización',

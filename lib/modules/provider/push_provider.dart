@@ -47,7 +47,7 @@ class PushProvider extends GetxController {
         Get.snackbar(
           '¡Éxito!',
           'Las notificaciones se han activado correctamente.',
-          backgroundColor: Styles.iconColorBack,
+          backgroundColor: Colors.green,
           snackPosition: SnackPosition.BOTTOM,
           duration: Duration(seconds: 3),
           margin: EdgeInsets.all(10),

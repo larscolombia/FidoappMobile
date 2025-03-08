@@ -176,54 +176,67 @@ class PetActivityController extends GetxController {
       var url = Uri.parse('${BASE_URL}training-diaries/$diaryId');
       var headers = {
         'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-        'ngrok-skip-browser-warning': 'true',
+        'Content-Type': 'multipart/form-data',
       };
 
-      // Crear una solicitud multipart
       var request = http.MultipartRequest('PUT', url);
       request.headers.addAll(headers);
 
-      // Agregar campos al cuerpo de la solicitud
-      request.fields['actividadId'] = diario['actividadId'].toString();
-      request.fields['actividad'] = diario['actividad'];
-      request.fields['date'] = diario['date'];
-      request.fields['category_id'] = diario['category_id'].toString();
-      request.fields['notas'] = diario['notas'];
-      request.fields['pet_id'] = diario['pet_id'].toString();
+      // Campos
+      request.fields.addAll({
+        'actividadId': diario['actividadId'].toString(),
+        'actividad': diario['actividad'],
+        'date': diario['date'],
+        'category_id': diario['category_id'].toString(),
+        'notas': diario['notas'],
+        'pet_id': diario['pet_id'].toString(),
+      });
 
-      // Adjuntar la imagen si existe
+      // Adjuntar imagen
       if (imageFile != null) {
         request.files.add(await http.MultipartFile.fromPath(
-          'image', // Este es el nombre esperado por el servidor para la imagen
+          'image',
           imageFile.path,
         ));
       }
 
-      if (imageFile != null) {
-        var stream = http.ByteStream(imageFile.openRead());
-        var length = await imageFile.length();
-        var multipartFile = http.MultipartFile('image', stream, length,
-            filename: path.basename(imageFile.path));
-        request.files.add(multipartFile);
-      }
+      // ---------- IMPRIMIR LA SOLICITUD COMPLETA ----------
+      print('\n======= [DEBUG] Contenido de la solicitud =======');
+      print('URL: ${request.url}');
+      print('Método: ${request.method}');
+      print('Headers: ${request.headers}');
 
-      // Enviar la solicitud
+      // Campos del formulario
+      print('\nCampos:');
+      request.fields.forEach((key, value) {
+        print('$key: $value');
+      });
+
+      // Archivos adjuntos
+      print('\nArchivos:');
+      if (request.files.isEmpty) {
+        print('No hay archivos adjuntos.');
+      } else {
+        for (var file in request.files) {
+          print('Campo: ${file.field}');
+          print('Nombre del archivo: ${file.filename}');
+          print('Tamaño: ${file.length} bytes\n');
+        }
+      }
+      print('==============================================\n');
+      // ---------------------------------------------------
+
       var response = await request.send();
 
-      // Manejar la respuesta
       if (response.statusCode == 200 || response.statusCode == 201) {
         Get.dialog(
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
             title: 'Éxito',
-            description: 'El Diario ha sido actualizado exitosamente.',
+            description: 'El Diario ha sido creado exitosamente.',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
-              Get.back();
               Get.off(() => Diario());
-              fetchPetActivities(diario['pet_id']);
-              getActivityById(diario['actividadId']);
-              Get.back();
             },
           ),
           barrierDismissible: false,
@@ -235,7 +248,7 @@ class PetActivityController extends GetxController {
     } catch (e) {
       print('Excepción capturada: $e');
     } finally {
-      isLoading(false);
+      isLoading.value = false;
     }
   }
 

@@ -174,34 +174,32 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                               );
                             }
 
-                            return Center(
-                              child: Container(
-                                padding: Styles.paddingAll,
-                                width: MediaQuery.of(context).size.width,
-                                child: InputSelect(
-                                  onChanged: (value) {
-                                    profileController.user['expert'] =
-                                        value.toString();
-                                  },
-                                  label: 'Áreas de especialización',
-                                  placeholder:
-                                      controller.user.value.profile?.expert,
-                                  TextColor: Colors.black,
-                                  prefiIcon: 'assets/icons/user-octagon.png',
-                                  items: specialityController.specialities
-                                      .map((entry) {
-                                    return DropdownMenuItem(
-                                      value: entry.description,
-                                      child: Text(entry.description,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontFamily: "Lato",
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w800)),
-                                    );
-                                  }).toList(),
-                                ),
+                            return Container(
+                              padding: Styles.paddingAll,
+                              width: MediaQuery.of(context).size.width,
+                              child: InputSelect(
+                                onChanged: (value) {
+                                  profileController.user['expert'] =
+                                      value.toString();
+                                },
+                                label: 'Áreas de especialización',
+                                placeholder:
+                                    controller.user.value.profile?.expert,
+                                TextColor: Colors.black,
+                                prefiIcon: 'assets/icons/user-octagon.png',
+                                items: specialityController.specialities
+                                    .map((entry) {
+                                  return DropdownMenuItem(
+                                    value: entry.description,
+                                    child: Text(entry.description,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                            fontFamily: "Lato",
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w800)),
+                                  );
+                                }).toList(),
                               ),
                             );
                           }),

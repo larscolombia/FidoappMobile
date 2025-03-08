@@ -119,8 +119,8 @@ class EntertainmentBlogs extends StatelessWidget {
                                   color: Colors.black.withOpacity(0.7),
                                   borderRadius: BorderRadius.circular(5),
                                 ),
-                                child: const Text(
-                                  "Necesitamos la duración",
+                                child: Text(
+                                  "${video.duration ?? "0"}",
                                   style: TextStyle(
                                     fontFamily: 'Lato',
                                     fontSize: 12,

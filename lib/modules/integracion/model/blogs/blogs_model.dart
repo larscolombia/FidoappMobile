@@ -14,7 +14,7 @@ class BlogPost {
   final String createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
-
+  final String? duration;
   BlogPost({
     required this.id,
     required this.description,
@@ -29,6 +29,7 @@ class BlogPost {
     required this.updatedAt,
     this.deletedAt,
     this.url_video,
+    this.duration,
   });
 
   // Método para crear una instancia de BlogPost desde un JSON
@@ -45,6 +46,7 @@ class BlogPost {
       updatedBy: json['updated_by'] ?? 0, // Asegurar que no sea nulo
       deletedBy: json['deleted_by'], // Asegurar que permita nulos
       url_video: json['url_video'],
+      duration: json['duration'],
       createdAt: json['created_at'],
       updatedAt: dateFormat.parse(json['updated_at']),
       deletedAt: json['deleted_at'] != null
@@ -69,6 +71,7 @@ class BlogPost {
       'deleted_by': deletedBy,
       'created_at': createdAt,
       'updated_at': dateFormat.format(updatedAt),
+      'duration': duration,
       'deleted_at': deletedAt != null ? dateFormat.format(deletedAt!) : null,
     };
   }
