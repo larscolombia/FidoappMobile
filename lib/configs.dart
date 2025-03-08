@@ -12,7 +12,8 @@ const DOMINIO_LOCAL = "https://7841-190-120-252-210.ngrok-free.app";
 const DOMINIO_PRUEBA = "https://balance.healtheworld.com.co";
 const DOMINIO_PRODUCTION = "";
 const DOMINIO = "http://admin.myfidoapp.com";
-const DOMAIN_URL = DOMINIO; // DOMINIO_PRUEBA; //DOMINIO_LOCAL; //aqui va la url
+const DOMAIN_URL =
+    DOMINIO_PRUEBA; // DOMINIO_PRUEBA; //DOMINIO_LOCAL; //aqui va la url
 // const DOMAIN_URL = "http://10.0.2.2:8000";
 
 const BASE_URL = '$DOMAIN_URL/api/';

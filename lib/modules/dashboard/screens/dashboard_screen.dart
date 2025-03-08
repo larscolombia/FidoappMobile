@@ -79,9 +79,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                 ),
                 // Nombre del Usuario
-                const SizedBox(height: 20),
                 Container(
-                  height: imageSize + 20,
+                  height: 190,
                   width: 250,
                   alignment: Alignment.bottomCenter,
                   child: Obx(
@@ -161,7 +160,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           _getItemIcon(index),
                                           width: 24,
                                           height: 24,
-                                          color: Styles.iconColorBack,
+                                          //color: Styles.iconColorBack,
                                         ),
                                       ),
                                       const SizedBox(width: 16),
@@ -173,7 +172,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   ),
                                   const Icon(
                                     Icons.chevron_right,
-                                    color: Styles.greyTextColor,
+                                    color: Color(0xFF383838),
                                     size: 24,
                                   ),
                                 ],
@@ -297,7 +296,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 4:
         return Routes.PRIVACYPOLICY;
       case 5:
-        return SobreAppPage();
+        return Routes.SOBREAPP;
       case 6:
         return FideCoin();
       case 7:
@@ -323,7 +322,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 5:
         return 'assets/icons/svg/info-circle.svg';
       case 6:
-        return 'assets/icons/svg/info-circle.svg';
+        return 'assets/icons/svg/fidocoins.svg';
       case 7:
         return 'assets/icons/svg/logout.svg';
       default:

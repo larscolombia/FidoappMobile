@@ -78,33 +78,4 @@ dependencies {
 
 flutter {
     source = "../.."
-<<<<<<< HEAD
-=======
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version" // Cambiado a kotlin_version
-    implementation 'com.google.firebase:firebase-analytics'
-    
-    // Agregar Firebase Messaging
-    implementation 'com.google.firebase:firebase-messaging:23.1.0'  // Asegúrate de usar la versión más reciente
-
-    // Usa la última BOM disponible para manejar las versiones de Firebase
-    implementation platform('com.google.firebase:firebase-bom:31.2.0') 
-
-    // Otros paquetes
-    implementation 'phonepe.intentsdk.android.release:IntentSDK:2.3.0'
-
-    implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'com.google.android.gms:play-services-measurement-api:22.2.0' 
-    implementation 'com.google.android.gms:play-services-measurement-impl:22.2.0'
-
-}
-
-apply plugin: 'com.google.gms.google-services'
-configurations {
-    all {
-        exclude group: 'com.google.errorprone', module: 'error_prone_annotations'
-    }
->>>>>>> e79cb2ffbbf2be477cda476507478dde18e3e744
 }

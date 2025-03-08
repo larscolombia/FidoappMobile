@@ -146,10 +146,13 @@ class NotificationsScreen extends StatelessWidget {
                         width: 1.0, // Grosor del borde
                       ),
                     ),
-                    child: SvgPicture.asset(
-                      'assets/icons/svg/Vector1.svg',
-                      width: 25,
-                      height: 25,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: SvgPicture.asset(
+                        'assets/icons/svg/vector_notification.svg',
+                        width: 1,
+                        height: 1,
+                      ),
                     ),
                   ),
                 if (notification.type != 'fidocoin')
