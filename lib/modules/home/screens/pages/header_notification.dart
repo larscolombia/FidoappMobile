@@ -98,7 +98,6 @@ class HeaderWiget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment
                     .end, // Alinea los hijos al final de la Row
                 children: [
-                  LongPressButton(),
                   Obx(
                     () => Column(
                       mainAxisSize: MainAxisSize

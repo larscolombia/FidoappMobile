@@ -9,7 +9,9 @@ import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/mascota_perdida/mscota_perdida.dart';
 
 class LongPressButton extends StatefulWidget {
-  const LongPressButton({super.key});
+  final bool isDiario;
+
+  const LongPressButton({super.key, this.isDiario = false});
 
   @override
   _LongPressButtonState createState() => _LongPressButtonState();
@@ -76,13 +78,12 @@ class _LongPressButtonState extends State<LongPressButton> {
         buttonCancelar: true,
         title: 'Alerta de mascota extraviada',
         description:
-            '¿Estás seguro de marcar a ${_homeController.selectedProfile.value!.name} como extraviado?',
+            '¿Estás seguro de marcar a ${_homeController.selectedProfile.value?.name ?? "tu mascota"} como extraviado?',
         primaryButtonText: 'Aceptar',
         onPrimaryButtonPressed: () {
-          print('Acción confirmada');
           _mascotaPerdida.reportarMascotaPerdida();
           _resetButton();
-          Navigator.of(context).pop();
+          Get.back(); // Cierra el diálogo
         },
       ),
       barrierDismissible: true,
@@ -99,58 +100,62 @@ class _LongPressButtonState extends State<LongPressButton> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onLongPressStart: (_) => _startProgress(),
-      onLongPressEnd: (_) => _stopProgress(),
-      child: AnimatedScale(
-        scale: _isPressed ? 1.2 : 1.0,
-        duration: const Duration(milliseconds: 100),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                color: _isPressed
-                    ? const Color(0xFFFF7A66)
-                    : const Color(0xFFFC9214), // Rojo más suave al presionar
-                border: Border.all(
-                  color: Styles.iconColorBack,
-                  width: 0.5,
-                ),
-                borderRadius: BorderRadius.circular(40),
-                boxShadow: _isPressed
-                    ? [
-                        BoxShadow(
-                          color: const Color(0xFFFF4931)
-                              .withOpacity(0.7), // Efecto más suave
-                          blurRadius: 15,
-                          spreadRadius: 2,
-                        ),
-                      ]
-                    : [],
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.report,
-                  color: Colors.white,
-                ),
-              ),
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: widget.isDiario ? 0 : Styles.padding, vertical: 16),
+      child: GestureDetector(
+        onLongPressStart: (_) => _startProgress(),
+        onLongPressEnd: (_) => _stopProgress(),
+        child: AnimatedScale(
+          scale: _isPressed ? 1.1 : 1.0,
+          duration: const Duration(milliseconds: 100),
+          child: Container(
+            height: 50,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: _isPressed
+                  ? const Color(0xFFFF7A66)
+                  : const Color(0xFFFC9214),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: _isPressed
+                  ? [
+                      BoxShadow(
+                        color: const Color(0xFFFF4931).withOpacity(0.7),
+                        blurRadius: 15,
+                        spreadRadius: 2,
+                      ),
+                    ]
+                  : [],
             ),
-            if (_progress > 0 && _progress < 1.0)
-              Positioned.fill(
-                child: Container(
-                  color: Colors.black.withOpacity(0.3),
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      value: _progress,
-                      color: Styles.fiveColor,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Center(
+                  child: Text(
+                    'Reportar mascota perdida',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Lato',
                     ),
                   ),
                 ),
-              ),
-          ],
+                if (_progress > 0 && _progress < 1.0)
+                  Positioned.fill(
+                    child: Container(
+                      color: Colors.black.withOpacity(0.3),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          value: _progress,
+                          color: Styles.fiveColor,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/modules/components/reportar_mascota.dart';
 
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 
@@ -86,6 +87,8 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   HeaderNotification(),
                   // Agregar animación para mostrar/ocultar el contenedor de notificaciones
+                  LongPressButton(),
+
                   AnimatedOpacity(
                     opacity:
                         AuthServiceApis.dataCurrentUser.deviceToken == 'null'
@@ -332,107 +335,6 @@ class HomeScreen extends StatelessWidget {
       ],
     );
   }
-  /** 
-  Widget _buildCase5Content(BuildContext context) {
-    final ancho = MediaQuery.of(context).size.width - 100;
-    var doubleHeight = 10.00;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 16),
-        ProfilesDogs(),
-        const SizedBox(height: 20),
-        SizedBox(
-          width: ancho,
-          child: BarraBack(
-            titulo: 'Registros en el Diario',
-            callback: () {
-              Get.back();
-            },
-          ),
-        ),
-        SizedBox(height: doubleHeight),
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 280,
-                child: InputText(
-                  fondoColor: Colors.white,
-                  placeholderImage: Image.asset('assets/icons/busqueda.png'),
-                  placeholderFontFamily: 'lato',
-                  borderColor: const Color.fromARGB(255, 117, 113, 113),
-                  placeholder: 'Realiza tu búsqueda',
-                  onChanged: (String value) =>
-                      historialClinicoController.searchActivities(value),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    // FilterDialog.show(context, medicalHistoryController);
-                    FiltrarActividad.show(context, historialClinicoController);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    backgroundColor: Styles.fiveColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    minimumSize: const Size(48, 48),
-                  ),
-                  child: const Icon(
-                    Icons.filter_list,
-                    color: Styles.iconColorBack,
-                    size: 24,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        Container(
-          child: FloatingActionButton(
-            onPressed: () {
-              // Acción cuando el FAB es presionado
-              Get.to(() => FormularioDiario());
-            },
-            shape: const CircleBorder(),
-            backgroundColor: Styles.primaryColor,
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        Container(
-          child: RecargaComponente(
-            titulo: 'Toca para mostrar actividades',
-            callback: () {
-              final PetActivityController controller =
-                  Get.put(PetActivityController());
-              controller.fetchPetActivities(
-                  homeController.selectedProfile.value!.id.toString());
-            },
-          ),
-        ),
-        const SizedBox(height: 16),
-        Container(
-          height: 330,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: DiarioMascotas(),
-        ),
-      ],
-    );
-  }*/
 
   Widget __Ebooks() {
     return Column(

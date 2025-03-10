@@ -45,6 +45,9 @@ class Calendar extends StatelessWidget {
                 ),
               ),
               child: TableCalendar(
+                availableGestures:
+                    AvailableGestures.none, //this single code will solve
+
                 daysOfWeekHeight: 70,
                 firstDay: DateTime.utc(2022, 1, 1),
                 lastDay: DateTime.utc(2030, 12, 31),
