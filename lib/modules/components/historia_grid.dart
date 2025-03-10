@@ -4,6 +4,7 @@ import 'package:pawlly/modules/components/registro.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 
 import 'package:pawlly/modules/profile_pet/screens/confirmar_formulario.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 class HistorialGrid extends StatelessWidget {
   final HistorialClinicoController controller;
@@ -41,7 +42,9 @@ class HistorialGrid extends StatelessWidget {
             callback: () {
               controller.isEditing.value = true;
               Get.to(() => ConfirmarFormulario(
-                    isEdit: true,
+                    isEdit: AuthServiceApis.dataCurrentUser.userType == 'user'
+                        ? true
+                        : false,
                     historialClinico: history,
                   ));
             },

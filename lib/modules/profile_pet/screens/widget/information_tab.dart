@@ -503,16 +503,17 @@ class InformationTab extends StatelessWidget {
               SizedBox(height: margen),
               // Botón de eliminar mascota
               /**  */
-              Center(
-                child: TextButton(
-                  onPressed: controller
-                      .deletePet, // Llamar a la función para mostrar el modal
-                  child: const Text(
-                    'Eliminar animal',
-                    style: TextStyle(color: Colors.red, fontFamily: "Lato"),
+              if (AuthServiceApis.dataCurrentUser.userType == 'user')
+                Center(
+                  child: TextButton(
+                    onPressed: controller
+                        .deletePet, // Llamar a la función para mostrar el modal
+                    child: const Text(
+                      'Eliminar animal',
+                      style: TextStyle(color: Colors.red, fontFamily: "Lato"),
+                    ),
                   ),
                 ),
-              ),
               const SizedBox(height: 20),
             ],
           ),

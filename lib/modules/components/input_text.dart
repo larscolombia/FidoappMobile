@@ -142,9 +142,13 @@ class _InputTextState extends State<InputText> {
           GestureDetector(
             onTap: () {
               if (widget.isDateField) {
-                _selectDate(context);
+                if (widget.readOnly == false) {
+                  _selectDate(context);
+                }
               } else if (widget.isTimeField) {
-                _selectTime(context);
+                if (widget.readOnly == false) {
+                  _selectTime(context);
+                }
               } else if (widget.isFilePicker) {
                 _pickFile();
               } else if (widget.isImagePicker) {

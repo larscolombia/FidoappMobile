@@ -21,7 +21,7 @@ class ConfirmarFormulario extends StatelessWidget {
   final HistorialClinicoController medicalHistoryController =
       Get.put(HistorialClinicoController());
   final HomeController petController = Get.find<HomeController>();
-  final bool? isEdit;
+  final bool isEdit;
   final HistorialClinico historialClinico;
   ConfirmarFormulario({
     super.key,
@@ -31,7 +31,9 @@ class ConfirmarFormulario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // petController.selectType(0);
-    print('historial en vista ${AuthServiceApis.dataCurrentUser.userType}');
+    print(
+        'historial en vista ${AuthServiceApis.dataCurrentUser.userType}  ${isEdit}');
+
     return Scaffold(
       backgroundColor: Styles.fiveColor,
       body: Obx(() {
@@ -98,6 +100,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                     historialClinico!.reportType = value;
                                   },
                                   TextColor: Colors.white,
+                                  isReadOnly: isEdit,
                                   color: Styles.primaryColor,
                                   placeholder: medicalHistoryController
                                       .reporType(medicalHistoryController
@@ -132,7 +135,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                 onChanged: (value) {
                                   historialClinico!.reportName = value;
                                 },
-                                readOnly: isEdit == true ? false : true,
+                                readOnly: isEdit,
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -143,10 +146,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                 label: 'Fecha de aplicación',
                                 placeholder: '',
                                 initialValue: historialClinico.fechaAplicacion,
-                                prefiIcon: const Icon(
-                                  Icons.calendar_today,
-                                  color: Color.fromRGBO(252, 186, 103, 1),
-                                ),
+                                placeholderSvg: 'assets/icons/svg/calendar.svg',
                                 suffixIcon: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Color.fromRGBO(252, 186, 103, 1),
@@ -154,7 +154,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                 onChanged: (value) {
                                   historialClinico!.applicationDate = value;
                                 },
-                                readOnly: isEdit! ? false : true,
+                                readOnly: isEdit,
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -166,10 +166,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                 isDateField: true,
                                 initialValue:
                                     historialClinico!.fechaRefuerzo.toString(),
-                                prefiIcon: const Icon(
-                                  Icons.calendar_today,
-                                  color: Color.fromRGBO(252, 186, 103, 1),
-                                ),
+                                placeholderSvg: 'assets/icons/svg/calendar.svg',
                                 suffixIcon: const Icon(
                                   Icons.arrow_drop_down,
                                   color: Color.fromRGBO(252, 186, 103, 1),
@@ -177,7 +174,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                 onChanged: (value) {
                                   historialClinico!.fechaRefuerzo = value;
                                 },
-                                readOnly: isEdit! ? false : true,
+                                readOnly: isEdit,
                               ),
                             ),
                             const SizedBox(height: 16),
@@ -193,7 +190,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                   historialClinico!.medicalConditions = value;
                                   historialClinico!.notes = value;
                                 },
-                                readOnly: isEdit! ? false : true,
+                                readOnly: isEdit,
                               ),
                             ),
                             /** 
