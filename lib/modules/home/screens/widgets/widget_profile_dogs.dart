@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/modules/components/custom_checkbox.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
@@ -118,11 +119,10 @@ class ProfileModal extends StatelessWidget {
                   RecargaComponente(
                     callback: () {
                       controller.fetchProfiles();
-                      Get.snackbar(
-                        'Refrescando data',
-                        'Espere mientras se actualiza la información.',
-                        snackPosition: SnackPosition.BOTTOM,
-                        duration: Duration(seconds: 2),
+                      CustomSnackbar.show(
+                        title: 'Actualizando',
+                        message: 'Espere mientras se actualiza la información.',
+                        isError: false,
                       );
                     },
                   )

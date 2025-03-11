@@ -12,6 +12,7 @@ import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'dart:io';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -203,20 +204,19 @@ class ProfileController extends GetxController {
         );
       } else {
         print('Error al actualizar el perfil: $responseBody');
-        Get.snackbar(
-          'Error',
-          'No se pudo actualizar el perfil. Por favor, inténtalo nuevamente.',
-          backgroundColor: Styles.ColorError,
-          snackPosition: SnackPosition.BOTTOM,
+        CustomSnackbar.show(
+          title: 'Error',
+          message:
+              'No se pudo actualizar el perfil. Por favor, inténtalo nuevamente.',
+          isError: true,
         );
       }
     } catch (e) {
       print('Excepción: $e');
-      Get.snackbar(
-        'Error',
-        'Ocurrió un error al actualizar el perfil: $e',
-        backgroundColor: Styles.ColorError,
-        snackPosition: SnackPosition.BOTTOM,
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Ocurrió un error al actualizar el perfil: $e',
+        isError: true,
       );
     } finally {
       isLoading.value = false;
@@ -243,20 +243,17 @@ class ProfileController extends GetxController {
             UserData.fromJson(data); // Actualiza el modelo con la respuesta.
         print('userdata ${userprofile}');
       } else {
-        Get.snackbar(
-          "Error",
-          "Error al obtener datos del usuario",
-          backgroundColor: Styles.ColorError,
-          snackPosition: SnackPosition.BOTTOM,
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'Error al obtener datos del usuario',
+          isError: true,
         );
       }
     } catch (e) {
-      print('Error al obtener datos del usuario: $e');
-      Get.snackbar(
-        "Error",
-        "Error al obtener datos del usuario 500",
-        backgroundColor: Styles.ColorError,
-        snackPosition: SnackPosition.BOTTOM,
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Error al obtener datos del usuario',
+        isError: true,
       );
     } finally {
       isLoading(false);

@@ -21,6 +21,7 @@ import 'package:pawlly/modules/integracion/controller/servicio_entrenador_catego
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 import 'package:pawlly/modules/integracion/model/balance/producto_pay_model.dart';
 import 'package:pawlly/modules/integracion/model/lista_categoria_servicio/category_model.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({Key? key}) : super(key: key);
@@ -484,7 +485,11 @@ class _CreateEventState extends State<CreateEvent> {
                               : 'Finalizar',
                           callback: () async {
                             if (homeController.selectedProfile.value == null) {
-                              Get.snackbar("Error", "Seleccione una mascota");
+                              CustomSnackbar.show(
+                                title: "Error",
+                                message: "Seleccione una mascota",
+                                isError: true,
+                              );
                               return;
                             }
                             var petId =
@@ -502,7 +507,11 @@ class _CreateEventState extends State<CreateEvent> {
                                     "") {
                               if (calendarController.event.value['pet_id'] ==
                                   '0') {
-                                Get.snackbar("Error", "Seleccione una mascota");
+                                CustomSnackbar.show(
+                                  title: "Error",
+                                  message: "Seleccione una mascota",
+                                  isError: true,
+                                );
                                 return;
                               }
 
@@ -515,9 +524,12 @@ class _CreateEventState extends State<CreateEvent> {
                                 validate['location'] = true;
                               });
 
-                              Get.snackbar("Campos Incompletos",
-                                  "Por favor, rellene todos los campos requeridos.",
-                                  backgroundColor: Styles.ColorError);
+                              CustomSnackbar.show(
+                                title: "Campos Incompletos",
+                                message:
+                                    "Por favor, rellene todos los campos requeridos.",
+                                isError: true,
+                              );
                               return;
                             }
 

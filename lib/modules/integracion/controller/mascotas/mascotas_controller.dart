@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'dart:convert';
@@ -36,10 +37,18 @@ class PetControllerv2 extends GetxController {
         var data = jsonResponse['data'] as List;
         pets.value = data.map((item) => Pet.fromJson(item)).toList();
       } else {
-        Get.snackbar('Error', 'Failed to fetch pets');
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'No se pudieron obtener las mascotas',
+          isError: true,
+        );
       }
     } catch (e) {
-      print('Error en la solicitud: $e');
+      CustomSnackbar.show(
+        title: 'Error',
+        message: e.toString(),
+        isError: true,
+      );
     } finally {
       isLoading(false);
       isLoading.value = false;
@@ -63,10 +72,18 @@ class PetControllerv2 extends GetxController {
         selectedPet.value = Pet.fromJson(jsonResponse['data']);
         print('seleccionado ${jsonResponse['data']}');
       } else {
-        Get.snackbar('Error', 'Failed to fetch pet profile');
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'No se pudo obtener el perfil de la mascota',
+          isError: true,
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      CustomSnackbar.show(
+        title: 'Error',
+        message: e.toString(),
+        isError: true,
+      );
     } finally {
       isLoading(false);
     }
@@ -130,17 +147,18 @@ class PetControllerv2 extends GetxController {
           barrierDismissible: true,
         );
       } else {
-        print('Error en la solicitud: ${response.statusCode}');
-        print('Respuesta: ${response.body}');
-        Get.snackbar(
-          'Advertencia',
-          'verifique todos los campos',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
+        CustomSnackbar.show(
+          title: 'Advertencia',
+          message: 'Verifique todos los campos',
+          isError: true,
         );
       }
     } catch (e) {
-      print('Error al actualizar la mascota: $e');
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Error al actualizar la mascota',
+        isError: true,
+      );
     } finally {
       isLoading(false);
     }

@@ -7,6 +7,7 @@ import 'dart:convert';
 
 import 'package:pawlly/modules/integracion/model/user_type/user_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class UserController extends GetxController {
   var users = <User>[].obs;
@@ -100,14 +101,25 @@ class UserController extends GetxController {
         if (jsonResponse["status"] == true && jsonResponse["data"] != null) {
           return User.fromJson(jsonResponse["data"]);
         } else {
-          Get.snackbar("Error", "Usuario con id $id no encontrado");
+          CustomSnackbar.show(
+            title: 'Error',
+            message: 'Usuario con id $id no encontrado',
+            isError: true,
+          );
         }
       } else {
-        Get.snackbar(
-            "Error", "Error al obtener usuario $id: ${response.statusCode}");
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'Error al obtener usuario $id: ${response.statusCode}',
+          isError: true,
+        );
       }
     } catch (e) {
-      Get.snackbar("Error", "Excepción al obtener usuario $id: $e");
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Error al obtener usuario: $e',
+        isError: true,
+      );
     }
 
     return null; // En caso de error, retorna null
@@ -210,24 +222,25 @@ class UserController extends GetxController {
         // Decodificamos la respuesta si es exitosa
         final data = json.decode(response.body);
 
-        Get.snackbar(
-          'Éxito',
-          'Persona agregada exitosamente',
+        CustomSnackbar.show(
+          title: 'Éxito',
+          message: 'Persona agregada exitosamente',
+          isError: false,
         );
 
         // Aquí puedes retornar o manipular la data obtenida
       } else {
-        print('Respuesta agregar usuario: ${response.body}');
-
-        Get.snackbar(
-          'Error',
-          'Hubo un error al agregar la persona',
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'Hubo un error al agregar la persona',
+          isError: true,
         );
       }
     } catch (error) {
-      Get.snackbar(
-        'Error',
-        'Error del servidor',
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Error del servidor',
+        isError: true,
       );
       print('Error de conexión: $error');
     } finally {

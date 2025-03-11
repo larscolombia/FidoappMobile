@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_controller.dart';
 import 'package:pawlly/modules/integracion/controller/soun/soun_controller.dart';
@@ -68,10 +69,10 @@ class _UtilitiesState extends State<Utilities> {
                     imagePath: _getImageForTool(index),
                     title: tool.name,
                     audioUrl: tool.audio ?? "",
-                    onError: () => Get.snackbar(
-                      "Error",
-                      "No se encontró el sonido",
-                      backgroundColor: Colors.red,
+                    onError: () => CustomSnackbar.show(
+                      title: "Error",
+                      message: "No se encontró el sonido",
+                      isError: true,
                     ),
                   ),
                 );

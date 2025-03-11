@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart'; // Asegúrate de que este archivo exista y contenga la constante BASE_URL
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
@@ -257,10 +258,10 @@ class UserBalanceController extends GetxController {
                             : () {
                                 if (productController
                                     .selectedProduct.value.precio.isEmpty) {
-                                  Get.snackbar(
-                                    'Error',
-                                    'El precio es requerido',
-                                    snackPosition: SnackPosition.BOTTOM,
+                                  CustomSnackbar.show(
+                                    title: 'Error',
+                                    message: 'El precio es requerido',
+                                    isError: true,
                                   );
                                   return;
                                 }

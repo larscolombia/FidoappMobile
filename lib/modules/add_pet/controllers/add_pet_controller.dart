@@ -6,6 +6,7 @@ import 'package:pawlly/models/brear_model.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart'; // Asegúrate de importar tu servicio
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class AddPetController extends GetxController {
   RxBool isLoading = false.obs;
@@ -37,7 +38,11 @@ class AddPetController extends GetxController {
       breedList.assignAll(breeds);
     } else {
       // Manejar el error si la lista está vacía
-      Get.snackbar('Error', 'No se pudo cargar la lista de razas');
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'No se pudo cargar la lista de razas',
+        isError: true,
+      );
     }
   }
 

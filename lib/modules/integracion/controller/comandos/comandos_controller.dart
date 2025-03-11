@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
@@ -95,12 +96,24 @@ class ComandoController extends GetxController {
           comandoList[index] = updatedComando;
           comandoList.refresh();
         }
-        Get.snackbar('Success', 'Command updated successfully');
+        CustomSnackbar.show(
+          title: 'Éxito',
+          message: 'Comando actualizado correctamente',
+          isError: false,
+        );
       } else {
-        Get.snackbar('Error', 'Failed to update command');
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'No se pudo actualizar el comando',
+          isError: true,
+        );
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      CustomSnackbar.show(
+        title: 'Error',
+        message: e.toString(),
+        isError: true,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -134,14 +147,26 @@ class ComandoController extends GetxController {
 
         if (response.statusCode == 200) {
           comandoList.refresh();
-          Get.snackbar('Success', 'Favorite status updated');
+          CustomSnackbar.show(
+            title: 'Éxito',
+            message: 'Estado favorito actualizado',
+            isError: false,
+          );
         } else {
           comandoList[index].isFavorite = !newFavoriteStatus;
-          Get.snackbar('Error', 'Failed to update favorite status');
+          CustomSnackbar.show(
+            title: 'Error',
+            message: 'No se pudo actualizar el estado favorito',
+            isError: true,
+          );
         }
       } catch (e) {
         comandoList[index].isFavorite = !newFavoriteStatus;
-        Get.snackbar('Error', e.toString());
+        CustomSnackbar.show(
+          title: 'Error',
+          message: e.toString(),
+          isError: true,
+        );
       } finally {
         isLoading.value = false;
       }
@@ -188,25 +213,33 @@ class ComandoController extends GetxController {
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
             title: 'Éxito',
-            description: 'Comando creado con exito',
+            description: 'Comando creado con éxito',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
               Get.off(HomeScreen()); // Cerrar el diálogo
+              CustomSnackbar.show(
+                title: 'Éxito',
+                message: 'Comando creado correctamente',
+                isError: false,
+              );
             },
           ),
           barrierDismissible:
               false, // No permite cerrar el diálogo tocando fuera
         );
       } else {
-        print('Error en la solicitud: ${response.statusCode}');
-        print('Respuesta: ${response.body}');
-        Get.snackbar('Error', 'Error al crear el comando',
-            backgroundColor: Colors.red);
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'Error al crear el comando',
+          isError: true,
+        );
       }
     } catch (e) {
-      print('Error al crear el comando: $e');
-      Get.snackbar('Error', 'Error al crear el comando',
-          backgroundColor: Colors.red);
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Error al crear el comando: ${e.toString()}',
+        isError: true,
+      );
     } finally {
       isLoading(false);
     }

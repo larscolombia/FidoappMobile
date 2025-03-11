@@ -8,6 +8,7 @@ import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
 import 'dart:convert';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class HistorialClinicoController extends GetxController {
   final HomeController _homeController = Get.find();
@@ -347,13 +348,20 @@ class HistorialClinicoController extends GetxController {
       } else {
         // Si la respuesta es un error, mostrar el error
 
-        Get.snackbar("Error", "Error al actualizar los datos: ${response.body}",
-            backgroundColor: Colors.red);
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'Error al actualizar los datos: ${response.body}',
+          isError: true,
+        );
         print('error al actualizar los datos: ${response.body}');
         isSuccess.value = false;
       }
     } catch (e) {
-      Get.snackbar("Error", "Error", backgroundColor: Colors.red);
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Error al actualizar el historial',
+        isError: true,
+      );
 
       isSuccess.value = false;
     } finally {

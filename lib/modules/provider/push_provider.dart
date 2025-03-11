@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import 'package:pawlly/modules/integracion/controller/transaccion/transaction_controller.dart';
 import 'package:pawlly/modules/integracion/model/categoria/categoria_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import '../components/custom_snackbar.dart';
 
 class PushProvider extends GetxController {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -44,15 +45,10 @@ class PushProvider extends GetxController {
       print(response.body);
       if (response.statusCode == 200) {
         print('Token actualizado exitosamente');
-        Get.snackbar(
-          '¡Éxito!',
-          'Las notificaciones se han activado correctamente.',
-          backgroundColor: Colors.green,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 3),
-          margin: EdgeInsets.all(10),
-          colorText: Styles.whiteColor,
-          borderRadius: 10,
+        CustomSnackbar.show(
+          title: '¡Éxito!',
+          message: 'Las notificaciones se han activado correctamente.',
+          isError: false,
         );
         var data = json.decode(response.body);
         AuthServiceApis.dataCurrentUser.deviceToken =

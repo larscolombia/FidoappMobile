@@ -1,14 +1,9 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-<<<<<<< HEAD
-export "FLUTTER_ROOT=C:\flutter"
-export "FLUTTER_APPLICATION_PATH=C:\Users\user\Desktop\balance-dog-customer-app"
-=======
-export "FLUTTER_ROOT=/Users/macbookair/development/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/macbookair/Documents/proyectos_flutter/balance-dog-customer-app"
->>>>>>> e79cb2ffbbf2be477cda476507478dde18e3e744
+export "FLUTTER_ROOT=C:\Users\nemer\fvm\versions\3.22.1"
+export "FLUTTER_APPLICATION_PATH=C:\Users\nemer\repos lars\balance-dog-customer-app"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
-export "FLUTTER_TARGET=lib/main.dart"
+export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"
 export "FLUTTER_BUILD_NUMBER=1"
