@@ -16,7 +16,7 @@ class MenuOfNavigation extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 75,
+      height: 85,
       decoration: BoxDecoration(
         color: Styles.primaryColor,
         borderRadius: BorderRadius.circular(66),
@@ -73,6 +73,9 @@ class MenuOfNavigation extends GetView<HomeController> {
     final bool isSelected = controller.selectedIndex.value == index;
 
     return GestureDetector(
+      behavior: HitTestBehavior
+          .translucent, // Asegura que detecte toques en toda el área
+
       onTap: () async {
         switch (index) {
           case 0:
@@ -96,65 +99,54 @@ class MenuOfNavigation extends GetView<HomeController> {
             controller.subtitle.value = "de tu mascota";
             break;
         }
-        // Actualiza el índice seleccionado
-        print('inicio $index');
+
         controller.updateIndex(index);
 
-        // Prefetch de datos y navegación optimizada
         if (index == 4) {
-          //await Future.delayed(const Duration(milliseconds: 50));
-          Get.to(() => Diario()); // Limpia la pila con Get.off
+          Get.to(() => Diario());
         } else {
-          //await Future.delayed(const Duration(milliseconds: 50));
           Get.to(() => HomeScreen());
         }
       },
-      child: AnimatedContainer(
-        duration: const Duration(seconds: 1), // Animación rápida
-        curve: Curves.easeOutQuad, // Curva fluida
-        padding: EdgeInsets.symmetric(
-          vertical: isSelected ? 10 : 5,
-          horizontal: isSelected ? 16 : 10,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? const Color(
-                  0xffFC9214) // Fondo naranja cuando está seleccionado
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Ícono
-            SvgPicture.asset(
-              path,
-              width: 24,
-              height: 24,
-              color: Colors.white,
-            ),
-            // Texto deslizante al seleccionarse
-            AnimatedSize(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeOutQuad,
-              child: isSelected
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 4),
-                      child: Text(
-                        label,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11,
-                        ),
-                      ),
-                    )
-                  : const SizedBox
-                      .shrink(), // Oculta el texto si no está seleccionado
-            ),
-          ],
+      child: IntrinsicWidth(
+        // Ajusta el tamaño del botón al contenido
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeOutQuad,
+          padding: const EdgeInsets.symmetric(
+              vertical: 12, horizontal: 10), // Aumenta el área táctil
+
+          decoration: BoxDecoration(
+            color: isSelected ? const Color(0xffFC9214) : Colors.transparent,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                path,
+                width: 28,
+                height: 28,
+                color: Colors.white,
+              ),
+              if (isSelected)
+                Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: Text(
+                    label,
+                    overflow: TextOverflow.ellipsis, // Evita desbordes
+                    softWrap: false,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13.33,
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

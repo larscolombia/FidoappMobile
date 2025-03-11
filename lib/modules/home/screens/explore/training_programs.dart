@@ -54,16 +54,21 @@ class TrainingPrograms extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(
+          height: 15,
+        ),
         // Título de la sección
-        if (this.showTitle)
-          Text(
-            'Cursos y Programas de Entrenamiento',
-            style: const TextStyle(
-              fontSize: 20,
-              color: Styles.primaryColor,
-              fontFamily: Styles.fuente2,
-            ),
+        Text(
+          'Cursos y Programas de Entrenamiento',
+          style: const TextStyle(
+            fontSize: 20,
+            color: Styles.primaryColor,
+            fontFamily: Styles.fuente2,
           ),
+        ),
+        SizedBox(
+          height: 15,
+        ),
 
         // Lista de cursos
         Obx(() {
@@ -86,7 +91,7 @@ class TrainingPrograms extends StatelessWidget {
             return Column(
               children: cursosController.filteredCourses.map((course) {
                 return Container(
-                  margin: const EdgeInsets.only(bottom: 5),
+                  margin: const EdgeInsets.only(bottom: 15),
                   padding: const EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     color: Styles.whiteColor,
@@ -230,7 +235,7 @@ class TrainingPrograms extends StatelessWidget {
           }
         }),
         if (vermas == true) SizedBox(height: height * 0.15),
-        if (vermas == true && !cursosController.courses.isEmpty)
+        if (vermas == true && cursosController.courses.isNotEmpty)
           Container(
             width: double.infinity,
             child: GestureDetector(
