@@ -479,6 +479,7 @@ class _CreateEventState extends State<CreateEvent> {
                       return SizedBox(
                         width: inputWidth,
                         child: ButtonDefaultWidget(
+                          disabled: calendarController.isLoading.value,
                           title: calendarController.isLoading.value
                               ? 'Guardando...'
                               : 'Finalizar',

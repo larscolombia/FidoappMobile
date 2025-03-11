@@ -64,7 +64,7 @@ class _DiarioMascotasState extends State<DiarioMascotas> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 7,
-                childAspectRatio: 0.75,
+                childAspectRatio: 0.70,
               ),
               itemCount: widget.controller.filteredActivities.length,
               itemBuilder: (context, index) {

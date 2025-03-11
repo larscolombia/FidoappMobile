@@ -22,6 +22,7 @@ class ButtonDefaultWidget extends StatelessWidget {
   final bool isLoading;
   final List<BoxShadow>? boxShadow;
   final bool showDecoration;
+  final bool disabled; // New parameter to control disabled state
 
   const ButtonDefaultWidget({
     super.key,
@@ -43,6 +44,8 @@ class ButtonDefaultWidget extends StatelessWidget {
     this.isLoading = false,
     this.boxShadow,
     this.showDecoration = false,
+    this.disabled =
+        false, // Default value is false, button is enabled by default
   });
 
   @override
@@ -56,7 +59,7 @@ class ButtonDefaultWidget extends StatelessWidget {
               boxShadow: boxShadow ??
                   [
                     BoxShadow(
-                      color: Color(0xffFF4931).withOpacity(0.1),
+                      color: const Color(0xffFF4931).withOpacity(0.1),
                       spreadRadius: 1,
                       blurRadius: 12,
                       offset: const Offset(0, 4),
@@ -80,7 +83,9 @@ class ButtonDefaultWidget extends StatelessWidget {
               ),
             ),
           ),
-          onPressed: isLoading ? null : callback,
+          onPressed: disabled || isLoading // Check for disabled state here
+              ? null
+              : callback,
           child: isLoading
               ? CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(textColor),
