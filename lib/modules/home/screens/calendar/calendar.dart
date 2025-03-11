@@ -84,6 +84,7 @@ class Calendar extends StatelessWidget {
                     color: const Color(0xFFFFFC9214),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
+                    
                   ),
                   markerDecoration: const BoxDecoration(
                     shape: BoxShape.circle,

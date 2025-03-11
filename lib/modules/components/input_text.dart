@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
@@ -339,6 +340,78 @@ class _InputTextState extends State<InputText> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
+      confirmText: 'Aceptar',
+      cancelText: 'Cancelar',
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData(
+            useMaterial3: true,
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFFFC9214), // Color del header
+              onPrimary: Colors.white, // Texto en el header
+              surface: Colors.white, // Fondo del calendario
+              onSurface: Colors.black, // Texto del calendario
+              secondary: Color(0xFFFC9214), // Color para selección de días
+            ),
+            dividerColor: Color(0xFFFC9214),
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Color(0xFFFC9214), // Color del header
+              foregroundColor: Colors.white, // Color del texto del header
+              surfaceTintColor: Color(0xFFFC9214),
+              titleTextStyle: TextStyle(
+                // Fuente del header
+                fontFamily: 'PoetsenOne',
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            datePickerTheme: const DatePickerThemeData(
+              headerBackgroundColor: Color(0xFFFC9214),
+              headerForegroundColor: Colors.white,
+              dividerColor: Color(0xFFFC9214),
+              shadowColor: Color(0xFFFC9214),
+              backgroundColor: Colors.white,
+              headerHeadlineStyle: TextStyle(
+                fontFamily: 'PoetsenOne',
+                fontWeight: FontWeight.w400,
+                fontSize: 26,
+              ),
+              headerHelpStyle: TextStyle(
+                fontFamily: 'PoetsenOne',
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+              ),
+            ),
+            textTheme: TextTheme(
+              titleLarge: TextStyle(
+                // Fuente para el día, mes y año
+                fontFamily: 'PoetsenOne',
+                fontSize: 24,
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+              ),
+              labelLarge: GoogleFonts.lato(
+                // Fuente para los botones Aceptar/Cancelar
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+                color: Colors.orange,
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.orange, // Color de los botones
+                textStyle: TextStyle(
+                  fontFamily: 'PoetsenOne',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+          ),
+          child: child ?? const SizedBox(),
+        );
+      },
     );
 
     if (picked != null) {
@@ -357,6 +430,78 @@ class _InputTextState extends State<InputText> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      confirmText: 'Aceptar',
+      cancelText: 'Cancelar',
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData(
+            useMaterial3: true,
+            colorScheme: const ColorScheme.light(
+              primary: Color(0xFFFC9214), // Color del header
+              onPrimary: Colors.white, // Texto en el header
+              surface: Colors.white, // Fondo del selector de hora
+              onSurface: Colors.black, // Texto del selector de hora
+              secondary: Color(0xFFFC9214), // Color de selección
+            ),
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Color(0xFFFC9214),
+              foregroundColor: Colors.white,
+              surfaceTintColor: Color(0xFFFC9214),
+              titleTextStyle: TextStyle(
+                fontFamily: 'PoetsenOne',
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            timePickerTheme: const TimePickerThemeData(
+              backgroundColor: Colors.white, // Fondo del TimePicker
+              hourMinuteColor:
+                  Color(0xFFFC9214), // Color del número seleccionado
+              hourMinuteTextColor:
+                  Colors.white, // Texto de la hora seleccionada
+              dialHandColor: Color(0xFFFC9214), // Color de la aguja del reloj
+              dialBackgroundColor: Colors.white, // Fondo del reloj
+              entryModeIconColor: Color(0xFFFC9214), // Icono de cambio de modo
+              hourMinuteTextStyle: TextStyle(
+                fontFamily: 'PoetsenOne',
+                fontSize: 26,
+                fontWeight: FontWeight.w400,
+              ),
+              helpTextStyle: TextStyle(
+                fontFamily: 'PoetsenOne',
+                fontSize: 18,
+                fontWeight: FontWeight.w200,
+                color: Colors.black, // Cambia el color del texto
+              ),
+            ),
+            textTheme: TextTheme(
+              titleLarge: TextStyle(
+                fontFamily: 'PoetsenOne',
+                fontSize: 24,
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+              ),
+              labelLarge: GoogleFonts.lato(
+                fontSize: 18,
+                fontWeight: FontWeight.w400,
+                color: Colors.orange,
+              ),
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.orange,
+                textStyle: TextStyle(
+                  fontFamily: 'PoetsenOne',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+          child: child ?? const SizedBox(),
+        );
+      },
     );
 
     if (picked != null) {
