@@ -38,7 +38,8 @@ class _DiarioMascotasState extends State<DiarioMascotas> {
       }
 
       if (widget.controller.filteredActivities.isEmpty) {
-        return const Center(child:  Text(
+        return const Center(
+          child: Text(
             'No hay actividades disponibles.',
             style: TextStyle(
                 color: Color(0xFF959595),
@@ -60,12 +61,10 @@ class _DiarioMascotasState extends State<DiarioMascotas> {
               physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                crossAxisSpacing: 5.0,
-                mainAxisSpacing: 5.0,
-                childAspectRatio: constraints.maxWidth > 600
-                    ? 0.700
-                    : 0.900, // Ajustar aquí el valor
+                crossAxisCount: 2,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 7,
+                childAspectRatio: 0.75,
               ),
               itemCount: widget.controller.filteredActivities.length,
               itemBuilder: (context, index) {

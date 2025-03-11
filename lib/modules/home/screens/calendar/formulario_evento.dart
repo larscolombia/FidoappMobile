@@ -183,7 +183,7 @@ class _CreateEventState extends State<CreateEvent> {
         const EdgeInsets.symmetric(horizontal: 26.0);
     final double inputWidth = ancho - defaultPadding.horizontal;
     const double defaultMargin = 1.0;
-    const alto = 100.0;
+    const alto = 105.0;
     return Scaffold(
       backgroundColor: Styles.colorContainer,
       body: Column(
