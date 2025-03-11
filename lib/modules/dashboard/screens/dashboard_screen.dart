@@ -31,8 +31,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final imageSize = size.height /
-        4; // Cambia a /3 si necesitas una tercera parte de la altura
+    final imageSize = size.height / 4;
 
     return Scaffold(
       body: Container(
@@ -42,41 +41,38 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Stack(
               alignment: Alignment.center,
               children: [
-                // Contenedor de la Imagen
+                // Image Container
                 Container(
                   height: imageSize,
                   width: double.infinity,
-                  color: Styles
-                      .fiveColor, // Color de fondo para representar la imagen de fondo
+                  color: Styles.fiveColor,
                 ),
-                // Imagen Circular con Borde
+                // Circular Image with Border
                 Container(
                   width: 100,
                   height: 120,
-                  padding: const EdgeInsets.all(
-                      4), // Espacio entre la imagen y el borde
+                  padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Styles.fiveColor, // Fondo del borde
+                    color: Styles.fiveColor,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Styles.iconColorBack, // Color del borde
-                      width: 3.0, // Grosor del borde
+                      color: Styles.iconColorBack,
+                      width: 3.0,
                     ),
                   ),
                   child: Obx(
                     () => CircleAvatar(
-                      radius:
-                          46, // Ajustar el radio para que la imagen se adapte mejor al contenedor
+                      radius: 46,
                       backgroundImage: controller.profileImagePath.isNotEmpty
-                          ? NetworkImage(AuthServiceApis.dataCurrentUser
-                              .profileImage) // Carga la imagen desde la red si hay una URL
+                          ? NetworkImage(
+                              AuthServiceApis.dataCurrentUser.profileImage)
                           : const AssetImage('assets/images/avatar.png')
-                              as ImageProvider, // Imagen predeterminada si la URL está vacía
-                      backgroundColor: Colors.transparent, // Fondo transparente
+                              as ImageProvider,
+                      backgroundColor: Colors.transparent,
                     ),
                   ),
                 ),
-                // Nombre del Usuario
+                // User Name
                 Container(
                   height: 220,
                   width: 250,
@@ -86,16 +82,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                       textAlign: TextAlign.center,
-                      controller
-                          .name.value, // Acceder al valor de name con .value
+                      controller.name.value,
                       style: Styles.dashboardTitle24,
                     ),
                   ),
                 ),
               ],
             ),
-
-            // Contenido del Dashboard
+            // Dashboard Content
             Expanded(
               child: Container(
                 padding: Styles.paddingAll,
@@ -107,7 +101,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Sección del Dashboard
+                    // Dashboard Section Title
                     Padding(
                       padding: const EdgeInsets.only(left: 16, top: 26),
                       child: Row(
@@ -125,17 +119,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ],
                       ),
                     ),
-
                     Expanded(
                       child: ListView.builder(
                         itemCount: 8,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
+                          return InkWell(
+                            // Changed to InkWell for better touch feedback
                             onTap: () {
-                              _onItemTap(index,
-                                  context); // Llama al método que maneja el modal y la navegación
+                              _onItemTap(index, context);
                             },
                             child: Container(
+                              // GestureDetector replaced by InkWell + Container
+
                               margin: const EdgeInsets.only(bottom: 2),
                               padding: const EdgeInsets.all(10.0),
                               child: Row(
@@ -149,10 +144,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                         height: 44,
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
-                                          color: Styles
-                                              .fiveColor, // Fondo del ícono
-                                          borderRadius: BorderRadius.circular(
-                                              15), // Bordes redondeados
+                                          color: Styles.fiveColor,
+                                          borderRadius:
+                                              BorderRadius.circular(15),
                                         ),
                                         child: SvgPicture.asset(
                                           _getItemIcon(index),
@@ -167,7 +161,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       ),
                                     ],
                                   ),
-                                  // Esta parte también se envuelve en el GestureDetector
                                   const Icon(
                                     Icons.chevron_right,
                                     color: Color(0xFF383838),
@@ -190,7 +183,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  // Método auxiliar para obtener el título del ítem
+  // Helper method to get item title
   String _getItemTitle(int index) {
     switch (index) {
       case 0:
@@ -221,7 +214,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // Get.to(Pacientes());
     }
     if (index == 1) {
-      // Mostrar el modal para el caso 1
+      // Show modal for item 1
       if (roleUser.roleUser() == roleUser.tipoUsuario('vet')) {
         Get.to(Pacientes());
       } else {
@@ -235,10 +228,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         );
       }
     } else if (index == 7) {
-      // Mostrar el diálogo de confirmación para cerrar sesión
+      // Show logout confirmation dialog
       _showLogoutConfirmationDialog(context);
     } else {
-      // Navegar a la vista correspondiente para otros casos
+      // Navigate to corresponding view for other cases
       var route = _getPageForIndex(index);
       if (route is String) {
         Get.toNamed(route);
@@ -253,14 +246,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       context: context,
       builder: (BuildContext context) {
         return CustomAlertDialog(
-          icon: Icons.exit_to_app, // Ícono más apropiado para logout
+          icon: Icons.exit_to_app, // More appropriate icon for logout
           title: "Cerrar sesión",
           description: "¿Estás seguro de que deseas cerrar sesión?",
           buttonCancelar: true,
           primaryButtonText: "Aceptar",
           onPrimaryButtonPressed: () async {
             await controller.logoutUser();
-            Get.back(); // Cierra el modal después de cerrar sesión
+            Get.back(); // Close modal after logout
           },
         );
       },
@@ -275,8 +268,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 0:
         return Routes.PROFILE;
       case 1:
-        return '';
-      // Devuelve una cadena vacía o cualquier valor que indique que no se debe navegar
+        return ''; // Return empty string or any value to indicate no navigation
       case 2:
         return Diario();
       case 3:
@@ -294,7 +286,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  // Método auxiliar para obtener el icono del ítem
+  // Helper method to get item icon
   String _getItemIcon(int index) {
     switch (index) {
       case 0:

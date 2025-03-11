@@ -56,7 +56,6 @@ class EntertainmentBlogs extends StatelessWidget {
                     margin: const EdgeInsets.only(right: 16),
                     padding: const EdgeInsets.all(18),
                     width: MediaQuery.of(context).size.width * 0.8,
-                    height: 260,
                     decoration: BoxDecoration(
                       color: Styles.whiteColor,
                       borderRadius: BorderRadius.circular(10),
@@ -66,9 +65,12 @@ class EntertainmentBlogs extends StatelessWidget {
                       ),
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize
+                          .min, // Para que la columna se ajuste al contenido
+                      crossAxisAlignment: CrossAxisAlignment
+                          .start, // Alineación a la izquierda para el texto
                       children: [
-                        // Imagen del video con el icono de reproducción y la duración
+                        // Imagen del video con el icono de reproducción
                         Stack(
                           children: [
                             Container(
@@ -147,7 +149,6 @@ class EntertainmentBlogs extends StatelessWidget {
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 4),
                         // Fecha y cantidad de visualizaciones
                         Row(
@@ -180,7 +181,9 @@ class EntertainmentBlogs extends StatelessWidget {
                           ],
                         ),
                         // Título del video (máximo 2 líneas)
-                        Expanded(
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8.0), // Añade espacio arriba del título
                           child: Text(
                             video.name,
                             maxLines: 2,

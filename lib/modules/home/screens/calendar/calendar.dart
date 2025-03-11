@@ -84,6 +84,7 @@ class Calendar extends StatelessWidget {
                     color: const Color(0xFFFFFC9214),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
+                    
                   ),
                   markerDecoration: const BoxDecoration(
                     shape: BoxShape.circle,
@@ -161,8 +162,8 @@ class Calendar extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  width: 280,
+                Expanded(
+                  flex: 5,
                   child: InputText(
                     fondoColor: Colors.white,
                     onChanged: (value) {
@@ -177,6 +178,7 @@ class Calendar extends StatelessWidget {
                 ),
                 const SizedBox(width: 5),
                 Expanded(
+                  flex: 1,
                   child: FloatingActionButton(
                     onPressed: () {
                       calendarController.ResetEvent();
