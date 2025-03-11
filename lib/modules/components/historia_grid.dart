@@ -19,8 +19,20 @@ class HistorialGrid extends StatelessWidget {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
+      
       if (historial.value.isEmpty) {
-        return const Center(child: Text('No hay datos disponibles.'));
+        return const Center(
+          child: Text(
+            'No hay datos disponibles.',
+            style: TextStyle(
+              color: Color(0xFF959595),
+              fontSize: 16,
+              fontFamily: 'Lato',
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        );
       }
       return GridView.builder(
         physics: const NeverScrollableScrollPhysics(),

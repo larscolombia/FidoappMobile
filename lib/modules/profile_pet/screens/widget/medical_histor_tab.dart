@@ -142,6 +142,9 @@ class MedicalHistoryTab extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(
+              height: 20,
+            ),
             HistorialGrid(controller: medicalHistoryController),
             SizedBox(height: margen),
             RecargaComponente(

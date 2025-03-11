@@ -83,11 +83,10 @@ class _LongPressButtonState extends State<LongPressButton> {
         onPrimaryButtonPressed: () {
           _mascotaPerdida.reportarMascotaPerdida();
           Get.back(); // Cierra el diálogo
-          _resetButton(); // Se resetea solo si el usuario acepta
         },
       ),
-      barrierDismissible: true,
-    );
+      barrierDismissible: true, // Permite cerrar el modal tocando afuera
+    ).then((_) => _resetButton()); // Resetea el botón al cerrar el modal
   }
 
   void _resetButton() {

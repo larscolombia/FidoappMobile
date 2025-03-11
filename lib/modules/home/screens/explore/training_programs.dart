@@ -70,7 +70,18 @@ class TrainingPrograms extends StatelessWidget {
           if (cursosController.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           } else if (cursosController.courses.isEmpty) {
-            return const Center(child: Text('No hay cursos disponibles'));
+            return const Center(
+              child: Text(
+                'No hay cursos disponibles',
+                style: TextStyle(
+                  color: Color(0xFF959595),
+                  fontSize: 16,
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            );
           } else {
             return Column(
               children: cursosController.filteredCourses.map((course) {
@@ -219,7 +230,7 @@ class TrainingPrograms extends StatelessWidget {
           }
         }),
         if (vermas == true) SizedBox(height: height * 0.15),
-        if (vermas == true)
+        if (vermas == true && !cursosController.courses.isEmpty)
           Container(
             width: double.infinity,
             child: GestureDetector(

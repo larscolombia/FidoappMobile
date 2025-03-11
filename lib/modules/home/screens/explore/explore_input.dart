@@ -35,15 +35,27 @@ class ExploreInput extends StatelessWidget {
         ),
 
         const SizedBox(height: 16),
+        if (controller.ebooks.isEmpty)
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              'No hay libros disponibles',
+              style: TextStyle(
+                color: Color(0xFF959595),
+                fontSize: 16,
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
 
         // Lista de productos para mascotas
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Obx(() {
             if (controller.ebooks.isEmpty) {
-              return const Center(
-                child: Text('No hay libros disponibles'),
-              );
+              return Container();
             }
 
             if (controller.isLoading.value) {
