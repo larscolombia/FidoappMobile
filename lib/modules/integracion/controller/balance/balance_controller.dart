@@ -285,8 +285,9 @@ class UserBalanceController extends GetxController {
                                   Get.dialog(
                                     CustomAlertDialog(
                                       icon: Icons.account_balance_wallet,
-                                      title: 'Advertencia',
-                                      description: 'Confirmar transacción',
+                                      title: 'Atención',
+                                      description:
+                                          'Estás a punto de confirmar esta transacción. ¿Deseas continuar?',
                                       primaryButtonText: 'Aceptar',
                                       onPrimaryButtonPressed: () {
                                         switch (productController

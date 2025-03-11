@@ -168,6 +168,8 @@ class CursosDetalles extends StatelessWidget {
 
                               balanceController.showPurchaseModal(context);
                               // miscursos.subscribeToCourse(curso.id);
+                              // Recargar la pantalla completamente
+                              Get.reload<CursosDetalles>();
                             },
                           ),
                         const SizedBox(height: 20),

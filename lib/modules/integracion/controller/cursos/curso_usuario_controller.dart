@@ -141,8 +141,8 @@ class CursoUsuarioController extends GetxController {
             //pisa papel
             CustomAlertDialog(
               icon: Icons.check_circle_outline,
-              title: 'Felicidades!!! :)',
-              description: 'El curso ha sido comprado con exito!!',
+              title: '¡Felicidades!',
+              description: 'El curso ha sido adquirido con exito.',
               primaryButtonText: 'Continuar',
               onPrimaryButtonPressed: () {
                 fetchCourses();

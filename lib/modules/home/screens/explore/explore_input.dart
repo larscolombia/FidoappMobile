@@ -41,7 +41,7 @@ class ExploreInput extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
 
-          if (!controller.filteredEBooks.isEmpty) {
+          if (controller.filteredEBooks.isEmpty) {
             return Container();
           }
 

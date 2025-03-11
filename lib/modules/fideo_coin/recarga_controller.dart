@@ -72,7 +72,7 @@ class StripeController extends GetxController {
       CustomAlertDialog(
         icon: Icons.check_circle_outline,
         title: 'Confirmación',
-        description: 'Estas a punto de comprar $precio',
+        description: 'Estás a punto de adquirir $precio. ¿Deseas continuar?',
         primaryButtonText: 'Continuar',
         onPrimaryButtonPressed: () async {
           // 1. Cierra el modal

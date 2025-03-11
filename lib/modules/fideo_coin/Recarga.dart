@@ -187,15 +187,16 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                           icon: Icons.check_circle_outline,
                           title: 'Confirmación',
                           buttonCancelar: true,
-                          description: controller.isLoading.value == true
-                              ? "cargando ..."
-                              : 'Estas a punto de comprar ${_formattedInput(_input)} ƒ',
+                          description: controller.isLoading.value
+                              ? "Procesando tu compra..."
+                              : 'Estás a punto de adquirir ${_formattedInput(_input)} ƒ. ¿Deseas continuar?',
                           primaryButtonText: 'Continuar',
                           onPrimaryButtonPressed: () async {
                             controller.GetUrlPayment(
                                 _formattedInput(_input), context);
                           },
                         ),
+
                         barrierDismissible: true,
                       );
                     },

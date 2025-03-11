@@ -173,13 +173,15 @@ class PushProvider extends GetxController {
             //pisa papel
             CustomAlertDialog(
               icon: Icons.check_circle_outline,
-              title: 'Has recargado tu FidoCoin con exito ',
-              description: 'Tu compra fue exitosa',
-              primaryButtonText: 'Continuar',
+              title: '¡Recarga Exitosa!',
+              description:
+                  'Tu FidoCoin ha sido acreditado correctamente. ¡Disfrútalo!',
+              primaryButtonText: 'Seguir explorando',
               onPrimaryButtonPressed: () {
                 Get.back();
               },
             ),
+
             barrierDismissible: true,
           );
 
