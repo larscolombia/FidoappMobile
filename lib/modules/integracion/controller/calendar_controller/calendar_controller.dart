@@ -196,7 +196,15 @@ class CalendarController extends GetxController {
   Future<void> postEvent() async {
     isLoading.value = true;
     isSuccess.value = false;
-    print('guardando evento');
+
+    if (event['owner_id'] == "") {
+      updateField(
+        'owner_id',
+        [AuthServiceApis.dataCurrentUser.id],
+      );
+      print('owner_id ddddd');
+    }
+    print('guardando evento ${event}');
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/events'),

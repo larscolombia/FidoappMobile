@@ -93,8 +93,8 @@ class MenuOfNavigation extends GetView<HomeController> {
   }) {
     final bool isSelected = controller.selectedIndex.value == index;
 
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
+    return InkWell(
+      // Changed to InkWell for better touch area
       onTap: () async {
         switch (index) {
           case 0:
@@ -132,10 +132,9 @@ class MenuOfNavigation extends GetView<HomeController> {
           duration: const Duration(milliseconds: 150),
           curve: Curves.easeOutQuad,
           padding: EdgeInsets.symmetric(
-              // Reduced horizontal padding here
+              // Increased horizontal padding significantly
               vertical: 12,
-              horizontal: labelFontSize *
-                  0.5), // Horizontal padding relative to font size
+              horizontal: labelFontSize * 0.8), // More horizontal padding
 
           decoration: BoxDecoration(
             color: isSelected ? const Color(0xffFC9214) : Colors.transparent,
@@ -153,7 +152,6 @@ class MenuOfNavigation extends GetView<HomeController> {
               ),
               if (isSelected)
                 Flexible(
-                  // Use Flexible to wrap the Text
                   child: Padding(
                     padding: const EdgeInsets.only(left: 4),
                     child: Text(
