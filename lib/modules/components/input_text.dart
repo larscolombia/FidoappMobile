@@ -367,10 +367,9 @@ class _InputTextState extends State<InputText> {
               ),
             ),
             datePickerTheme: const DatePickerThemeData(
-              headerBackgroundColor: Color(0xFFFC9214),
+              headerBackgroundColor: Color(0xFFFF4931),
               headerForegroundColor: Colors.white,
-              dividerColor: Color(0xFFFC9214),
-              shadowColor: Color(0xFFFC9214),
+              dividerColor: Color(0xFFFF4931),
               backgroundColor: Colors.white,
               headerHeadlineStyle: TextStyle(
                 fontFamily: 'PoetsenOne',
@@ -400,7 +399,7 @@ class _InputTextState extends State<InputText> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.orange, // Color de los botones
+                foregroundColor: Color(0xFFFF4931), // Color de los botones
                 textStyle: TextStyle(
                   fontFamily: 'PoetsenOne',
                   fontWeight: FontWeight.w400,
@@ -490,7 +489,7 @@ class _InputTextState extends State<InputText> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Colors.orange,
+                foregroundColor: Color(0xFFFF4931),
                 textStyle: TextStyle(
                   fontFamily: 'PoetsenOne',
                   fontWeight: FontWeight.w400,
