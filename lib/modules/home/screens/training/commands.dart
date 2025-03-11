@@ -173,9 +173,17 @@ class Commands extends StatelessWidget {
           // Mostrar comando seleccionado
           Obx(() {
             if (controller.selectedComando.value != null) {
-              return Text(
+              return Center(
+                  child: Text(
                 'Comando seleccionado: ${controller.selectedComando.value!.name}',
-              );
+                style: TextStyle(
+                  color: Color.fromARGB(255, 0, 0, 0),
+                  fontSize: 16,
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ));
             } else {
               return const Padding(
                 padding: EdgeInsets.all(16.0),

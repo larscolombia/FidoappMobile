@@ -187,7 +187,7 @@ class DetallesDiario extends StatelessWidget {
                               }
                               return Container(
                                 width: MediaQuery.of(context).size.width,
-                                height: 200,
+                                height: MediaQuery.of(context).size.height,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     fit: BoxFit.cover,

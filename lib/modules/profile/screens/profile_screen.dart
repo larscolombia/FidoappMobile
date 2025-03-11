@@ -334,16 +334,27 @@ class ProfileScreen extends StatelessWidget {
                               // Navegar a la página de cambiar contraseña
                               Get.to(() => ChangePasswordScreen());
                             },
-                            child: const Align(
+                            child: Align(
                               alignment: Alignment.centerRight,
-                              child: Text(
-                                'Cambiar Contraseña  >',
-                                style: TextStyle(
-                                  color: Styles.primaryColor,
-                                  fontFamily: 'Lato',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    'Cambiar Contraseña',
+                                    style: TextStyle(
+                                      color: Styles.primaryColor,
+                                      fontFamily: 'Lato',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                  SizedBox(width: 4),
+                                  SvgPicture.asset(
+                                    'assets/icons/svg/flecha_derecha.svg', // Ruta del ícono
+                                    height: 10,
+                                    color: Color(0xFFFF4931),
+                                  ),
+                                ],
                               ),
                             ),
                           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class InputTextWithIcon extends StatelessWidget {
   const InputTextWithIcon({
@@ -36,10 +37,9 @@ class InputTextWithIcon extends StatelessWidget {
           if (iconPosition == IconPosition.left) // Ícono a la izquierda
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: Image.asset(
-                iconPath,
-                width: 24,
-                height: 24,
+              child: SvgPicture.asset(
+                'assets/icons/svg/search-status.svg',
+                height: 24, // Ajusta el tamaño del ícono si es necesario
               ),
             ),
           Expanded(
@@ -64,14 +64,9 @@ class InputTextWithIcon extends StatelessWidget {
               onTap: callbackButton ? onButtonPressed : null,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Image.asset(
-                  iconPath,
-                  width: 24,
-                  height: 24,
-                  color: callbackButton
-                      ? null
-                      : Colors
-                          .grey, // Cambia el color si el botón está deshabilitado
+                child: SvgPicture.asset(
+                  'assets/icons/svg/search-status.svg',
+                  height: 16, // Ajusta el tamaño del ícono si es necesario
                 ),
               ),
             ),

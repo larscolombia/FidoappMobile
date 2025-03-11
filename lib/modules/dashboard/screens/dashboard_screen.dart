@@ -132,7 +132,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           return GestureDetector(
                             onTap: () {
                               _onItemTap(index,
-                                  context); // Llama al nuevo método que maneja el modal y la navegación
+                                  context); // Llama al método que maneja el modal y la navegación
                             },
                             child: Container(
                               margin: const EdgeInsets.only(bottom: 2),
@@ -157,7 +157,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           _getItemIcon(index),
                                           width: 24,
                                           height: 24,
-                                          //color: Styles.iconColorBack,
                                         ),
                                       ),
                                       const SizedBox(width: 16),
@@ -167,6 +166,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                       ),
                                     ],
                                   ),
+                                  // Esta parte también se envuelve en el GestureDetector
                                   const Icon(
                                     Icons.chevron_right,
                                     color: Color(0xFF383838),
