@@ -164,7 +164,7 @@ class _InputTextState extends State<InputText> {
               child: TextFormField(
                 controller: _textController,
                 focusNode: _focusNode,
-                maxLines: widget.isTextArea ? null : 1,
+                maxLines: widget.isTextArea ? null : 2,
                 minLines: widget.isTextArea ? 3 : 1,
                 style: const TextStyle(
                   fontFamily: 'Lato',

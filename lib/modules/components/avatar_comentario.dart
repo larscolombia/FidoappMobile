@@ -53,7 +53,7 @@ class AvatarComentarios extends StatelessWidget {
                       margin: const EdgeInsets.only(left: 5),
                       width: 200,
                       child: Text(
-                        maxLines: 1,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         name ?? "",
                         style: const TextStyle(

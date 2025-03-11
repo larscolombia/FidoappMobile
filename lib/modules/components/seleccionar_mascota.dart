@@ -30,13 +30,13 @@ class SeleccionarMascota extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CircleAvatar(
-                  radius: 20,
-                  backgroundImage: NetworkImage('$avatar'),
-                  backgroundColor: Colors.transparent,
-                  child: const Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 20,
+                  radius:
+                      22, // Aumentamos el radio para que el borde se vea bien
+                  backgroundColor: Color(0xFFFF4931), // Color del borde
+                  child: CircleAvatar(
+                    radius: 20, // Radio original de la imagen
+                    backgroundImage: NetworkImage('$avatar'),
+                    backgroundColor: Colors.transparent,
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -47,11 +47,21 @@ class SeleccionarMascota extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       '$name',
-                      style: Styles.AvatarPetName,
+                      style: const TextStyle(
+                        fontFamily: 'PoetsenOne',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 20,
+                        color: Color(0xFFFF4931),
+                      ),
                     ),
                     Text(
                       '$edad',
-                      style: Styles.textNameAvatar,
+                      style: const TextStyle(
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),
@@ -59,7 +69,7 @@ class SeleccionarMascota extends StatelessWidget {
             ),
             const Icon(
               Icons.arrow_forward_ios_rounded,
-              weight: 24,
+              weight: 20,
               color: Styles.iconColor,
             ),
           ],

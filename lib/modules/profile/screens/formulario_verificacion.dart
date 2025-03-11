@@ -305,8 +305,12 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                     callback: () {
                                       Get.to(PublicProfilePage());
                                     },
-                                    title: 'Previsualizar Perfil >',
+                                    title: 'Previsualizar Perfil',
                                     defaultColor: Styles.fiveColor,
+                                    svgIconPath:
+                                        'assets/icons/svg/arrow-left.svg',
+                                    svgIconPathSize: 14,
+                                    svgIconColor: Colors.white,
                                   ),
                                 ),
                               ),

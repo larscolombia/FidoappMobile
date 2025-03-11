@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pacientes.dart';
@@ -251,26 +252,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Cerrar Sesión"),
-          content: const Text("¿Desea cerrar sesión?"),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                // Si el usuario elige "No", simplemente cierra el modal
-                Navigator.of(context).pop();
-              },
-              child: const Text("No"),
-            ),
-            TextButton(
-              onPressed: () async {
-                // Si el usuario elige "Sí", llama a la función de logout y cierra el modal
-                await controller.logoutUser();
-                Navigator.of(context).pop(); // Cerrar el modal
-              },
-              child: const Text("Sí"),
-            ),
-          ],
+        return CustomAlertDialog(
+          icon: Icons.exit_to_app, // Ícono más apropiado para logout
+          title: "Cerrar sesión",
+          description: "¿Estás seguro de que deseas cerrar sesión?",
+          buttonCancelar: true,
+          primaryButtonText: "Aceptar",
+          onPrimaryButtonPressed: () async {
+            await controller.logoutUser();
+            Get.back(); // Cierra el modal después de cerrar sesión
+          },
         );
       },
     );

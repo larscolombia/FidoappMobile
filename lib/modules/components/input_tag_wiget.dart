@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/style.dart';
 
@@ -40,12 +41,34 @@ class _TagInputWidgetState extends State<TagInputWidget> {
 
     Get.dialog(
       AlertDialog(
-        title: const Text('Nueva Tab'),
-        content: TextFormField(
-          controller: _dialogController,
-          decoration: const InputDecoration(
-            labelText: 'Nombre de la Tab',
+        backgroundColor: Colors.white, // Fondo blanco
+        contentPadding: const EdgeInsets.all(20),
+        title: const Text(
+          'Nueva Tab',
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Lato',
+            color: const Color(0xFFFF4931),
           ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: _dialogController,
+              decoration: const InputDecoration(
+                labelText: 'Nombre de la Tab',
+                labelStyle: TextStyle(
+                  fontFamily: 'Lato',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
         ),
         actions: [
           TextButton(
@@ -53,9 +76,39 @@ class _TagInputWidgetState extends State<TagInputWidget> {
               // Cerramos el diálogo sin hacer nada
               Get.back();
             },
-            child: const Text('Cancelar'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Styles.primaryColor,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 35,
+                vertical: 8,
+              ),
+              elevation: 0,
+              textStyle: const TextStyle(
+                fontFamily: 'Lato',
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            child: const Text(
+              'Cancelar',
+              style: const TextStyle(
+                fontFamily: 'Lato',
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Styles.primaryColor,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 35,
+                vertical: 8,
+              ),
+              elevation: 0,
+            ),
             onPressed: () {
               final newTag = _dialogController.text.trim();
               if (newTag.isNotEmpty && !_tags.contains(newTag)) {
@@ -70,7 +123,15 @@ class _TagInputWidgetState extends State<TagInputWidget> {
               // Cerramos el diálogo
               Get.back();
             },
-            child: const Text('Agregar'),
+            child: const Text(
+              'Agregar',
+              style: const TextStyle(
+                fontFamily: 'Lato',
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
         ],
       ),
@@ -138,17 +199,28 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                 borderRadius:
                     BorderRadius.circular(16), // Radio de las esquinas
               ),
-              label: const Text(
-                'Añadir Tab  +',
-                style: TextStyle(
-                  fontFamily: "Lato",
-                  fontSize: 14,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.white, // Color del texto
-                ),
+              label: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Añadir Tab',
+                    style: TextStyle(
+                      fontFamily: "Lato",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white, // Color del texto
+                    ),
+                  ),
+                  const SizedBox(width: 15), // Espacio para separar el icono
+                  SvgPicture.asset(
+                    'assets/icons/svg/vector_plus.svg',
+                    height: 10, // Ajusta el tamaño del ícono si es necesario
+                    width: 10,
+                  ),
+                ],
               ),
               onPressed: _showAddTagDialog,
-            ),
+            )
           ],
         ),
       ],

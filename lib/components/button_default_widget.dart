@@ -16,6 +16,8 @@ class ButtonDefaultWidget extends StatelessWidget {
   final double? borderSize;
   final IconData? icon;
   final String? svgIconPath;
+  final double? svgIconPathSize;
+  final Color? svgIconColor;
   final bool iconAfterText;
   final bool isLoading;
   final List<BoxShadow>? boxShadow;
@@ -35,6 +37,8 @@ class ButtonDefaultWidget extends StatelessWidget {
     this.borderSize,
     this.icon,
     this.svgIconPath,
+    this.svgIconPathSize,
+    this.svgIconColor,
     this.iconAfterText = true,
     this.isLoading = false,
     this.boxShadow,
@@ -97,9 +101,9 @@ class ButtonDefaultWidget extends StatelessWidget {
                           if (svgIconPath != null)
                             SvgPicture.asset(
                               svgIconPath!,
-                              color: Styles.iconColorBack,
-                              width: 24,
-                              height: 24,
+                              color: svgIconColor ?? Styles.iconColorBack,
+                              width: svgIconPathSize ?? 24,
+                              height: svgIconPathSize ?? 24,
                             )
                           else if (icon != null)
                             Icon(

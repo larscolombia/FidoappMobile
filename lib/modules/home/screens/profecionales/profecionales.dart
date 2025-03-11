@@ -162,7 +162,7 @@ class Profecionales extends StatelessWidget {
                   placeholder: 'Realiza tu búsqueda',
                   fondoColor: Colors.white,
                   borderColor: const Color.fromARGB(255, 107, 105, 105),
-                  placeholderImage: Image.asset('assets/icons/search.png'),
+                  placeholderSvg: 'assets/icons/svg/search-status.svg',
                 ),
               ),
               const SizedBox(height: 20),

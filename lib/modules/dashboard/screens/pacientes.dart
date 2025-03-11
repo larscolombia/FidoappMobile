@@ -60,7 +60,7 @@ class Pacientes extends StatelessWidget {
                             width: 350,
                             child: InputTextWithIcon(
                               hintText: 'Realiza tu búsqueda',
-                              iconPath: 'assets/icons/search.png',
+                              iconPath: 'assets/icons/svg/search-status.svg',
                               iconPosition: IconPosition.left,
                               height: 60.0, // Altura personalizada
                               onChanged: (value) =>

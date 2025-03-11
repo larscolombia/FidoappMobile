@@ -138,64 +138,50 @@ class ProfilePetController extends GetxController {
   // Eliminar mascota con confirmación
   void deletePet() {
     Get.dialog(
-      AlertDialog(
-        title: const Text('Confirmar eliminación'),
-        content:
-            Text('¿Estás seguro de que deseas eliminar a ${petName.value}?'),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(), // Cerrar el modal sin eliminar
-            child: const Text('No'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Get.back(); // Cerrar el modal antes de ejecutar la eliminación
-              final success =
-                  await _deletePetApi(); // Llamar a la función para eliminar la mascota
-              if (success) {
-                // Obtener el controlador de HomeController para actualizar la lista
-                final homeController = Get.find<HomeController>();
+      CustomAlertDialog(
+        icon: Icons.pets,
+        title: "Confirmar eliminación",
+        description: "¿Estás seguro de que deseas eliminar a ${petName.value}?",
+        buttonCancelar: true,
+        primaryButtonText: "Eliminar",
+        onPrimaryButtonPressed: () async {
+          Get.back(); // Cierra el modal antes de ejecutar la eliminación
 
-                // Eliminar el pet de la lista en HomeController
-                homeController.profiles
-                    .removeWhere((pet) => pet.id == petProfile.id);
+          final success = await _deletePetApi(); // Ejecuta la eliminación
 
-                // Mostrar el diálogo de éxito con el CustomAlertDialog
-                Get.dialog(
-                  CustomAlertDialog(
-                    icon: Icons.check_circle_outline,
-                    title: 'Éxito',
-                    description: 'La mascota ha sido eliminada exitosamente.',
-                    primaryButtonText: 'Aceptar',
-                    onPrimaryButtonPressed: () {
-                      Get.back(); // Cerrar el diálogo
-                      Get.back();
-                      Get.back();
-                    },
-                  ),
-                  barrierDismissible:
-                      false, // No permite cerrar el diálogo tocando fuera
-                );
-              } else {
-                // Mostrar el diálogo de error con el CustomAlertDialog
-                Get.dialog(
-                  CustomAlertDialog(
-                    icon: Icons.error_outline,
-                    title: 'Error',
-                    description: 'Hubo un problema al eliminar la mascota.',
-                    primaryButtonText: 'Aceptar',
-                    onPrimaryButtonPressed: () {
-                      Get.back(); // Cerrar el diálogo
-                    },
-                  ),
-                  barrierDismissible:
-                      false, // No permite cerrar el diálogo tocando fuera
-                );
-              }
-            },
-            child: const Text('Sí', style: TextStyle(color: Colors.red)),
-          ),
-        ],
+          if (success) {
+            // Actualiza la lista en HomeController
+            final homeController = Get.find<HomeController>();
+            homeController.profiles
+                .removeWhere((pet) => pet.id == petProfile.id);
+
+            // Muestra un mensaje de éxito
+            Get.dialog(
+              CustomAlertDialog(
+                icon: Icons.check_circle_outline,
+                title: "Éxito",
+                description: "La mascota ha sido eliminada exitosamente.",
+                primaryButtonText: "Aceptar",
+                onPrimaryButtonPressed: () {
+                  Get.close(3); // Cierra todos los modales abiertos
+                },
+              ),
+              barrierDismissible: false,
+            );
+          } else {
+            // Muestra un mensaje de error
+            Get.dialog(
+              CustomAlertDialog(
+                icon: Icons.error_outline,
+                title: "Error",
+                description: "Hubo un problema al eliminar la mascota.",
+                primaryButtonText: "Aceptar",
+                onPrimaryButtonPressed: () => Get.back(),
+              ),
+              barrierDismissible: false,
+            );
+          }
+        },
       ),
     );
   }
