@@ -306,7 +306,16 @@ class _CursoVideoState extends State<CursoVideo> {
                       Obx(() {
                         if (_commentController.comments.isEmpty) {
                           return const Center(
-                            child: Text('No hay comentarios'),
+                            child: Text(
+                              'No hay comentarios.',
+                              style: TextStyle(
+                                color: Color(0xFF959595),
+                                fontSize: 16,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
                           );
                         }
                         if (_commentController.isLoading.value) {
@@ -316,6 +325,7 @@ class _CursoVideoState extends State<CursoVideo> {
                         }
                         return SingleChildScrollView(
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: _commentController.comments.map((value) {
                               print('comentarios value ${value.reviewMsg}');
                               return AvatarComentarios(
@@ -329,7 +339,7 @@ class _CursoVideoState extends State<CursoVideo> {
                           ),
                         );
                       }),
-                      SizedBox(height: width),
+                      SizedBox(height: 10),
                       // Componente para recargar comentarios
                       RecargaComponente(
                         callback: () {

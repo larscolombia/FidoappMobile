@@ -77,7 +77,13 @@ class ComentariosLibros extends StatelessWidget {
           if (bookRatings == null || bookRatings.isEmpty) {
             return const Text(
               'No hay comentarios.',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(
+                color: Color(0xFF959595),
+                fontSize: 16,
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
             );
           }
           return ListView.builder(

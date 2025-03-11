@@ -179,7 +179,20 @@ class Commands extends StatelessWidget {
             } else {
               return const Padding(
                 padding: EdgeInsets.all(16.0),
-                child: Text('No hay comando seleccionado'),
+                child: Center(
+                  // Centra el texto horizontalmente
+                  child: Text(
+                    'No hay comando seleccionado',
+                    style: TextStyle(
+                      color: Color(0xFF959595),
+                      fontSize: 16,
+                      fontFamily: 'Lato',
+                      fontWeight: FontWeight.w500,
+                    ),
+                    textAlign:
+                        TextAlign.center, // Asegura la alineación del texto
+                  ),
+                ),
               );
             }
           }),

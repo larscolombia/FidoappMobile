@@ -18,6 +18,7 @@ class MascotaPerdida extends GetxController {
 
   Future<void> reportarMascotaPerdida() async {
     const url = '${BASE_URL}pets/update-lost';
+    print(url);
     try {
       final response = await http.post(
         Uri.parse(url),

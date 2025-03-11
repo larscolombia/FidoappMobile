@@ -65,7 +65,6 @@ class Diario extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const LongPressButton(isDiario: true),
                           ProfilesDogs(),
                           SizedBox(height: margen + 10),
                           SizedBox(

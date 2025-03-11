@@ -35,7 +35,7 @@ class _LongPressButtonState extends State<LongPressButton> {
     const duration = Duration(milliseconds: 50);
     _timer = Timer.periodic(duration, (timer) {
       setState(() {
-        _progress += 0.01;
+        _progress += 0.02;
       });
 
       if (_progress >= 1.0) {
@@ -82,12 +82,12 @@ class _LongPressButtonState extends State<LongPressButton> {
         primaryButtonText: 'Aceptar',
         onPrimaryButtonPressed: () {
           _mascotaPerdida.reportarMascotaPerdida();
-          _resetButton();
           Get.back(); // Cierra el diálogo
+          _resetButton(); // Se resetea solo si el usuario acepta
         },
       ),
       barrierDismissible: true,
-    ).then((_) => _resetButton()); // Resetea cuando el modal se cierra
+    );
   }
 
   void _resetButton() {
@@ -100,64 +100,47 @@ class _LongPressButtonState extends State<LongPressButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: widget.isDiario ? 0 : Styles.padding, vertical: 16),
-      child: GestureDetector(
-        onLongPressStart: (_) => _startProgress(),
-        onLongPressEnd: (_) => _stopProgress(),
-        child: AnimatedScale(
-          scale: _isPressed ? 1.1 : 1.0,
-          duration: const Duration(milliseconds: 100),
-          child: Container(
-            height: 50,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: _isPressed
-                  ? const Color(0xFFFF7A66)
-                  : const Color(0xFFFC9214),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: _isPressed
-                  ? [
-                      BoxShadow(
-                        color: const Color(0xFFFF4931).withOpacity(0.7),
-                        blurRadius: 15,
-                        spreadRadius: 2,
-                      ),
-                    ]
-                  : [],
-            ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Center(
+    final HomeController controller = Get.put(HomeController());
+
+    return controller.selectedProfile.value == null
+        ? Container()
+        : Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: widget.isDiario ? 0 : Styles.padding, vertical: 16),
+            child: GestureDetector(
+              onLongPressStart: (_) => _startProgress(),
+              onLongPressEnd: (_) => _stopProgress(),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 50),
+                height: 60,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Color.lerp(
+                      const Color(0xFFFC9214), Colors.white, _progress),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: _isPressed
+                          ? Colors.orange.withOpacity(0.5)
+                          : Colors.transparent,
+                      blurRadius: 15,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Center(
                   child: Text(
                     'Reportar mascota perdida',
-                    style: const TextStyle(
-                      color: Colors.white,
+                    style: TextStyle(
+                      color: _progress > 0.5 ? Colors.black : Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Lato',
                     ),
                   ),
                 ),
-                if (_progress > 0 && _progress < 1.0)
-                  Positioned.fill(
-                    child: Container(
-                      color: Colors.black.withOpacity(0.3),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          value: _progress,
-                          color: Styles.fiveColor,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 }

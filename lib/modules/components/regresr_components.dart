@@ -11,7 +11,7 @@ class BarraBack extends StatelessWidget {
     this.subtitle,
     this.ColorSubtitle,
     this.size = 18.00,
-    this.fontFamily, // Nuevo parámetro para la fuente
+    this.fontFamily,
   });
 
   final String titulo;
@@ -19,56 +19,52 @@ class BarraBack extends StatelessWidget {
   final String? subtitle;
   final Color? ColorSubtitle;
   final double size;
-  final String? fontFamily; // Nuevo parámetro para la fuente
+  final String? fontFamily;
   final void Function()? callback;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: callback,
+      behavior: HitTestBehavior.opaque, // Asegura que toda el área es táctil
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 30,
-            height: 30,
-            child: Center(
-              child: SvgPicture.asset(
-                'assets/icons/svg/arrow_back.svg',
-                width: 15,
-                height: 15,
-                colorFilter: ColorFilter.mode(
-                    Styles.fiveColor, BlendMode.srcIn), // Aplica el color
-              ),
+          Container(
+            padding: const EdgeInsets.all(10), // Aumenta el área táctil
+            child: SvgPicture.asset(
+              'assets/icons/svg/arrow_back.svg',
+              width: 18,
+              height: 18,
+              colorFilter: ColorFilter.mode(
+                  Styles.fiveColor, BlendMode.srcIn), // Aplica el color
             ),
           ),
-          const SizedBox(width: 8), // Separación fija para evitar apilamientos
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   titulo,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
                   style: TextStyle(
                     fontSize: size,
                     fontWeight: FontWeight.w400,
-                    fontFamily: fontFamily ??
-                        'PoetsenOne', // Usa el parámetro o 'Lato' por defecto
+                    fontFamily: fontFamily ?? 'PoetsenOne',
                     color: color,
                   ),
                 ),
                 if (subtitle != null)
                   Text(
                     subtitle!,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
-                      fontFamily: fontFamily ??
-                          'Lato', // Usa el parámetro o 'Lato' por defecto
+                      fontFamily: fontFamily ?? 'Lato',
                       color: ColorSubtitle ?? Styles.fiveColor,
                     ),
                   ),

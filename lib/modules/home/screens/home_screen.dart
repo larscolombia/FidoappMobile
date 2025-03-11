@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/modules/components/reportar_mascota.dart';
 
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
@@ -87,7 +88,6 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   HeaderNotification(),
                   // Agregar animación para mostrar/ocultar el contenedor de notificaciones
-                  LongPressButton(),
 
                   AnimatedOpacity(
                     opacity:
@@ -188,6 +188,8 @@ class HomeScreen extends StatelessWidget {
   // Funciones que devuelven el contenido basado en el selectedIndex
 
   Widget _buildCase1Content(context) {
+   
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,6 +257,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+           LongPressButton(isDiario: true),
           const SizedBox(height: 16),
           Resources(),
           const SizedBox(height: 16),
