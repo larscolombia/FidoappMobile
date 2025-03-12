@@ -13,14 +13,61 @@ import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/comandos/comandos_controller.dart';
 import 'package:pawlly/styles/recursos.dart';
 
-class CrearComando extends StatelessWidget {
+class CrearComando extends StatefulWidget {
   CrearComando({super.key});
 
+  @override
+  State<CrearComando> createState() => _CrearComandoState();
+}
+
+class _CrearComandoState extends State<CrearComando> {
   // Busca los controladores ya existentes en lugar de inicializarlos nuevamente
   final ComandoController controller = Get.find<ComandoController>();
-  final HomeController homeController = Get.find<HomeController>();
 
+  final HomeController homeController = Get.find<HomeController>();
+  Map<String, bool> validate = {
+    'name': true,
+    'voz_comando': true,
+    'instructions': true,
+    'description': true,
+  };
   @override
+  void initState() {
+    super.initState();
+    validate = {
+      'name': true,
+      'voz_comando': true,
+      'instructions': true,
+      'description': true,
+    };
+  }
+
+  void validateForm() {
+    if (controller.dataComando['name'] == "") {
+      setState(() {
+        validate['name'] = true;
+      });
+    }
+
+    if (controller.dataComando['voz_comando'] == "") {
+      setState(() {
+        validate['voz_comando'] = true;
+      });
+    }
+
+    if (controller.dataComando['instructions'] == "") {
+      setState(() {
+        validate['instructions'] = true;
+      });
+    }
+
+    if (controller.dataComando['description'] == "") {
+      setState(() {
+        validate['description'] = true;
+      });
+    }
+  }
+
   Widget build(BuildContext context) {
     const double margen = 16.0;
     var headerHeight = 150.00;
@@ -47,14 +94,14 @@ class CrearComando extends StatelessWidget {
                         height: 120,
                         width: width,
                         padding: Styles.paddingAll,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Styles.colorContainer,
                         ),
-                        child: Align(
+                        child: const Align(
                           alignment: Alignment
                               .bottomCenter, // Alinea el contenido en la parte inferior
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(
+                            padding: EdgeInsets.symmetric(
                                 horizontal: 0, vertical: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,7 +166,6 @@ class CrearComando extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         // Selección de Mascota
-
                         const SizedBox(height: margen),
                         // Campos de Entrada para el Comando
                         Padding(
@@ -147,33 +193,66 @@ class CrearComando extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: margen),
-                              InputField(
+                              InputText(
                                 label: 'Nombre del Comando',
-                                placeholder: 'Nombre del Comando',
-                                onChanged: (value) =>
-                                    controller.updateField('name', value),
+                                placeholder: '',
+                                errorText: (validate['description'] ?? false)
+                                    ? 'campo requerido'
+                                    : '',
+                                onChanged: (value) {
+                                  controller.updateField('name', value);
+                                  if (value.isNotEmpty) {
+                                    setState(() {
+                                      validate['name'] = false;
+                                    });
+                                  }
+                                },
                               ),
-                              const SizedBox(height: margen),
-                              InputField(
+                              InputText(
                                 label: 'Descripción del Comando',
-                                placeholder: 'Descripción del Comando',
-                                onChanged: (value) => controller.updateField(
-                                    'description', value),
+                                placeholder: '',
+                                onChanged: (value) {
+                                  controller.updateField('description', value);
+                                  if (value.isNotEmpty) {
+                                    setState(() {
+                                      validate['description'] = false;
+                                    });
+                                  }
+                                },
+                                errorText: (validate['description'] ?? false)
+                                    ? 'campo requerido'
+                                    : '', // Mensaje de error
                               ),
-                              const SizedBox(height: margen),
-                              InputField(
+                              InputText(
                                 label: 'Voz del Comando',
-                                placeholder: 'Voz del Comando',
-                                onChanged: (value) => controller.updateField(
-                                    'voz_comando', value),
+                                placeholder: '',
+                                errorText: (validate['voz_comando'] ?? false)
+                                    ? 'campo requerido'
+                                    : '',
+                                onChanged: (value) {
+                                  controller.updateField('voz_comando', value);
+                                  if (value.isNotEmpty) {
+                                    setState(() {
+                                      validate['voz_comando'] = false;
+                                    });
+                                  }
+                                },
                               ),
-                              const SizedBox(height: margen),
-                              InputField(
-                                label: 'Instrucciones del Comando',
-                                placeholder: 'Instrucciones del Comando',
-                                onChanged: (value) => controller.updateField(
-                                    'instructions', value),
-                              ),
+                              InputText(
+                                  label: 'Instrucciones del Comando',
+                                  placeholder: '',
+                                  errorText: (validate['instructions'] ?? false)
+                                      ? 'campo requerido'
+                                      : '',
+                                  onChanged: (value) {
+                                    controller.updateField(
+                                        'instructions', value);
+                                    if (value.isNotEmpty) {
+                                      setState(() {
+                                        validate['instructions'] = false;
+                                      });
+                                    }
+                                  }),
                             ],
                           ),
                         ),
@@ -190,6 +269,21 @@ class CrearComando extends StatelessWidget {
                                   ? null // Desactiva el botón mientras se carga
                                   : () {
                                       // Actualizar el ID de la mascota seleccionada
+                                      validateForm();
+                                      if (validate['name'] == true) {
+                                        return;
+                                      }
+                                      if (validate['voz_comando'] == true) {
+                                        return;
+                                      }
+
+                                      if (validate['instructions'] == true) {
+                                        return;
+                                      }
+                                      if (validate['description'] == true) {
+                                        return;
+                                      }
+
                                       controller.updateField(
                                         'pet_id',
                                         homeController

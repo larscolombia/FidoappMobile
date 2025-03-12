@@ -169,7 +169,6 @@ class CursosDetalles extends StatelessWidget {
                               balanceController.showPurchaseModal(context);
                               // miscursos.subscribeToCourse(curso.id);
                               // Recargar la pantalla completamente
-                              Get.reload<CursosDetalles>();
                             },
                           ),
                         const SizedBox(height: 20),
@@ -306,7 +305,7 @@ class BanerCompraPrecio extends StatelessWidget {
                 child: Center(
                     child: Text(
                   '$price',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 14,
                     color: Colors.black,

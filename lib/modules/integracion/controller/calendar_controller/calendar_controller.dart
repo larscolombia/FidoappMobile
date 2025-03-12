@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
@@ -75,7 +76,11 @@ class CalendarController extends GetxController {
             .toList();
         filteredCalendars.value = allCalendars;
       } else {
-        Get.snackbar("Error", "Failed to fetch histories");
+        CustomSnackbar.show(
+          title: "Error",
+          message: "No se pudieron obtener los eventos",
+          isError: true,
+        );
       }
     } catch (e) {
       print("data calendario : $e");
@@ -197,7 +202,7 @@ class CalendarController extends GetxController {
     isLoading.value = true;
     isSuccess.value = false;
 
-    if (event['owner_id'] == "sqwsqsq") {
+    if (event['owner_id'] == "") {
       updateField(
         'owner_id',
         [AuthServiceApis.dataCurrentUser.id],
@@ -237,12 +242,20 @@ class CalendarController extends GetxController {
 
         isSuccess(true);
       } else {
-        Get.snackbar("Error", "comprueba los datos ");
+        CustomSnackbar.show(
+          title: "Error",
+          message: "Comprueba los datos ingresados",
+          isError: true,
+        );
         print('Error al enviar los datos: $e');
       }
     } catch (e) {
       print('Error al enviar los datos: $e');
-      Get.snackbar("Error", "Error al enviar los datos");
+      CustomSnackbar.show(
+        title: "Error",
+        message: "Error al enviar los datos",
+        isError: true,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -305,24 +318,24 @@ class CalendarController extends GetxController {
         // Desactivar el modo de edición
         isEdit.value = false;
 
-        Get.snackbar(
-          "Éxito",
-          "Evento actualizado correctamente",
-          snackPosition: SnackPosition.BOTTOM,
+        CustomSnackbar.show(
+          title: "Éxito",
+          message: "Evento actualizado correctamente",
+          isError: false,
         );
       } else {
-        Get.snackbar(
-          "Error",
-          "Error al actualizar el evento",
-          snackPosition: SnackPosition.BOTTOM,
+        CustomSnackbar.show(
+          title: "Error",
+          message: "Error al actualizar el evento",
+          isError: true,
         );
       }
     } catch (e) {
       print("Error al actualizar el evento: $e");
-      Get.snackbar(
-        "Error",
-        "Error al actualizar el evento",
-        snackPosition: SnackPosition.BOTTOM,
+      CustomSnackbar.show(
+        title: "Error",
+        message: "Error al actualizar el evento",
+        isError: true,
       );
     } finally {
       isLoading.value = false;

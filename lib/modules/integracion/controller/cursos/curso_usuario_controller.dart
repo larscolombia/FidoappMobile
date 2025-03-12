@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart';
+import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_usuarios.dart';
 
 import '../../../../services/auth_service_apis.dart';
@@ -62,8 +64,11 @@ class CursoUsuarioController extends GetxController {
 
       if (response.statusCode == 200) {
         // La actualización fue exitosa.
-        Get.snackbar('Éxito', 'El video ha sido marcado como visto',
-            backgroundColor: Colors.green);
+        CustomSnackbar.show(
+          title: 'Éxito',
+          message: 'El video ha sido marcado como visto',
+          isError: false,
+        );
         fetchCourses();
       } else {
         // Se produjo un error en la petición.
@@ -146,7 +151,10 @@ class CursoUsuarioController extends GetxController {
               primaryButtonText: 'Continuar',
               onPrimaryButtonPressed: () {
                 fetchCourses();
-                Get.back();
+                print('curo id ${courseId}');
+                Get.to(() => CursosDetalles(
+                      cursoId: courseId.toString(),
+                    ));
               },
             ),
             barrierDismissible: true,
@@ -158,8 +166,11 @@ class CursoUsuarioController extends GetxController {
         throw Exception('Failed to subscribe to course');
       }
     } catch (e) {
-      print('error ${e}');
-      Get.snackbar("Error", "error $e", backgroundColor: Colors.red);
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Error al suscribirse al curso: $e',
+        isError: true,
+      );
     } finally {
       isLoading.value = false;
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
@@ -173,11 +174,10 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                     callback: () {
                       if (_input.isEmpty ||
                           double.tryParse(_input.replaceAll(',', '')) == 0) {
-                        Get.snackbar(
-                          'Error',
-                          'Debe ingresar un monto mayor a 0',
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
+                        CustomSnackbar.show(
+                          title: 'Error',
+                          message: 'Debe ingresar un monto mayor a 0',
+                          isError: true,
                         );
                         return;
                       }
@@ -196,7 +196,6 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                                 _formattedInput(_input), context);
                           },
                         ),
-
                         barrierDismissible: true,
                       );
                     },

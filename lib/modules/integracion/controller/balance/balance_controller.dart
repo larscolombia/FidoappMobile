@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart'; // Asegúrate de que este archivo exista y contenga la constante BASE_URL
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
@@ -132,7 +133,7 @@ class UserBalanceController extends GetxController {
                       const SizedBox(height: 16),
                       // Imagen del producto
                       SizedBox(
-                        width: MediaQuery.of(context).size.width - 150,
+                        width: MediaQuery.of(context).size.width,
                         height: 250,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -141,6 +142,17 @@ class UserBalanceController extends GetxController {
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: 200,
+                            errorBuilder: (context, error, stackTrace) {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.asset(
+                                  'assets/images/placeholder_image.png', // Reemplaza con la ruta de tu imagen de repuesto
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: 200,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -257,10 +269,10 @@ class UserBalanceController extends GetxController {
                             : () {
                                 if (productController
                                     .selectedProduct.value.precio.isEmpty) {
-                                  Get.snackbar(
-                                    'Error',
-                                    'El precio es requerido',
-                                    snackPosition: SnackPosition.BOTTOM,
+                                  CustomSnackbar.show(
+                                    title: 'Error',
+                                    message: 'El precio es requerido',
+                                    isError: true,
                                   );
                                   return;
                                 }

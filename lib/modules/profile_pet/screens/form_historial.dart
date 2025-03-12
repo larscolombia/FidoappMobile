@@ -14,6 +14,7 @@ import 'package:pawlly/modules/integracion/controller/categoria/categoria_contro
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/confirmar_formulario.dart';
 import 'package:pawlly/styles/styles.dart';
+import '../../../components/custom_snackbar.dart';
 
 class FormularioRegistro extends StatelessWidget {
   final HistorialClinicoController controller =
@@ -181,8 +182,12 @@ class FormularioRegistro extends StatelessWidget {
                                   if (controller.validateReportData()) {
                                     controller.submitReport();
                                   } else {
-                                    Get.snackbar("Error",
-                                        "Por favor, rellene todos los campos");
+                                    CustomSnackbar.show(
+                                      title: 'Error',
+                                      message:
+                                          'Por favor, rellene todos los campos',
+                                      isError: true,
+                                    );
                                   }
                                   //Get.to(ConfirmarFormulario());
                                 },

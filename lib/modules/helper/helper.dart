@@ -8,6 +8,7 @@ import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class Helper extends GetX {
   Helper({required super.builder});
@@ -148,7 +149,6 @@ class Helper extends GetX {
                         ),
                         const SizedBox(height: 20),
                         SelectedAvatar(
-                          width: 300,
                           nombre: filteredUsers.first.firstName,
                           imageUrl: filteredUsers.first.profileImage,
                           profesion: Helper.tipoUsuario(
@@ -173,11 +173,10 @@ class Helper extends GetX {
                               .selectUser(userController.filteredUsers.first);
                           Navigator.of(context).pop();
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  'No hay usuarios disponibles para invitar'),
-                            ),
+                          CustomSnackbar.show(
+                            title: 'Error',
+                            message: 'No hay usuarios disponibles para invitar',
+                            isError: true,
                           );
                         }
                       },

@@ -114,24 +114,15 @@ class _LongPressButtonState extends State<LongPressButton> {
                 height: 60,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color.lerp(
-                      const Color(0xFFFC9214), Colors.white, _progress),
+                  color: Color.lerp(const Color(0xFFFC9214),
+                      const Color(0xFFFF4931), _progress),
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: _isPressed
-                          ? Colors.orange.withOpacity(0.5)
-                          : Colors.transparent,
-                      blurRadius: 15,
-                      spreadRadius: 2,
-                    ),
-                  ],
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Reportar mascota perdida',
                     style: TextStyle(
-                      color: _progress > 0.5 ? Colors.black : Colors.white,
+                      color: Colors.white,
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       fontFamily: 'Lato',

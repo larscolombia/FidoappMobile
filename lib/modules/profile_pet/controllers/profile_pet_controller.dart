@@ -7,6 +7,7 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class ProfilePetController extends GetxController {
   final TextEditingController searchController = TextEditingController();
@@ -128,10 +129,18 @@ class ProfilePetController extends GetxController {
     if (updatedPet != null) {
       // Actualización exitosa, puedes actualizar el perfil localmente o realizar alguna otra acción
       petProfile = updatedPet;
-      Get.snackbar('Éxito', 'Perfil de la mascota actualizado con éxito');
+      CustomSnackbar.show(
+        title: 'Éxito',
+        message: 'Perfil de la mascota actualizado con éxito',
+        isError: false,
+      );
     } else {
       // Manejo del error
-      Get.snackbar('Error', 'Hubo un problema al actualizar el perfil');
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Hubo un problema al actualizar el perfil',
+        isError: true,
+      );
     }
   }
 

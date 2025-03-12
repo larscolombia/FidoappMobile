@@ -33,10 +33,20 @@ class _FormularioDiarioState extends State<FormularioDiario> {
   File? __imageFile;
   late final PetActivityController controller;
   final HomeController homeController = Get.put(HomeController());
-
+  Map<String, bool> validate = {
+    'actividad': false,
+    'category_id': false,
+    'date': false,
+    'notas': false,
+  };
   @override
   void initState() {
     super.initState();
+    validate = {
+      'actividad': true,
+      'date': true,
+      'notas': true,
+    };
     if (widget.isEdit) {
       controller = Get.find<PetActivityController>();
       widget.ImagenEdit = controller.activitiesOne.value!.image ?? "";
@@ -44,6 +54,32 @@ class _FormularioDiarioState extends State<FormularioDiario> {
       controller.updateField('actividadId', controller.activitiesOne.value!.id);
     } else {
       controller = Get.put(PetActivityController());
+    }
+  }
+
+  void validateForm() {
+    if (controller.diario['actividad'] == "") {
+      setState(() {
+        validate['actividad'] = true;
+      });
+    }
+
+    if (controller.diario['category_id'] == "") {
+      setState(() {
+        validate['category_id'] = true;
+      });
+    }
+
+    if (controller.diario['date'] == "") {
+      setState(() {
+        validate['date'] = true;
+      });
+    }
+
+    if (controller.diario['notas'] == "") {
+      setState(() {
+        validate['notas'] = true;
+      });
     }
   }
 
@@ -136,8 +172,16 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                   : "",
                               label: 'Título del registro',
                               placeholder: '',
+                              errorText: (validate['actividad'] ?? false)
+                                  ? 'campo requerido'
+                                  : '', // Mensaje de
                               onChanged: (value) {
                                 controller.updateField('actividad', value);
+                                setState(() {
+                                  if (value.isNotEmpty) {
+                                    validate['actividad'] = false;
+                                  }
+                                });
                               },
                             ),
                           ),
@@ -184,9 +228,16 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                 Icons.arrow_drop_down_sharp,
                                 color: Styles.iconColorBack,
                               ),
+                              errorText: (validate['date'] ?? false)
+                                  ? 'campo requerido'
+                                  : '', // Mensaje de
                               onChanged: (value) {
                                 controller.updateField('date', value);
-                                print('Fecha del registro: $value');
+                                setState(() {
+                                  if (value.isNotEmpty) {
+                                    validate['date'] = false;
+                                  }
+                                });
                               },
                             ),
                           ),
@@ -202,8 +253,15 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               placeholder: 'Describe el evento',
                               onChanged: (value) {
                                 controller.updateField('notas', value);
-                                print('Descripción del registro: $value');
+                                setState(() {
+                                  if (value.isNotEmpty) {
+                                    validate['notas'] = false;
+                                  }
+                                });
                               },
+                              errorText: (validate['notas'] ?? false)
+                                  ? 'campo requerido'
+                                  : '', // Me
                             ),
                           ),
                           SizedBox(height: margen),
@@ -291,19 +349,29 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                         ? 'Cargando ...'
                                         : 'Finalizar',
                                 callback: () {
-                                  print('imagen $__imageFile');
+                                  validateForm();
+                                  if (validate['actividad'] == true) {
+                                    return;
+                                  }
+                                  if (validate['notas'] == true) {
+                                    return;
+                                  }
+
+                                  if (validate['date'] == true) {
+                                    return;
+                                  }
+
+                                  controller.updateField(
+                                    'pet_id',
+                                    homeController.selectedProfile.value!.id
+                                        .toString(),
+                                  );
                                   if (widget.isEdit) {
                                     controller.editPetActivity2(
                                       "${controller.activitiesOne.value!.id}",
                                       __imageFile,
                                     );
                                   } else {
-                                    controller.updateField(
-                                      'pet_id',
-                                      homeController.selectedProfile.value!.id
-                                          .toString(),
-                                    );
-
                                     controller.addPetActivity(__imageFile);
                                   }
                                 },

@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 // curso de la plataforma
 class CourseController extends GetxController {
@@ -65,10 +66,18 @@ class CourseController extends GetxController {
             coursesData.map((course) => Course.fromJson(course)).toList();
         courses.assignAll(coursesList);
       } else {
-        Get.snackbar('Error', 'No se pudieron recuperar los cursos');
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'No se pudieron recuperar los cursos',
+          isError: true,
+        );
       }
     } catch (e) {
-      print('Error en course controller: $e');
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Error al cargar los cursos',
+        isError: true,
+      );
     } finally {
       isLoading.value = false;
     }

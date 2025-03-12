@@ -14,6 +14,7 @@ import 'package:pawlly/modules/integracion/controller/historial_clinico/historia
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/form_historial.dart';
 import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 class PasaporteMascota extends StatelessWidget {
   PasaporteMascota({super.key});
@@ -271,15 +272,16 @@ class PasaporteMascota extends StatelessWidget {
                       const SizedBox(height: 10),
                       Helper.titulo('Datos de Vacunación y Tratamientos'),
                       SizedBox(height: margin),
-                      ButtonDefaultWidget(
-                        title: 'Añadir Informe >',
-                        callback: () {
-                          Get.to(
-                            () => FormularioRegistro(),
-                          );
-                        },
-                        defaultColor: Styles.fiveColor,
-                      ),
+                      if (AuthServiceApis.dataCurrentUser.userType != 'user')
+                        ButtonDefaultWidget(
+                          title: 'Añadir Informe >',
+                          callback: () {
+                            Get.to(
+                              () => FormularioRegistro(),
+                            );
+                          },
+                          defaultColor: Styles.fiveColor,
+                        ),
                       SizedBox(height: margin + margin),
                       //pisa papel
                       HistorialGrid(controller: historiaClinicaController),
