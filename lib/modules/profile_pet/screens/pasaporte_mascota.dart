@@ -14,6 +14,7 @@ import 'package:pawlly/modules/integracion/controller/historial_clinico/historia
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/form_historial.dart';
 import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 class PasaporteMascota extends StatelessWidget {
   PasaporteMascota({super.key});
@@ -54,8 +55,8 @@ class PasaporteMascota extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'PoetsenOne',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     Text(
@@ -64,7 +65,7 @@ class PasaporteMascota extends StatelessWidget {
                         color: Colors.black,
                         fontFamily: 'Lato',
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                       ),
                     )
                   ],
@@ -271,15 +272,16 @@ class PasaporteMascota extends StatelessWidget {
                       const SizedBox(height: 10),
                       Helper.titulo('Datos de Vacunación y Tratamientos'),
                       SizedBox(height: margin),
-                      ButtonDefaultWidget(
-                        title: 'Añadir Informe >',
-                        callback: () {
-                          Get.to(
-                            () => FormularioRegistro(),
-                          );
-                        },
-                        defaultColor: Styles.fiveColor,
-                      ),
+                      if (AuthServiceApis.dataCurrentUser.userType != 'user')
+                        ButtonDefaultWidget(
+                          title: 'Añadir Informe >',
+                          callback: () {
+                            Get.to(
+                              () => FormularioRegistro(),
+                            );
+                          },
+                          defaultColor: Styles.fiveColor,
+                        ),
                       SizedBox(height: margin + margin),
                       //pisa papel
                       HistorialGrid(controller: historiaClinicaController),
@@ -305,7 +307,10 @@ class PasaporteMascota extends StatelessWidget {
                           return ButtonDefaultWidget(
                             title: petController.isLoading.value
                                 ? 'Actualizando ...'
-                                : 'Actualizar +',
+                                : 'Finalizar',
+                            svgIconPath: 'assets/icons/svg/flecha_derecha.svg',
+                            svgIconColor: Colors.white,
+                            svgIconPathSize: 12,
                             callback: () {
                               // Verifica si pet.dateOfBirth no es nulo o vacío
                               print('objeto actulizado ${jsonEncode(pet)}');

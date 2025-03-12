@@ -250,7 +250,11 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                       width: 226,
                                       child: Text(
                                         'Selecciona la mascota vinculada a este evento',
-                                        style: Styles.AvatarComentario,
+                                        style: TextStyle(
+                                            fontFamily: 'Lato',
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xFF383838)),
                                       ),
                                     ),
                                     const SizedBox(height: 10),
@@ -289,7 +293,8 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                           style: TextStyle(
                                             fontSize: 16,
                                             color: Colors.black,
-                                            fontFamily: 'PoetsenOne',
+                                            fontWeight: FontWeight.w800,
+                                            fontFamily: 'Lato',
                                           ),
                                         ),
                                       ),
@@ -348,7 +353,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                   width: MediaQuery.of(context).size.width,
                                   height: 50,
                                   child: ButtonDefaultWidget(
-                                    title: 'editar',
+                                    title: 'Editar',
                                     callback: () {
                                       print(
                                           'evento editr  ${json.encode(event)}');

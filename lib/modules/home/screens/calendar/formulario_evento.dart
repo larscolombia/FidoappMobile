@@ -258,11 +258,11 @@ class _CreateEventState extends State<CreateEvent> {
                         labelColor: Color(0xFF383838),
 
                         placeholder: (validate['name'] ?? false)
-                            ? 'campo requerido'
+                            ? 'Campo requerido'
                             : '',
                         errorPadding: (validate['name'] ?? false),
                         errorText: (validate['name'] ?? false)
-                            ? 'campo requerido'
+                            ? 'Campo requerido'
                             : '', // Mensaje de error
                         onChanged: (value) {
                           calendarController.updateField(
@@ -287,7 +287,7 @@ class _CreateEventState extends State<CreateEvent> {
                           labelColor: Color(0xFF383838),
                           errorPadding: (validate['description'] ?? false),
                           errorText: (validate['description'] ?? false)
-                              ? 'campo requerido'
+                              ? 'Campo requerido'
                               : '', // Mensaje de error
                           placeholder: 'Describe el evento',
                           onChanged: (value) {
@@ -311,7 +311,7 @@ class _CreateEventState extends State<CreateEvent> {
                           placeholder: '',
                           errorPadding: (validate['location'] ?? false),
                           errorText: (validate['location'] ?? false)
-                              ? 'campo requerido'
+                              ? 'Campo requerido'
                               : '', // Mensaje de error
                           onChanged: (value) {
                             calendarController.updateField('location', value);
@@ -366,7 +366,7 @@ class _CreateEventState extends State<CreateEvent> {
                         isDateField: true,
                         errorPadding: (validate['start_date'] ?? false),
                         errorText: (validate['start_date'] ?? false)
-                            ? 'campo requerido'
+                            ? 'Campo requerido'
                             : '', // Mensaje de error
                         suffixIcon:
                             Image.asset('assets/icons/flecha_select.png'),
@@ -399,7 +399,7 @@ class _CreateEventState extends State<CreateEvent> {
                           placeholder: 'Hora del evento',
                           labelColor: Color(0xFF383838),
                           errorText: (validate['event_time'] ?? false)
-                              ? 'campo requerido'
+                              ? 'Campo requerido'
                               : "",
                           isTimeField: true,
                           borderColor: Color(0XFFFCBA67),
@@ -423,11 +423,10 @@ class _CreateEventState extends State<CreateEvent> {
                       child: const Text(
                         'Selecciona la mascota vinculada\na este evento',
                         style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF383838),
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w600,
-                        ),
+                            fontFamily: 'Lato',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF383838)),
                       ),
                     ),
                     SizedBox(height: defaultMargin + 10),
@@ -524,6 +523,9 @@ class _CreateEventState extends State<CreateEvent> {
                                 validate['description'] = true;
                                 validate['location'] = true;
                               });
+                              Helper.showErrorSnackBar(
+                                'Por favor, rellene todos los campos requeridos.',
+                              );
 
                               CustomSnackbar.show(
                                 title: "Campos Incompletos",

@@ -29,29 +29,29 @@ class BotonCompartir extends StatelessWidget {
                   height: 32,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: Colors.green.shade100,
+                    color: Color(0xFFE5FEED),
                     border: Border.all(
-                      color: const Color.fromARGB(255, 11, 139, 21),
+                      color: const Color(0xFF19A02F),
                       width: 0.5,
                     ),
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: const [
+                      children: [
                         Icon(
                           Icons.check,
-                          color: Colors.green,
+                          color: Color(0xFF19A02F),
                           size: 16,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'Adquirido',
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Color(0xff19A02F),
+                            color: Color(0xFF19A02F),
+                            fontWeight: FontWeight.w700,
                             fontFamily: 'Lato',
-                            fontWeight: FontWeight.w600,
+                            fontSize: 12,
                           ),
                         ),
                       ],

@@ -149,7 +149,6 @@ class Helper extends GetX {
                         ),
                         const SizedBox(height: 20),
                         SelectedAvatar(
-                          width: 300,
                           nombre: filteredUsers.first.firstName,
                           imageUrl: filteredUsers.first.profileImage,
                           profesion: Helper.tipoUsuario(
@@ -203,6 +202,17 @@ class Helper extends GetX {
         fontFamily: 'PoetsenOne',
         height: 1.3,
       ),
+    );
+  }
+
+  static void showErrorSnackBar(String message) {
+    GetSnackBar(
+      title: "Error",
+      message: message,
+      icon: const Icon(Icons.error, color: Colors.white),
+      backgroundColor: Colors.redAccent,
+      duration: const Duration(seconds: 3),
+      snackPosition: SnackPosition.TOP,
     );
   }
 }

@@ -133,7 +133,7 @@ class UserBalanceController extends GetxController {
                       const SizedBox(height: 16),
                       // Imagen del producto
                       SizedBox(
-                        width: MediaQuery.of(context).size.width - 150,
+                        width: MediaQuery.of(context).size.width,
                         height: 250,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -142,6 +142,17 @@ class UserBalanceController extends GetxController {
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: 200,
+                            errorBuilder: (context, error, stackTrace) {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.asset(
+                                  'assets/images/placeholder_image.png', // Reemplaza con la ruta de tu imagen de repuesto
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: 200,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),

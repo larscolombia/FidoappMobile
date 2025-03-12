@@ -178,13 +178,13 @@ class ComandoController extends GetxController {
   //crear comando
 
   var dataComando = {
-    "name": "Comando 1",
-    "description": "Descripción del comando 1",
+    "name": "",
+    "description": "",
     "type": "especializado",
     "is_favorite": true,
     "category_id": 1,
-    "voz_comando": "Voz de comando 1",
-    "instructions": "Instrucciones del comando 1",
+    "voz_comando": "",
+    "instructions": "",
     "pet_id": ''
   }.obs;
 

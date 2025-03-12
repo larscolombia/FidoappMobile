@@ -93,7 +93,7 @@ class CalendarController extends GetxController {
     return allCalendars.where((event) {
       try {
         // Convertir la fecha del evento (string) a DateTime
-        final eventDate = DateFormat('dd-MM-yyyy HH:mm:ss').parse(event.date);
+        final eventDate = DateFormat('dd-MM-yyyy').parse(event.date);
         return isSameDay(eventDate, day); // Comparar con el día actual
       } catch (e) {
         print('Error al analizar la fecha: $e');

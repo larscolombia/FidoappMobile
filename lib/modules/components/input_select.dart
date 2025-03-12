@@ -12,6 +12,7 @@ class InputSelect extends StatelessWidget {
     this.suffixIcon,
     this.color,
     this.prefiIcon,
+    this.prefiIconSVG,
     this.TextColor,
     this.value,
     this.isReadOnly = false,
@@ -26,31 +27,17 @@ class InputSelect extends StatelessWidget {
   final Color? color;
   final Icon? suffixIcon;
   final String? prefiIcon;
+  final String? prefiIconSVG;
   final bool isReadOnly;
 
   @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuItem<String>> formattedItems = items.map((item) {
-      return DropdownMenuItem<String>(
-        value: item.value,
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: Color(0xFFF0F0F0)),
-            ),
-          ),
-          child: item.child,
-        ),
-      );
-    }).toList();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (label != null)
           Text(
-            label ?? '',
+            label!,
             style: const TextStyle(
               fontSize: 14,
               color: Color(0xFF383838),
@@ -59,55 +46,35 @@ class InputSelect extends StatelessWidget {
             ),
           ),
         const SizedBox(height: 8),
-        Theme(
-          data: Theme.of(context).copyWith(
-            popupMenuTheme: PopupMenuThemeData(
-              shape: RoundedRectangleBorder(
+        IgnorePointer(
+          ignoring: isReadOnly,
+          child: DropdownButtonFormField<String>(
+            value: items.any((item) => item.value == value) ? value : null,
+            isExpanded: true, // ✅ Evita desbordes horizontales
+            icon:
+                const Icon(Icons.arrow_drop_down, color: Styles.colorContainer),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                side: const BorderSide(color: Colors.red, width: 1),
+                borderSide: BorderSide(
+                  color: value != null ? Colors.blue : const Color(0xFFFCBA67),
+                  width: 1,
+                ),
               ),
-            ),
-          ),
-          child: IgnorePointer(
-            // Wrap DropdownButtonFormField with IgnorePointer
-            ignoring: isReadOnly, // Disable interaction when isReadOnly is true
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.90,
-              ),
-              child: DropdownButtonFormField<String>(
-                value: value,
-                icon: const SizedBox.shrink(),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(
-                      color:
-                          value != null ? Colors.blue : const Color(0xFFFCBA67),
-                      width: 1,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(
-                      color:
-                          value != null ? Colors.blue : const Color(0xFFFCBA67),
-                      width: 1,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(
-                      color:
-                          value != null ? Colors.blue : const Color(0xFFFCBA67),
-                      width: 1,
-                    ),
-                  ),
-                  filled: true,
-                  fillColor: color ?? Styles.colorContainer,
-                  prefixIcon: prefiIcon != null
+              filled: true,
+              fillColor: color ?? Styles.colorContainer,
+              prefixIcon: prefiIconSVG != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 5),
+                      child: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: SvgPicture.asset(prefiIconSVG!),
+                      ),
+                    )
+                  : prefiIcon != null
                       ? Padding(
-                          padding: const EdgeInsets.only(left: 10),
+                          padding: const EdgeInsets.only(left: 20, right: 5),
                           child: Image.asset(
                             prefiIcon!,
                             width: 24,
@@ -115,48 +82,47 @@ class InputSelect extends StatelessWidget {
                           ),
                         )
                       : null,
-                  suffixIcon: SizedBox(
-                    width: 30,
-                    child: suffixIcon ??
-                        Padding(
-                          padding: const EdgeInsets.all(18),
-                          child: SvgPicture.asset(
-                            'assets/icons/svg/flecha_select.svg',
-                            width: 24,
-                            height: 24,
-                          ),
-                        ),
+              suffixIcon: suffixIcon ??
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: SvgPicture.asset(
+                      'assets/icons/svg/flecha_select.svg',
+                      width: 5,
+                      height: 5,
+                    ),
                   ),
-                ),
-                hint: Padding(
-                  padding: const EdgeInsets.only(left: 8),
+            ),
+            hint: Text(
+              placeholder ?? 'Seleccione una opción',
+              overflow: TextOverflow.ellipsis, // ✅ Evita desbordes de texto
+              style: TextStyle(
+                color: TextColor ?? Colors.grey,
+                fontFamily: 'Lato',
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+            ),
+            items: items.map((DropdownMenuItem<String> item) {
+              return DropdownMenuItem<String>(
+                value: item.value,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown, // ✅ Ajusta el texto si es muy largo
                   child: Text(
-                    placeholder ?? 'placeholder',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color:
-                          TextColor ?? const Color.fromARGB(255, 252, 252, 252),
+                    item.value!,
+                    style: const TextStyle(
                       fontFamily: 'Lato',
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: 14,
+                      height: 1.3,
+                      letterSpacing: 0,
                     ),
                   ),
                 ),
-                items: formattedItems,
-                onChanged: isReadOnly ? null : onChanged,
-                dropdownColor: Colors.white,
-                elevation: 4,
-                selectedItemBuilder: (BuildContext context) {
-                  return formattedItems.map((DropdownMenuItem<String> item) {
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: item.child,
-                    );
-                  }).toList();
-                },
-              ),
-            ),
+              );
+            }).toList(),
+            onChanged: isReadOnly ? null : onChanged,
+            dropdownColor: Colors.white,
+            elevation: 4,
           ),
         ),
       ],

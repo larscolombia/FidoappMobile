@@ -10,7 +10,7 @@ class BarraBack extends StatelessWidget {
     this.color = Styles.primaryColor,
     this.subtitle,
     this.ColorSubtitle,
-    this.size = 18.00,
+    this.size = 20.00,
     this.fontFamily,
   });
 
