@@ -65,11 +65,13 @@ class Calendar extends StatelessWidget {
                 },
                 eventLoader: (day) => calendarController.getEventsForDay(day),
                 calendarStyle: CalendarStyle(
-                  selectedTextStyle: const TextStyle(
+                  selectedTextStyle: TextStyle(
                     fontFamily: 'Lato',
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: Colors.black,
+                    color: isSameDay(controller.selectedDay.value, today)
+                        ? Colors.white
+                        : Colors.black,
                   ),
                   todayTextStyle: const TextStyle(
                     fontFamily: 'Lato',
