@@ -205,4 +205,15 @@ class Helper extends GetX {
       ),
     );
   }
+
+  static void showErrorSnackBar(String message) {
+    GetSnackBar(
+      title: "Error",
+      message: message,
+      icon: const Icon(Icons.error, color: Colors.white),
+      backgroundColor: Colors.redAccent,
+      duration: const Duration(seconds: 3),
+      snackPosition: SnackPosition.TOP,
+    );
+  }
 }

@@ -197,7 +197,7 @@ class CalendarController extends GetxController {
     isLoading.value = true;
     isSuccess.value = false;
 
-    if (event['owner_id'] == "") {
+    if (event['owner_id'] == "sqwsqsq") {
       updateField(
         'owner_id',
         [AuthServiceApis.dataCurrentUser.id],

@@ -515,10 +515,10 @@ class _CreateEventState extends State<CreateEvent> {
                                 validate['description'] = true;
                                 validate['location'] = true;
                               });
+                              Helper.showErrorSnackBar(
+                                'Por favor, rellene todos los campos requeridos.',
+                              );
 
-                              Get.snackbar("Campos Incompletos",
-                                  "Por favor, rellene todos los campos requeridos.",
-                                  backgroundColor: Styles.ColorError);
                               return;
                             }
 
