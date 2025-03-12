@@ -230,7 +230,11 @@ class ConfirmarFormulario extends StatelessWidget {
                                     width: 302,
                                     child: Text(
                                       'Selecciona la mascota',
-                                      style: Styles.textProfile15w700,
+                                      style: TextStyle(
+                                          fontFamily: 'Lato',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xFF383838)),
                                     ),
                                   )
                                 : const SizedBox(),

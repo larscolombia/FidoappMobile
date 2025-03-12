@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
@@ -13,7 +14,6 @@ import 'package:http/http.dart' as http;
 import 'package:pawlly/modules/integracion/controller/transaccion/transaction_controller.dart';
 import 'package:pawlly/modules/integracion/model/categoria/categoria_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-import '../components/custom_snackbar.dart';
 
 class PushProvider extends GetxController {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;

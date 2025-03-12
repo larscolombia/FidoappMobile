@@ -422,12 +422,11 @@ class _CreateEventState extends State<CreateEvent> {
                       width: inputWidth,
                       child: const Text(
                         'Selecciona la mascota vinculada\na este evento',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF383838),
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w600,
-                        ),
+                       style: TextStyle(
+                            fontFamily: 'Lato',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF383838)),
                       ),
                     ),
                     SizedBox(height: defaultMargin + 10),
