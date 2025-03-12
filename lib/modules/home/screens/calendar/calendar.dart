@@ -45,9 +45,7 @@ class Calendar extends StatelessWidget {
                 ),
               ),
               child: TableCalendar(
-                availableGestures:
-                    AvailableGestures.none, //this single code will solve
-
+                availableGestures: AvailableGestures.none,
                 daysOfWeekHeight: 70,
                 firstDay: DateTime.utc(2022, 1, 1),
                 lastDay: DateTime.utc(2030, 12, 31),
@@ -59,9 +57,7 @@ class Calendar extends StatelessWidget {
                   calendarController.filterByDate(selectedDay);
                   calendarController.gg(selectedDay);
                 },
-                eventLoader: (day) {
-                  return calendarController.getEventsForDay(day);
-                },
+                eventLoader: (day) => calendarController.getEventsForDay(day),
                 calendarStyle: CalendarStyle(
                   defaultTextStyle: const TextStyle(
                     fontFamily: 'Lato',
@@ -81,18 +77,18 @@ class Calendar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   selectedDecoration: BoxDecoration(
-                    color: const Color(0xFFFFFC9214),
+                    color: Color.fromARGB(255, 180, 141, 93),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
-                    
-                  ),
-                  markerDecoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color:
-                        Colors.red, // Puedes cambiar el color del punto aquí.
                   ),
                 ),
                 calendarBuilders: CalendarBuilders(
+                  markerBuilder: (context, day, events) {
+                    if (events.isNotEmpty) {
+                      return _buildMarkers(day, events.cast<CalendarModel>());
+                    }
+                    return null;
+                  },
                   defaultBuilder: (context, day, focusedDay) {
                     return Center(
                       child: Text(
@@ -187,7 +183,7 @@ class Calendar extends StatelessWidget {
                     elevation: 0,
                     clipBehavior: Clip.antiAlias,
                     backgroundColor: Styles.primaryColor,
-                    shape: const CircleBorder(), // Forma redonda asegurada
+                    shape: const CircleBorder(),
                     child: const Icon(
                       Icons.add,
                       color: Colors.white,
@@ -197,9 +193,7 @@ class Calendar extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 5,
-          ),
+          const SizedBox(height: 5),
           RecargaComponente(
             callback: () {
               calendarController.getEventos();
@@ -210,25 +204,32 @@ class Calendar extends StatelessWidget {
     );
   }
 
-  Widget _buildMarkers(DateTime date, List events) {
-    if (events.isEmpty)
-      return const SizedBox(); // Sin eventos, no renderizar nada.
+  Widget _buildMarkers(DateTime date, List<CalendarModel> events) {
+    if (events.isEmpty) return const SizedBox.shrink();
 
-    // Si hay eventos, renderiza un punto por cada uno
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: events.map((event) {
-        return Container(
-          margin: const EdgeInsets.symmetric(
-              horizontal: 1.5), // Espaciado entre puntos
-          width: 7.0,
-          height: 7.0,
-          decoration: BoxDecoration(
-            color: _getEventColor(event),
-            shape: BoxShape.circle,
-          ),
-        );
-      }).toList(),
+    return Positioned(
+      top: 3,
+      right: 3,
+      child: Wrap(
+        spacing: 4,
+        children: events.map((event) {
+          return Container(
+            width: 8.0,
+            height: 8.0,
+            decoration: BoxDecoration(
+              color: _getEventColor(event),
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 2,
+                  offset: const Offset(0, 1),
+                )
+              ],
+            ),
+          );
+        }).toList(),
+      ),
     );
   }
 
