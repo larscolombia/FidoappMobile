@@ -99,6 +99,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                               width: MediaQuery.of(context).size.width,
                               child: BarraBack(
                                 titulo: 'Perfil de Usuario',
+                                size: 20,
                                 subtitle: 'Completa la informmación',
                                 ColorSubtitle: Colors.black,
                                 callback: () {

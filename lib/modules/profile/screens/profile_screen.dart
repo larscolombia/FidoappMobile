@@ -167,8 +167,8 @@ class ProfileScreen extends StatelessWidget {
                                         padding: const EdgeInsets.all(7),
                                         decoration: BoxDecoration(
                                           color: controller.isEditing.value
-                                              ? Styles.fiveColor
-                                              : Styles.greyTextColor,
+                                              ? Colors.white
+                                              : Styles.fiveColor,
                                           borderRadius:
                                               BorderRadius.circular(10),
                                         ),
@@ -192,7 +192,11 @@ class ProfileScreen extends StatelessWidget {
                                     callback: () {
                                       Get.to(FormularioVerificacion());
                                     },
-                                    title: 'Perfil público >',
+                                    title: 'Perfil público',
+                                    svgIconPath:
+                                        'assets/icons/svg/flecha_derecha.svg',
+                                    svgIconColor: Colors.white,
+                                    svgIconPathSize: 14,
                                   ),
                                 ),
                                 const SizedBox(
@@ -213,8 +217,11 @@ class ProfileScreen extends StatelessWidget {
                                         TextSpan(
                                           text: 'Solicitud Confirmada, ',
                                           style: TextStyle(
-                                            color: Colors
-                                                .green, // Color verde para la primera parte
+                                            color: Colors.green,
+                                            fontFamily:
+                                                'Lato', // Color verde para la primera parte
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
                                           ),
                                         ),
                                         TextSpan(
@@ -222,6 +229,10 @@ class ProfileScreen extends StatelessWidget {
                                               'visita tu perfil público para configurar cómo se verá',
                                           style: TextStyle(
                                             color: Color(0xFF383838),
+                                            fontFamily:
+                                                'Lato', // Color verde para la primera parte
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
                                           ),
                                         ),
                                       ],
@@ -233,6 +244,12 @@ class ProfileScreen extends StatelessWidget {
                         ],
                       ),
                     ),
+                    const Divider(
+                      height: 40,
+                      thickness: .5,
+                      color: Color(0xFFDFDFDF),
+                    ),
+
                     // Formulario de Perfil
                     ListView(
                       shrinkWrap: true,
