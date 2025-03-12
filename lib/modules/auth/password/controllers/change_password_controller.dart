@@ -11,6 +11,7 @@ import '../screens/pages/password_set_success.dart';
 import '../../../../../utils/common_base.dart';
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/local_storage.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class ChangePasswordController extends GetxController {
   RxBool isLoading = false.obs;
@@ -26,40 +27,58 @@ class ChangePasswordController extends GetxController {
   }
 
   saveForm() async {
-    print('change Pass Controller join');
-
-    isLoading(true);
     try {
+      isLoading(true);
+
       if (getValueFromLocal(SharedPreferenceConst.USER_PASSWORD) !=
           oldPasswordCont.text.trim()) {
-        toast(locale.value.yourOldPasswordDoesnT);
+        CustomSnackbar.show(
+          title: 'Error',
+          message: locale.value.yourOldPasswordDoesnT,
+          isError: true,
+        );
         return;
       } else if (newpasswordCont.text.trim() !=
           confirmPasswordCont.text.trim()) {
-        toast(locale.value.yourNewPasswordDoesnT);
+        CustomSnackbar.show(
+          title: 'Error',
+          message: locale.value.yourNewPasswordDoesnT,
+          isError: true,
+        );
         return;
-      } else if ((oldPasswordCont.text.trim() == newpasswordCont.text.trim()) &&
-          oldPasswordCont.text.trim() == confirmPasswordCont.text.trim()) {
-        toast(locale.value.oldAndNewPassword);
+      } else if (oldPasswordCont.text.trim() == newpasswordCont.text.trim()) {
+        CustomSnackbar.show(
+          title: 'Error',
+          message: locale.value.oldAndNewPassword,
+          isError: true,
+        );
         return;
       }
-      hideKeyBoardWithoutContext();
 
+      hideKeyBoardWithoutContext();
       Map<String, dynamic> req = {
         'old_password': getValueFromLocal(SharedPreferenceConst.USER_PASSWORD),
         'new_password': confirmPasswordCont.text.trim(),
       };
 
-      await AuthServiceApis.changePasswordAPI(request: req).then((value) async {
-        setValueToLocal(SharedPreferenceConst.USER_PASSWORD,
-            confirmPasswordCont.text.trim());
-        loginUserData.value.apiToken = value.data.apiToken;
-        Get.to(() => const PasswordSetSuccess());
-      }).catchError((e) {
-        toast(e.toString(), print: true);
-      });
+      final value = await AuthServiceApis.changePasswordAPI(request: req);
+      setValueToLocal(
+          SharedPreferenceConst.USER_PASSWORD, confirmPasswordCont.text.trim());
+      loginUserData.value.apiToken = value.data.apiToken;
+
+      CustomSnackbar.show(
+        title: 'Éxito',
+        message: 'Contraseña actualizada correctamente',
+        isError: false,
+      );
+
+      Get.to(() => const PasswordSetSuccess());
     } catch (e) {
-      toast(e.toString(), print: true);
+      CustomSnackbar.show(
+        title: 'Error',
+        message: e.toString(),
+        isError: true,
+      );
     } finally {
       isLoading(false);
     }

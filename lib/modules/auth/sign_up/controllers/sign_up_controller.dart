@@ -9,6 +9,7 @@ import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/utils/common_base.dart';
 import 'package:pawlly/utils/constants.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class SignUpController extends GetxController {
   RxBool isLoading = false.obs;
@@ -23,11 +24,19 @@ class SignUpController extends GetxController {
   TextEditingController genCont = TextEditingController();
 
   Future<void> saveForm() async {
-    print('SignUp Controller');
+    if (!isAcceptedTc.value) {
+      CustomSnackbar.show(
+        title: 'Error',
+        message: locale.value.pleaseAcceptTermsAnd,
+        isError: true,
+      );
+      return;
+    }
 
-    if (isAcceptedTc.value) {
+    try {
       isLoading(true);
       hideKeyBoardWithoutContext();
+
       Map<String, dynamic> req = {
         "email": emailCont.text.trim(),
         "first_name": fisrtNameCont.text.trim(),
@@ -36,63 +45,25 @@ class SignUpController extends GetxController {
         UserKeys.userType: LoginTypeConst.LOGIN_TYPE_USER,
       };
 
-      try {
-        final value = await AuthServiceApis.createUser(request: req);
-        toast(value.message.toString(), print: true);
+      final value = await AuthServiceApis.createUser(request: req);
+      CustomSnackbar.show(
+        title: 'Éxito',
+        message: '¡Felicidades! Tu cuenta ha sido creada.',
+        isError: false,
+      );
 
-        // Mostrar el diálogo de éxito con dos botones
-        Get.dialog(
-          CustomAlertDialog(
-            icon: Icons.check_circle_outline,
-            title: locale.value.actionPerformedSuccessfully,
-            description: "¡Felicidades! Tu cuenta ha sido creada.",
-            primaryButtonText: "Continuar",
-            onPrimaryButtonPressed: () {
-              // Navegar a la pantalla de inicio de sesión sin iniciar sesión automáticamente
-              Get.offUntil(GetPageRoute(page: () => SignInScreen()),
-                  (route) => route.isFirst);
-            },
-            /*
-            secondaryButtonText: "Conectar",
-            onSecondaryButtonPressed: () async {
-              // Registrar el controlador si no está registrado
-              if (!Get.isRegistered<SignInController>()) {
-                Get.put(SignInController());
-              }
-
-              final SignInController sCont = Get.find();
-              sCont.emailCont.text = emailCont.text.trim();
-              sCont.passwordCont.text = passwordCont.text.trim();
-              await sCont.saveForm().whenComplete(() => isLoading(false));
-            },
-            */
-          ),
-          barrierDismissible:
-              false, // No permite cerrar el diálogo tocando fuera
-        );
-      } catch (e) {
-        log('E: $e');
-        toast(e.toString(), print: true);
-
-        // Mostrar el diálogo de error con un botón
-        Get.dialog(
-          CustomAlertDialog(
-            icon: Icons.error_outline,
-            title: locale.value.actionFailed,
-            description: "Ha ocurrido un error.",
-            primaryButtonText: "Regresar",
-            onPrimaryButtonPressed: () {
-              Get.back(); // Regresa al diálogo anterior
-            },
-          ),
-          barrierDismissible:
-              false, // No permite cerrar el diálogo tocando fuera
-        );
-      } finally {
-        isLoading(false);
-      }
-    } else {
-      toast(locale.value.pleaseAcceptTermsAnd);
+      Get.offUntil(
+        GetPageRoute(page: () => SignInScreen()),
+        (route) => route.isFirst,
+      );
+    } catch (e) {
+      CustomSnackbar.show(
+        title: 'Error',
+        message: e.toString(),
+        isError: true,
+      );
+    } finally {
+      isLoading(false);
     }
   }
 }

@@ -13,6 +13,7 @@ import 'package:pawlly/utils/common_base.dart';
 import 'package:pawlly/utils/constants.dart';
 import 'package:pawlly/utils/local_storage.dart';
 import 'package:pawlly/utils/social_logins.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class SignInController extends GetxController {
   RxBool isNavigateToDashboard = false.obs;
@@ -59,23 +60,31 @@ class SignInController extends GetxController {
   }
 
   Future<void> saveForm() async {
-    isLoading(true);
-    hideKeyBoardWithoutContext();
+    try {
+      isLoading(true);
+      hideKeyBoardWithoutContext();
 
-    Map<String, dynamic> req = {
-      'email': emailCont.text.trim(),
-      'password': passwordCont.text.trim(),
-      // 'player_id': playerId.value,
-      UserKeys.userType: LoginTypeConst
-          .LOGIN_TYPE_USER, // tipo de usuario con google pisa papel
-    };
+      Map<String, dynamic> req = {
+        'email': emailCont.text.trim(),
+        'password': passwordCont.text.trim(),
+        UserKeys.userType: LoginTypeConst.LOGIN_TYPE_USER,
+      };
 
-    await AuthServiceApis.loginUser(request: req).then((value) async {
+      final value = await AuthServiceApis.loginUser(request: req);
       handleLoginResponse(loginResponse: value);
-    }).catchError((e) {
+      CustomSnackbar.show(
+        title: 'Bienvenido',
+        message: 'Has iniciado sesión exitosamente',
+        isError: false,
+      );
+    } catch (e) {
       isLoading(false);
-      toast(e.toString(), print: true);
-    });
+      CustomSnackbar.show(
+        title: 'Error',
+        message: e.toString(),
+        isError: true,
+      );
+    }
   }
 
   googleSignIn(BuildContext context) async {
