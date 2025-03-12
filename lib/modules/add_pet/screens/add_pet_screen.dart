@@ -200,7 +200,7 @@ class AddPetScreen extends StatelessWidget {
                                 }
                                 return null;
                               },
-                            ], // Validación de campo requerido
+                            ], // Validación de Campo requerido
                           );
                         }),
                       ),

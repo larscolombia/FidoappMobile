@@ -197,7 +197,7 @@ class _CrearComandoState extends State<CrearComando> {
                                 label: 'Nombre del Comando',
                                 placeholder: '',
                                 errorText: (validate['description'] ?? false)
-                                    ? 'campo requerido'
+                                    ? 'Campo requerido'
                                     : '',
                                 onChanged: (value) {
                                   controller.updateField('name', value);
@@ -220,14 +220,14 @@ class _CrearComandoState extends State<CrearComando> {
                                   }
                                 },
                                 errorText: (validate['description'] ?? false)
-                                    ? 'campo requerido'
+                                    ? 'Campo requerido'
                                     : '', // Mensaje de error
                               ),
                               InputText(
                                 label: 'Voz del Comando',
                                 placeholder: '',
                                 errorText: (validate['voz_comando'] ?? false)
-                                    ? 'campo requerido'
+                                    ? 'Campo requerido'
                                     : '',
                                 onChanged: (value) {
                                   controller.updateField('voz_comando', value);
@@ -242,7 +242,7 @@ class _CrearComandoState extends State<CrearComando> {
                                   label: 'Instrucciones del Comando',
                                   placeholder: '',
                                   errorText: (validate['instructions'] ?? false)
-                                      ? 'campo requerido'
+                                      ? 'Campo requerido'
                                       : '',
                                   onChanged: (value) {
                                     controller.updateField(

@@ -55,8 +55,8 @@ class PasaporteMascota extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: 'PoetsenOne',
-                        fontSize: 24,
-                        fontWeight: FontWeight.w800,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                     Text(
@@ -65,7 +65,7 @@ class PasaporteMascota extends StatelessWidget {
                         color: Colors.black,
                         fontFamily: 'Lato',
                         fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                       ),
                     )
                   ],
@@ -307,7 +307,10 @@ class PasaporteMascota extends StatelessWidget {
                           return ButtonDefaultWidget(
                             title: petController.isLoading.value
                                 ? 'Actualizando ...'
-                                : 'Actualizar +',
+                                : 'Finalizar',
+                            svgIconPath: 'assets/icons/svg/flecha_derecha.svg',
+                            svgIconColor: Colors.white,
+                            svgIconPathSize: 12,
                             callback: () {
                               // Verifica si pet.dateOfBirth no es nulo o vacío
                               print('objeto actulizado ${jsonEncode(pet)}');

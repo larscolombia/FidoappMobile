@@ -173,7 +173,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               label: 'Título del registro',
                               placeholder: '',
                               errorText: (validate['actividad'] ?? false)
-                                  ? 'campo requerido'
+                                  ? 'Campo requerido'
                                   : '', // Mensaje de
                               onChanged: (value) {
                                 controller.updateField('actividad', value);
@@ -229,7 +229,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                 color: Styles.iconColorBack,
                               ),
                               errorText: (validate['date'] ?? false)
-                                  ? 'campo requerido'
+                                  ? 'Campo requerido'
                                   : '', // Mensaje de
                               onChanged: (value) {
                                 controller.updateField('date', value);
@@ -260,7 +260,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                 });
                               },
                               errorText: (validate['notas'] ?? false)
-                                  ? 'campo requerido'
+                                  ? 'Campo requerido'
                                   : '', // Me
                             ),
                           ),
