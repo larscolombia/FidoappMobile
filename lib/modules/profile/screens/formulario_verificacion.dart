@@ -187,18 +187,22 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                 placeholder:
                                     controller.user.value.profile?.expert,
                                 TextColor: Colors.black,
-                                prefiIcon: 'assets/icons/user-octagon.png',
+                                //prefiIcon: 'assets/icons/user-octagon.png',
+                                prefiIconSVG: 'assets/icons/svg/genero.svg',
                                 items: specialityController.specialities
                                     .map((entry) {
                                   return DropdownMenuItem(
                                     value: entry.description,
-                                    child: Text(entry.description,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                            fontFamily: "Lato",
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w800)),
+                                    child: Text(
+                                      entry.description,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontFamily: "Lato",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
                                   );
                                 }).toList(),
                               ),

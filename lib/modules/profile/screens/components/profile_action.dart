@@ -63,12 +63,12 @@ class ProfileActions extends StatelessWidget {
                 child: InputText(
                   placeholder: "",
                   fw: FontWeight.bold,
-
-                  placeholderImage: Image.asset('assets/icons/genero.png'),
+                  placeholderSvg: 'assets/icons/svg/genero.svg',
                   placeholderFontFamily: "Lato",
                   label: 'Área de especialización',
                   initialValue:
                       profileController.user.value.profile?.expert ?? "",
+                  isTextArea: true,
                   onChanged: (value) {
                     controller.specializationArea.value = value;
                   },
