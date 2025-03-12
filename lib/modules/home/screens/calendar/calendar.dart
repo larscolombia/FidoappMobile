@@ -20,6 +20,9 @@ class Calendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime today =
+        DateTime.now(); // Obtiene la fecha y hora actual del dispositivo
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,28 +59,47 @@ class Calendar extends StatelessWidget {
                 onDaySelected: (selectedDay, focusedDay) {
                   calendarController.filterByDate(selectedDay);
                   calendarController.gg(selectedDay);
+                  // Actualiza la fecha seleccionada
+                  controller.selectedDay.value =
+                      selectedDay; // Actualiza la fecha seleccionada
                 },
                 eventLoader: (day) => calendarController.getEventsForDay(day),
                 calendarStyle: CalendarStyle(
+                  selectedTextStyle: TextStyle(
+                    fontFamily: 'Lato',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: isSameDay(controller.selectedDay.value, today)
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                  todayTextStyle: const TextStyle(
+                    fontFamily: 'Lato',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  ),
                   defaultTextStyle: const TextStyle(
                     fontFamily: 'Lato',
                     fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                     color: Colors.black,
                   ),
                   weekendTextStyle: const TextStyle(
                     fontFamily: 'Lato',
                     fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                     color: Colors.black,
                   ),
                   todayDecoration: BoxDecoration(
-                    color: Styles.blackColor,
+                    color: const Color(0xFFFC9214),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   selectedDecoration: BoxDecoration(
-                    color: Color.fromARGB(255, 180, 141, 93),
+                    color: isSameDay(controller.selectedDay.value, today)
+                        ? const Color(0xFFFC9214)
+                        : const Color(0xFFFC9214).withOpacity(0.30),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -221,7 +243,8 @@ class Calendar extends StatelessWidget {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color:
+                      const Color.fromARGB(255, 182, 41, 41).withOpacity(0.1),
                   blurRadius: 2,
                   offset: const Offset(0, 1),
                 )
