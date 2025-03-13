@@ -13,6 +13,7 @@ import 'package:pawlly/utils/common_base.dart';
 import 'package:pawlly/utils/constants.dart';
 import 'package:pawlly/utils/local_storage.dart';
 import 'package:pawlly/utils/social_logins.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class SignInController extends GetxController {
   RxBool isNavigateToDashboard = false.obs;
@@ -59,23 +60,52 @@ class SignInController extends GetxController {
   }
 
   Future<void> saveForm() async {
-    isLoading(true);
-    hideKeyBoardWithoutContext();
+    // Validar campos vacíos
+    if (emailCont.text.isEmpty || passwordCont.text.isEmpty) {
+      CustomSnackbar.show(
+        title: 'Campos requeridos',
+        message: 'Por favor ingrese su correo y contraseña',
+        isError: true,
+      );
+      return;
+    }
 
-    Map<String, dynamic> req = {
-      'email': emailCont.text.trim(),
-      'password': passwordCont.text.trim(),
-      // 'player_id': playerId.value,
-      UserKeys.userType: LoginTypeConst
-          .LOGIN_TYPE_USER, // tipo de usuario con google pisa papel
-    };
+    try {
+      isLoading(true);
+      hideKeyBoardWithoutContext();
 
-    await AuthServiceApis.loginUser(request: req).then((value) async {
+      Map<String, dynamic> req = {
+        'email': emailCont.text.trim(),
+        'password': passwordCont.text.trim(),
+        UserKeys.userType: LoginTypeConst.LOGIN_TYPE_USER,
+      };
+
+      final value = await AuthServiceApis.loginUser(request: req);
       handleLoginResponse(loginResponse: value);
-    }).catchError((e) {
+      CustomSnackbar.show(
+        title: 'Bienvenido',
+        message: 'Has iniciado sesión exitosamente',
+        isError: false,
+      );
+    } catch (e) {
+      // Si el error es de usuario no registrado, mostrar mensaje específico
+      if (e.toString().contains('user not found') ||
+          e.toString().contains('no registered')) {
+        CustomSnackbar.show(
+          title: 'Usuario no registrado',
+          message: 'Por favor regístrese antes de iniciar sesión',
+          isError: true,
+        );
+      } else {
+        CustomSnackbar.show(
+          title: 'Error',
+          message: e.toString(),
+          isError: true,
+        );
+      }
+    } finally {
       isLoading(false);
-      toast(e.toString(), print: true);
-    });
+    }
   }
 
   googleSignIn(BuildContext context) async {

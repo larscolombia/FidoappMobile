@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
@@ -287,6 +288,14 @@ class SignUpScreen extends GetView<SignUpController> {
                               if (_signUpformKey.currentState!.validate()) {
                                 _signUpformKey.currentState!.save();
                                 controller.saveForm();
+                              } else {
+                                // Mostrar Snackbar cuando la validación falla
+                                CustomSnackbar.show(
+                                  title: 'Campos incompletos',
+                                  message:
+                                      'Por favor complete todos los campos obligatorios',
+                                  isError: true,
+                                );
                               }
                             },
                             title: locale.value.signUp,
