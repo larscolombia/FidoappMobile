@@ -216,6 +216,16 @@ class ComandoController extends GetxController {
             description: 'Comando creado con éxito',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
+              dataComando = {
+                "name": "",
+                "description": "",
+                "type": "especializado",
+                "is_favorite": true,
+                "category_id": 1,
+                "voz_comando": "",
+                "instructions": "",
+                "pet_id": ''
+              };
               Get.off(HomeScreen()); // Cerrar el diálogo
               CustomSnackbar.show(
                 title: 'Éxito',

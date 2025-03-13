@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
@@ -35,10 +36,10 @@ class _CrearComandoState extends State<CrearComando> {
   void initState() {
     super.initState();
     validate = {
-      'name': true,
-      'voz_comando': true,
-      'instructions': true,
-      'description': true,
+      'name': false,
+      'voz_comando': false,
+      'instructions': false,
+      'description': false,
     };
   }
 
@@ -270,17 +271,38 @@ class _CrearComandoState extends State<CrearComando> {
                                   : () {
                                       // Actualizar el ID de la mascota seleccionada
                                       validateForm();
+
                                       if (validate['name'] == true) {
+                                        CustomSnackbar.show(
+                                          title: 'Error',
+                                          message: Helper.errorValidate,
+                                          isError: true,
+                                        );
                                         return;
                                       }
                                       if (validate['voz_comando'] == true) {
+                                        CustomSnackbar.show(
+                                          title: 'Error',
+                                          message: Helper.errorValidate,
+                                          isError: true,
+                                        );
                                         return;
                                       }
 
                                       if (validate['instructions'] == true) {
+                                        CustomSnackbar.show(
+                                          title: 'Error',
+                                          message: Helper.errorValidate,
+                                          isError: true,
+                                        );
                                         return;
                                       }
                                       if (validate['description'] == true) {
+                                        CustomSnackbar.show(
+                                          title: 'Error',
+                                          message: Helper.errorValidate,
+                                          isError: true,
+                                        );
                                         return;
                                       }
 

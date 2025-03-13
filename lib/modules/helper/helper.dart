@@ -14,7 +14,7 @@ class Helper extends GetX {
   Helper({required super.builder});
 
   static Helper get instance => Get.find<Helper>();
-
+  static const errorValidate = "rellene todos los campos requeridos";
   static const margenDefault = 16.0;
   static const paddingDefault = 26.0;
   static const String funte1 = 'Lato';

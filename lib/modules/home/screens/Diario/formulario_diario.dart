@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pawlly/components/app_scaffold.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
@@ -306,7 +307,16 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                         : 'Finalizar',
                                 callback: () {
                                   validateForm();
-                                  if (validate.containsValue(true)) return;
+                                  if (validate.containsValue(true)) {
+                                    CustomSnackbar.show(
+                                      title: 'Error',
+                                      message:
+                                          'rellene todos los campos requeridos',
+                                      isError: true,
+                                    );
+                                    return;
+                                  }
+                                  ;
 
                                   controller.updateField(
                                     'pet_id',
