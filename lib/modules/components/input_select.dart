@@ -16,6 +16,7 @@ class InputSelect extends StatelessWidget {
     this.TextColor,
     this.value,
     this.isReadOnly = false,
+    this.borderColor,
   });
 
   final String? placeholder;
@@ -29,7 +30,7 @@ class InputSelect extends StatelessWidget {
   final String? prefiIcon;
   final String? prefiIconSVG;
   final bool isReadOnly;
-
+  final Color? borderColor;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -51,7 +52,7 @@ class InputSelect extends StatelessWidget {
           data: Theme.of(context).copyWith(
             popupMenuTheme: PopupMenuThemeData(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(10.1),
                 side: const BorderSide(
                   color: Styles.iconColorBack, // Modal border color
                   width: 1.5,
@@ -70,8 +71,8 @@ class InputSelect extends StatelessWidget {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
                   borderSide: BorderSide(
-                    color: Styles.colorContainer,
-                    width: 0.5,
+                    color: borderColor ?? Styles.iconColorBack,
+                    width: 0.1,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -85,7 +86,7 @@ class InputSelect extends StatelessWidget {
                 enabledBorder: OutlineInputBorder(
                   // Enabled border style
                   borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Styles.colorContainer, // Enabled border color
                     width: 0.5,
                   ),
@@ -113,10 +114,10 @@ class InputSelect extends StatelessWidget {
                         : null,
                 suffixIcon: suffixIcon ??
                     Padding(
-                      padding: const EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(18),
                       child: SvgPicture.asset(
                         'assets/icons/svg/flecha_select.svg',
-                        width: 5,
+                        width: 1,
                         height: 5,
                       ),
                     ),
@@ -136,23 +137,13 @@ class InputSelect extends StatelessWidget {
                   value: item.value,
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: Text(
-                      item.value!,
-                      style: const TextStyle(
-                        fontFamily: 'Lato',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        height: 1.3,
-                        letterSpacing: 0,
-                      ),
-                    ),
+                    child: item.child,
                   ),
                 );
               }).toList(),
               onChanged: isReadOnly ? null : onChanged,
               dropdownColor: Colors.white,
               elevation: 4,
-              menuMaxHeight: 350,
             ),
           ),
         ),

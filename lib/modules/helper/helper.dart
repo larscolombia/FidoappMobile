@@ -19,7 +19,13 @@ class Helper extends GetX {
   static const paddingDefault = 26.0;
   static const String funte1 = 'Lato';
   static const Color dividerColor = Color(0xFFEAEAEA);
-
+  static const selectStyle = TextStyle(
+    fontFamily: 'Lato',
+    fontWeight: FontWeight.w500,
+    fontSize: 14,
+    height: 1.3,
+    letterSpacing: 0,
+  );
   static String tipoUsuario(String userType) {
     switch (userType) {
       case 'vet':

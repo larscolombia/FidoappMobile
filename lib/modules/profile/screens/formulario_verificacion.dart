@@ -184,6 +184,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                       value.toString();
                                 },
                                 label: 'Áreas de especialización',
+                                borderColor: Styles.iconColorBack,
                                 placeholder:
                                     controller.user.value.profile?.expert,
                                 TextColor: Colors.black,

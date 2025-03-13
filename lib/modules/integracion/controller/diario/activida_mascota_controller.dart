@@ -154,6 +154,14 @@ class PetActivityController extends GetxController {
             description: 'El Diario ha sido creado exitosamente.',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
+              diario.value = {
+                'actividad': "",
+                'date': "",
+                'category_id': "",
+                'notas': "",
+                'pet_id': '0',
+                'image': "",
+              };
               Get.off(() => Diario());
             },
           ),
@@ -236,6 +244,14 @@ class PetActivityController extends GetxController {
             description: 'El Diario ha sido creado exitosamente.',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
+              diario.value = {
+                'actividad': "",
+                'date': "",
+                'category_id': "",
+                'notas': "",
+                'pet_id': '0',
+                'image': "",
+              };
               Get.off(() => Diario());
             },
           ),
