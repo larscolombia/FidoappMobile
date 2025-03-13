@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/main.dart';
@@ -167,9 +168,13 @@ class PerfilMascotas extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                const Icon(
-                  Icons.arrow_drop_down,
-                  color: Styles.iconColorBack, // Color del icono
+                Padding(
+                  padding: EdgeInsets.only(right: 5.0),
+                  child: SvgPicture.asset(
+                    'assets/icons/svg/arrow_profile.svg',
+                    height: 16,
+                    width: 16,
+                  ),
                 ),
               ],
             );
