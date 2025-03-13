@@ -103,7 +103,7 @@ class CursosDetalles extends StatelessWidget {
                         Text(
                           curso.description,
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 15,
                               fontWeight: FontWeight.w400,

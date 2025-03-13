@@ -188,7 +188,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                     controller.user.value.profile?.expert,
                                 TextColor: Colors.black,
                                 //prefiIcon: 'assets/icons/user-octagon.png',
-                                prefiIconSVG: 'assets/icons/svg/genero.svg',
+                                // prefiIconSVG: 'assets/icons/svg/genero.svg',
                                 items: specialityController.specialities
                                     .map((entry) {
                                   return DropdownMenuItem(

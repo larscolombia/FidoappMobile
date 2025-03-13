@@ -69,6 +69,8 @@ class CursoUsuarioController extends GetxController {
           message: 'El video ha sido marcado como visto',
           isError: false,
         );
+        print('curso ${coursePlatformId}');
+
         fetchCourses();
       } else {
         // Se produjo un error en la petición.

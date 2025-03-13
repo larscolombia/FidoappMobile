@@ -183,6 +183,7 @@ class _CursoVideoState extends State<CursoVideo> {
                       ),
                       SizedBox(height: margen),
                       // Comentario (InputTextWithIcon) solo envuelto en Obx si es necesario
+                      /**
                       if (widget.tipovideo == "video")
                         Container(
                           width: MediaQuery.of(context).size.width - 100,
@@ -208,11 +209,12 @@ class _CursoVideoState extends State<CursoVideo> {
                                   ),
                                   const SizedBox(width: 10),
                                   const SizedBox(
-                                    child: Text('Marca como visto'),
+                                    child: Text('Marcar como visto'),
                                   ),
                                 ],
                               )),
                         ),
+                       */
                       SizedBox(height: margen),
                       Obx(() {
                         if (_commentController.isComentarioPosrLoading.value) {
