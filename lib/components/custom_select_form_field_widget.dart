@@ -262,7 +262,14 @@ class _CustomSelectFormFieldWidgetState
                 shrinkWrap: true,
                 children: widget.items!.map((item) {
                   return ListTile(
-                    title: Text(item),
+                    title: Text(item,
+                        style: const TextStyle(
+                          fontFamily: 'Lato',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF535251),
+                        )),
+                    selectedColor: Colors.black,
                     onTap: () {
                       setState(() {
                         _selectedValue = item;

@@ -152,6 +152,7 @@ class InputSelect extends StatelessWidget {
               onChanged: isReadOnly ? null : onChanged,
               dropdownColor: Colors.white,
               elevation: 4,
+              menuMaxHeight: 350,
             ),
           ),
         ),
