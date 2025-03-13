@@ -71,8 +71,10 @@ class FideCoin extends StatelessWidget {
                         child: Text(
                           'No tienes movimientos aún.',
                           style: TextStyle(
-                            fontSize: 14,
                             color: Color(0xFF959595),
+                            fontSize:
+                                14, // Reduje el tamaño de fuente para "No hay cursos"
+                            fontFamily: 'Lato',
                             fontWeight: FontWeight.w500,
                           ),
                         ),

@@ -311,7 +311,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                     CustomSnackbar.show(
                                       title: 'Error',
                                       message:
-                                          'rellene todos los campos requeridos',
+                                          'Por favor, rellene todos los campos requeridos',
                                       isError: true,
                                     );
                                     return;
