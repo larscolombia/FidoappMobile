@@ -140,8 +140,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                         return Editar(
                                           coloredit:
                                               !calendarController.isEdit.value
-                                                  ? const Color.fromARGB(
-                                                      255, 107, 106, 106)
+                                                  ? Styles.secondaryColor
                                                   : Styles.colorContainer,
                                           callback: () {
                                             userController.filterUsers(

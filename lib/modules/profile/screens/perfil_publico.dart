@@ -62,10 +62,10 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                 profileController: profileController,
                 id: AuthServiceApis.dataCurrentUser.id.toString(),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(
                     left: Helper.paddingDefault, right: Helper.paddingDefault),
-                child: const SizedBox(
+                child: SizedBox(
                   height: 20,
                   child: Divider(
                     thickness: .2,
@@ -86,11 +86,12 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
                 profileController: profileController,
                 controller: controller,
               ),
+              /** 
               const SizedBox(height: 20),
               ProfileActions(
                 controller: controller,
                 profileController: profileController,
-              ),
+              ),*/
               const SizedBox(height: 20),
               CommentsSection(
                 id: '${AuthServiceApis.dataCurrentUser.id}',

@@ -44,13 +44,19 @@ class ProfileHeader extends StatelessWidget {
             ),
             child: Obx(
               () {
-                return CircleAvatar(
-                  radius: 46,
-                  backgroundImage: NetworkImage(
-                    profileController.user.value.profileImage ?? '',
-                  ),
-                  backgroundColor: Colors.transparent,
-                );
+                final profileImage = profileController.user.value.profileImage;
+                return profileImage != null && profileImage.isNotEmpty
+                    ? CircleAvatar(
+                        radius: 46,
+                        backgroundImage: NetworkImage(profileImage),
+                        backgroundColor: Colors.transparent,
+                      )
+                    : const CircleAvatar(
+                        radius: 46,
+                        backgroundColor:
+                            Colors.grey, // O un placeholder de tu elección
+                        child: Icon(Icons.person, size: 46),
+                      );
               },
             ),
           ),

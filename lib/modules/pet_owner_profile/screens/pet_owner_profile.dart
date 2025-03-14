@@ -92,10 +92,11 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
                     Sobremi(
                         profileController: profileController,
                         controller: controller),
+                    /**
                     const SizedBox(height: 20),
                     ProfileActions(
                         controller: controller,
-                        profileController: profileController),
+                        profileController: profileController), */
                     const SizedBox(height: 20),
                     profileController.user.value.userType == "user"
                         ? ListPet(pets: profileController.user.value.pets ?? [])
