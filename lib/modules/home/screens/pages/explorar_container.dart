@@ -9,6 +9,9 @@ class Explore extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = Get.width;
+    final screenHeight = Get.height;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -21,14 +24,15 @@ class Explore extends StatelessWidget {
             top: 0,
             bottom: 0,
             right: 0,
-            child: Container(
-              width: 127,
-              height: Get.height,
-              decoration: const BoxDecoration(),
+            child: SizedBox(
+              width: screenWidth * 0.3, // Responsive width for the first image
+              height: screenHeight,
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Image.asset(
                   Assets.elice,
+                  fit: BoxFit
+                      .contain, // Consider using BoxFit.contain for better fit
                 ),
               ),
             ),
@@ -37,10 +41,9 @@ class Explore extends StatelessWidget {
             top: 0,
             bottom: 0,
             right: 0,
-            child: Container(
-              width: Get.width * 0.5,
-              height: Get.height,
-              decoration: const BoxDecoration(),
+            child: SizedBox(
+              width: screenWidth * 0.5,
+              height: screenHeight,
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Image.asset(
@@ -55,12 +58,13 @@ class Explore extends StatelessWidget {
             padding: const EdgeInsets.only(left: 22, top: 15, bottom: 15),
             child: Row(
               children: [
-                // Texto y botón ocupando el 60% del ancho
+                // Texto y botón occupying a percentage of the width
                 SizedBox(
-                  width: Get.width * 0.4, // 60% del ancho total
+                  width: screenWidth *
+                      0.5, // Increased width to accommodate potentially longer text
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min, // Ajuste dinámico en altura
+                    mainAxisSize: MainAxisSize.min, // Adjust height dynamically
                     children: [
                       // Texto principal
                       const Text(
@@ -88,7 +92,8 @@ class Explore extends StatelessWidget {
                       const SizedBox(height: 10),
                       // Botón para explorar
                       SizedBox(
-                        width: 97,
+                        width:
+                            screenWidth * 0.25, // Make button width responsive
                         height: 34,
                         child: ButtonDefaultWidget(
                           textSize: 13,

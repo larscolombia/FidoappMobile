@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
@@ -55,24 +55,12 @@ class _CreateEventState extends State<CreateEvent> {
     'tipo': false,
     'pet_id': false,
   };
+
   @override
   void initState() {
     super.initState();
-    // Llamamos a fetchUsers una sola vez al iniciar el widget
-    validate = {
-      'name': false,
-      'date': false,
-      'end_date': false,
-      'event_time': false,
-      "start_date": false,
-      'slug': false,
-      'description': false,
-      'location': false,
-      'tipo': false,
-      'pet_id': false,
-    };
-
-    userController.fetchUsers();
+    // Llamamos a fetchUsers solo una vez cuando el widget se carga
+    // userController.fetchUsers();
   }
 
   // Widget para mostrar el servicio de evento médico
@@ -178,7 +166,6 @@ class _CreateEventState extends State<CreateEvent> {
 
   @override
   Widget build(BuildContext context) {
-    // Variables globales para padding, margen y ancho de los inputs
     final double ancho = MediaQuery.of(context).size.width;
     final EdgeInsets defaultPadding =
         const EdgeInsets.symmetric(horizontal: 26.0);
@@ -256,7 +243,6 @@ class _CreateEventState extends State<CreateEvent> {
                       child: InputText(
                         label: 'Nombre del Evento',
                         labelColor: Color(0xFF383838),
-
                         placeholder: (validate['name'] ?? false)
                             ? 'Campo requerido'
                             : '',
@@ -342,7 +328,9 @@ class _CreateEventState extends State<CreateEvent> {
                           calendarController.updateField('tipo', value);
                           userController.type.value =
                               value == 'medico' ? 'vet' : 'trainer';
-                          userController.fetchUsers();
+                          if (value != 'evento') {
+                            userController.fetchUsers();
+                          }
                         },
                       ),
                     ),

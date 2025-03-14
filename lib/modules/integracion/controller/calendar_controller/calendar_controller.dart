@@ -220,6 +220,19 @@ class CalendarController extends GetxController {
         body: jsonEncode(event.toJson()),
       );
       print('response data evento  ${response.body}');
+      if (response.statusCode == 429) {
+        // Aquí puedes usar el encabezado Retry-After para saber cuánto esperar
+        final retryAfter = response.headers['retry-after'];
+        if (retryAfter != null) {
+          final retryDuration = Duration(seconds: int.parse(retryAfter));
+          await Future.delayed(retryDuration);
+          return postEvent(); // Reintenta la solicitud
+        } else {
+          // Si no hay encabezado Retry-After, solo esperar unos segundos
+          await Future.delayed(Duration(seconds: 5));
+          return postEvent();
+        }
+      }
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('response : ${response.statusCode}');
         userController.selectedUser.value = null;

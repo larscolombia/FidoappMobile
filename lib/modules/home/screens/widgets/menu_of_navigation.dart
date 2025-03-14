@@ -129,7 +129,7 @@ class MenuOfNavigation extends GetView<HomeController> {
       },
       child: IntrinsicWidth(
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: 1),
           curve: Curves.easeOutQuad,
           padding: EdgeInsets.symmetric(
               // Increased horizontal padding significantly
