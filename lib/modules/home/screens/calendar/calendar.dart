@@ -22,6 +22,7 @@ class Calendar extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime today =
         DateTime.now(); // Obtiene la fecha y hora actual del dispositivo
+    final data = calendarController.filteredCalendars.value;
 
     return Container(
       child: Column(
@@ -215,7 +216,20 @@ class Calendar extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 15),
+          if (data.isEmpty)
+            const Center(
+              child: Text(
+                'No hay actividades disponibles.',
+                style: TextStyle(
+                    color: Color(0xFF959595),
+                    fontSize: 16,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          const SizedBox(height: 15),
           RecargaComponente(
             callback: () {
               calendarController.getEventos();

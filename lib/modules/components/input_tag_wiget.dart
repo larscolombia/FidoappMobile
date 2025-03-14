@@ -71,43 +71,18 @@ class _TagInputWidgetState extends State<TagInputWidget> {
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () {
-              // Cerramos el diálogo sin hacer nada
-              Get.back();
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Styles.primaryColor,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 35,
-                vertical: 8,
-              ),
-              elevation: 0,
-              textStyle: const TextStyle(
-                fontFamily: 'Lato',
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            child: const Text(
-              'Cancelar',
-              style: const TextStyle(
-                fontFamily: 'Lato',
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: Styles.primaryColor,
+              backgroundColor: Color(0xFFFC9214),
               padding: const EdgeInsets.symmetric(
                 horizontal: 35,
                 vertical: 8,
               ),
               elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(12), // Se agrega el borderRadius
+              ),
             ),
             onPressed: () {
               final newTag = _dialogController.text.trim();
@@ -125,6 +100,39 @@ class _TagInputWidgetState extends State<TagInputWidget> {
             },
             child: const Text(
               'Agregar',
+              style: const TextStyle(
+                fontFamily: 'Lato',
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              // Cerramos el diálogo sin hacer nada
+              Get.back();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Styles.primaryColor,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 35,
+                vertical: 8,
+              ),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(12), // Se agrega el borderRadius
+              ),
+              textStyle: const TextStyle(
+                fontFamily: 'Lato',
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            child: const Text(
+              'Cancelar',
               style: const TextStyle(
                 fontFamily: 'Lato',
                 color: Colors.white,
@@ -166,7 +174,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                     width: 1, // Grosor del borde
                   ),
                   borderRadius:
-                      BorderRadius.circular(16), // Radio de las esquinas
+                      BorderRadius.circular(12), // Radio de las esquinas
                 ),
                 label: Text(
                   tag,
@@ -197,7 +205,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                   width: 1, // Grosor del borde
                 ),
                 borderRadius:
-                    BorderRadius.circular(16), // Radio de las esquinas
+                    BorderRadius.circular(12), // Radio de las esquinas
               ),
               label: Row(
                 mainAxisSize: MainAxisSize.min,

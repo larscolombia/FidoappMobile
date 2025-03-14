@@ -30,19 +30,7 @@ class ActivityListScreen extends StatelessWidget {
             );
           }
 
-          if (data.isEmpty) {
-            return const Center(
-              child: Text(
-                'No hay actividades disponibles.',
-                style: TextStyle(
-                    color: Color(0xFF959595),
-                    fontSize: 16,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w500),
-                textAlign: TextAlign.center,
-              ),
-            );
-          }
+         
 
           // Agrupar los eventos por fecha
           Map<String, List<CalendarModel>> groupedByDate = {};

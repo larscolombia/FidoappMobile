@@ -121,7 +121,8 @@ class CursosEntrenamiento extends StatelessWidget {
                       width: ancho,
                       child: TrainingPrograms(
                         cursosController: cursosController,
-                        vermas: false,
+                        vermas: miscursos.courses.length == 0 ? false : true,
+                        showTitle: miscursos.courses.length == 0 ? false : true,
                       ),
                     ),
                     SizedBox(height: margen),

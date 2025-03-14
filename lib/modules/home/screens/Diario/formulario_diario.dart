@@ -249,7 +249,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                             child: InputText(
                               label: 'Adjuntar imagen',
                               placeholderSvg: 'assets/icons/svg/imagen2.svg',
-                              placeholder: 'Añadir imagen .pdf',
+                              placeholder: 'Añadir imagen',
                               placeholderSuffixSvg:
                                   'assets/icons/svg/vector_select_images.svg',
                               isImagePicker: true,

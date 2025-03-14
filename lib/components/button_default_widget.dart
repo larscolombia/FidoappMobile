@@ -22,7 +22,7 @@ class ButtonDefaultWidget extends StatelessWidget {
   final bool isLoading;
   final List<BoxShadow>? boxShadow;
   final bool showDecoration;
-  final bool disabled; // New parameter to control disabled state
+  final bool disabled;
 
   const ButtonDefaultWidget({
     super.key,
@@ -44,8 +44,7 @@ class ButtonDefaultWidget extends StatelessWidget {
     this.isLoading = false,
     this.boxShadow,
     this.showDecoration = false,
-    this.disabled =
-        false, // Default value is false, button is enabled by default
+    this.disabled = false,
   });
 
   @override
@@ -83,62 +82,57 @@ class ButtonDefaultWidget extends StatelessWidget {
               ),
             ),
           ),
-          onPressed: disabled || isLoading // Check for disabled state here
-              ? null
-              : callback,
+          onPressed: disabled || isLoading ? null : callback,
           child: isLoading
               ? CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(textColor),
                 )
               : Row(
+                  mainAxisSize: MainAxisSize
+                      .min, // Asegura que el contenido no se expanda
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: iconAfterText
-                      ? [
-                          Text(
-                            title,
-                            style: GoogleFonts.poppins(
-                              fontSize: textSize ?? 16,
-                              fontWeight: FontWeight.w500,
-                              color: textColor,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          if (svgIconPath != null)
-                            SvgPicture.asset(
-                              svgIconPath!,
-                              color: svgIconColor ?? Styles.iconColorBack,
-                              width: svgIconPathSize ?? 24,
-                              height: svgIconPathSize ?? 24,
-                            )
-                          else if (icon != null)
-                            Icon(
-                              icon,
-                              color: textColor,
-                            ),
-                        ]
-                      : [
-                          if (svgIconPath != null)
-                            SvgPicture.asset(
-                              svgIconPath!,
-                              color: textColor,
-                              width: 24,
-                              height: 24,
-                            )
-                          else if (icon != null)
-                            Icon(
-                              icon,
-                              color: textColor,
-                            ),
-                          const SizedBox(width: 8),
-                          Text(
-                            title,
-                            style: GoogleFonts.poppins(
-                              fontSize: textSize ?? 16,
-                              fontWeight: FontWeight.w500,
-                              color: textColor,
-                            ),
-                          ),
-                        ],
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    if (!iconAfterText) ...[
+                      if (svgIconPath != null)
+                        SvgPicture.asset(
+                          svgIconPath!,
+                          color: textColor,
+                          width: svgIconPathSize ?? 24,
+                          height: svgIconPathSize ?? 24,
+                        )
+                      else if (icon != null)
+                        Icon(
+                          icon,
+                          color: textColor,
+                        ),
+                      const SizedBox(width: 8),
+                    ],
+                    Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: textSize ?? 16,
+                        fontWeight: FontWeight.w500,
+                        color: textColor,
+                      ),
+                    ),
+                    if (iconAfterText) ...[
+                      const SizedBox(width: 8),
+                      if (svgIconPath != null)
+                        SvgPicture.asset(
+                          svgIconPath!,
+                          color: svgIconColor ?? Styles.iconColorBack,
+                          width: svgIconPathSize ?? 24,
+                          height: svgIconPathSize ?? 24,
+                        )
+                      else if (icon != null)
+                        Icon(
+                          icon,
+                          color: textColor,
+                        ),
+                    ],
+                  ],
                 ),
         ),
       ),
