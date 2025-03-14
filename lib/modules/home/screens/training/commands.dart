@@ -40,8 +40,9 @@ class Commands extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width - 120,
                 child: const Text(
-                  'Comandos de Entrenamiento',
+                  'Comandos de Entrenamiento ',
                   overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                   style: TextStyle(
                     fontSize: 20,
                     color: Styles.primaryColor,
