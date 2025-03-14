@@ -261,7 +261,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                   onChanged: (value) {
                                     profileController.user['address'] = value;
                                   },
-                                  label: 'Dirección de vivienda',
+                                  label: 'Ubicación',
                                   placeholder: "",
                                   prefiIcon: const Icon(
                                     Icons.location_on,
