@@ -110,7 +110,7 @@ class CustomAlertDialog extends StatelessWidget {
                       title: primaryButtonText!,
                       callback: onPrimaryButtonPressed ?? () {},
                       defaultColor:
-                          Styles.primaryColor, // Color de fondo del botón
+                          Color(0xFFFC9214), // Color de fondo del botón
                       textColor: Styles.whiteColor, // Color del texto del botón
                       heigthButtom: 48, // Altura del botón
                       borderSize: 12, // Tamaño del borde
