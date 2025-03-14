@@ -188,8 +188,6 @@ class HomeScreen extends StatelessWidget {
   // Funciones que devuelven el contenido basado en el selectedIndex
 
   Widget _buildCase1Content(context) {
-   
-
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -257,7 +255,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-           LongPressButton(isDiario: true),
+          LongPressButton(isDiario: true),
           const SizedBox(height: 16),
           Resources(),
           const SizedBox(height: 16),
@@ -333,6 +331,8 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 16),
         TrainingPrograms(
           cursosController: cursosController,
+          showTitle: miscursos.courses.length == 0 ? false : true,
+          vermas: miscursos.courses.length == 0 ? false : true,
         ),
         const SizedBox(height: 220),
       ],

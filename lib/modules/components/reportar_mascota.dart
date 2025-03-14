@@ -41,7 +41,6 @@ class _LongPressButtonState extends State<LongPressButton> {
       if (_progress >= 1.0) {
         timer.cancel();
         _stopVibration();
-        _showAlert();
       }
     });
   }
@@ -107,8 +106,7 @@ class _LongPressButtonState extends State<LongPressButton> {
             padding: EdgeInsets.symmetric(
                 horizontal: widget.isDiario ? 0 : Styles.padding, vertical: 16),
             child: GestureDetector(
-              onLongPressStart: (_) => _startProgress(),
-              onLongPressEnd: (_) => _stopProgress(),
+              onTap: _showAlert,
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 50),
                 height: 60,
