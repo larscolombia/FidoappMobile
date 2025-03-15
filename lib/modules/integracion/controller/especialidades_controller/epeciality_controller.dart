@@ -12,7 +12,7 @@ class SpecialityController extends GetxController {
 
   // URL de la API
   final String url =
-      '${BASE_URL}specialities?speciality_id=${AuthServiceApis.dataCurrentUser.userType}';
+      '${BASE_URL}specialities?role=${AuthServiceApis.dataCurrentUser.userType}';
 
   @override
   void onInit() {
