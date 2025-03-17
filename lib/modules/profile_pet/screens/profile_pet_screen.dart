@@ -163,7 +163,7 @@ class ProfilePetScreen extends StatelessWidget {
                                     border: controller.selectedTab.value == 0
                                         ? null
                                         : const BorderSide(
-                                            color: Colors.grey, width: 1),
+                                            color: Color(0xFFEFEFEF), width: 1),
                                     textSize: 14,
                                   ),
                                 ),
@@ -185,7 +185,7 @@ class ProfilePetScreen extends StatelessWidget {
                                     border: controller.selectedTab.value == 1
                                         ? null
                                         : const BorderSide(
-                                            color: Colors.grey, width: 1),
+                                            color: Color(0xFFEFEFEF), width: 1),
                                     textSize: 14,
                                   ),
                                 ),
