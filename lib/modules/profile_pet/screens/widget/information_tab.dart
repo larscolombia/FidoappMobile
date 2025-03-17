@@ -418,54 +418,55 @@ class InformationTab extends StatelessWidget {
               ),
               const SizedBox(height: 22),
               // Personas asociadas a la mascota
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Expanded(
-                    child: Text(
-                      'Personas Asociadas a\nesta Mascota',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 16,
-                        color: Colors.black,
-                        fontFamily: 'Lato',
-                        height: 1.3,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 44, // Ancho fijo
-                    height: 44, // Alto fijo
-                    child: ElevatedButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.vertical(top: Radius.circular(20)),
-                          ),
-                          builder: (context) {
-                            return AssociatedPersonsModal(
-                                controller: controller);
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFFC9214),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+              if (AuthServiceApis.dataCurrentUser.userType == 'user')
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        'Personas Asociadas a\nesta Mascota',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontFamily: 'Lato',
+                          height: 1.3,
                         ),
-                        padding: EdgeInsets.zero,
-                        shadowColor: Colors.transparent, // Elimina la sombra
-                        elevation: 0, // Evita cualquier sombra residual
                       ),
-                      child: const Icon(Icons.add,
-                          color: Colors.white, size: 24), // Centrado
                     ),
-                  ),
-                ],
-              ),
+                    SizedBox(
+                      width: 44, // Ancho fijo
+                      height: 44, // Alto fijo
+                      child: ElevatedButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20)),
+                            ),
+                            builder: (context) {
+                              return AssociatedPersonsModal(
+                                  controller: controller);
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFFC9214),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          padding: EdgeInsets.zero,
+                          shadowColor: Colors.transparent, // Elimina la sombra
+                          elevation: 0, // Evita cualquier sombra residual
+                        ),
+                        child: const Icon(Icons.add,
+                            color: Colors.white, size: 24), // Centrado
+                      ),
+                    ),
+                  ],
+                ),
 
               const SizedBox(height: 10),
 

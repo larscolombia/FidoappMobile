@@ -17,6 +17,7 @@ class InputSelect extends StatelessWidget {
     this.value,
     this.isReadOnly = false,
     this.borderColor,
+    this.fonsize = 14,
   });
 
   final String? placeholder;
@@ -26,11 +27,12 @@ class InputSelect extends StatelessWidget {
   final List<DropdownMenuItem<String>> items;
   final Color? TextColor;
   final Color? color;
-  final Icon? suffixIcon;
+  final String? suffixIcon;
   final String? prefiIcon;
   final String? prefiIconSVG;
   final bool isReadOnly;
   final Color? borderColor;
+  final double fonsize;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,10 +55,6 @@ class InputSelect extends StatelessWidget {
             popupMenuTheme: PopupMenuThemeData(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.1),
-                side: const BorderSide(
-                  color: Styles.iconColorBack, // Modal border color
-                  width: 1.5,
-                ),
               ),
             ),
           ),
@@ -66,7 +64,7 @@ class InputSelect extends StatelessWidget {
               value: items.any((item) => item.value == value) ? value : null,
               isExpanded: true,
               icon: const Icon(Icons.arrow_drop_down,
-                  color: Styles.colorContainer),
+                  color: Colors.transparent, size: 24),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -112,15 +110,14 @@ class InputSelect extends StatelessWidget {
                             ),
                           )
                         : null,
-                suffixIcon: suffixIcon ??
-                    Padding(
-                      padding: const EdgeInsets.all(18),
-                      child: SvgPicture.asset(
-                        'assets/icons/svg/flecha_select.svg',
-                        width: 1,
-                        height: 5,
-                      ),
-                    ),
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SvgPicture.asset(
+                    suffixIcon ?? 'assets/icons/svg/flecha_select.svg',
+                    width: 1,
+                    height: 5,
+                  ),
+                ),
               ),
               hint: Text(
                 placeholder ?? 'Seleccione una opción',
@@ -129,7 +126,7 @@ class InputSelect extends StatelessWidget {
                   color: TextColor ?? Colors.grey,
                   fontFamily: 'Lato',
                   fontWeight: FontWeight.w600,
-                  fontSize: 14,
+                  fontSize: fonsize,
                 ),
               ),
               items: items.map((DropdownMenuItem<String> item) {
