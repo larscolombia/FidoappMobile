@@ -243,10 +243,10 @@ class TrainingPrograms extends StatelessWidget {
                                           color: Color(0xffFFFFFF),
                                         ),
                                       ),
-                                      const SizedBox(width: 2),
+                                      const SizedBox(width: 5),
                                       const Icon(
                                         Icons.arrow_forward_ios,
-                                        size: 8,
+                                        size: 10,
                                         color: Styles.whiteColor,
                                       ),
                                     ],
