@@ -255,7 +255,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-          LongPressButton(isDiario: true),
+          //LongPressButton(isDiario: true),
           const SizedBox(height: 16),
           Resources(),
           const SizedBox(height: 16),
