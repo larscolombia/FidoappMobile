@@ -1959,14 +1959,14 @@ class LanguageEs extends BaseLanguage {
       'Diseñada para acompañarte en las actividades diarias de tu mascota';
 
   @override
-  String get yourPetLifeRegister => 'Tu Registro de Vida';
+  String get yourPetLifeRegister => 'Registro de vida';
 
   @override
-  String get forYourPet => 'para tu Mascota';
+  String get forYourPet => 'sobre tu Mascota';
 
   @override
   String get registerAllPetInfo =>
-      'Registra toda la información de tu mascota en un solo lugar';
+      'Registra toda su información en un solo lugar';
 
   @override
   String get findUse => 'Encuentra';
@@ -1976,7 +1976,7 @@ class LanguageEs extends BaseLanguage {
 
   @override
   String get findInformationForYourPet =>
-      'Encuentra información útil para tu mascota';
+      'Consulta nuestras recomendaciones prácticas, datos curiosos y guías';
 
   @override
   String get emailAddress => 'Correo Electrónico';

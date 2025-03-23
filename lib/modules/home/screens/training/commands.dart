@@ -117,17 +117,15 @@ class Commands extends StatelessWidget {
                       ),
                     ),
                     columns: const [
+                      DataColumn(label: Text('Nombre')),
                       DataColumn(label: Text('Comando')),
                       DataColumn(label: Text('Acción')),
                       DataColumn(label: Text('Aprendido')),
-                      DataColumn(label: Text('Comando personalizado')),
                     ],
                     rows: controller.comandoList.map((comando) {
                       return DataRow(
                         cells: [
                           DataCell(Text(comando.name)),
-                          DataCell(Text(comando.description)),
-                          DataCell(Text(comando.isFavorite ? 'Sí' : 'No')),
                           DataCell(
                             comando.vozComando.isEmpty
                                 ? Row(
@@ -156,6 +154,8 @@ class Commands extends StatelessWidget {
                                   )
                                 : Text(comando.vozComando),
                           ),
+                          DataCell(Text(comando.description)),
+                          DataCell(Text(comando.isFavorite ? 'Sí' : 'No')),
                         ],
                         onSelectChanged: (isSelected) {
                           if (isSelected ?? false) {
