@@ -19,6 +19,10 @@ import 'package:pawlly/utils/app_common.dart';
 import 'package:pawlly/utils/common_base.dart';
 import 'package:pawlly/utils/local_storage.dart';
 
+import 'modules/home/controllers/home_controller.dart';
+import 'modules/home/screens/home_screen.dart';
+import 'services/auth_service_apis.dart';
+
 Rx<BaseLanguage> locale = LanguageEn().obs;
 
 Future<void> main() async {
@@ -60,19 +64,26 @@ Future<void> main() async {
     // También puedes enviar el error a un servicio externo si lo necesitas.
     print('Flutter Error: ${details.exception}');
   };
-  // Ejecuta la app
-  runApp(MyApp());
+
+  // Validar si el usuario está logueado
+  final bool isLoggedIn = await AuthServiceApis.loadLoginData();
+
+  // Ejecuta la app con el estado de sesión
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  final bool isLoggedIn;
+
+  MyApp({Key? key, required this.isLoggedIn}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Obx(() {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: Routes.WELCOME,
+        // Quitar initialRoute para que no fuerce Welcome
+        // initialRoute: Routes.WELCOME, <- REMOVER ESTA LÍNEA
         getPages: AppPages.routes,
         supportedLocales: LanguageDataModel.languageLocales(),
         color: Colors.white,
@@ -89,16 +100,17 @@ class MyApp extends StatelessWidget {
 
         // Esta es la sección inicial donde se configuran las bindings.
         initialBinding: BindingsBuilder(() {
-          // Si el usuario está logueado, se inicializa el WelcomeController.
-          if (isLoggedIn.value) {
-            log('INITIALBINDING: called');
-            Get.put<WelcomeController>(WelcomeController());
+          if (isLoggedIn) {
+            Get.put<HomeController>(HomeController());
           }
         }),
 
+        // Asegurar que home use el estado de sesión correctamente
+        home: isLoggedIn && AuthServiceApis.currentUser.value != null
+            ? HomeScreen()
+            : SplashScreen(),
         title: APP_NAME,
         theme: AppTheme.lightTheme,
-        home: SplashScreen(),
       );
     });
   }

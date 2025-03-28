@@ -72,36 +72,49 @@ class AuthServiceApis {
   static Future<void> saveLoginData(Map request, Map response) async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Guarda la solicitud
-    await prefs.setString('lastLoginRequest', request.toString());
+    // Guardar la respuesta completa del login
+    await prefs.setString('lastLoginResponse', json.encode(response));
 
-    // Convirtiendo el mapa a Map<String, dynamic> explícitamente
-    Map<String, dynamic> responseMap = response.cast<String, dynamic>();
+    // Guardar el token
+    await prefs.setString('apiToken', response['data']['api_token']);
 
-    // Guarda la respuesta como un string JSON
-    await prefs.setString('lastLoginResponse', json.encode(responseMap));
+    // Guardar email y contraseña si existe
+    if (request.containsKey('email')) {
+      await prefs.setString(SharedPreferenceConst.USER_EMAIL, request['email']);
+    }
 
-    // Guarda los datos del usuario en el ValueNotifier
-    currentUser.value = LoginResponse.fromJson(responseMap);
+    if (request.containsKey('password')) {
+      await prefs.setString(
+          SharedPreferenceConst.USER_PASSWORD, request['password']);
+    }
+
+    // Marcar como logged in
+    await prefs.setBool(SharedPreferenceConst.IS_LOGGED_IN, true);
+    isLoggedIn(true);
   }
 
-  static Future<void> loadLoginData() async {
+  static Future<bool> loadLoginData() async {
     final prefs = await SharedPreferences.getInstance();
-
-    // Recupera la respuesta guardada
     String? lastLoginResponse = prefs.getString('lastLoginResponse');
+    String? apiToken = prefs.getString('apiToken');
+    bool? isLogged = prefs.getBool(SharedPreferenceConst.IS_LOGGED_IN);
 
-    if (lastLoginResponse != null) {
-      try {
-        Map<String, dynamic> responseMap = jsonDecode(lastLoginResponse);
+    // Verificación más estricta del estado de la sesión
+    if (lastLoginResponse == null || apiToken == null || !isLogged!) {
+      await clearData(); // Limpiar datos si algo falta
+      return false;
+    }
 
-        // Inicializa el ValueNotifier con los datos recuperados
-        currentUser.value = LoginResponse.fromJson(responseMap);
-
-        print("Datos del usuario cargados: ${currentUser.value}");
-      } catch (e) {
-        print("Error al decodificar la respuesta: $e");
-      }
+    try {
+      Map<String, dynamic> responseMap = jsonDecode(lastLoginResponse);
+      currentUser.value = LoginResponse.fromJson(responseMap);
+      dataCurrentUser = UserData.fromJson(responseMap['data']);
+      isLoggedIn(true);
+      return true;
+    } catch (e) {
+      print("Error al cargar los datos de sesión: $e");
+      await clearData();
+      return false;
     }
   }
 
@@ -154,44 +167,67 @@ class AuthServiceApis {
             method: HttpMethodType.GET)));
   }
 
-  static Future<void> clearData({bool isFromDeleteAcc = false}) async {
-    GoogleSignIn().signOut();
-    if (isFromDeleteAcc) {
-      localStorage.erase();
-      isLoggedIn(false);
-      loginUserData(UserData());
-    } else {
-      final tempEmail = loginUserData.value.email;
-      final tempPASSWORD =
-          getValueFromLocal(SharedPreferenceConst.USER_PASSWORD);
-      final tempIsRemeberMe =
-          getValueFromLocal(SharedPreferenceConst.IS_REMEMBER_ME);
-      final tempUserName = loginUserData.value.userName;
+  static Future<void> clearData() async {
+    final prefs = await SharedPreferences.getInstance();
 
-      localStorage.erase();
-      isLoggedIn(false);
-      loginUserData(UserData());
-      OneSignal.Notifications.clearAll();
-      OneSignal.logout();
-      // isOneSignalInitilaized = false;
+    // Mantener email y contraseña si isRememberMe es true
+    final isRememberMe =
+        prefs.getBool(SharedPreferenceConst.IS_REMEMBER_ME) ?? false;
+    final savedEmail = prefs.getString(SharedPreferenceConst.USER_EMAIL);
+    final savedPassword = prefs.getString(SharedPreferenceConst.USER_PASSWORD);
 
-      setValueToLocal(SharedPreferenceConst.FIRST_TIME, true);
-      setValueToLocal(SharedPreferenceConst.USER_EMAIL, tempEmail);
-      setValueToLocal(SharedPreferenceConst.USER_NAME, tempUserName);
+    // Limpiar TODOS los datos de sesión primero
+    await prefs.clear();
 
-      if (tempPASSWORD is String) {
-        setValueToLocal(SharedPreferenceConst.USER_PASSWORD, tempPASSWORD);
-      }
-      if (tempIsRemeberMe is bool) {
-        setValueToLocal(SharedPreferenceConst.IS_REMEMBER_ME, tempIsRemeberMe);
-      }
+    // Si remember me está activo, restaurar SOLO las credenciales
+    if (isRememberMe) {
+      await prefs.setString(SharedPreferenceConst.USER_EMAIL, savedEmail ?? '');
+      await prefs.setString(
+          SharedPreferenceConst.USER_PASSWORD, savedPassword ?? '');
+      await prefs.setBool(SharedPreferenceConst.IS_REMEMBER_ME, true);
     }
+
+    // Asegurarnos de que los datos de sesión estén limpios
+    await prefs.remove('lastLoginResponse');
+    await prefs.remove('apiToken');
+    await prefs.remove(SharedPreferenceConst.IS_LOGGED_IN);
+
+    // Limpiar datos en memoria
+    currentUser.value = null;
+    dataCurrentUser = UserData();
+    isLoggedIn(false);
   }
 
   static Future<BaseResponseModel> logoutApi() async {
-    return BaseResponseModel.fromJson(await handleResponse(
-        await buildHttpResponse(APIEndPoints.logout,
-            method: HttpMethodType.GET)));
+    try {
+      // Obtener el token antes de limpiarlo
+      final token = await getToken();
+      if (token == null || token.isEmpty) {
+        throw 'Token no encontrado';
+      }
+
+      // Realizar la llamada al API con el token
+      final response = await handleResponse(
+        await buildHttpResponse(
+          APIEndPoints.logout,
+          method: HttpMethodType.GET,
+          extraKeys: {'authorization': 'Bearer $token'},
+        ),
+        avoidTokenError: true,
+      );
+
+      // Limpiar datos después de un logout exitoso
+      await clearData();
+      return BaseResponseModel.fromJson(response);
+    } catch (e) {
+      print('Error en logoutApi: $e');
+      // Limpiar datos locales aunque falle el servidor
+      await clearData();
+      return BaseResponseModel(
+        message: 'Logged out successfully',
+        status: true,
+      );
+    }
   }
 
   static Future<BaseResponseModel> deleteAccountCompletely() async {

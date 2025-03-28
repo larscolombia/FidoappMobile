@@ -15,6 +15,8 @@ import 'package:pawlly/utils/local_storage.dart';
 import 'package:pawlly/utils/social_logins.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 
+import '../../../welcome/screens/welcome_screen.dart';
+
 class SignInController extends GetxController {
   RxBool isNavigateToDashboard = false.obs;
 
@@ -243,61 +245,61 @@ class SignInController extends GetxController {
 
   void handleLoginResponse(
       {required LoginResponse loginResponse, bool isSocialLogin = false}) {
-    if (true) {
-      //role
-      loginUserData(loginResponse.userData);
-      loginUserData.value.playerId = playerId.value;
-      loginUserData.value.isSocialLogin = isSocialLogin;
-      setValueToLocal(SharedPreferenceConst.USER_DATA, loginUserData.toJson());
-      setValueToLocal(SharedPreferenceConst.USER_PASSWORD,
-          isSocialLogin ? "" : passwordCont.text.trim());
-      isLoggedIn(true);
-      setValueToLocal(SharedPreferenceConst.IS_LOGGED_IN, true);
-      setValueToLocal(SharedPreferenceConst.IS_REMEMBER_ME, isRememberMe.value);
+    loginUserData(loginResponse.userData);
+    loginUserData.value.playerId = playerId.value;
+    loginUserData.value.isSocialLogin = isSocialLogin;
 
-      isLoading(false);
-      if (!isNavigateToDashboard.value) {
-        Get.offAll(() => HomeScreen(), binding: BindingsBuilder(() {
-          Get.put(HomeController());
-        }));
+    // Guardar datos incluyendo la contraseña si Remember Me está activo
+    Map<String, dynamic> requestData = {
+      UserKeys.email: loginResponse.userData.email,
+    };
+
+    if (isRememberMe.value && !isSocialLogin) {
+      requestData['password'] = passwordCont.text.trim();
+      setValueToLocal(
+          SharedPreferenceConst.USER_PASSWORD, passwordCont.text.trim());
+    }
+
+    // Guardar estado de Remember Me
+    setValueToLocal(SharedPreferenceConst.IS_REMEMBER_ME, isRememberMe.value);
+
+    // Guardar datos de sesión
+    AuthServiceApis.saveLoginData(requestData, loginResponse.toJson());
+
+    // Actualizar estado de sesión
+    isLoggedIn(true);
+    setValueToLocal(SharedPreferenceConst.IS_LOGGED_IN, true);
+
+    // Navegar a HomeScreen
+    Get.offAll(() => HomeScreen(), binding: BindingsBuilder(() {
+      Get.put(HomeController());
+    }));
+  }
+
+  // Método para cerrar sesión
+  Future<void> logout() async {
+    try {
+      isLoading(true);
+
+      // Primero llamar al API de logout
+      final result = await AuthServiceApis.logoutApi();
+
+      if (result.status) {
+        // Si el logout fue exitoso, navegar a WelcomeScreen
+        isLoading(false);
+        await Get.offAll(
+          () => WelcomeScreen(),
+          predicate: (route) => false,
+        );
       } else {
-        try {
-          HomeController homeScreenController = Get.find();
-          homeScreenController.updateIndex(0);
-        } catch (e) {
-          log('homeScreenController Get.find E: $e');
-        }
-        /*
-        try {
-          DashboardController dashboardController = Get.find();
-          dashboardController.reloadBottomTabs();
-        } catch (e) {
-          log('dashboardController Get.find E: $e');
-        }
-        try {
-          HomeScreenController homeScreenController = Get.find();
-          homeScreenController.init();
-        } catch (e) {
-          log('homeScreenController Get.find E: $e');
-        }
-        try {
-          BookingsController bookingsController = Get.find();
-          bookingsController.getBookingList();
-        } catch (e) {
-          log('appointmentsController Get.find E: $e');
-        }
-        try {
-          myPetsScreenController.init();
-        } catch (e) {
-          log('myPetsScreenController.init E: $e');
-        }
-        */
-        log('Else : isNavigateToDashboard.value');
-        // Get.back(result: true);
+        throw 'Error al cerrar sesión';
       }
-    } else {
+    } catch (e) {
+      print('Error durante logout: $e');
       isLoading(false);
-      toast('Sorry User Cannot Signin'); //TODO: string translation
+
+      // Aún si hay error, intentar navegar al Welcome Screen
+      await Get.offAll(() => WelcomeScreen());
     }
   }
 }
