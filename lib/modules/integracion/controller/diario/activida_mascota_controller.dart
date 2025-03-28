@@ -59,12 +59,26 @@ class PetActivityController extends GetxController {
     }
   }
 
+  // ignore: non_constant_identifier_names
+  String categoria_user_type() {
+    switch (AuthServiceApis.dataCurrentUser.userType) {
+      case 'user':
+        return '1';
+      case 'vet':
+        return '2';
+      case 'trainer':
+        return '3';
+      default:
+        return '3';
+    }
+  }
+
   void initDiario() {
     diario.value = {
       'actividadId': '0',
       'actividad': "",
       'date': "",
-      'category_id': "",
+      'category_id': categoria_user_type(),
       'notas': "",
       'pet_id': '0',
       'image': "",
@@ -75,7 +89,7 @@ class PetActivityController extends GetxController {
     diario.value = {
       'actividad': "",
       'date': "",
-      'category_id': "",
+      'category_id': categoria_user_type(),
       'notas': "",
       'pet_id': '0',
       'image': "",

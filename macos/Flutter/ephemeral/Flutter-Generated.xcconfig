@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=C:\Users\nemer\fvm\versions\3.22.1
-FLUTTER_APPLICATION_PATH=C:\Users\nemer\repos lars\balance-dog-customer-app
+FLUTTER_ROOT=C:\flutter
+FLUTTER_APPLICATION_PATH=C:\Users\user\Desktop\balance-dog-customer-app
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0

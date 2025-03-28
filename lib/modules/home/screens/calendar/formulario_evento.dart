@@ -347,7 +347,7 @@ class _CreateEventState extends State<CreateEvent> {
                       height: alto,
                       child: InputText(
                         label: 'Fecha del evento',
-                        placeholder: 'Fecha del evento',
+                        placeholder: '',
                         borderColor: Color(0XFFFCBA67),
                         labelColor: Color(0xFF383838),
 
@@ -384,7 +384,7 @@ class _CreateEventState extends State<CreateEvent> {
                       height: alto,
                       child: InputText(
                           label: 'Hora del evento',
-                          placeholder: 'Hora del evento',
+                          placeholder: '',
                           labelColor: Color(0xFF383838),
                           errorText: (validate['event_time'] ?? false)
                               ? 'Campo requerido'

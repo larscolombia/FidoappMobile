@@ -1,0 +1,11 @@
+-keep class android.window.BackEvent { *; }
+-keep class io.flutter.plugins.inappwebview.** { *; }
+-keep class com.pichillilorenzo.flutter_inappwebview.** { *; }
+-keep class org.chromium.** { *; }
+-keep class android.webkit.** { *; }
+-keep class androidx.webkit.** { *; }
+-keep class com.android.webview.** { *; }
+-keep class android.support.customtabs.** { *; }
+-keep class androidx.browser.** { *; }
+-keep class androidx.core.** { *; }
+-keep class androidx.media3.** { *; }
