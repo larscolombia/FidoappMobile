@@ -166,8 +166,8 @@ class CommentController extends GetxController {
             icon: Icons.check_circle_outline,
             title: 'Comentario creado',
             description: rating < 3
-                ? "Tu comentario debe ser aprobado por un administrador"
-                : 'Tu comentario ha sido publicado ',
+                ? "Le enviaremos un correo electrónico para conocer su experiencia."
+                : 'Tu comentario ha sido publicado',
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
               Navigator.of(context).pop();

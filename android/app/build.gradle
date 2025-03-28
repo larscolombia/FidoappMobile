@@ -34,8 +34,8 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace 'com.fidoapp.newcustomer'
-    compileSdkVersion 34
+    namespace 'com.fidoapp.customer'
+    compileSdkVersion 35
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -44,7 +44,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.fidoapp.newcustomer"
+        applicationId "com.fidoapp.customer"
         minSdkVersion 26
         targetSdkVersion 34
         versionCode 3
@@ -64,16 +64,15 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
-            shrinkResources false
-           // proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
         }
     }
 } 
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3' // Asegúrate de incluir esta línea
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4' // Asegúrate de incluir esta línea
     // implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation platform('com.google.firebase:firebase-bom:31.2.0')
 

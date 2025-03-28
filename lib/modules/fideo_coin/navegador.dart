@@ -14,43 +14,46 @@ class InAppBrowserModal extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: double.maxFinite,
-            height: 500, // puedes ajustar la altura según tus necesidades
-            child: ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-              child: InAppWebView(
-                initialUrlRequest: URLRequest(url: WebUri(url)),
-                initialSettings: InAppWebViewSettings(
-                  javaScriptEnabled: true,
-                  domStorageEnabled: true,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Container(
+            height:
+                MediaQuery.of(context).size.height * 0.8, // 80% de la pantalla
+            child: Column(
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(16)),
+                    child: InAppWebView(
+                      initialUrlRequest: URLRequest(url: WebUri(url)),
+                      initialSettings: InAppWebViewSettings(
+                        javaScriptEnabled: true,
+                        domStorageEnabled: true,
+                      ),
+                    ),
+                  ),
                 ),
-                onConsoleMessage: (controller, consoleMessage) {
-                  print("Consola Web: ${consoleMessage.message}");
-                },
-              ),
+                Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: ButtonDefaultWidget(
+                      title: 'Cerrar',
+                      defaultColor: const Color(0xFFFC9214),
+                      textColor: Styles.whiteColor,
+                      heigthButtom: 48,
+                      borderSize: 12,
+                      showDecoration: true,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Cierra el modal
-            },
-            child: Expanded(
-              child: ButtonDefaultWidget(
-                title: 'Cerrar',
-                defaultColor:
-                    const Color(0xFFFC9214), // Color de fondo del botón
-                textColor: Styles.whiteColor, // Color del texto del botón
-                heigthButtom: 48, // Altura del botón
-                borderSize: 12, // Tamaño del borde
-                showDecoration: true, // Mostrar decoración
-              ),
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

@@ -418,6 +418,25 @@ class InformationTab extends StatelessWidget {
               ),
               const SizedBox(height: 22),
               // Personas asociadas a la mascota
+              if (AuthServiceApis.dataCurrentUser.userType != 'user')
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Personas Asociadas a\nesta Mascota',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontFamily: 'Lato',
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
               if (AuthServiceApis.dataCurrentUser.userType == 'user')
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

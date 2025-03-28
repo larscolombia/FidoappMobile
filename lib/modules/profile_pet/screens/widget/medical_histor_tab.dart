@@ -78,7 +78,7 @@ class MedicalHistoryTab extends StatelessWidget {
                         TextColor: Colors.white,
                         color: Styles.primaryColor,
                         placeholder: 'Agregar nuevo informe',
-                        prefiIcon: 'assets/icons/categori.png',
+                        prefiIconSVG: 'assets/icons/svg/document-text.svg',
                         suffixIcon: "assets/icons/svg/plus.svg",
                         fonsize: 16,
                         items: const [

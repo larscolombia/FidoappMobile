@@ -181,7 +181,7 @@ class Movimientos extends StatelessWidget {
             ],
           ),
           Text(
-            '$amount ƒ',
+            '\$ ${(amount)}',
             style: TextStyle(
               fontFamily: 'Lato',
               fontSize: 18,
