@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/input_busqueda.dart';
 import 'package:pawlly/modules/components/input_text.dart';
@@ -94,22 +95,31 @@ class Diario extends StatelessWidget {
                                 Expanded(
                                   flex: 2,
                                   child: ElevatedButton(
-                                    onPressed: () {
-                                      FiltrarActividad.show(
-                                          context, historialClinicoController);
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 0,
-                                      padding: EdgeInsets.zero,
-                                      backgroundColor: Styles.fiveColor,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
+                                      onPressed: () {
+                                        FiltrarActividad.show(context,
+                                            historialClinicoController);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        padding: EdgeInsets.zero,
+                                        backgroundColor: Styles.fiveColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          side: BorderSide(
+                                            color: Color(0xFFFC9214)
+                                                .withOpacity(
+                                                    0.20), // Color del borde
+                                            width: 0.55, // Grosor del borde
+                                          ),
+                                        ),
+                                        minimumSize: const Size(58, 58),
                                       ),
-                                      minimumSize: const Size(48, 48),
-                                    ),
-                                    child:
-                                        Image.asset('assets/icons/filtro.png'),
-                                  ),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/svg/filters.svg',
+                                        height: 25,
+                                        width: 25,
+                                      )),
                                 ),
                               ],
                             ),

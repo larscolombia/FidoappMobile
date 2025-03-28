@@ -82,7 +82,7 @@ class Balance extends StatelessWidget {
             ),
             SizedBox(height: screenHeight * 0.01), // 1% del alto
             Text(
-              '${controller.userBalance.value.balance} ƒ',
+              '\$ ${controller.userBalance.value.balance}',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 24, // 5% del ancho

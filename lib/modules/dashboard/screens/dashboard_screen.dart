@@ -152,6 +152,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                           _getItemIcon(index),
                                           width: 24,
                                           height: 24,
+                                          color: Styles.iconColorBack,
                                         ),
                                       ),
                                       const SizedBox(width: 16),
@@ -302,7 +303,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 5:
         return 'assets/icons/svg/info-circle.svg';
       case 6:
-        return 'assets/icons/svg/fidocoins.svg';
+        return 'assets/icons/svg/moneda.svg';
       case 7:
         return 'assets/icons/svg/logout.svg';
       default:

@@ -53,7 +53,8 @@ class EbooksList extends StatelessWidget {
                     GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, // Dos columnas
                         crossAxisSpacing:
                             15, // Espacio horizontal entre elementos
@@ -144,17 +145,22 @@ class BooksComponents extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: Text(
-              ebook.title!,
-              maxLines: 4,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                height: 1.2,
-                fontFamily: 'Lato',
-                fontSize: 14.14,
-                fontWeight: FontWeight.w700,
-                color: Color(0XFF383838),
-              ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Text(
+                  ebook.title!,
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    height: 1.2,
+                    fontFamily: 'Lato',
+                    fontSize: constraints.maxWidth *
+                        0.095, // Ajusta el tamaño de la fuente según el ancho del contenedor
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0XFF383838),
+                  ),
+                );
+              },
             ),
           ),
           const SizedBox(height: 8),

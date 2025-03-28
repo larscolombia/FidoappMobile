@@ -1,4 +1,4 @@
-package com.fidoapp.newcustomer
+package com.fidoapp.customer
 
 import io.flutter.embedding.android.FlutterActivity
 

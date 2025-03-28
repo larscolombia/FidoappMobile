@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:932477866605:android:aee30f9812e38c81276564",
         "android_client_info": {
-          "package_name": "com.fidoapp.newcustomer"
+          "package_name": "com.fidoapp.customer"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "932477866605-ltdmior818vagmg8idt22d11s84fhgmh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.fidoapp.newcustomer",
+            "package_name": "com.fidoapp.customer",
             "certificate_hash": "f4100bc8e20f2f5f655d715d23e2b53e00c2fc93"
           }
         },

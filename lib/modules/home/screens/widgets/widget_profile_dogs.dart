@@ -77,15 +77,6 @@ class ProfileModal extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    "Selecciona",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.black,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
                   const SizedBox(height: 8),
                   const Text(
                     'Seleccionar el perfil de la mascota la cual quieres ver la información',

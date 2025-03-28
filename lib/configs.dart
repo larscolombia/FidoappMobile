@@ -30,7 +30,7 @@ const STRIPE_merchantIdentifier = "merchant.flutter.stripe.test";
 //endregion
 
 const APP_PLAY_STORE_URL =
-    'https://play.google.com/store/apps/details?id=com.fidoapp.newcustomer';
+    'https://play.google.com/store/apps/details?id=com.fidoapp.customer';
 const APP_APPSTORE_URL = 'https://apps.apple.com/in/app/pawlly/id6458044939';
 
 const TERMS_CONDITION_URL = '$DOMAIN_URL/page/terms-conditions';

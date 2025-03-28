@@ -12,6 +12,7 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 class FormularioDiario extends StatefulWidget {
   final bool isEdit;
@@ -166,10 +167,11 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                           SizedBox(height: margen),
                           SizedBox(
                             width: width,
-                            child: InputSelect(
-                              TextColor: const Color(0xFF383838),
+                            child: InputText(
+                              readOnly: true,
                               label: 'Categoría',
-                              placeholder: "Categoría del registro",
+                              placeholder: controller.categoria_value(
+                                  controller.categoria_user_type()),
                               onChanged: (value) {
                                 controller.updateField('category_id', value);
                                 if (value != null && validate['category_id']!) {
@@ -177,23 +179,6 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                       () => validate['category_id'] = false);
                                 }
                               },
-                              items: const [
-                                DropdownMenuItem(
-                                  value: '1',
-                                  child: Text('Actividad',
-                                      style: Helper.selectStyle),
-                                ),
-                                DropdownMenuItem(
-                                  value: '2',
-                                  child: Text('Informe médico',
-                                      style: Helper.selectStyle),
-                                ),
-                                DropdownMenuItem(
-                                  value: '3',
-                                  child: Text('Entrenamiento',
-                                      style: Helper.selectStyle),
-                                ),
-                              ],
                             ),
                           ),
                           SizedBox(height: margen),
@@ -204,7 +189,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                   ? controller.activitiesOne.value!.date
                                   : '',
                               label: 'Fecha del registro',
-                              placeholder: 'Fecha del evento',
+                              placeholder: '',
                               isDateField: true,
                               placeholderSvg: 'assets/icons/svg/calendar.svg',
                               placeholderSuffixSvg:
