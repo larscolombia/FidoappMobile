@@ -1,18 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:pawlly/components/app_scaffold.dart';
+
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
-import 'package:pawlly/modules/components/input_select.dart';
+
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
-import 'package:pawlly/services/auth_service_apis.dart';
 
 class FormularioDiario extends StatefulWidget {
   final bool isEdit;
@@ -36,7 +34,6 @@ class _FormularioDiarioState extends State<FormularioDiario> {
   final HomeController homeController = Get.put(HomeController());
   Map<String, bool> validate = {
     'actividad': false,
-    'category_id': false,
     'date': false,
     'notas': false,
   };
@@ -47,7 +44,6 @@ class _FormularioDiarioState extends State<FormularioDiario> {
     // Inicializar todas las validaciones en false
     validate = {
       'actividad': false,
-      'category_id': false,
       'date': false,
       'notas': false,
     };
@@ -65,8 +61,6 @@ class _FormularioDiarioState extends State<FormularioDiario> {
     setState(() {
       // Validar solo cuando se presiona el botón
       validate['actividad'] = controller.diario['actividad']?.isEmpty ?? true;
-      validate['category_id'] =
-          controller.diario['category_id']?.isEmpty ?? true;
       validate['date'] = controller.diario['date']?.isEmpty ?? true;
       validate['notas'] = controller.diario['notas']?.isEmpty ?? true;
     });
@@ -170,14 +164,10 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                             child: InputText(
                               readOnly: true,
                               label: 'Categoría',
-                              placeholder: controller.categoria_value(
-                                  controller.categoria_user_type()),
+                              placeholder: controller.categoria(
+                                  int.parse(controller.categoria_user_type())),
                               onChanged: (value) {
                                 controller.updateField('category_id', value);
-                                if (value != null && validate['category_id']!) {
-                                  setState(
-                                      () => validate['category_id'] = false);
-                                }
                               },
                             ),
                           ),
@@ -302,7 +292,7 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                     return;
                                   }
                                   ;
-
+                                  //este es el id del animal
                                   controller.updateField(
                                     'pet_id',
                                     homeController.selectedProfile.value!.id

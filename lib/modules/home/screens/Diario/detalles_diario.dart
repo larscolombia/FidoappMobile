@@ -175,16 +175,7 @@ class DetallesDiario extends StatelessWidget {
                             const SizedBox(height: 26),
                             Obx(() {
                               if (controller.activitiesOne.value!.image ==
-                                  null) {
-                                return Center(
-                                  child: SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 200,
-                                    child: Image.asset(
-                                        'assets/images/actividad.jpg'),
-                                  ),
-                                );
-                              }
+                                  null) {}
                               return Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: MediaQuery.of(context).size.height,

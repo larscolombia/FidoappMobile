@@ -63,13 +63,13 @@ class PetActivityController extends GetxController {
   String categoria_user_type() {
     switch (AuthServiceApis.dataCurrentUser.userType) {
       case 'user':
-        return '1';
+        return "1";
       case 'vet':
-        return '2';
+        return "2";
       case 'trainer':
-        return '3';
+        return "3";
       default:
-        return '3';
+        return "3";
     }
   }
 
@@ -134,7 +134,7 @@ class PetActivityController extends GetxController {
     try {
       isLoading(true);
       var petId = diario['pet_id'];
-      print('response actividades ${petId}');
+
       petId = petId != null ? petId.toString() : '';
       var request = http.MultipartRequest('POST', Uri.parse(createUrl))
         ..headers.addAll({
@@ -143,7 +143,7 @@ class PetActivityController extends GetxController {
         })
         ..fields['actividad'] = diario['actividad'] ?? ''
         ..fields['date'] = diario['date'] ?? ''
-        ..fields['category_id'] = diario['category_id'] ?? ''
+        ..fields['category_id'] = categoria_user_type()
         ..fields['notas'] = diario['notas'] ?? ''
         ..fields['pet_id'] =
             homeController.selectedProfile.value!.id.toString();
@@ -171,7 +171,7 @@ class PetActivityController extends GetxController {
               diario.value = {
                 'actividad': "",
                 'date': "",
-                'category_id': "",
+                'category_id': categoria_user_type(),
                 'notas': "",
                 'pet_id': '0',
                 'image': "",
@@ -206,10 +206,10 @@ class PetActivityController extends GetxController {
 
       // Campos
       request.fields.addAll({
-        'actividadId': diario['actividadId'].toString(),
+        'actividadId': categoria_user_type(),
         'actividad': diario['actividad'],
         'date': diario['date'],
-        'category_id': diario['category_id'].toString(),
+        'category_id': categoria_user_type(),
         'notas': diario['notas'],
         'pet_id': diario['pet_id'].toString(),
       });
@@ -222,12 +222,6 @@ class PetActivityController extends GetxController {
         ));
       }
 
-      // ---------- IMPRIMIR LA SOLICITUD COMPLETA ----------
-      print('\n======= [DEBUG] Contenido de la solicitud =======');
-      print('URL: ${request.url}');
-      print('Método: ${request.method}');
-      print('Headers: ${request.headers}');
-
       // Campos del formulario
       print('\nCampos:');
       request.fields.forEach((key, value) {
@@ -235,18 +229,11 @@ class PetActivityController extends GetxController {
       });
 
       // Archivos adjuntos
-      print('\nArchivos:');
+
       if (request.files.isEmpty) {
-        print('No hay archivos adjuntos.');
       } else {
-        for (var file in request.files) {
-          print('Campo: ${file.field}');
-          print('Nombre del archivo: ${file.filename}');
-          print('Tamaño: ${file.length} bytes\n');
-        }
+        for (var file in request.files) {}
       }
-      print('==============================================\n');
-      // ---------------------------------------------------
 
       var response = await request.send();
 
@@ -261,7 +248,7 @@ class PetActivityController extends GetxController {
               diario.value = {
                 'actividad': "",
                 'date': "",
-                'category_id': "",
+                'category_id': categoria_user_type(),
                 'notas': "",
                 'pet_id': '0',
                 'image': "",
@@ -301,7 +288,7 @@ class PetActivityController extends GetxController {
         'actividadId': diario['actividadId'],
         'actividad': diario['actividad'],
         'date': diario['date'],
-        'category_id': diario['category_id'],
+        'category_id': categoria_user_type(),
         'notas': diario['notas'],
         'pet_id': diario['pet_id'],
       });
@@ -329,7 +316,6 @@ class PetActivityController extends GetxController {
       var response = await request.send();
       var responseBody = await http.Response.fromStream(response);
 
-      print('Response Code: ${response.statusCode}');
       print('Response Body: ${responseBody.body}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
