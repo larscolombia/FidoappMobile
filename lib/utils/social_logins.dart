@@ -4,7 +4,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/models/user_data_model.dart';
-import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/utils/constants.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
