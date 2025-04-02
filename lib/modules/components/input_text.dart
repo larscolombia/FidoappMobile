@@ -1,11 +1,11 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-
+import 'package:intl/intl.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class InputText extends StatefulWidget {
@@ -29,9 +29,9 @@ class InputText extends StatefulWidget {
     this.initialValue,
     this.fondoColor = Styles.colorContainer,
     this.borderColor = Colors.transparent,
-    this.labelColor = null,
-    this.labelFontSize = null,
-    this.height = null,
+    this.labelColor,
+    this.labelFontSize,
+    this.height,
     this.onImagePicked,
     this.isTextArea = false,
     this.fw,
@@ -103,7 +103,7 @@ class _InputTextState extends State<InputText> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: widget.isTextArea ? double.infinity : 302,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,7 +118,7 @@ class _InputTextState extends State<InputText> {
                     widget.label ?? 'label',
                     style: TextStyle(
                       fontSize: 14,
-                      color: Color(0xFF383838),
+                      color: const Color(0xFF383838),
                       fontFamily: 'Lato',
                       fontWeight: widget.fw ?? FontWeight.w500,
                     ),
@@ -302,7 +302,7 @@ class _InputTextState extends State<InputText> {
           // Mensaje de error
 
           if (_imageFile != null)
-            Container(
+            SizedBox(
               height: 220,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -334,6 +334,7 @@ class _InputTextState extends State<InputText> {
     // Remueve el foco para evitar que el teclado aparezca
     _focusNode.unfocus();
 
+    // Todo: @john
     final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -353,7 +354,7 @@ class _InputTextState extends State<InputText> {
               onSurface: Colors.black, // Texto del calendario
               secondary: Color(0xFFFC9214), // Color para selección de días
             ),
-            dividerColor: Color(0xFFFC9214),
+            dividerColor: const Color(0xFFFC9214),
             appBarTheme: const AppBarTheme(
               backgroundColor: Color(0xFFFC9214), // Color del header
               foregroundColor: Colors.white, // Color del texto del header
@@ -383,7 +384,7 @@ class _InputTextState extends State<InputText> {
               ),
             ),
             textTheme: TextTheme(
-              titleLarge: TextStyle(
+              titleLarge: const TextStyle(
                 // Fuente para el día, mes y año
                 fontFamily: 'PoetsenOne',
                 fontSize: 24,
@@ -399,8 +400,8 @@ class _InputTextState extends State<InputText> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Color(0xFFFF4931), // Color de los botones
-                textStyle: TextStyle(
+                foregroundColor: const Color(0xFFFF4931), // Color de los botones
+                textStyle: const TextStyle(
                   fontFamily: 'PoetsenOne',
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
@@ -475,7 +476,7 @@ class _InputTextState extends State<InputText> {
               ),
             ),
             textTheme: TextTheme(
-              titleLarge: TextStyle(
+              titleLarge: const TextStyle(
                 fontFamily: 'PoetsenOne',
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
@@ -489,8 +490,8 @@ class _InputTextState extends State<InputText> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Color(0xFFFF4931),
-                textStyle: TextStyle(
+                foregroundColor: const Color(0xFFFF4931),
+                textStyle: const TextStyle(
                   fontFamily: 'PoetsenOne',
                   fontWeight: FontWeight.w400,
                   fontSize: 16,

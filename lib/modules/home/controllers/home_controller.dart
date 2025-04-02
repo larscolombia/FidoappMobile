@@ -1,13 +1,10 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/event_model.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/training_model.dart';
 import 'package:pawlly/models/user_data_model.dart';
-import 'package:pawlly/modules/home/screens/Diario/index.dart';
-import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/event_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
@@ -25,7 +22,7 @@ class HomeController extends GetxController {
 
   var training = <TrainingModel>[].obs;
   late UserData currentUser;
-  var profileImagePath = '${AuthServiceApis.dataCurrentUser.profileImage}'.obs;
+  var profileImagePath = AuthServiceApis.dataCurrentUser.profileImage.obs;
   var isLoading = false.obs;
   var selectedDay = DateTime.now().obs;
   var focusedDay = DateTime.now().obs;

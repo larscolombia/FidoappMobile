@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +14,6 @@ import 'package:pawlly/locale/language_en.dart';
 import 'package:pawlly/locale/languages.dart';
 import 'package:pawlly/modules/provider/push_provider.dart';
 import 'package:pawlly/modules/splash/splash_screen.dart';
-import 'package:pawlly/modules/welcome/controllers/welcome_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/utils/app_common.dart';
 import 'package:pawlly/utils/common_base.dart';
@@ -27,7 +27,7 @@ Future<void> main() async {
   // Si usas funciones específicas de Android, por ejemplo:
   if (Platform.isAndroid) {
     // Opcional: habilitar debugging para el contenido web de Android (solo para pruebas)
-    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+    await InAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -65,7 +65,9 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
+  final bool isLoggedIn;
+
+  const MyApp({super.key, required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context) {

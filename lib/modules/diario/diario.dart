@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/input_busqueda.dart';
-import 'package:pawlly/modules/components/input_text.dart';
+// import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
-import 'package:pawlly/modules/components/reportar_mascota.dart';
+// import 'package:pawlly/modules/components/reportar_mascota.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/Diario/formulario_diario.dart';
@@ -38,144 +38,149 @@ class Diario extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
+      body: Column(
         children: [
-          Column(
-            children: [
-              Container(
-                width: double.infinity,
-                height: 148,
-                decoration: const BoxDecoration(
-                  color: Styles.blackColor,
-                ),
-                child: HeaderNotification(),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: Helper.paddingDefault,
-                    right: Helper.paddingDefault,
-                    bottom: Helper.paddingDefault,
-                  ),
-                  child: Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          ProfilesDogs(),
-                          SizedBox(height: margen + 10),
-                          SizedBox(
-                            width: ancho,
-                            child: BarraBack(
-                              titulo: 'Registros en el Diario',
-                              size: 20,
-                              callback: () {
-                                Get.back();
-                              },
-                            ),
-                          ),
-                          SizedBox(height: margen + 10),
-                          SizedBox(
-                            width: ancho,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 11,
-                                  child: InputBusqueda(
-                                    onChanged: (value) =>
-                                        historialClinicoController
-                                            .searchActivities(value),
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  flex: 2,
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        FiltrarActividad.show(context,
-                                            historialClinicoController);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        elevation: 0,
-                                        padding: EdgeInsets.zero,
-                                        backgroundColor: Styles.fiveColor,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          side: BorderSide(
-                                            color: Color(0xFFFC9214)
-                                                .withOpacity(
-                                                    0.20), // Color del borde
-                                            width: 0.55, // Grosor del borde
-                                          ),
-                                        ),
-                                        minimumSize: const Size(58, 58),
-                                      ),
-                                      child: SvgPicture.asset(
-                                        'assets/icons/svg/filters.svg',
-                                        height: 25,
-                                        width: 25,
-                                      )),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: margen + 10),
-                          SizedBox(
-                            width: ancho,
-                            child: DiarioMascotas(
-                              homeController: homeController,
-                              controller: historialClinicoController,
-                            ),
-                          ),
-                          RecargaComponente(
-                            callback: () {
-                              historialClinicoController.fetchPetActivities(
-                                  "${homeController.selectedProfile.value?.id ?? '-1'}");
-                            },
-                          ),
-                          SizedBox(height: margen + 100),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+          Container(
+            width: double.infinity,
+            height: 148,
+            decoration: const BoxDecoration(
+              color: Styles.blackColor,
+            ),
+            child: HeaderNotification(),
           ),
-          Positioned(
-            bottom: 120,
-            right: 30,
-            child: FloatingActionButton(
-              onPressed: () {
-                Get.to(() => FormularioDiario());
-              },
-              elevation: 0,
-              shape: const CircleBorder(),
-              backgroundColor: Styles.primaryColor,
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: Helper.paddingDefault,
+                right: Helper.paddingDefault,
+                bottom: Helper.paddingDefault,
+              ),
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ProfilesDogs(),
+                      
+                      SizedBox(height: margen + 10),
+                      
+                      SizedBox(
+                        width: ancho,
+                        child: BarraBack(
+                          titulo: 'Registros en el Diario',
+                          size: 20,
+                          callback: () {
+                            Get.back();
+                          },
+                        ),
+                      ),
+                      
+                      SizedBox(height: margen + 10),
+                      
+                      SizedBox(
+                        width: ancho,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 11,
+                              child: InputBusqueda(
+                                onChanged: (value) =>
+                                    historialClinicoController
+                                        .searchActivities(value),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 2,
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    FiltrarActividad.show(context,
+                                        historialClinicoController);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    padding: EdgeInsets.zero,
+                                    backgroundColor: Styles.fiveColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(16),
+                                      side: BorderSide(
+                                        color: const Color(0xFFFC9214)
+                                            .withOpacity(
+                                                0.20), // Color del borde
+                                        width: 0.55, // Grosor del borde
+                                      ),
+                                    ),
+                                    minimumSize: const Size(58, 58),
+                                  ),
+                                  child: SvgPicture.asset(
+                                    'assets/icons/svg/filters.svg',
+                                    height: 25,
+                                    width: 25,
+                                  )),
+                            ),
+                          ],
+                        ),
+                      ),
+                      
+                      SizedBox(height: margen + 10),
+                      
+                      SizedBox(
+                        width: ancho,
+                        child: DiarioMascotas(
+                          homeController: homeController,
+                          controller: historialClinicoController,
+                        ),
+                      ),
+                      
+                      RecargaComponente(
+                        callback: () {
+                          historialClinicoController.fetchPetActivities(
+                              "${homeController.selectedProfile.value?.id ?? '-1'}");
+                        },
+                      ),
+                      
+                      SizedBox(height: margen + 10),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-          Obx(() {
-            if (homeController.selectedIndex.value == 5 ||
-                homeController.selectedIndex.value == 6) {
-              return const SizedBox(height: 100);
-            }
-            return Positioned(
-              left: 25,
-              right: 25,
-              bottom: 30,
-              child: MenuOfNavigation(),
-            );
-          }),
         ],
+      ),
+
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: FloatingActionButton(
+          onPressed: () {
+            Get.to(() => FormularioDiario());
+          },
+          elevation: 0,
+          shape: const CircleBorder(),
+          backgroundColor: Styles.primaryColor,
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+      ),
+
+      bottomNavigationBar: Obx(
+        () {
+          if (homeController.selectedIndex.value == 5 ||
+              homeController.selectedIndex.value == 6) {
+            return const SizedBox(height: 0);
+          }
+          return Padding(
+            padding: const EdgeInsets.only(left: 25, right: 25, bottom: 30),
+            child: MenuOfNavigation(),
+          );
+        },
       ),
     );
   }

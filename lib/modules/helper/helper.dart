@@ -3,15 +3,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
-import 'package:pawlly/components/custom_snackbar.dart';
 
 class Helper extends GetX {
-  Helper({required super.builder});
+  const Helper({super.key, required super.builder});
 
   static Helper get instance => Get.find<Helper>();
   static const errorValidate =
@@ -119,7 +119,7 @@ class Helper extends GetX {
                               'assets/icons/svg/x.svg',
                               width: 24, // Ajusta el tamaño si es necesario
                               height: 24,
-                              colorFilter: ColorFilter.mode(Color(0XFFBEBEBE),
+                              colorFilter: const ColorFilter.mode(Color(0XFFBEBEBE),
                                   BlendMode.srcIn), // Aplica color rojo
                             ),
                           ),

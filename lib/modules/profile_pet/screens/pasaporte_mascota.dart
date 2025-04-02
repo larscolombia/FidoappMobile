@@ -1,9 +1,8 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/modules/components/historia_grid.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
@@ -167,16 +166,16 @@ class PasaporteMascota extends StatelessWidget {
                           onChanged: (value) => pet.petFur = value,
                         ),
                       ),
-                      SizedBox(
-                        width: ancho,
-                        height: altoInput,
-                        child: InputText(
-                          label: 'Edad',
-                          placeholder: '',
-                          initialValue: pet.age ?? "",
-                          onChanged: (value) => pet.age = value,
-                        ),
-                      ),
+                      // SizedBox(
+                      //   width: ancho,
+                      //   height: altoInput,
+                      //   child: InputText(
+                      //     label: 'Edad',
+                      //     placeholder: '',
+                      //     initialValue: pet.age ?? "",
+                      //     onChanged: (value) => pet.age = value,
+                      //   ),
+                      // ),
                       SizedBox(
                         width: ancho,
                         height: altoInput,
@@ -328,7 +327,7 @@ class PasaporteMascota extends StatelessWidget {
                                   "height_unit": pet.heightUnit,
                                   "height": num.parse(pet.size ?? "0"),
                                   "user_id": pet.userId,
-                                  "age": "${pet.age}",
+                                  // "age": pet.age,
                                   "pet_fur": pet.petFur,
                                   "chip": pet.chip,
                                   "size": "${pet.size}",
