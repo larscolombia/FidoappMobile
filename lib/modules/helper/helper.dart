@@ -222,4 +222,11 @@ class Helper extends GetX {
       snackPosition: SnackPosition.TOP,
     );
   }
+
+  static String cleanNumberString(String input) {
+    RegExp regExp = RegExp(r'[0-9\.]');
+    String cleanedString =
+        regExp.allMatches(input).map((m) => m.group(0)).join();
+    return cleanedString;
+  }
 }

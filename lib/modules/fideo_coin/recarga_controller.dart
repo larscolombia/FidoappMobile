@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/fideo_coin/navegador.dart';
 import 'dart:convert';
 
@@ -38,7 +39,7 @@ class StripeController extends GetxController {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         url_pago_stripe.value = data['url'];
-        // Get.off(() => FideCoin());
+        Get.off(() => FideCoin());
         print('contexto ${url_pago_stripe.toString()}');
         abrirNavegador(context, url_pago_stripe.toString());
         //openStripeCheckout(url_pago_stripe.toString());
