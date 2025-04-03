@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/modules/fideo_coin/navegador.dart';
 import 'dart:convert';
 
-import 'package:webview_flutter/webview_flutter.dart';
-
 import 'package:pawlly/configs.dart';
-import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -42,9 +38,10 @@ class StripeController extends GetxController {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         url_pago_stripe.value = data['url'];
-        Get.off(() => FideCoin());
+        // Get.off(() => FideCoin());
+        print('contexto ${url_pago_stripe.toString()}');
         abrirNavegador(context, url_pago_stripe.toString());
-        // openStripeCheckout(url_pago_stripe.toString());
+        //openStripeCheckout(url_pago_stripe.toString());
       } else {
         // ignore: avoid_print
         print('Error: ${response.statusCode} - ${response.body}');
@@ -103,6 +100,8 @@ class StripeController extends GetxController {
   }
 
   void abrirNavegador(BuildContext context, String url) {
+    print('contexto modal $context');
+    if (!context.mounted) return; // Previene contextos no válidos
     showDialog(
       context: context,
       builder: (BuildContext context) {

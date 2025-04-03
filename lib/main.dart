@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -24,15 +22,10 @@ Rx<BaseLanguage> locale = LanguageEn().obs;
 Future<void> main() async {
   // Registra el controller de notificaciones
   WidgetsFlutterBinding.ensureInitialized();
-  // Si usas funciones específicas de Android, por ejemplo:
-  if (Platform.isAndroid) {
-    // Opcional: habilitar debugging para el contenido web de Android (solo para pruebas)
-    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
-  }
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
-  WidgetsFlutterBinding.ensureInitialized();
 
   // Inicializa Firebase y espera a que termine
   await Firebase.initializeApp();

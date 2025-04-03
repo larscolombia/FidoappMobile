@@ -124,7 +124,7 @@ class Movimientos extends StatelessWidget {
           horizontal: 24,
           vertical: 8), // Márgenes laterales y verticales más amplios
       padding: const EdgeInsets.all(16),
-      width: MediaQuery.of(context).size.width - 48, // Ajustar al nuevo margen
+      width: MediaQuery.of(context).size.width - 40, // Ajustar al nuevo margen
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,
@@ -135,58 +135,62 @@ class Movimientos extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Styles.fiveColor,
-                  borderRadius: BorderRadius.circular(50),
+          SizedBox(
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(7),
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Styles.fiveColor,
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/icons/svg/moneda.svg',
+                    width: 30,
+                  ),
                 ),
-                child: SvgPicture.asset(
-                  'assets/icons/svg/moneda.svg',
-                  width: 30,
-                ),
-              ),
-              const SizedBox(width: 10),
-              SizedBox(
-                width: 200,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      description ?? "Movimiento",
-                      style: TextStyle(
-                        fontFamily: 'Lato',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black,
+                const SizedBox(width: 10),
+                SizedBox(
+                  width: 180,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        description ?? "Movimiento",
+                        style: const TextStyle(
+                          fontFamily: 'Lato',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Fecha: $date',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        color: Color.fromARGB(255, 78, 75, 75),
-                        fontFamily: 'Lato',
+                      const SizedBox(height: 4),
+                      Text(
+                        'Fecha: $date',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                          color: Color.fromARGB(255, 78, 75, 75),
+                          fontFamily: 'Lato',
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-          Text(
-            '\$ ${(amount)}',
-            style: TextStyle(
-              fontFamily: 'Lato',
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              color: Colors.black,
+          Expanded(
+            child: Text(
+              '\$ ${(amount)}',
+              style: TextStyle(
+                fontFamily: 'Lato',
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
             ),
           ),
         ],

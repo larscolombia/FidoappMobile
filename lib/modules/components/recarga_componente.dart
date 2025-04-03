@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart'; // Asegúrate de importar el paquete
-import 'package:pawlly/modules/components/style.dart';
 
 class RecargaComponente extends StatelessWidget {
   const RecargaComponente({

@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/style.dart';
 
-class InAppBrowserModal extends StatelessWidget {
+class InAppBrowserModal extends StatefulWidget {
+  // Cambiado a StatefulWidget
   final String url;
 
   const InAppBrowserModal({Key? key, required this.url}) : super(key: key);
+
+  @override
+  State<InAppBrowserModal> createState() => _InAppBrowserModalState();
+}
+
+class _InAppBrowserModalState extends State<InAppBrowserModal> {
+  late final WebViewController controller; // Declarado como late final
+
+  @override
+  void initState() {
+    super.initState();
+    controller = WebViewController() // Inicializado en initState
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(Uri.parse(widget.url)); // Usando widget.url
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +41,9 @@ class InAppBrowserModal extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(16)),
-                    child: InAppWebView(
-                      initialUrlRequest: URLRequest(url: WebUri(url)),
-                      initialSettings: InAppWebViewSettings(
-                        javaScriptEnabled: true,
-                        domStorageEnabled: true,
-                      ),
-                    ),
+                    child: WebViewWidget(
+                        controller:
+                            controller), // Usando el controller inicializado
                   ),
                 ),
                 Padding(

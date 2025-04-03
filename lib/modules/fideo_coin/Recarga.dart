@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
-
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -20,6 +19,7 @@ class RecargarSaldoScreen extends StatefulWidget {
 
 class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
   String _input = "";
+
   // Formatear la entrada
   String _formattedInput(String input) {
     if (input.isEmpty) return "0,00";
@@ -103,7 +103,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                       Get.off(() => DashboardScreen());
                     },
                   ),
-                  const SizedBox(height: 20),
+
                   // Input sin bordes
                   Container(
                     height: 60,
@@ -192,6 +192,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                               : 'Estás a punto de adquirir \$ ${_formattedInput(_input)} . ¿Deseas continuar?',
                           primaryButtonText: 'Continuar',
                           onPrimaryButtonPressed: () async {
+                            print('dew');
                             controller.GetUrlPayment(
                                 _formattedInput(_input), context);
                           },
