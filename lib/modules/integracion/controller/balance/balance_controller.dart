@@ -8,6 +8,7 @@ import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart'; // Asegúrate de que este archivo exista y contenga la constante BASE_URL
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_wdget.dart';
 import 'package:pawlly/modules/integracion/controller/balance/producto_pay_controller.dart';
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
@@ -267,6 +268,14 @@ class UserBalanceController extends GetxController {
                         callback: loading
                             ? null
                             : () {
+                                var precioProducto = Helper.cleanNumberString(
+                                    productController
+                                        .selectedProduct.value.precio);
+
+                                var precionBalance = Helper.cleanNumberString(
+                                    userBalanceController
+                                        .userBalance.value.balance);
+
                                 if (productController
                                     .selectedProduct.value.precio.isEmpty) {
                                   CustomSnackbar.show(
@@ -278,11 +287,8 @@ class UserBalanceController extends GetxController {
                                 }
 
                                 // Validación de fondos insuficientes
-                                if (double.parse(userBalanceController
-                                        .userBalance.value.balance) <
-                                    double.parse(productController
-                                        .selectedProduct.value.precio
-                                        .split('ƒ')[0])) {
+                                if (double.parse(precionBalance) <
+                                    double.parse(precioProducto)) {
                                   Get.dialog(
                                     CustomAlertDialog(
                                       icon: Icons.close,

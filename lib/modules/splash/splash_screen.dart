@@ -19,27 +19,39 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-      future: AuthServiceApis.loadLoginData(),
+      future: Future.wait([
+        AuthServiceApis.loadLoginData(),
+        Future.delayed(const Duration(seconds: 2)), // Mínimo tiempo de splash
+      ]).then((results) => results[0]),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return buildSplashScreen();
-        } else {
-          if (snapshot.data == true &&
-              AuthServiceApis.currentUser.value != null) {
-            // Usar GetX para la navegación
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Get.offAll(() => HomeScreen(), binding: BindingsBuilder(() {
-                Get.put(HomeController());
-              }));
-            });
-            return buildSplashScreen();
-          } else {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Get.offAll(() => WelcomeScreen());
-            });
-            return buildSplashScreen();
-          }
         }
+
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          try {
+            if (snapshot.data == true &&
+                AuthServiceApis.currentUser.value != null) {
+              await Get.offAll(
+                () => HomeScreen(),
+                binding: BindingsBuilder(() {
+                  Get.put(HomeController());
+                }),
+                transition: Transition.fadeIn,
+              );
+            } else {
+              await Get.offAll(
+                () => WelcomeScreen(),
+                transition: Transition.fadeIn,
+              );
+            }
+          } catch (e) {
+            debugPrint('Error en navegación: $e');
+            await Get.offAll(() => WelcomeScreen());
+          }
+        });
+
+        return buildSplashScreen();
       },
     );
   }
@@ -49,21 +61,13 @@ class SplashScreen extends StatelessWidget {
       hideAppBar: true,
       scaffoldBackgroundColor:
           isDarkMode.value ? const Color(0xFF0C0910) : const Color(0xFFFCFCFC),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              isDarkMode.value
-                  ? Assets.imagesPawllyLoaderDark
-                  : Assets.imagesPawllyLoaderLight,
-              height: Constants.appLogoSize,
-              width: Constants.appLogoSize,
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) =>
-                  const AppLogoWidget(),
-            ),
-          ],
+      body: SizedBox.expand(
+        child: Image.asset(
+          isDarkMode.value
+              ? Assets.imagesPawllyLoaderDark
+              : Assets.imagesPawllyLoaderLight,
+          fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) => const AppLogoWidget(),
         ),
       ),
     );
