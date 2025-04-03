@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -23,9 +24,11 @@ import '../../../utils/app_common.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/local_storage.dart';
 
-class AuthServiceApis {
+class AuthServiceApis extends GetxController {
   static ValueNotifier<LoginResponse?> currentUser = ValueNotifier(null);
   static UserData dataCurrentUser = UserData();
+  static const String KEY_USER_DATA = 'lastLoginResponse';
+  static const String KEY_API_TOKEN = 'apiToken';
   RxString deviceToken = 'null'.obs;
   static Future<RegUserResp> createUser({required Map request}) async {
     return RegUserResp.fromJson(await handleResponse(await buildHttpResponse(
@@ -70,51 +73,104 @@ class AuthServiceApis {
   }
 
   static Future<void> saveLoginData(Map request, Map response) async {
-    final prefs = await SharedPreferences.getInstance();
+    try {
+      final prefs = await SharedPreferences.getInstance();
 
-    // Guardar la respuesta completa del login
-    await prefs.setString('lastLoginResponse', json.encode(response));
+      // Guardar los datos completos del usuario
+      await prefs.setString(KEY_USER_DATA, json.encode(response));
+      await prefs.setString(KEY_API_TOKEN, response['data']['api_token']);
 
-    // Guardar el token
-    await prefs.setString('apiToken', response['data']['api_token']);
+      // Actualizar el estado en memoria
+      currentUser.value =
+          LoginResponse.fromJson(Map<String, dynamic>.from(response));
+      dataCurrentUser = UserData.fromJson(response['data']);
 
-    // Guardar email y contraseña si existe
-    if (request.containsKey('email')) {
-      await prefs.setString(SharedPreferenceConst.USER_EMAIL, request['email']);
+      // Marcar como logged in
+      await prefs.setBool(SharedPreferenceConst.IS_LOGGED_IN, true);
+      isLoggedIn(true);
+
+      // Guardar credenciales si existe remember me
+      if (prefs.getBool(SharedPreferenceConst.IS_REMEMBER_ME) == true) {
+        if (request.containsKey('email')) {
+          await prefs.setString(
+              SharedPreferenceConst.USER_EMAIL, request['email']);
+        }
+        if (request.containsKey('password')) {
+          await prefs.setString(
+              SharedPreferenceConst.USER_PASSWORD, request['password']);
+        }
+      }
+    } catch (e) {
+      debugPrint('Error saving login data: $e');
     }
-
-    if (request.containsKey('password')) {
-      await prefs.setString(
-          SharedPreferenceConst.USER_PASSWORD, request['password']);
-    }
-
-    // Marcar como logged in
-    await prefs.setBool(SharedPreferenceConst.IS_LOGGED_IN, true);
-    isLoggedIn(true);
   }
 
   static Future<bool> loadLoginData() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? lastLoginResponse = prefs.getString('lastLoginResponse');
-    String? apiToken = prefs.getString('apiToken');
-    bool? isLogged = prefs.getBool(SharedPreferenceConst.IS_LOGGED_IN);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userDataStr = prefs.getString(KEY_USER_DATA);
+      final apiToken = prefs.getString(KEY_API_TOKEN);
+      final isLogged =
+          prefs.getBool(SharedPreferenceConst.IS_LOGGED_IN) ?? false;
 
-    // Verificación más estricta del estado de la sesión
-    if (lastLoginResponse == null || apiToken == null || !isLogged!) {
-      await clearData(); // Limpiar datos si algo falta
+      if (userDataStr != null && apiToken != null && isLogged) {
+        final userDataMap = json.decode(userDataStr);
+        currentUser.value = LoginResponse.fromJson(userDataMap);
+        dataCurrentUser = UserData.fromJson(userDataMap['data']);
+        isLoggedIn(true);
+
+        // Verificar y actualizar el token en los headers
+        await saveToken(apiToken);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      debugPrint('Error loading login data: $e');
+      await clearData(); // Limpiar datos corruptos
       return false;
     }
+  }
 
+  static Future<void> clearData() async {
     try {
-      Map<String, dynamic> responseMap = jsonDecode(lastLoginResponse);
-      currentUser.value = LoginResponse.fromJson(responseMap);
-      dataCurrentUser = UserData.fromJson(responseMap['data']);
-      isLoggedIn(true);
-      return true;
+      final prefs = await SharedPreferences.getInstance();
+
+      // Preservar remember me y credenciales si está activo
+      final isRememberMe =
+          prefs.getBool(SharedPreferenceConst.IS_REMEMBER_ME) ?? false;
+      final savedEmail = isRememberMe
+          ? prefs.getString(SharedPreferenceConst.USER_EMAIL)
+          : null;
+      final savedPassword = isRememberMe
+          ? prefs.getString(SharedPreferenceConst.USER_PASSWORD)
+          : null;
+
+      // Limpiar todos los datos
+      await prefs.clear();
+
+      // Restaurar remember me y credenciales si necesario
+      if (isRememberMe) {
+        await prefs.setBool(SharedPreferenceConst.IS_REMEMBER_ME, true);
+        if (savedEmail != null) {
+          await prefs.setString(SharedPreferenceConst.USER_EMAIL, savedEmail);
+        }
+        if (savedPassword != null) {
+          await prefs.setString(
+              SharedPreferenceConst.USER_PASSWORD, savedPassword);
+        }
+      }
+
+      // Limpiar datos específicos de sesión
+      await prefs.remove(KEY_USER_DATA);
+      await prefs.remove(KEY_API_TOKEN);
+      await prefs.remove(SharedPreferenceConst.IS_LOGGED_IN);
+
+      // Limpiar datos en memoria
+      currentUser.value = null;
+      dataCurrentUser = UserData();
+      isLoggedIn(false);
     } catch (e) {
-      print("Error al cargar los datos de sesión: $e");
-      await clearData();
-      return false;
+      debugPrint('Error clearing data: $e');
     }
   }
 
@@ -165,37 +221,6 @@ class AuthServiceApis {
         await buildHttpResponse(
             '${APIEndPoints.removeNotification}?id=$notificationId',
             method: HttpMethodType.GET)));
-  }
-
-  static Future<void> clearData() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    // Mantener email y contraseña si isRememberMe es true
-    final isRememberMe =
-        prefs.getBool(SharedPreferenceConst.IS_REMEMBER_ME) ?? false;
-    final savedEmail = prefs.getString(SharedPreferenceConst.USER_EMAIL);
-    final savedPassword = prefs.getString(SharedPreferenceConst.USER_PASSWORD);
-
-    // Limpiar TODOS los datos de sesión primero
-    await prefs.clear();
-
-    // Si remember me está activo, restaurar SOLO las credenciales
-    if (isRememberMe) {
-      await prefs.setString(SharedPreferenceConst.USER_EMAIL, savedEmail ?? '');
-      await prefs.setString(
-          SharedPreferenceConst.USER_PASSWORD, savedPassword ?? '');
-      await prefs.setBool(SharedPreferenceConst.IS_REMEMBER_ME, true);
-    }
-
-    // Asegurarnos de que los datos de sesión estén limpios
-    await prefs.remove('lastLoginResponse');
-    await prefs.remove('apiToken');
-    await prefs.remove(SharedPreferenceConst.IS_LOGGED_IN);
-
-    // Limpiar datos en memoria
-    currentUser.value = null;
-    dataCurrentUser = UserData();
-    isLoggedIn(false);
   }
 
   static Future<BaseResponseModel> logoutApi() async {
