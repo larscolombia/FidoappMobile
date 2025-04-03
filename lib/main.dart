@@ -25,6 +25,7 @@ Future<void> main() async {
   // Registra el controller de notificaciones
   WidgetsFlutterBinding.ensureInitialized();
 
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -58,7 +59,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +67,8 @@ class MyApp extends StatelessWidget {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: AuthServiceApis.currentUser.value != null
+            ? Routes.HOME
+            : AuthServiceApis.currentUser.value != null
             ? Routes.HOME
             : Routes.WELCOME,
         getPages: AppPages.routes,
@@ -85,7 +88,9 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
 
         // Binding global para manejar la sesión
+        // Binding global para manejar la sesión
         initialBinding: BindingsBuilder(() {
+          Get.put(AuthServiceApis(), permanent: true);
           Get.put(AuthServiceApis(), permanent: true);
           if (isLoggedIn.value) {
             Get.put<WelcomeController>(WelcomeController());
