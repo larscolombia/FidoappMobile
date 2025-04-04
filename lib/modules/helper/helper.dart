@@ -27,6 +27,15 @@ class Helper extends GetX {
     height: 1.3,
     letterSpacing: 0,
   );
+  static String formatDate(String date) {
+    if (date.isEmpty) return date;
+    final parts = date.split('/');
+    if (parts.length == 3) {
+      return '${parts[2]}/${parts[1]}/${parts[0]}'; // Formato DD/MM/AAAA
+    }
+    return date;
+  }
+
   static String tipoUsuario(String userType) {
     switch (userType) {
       case 'vet':
@@ -119,7 +128,8 @@ class Helper extends GetX {
                               'assets/icons/svg/x.svg',
                               width: 24, // Ajusta el tamaño si es necesario
                               height: 24,
-                              colorFilter: const ColorFilter.mode(Color(0XFFBEBEBE),
+                              colorFilter: const ColorFilter.mode(
+                                  Color(0XFFBEBEBE),
                                   BlendMode.srcIn), // Aplica color rojo
                             ),
                           ),

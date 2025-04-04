@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 
 class InputText extends StatefulWidget {
   const InputText({
@@ -334,7 +335,6 @@ class _InputTextState extends State<InputText> {
     // Remueve el foco para evitar que el teclado aparezca
     _focusNode.unfocus();
 
-    // Todo: @john
     final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -348,65 +348,16 @@ class _InputTextState extends State<InputText> {
           data: ThemeData(
             useMaterial3: true,
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFFFC9214), // Color del header
-              onPrimary: Colors.white, // Texto en el header
-              surface: Colors.white, // Fondo del calendario
-              onSurface: Colors.black, // Texto del calendario
-              secondary: Color(0xFFFC9214), // Color para selección de días
+              primary: Color(0xFFFC9214),
+              onPrimary: Colors.white,
+              surface: Colors.white,
+              onSurface: Colors.black,
+              secondary: Color(0xFFFC9214),
             ),
             dividerColor: const Color(0xFFFC9214),
             appBarTheme: const AppBarTheme(
-              backgroundColor: Color(0xFFFC9214), // Color del header
-              foregroundColor: Colors.white, // Color del texto del header
-              surfaceTintColor: Color(0xFFFC9214),
-              titleTextStyle: TextStyle(
-                // Fuente del header
-                fontFamily: 'PoetsenOne',
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            datePickerTheme: const DatePickerThemeData(
-              headerBackgroundColor: Color(0xFFFF4931),
-              headerForegroundColor: Colors.white,
-              dividerColor: Color(0xFFFF4931),
-              backgroundColor: Colors.white,
-              headerHeadlineStyle: TextStyle(
-                fontFamily: 'PoetsenOne',
-                fontWeight: FontWeight.w400,
-                fontSize: 26,
-              ),
-              headerHelpStyle: TextStyle(
-                fontFamily: 'PoetsenOne',
-                fontWeight: FontWeight.w400,
-                fontSize: 14,
-              ),
-            ),
-            textTheme: TextTheme(
-              titleLarge: const TextStyle(
-                // Fuente para el día, mes y año
-                fontFamily: 'PoetsenOne',
-                fontSize: 24,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
-              ),
-              labelLarge: GoogleFonts.lato(
-                // Fuente para los botones Aceptar/Cancelar
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                color: Colors.orange,
-              ),
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: const Color(0xFFFF4931), // Color de los botones
-                textStyle: const TextStyle(
-                  fontFamily: 'PoetsenOne',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 14,
-                ),
-              ),
+              backgroundColor: Color(0xFFFC9214),
+              foregroundColor: Colors.white,
             ),
           ),
           child: child ?? const SizedBox(),
@@ -417,8 +368,11 @@ class _InputTextState extends State<InputText> {
     if (picked != null) {
       final formattedDate = dateFormat.format(picked);
       widget.onChanged(formattedDate); // Notifica el cambio
+
       setState(() {
-        _textController.text = formattedDate; // Actualiza el controlador
+        // Actualizamos el controlador con la fecha formateada como DD/MM/YYYY
+        print('fecha ${formattedDate}');
+        _textController.text = Helper.formatDate(formattedDate);
       });
     }
   }
