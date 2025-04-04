@@ -102,8 +102,27 @@ class CustomAlertDialog extends StatelessWidget {
             const Divider(), // Línea divisoria
             const SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment:
+                  MainAxisAlignment.start, // Alineación a la izquierda
               children: [
+                if (buttonCancelar) ...[
+                  // Colocar el botón de Cancelar a la izquierda
+                  Expanded(
+                    flex: 1, // Expande el botón de cancelar a la izquierda
+                    child: ButtonDefaultWidget(
+                      title: 'Cancelar',
+                      callback: () {
+                        Navigator.of(context).pop();
+                      },
+                      defaultColor:
+                          Styles.primaryColor, // Color de fondo del botón
+                      textColor: Styles.whiteColor, // Color del texto del botón
+                      heigthButtom: 48, // Altura del botón
+                      borderSize: 12, // Tamaño del borde
+                    ),
+                  ),
+                  const SizedBox(width: 10), // Espacio entre los botones
+                ],
                 if (primaryButtonText != null)
                   Expanded(
                     child: ButtonDefaultWidget(
@@ -125,23 +144,6 @@ class CustomAlertDialog extends StatelessWidget {
                       callback: onSecondaryButtonPressed ?? () {},
                       defaultColor:
                           Styles.primaryColor, // Color de fondo del botón
-                      textColor: Styles.whiteColor, // Color del texto del botón
-                      heigthButtom: 48, // Altura del botón
-                      borderSize: 12, // Tamaño del borde
-                    ),
-                  ),
-                ],
-                if (buttonCancelar) ...[
-                  const SizedBox(width: 10), // Espacio entre los botones
-                  Expanded(
-                    child: ButtonDefaultWidget(
-                      title: 'Cancelar',
-                      callback: () {
-                        Navigator.of(context).pop();
-                      },
-                      defaultColor:
-                          Styles.primaryColor, // Color de fondo del botón
-
                       textColor: Styles.whiteColor, // Color del texto del botón
                       heigthButtom: 48, // Altura del botón
                       borderSize: 12, // Tamaño del borde
