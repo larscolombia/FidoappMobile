@@ -19,7 +19,7 @@ class HistorialGrid extends StatelessWidget {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
       }
-      
+
       if (historial.value.isEmpty) {
         return const Center(
           child: Text(
@@ -37,11 +37,12 @@ class HistorialGrid extends StatelessWidget {
       return GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
-          childAspectRatio: 0.70,
+          childAspectRatio: MediaQuery.of(context).size.width /
+              (MediaQuery.of(context).size.height / 2),
         ),
         itemCount: historial.value.length,
         itemBuilder: (context, index) {

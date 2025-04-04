@@ -144,7 +144,7 @@ class MedicalHistoryTab extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             HistorialGrid(controller: medicalHistoryController),

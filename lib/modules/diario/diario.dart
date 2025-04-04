@@ -65,9 +65,7 @@ class Diario extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ProfilesDogs(),
-                      
                       SizedBox(height: margen + 10),
-                      
                       SizedBox(
                         width: ancho,
                         child: BarraBack(
@@ -78,9 +76,7 @@ class Diario extends StatelessWidget {
                           },
                         ),
                       ),
-                      
                       SizedBox(height: margen + 10),
-                      
                       SizedBox(
                         width: ancho,
                         child: Row(
@@ -88,9 +84,8 @@ class Diario extends StatelessWidget {
                             Expanded(
                               flex: 11,
                               child: InputBusqueda(
-                                onChanged: (value) =>
-                                    historialClinicoController
-                                        .searchActivities(value),
+                                onChanged: (value) => historialClinicoController
+                                    .searchActivities(value),
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -98,16 +93,15 @@ class Diario extends StatelessWidget {
                               flex: 2,
                               child: ElevatedButton(
                                   onPressed: () {
-                                    FiltrarActividad.show(context,
-                                        historialClinicoController);
+                                    FiltrarActividad.show(
+                                        context, historialClinicoController);
                                   },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 0,
                                     padding: EdgeInsets.zero,
                                     backgroundColor: Styles.fiveColor,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(16),
+                                      borderRadius: BorderRadius.circular(16),
                                       side: BorderSide(
                                         color: const Color(0xFFFC9214)
                                             .withOpacity(
@@ -126,9 +120,7 @@ class Diario extends StatelessWidget {
                           ],
                         ),
                       ),
-                      
                       SizedBox(height: margen + 10),
-                      
                       SizedBox(
                         width: ancho,
                         child: DiarioMascotas(
@@ -136,14 +128,12 @@ class Diario extends StatelessWidget {
                           controller: historialClinicoController,
                         ),
                       ),
-                      
                       RecargaComponente(
                         callback: () {
                           historialClinicoController.fetchPetActivities(
                               "${homeController.selectedProfile.value?.id ?? '-1'}");
                         },
                       ),
-                      
                       SizedBox(height: margen + 10),
                     ],
                   ),
@@ -153,7 +143,6 @@ class Diario extends StatelessWidget {
           ),
         ],
       ),
-
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(right: 10),
         child: FloatingActionButton(
@@ -169,7 +158,6 @@ class Diario extends StatelessWidget {
           ),
         ),
       ),
-
       bottomNavigationBar: Obx(
         () {
           if (homeController.selectedIndex.value == 5 ||

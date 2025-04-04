@@ -57,14 +57,17 @@ class _DiarioMascotasState extends State<DiarioMascotas> {
 
           return SingleChildScrollView(
             child: GridView.builder(
-              shrinkWrap: true,
+              shrinkWrap:
+                  true, // Esto asegura que GridView se ajuste al tamaño del contenido.
               physics: const NeverScrollableScrollPhysics(),
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 7,
-                childAspectRatio: 0.70,
+                childAspectRatio: MediaQuery.of(context).size.width /
+                    (MediaQuery.of(context).size.height /
+                        2), // Ajuste dinámico del childAspectRatio
               ),
               itemCount: widget.controller.filteredActivities.length,
               itemBuilder: (context, index) {

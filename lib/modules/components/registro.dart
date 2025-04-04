@@ -105,7 +105,7 @@ class Registro extends StatelessWidget {
             height: width > 600
                 ? 40
                 : height *
-                    0.05, // Ajusta el tamaño del botón según el ancho de la pantalla
+                    0.04, // Ajusta el tamaño del botón según el ancho de la pantalla
             child: Align(
               alignment: Alignment.bottomCenter,
               child: ButtonDefaultWidget(
