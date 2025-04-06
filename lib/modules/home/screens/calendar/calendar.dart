@@ -66,6 +66,18 @@ class Calendar extends StatelessWidget {
                 },
                 eventLoader: (day) => calendarController.getEventsForDay(day),
                 calendarStyle: CalendarStyle(
+                  outsideTextStyle: TextStyle(
+                    fontFamily: 'Lato',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black.withOpacity(0.2),
+                  ),
+                  rangeStartTextStyle: const TextStyle(
+                    fontFamily: 'Lato',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                  ),
                   selectedTextStyle: TextStyle(
                     fontFamily: 'Lato',
                     fontSize: 14,
