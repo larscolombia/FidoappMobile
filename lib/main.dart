@@ -25,7 +25,6 @@ Future<void> main() async {
   // Registra el controller de notificaciones
   WidgetsFlutterBinding.ensureInitialized();
 
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -69,8 +68,8 @@ class MyApp extends StatelessWidget {
         initialRoute: AuthServiceApis.currentUser.value != null
             ? Routes.HOME
             : AuthServiceApis.currentUser.value != null
-            ? Routes.HOME
-            : Routes.WELCOME,
+                ? Routes.HOME
+                : Routes.WELCOME,
         getPages: AppPages.routes,
         supportedLocales: LanguageDataModel.languageLocales(),
         color: Colors.white,
