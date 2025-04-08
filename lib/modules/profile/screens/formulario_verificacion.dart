@@ -186,21 +186,30 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                 label: 'Áreas de especialización',
                                 borderColor: Styles.iconColorBack,
                                 placeholder:
-                                    controller.user.value.profile?.expert,
-                                TextColor: Colors.black,
+                                    controller.user.value.profile?.expert ??
+                                        'Consulta',
+                                TextColor: Styles.primaryColor,
+                                prefixIconColor: Colors.orange,
                                 prefiIconSVG: 'assets/icons/svg/genero.svg',
+                                textStyle: const TextStyle(
+                                  fontFamily: "Lato",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.black87,
+                                ),
                                 items: specialityController.specialities
                                     .map((entry) {
                                   return DropdownMenuItem(
                                     value: entry.description,
                                     child: Text(
                                       entry.description,
-                                      maxLines: 3,
+                                      maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         fontFamily: "Lato",
                                         fontSize: 14,
-                                        fontWeight: FontWeight.w800,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black87,
                                       ),
                                     ),
                                   );

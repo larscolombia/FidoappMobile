@@ -43,12 +43,14 @@ class FormularioRegistro extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: Styles.fiveColor,
                 ),
-                child: const Text(
-                  'Registro de Historial',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                child: const Center(
+                  child: Text(
+                    'Registro de Historial',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
@@ -98,16 +100,16 @@ class FormularioRegistro extends StatelessWidget {
                               prefiIcon: 'assets/icons/nota.png',
                               placeholder: 'Categoría del informe',
                               TextColor: Colors.black,
+                              borderColor: const Color(0xFFFC9214),
+                              prefixIconColor: const Color(0xFFFC9214),
+                              iconColor: const Color(0xFFFC9214),
                               onChanged: (value) {
-                                controller.updateField("category",
-                                    value); // Actualizamos el controlador
+                                controller.updateField("category", value);
                               },
                               items: categoryController.categories
                                   .map((category) => DropdownMenuItem<String>(
-                                        value: category.id
-                                            .toString(), // ID de la categoría como valor
-                                        child: Text(category
-                                            .name), // Nombre de la categoría como texto
+                                        value: category.id.toString(),
+                                        child: Text(category.name),
                                       ))
                                   .toList(),
                             );
@@ -116,18 +118,26 @@ class FormularioRegistro extends StatelessWidget {
                         SizedBox(height: margen),
                         SizedBox(
                           width: ancho,
-                          child: InputText(
+                          child: InputSelect(
                             placeholder: 'Fecha de Aplicación',
-                            isDateField: true,
+                            prefiIconSVG: 'assets/icons/svg/calendar.svg',
+                            borderColor: const Color(0xFFFC9214),
+                            prefixIconColor: const Color(0xFFFC9214),
+                            iconColor: const Color(0xFFFC9214),
+                            TextColor: Colors.black,
                             onChanged: (value) {
                               controller.updateField("fecha_aplicacion", value);
                               controller.updateField("fecha_refuerzo", value);
                             },
-                            suffixIcon: const Icon(
-                              Icons.arrow_drop_down,
-                              color: Styles.fiveColor,
-                            ),
-                            placeholderSvg: 'assets/icons/svg/calendar.svg',
+                            items: [
+                              DropdownMenuItem<String>(
+                                value: DateFormat('yyyy-MM-dd')
+                                    .format(DateTime.now()),
+                                child: Text(DateFormat('dd/MM/yyyy')
+                                    .format(DateTime.now())),
+                              ),
+                            ],
+                            textAlignment: TextAlignment.left,
                           ),
                         ),
                         SizedBox(height: margen),

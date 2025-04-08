@@ -169,18 +169,33 @@ class _CursoVideoState extends State<CursoVideo> {
                       ),
                       const SizedBox(height: 20),
                       // Botón de compartir
-                      SizedBox(
+                      /**
+                        SizedBox(
                         width: MediaQuery.of(context).size.width - 100,
                         child: BotonCompartir(
                           modo: "compartir",
                           onCompartir: () {
-                            Share.share(
-                              '¡Hola! Este es un buen video ${widget.videoUrl}.',
-                              subject: 'Compartir Mensaje',
-                            );
+                          // Nombre de la aplicación
+                          final String appName = "Balance Dog";
+                          // Título del video a compartir
+                          final String videoTitle = widget.name;
+
+                          // URL que se compartirá
+                          final String shareableUrl = widget.videoUrl;
+
+                          // Construye el mensaje que se compartirá, incluyendo título y URL
+                          final String shareMessage =
+                            "¡Mira \"$videoTitle\" en $appName!\n\n"
+                            "$shareableUrl";
+
+                          // Usa el plugin share_plus para mostrar el diálogo de compartir
+                          Share.share(
+                            shareMessage,
+                            subject: "Video de Balance Dog: $videoTitle",
+                          );
                           },
                         ),
-                      ),
+                        ),*/
                       SizedBox(height: margen),
                       // Comentario (InputTextWithIcon) solo envuelto en Obx si es necesario
                       /**

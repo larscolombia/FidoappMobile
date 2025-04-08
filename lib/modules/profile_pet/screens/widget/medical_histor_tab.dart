@@ -80,6 +80,8 @@ class MedicalHistoryTab extends StatelessWidget {
                         placeholder: 'Agregar nuevo informe',
                         prefiIconSVG: 'assets/icons/svg/document-text.svg',
                         suffixIcon: "assets/icons/svg/plus.svg",
+                        iconColor: Colors.white, // Set icon color to white
+                        textAlignment: TextAlignment.left,
                         fonsize: 16,
                         items: const [
                           DropdownMenuItem(

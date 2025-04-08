@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+enum TextAlignment { left, center, right }
+
 class InputSelect extends StatefulWidget {
   final String? label;
   final String? placeholder;
@@ -15,6 +17,10 @@ class InputSelect extends StatefulWidget {
   final bool isReadOnly;
   final Color? borderColor;
   final double fonsize;
+  final Color? prefixIconColor;
+  final TextStyle? textStyle;
+  final Color? iconColor;
+  final TextAlignment textAlignment;
 
   const InputSelect({
     super.key,
@@ -31,6 +37,10 @@ class InputSelect extends StatefulWidget {
     this.isReadOnly = false,
     this.borderColor,
     this.fonsize = 14,
+    this.prefixIconColor,
+    this.textStyle,
+    this.iconColor,
+    this.textAlignment = TextAlignment.left,
   });
 
   @override
@@ -114,30 +124,29 @@ class _InputSelectState extends State<InputSelect> {
                     ),
                   ),
                   filled: true,
-                  fillColor: widget.color ?? Colors.white,
-                  prefixIcon: widget.prefiIconSVG != null
+                  fillColor: widget.color ?? Color.fromARGB(255, 254, 247, 229),
+                  prefixIcon: widget.prefiIcon != null
                       ? Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 15),
-                          child: SizedBox(
+                          padding: const EdgeInsets.all(12),
+                          child: Image.asset(
+                            widget.prefiIcon!,
                             width: 24,
                             height: 24,
-                            child: SvgPicture.asset(
-                              widget.prefiIconSVG!,
-                              colorFilter: widget.prefiIconSVG != null
-                                  ? ColorFilter.mode(
-                                      Colors.grey, BlendMode.srcIn)
-                                  : null,
-                            ),
+                            color: Colors.orange,
                           ),
                         )
-                      : widget.prefiIcon != null
+                      : widget.prefiIconSVG != null
                           ? Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 20),
-                              child: Image.asset(
-                                widget.prefiIcon!,
-                                width: 20,
-                                height: 20,
+                              padding: const EdgeInsets.all(12),
+                              child: SvgPicture.asset(
+                                widget.prefiIconSVG!,
+                                width: 24,
+                                height: 24,
+                                colorFilter: ColorFilter.mode(
+                                  widget.iconColor ??
+                                      Colors.orange, // Naranja por defecto
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             )
                           : null,
@@ -149,35 +158,29 @@ class _InputSelectState extends State<InputSelect> {
                       height: 5,
                     ),
                   ),
-                  labelText: _selectedValue == null
-                      ? widget.placeholder
-                      : null, // Mostrar placeholder solo si no hay valor seleccionado
-                  labelStyle: TextStyle(
-                    color: widget.TextColor ?? Colors.black,
-                    fontFamily: 'Lato',
-                    fontSize: widget.fonsize,
-                    fontWeight: FontWeight.w500,
-                  ),
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      _selectedValue != null
-                          ? widget.items
-                              .firstWhere(
-                                  (item) => item.value == _selectedValue)
-                              .child
-                              .toString()
-                              .replaceAll('Text("', '')
-                              .replaceAll('")', '')
-                          : '',
-                      style: TextStyle(
-                        color: widget.isReadOnly ? Colors.grey : Colors.black,
-                        fontFamily: 'Lato',
-                        fontSize: widget.fonsize,
+                    if (_selectedValue != null || widget.placeholder != null)
+                      Expanded(
+                        child: Text(
+                          _selectedValue != null
+                              ? _getDisplayText()
+                              : widget.placeholder ?? '',
+                          style: widget.textStyle ??
+                              TextStyle(
+                                color: widget.TextColor ??
+                                    (widget.isReadOnly
+                                        ? Colors.grey
+                                        : Colors.black),
+                                fontFamily: 'Lato',
+                                fontSize: widget.fonsize,
+                                fontWeight: FontWeight.w400,
+                              ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
                       ),
-                    ),
                     const SizedBox.shrink(),
                   ],
                 ),
@@ -187,6 +190,45 @@ class _InputSelectState extends State<InputSelect> {
         ),
       ),
     );
+  }
+
+  TextAlign _getTextAlign() {
+    switch (widget.textAlignment) {
+      case TextAlignment.center:
+        return TextAlign.center;
+      case TextAlignment.right:
+        return TextAlign.right;
+      case TextAlignment.left:
+      default:
+        return TextAlign.left;
+    }
+  }
+
+  MainAxisAlignment _getMainAxisAlignment() {
+    switch (widget.textAlignment) {
+      case TextAlignment.center:
+        return MainAxisAlignment.center;
+      case TextAlignment.right:
+        return MainAxisAlignment.end;
+      case TextAlignment.left:
+      default:
+        return MainAxisAlignment.start;
+    }
+  }
+
+  String _getDisplayText() {
+    if (_selectedValue == null) return '';
+
+    final item = widget.items.firstWhere(
+      (item) => item.value == _selectedValue,
+      orElse: () => DropdownMenuItem(value: '', child: Text('')),
+    );
+
+    if (item.child is Text) {
+      return (item.child as Text).data ?? '';
+    } else {
+      return item.value ?? '';
+    }
   }
 
   OverlayEntry _createOverlayEntry() {
@@ -207,7 +249,7 @@ class _InputSelectState extends State<InputSelect> {
             borderRadius: BorderRadius.circular(16),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.white, // Dropdown menu background
                 border: Border.all(color: Colors.orange),
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -217,18 +259,9 @@ class _InputSelectState extends State<InputSelect> {
                 children: widget.items.map((item) {
                   return Column(children: [
                     ListTile(
-                      title: Text(
-                          item.child
-                              .toString()
-                              .replaceAll('Text("', '')
-                              .replaceAll('")', ''),
-                          style: const TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF535251),
-                          )),
+                      title: item.child,
                       selectedColor: Colors.black,
+                      tileColor: const Color(0xFFFCBA67),
                       onTap: () {
                         setState(() {
                           _selectedValue = item.value;
@@ -239,7 +272,7 @@ class _InputSelectState extends State<InputSelect> {
                     ),
                     const Divider(
                       height: 0.2,
-                      color: Color(0xFFFCBA67),
+                      color: Colors.orange,
                     )
                   ]);
                 }).toList(),
