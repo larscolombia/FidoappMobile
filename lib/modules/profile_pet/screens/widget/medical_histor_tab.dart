@@ -76,6 +76,7 @@ class MedicalHistoryTab extends StatelessWidget {
                           );
                         },
                         TextColor: Colors.white,
+                        borderColor: Styles.primaryColor,
                         color: Styles.primaryColor,
                         placeholder: 'Agregar nuevo informe',
                         prefiIconSVG: 'assets/icons/svg/document-text.svg',
@@ -86,15 +87,17 @@ class MedicalHistoryTab extends StatelessWidget {
                         items: const [
                           DropdownMenuItem(
                             value: '1',
-                            child: Text('Vacunas'),
+                            child: Text('Vacunas', style: Helper.selectStyle),
                           ),
                           DropdownMenuItem(
                             value: '2',
-                            child: Text('Antiparasitante'),
+                            child: Text('Antiparasitante',
+                                style: Helper.selectStyle),
                           ),
                           DropdownMenuItem(
                             value: '3',
-                            child: Text('Antigarrapata'),
+                            child: Text('Antigarrapata',
+                                style: Helper.selectStyle),
                           ),
                         ],
                       ),

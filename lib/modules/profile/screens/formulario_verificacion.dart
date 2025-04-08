@@ -205,12 +205,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                       entry.description,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontFamily: "Lato",
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black87,
-                                      ),
+                                      style: Helper.selectStyle,
                                     ),
                                   );
                                 }).toList(),

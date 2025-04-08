@@ -43,13 +43,12 @@ class FormularioRegistro extends StatelessWidget {
                 decoration: const BoxDecoration(
                   color: Styles.fiveColor,
                 ),
-                child: const Center(
-                  child: Text(
-                    'Registro de Historial',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                child: Center(
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 40),
+                    child: const Text(
+                      'Registro de Historial',
+                      style: Helper.tuttleStyle,
                     ),
                   ),
                 ),
@@ -109,7 +108,10 @@ class FormularioRegistro extends StatelessWidget {
                               items: categoryController.categories
                                   .map((category) => DropdownMenuItem<String>(
                                         value: category.id.toString(),
-                                        child: Text(category.name),
+                                        child: Text(
+                                          category.name,
+                                          style: Helper.selectStyle,
+                                        ),
                                       ))
                                   .toList(),
                             );

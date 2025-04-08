@@ -103,7 +103,7 @@ class _CreateEventState extends State<CreateEvent> {
                   .map(
                     (category) => DropdownMenuItem<String>(
                       value: category.id.toString(),
-                      child: Text(category.name),
+                      child: Text(category.name, style: Helper.selectStyle),
                     ),
                   )
                   .toList(),
