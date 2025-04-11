@@ -50,7 +50,8 @@ class CursosDetalles extends StatelessWidget {
         }
 
         var curso = controller.getCourseById(int.parse(cursoId!));
-        bool cursoAdquirido = miscursos.hasCourse(curso.id.toString());
+        // Todos los cursos son gratuitos, por lo que siempre serán considerados como adquiridos
+        bool cursoAdquirido = true;
         print('cursoAdquirido s $cursoAdquirido');
         return Stack(
           children: [
@@ -140,38 +141,6 @@ class CursosDetalles extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        SizedBox(
-                          child: BotonCompartir(
-                            modo: "compartir",
-                            compra: cursoAdquirido,
-                            title: 'Compartir curso',
-                            onCompartir: () {
-                              print('comprando');
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        if (!cursoAdquirido)
-                          BanerCompraPrecio(
-                            price: curso.price,
-                            callback: () {
-                              compraController.setProduct(
-                                ProductoPayModel(
-                                  precio: curso.price,
-                                  nombreProducto: curso.name,
-                                  imagen: curso.image,
-                                  descripcion: curso.description,
-                                  slug: 'curso',
-                                  id: curso.id,
-                                ),
-                              );
-
-                              balanceController.showPurchaseModal(context);
-                              // miscursos.subscribeToCourse(curso.id);
-                              // Recargar la pantalla completamente
-                            },
-                          ),
-                        const SizedBox(height: 20),
                         const Center(
                           child: SizedBox(
                             width: 302,
@@ -211,7 +180,7 @@ class CursosDetalles extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Text(
-                                  '${curso.price}',
+                                  'Gratis', // Cambiado de precio a "Gratis"
                                   style: Styles.textTituloLibros,
                                 ),
                               ),
@@ -221,23 +190,8 @@ class CursosDetalles extends StatelessWidget {
                         ...curso.videos.map((video) {
                           return GestureDetector(
                             onTap: () {
-                              if (!cursoAdquirido) {
-                                Get.dialog(
-                                  //pisa papel
-                                  CustomAlertDialog(
-                                    icon: Icons.warning,
-                                    title: 'Información',
-                                    description: 'Debes comprar el curso',
-                                    primaryButtonText: 'Ok',
-                                    onPrimaryButtonPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  barrierDismissible: true,
-                                );
-                                return;
-                              }
-                              // Acción al tocar un video
+                              // Se eliminó la comprobación de si el curso está adquirido
+                              // ya que todos los cursos serán gratuitos
                               Get.to(() => CursoVideo(
                                     videoId: video.url,
                                     cursoId: curso.id.toString(),
@@ -245,7 +199,8 @@ class CursosDetalles extends StatelessWidget {
                                     description: curso.description,
                                     image: curso.image,
                                     duration: curso.duration,
-                                    price: curso.price,
+                                    price:
+                                        'Gratis', // Cambiado precio a "Gratis"
                                     difficulty: curso.difficulty,
                                     videoUrl: video.url,
                                     tipovideo: 'video',
@@ -274,6 +229,7 @@ class CursosDetalles extends StatelessWidget {
   }
 }
 
+// Se mantiene la definición pero no se utiliza
 class BanerCompraPrecio extends StatelessWidget {
   const BanerCompraPrecio({
     super.key,

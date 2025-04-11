@@ -22,34 +22,24 @@ class CategoryControllerVet extends GetxController {
   void fetchprecio(String type, BuildContext context) async {
     isLoading.value = true;
     print('type $type');
-    final response = await http.get(
-      Uri.parse('${BASE_URL}service-price?service_id=$type'),
-      headers: {
-        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-        'Content-Type': 'application/json',
-      },
+
+    // En lugar de consultar el precio del servicio, simplemente establecemos que es gratis
+    totalAmount.value = "Gratis";
+
+    Get.dialog(
+      //pisa papel
+      CustomAlertDialog(
+        icon: Icons.check_circle_outline,
+        title: 'Costo del servicio',
+        description: '${totalAmount.value}', // Mostrará "Gratis"
+        primaryButtonText: 'Continuar',
+        onPrimaryButtonPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      barrierDismissible: true,
     );
 
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      print('Respuesta JSON precio: $jsonResponse');
-      totalAmount.value = jsonResponse['data']['amount'].toString();
-      Get.dialog(
-        //pisa papel
-        CustomAlertDialog(
-          icon: Icons.check_circle_outline,
-          title: 'Costo del servicio ',
-          description: '${totalAmount.value}',
-          primaryButtonText: 'Continuar',
-          onPrimaryButtonPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        barrierDismissible: true,
-      );
-    } else {
-      print('Error: ${response.statusCode}');
-    }
     isLoading.value = false;
   }
 

@@ -79,6 +79,7 @@ class _CreateEventState extends State<CreateEvent> {
               label: 'Servicio de evento medico',
               placeholder: calendarController.cateogoryName.value,
               TextColor: Colors.black,
+              borderColor: Color(0XFFFCBA67),
               onChanged: (value) {
                 calendarController.cateogoryName.value = value ?? "";
                 final selectedCategory =
@@ -97,13 +98,19 @@ class _CreateEventState extends State<CreateEvent> {
                 calendarController.cateogoryName.value = selectedCategory.name;
                 calendarController.updateField('category_id', value);
                 calendarController.updateField('service_id', value);
-                categoryController.fetchprecio(value ?? "", context);
+                //categoryController.fetchprecio(value ?? "", context);
               },
               items: categoryController.categories
                   .map(
                     (category) => DropdownMenuItem<String>(
                       value: category.id.toString(),
-                      child: Text(category.name),
+                      child: Text(
+                        category.name,
+                        style: TextStyle(
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ),
                   )
                   .toList(),
@@ -130,6 +137,7 @@ class _CreateEventState extends State<CreateEvent> {
               label: 'Servicio del entrenamiento',
               placeholder: calendarController.cateogoryName.value,
               TextColor: Colors.black,
+              borderColor: Color(0XFFFCBA67),
               onChanged: (value) {
                 final selectedCategory =
                     categoryController.categories.firstWhere(
@@ -147,13 +155,19 @@ class _CreateEventState extends State<CreateEvent> {
                 calendarController.cateogoryName.value = selectedCategory.name;
                 calendarController.updateField('training_id', value);
                 calendarController.updateField('duration_id', value);
-                serviceController.fetchprecio(value.toString(), context);
+                // serviceController.fetchprecio(value.toString(), context);
               },
               items: serviceController.services
                   .map(
                     (category) => DropdownMenuItem<String>(
                       value: category.id.toString(),
-                      child: Text(category.name),
+                      child: Text(
+                        category.name,
+                        style: TextStyle(
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ),
                   )
                   .toList(),
@@ -526,24 +540,9 @@ class _CreateEventState extends State<CreateEvent> {
 
                             if (calendarController.event.value['tipo'] !=
                                 'evento') {
-                              payController.setProduct(
-                                ProductoPayModel(
-                                  precio: calendarController.event['tipo'] ==
-                                          "medico"
-                                      ? categoryController.totalAmount.value
-                                      : serviceController.totalAmount.value,
-                                  nombreProducto: "Servicio",
-                                  imagen: calendarController
-                                              .event.value['tipo'] ==
-                                          'medico'
-                                      ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTDsiOSLQ5UvO73L2AtydpiTYHYvox0FBXUA&s"
-                                      : "https://d3puay5pkxu9s4.cloudfront.net/curso/2136/800_imagen.jpg",
-                                  descripcion: "Servicio",
-                                  slug: "servicio",
-                                  id: 1,
-                                ),
-                              );
-                              balanceController.showPurchaseModal(context);
+                              // En lugar de mostrar el modal de pago, simplemente publicamos el evento
+                              // ya que ahora todos los eventos son gratuitos
+                              calendarController.postEvent();
                             } else {
                               calendarController.postEvent();
                             }

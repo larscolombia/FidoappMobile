@@ -50,34 +50,25 @@ class ServiceEntrenadorController extends GetxController {
   void fetchprecio(String type, BuildContext context) async {
     isLoading.value = true;
     print('type entrenamiento ${type.toString()}');
-    final response = await http.get(
-      Uri.parse('${BASE_URL}duration-price?duration_id=$type'),
-      headers: {
-        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-        'Content-Type': 'application/json',
-      },
+
+    // Modificado para hacer todos los entrenamientos gratuitos
+    // En lugar de consultar el precio, simplemente establecemos un valor gratuito
+    totalAmount.value = "Gratis";
+
+    Get.dialog(
+      //pisa papel
+      CustomAlertDialog(
+        icon: Icons.check_circle_outline,
+        title: 'Costo del servicio ',
+        description: '${totalAmount.value}', // Ahora mostrará "Gratis"
+        primaryButtonText: 'Continuar',
+        onPrimaryButtonPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+      barrierDismissible: true,
     );
 
-    if (response.statusCode == 200) {
-      var jsonResponse = json.decode(response.body);
-      print('Respuesta JSON precio: $jsonResponse');
-      totalAmount.value = jsonResponse['data']['amount'].toString();
-      Get.dialog(
-        //pisa papel
-        CustomAlertDialog(
-          icon: Icons.check_circle_outline,
-          title: 'Costo del servicio ',
-          description: '${totalAmount.value}',
-          primaryButtonText: 'Continuar',
-          onPrimaryButtonPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        barrierDismissible: true,
-      );
-    } else {
-      print('Error: ${response.statusCode}');
-    }
     isLoading.value = false;
   }
 }

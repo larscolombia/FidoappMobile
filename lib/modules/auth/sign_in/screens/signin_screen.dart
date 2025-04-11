@@ -120,69 +120,11 @@ class SignInScreen extends StatelessWidget {
                           ],
                         ),
                       ).paddingTop(42),
-                      Row(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(left: 10.0),
-                            child: const Divider(
-                              height: 12,
-                              color: Styles.greyDivider,
-                              thickness: 1,
-                            ),
-                          ).expand(),
-                          const Text('O',
-                              style: TextStyle(
-                                color: Recursos.TextColorBlackMedium,
-                                fontSize: 16,
-                                fontFamily: 'Lato',
-                                fontWeight: FontWeight.w400,
-                                height: 18 / 14,
-                              )).paddingSymmetric(horizontal: 20),
-                          Container(
-                            margin: const EdgeInsets.only(right: 10.0),
-                            child: const Divider(
-                              height: 12,
-                              color: Styles.greyDivider,
-                              thickness: 1,
-                            ),
-                          ).expand(),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 58,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: const Color.fromRGBO(255, 73, 49, 1)),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: TextButton.icon(
-                                onPressed: () {
-                                  signInController.googleSignIn(context);
-                                },
-                                icon: SvgPicture.asset(
-                                    'assets/icons/svg/google.svg'),
-                                label: Text(
-                                  locale.value.signInWithGoogle,
-                                  style: const TextStyle(
-                                    color: Color(0xFF535251),
-                                    fontFamily: 'Lato',
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                )),
-                          ),
-                        ],
-                      ),
-                      8.height,
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            margin: const EdgeInsets.only(top: 20.0),
+                            margin: const EdgeInsets.only(top: 10.0),
                             child: Text(
                               locale.value.dontHaveAnAccount,
                               style: const TextStyle(
@@ -198,7 +140,7 @@ class SignInScreen extends StatelessWidget {
                           ),
                           Container(
                             margin:
-                                const EdgeInsets.only(top: 5.0, bottom: 15.0),
+                                const EdgeInsets.only(top: 4.0, bottom: 15.0),
                             child: GestureDetector(
                               onTap: () {
                                 Get.toNamed(
