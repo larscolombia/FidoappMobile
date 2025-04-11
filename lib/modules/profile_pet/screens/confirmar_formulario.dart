@@ -9,6 +9,7 @@ import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
@@ -100,7 +101,6 @@ class ConfirmarFormulario extends StatelessWidget {
                                     historialClinico!.reportType = value;
                                   },
                                   TextColor: Colors.white,
-                                  isReadOnly: isEdit,
                                   color: Styles.primaryColor,
                                   placeholder: medicalHistoryController
                                       .reporType(medicalHistoryController
@@ -110,15 +110,18 @@ class ConfirmarFormulario extends StatelessWidget {
                                   items: const [
                                     DropdownMenuItem(
                                       value: '1',
-                                      child: Text('Vacunas'),
+                                      child: Text('Vacunas',
+                                          style: Helper.selectStyle),
                                     ),
                                     DropdownMenuItem(
                                       value: '2',
-                                      child: Text('Antiparasitante'),
+                                      child: Text('Antiparasitante',
+                                          style: Helper.selectStyle),
                                     ),
                                     DropdownMenuItem(
                                       value: '3',
-                                      child: Text('Antigarrapata'),
+                                      child: Text('Antigarrapata',
+                                          style: Helper.selectStyle),
                                     ),
                                   ],
                                 ),

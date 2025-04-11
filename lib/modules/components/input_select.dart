@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 
 enum TextAlignment { left, center, right }
 
@@ -84,7 +85,7 @@ class _InputSelectState extends State<InputSelect> {
                 style: const TextStyle(
                   fontSize: 14,
                   color: Color(0xFF383838),
-                  fontFamily: 'Lato',
+                  fontFamily: Helper.funte2,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -173,7 +174,7 @@ class _InputSelectState extends State<InputSelect> {
                                     (widget.isReadOnly
                                         ? Colors.grey
                                         : Colors.black),
-                                fontFamily: 'Lato',
+                                fontFamily: Helper.funte1,
                                 fontSize: widget.fonsize,
                                 fontWeight: FontWeight.w400,
                               ),

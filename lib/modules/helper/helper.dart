@@ -19,6 +19,7 @@ class Helper extends GetX {
   static const margenDefault = 16.0;
   static const paddingDefault = 26.0;
   static const String funte1 = 'Lato';
+  static const String funte2 = 'PoetsenOne';
   static const Color dividerColor = Color(0xFFEAEAEA);
   static const selectStyle = TextStyle(
     fontFamily: 'Lato',
@@ -27,6 +28,13 @@ class Helper extends GetX {
     height: 1.3,
     letterSpacing: 0,
   );
+
+  static const tuttleStyle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+    color: Colors.black,
+  );
+
   static String formatDate(String date) {
     if (date.isEmpty) return date;
     final parts = date.split('/');
