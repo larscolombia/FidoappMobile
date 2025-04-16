@@ -298,7 +298,7 @@ class _LibroDetallesState extends State<LibroDetalles> {
                               children: [
                                 Expanded(
                                   child: ButtonDefaultWidget(
-                                    title: 'Comprar',
+                                    title: 'Ver más',
                                     callback: () {
                                       var url =
                                           econtroller.selectedEBook.value.url;
@@ -308,6 +308,19 @@ class _LibroDetallesState extends State<LibroDetalles> {
                                   ),
                                 ),
                               ],
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          const Center(
+                            child: Text(
+                              "Este enlace te llevará a un sitio externo para completar la compra",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 13,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 20),

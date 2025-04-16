@@ -16,6 +16,8 @@ import 'package:pawlly/components/custom_snackbar.dart';
 
 import 'package:http/http.dart' as http;
 
+import '../../auth/sign_in/screens/signin_screen.dart';
+
 class ProfileController extends GetxController {
   var profileController = Get.put(UserProfileController());
   late UserData currentUser; // Instancia del modelo de datos de usuario
@@ -258,5 +260,71 @@ class ProfileController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  Future<void> deleteAccount() async {
+    try {
+      isLoading.value = true;
+
+      final url = Uri.parse('$DOMAIN_URL/api/delete-account');
+
+      final response = await http.post(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Logout the user and clear data
+        await AuthServiceApis.logoutApi();
+
+        Get.offAll(() => SignInScreen());
+
+        CustomSnackbar.show(
+          title: 'Cuenta eliminada',
+          message: 'Tu cuenta ha sido eliminada exitosamente.',
+          isError: false,
+        );
+      } else {
+        print('Error al eliminar la cuenta: ${response.body}');
+        CustomSnackbar.show(
+          title: 'Error',
+          message:
+              'No se pudo eliminar la cuenta. Por favor, inténtalo nuevamente.',
+          isError: true,
+        );
+      }
+    } catch (e) {
+      print('Excepción: $e');
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Ocurrió un error al eliminar la cuenta: $e',
+        isError: true,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void showDeleteConfirmation() {
+    Get.dialog(
+      CustomAlertDialog(
+        title: '¿Estás seguro?',
+        description:
+            'Esta acción eliminará permanentemente tu cuenta y todos tus datos. No podrás recuperarlos después.',
+        primaryButtonText: 'Eliminar',
+        secondaryButtonText: 'Cancelar',
+        onPrimaryButtonPressed: () {
+          Get.back(); // Close dialog
+          deleteAccount(); // Call delete account method
+        },
+        onSecondaryButtonPressed: () {
+          Get.back(); // Close dialog
+        },
+      ),
+      barrierDismissible: true,
+    );
   }
 }

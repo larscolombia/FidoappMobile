@@ -398,7 +398,7 @@ class ProfileScreen extends StatelessWidget {
                           alignment: Alignment.center,
                           child: TextButton(
                             onPressed: () {
-                              // Lógica para eliminar cuenta
+                              controller.showDeleteConfirmation();
                             },
                             child: const Text(
                               'Eliminar cuenta',
