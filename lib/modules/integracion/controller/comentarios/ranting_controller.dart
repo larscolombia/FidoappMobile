@@ -46,7 +46,6 @@ class CommentController extends GetxController {
   }
 
   Future<void> fetchComments(String itemId, String tipo) async {
-    print('url comentarios libro ${baseUrl + getEndpoint(tipo, itemId)}');
     try {
       comments.value = [];
       isLoading(true);
@@ -59,7 +58,6 @@ class CommentController extends GetxController {
       var data = json.decode(response.body);
 
       if (response.statusCode == 200) {
-        print('comentarios ${data['data']}');
         comments.value = (data['data'] as List)
             .map((item) => Comment.fromJson(item))
             .toList();
@@ -70,6 +68,7 @@ class CommentController extends GetxController {
       print('error en comentarios $e');
     } finally {
       isLoading(false);
+      isComentarioPosrLoading(false);
     }
     isFirstLoad.value = false; // Cambiamos el flag para evitar cargas futuras.
   }
@@ -89,9 +88,7 @@ class CommentController extends GetxController {
       if (response.statusCode == 200) {
         // Éxito
         final Map<String, dynamic> data = json.decode(response.body);
-        print('Respuesta visualizacion: $data');
-        print(data[
-            'message']); //Imprimira "Visualización actualizada correctamente"
+
         visualizacion.value = data['visualizations'];
       } else {
         // Error
@@ -143,9 +140,28 @@ class CommentController extends GetxController {
   }
 
   Future<void> postComment(String tipo, context) async {
-    print("log comentario ${Uri.parse(postEnpoint(tipo))}");
+    if (comentario['review_msg'] == "") {
+      Get.dialog(
+        //pisa papel
+        CustomAlertDialog(
+          icon: Icons.sd_card_alert,
+          title: 'Alerta',
+          description: "El comentario no puede estar vacío",
+          onPrimaryButtonPressed: () {
+            isComentarioPosrLoading(false);
+            isLoading(false);
+            Navigator.of(context).pop();
+          },
+          primaryButtonText: 'Ok',
+        ),
+
+        barrierDismissible: true,
+      );
+      return;
+    }
     try {
       isComentarioPosrLoading(true);
+
       final response = await http.post(
         Uri.parse(postEnpoint(tipo)),
         headers: <String, String>{
@@ -156,10 +172,8 @@ class CommentController extends GetxController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print(
-          'log comentario ${json.decode(response.body)['data']['rating']}',
-        );
         var rating = json.decode(response.body)['data']['rating'];
+
         Get.dialog(
           //pisa papel
           CustomAlertDialog(
@@ -170,6 +184,8 @@ class CommentController extends GetxController {
                 : 'Tu comentario ha sido publicado',
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
+              isComentarioPosrLoading(false);
+              isLoading(false);
               Navigator.of(context).pop();
             },
           ),
@@ -178,6 +194,7 @@ class CommentController extends GetxController {
       }
     } finally {
       isComentarioPosrLoading(false);
+      isLoading(false);
     }
   }
 

@@ -6,17 +6,19 @@ import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class BanerComentarios extends StatelessWidget {
-  const BanerComentarios(
-      {super.key,
-      required this.eventTextChanged,
-      this.titulo,
-      required this.onRatingUpdate,
-      required this.onEvento});
+  const BanerComentarios({
+    super.key,
+    required this.eventTextChanged,
+    this.titulo = "Enviar >",
+    required this.onRatingUpdate,
+    required this.onEvento,
+  });
 
   final void Function(String) eventTextChanged;
   final String? titulo;
   final void Function(double) onRatingUpdate;
   final void Function() onEvento;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -79,7 +81,7 @@ class BanerComentarios extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: 42,
               child: ButtonDefaultWidget(
-                title: 'Enviar >',
+                title: titulo ?? "Enviar >",
                 callback: onEvento,
               ),
             ),
@@ -157,11 +159,11 @@ class Estadisticas extends StatelessWidget {
                     const SizedBox(
                         width:
                             4), // Espacio entre el puntaje y la palabra "Calificación"
-                    Text(
+                    const Text(
                       'Calificación',
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         color: Color(0XFF383838),
                         fontFamily: 'Lato',

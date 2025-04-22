@@ -72,6 +72,16 @@ class _CursoVideoState extends State<CursoVideo> {
     _commentController.visualizaciones(widget.cursoId);
   }
 
+  // ignore: unused_element
+  void _refreshComments() {
+    if (widget.tipovideo == "blogs") {
+      _commentController.fetchComments(widget.cursoId, "blog");
+    }
+    if (widget.tipovideo == "video") {
+      _commentController.fetchComments(widget.cursoId, "video");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Llamamos a la función fetchComments solo después de que el widget se haya construido
@@ -281,31 +291,10 @@ class _CursoVideoState extends State<CursoVideo> {
                                         'course_platform_video_id',
                                         widget.cursoId);
                                   }
+                                  _refreshComments();
                                 });
                               },
                             ),
-                            /** 
-                            SizedBox(
-                              width: 305,
-                              child: InputTextWithIcon(
-                                hintText: 'Escribe un comentario',
-                                iconPath: 'assets/icons/send.png',
-                                iconPosition: IconPosition.right,
-                                height: 60.0,
-                                onChanged: (value) {
-                                  _commentController.updateField(
-                                      'review_msg', value);
-                                },
-                                callbackButton: true,
-                                onButtonPressed: () {
-                                  if (tipovideo == "video") {
-                                    _commentController.postComment('video');
-                                  } else {
-                                    _commentController.postComment('blog');
-                                  }
-                                },
-                              ),
-                            ),*/
                           ],
                         );
                       }),
@@ -344,7 +333,6 @@ class _CursoVideoState extends State<CursoVideo> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: _commentController.comments.map((value) {
-                              print('comentarios value ${value.reviewMsg}');
                               return AvatarComentarios(
                                 avatar: value.userAvatar,
                                 name: value.userFullName,
@@ -359,16 +347,7 @@ class _CursoVideoState extends State<CursoVideo> {
                       SizedBox(height: 10),
                       // Componente para recargar comentarios
                       RecargaComponente(
-                        callback: () {
-                          if (widget.tipovideo == "blogs") {
-                            _commentController.fetchComments(
-                                widget.cursoId, "blog");
-                          }
-                          if (widget.tipovideo == "video") {
-                            _commentController.fetchComments(
-                                widget.cursoId, "video");
-                          }
-                        },
+                        callback: () => _refreshComments(),
                       ),
                       const SizedBox(height: 20),
                     ],

@@ -3,11 +3,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/modules/auth/model/address_models/country_list_response.dart';
 import 'package:pawlly/modules/components/avatar_comentario.dart';
 import 'package:pawlly/modules/components/baner_comentarios.dart';
-import 'package:pawlly/modules/components/boton_compartir.dart';
-import 'package:pawlly/modules/components/input_text.dart';
+
 import 'package:pawlly/modules/components/recarga_componente.dart';
 
 import 'package:pawlly/modules/components/regresr_components.dart';
@@ -17,7 +15,6 @@ import 'package:pawlly/modules/integracion/controller/balance/producto_pay_contr
 
 import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
-import 'package:pawlly/modules/integracion/model/balance/producto_pay_model.dart';
 
 class LibroDetalles extends StatefulWidget {
   LibroDetalles({super.key});
@@ -98,7 +95,7 @@ class _LibroDetallesState extends State<LibroDetalles> {
                             child: Obx(() {
                               if (econtroller.isLoading.value) {
                                 return const Center(
-                                  child: CircularProgressIndicator(),
+                                  child: Text("cargando"),
                                 );
                               }
                               return FadeInImage.assetNetwork(
@@ -160,7 +157,8 @@ class _LibroDetallesState extends State<LibroDetalles> {
                           Obx(() {
                             if (commentController.isLoading.value) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                child: CircularProgressIndicator(),
+                              );
                             }
                             return Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -329,6 +327,16 @@ class _LibroDetallesState extends State<LibroDetalles> {
                                 .isComentarioPosrLoading.value) {
                               return const Text('cargando');
                             }
+
+                            if (commentController
+                                .isComentarioPosrLoading.value) {
+                              return Container(
+                                color: Colors.black.withOpacity(0.5),
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
@@ -350,15 +358,22 @@ class _LibroDetallesState extends State<LibroDetalles> {
                                     commentController.updateField(
                                         'rating', rating);
                                   },
-                                  onEvento: () {
+                                  onEvento: () async {
                                     commentController.updateField(
-                                        'e_book_id', id);
+                                      'e_book_id',
+                                      id,
+                                    );
+
                                     if (commentController
                                         .comentario.isNotEmpty) {
-                                      commentController.postComment(
-                                          'books', context);
-                                      commentController.fetchComments(
-                                          id, "books");
+                                      await commentController.postComment(
+                                        'books',
+                                        context,
+                                      );
+                                      await commentController.fetchComments(
+                                        id,
+                                        "books",
+                                      );
                                     }
                                   },
                                 ),
@@ -412,13 +427,6 @@ class _LibroDetallesState extends State<LibroDetalles> {
               ]),
             ),
           ]),
-          if (commentController.isComentarioPosrLoading.value)
-            Container(
-              color: Colors.black.withOpacity(0.5),
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
         ],
       ),
     );
@@ -465,51 +473,6 @@ class HeaderEbook extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class BarraComentario extends StatelessWidget {
-  const BarraComentario({
-    super.key,
-    required this.eventTextChanged,
-    this.titulo,
-  });
-  final void Function(String) eventTextChanged;
-  final String? titulo;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(
-          height: 10,
-        ),
-        const Text(
-          '¿Quieres dejar una reseña?',
-          style: Styles.textDescription,
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        SizedBox(
-          width: 276,
-          child: InputText(
-            onChanged: eventTextChanged,
-            placeholder: titulo ?? 'Describe tu experiencia',
-            label: '',
-          ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          width: 276,
-          height: 42,
-          child: ButtonDefaultWidget(
-            title: 'Enviar >',
-            callback: () {},
-          ),
-        )
-      ],
     );
   }
 }

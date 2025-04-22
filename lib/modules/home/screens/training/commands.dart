@@ -6,22 +6,30 @@ import 'package:pawlly/modules/home/screens/training/crear_comando.dart';
 import 'package:pawlly/modules/integracion/controller/comandos/comandos_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class Commands extends StatelessWidget {
+class Commands extends StatefulWidget {
   Commands({super.key});
 
+  @override
+  _CommandsState createState() => _CommandsState();
+}
+
+class _CommandsState extends State<Commands> {
   final ComandoController controller = Get.put(ComandoController());
   final HomeController homeController = Get.put(HomeController());
 
   @override
-  Widget build(BuildContext context) {
-    // Escuchar cambios en `selectedProfile` para actualizar comandos
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (homeController.selectedProfile.value != null) {
-        controller
-            .fetchComandos(homeController.selectedProfile.value!.id.toString());
+  void initState() {
+    super.initState();
+    // Llamada a la API para cargar los comandos cuando se selecciona un perfil.
+    homeController.selectedProfile.listen((selectedProfile) {
+      if (selectedProfile != null && !controller.isLoading.value) {
+        controller.fetchComandos(selectedProfile.id.toString());
       }
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Obx(() {
       // Mostrar indicador de carga si los comandos están cargándose
       if (controller.isLoading.value) {
@@ -33,14 +41,11 @@ class Commands extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Usamos un Row para poner el FloatingActionButton al lado del título
           Row(
             children: [
-              // Título
-              Container(
-                width: MediaQuery.of(context).size.width - 120,
+              Expanded(
                 child: const Text(
-                  'Comandos de Entrenamiento ',
+                  'Comandos de Entrenamiento',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                   style: TextStyle(
@@ -51,8 +56,7 @@ class Commands extends StatelessWidget {
                   textAlign: TextAlign.left,
                 ),
               ),
-              const SizedBox(width: 10), // Espacio entre el ícono y el texto
-
+              const SizedBox(width: 10),
               FloatingActionButton(
                 elevation: 0,
                 onPressed: () {
@@ -70,7 +74,7 @@ class Commands extends StatelessWidget {
           ),
           const SizedBox(height: 10),
 
-          // Tabla de comandos
+          // Habilitar desplazamiento en la tabla
           Container(
             height: 166,
             width: double.infinity,
@@ -85,9 +89,9 @@ class Commands extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.horizontal, // Desplazamiento horizontal
                 child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
+                  scrollDirection: Axis.vertical, // Desplazamiento vertical
                   child: DataTable(
                     headingRowColor: MaterialStateProperty.all(
                       const Color.fromRGBO(254, 247, 229, 1),
@@ -175,21 +179,21 @@ class Commands extends StatelessWidget {
           Obx(() {
             if (controller.selectedComando.value != null) {
               return Center(
-                  child: Text(
-                'Comando seleccionado: ${controller.selectedComando.value!.name}',
-                style: TextStyle(
-                  color: Color.fromARGB(255, 0, 0, 0),
-                  fontSize: 16,
-                  fontFamily: 'Lato',
-                  fontWeight: FontWeight.w500,
+                child: Text(
+                  'Comando seleccionado: ${controller.selectedComando.value!.name}',
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    fontSize: 16,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ));
+              );
             } else {
               return const Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Center(
-                  // Centra el texto horizontalmente
                   child: Text(
                     'No hay comando seleccionado',
                     style: TextStyle(
@@ -198,17 +202,14 @@ class Commands extends StatelessWidget {
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w500,
                     ),
-                    textAlign:
-                        TextAlign.center, // Asegura la alineación del texto
+                    textAlign: TextAlign.center,
                   ),
                 ),
               );
             }
           }),
           Utilities(),
-          const SizedBox(
-            height: 120,
-          )
+          const SizedBox(height: 120),
         ],
       );
     });

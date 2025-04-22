@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
-import 'package:pawlly/modules/components/border_redondiado.dart';
+import 'package:pawlly/components/regresr_components.dart';
 import 'package:pawlly/modules/components/input_text.dart';
-import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
-import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/comandos/comandos_controller.dart';
-import 'package:pawlly/styles/recursos.dart';
 
 class CrearComando extends StatefulWidget {
   CrearComando({super.key});
@@ -22,56 +19,70 @@ class CrearComando extends StatefulWidget {
 }
 
 class _CrearComandoState extends State<CrearComando> {
-  // Busca los controladores ya existentes en lugar de inicializarlos nuevamente
   final ComandoController controller = Get.find<ComandoController>();
-
   final HomeController homeController = Get.find<HomeController>();
-  Map<String, bool> validate = {
-    'name': true,
-    'voz_comando': true,
-    'instructions': true,
-    'description': true,
-  };
-  @override
-  void initState() {
-    super.initState();
-    validate = {
-      'name': false,
-      'voz_comando': false,
-      'instructions': false,
-      'description': false,
-    };
-  }
 
+  // Declarar variables reactivas para validación
+  RxBool nameValid = false.obs;
+  RxBool vozComandoValid = false.obs;
+  RxBool instructionsValid = false.obs;
+  RxBool descriptionValid = false.obs;
+
+  // Validación del formulario
   void validateForm() {
-    if (controller.dataComando['name'] == "") {
-      setState(() {
-        validate['name'] = true;
-      });
-    }
-
-    if (controller.dataComando['voz_comando'] == "") {
-      setState(() {
-        validate['voz_comando'] = true;
-      });
-    }
-
-    if (controller.dataComando['instructions'] == "") {
-      setState(() {
-        validate['instructions'] = true;
-      });
-    }
-
-    if (controller.dataComando['description'] == "") {
-      setState(() {
-        validate['description'] = true;
-      });
-    }
+    nameValid.value =
+        (controller.dataComando['name'] as String?)?.isEmpty ?? true;
+    vozComandoValid.value =
+        (controller.dataComando['voz_comando'] as String?)?.isEmpty ?? true;
+    instructionsValid.value =
+        (controller.dataComando['instructions'] as String?)?.isEmpty ?? true;
+    descriptionValid.value =
+        (controller.dataComando['description'] as String?)?.isEmpty ?? true;
   }
 
+  // Método para manejar el proceso de creación
+  void handleCreateCommand() {
+    if (controller.isLoading.value) return; // Evitar múltiples envíos
+
+    validateForm();
+
+    // Validar los campos antes de enviar la petición
+    if (nameValid.value ||
+        vozComandoValid.value ||
+        instructionsValid.value ||
+        descriptionValid.value) {
+      CustomSnackbar.show(
+        title: 'Error',
+        message: Helper.errorValidate,
+        isError: true,
+      );
+      return;
+    }
+
+    // Actualizar el ID de la mascota seleccionada
+    controller.updateField(
+        'pet_id', homeController.selectedProfile.value?.id ?? '');
+
+    // Cambiar el estado de carga
+    controller.isLoading.value = true;
+
+    // Llamar a la API para crear el comando
+    controller.postCommand(controller.dataComando).then((response) {
+      controller.isLoading.value = false; // Terminar carga
+      // Si necesitas manejar una respuesta, puedes hacerlo aquí.
+    }).catchError((error) {
+      controller.isLoading.value = false; // Terminar carga
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Hubo un error al crear el comando.',
+        isError: true,
+      );
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     const double margen = 16.0;
-    var headerHeight = 150.00;
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -99,15 +110,13 @@ class _CrearComandoState extends State<CrearComando> {
                           color: Styles.colorContainer,
                         ),
                         child: const Align(
-                          alignment: Alignment
-                              .bottomCenter, // Alinea el contenido en la parte inferior
+                          alignment: Alignment.bottomCenter,
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 0, vertical: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .end, // Alinea los hijos al final de la Row
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [],
                             ),
                           ),
@@ -194,66 +203,56 @@ class _CrearComandoState extends State<CrearComando> {
                                 ),
                               ),
                               const SizedBox(height: margen),
-                              InputText(
-                                label: 'Nombre del Comando',
-                                placeholder: '',
-                                errorText: (validate['description'] ?? false)
-                                    ? 'Campo requerido'
-                                    : '',
-                                onChanged: (value) {
-                                  controller.updateField('name', value);
-                                  if (value.isNotEmpty) {
-                                    setState(() {
-                                      validate['name'] = false;
-                                    });
-                                  }
-                                },
-                              ),
-                              InputText(
-                                label: 'Descripción del Comando',
-                                placeholder: '',
-                                onChanged: (value) {
-                                  controller.updateField('description', value);
-                                  if (value.isNotEmpty) {
-                                    setState(() {
-                                      validate['description'] = false;
-                                    });
-                                  }
-                                },
-                                errorText: (validate['description'] ?? false)
-                                    ? 'Campo requerido'
-                                    : '', // Mensaje de error
-                              ),
-                              InputText(
-                                label: 'Voz del Comando',
-                                placeholder: '',
-                                errorText: (validate['voz_comando'] ?? false)
-                                    ? 'Campo requerido'
-                                    : '',
-                                onChanged: (value) {
-                                  controller.updateField('voz_comando', value);
-                                  if (value.isNotEmpty) {
-                                    setState(() {
-                                      validate['voz_comando'] = false;
-                                    });
-                                  }
-                                },
-                              ),
-                              InputText(
+                              Obx(() {
+                                return InputText(
+                                  label: 'Nombre del Comando',
+                                  placeholder: '',
+                                  errorText:
+                                      nameValid.value ? 'Campo requerido' : '',
+                                  onChanged: (value) {
+                                    controller.updateField('name', value);
+                                  },
+                                );
+                              }),
+                              Obx(() {
+                                return InputText(
+                                  label: 'Descripción del Comando',
+                                  placeholder: '',
+                                  errorText: descriptionValid.value
+                                      ? 'Campo requerido'
+                                      : '',
+                                  onChanged: (value) {
+                                    controller.updateField(
+                                        'description', value);
+                                  },
+                                );
+                              }),
+                              Obx(() {
+                                return InputText(
+                                  label: 'Voz del Comando',
+                                  placeholder: '',
+                                  errorText: vozComandoValid.value
+                                      ? 'Campo requerido'
+                                      : '',
+                                  onChanged: (value) {
+                                    controller.updateField(
+                                        'voz_comando', value);
+                                  },
+                                );
+                              }),
+                              Obx(() {
+                                return InputText(
                                   label: 'Instrucciones del Comando',
                                   placeholder: '',
-                                  errorText: (validate['instructions'] ?? false)
+                                  errorText: instructionsValid.value
                                       ? 'Campo requerido'
                                       : '',
                                   onChanged: (value) {
                                     controller.updateField(
                                         'instructions', value);
-                                    if (value.isNotEmpty) {
-                                      setState(() {
-                                        validate['instructions'] = false;
-                                      });
-                                    }
-                                  }),
+                                  },
+                                );
+                              }),
                             ],
                           ),
                         ),
@@ -268,55 +267,7 @@ class _CrearComandoState extends State<CrearComando> {
                                   : 'Crear comando',
                               callback: controller.isLoading.value
                                   ? null // Desactiva el botón mientras se carga
-                                  : () {
-                                      // Actualizar el ID de la mascota seleccionada
-                                      validateForm();
-
-                                      if (validate['name'] == true) {
-                                        CustomSnackbar.show(
-                                          title: 'Error',
-                                          message: Helper.errorValidate,
-                                          isError: true,
-                                        );
-                                        return;
-                                      }
-                                      if (validate['voz_comando'] == true) {
-                                        CustomSnackbar.show(
-                                          title: 'Error',
-                                          message: Helper.errorValidate,
-                                          isError: true,
-                                        );
-                                        return;
-                                      }
-
-                                      if (validate['instructions'] == true) {
-                                        CustomSnackbar.show(
-                                          title: 'Error',
-                                          message: Helper.errorValidate,
-                                          isError: true,
-                                        );
-                                        return;
-                                      }
-                                      if (validate['description'] == true) {
-                                        CustomSnackbar.show(
-                                          title: 'Error',
-                                          message: Helper.errorValidate,
-                                          isError: true,
-                                        );
-                                        return;
-                                      }
-
-                                      controller.updateField(
-                                        'pet_id',
-                                        homeController
-                                                .selectedProfile.value?.id ??
-                                            '',
-                                      );
-
-                                      // Llamar a la API para crear el comando
-                                      controller
-                                          .postCommand(controller.dataComando);
-                                    },
+                                  : handleCreateCommand,
                             ),
                           );
                         }),
@@ -329,45 +280,6 @@ class _CrearComandoState extends State<CrearComando> {
           ),
         ],
       ),
-    );
-  }
-}
-
-// Widget Auxiliar para los Campos de Entrada
-class InputField extends StatelessWidget {
-  final String label;
-  final String placeholder;
-  final Function(String) onChanged;
-
-  const InputField({
-    super.key,
-    required this.label,
-    required this.placeholder,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontFamily: 'Lato',
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: Color(0XFF383838),
-          ),
-        ),
-        const SizedBox(height: 8),
-        InputText(
-          fondoColor: Colors.white,
-          borderColor: Recursos.ColorBorderSuave,
-          placeholder: placeholder,
-          onChanged: onChanged,
-        ),
-      ],
     );
   }
 }

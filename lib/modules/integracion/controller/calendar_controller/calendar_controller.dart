@@ -201,7 +201,7 @@ class CalendarController extends GetxController {
   Future<void> postEvent() async {
     isLoading.value = true;
     isSuccess.value = false;
-
+    await Future.delayed(Duration(seconds: 5));
     if (event['owner_id'] == "") {
       updateField(
         'owner_id',

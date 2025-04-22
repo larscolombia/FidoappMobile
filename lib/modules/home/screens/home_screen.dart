@@ -39,18 +39,27 @@ import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   //controlador principal
   final HomeController homeController = Get.put(HomeController());
+
   //carga los cursos
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
 
   // carga el el historial de las mascotas
   final PetActivityController historialClinicoController =
       Get.put(PetActivityController());
+
   //carga los blogs
   final BlogController blogController = Get.put(BlogController());
+
   //eventos del calendario
   final CalendarController calendarController = Get.put(CalendarController());
 
@@ -65,13 +74,15 @@ class HomeScreen extends StatelessWidget {
   final UserProfileController profileController =
       Get.put(UserProfileController());
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     if (profileController.user.value.profile == null) {
       profileController.fetchUserData('${AuthServiceApis.dataCurrentUser.id}');
     }
+  }
 
-    print(
-        'AuthServiceApis.dataCurrentUser.deviceToken ${AuthServiceApis.dataCurrentUser.deviceToken}');
+  @override
+  Widget build(BuildContext context) {
     //homeController.SelectType(1);
     return Scaffold(
       body: Stack(
@@ -186,7 +197,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   // Funciones que devuelven el contenido basado en el selectedIndex
-
   Widget _buildCase1Content(context) {
     return Container(
       child: Column(

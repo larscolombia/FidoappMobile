@@ -1,21 +1,21 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
-
+import 'package:pawlly/components/regresr_components.dart';
 import 'package:pawlly/modules/components/input_text.dart';
-import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
-import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 
-class FormularioDiario extends StatefulWidget {
+class FormularioDiario extends StatelessWidget {
   final bool isEdit;
-  bool? cambio;
-  String? ImagenEdit;
+  final bool? cambio;
+  final String? ImagenEdit;
+
   FormularioDiario({
     super.key,
     this.isEdit = false,
@@ -23,53 +23,19 @@ class FormularioDiario extends StatefulWidget {
     this.ImagenEdit,
   });
 
-  @override
-  _FormularioDiarioState createState() => _FormularioDiarioState();
-}
-
-class _FormularioDiarioState extends State<FormularioDiario> {
-  String? _imagePath;
-  File? __imageFile;
-  late final PetActivityController controller;
+  final PetActivityController controller = Get.put(PetActivityController());
   final HomeController homeController = Get.put(HomeController());
-  Map<String, bool> validate = {
-    'actividad': false,
-    'date': false,
-    'notas': false,
-  };
-
-  @override
-  void initState() {
-    super.initState();
-    // Inicializar todas las validaciones en false
-    validate = {
-      'actividad': false,
-      'date': false,
-      'notas': false,
-    };
-
-    if (widget.isEdit) {
-      controller = Get.find<PetActivityController>();
-      widget.ImagenEdit = controller.activitiesOne.value!.image ?? "";
-      controller.updateField('actividadId', controller.activitiesOne.value!.id);
-    } else {
-      controller = Get.put(PetActivityController());
-    }
-  }
-
-  void validateForm() {
-    setState(() {
-      // Validar solo cuando se presiona el botón
-      validate['actividad'] = controller.diario['actividad']?.isEmpty ?? true;
-      validate['date'] = controller.diario['date']?.isEmpty ?? true;
-      validate['notas'] = controller.diario['notas']?.isEmpty ?? true;
-    });
-  }
+  final RxMap<String, RxBool> validate = {
+    'actividad': false.obs,
+    'date': false.obs,
+    'notas': false.obs,
+  }.obs;
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final margen = 16.0;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -136,29 +102,27 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                             callback: () => Get.back(),
                           ),
                           SizedBox(height: margen),
+                          // Título del registro
                           SizedBox(
                             width: width,
                             child: InputText(
-                              initialValue: widget.isEdit
-                                  ? (controller
-                                          .activitiesOne.value!.actividad ??
-                                      "")
+                              initialValue: isEdit
+                                  ? controller.activitiesOne.value!.actividad ??
+                                      ""
                                   : "",
                               label: 'Título del registro',
                               placeholder: '',
-                              errorText: validate['actividad']!
+                              errorText: validate['actividad']!.value
                                   ? 'Campo requerido'
                                   : '',
                               onChanged: (value) {
                                 controller.updateField('actividad', value);
-                                if (value.isNotEmpty &&
-                                    validate['actividad']!) {
-                                  setState(() => validate['actividad'] = false);
-                                }
+                                validate['actividad']!.value = value.isEmpty;
                               },
                             ),
                           ),
                           SizedBox(height: margen),
+                          // Categoría
                           SizedBox(
                             width: width,
                             child: InputText(
@@ -172,10 +136,11 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                             ),
                           ),
                           SizedBox(height: margen),
+                          // Fecha
                           SizedBox(
                             width: width,
                             child: InputText(
-                              initialValue: widget.isEdit
+                              initialValue: isEdit
                                   ? controller.activitiesOne.value!.date
                                   : '',
                               label: 'Fecha del registro',
@@ -188,37 +153,37 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                 Icons.arrow_drop_down_sharp,
                                 color: Styles.iconColorBack,
                               ),
-                              errorText:
-                                  validate['date']! ? 'Campo requerido' : '',
+                              errorText: validate['date']!.value
+                                  ? 'Campo requerido'
+                                  : '',
                               onChanged: (value) {
                                 controller.updateField('date', value);
-                                if (value.isNotEmpty && validate['date']!) {
-                                  setState(() => validate['date'] = false);
-                                }
+                                validate['date']!.value = value.isEmpty;
                               },
                             ),
                           ),
                           SizedBox(height: margen),
+                          // Descripción
                           SizedBox(
                             width: width,
                             child: InputText(
                               isTextArea: true,
-                              initialValue: widget.isEdit
+                              initialValue: isEdit
                                   ? controller.activitiesOne.value!.notas
                                   : '',
                               label: 'Descripción',
                               placeholder: 'Describe el evento',
-                              errorText:
-                                  validate['notas']! ? 'Campo requerido' : '',
+                              errorText: validate['notas']!.value
+                                  ? 'Campo requerido'
+                                  : '',
                               onChanged: (value) {
                                 controller.updateField('notas', value);
-                                if (value.isNotEmpty && validate['notas']!) {
-                                  setState(() => validate['notas'] = false);
-                                }
+                                validate['notas']!.value = value.isEmpty;
                               },
                             ),
                           ),
                           SizedBox(height: margen),
+                          // Adjuntar imagen
                           SizedBox(
                             width: width,
                             child: InputText(
@@ -229,18 +194,11 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                   'assets/icons/svg/vector_select_images.svg',
                               isImagePicker: true,
                               onChanged: (value) {
-                                setState(() {
-                                  widget.cambio = false;
-                                  _imagePath = value;
-                                  controller.updateField('image', value);
-                                  __imageFile = File(value);
-                                });
+                                controller.updateField('image', value);
                               },
                             ),
                           ),
-                          if (widget.isEdit &&
-                              widget.cambio == false &&
-                              widget.ImagenEdit != null)
+                          if (isEdit && cambio == false && ImagenEdit != null)
                             Column(
                               children: [
                                 const Text("Imagen Actual"),
@@ -268,12 +226,13 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                               ],
                             ),
                           SizedBox(height: margen),
+                          // Botón Finalizar
                           SizedBox(
                             width: width,
                             height: 54,
                             child: Obx(() {
                               return ButtonDefaultWidget(
-                                title: widget.isEdit
+                                title: isEdit
                                     ? controller.isLoading.value
                                         ? 'Cargando ...'
                                         : 'Editar'
@@ -281,8 +240,9 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                         ? 'Cargando ...'
                                         : 'Finalizar',
                                 callback: () {
-                                  validateForm();
-                                  if (validate.containsValue(true)) {
+                                  if (validate['actividad']!.value ||
+                                      validate['date']!.value ||
+                                      validate['notas']!.value) {
                                     CustomSnackbar.show(
                                       title: 'Error',
                                       message:
@@ -291,24 +251,24 @@ class _FormularioDiarioState extends State<FormularioDiario> {
                                     );
                                     return;
                                   }
-                                  ;
                                   //este es el id del animal
                                   controller.updateField(
-                                    'pet_id',
-                                    homeController.selectedProfile.value!.id
-                                        .toString(),
-                                  );
-
-                                  widget.isEdit
+                                      'pet_id',
+                                      homeController.selectedProfile.value!.id
+                                          .toString());
+                                  isEdit
                                       ? controller.editPetActivity2(
                                           "${controller.activitiesOne.value!.id}",
-                                          __imageFile,
+                                          File(
+                                              controller.diario['image'] ?? ''),
                                         )
-                                      : controller.addPetActivity(__imageFile);
+                                      : controller.addPetActivity(File(
+                                          controller.diario['image'] ?? ''));
                                 },
                               );
                             }),
                           ),
+                          SizedBox(height: margen + 30),
                         ],
                       ),
                     ),
