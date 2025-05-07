@@ -51,3 +51,6 @@ ios/Flutter/Generated.xcconfig
 ios/Flutter/flutter_export_environment.sh
 
 /android/__disabled_key.properties
+/android/key.properties
+
+.docs/
