@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -12,10 +11,10 @@ import 'package:pawlly/models/brear_model.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/pet_note_model.dart';
 import 'package:pawlly/models/pet_type_model.dart';
-import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+
 import '../../../models/base_response_model.dart';
 import '../../../network/network_utils.dart';
 import '../../../utils/api_end_points.dart';
@@ -30,6 +29,7 @@ class PetService {
         method: HttpMethodType.GET)));
   }
 
+  // ignore: slash_for_doc_comments
   /*** 
   Future<PetService?> fetchPetData(int petId) async {
     final url = Uri.parse('$baseUrl/pets/$petId');
@@ -321,9 +321,7 @@ class PetService {
     }
   }
 
-  static Future<PetData?> getPetDetailsApi({
-    required int petId, // ID de la mascota a recuperar
-  }) async {
+  static Future<PetData?> getPetDetailsApi({required int petId}) async {
     if (isLoggedIn.value) {
       // Construir la URL completa con el ID de la mascota
       final url = Uri.parse('$BASE_URL${APIEndPoints.getPetList}/$petId');

@@ -1,12 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:get/get.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
-import 'package:pawlly/components/button_back.dart';
+import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/controllers/sign_in_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
@@ -14,8 +14,6 @@ import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
 import '../../../../components/app_scaffold.dart';
-
-import '../../../../utils/colors.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -120,6 +118,36 @@ class SignInScreen extends StatelessWidget {
                           ],
                         ),
                       ).paddingTop(42),
+                    // Google Sign-In (Android only)
+                    if (Platform.isAndroid) ...[
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 54,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            side: const BorderSide(color: Styles.greyDivider),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
+                          ),
+                          icon: Image.asset(
+                            Assets.imagesGoogleLogo,
+                            width: 24,
+                            height: 24,
+                          ),
+                          label: const Text(
+                            'Continuar con Google',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          onPressed: () => signInController.googleSignIn(context),
+                        ),
+                      ),
+                    ],
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

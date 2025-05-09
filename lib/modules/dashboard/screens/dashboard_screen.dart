@@ -7,17 +7,15 @@ import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pacientes.dart';
 import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
-
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
-
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class DashboardScreen extends StatefulWidget {
-  DashboardScreen({super.key});
+  const DashboardScreen({super.key});
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -226,7 +224,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (index == 1) {
       // Show modal for item 1
       if (roleUser.roleUser() == roleUser.tipoUsuario('vet')) {
-        Get.to(Pacientes());
+        Get.to(() => Pacientes());
       } else {
         showModalBottomSheet(
           context: context,

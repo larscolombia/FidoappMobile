@@ -1,12 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/models/brear_model.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart'; // Asegúrate de importar tu servicio
-import 'package:pawlly/components/custom_snackbar.dart';
 
 class AddPetController extends GetxController {
   RxBool isLoading = false.obs;
@@ -21,6 +21,7 @@ class AddPetController extends GetxController {
   var petBirthDate = DateTime.now().obs;
   var petGender = ''.obs;
   var petWeight = 0.0.obs;
+  var petWeightUnit = 'Kg'.obs;
   var breedList = <BreedModel>[].obs; // Observable para la lista de razas
   var petImage = Rx<XFile?>(null);
   var base64Image = ''.obs;
@@ -71,6 +72,16 @@ class AddPetController extends GetxController {
     }
   }
 
+  void toogleWeightUnit() {
+    if (petWeightUnit.value == 'Kg') {
+      petWeightUnit.value = 'gr';
+    } else if (petWeightUnit.value == 'gr') {
+      petWeightUnit.value = 'mg';
+    } else if (petWeightUnit.value == 'mg') {
+      petWeightUnit.value = 'Kg';
+    }
+  }
+  
   void submitForm(GlobalKey<FormState> formKey) async {
     if (formKey.currentState?.validate() ?? false) {
       isLoading(true);
@@ -84,6 +95,7 @@ class AddPetController extends GetxController {
         'breed_name': petBreed.text,
         'gender': petGender.value,
         'weight': petWeight.value.toString(),
+        'weight_unit': petWeightUnit.value,
         'user_id': AuthServiceApis.dataCurrentUser.id.toString(),
       };
 

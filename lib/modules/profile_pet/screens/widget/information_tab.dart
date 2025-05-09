@@ -1,27 +1,18 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/components/custom_select_form_field_widget.dart';
-import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
-
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
 import 'package:pawlly/modules/profile_pet/controllers/pet_owner_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
-
 import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/associated_persons_modal.dart';
-
 import 'package:pawlly/services/auth_service_apis.dart';
-
 import 'package:pawlly/styles/styles.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -472,7 +463,7 @@ class InformationTab extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFFC9214),
+                          backgroundColor: const Color(0xFFFC9214),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -513,7 +504,7 @@ class InformationTab extends StatelessWidget {
                             nombre: person['name'],
                             profesion: person['relation'],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 15,
                           ),
                         ],
