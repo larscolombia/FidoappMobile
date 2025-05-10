@@ -1,13 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:pawlly/configs.dart';
-import 'package:pawlly/modules/integracion/model/user_type/user_datails.dart';
 import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:pawlly/components/custom_snackbar.dart';
+import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/model/user_type/user_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-import 'package:pawlly/components/custom_snackbar.dart';
 
 class UserController extends GetxController {
   var users = <User>[].obs;
@@ -18,8 +16,7 @@ class UserController extends GetxController {
   var usersDetails = <User>[].obs;
 
   var selectedButton = 'Veterinarios'.obs;
-  var selectedUser =
-      Rxn<User>(); // Variable observable para el usuario seleccionado
+  var selectedUser = Rxn<User>(); // Variable observable para el usuario seleccionado
   var type = 'vet'.obs;
   var expertTags = <String>[].obs;
 
@@ -29,14 +26,15 @@ class UserController extends GetxController {
     super.onInit();
   }
 
-  Future<void> fetchUsers() async {
+  Future<void> fetchUsers([String? passedType]) async {
+    final userType = passedType ?? type; // usa passedType si no es null, sino usa la propiedad type
+
     try {
       isLoading.value = true;
-      print(
-          'usertype url ${Uri.parse("$DOMAIN_URL/api/get-user-by-type?user_type=$type")}');
+      print('usertype url ${Uri.parse("$DOMAIN_URL/api/get-user-by-type?user_type=$userType")}');
 
       final response = await http.get(
-        Uri.parse("$DOMAIN_URL/api/get-user-by-type?user_type=$type"),
+        Uri.parse("$DOMAIN_URL/api/get-user-by-type?user_type=$userType"),
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
@@ -48,11 +46,8 @@ class UserController extends GetxController {
 
         if (data['success']) {
           print('usuario tipo ${data['data']}');
-          users.value = (data['data'] as List)
-              .map((user) => User.fromJson(user))
-              .toList();
-          filteredUsers.value =
-              users; // Inicialmente mostramos todos los usuarios
+          users.value = (data['data'] as List).map((user) => User.fromJson(user)).toList();
+          filteredUsers.value = users;
           selecterUser.value = users;
           generateExpertTags();
         }
@@ -72,8 +67,7 @@ class UserController extends GetxController {
 
     try {
       for (var id in ownerIds) {
-        final user =
-            await fetchUserById(id); // Llama la función para un solo usuario
+        final user = await fetchUserById(id); // Llama la función para un solo usuario
         if (user != null) {
           usersDetails.add(user); // Acumula cada usuario en la lista
         }
@@ -135,21 +129,16 @@ class UserController extends GetxController {
 
   void filterUsers(String? query) {
     if (query == null || query.isEmpty) {
-      filteredUsers.value =
-          List.from(users); // Si no hay búsqueda, mostrar todos
+      filteredUsers.value = List.from(users); // Si no hay búsqueda, mostrar todos
     } else {
-      var foundUsers = users
-          .where(
-              (user) => user.email.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      var foundUsers = users.where((user) => user.email.toLowerCase().contains(query.toLowerCase())).toList();
       filteredUsers.value = foundUsers.isEmpty ? [] : foundUsers;
     }
   }
 
   void filterUsersId(String? query) {
     if (query == null || query.isEmpty) {
-      filteredUsers.value =
-          []; // Si no hay búsqueda o está vacía, no mostrar nada
+      filteredUsers.value = []; // Si no hay búsqueda o está vacía, no mostrar nada
     } else {
       // Intentamos convertir la consulta a un entero para filtrar por ID
       int? queryId = int.tryParse(query);
@@ -168,27 +157,18 @@ class UserController extends GetxController {
 
   void filterUsersByExpert(String? expertQuery) {
     if (expertQuery == null || expertQuery.isEmpty) {
-      filteredUsers.value =
-          List.from(users); // Mostrar todos si no hay búsqueda
+      filteredUsers.value = List.from(users); // Mostrar todos si no hay búsqueda
     } else {
       var foundUsers = users
           .where((user) =>
-              user.profile != null &&
-              user.profile!.expert != null &&
-              user.profile!.expert!
-                  .toLowerCase()
-                  .contains(expertQuery.toLowerCase()))
+              user.profile != null && user.profile!.expert != null && user.profile!.expert!.toLowerCase().contains(expertQuery.toLowerCase()))
           .toList();
       filteredUsers.value = foundUsers.isEmpty ? [] : foundUsers;
     }
   }
 
   void generateExpertTags() {
-    expertTags.value = users
-        .map((user) => user.profile?.expert ?? '')
-        .where((expert) => expert.isNotEmpty)
-        .toSet()
-        .toList();
+    expertTags.value = users.map((user) => user.profile?.expert ?? '').where((expert) => expert.isNotEmpty).toSet().toList();
   }
 
   void selectUser(User user) {

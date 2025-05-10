@@ -14,8 +14,7 @@ class Helper extends GetX {
   const Helper({super.key, required super.builder});
 
   static Helper get instance => Get.find<Helper>();
-  static const errorValidate =
-      "Por favor, rellene todos los campos requeridos.";
+  static const errorValidate = "Por favor, rellene todos los campos requeridos.";
   static const margenDefault = 16.0;
   static const paddingDefault = 26.0;
   static const String funte1 = 'Lato';
@@ -91,21 +90,18 @@ class Helper extends GetX {
     );
   }
 
-  static Future<void> showMyDialog(
-      BuildContext context, UserController controller) async {
-    final UserController userController =
-        Get.put(UserController(), permanent: true);
+  static Future<void> showMyDialog(BuildContext context, UserController controller) async {
+    final UserController userController = Get.put(UserController(), permanent: true);
     final CalendarController calendarController = Get.put(CalendarController());
     controller.type.value = 'vet';
-    controller.fetchUsers();
+    controller.fetchUsers('all');
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-                28.0), // Ajusta el valor del radio según desees
+            borderRadius: BorderRadius.circular(28.0), // Ajusta el valor del radio según desees
           ),
           content: SingleChildScrollView(
             child: SizedBox(
@@ -136,9 +132,7 @@ class Helper extends GetX {
                               'assets/icons/svg/x.svg',
                               width: 24, // Ajusta el tamaño si es necesario
                               height: 24,
-                              colorFilter: const ColorFilter.mode(
-                                  Color(0XFFBEBEBE),
-                                  BlendMode.srcIn), // Aplica color rojo
+                              colorFilter: const ColorFilter.mode(Color(0XFFBEBEBE), BlendMode.srcIn), // Aplica color rojo
                             ),
                           ),
                         ],
@@ -176,8 +170,7 @@ class Helper extends GetX {
                         SelectedAvatar(
                           nombre: filteredUsers.first.firstName,
                           imageUrl: filteredUsers.first.profileImage,
-                          profesion: Helper.tipoUsuario(
-                              filteredUsers.first.userType ?? ""),
+                          profesion: Helper.tipoUsuario(filteredUsers.first.userType ?? ""),
                         ),
                         const SizedBox(height: 20),
                       ],
@@ -194,8 +187,7 @@ class Helper extends GetX {
                             [userController.filteredUsers.first.id],
                           );
                           userController.deselectUser();
-                          userController
-                              .selectUser(userController.filteredUsers.first);
+                          userController.selectUser(userController.filteredUsers.first);
                           Navigator.of(context).pop();
                         } else {
                           CustomSnackbar.show(
@@ -243,8 +235,7 @@ class Helper extends GetX {
 
   static String cleanNumberString(String input) {
     RegExp regExp = RegExp(r'[0-9\.]');
-    String cleanedString =
-        regExp.allMatches(input).map((m) => m.group(0)).join();
+    String cleanedString = regExp.allMatches(input).map((m) => m.group(0)).join();
     return cleanedString;
   }
 }

@@ -9,7 +9,6 @@ import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/utils/common_base.dart';
-import 'package:pawlly/utils/constants.dart';
 
 class SignUpController extends GetxController {
   RxBool isLoading = false.obs;
@@ -39,9 +38,10 @@ class SignUpController extends GetxController {
       Map<String, dynamic> req = {
         "email": emailCont.text.trim(),
         "first_name": fisrtNameCont.text.trim(),
-        "last_name": fisrtNameCont.text.trim(),
+        "last_name": lastNameCont.text.trim(),
         "password": passwordCont.text.trim(),
-        UserKeys.userType: LoginTypeConst.LOGIN_TYPE_USER,
+        "gender": mapGender(genCont.text),
+        "user_type": mapUserType(userTypeCont.text)
       };
 
       final value = await AuthServiceApis.createUser(request: req);
@@ -56,8 +56,7 @@ class SignUpController extends GetxController {
           primaryButtonText: "Continuar",
           onPrimaryButtonPressed: () {
             // Navegar a la pantalla de inicio de sesión sin iniciar sesión automáticamente
-            Get.offUntil(GetPageRoute(page: () => SignInScreen()),
-                (route) => route.isFirst);
+            Get.offUntil(GetPageRoute(page: () => SignInScreen()), (route) => route.isFirst);
           },
         ),
         barrierDismissible: false, // No permite cerrar el diálogo tocando fuera
@@ -81,6 +80,32 @@ class SignUpController extends GetxController {
       );
     } finally {
       isLoading(false);
+    }
+  }
+
+  String mapGender(String gender) {
+    switch (gender) {
+      case 'Mujer':
+        return 'female';
+      case 'Hombre':
+        return 'male';
+      case 'Prefiero no decirlo':
+        return 'others';
+      default:
+        return '';
+    }
+  }
+
+  String mapUserType(String userType) {
+    switch (userType) {
+      case 'Veterinario':
+        return 'vet';
+      case 'Entrenador':
+        return 'trainer';
+      case 'Dueño de Mascota':
+        return 'user';
+      default:
+        return '';
     }
   }
 }

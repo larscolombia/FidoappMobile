@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
-import 'package:get/get.dart';
 
-class AppBarNotifications extends StatelessWidget
-    implements PreferredSizeWidget {
+class AppBarNotifications extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
 
-  const AppBarNotifications({super.key})
-      : preferredSize = const Size.fromHeight(120.0);
+  const AppBarNotifications({super.key}) : preferredSize = const Size.fromHeight(120.0);
 
   @override
   Widget build(BuildContext context) {
@@ -21,33 +18,28 @@ class AppBarNotifications extends StatelessWidget
       child: AppBar(
         backgroundColor: Styles.fiveColor,
         elevation: 0,
-        automaticallyImplyLeading:
-            false, // Para controlar manualmente el ícono de retroceso
+        automaticallyImplyLeading: false, // Para controlar manualmente el ícono de retroceso
         flexibleSpace: Stack(
           children: [
             BorderRedondiado(top: 130),
             Container(
-              padding: const EdgeInsets.only(
-                  top: 56, bottom: 40, left: 20, right: 20),
+              padding: const EdgeInsets.only(top: 56, bottom: 40, left: 20, right: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment
-                    .center, // Alinea verticalmente los elementos en el centro
+                crossAxisAlignment: CrossAxisAlignment.center, // Alinea verticalmente los elementos en el centro
                 children: [
                   GestureDetector(
                       onTap: () {
                         Navigator.pop(context); // Acción de retroceso
                       },
                       child: Material(
-                        color: Colors
-                            .transparent, // Para que el Material no oculte el fondo
+                        color: Colors.transparent, // Para que el Material no oculte el fondo
                         child: InkWell(
                           onTap: () {
                             Navigator.pop(context); // Acción de retroceso
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10), // Añadir padding horizontal
+                            padding: const EdgeInsets.symmetric(horizontal: 10), // Añadir padding horizontal
                             child: Row(
                               children: [
                                 SvgPicture.asset(
@@ -55,13 +47,10 @@ class AppBarNotifications extends StatelessWidget
                                   width: 15,
                                   height: 15,
                                 ),
-                                const SizedBox(
-                                    width:
-                                        24), // Espacio entre la flecha y el texto
+                                const SizedBox(width: 24), // Espacio entre la flecha y el texto
                                 const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .center, // Centra el texto verticalmente
+                                  mainAxisAlignment: MainAxisAlignment.center, // Centra el texto verticalmente
                                   children: [
                                     Text(
                                       'Notificaciones',
@@ -96,8 +85,7 @@ class AppBarNotifications extends StatelessWidget
                     child: Container(
                       width: 50, // Tamaño del contenedor que contiene la imagen
                       height: 50,
-                      padding: const EdgeInsets.all(
-                          2), // Espacio entre la imagen y el borde
+                      padding: const EdgeInsets.all(2), // Espacio entre la imagen y el borde
                       decoration: BoxDecoration(
                         color: Styles.fiveColor,
                         shape: BoxShape.circle,
@@ -107,13 +95,11 @@ class AppBarNotifications extends StatelessWidget
                         ),
                       ),
                       child: CircleAvatar(
-                        radius:
-                            46, // Ajustar el radio para que la imagen se adapte mejor al contenedor
-                        backgroundImage: NetworkImage(
-                          "${AuthServiceApis.dataCurrentUser.profileImage}",
-                        ), // Imagen predeterminada si la URL está vacía
-                        backgroundColor:
-                            Colors.transparent, // Fondo transparente
+                        radius: 46, // Ajustar el radio para que la imagen se adapte mejor al contenedor
+                        backgroundImage: AuthServiceApis.dataCurrentUser.profileImage.isNotEmpty
+                            ? NetworkImage("${AuthServiceApis.dataCurrentUser.profileImage}")
+                            : const AssetImage('assets/images/avatar.png') as ImageProvider,
+                        backgroundColor: Colors.transparent, // Fondo transparente
                       ),
                     ),
                   ),
