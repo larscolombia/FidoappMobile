@@ -1,15 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
-import 'dart:convert';
 import 'package:pawlly/modules/integracion/model/comentario/rainting.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
 class CommentController extends GetxController {
-  var comments =
-      <Comment>[].obs; // Usamos un RxList para almacenar los comentarios
+  var comments = <Comment>[].obs; // Usamos un RxList para almacenar los comentarios
   var isLoading = false.obs;
   var isFirstLoad = true.obs; // Variable para controlar si es la primera carga.
   var visualizacion = 0.obs;
@@ -49,8 +49,7 @@ class CommentController extends GetxController {
     try {
       comments.value = [];
       isLoading(true);
-      final response = await http
-          .get(Uri.parse('$baseUrl${getEndpoint(tipo, itemId)}'), headers: {
+      final response = await http.get(Uri.parse('$baseUrl${getEndpoint(tipo, itemId)}'), headers: {
         'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
         'Content-Type': 'application/json',
       });
@@ -58,9 +57,7 @@ class CommentController extends GetxController {
       var data = json.decode(response.body);
 
       if (response.statusCode == 200) {
-        comments.value = (data['data'] as List)
-            .map((item) => Comment.fromJson(item))
-            .toList();
+        comments.value = (data['data'] as List).map((item) => Comment.fromJson(item)).toList();
       } else {
         throw Exception('Failed to load comments');
       }
@@ -92,8 +89,7 @@ class CommentController extends GetxController {
         visualizacion.value = data['visualizations'];
       } else {
         // Error
-        print(
-            'Error al actualizar la visualización. Código de estado: ${response.statusCode}');
+        print('Error al actualizar la visualización. Código de estado: ${response.statusCode}');
         print('Cuerpo de respuesta: ${response.body}');
       }
     } catch (e) {
@@ -110,8 +106,7 @@ class CommentController extends GetxController {
 
       if (comment.rating != null) {
         try {
-          rating = double.parse(
-              comment.rating.toString()); // Intentamos convertir a double
+          rating = double.parse(comment.rating.toString()); // Intentamos convertir a double
         } catch (e) {
           print("Error al convertir el rating: $e");
         }
@@ -121,8 +116,7 @@ class CommentController extends GetxController {
     });
 
     double average = sum / comments.length;
-    return double.parse(
-        average.toStringAsFixed(1)); // Redondear a una cifra decimal
+    return double.parse(average.toStringAsFixed(1)); // Redondear a una cifra decimal
   }
 
   var comentario = {
@@ -179,9 +173,7 @@ class CommentController extends GetxController {
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
             title: 'Comentario creado',
-            description: rating < 3
-                ? "Le enviaremos un correo electrónico para conocer su experiencia."
-                : 'Tu comentario ha sido publicado',
+            description: rating < 3 ? "Tu comentario está bajo revisión y esperamos publicarlo pronto." : 'Tu comentario ha sido publicado',
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
               isComentarioPosrLoading(false);

@@ -96,14 +96,18 @@ class Estadisticas extends StatelessWidget {
   final String comentarios;
   final String calificacion;
   final List<String>? avatars;
+  final VoidCallback? onComentariosPressed;
+
   const Estadisticas({
     super.key,
     required this.comentarios,
     required this.calificacion,
     this.avatars,
+    this.onComentariosPressed,
   });
   @override
   Widget build(BuildContext context) {
+    print(avatars);
     // TODO: implement build
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -152,13 +156,10 @@ class Estadisticas extends StatelessWidget {
                         fontSize: 12,
                         color: Color(0XFF383838),
                         fontFamily: 'Lato',
-                        fontWeight:
-                            FontWeight.w800, // Puntaje con fontWeight 800
+                        fontWeight: FontWeight.w800, // Puntaje con fontWeight 800
                       ),
                     ),
-                    const SizedBox(
-                        width:
-                            4), // Espacio entre el puntaje y la palabra "Calificación"
+                    const SizedBox(width: 4), // Espacio entre el puntaje y la palabra "Calificación"
                     const Text(
                       'Calificación',
                       overflow: TextOverflow.ellipsis,
@@ -167,8 +168,7 @@ class Estadisticas extends StatelessWidget {
                         fontSize: 12,
                         color: Color(0XFF383838),
                         fontFamily: 'Lato',
-                        fontWeight: FontWeight
-                            .w400, // Texto "Calificación" con fontWeight 400
+                        fontWeight: FontWeight.w400, // Texto "Calificación" con fontWeight 400
                       ),
                     ),
                   ],
@@ -190,6 +190,8 @@ class Estadisticas extends StatelessWidget {
             Row(
               children: [
                 Expanded(
+                    child: GestureDetector(
+                  onTap: onComentariosPressed,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
@@ -209,7 +211,7 @@ class Estadisticas extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
+                )),
                 const SizedBox(width: 15),
                 Flexible(
                   // Usamos Flexible en lugar de Expanded
