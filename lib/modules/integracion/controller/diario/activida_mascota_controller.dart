@@ -1,24 +1,23 @@
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
-import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/model/diario/actividad_mascota_modal.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-import 'package:path/path.dart' as path;
 
 class PetActivityController extends GetxController {
   final HomeController homeController = Get.put(HomeController());
   var isLoading = false.obs;
   var activities = <PetActivity>[].obs;
   var filteredActivities = <PetActivity>[].obs;
-  var activitiesOne =
-      Rxn<PetActivity>(); // Observable para almacenar una sola actividad
+  var activitiesOne = Rxn<PetActivity>(); // Observable para almacenar una sola actividad
   var url = '$DOMAIN_URL/api/get-diary';
   var createUrl = "$DOMAIN_URL/api/training-diaries";
   var categories = ['Actividad', 'Informe médico', 'Entrenamiento'].obs;
@@ -78,7 +77,7 @@ class PetActivityController extends GetxController {
       'actividadId': '0',
       'actividad': "",
       'date': "",
-      'category_id': categoria_user_type(),
+      'category_id': "",
       'notas': "",
       'pet_id': '0',
       'image': "",
@@ -89,7 +88,7 @@ class PetActivityController extends GetxController {
     diario.value = {
       'actividad': "",
       'date': "",
-      'category_id': categoria_user_type(),
+      'category_id': '',
       'notas': "",
       'pet_id': '0',
       'image': "",
@@ -111,13 +110,11 @@ class PetActivityController extends GetxController {
       if (response.statusCode == 200) {
         if (jsonResponse['success']) {
           List<dynamic> data = jsonResponse['data'];
-          activities.value =
-              data.map((activity) => PetActivity.fromJson(activity)).toList();
+          activities.value = data.map((activity) => PetActivity.fromJson(activity)).toList();
           // print('actividades ${jsonEncode(activities)}');
           filteredActivities.value = activities;
         } else {
-          print(
-              'Error en la respuesta del servidor: ${jsonResponse['message']}');
+          print('Error en la respuesta del servidor: ${jsonResponse['message']}');
         }
       } else {
         print('Error en la solicitud: ${response.statusCode}');
@@ -145,14 +142,12 @@ class PetActivityController extends GetxController {
         ..fields['date'] = diario['date'] ?? ''
         ..fields['category_id'] = categoria_user_type()
         ..fields['notas'] = diario['notas'] ?? ''
-        ..fields['pet_id'] =
-            homeController.selectedProfile.value!.id.toString();
+        ..fields['pet_id'] = homeController.selectedProfile.value!.id.toString();
 
       if (imageFile != null) {
         var stream = http.ByteStream(imageFile.openRead());
         var length = await imageFile.length();
-        var multipartFile = http.MultipartFile('image', stream, length,
-            filename: path.basename(imageFile.path));
+        var multipartFile = http.MultipartFile('image', stream, length, filename: path.basename(imageFile.path));
         request.files.add(multipartFile);
       }
 
@@ -209,7 +204,7 @@ class PetActivityController extends GetxController {
         'actividadId': categoria_user_type(),
         'actividad': diario['actividad'],
         'date': diario['date'],
-        'category_id': categoria_user_type(),
+        'category_id': diario['category_id'],
         'notas': diario['notas'],
         'pet_id': diario['pet_id'].toString(),
       });
@@ -248,7 +243,7 @@ class PetActivityController extends GetxController {
               diario.value = {
                 'actividad': "",
                 'date': "",
-                'category_id': categoria_user_type(),
+                'category_id': '',
                 'notas': "",
                 'pet_id': '0',
                 'image': "",
@@ -359,6 +354,10 @@ class PetActivityController extends GetxController {
     diario[key] = value;
   }
 
+  void updateCategoryField(dynamic value) {
+    diario["category_id"] = value;
+  }
+
   void searchActivities(String query) {
     if (query.isEmpty) {
       filteredActivities.value = activities;
@@ -375,8 +374,7 @@ class PetActivityController extends GetxController {
       filteredActivities.value = activities;
     } else {
       filteredActivities.value = activities.where((activity) {
-        return activity.categoryId ==
-            int.tryParse(categoryId); // Evita errores al convertir
+        return activity.categoryId == int.tryParse(categoryId); // Evita errores al convertir
       }).toList();
     }
 
@@ -386,19 +384,13 @@ class PetActivityController extends GetxController {
 
   //Actualizar historial
   void filterPetActivities(String? reportName) {
-    List<PetActivity> filtered =
-        List<PetActivity>.from(activities); // Convertir a List<PetActivity>
+    List<PetActivity> filtered = List<PetActivity>.from(activities); // Convertir a List<PetActivity>
 
     if (reportName != null && reportName.isNotEmpty) {
       filtered = filtered.where((activity) {
-        return activity.actividad
-                ?.toLowerCase()
-                .contains(reportName.toLowerCase()) ??
-            false;
+        return activity.actividad?.toLowerCase().contains(reportName.toLowerCase()) ?? false;
       }).toList()
-        ..sort((a, b) => a.actividad
-            .toLowerCase()
-            .compareTo(b.actividad.toLowerCase())); // Ordenar alfabéticamente
+        ..sort((a, b) => a.actividad.toLowerCase().compareTo(b.actividad.toLowerCase())); // Ordenar alfabéticamente
     }
 
     var categoryId = diario['category_id']?.toLowerCase() ?? '';
@@ -416,8 +408,7 @@ class PetActivityController extends GetxController {
       });
     }
 
-    filteredActivities.value =
-        RxList<PetActivity>(filtered); // Convertir a RxList<PetActivity>
+    filteredActivities.value = RxList<PetActivity>(filtered); // Convertir a RxList<PetActivity>
   }
 
   String convertDateFormat(String date) {
@@ -441,8 +432,7 @@ class PetActivityController extends GetxController {
       // Convertimos el nombre de categoría a su ID
       final catId = categoria_value(categoryName);
       // Filtramos
-      result =
-          result.where((act) => act.categoryId == int.tryParse(catId)).toList();
+      result = result.where((act) => act.categoryId == int.tryParse(catId)).toList();
     }
 
     // 2. Filtrar por fecha (opcional: tu lógica para cada rango)
@@ -472,12 +462,10 @@ class PetActivityController extends GetxController {
       });
     } else if (sortType == "A-Z") {
       // Orden alfabético ascendente
-      result.sort((a, b) =>
-          a.actividad.toLowerCase().compareTo(b.actividad.toLowerCase()));
+      result.sort((a, b) => a.actividad.toLowerCase().compareTo(b.actividad.toLowerCase()));
     } else if (sortType == "Z-A") {
       // Orden alfabético descendente
-      result.sort((b, a) =>
-          a.actividad.toLowerCase().compareTo(b.actividad.toLowerCase()));
+      result.sort((b, a) => a.actividad.toLowerCase().compareTo(b.actividad.toLowerCase()));
     }
     print('filtro ${jsonEncode(result)}');
     // Asignamos a filteredActivities

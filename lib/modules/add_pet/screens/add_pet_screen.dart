@@ -8,12 +8,10 @@ import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/add_pet/controllers/add_pet_controller.dart';
-import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class AddPetScreen extends StatelessWidget {
   final AddPetController controller = Get.put(AddPetController());
-  final HomeController homeController = Get.put(HomeController());
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   AddPetScreen({super.key});
@@ -298,7 +296,6 @@ class AddPetScreen extends StatelessWidget {
                           callback: () {
                             if (_formKey.currentState!.validate()) {
                               controller.submitForm(_formKey);
-                              homeController.fetchProfiles();
                             }
                           },
                         ),

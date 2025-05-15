@@ -12,8 +12,7 @@ class PetListRes {
   factory PetListRes.fromJson(Map<String, dynamic> json) {
     return PetListRes(
       status: json['status'] ?? false,
-      data:
-          (json['data'] as List).map((item) => PetData.fromJson(item)).toList(),
+      data: (json['data'] as List).map((item) => PetData.fromJson(item)).toList(),
       message: json['message'] ?? "",
     );
   }
@@ -80,7 +79,7 @@ class PetData {
 
   factory PetData.fromJson(Map<String, dynamic> json) {
     return PetData(
-        id: json['id'] ?? -1,
+        id: int.tryParse(json['id'].toString()) ?? -1,
         name: json['name'] ?? "",
         slug: json['slug'] ?? "",
         pettype: json['pettype'] ?? "",
@@ -91,11 +90,11 @@ class PetData {
         dateOfBirth: json['date_of_birth'],
         age: json['age'] ?? "",
         gender: json['gender'] ?? "",
-        weight: json['weight'] ?? 0,
+        weight: num.tryParse(json['weight'].toString()) ?? 0,
         weightUnit: json['weight_unit'] ?? "",
         height: json['height'].toString() ?? "0",
         heightUnit: json['height_unit'] ?? "",
-        userId: json['user_id'] ?? -1,
+        userId: int.tryParse(json['user_id'].toString()) ?? -1,
         status: json['status'] ?? -1,
         qrCode: json['qr_code'],
         createdBy: json['created_by'],

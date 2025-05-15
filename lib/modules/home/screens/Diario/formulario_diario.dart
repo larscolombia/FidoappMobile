@@ -1,15 +1,17 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_select_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/components/regresr_components.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
-import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
-import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
+import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
+import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 
 class FormularioDiario extends StatelessWidget {
   final bool isEdit;
@@ -24,6 +26,7 @@ class FormularioDiario extends StatelessWidget {
   });
 
   final PetActivityController controller = Get.put(PetActivityController());
+  final CategoryController categoryController = Get.put(CategoryController());
   final HomeController homeController = Get.put(HomeController());
   final RxMap<String, RxBool> validate = {
     'actividad': false.obs,
@@ -35,7 +38,6 @@ class FormularioDiario extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final margen = 16.0;
-
     return Scaffold(
       body: Stack(
         children: [
@@ -106,15 +108,10 @@ class FormularioDiario extends StatelessWidget {
                           SizedBox(
                             width: width,
                             child: InputText(
-                              initialValue: isEdit
-                                  ? controller.activitiesOne.value!.actividad ??
-                                      ""
-                                  : "",
+                              initialValue: isEdit ? controller.activitiesOne.value!.actividad ?? "" : "",
                               label: 'Título del registro',
                               placeholder: '',
-                              errorText: validate['actividad']!.value
-                                  ? 'Campo requerido'
-                                  : '',
+                              errorText: validate['actividad']!.value ? 'Campo requerido' : '',
                               onChanged: (value) {
                                 controller.updateField('actividad', value);
                                 validate['actividad']!.value = value.isEmpty;
@@ -125,14 +122,29 @@ class FormularioDiario extends StatelessWidget {
                           // Categoría
                           SizedBox(
                             width: width,
-                            child: InputText(
-                              readOnly: true,
-                              label: 'Categoría',
-                              placeholder: controller.categoria(
-                                  int.parse(controller.categoria_user_type())),
-                              onChanged: (value) {
-                                controller.updateField('category_id', value);
-                              },
+                            child: // Campo para seleccionar la categoría
+                                Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              child: Obx(() {
+                                return CustomSelectWidget(
+                                  onChange: controller.updateCategoryField,
+                                  placeholder: 'Seleccionar categoría',
+                                  icon: 'assets/icons/patica.png',
+                                  filcolorCustom: Styles.colorContainer,
+                                  items: categoryController.diaryCategories.isNotEmpty
+                                      ? categoryController.diaryCategories.map((b) => SelectItem(label: b.name, value: b.id.toString())).toList()
+                                      : [SelectItem(label: 'No disponible', value: '')],
+                                  validators: [
+                                    (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'El campo categoría es requerido'; // Mensaje de error personalizado
+                                      }
+                                      return null;
+                                    },
+                                  ],
+                                  controller: null, // Validación de Campo requerido
+                                );
+                              }),
                             ),
                           ),
                           SizedBox(height: margen),
@@ -140,22 +152,17 @@ class FormularioDiario extends StatelessWidget {
                           SizedBox(
                             width: width,
                             child: InputText(
-                              initialValue: isEdit
-                                  ? controller.activitiesOne.value!.date
-                                  : '',
+                              initialValue: isEdit ? controller.activitiesOne.value!.date : '',
                               label: 'Fecha del registro',
                               placeholder: '',
                               isDateField: true,
                               placeholderSvg: 'assets/icons/svg/calendar.svg',
-                              placeholderSuffixSvg:
-                                  'assets/icons/svg/flecha_select.svg',
+                              placeholderSuffixSvg: 'assets/icons/svg/flecha_select.svg',
                               suffixIcon: const Icon(
                                 Icons.arrow_drop_down_sharp,
                                 color: Styles.iconColorBack,
                               ),
-                              errorText: validate['date']!.value
-                                  ? 'Campo requerido'
-                                  : '',
+                              errorText: validate['date']!.value ? 'Campo requerido' : '',
                               onChanged: (value) {
                                 controller.updateField('date', value);
                                 validate['date']!.value = value.isEmpty;
@@ -168,14 +175,10 @@ class FormularioDiario extends StatelessWidget {
                             width: width,
                             child: InputText(
                               isTextArea: true,
-                              initialValue: isEdit
-                                  ? controller.activitiesOne.value!.notas
-                                  : '',
+                              initialValue: isEdit ? controller.activitiesOne.value!.notas : '',
                               label: 'Descripción',
                               placeholder: 'Describe el evento',
-                              errorText: validate['notas']!.value
-                                  ? 'Campo requerido'
-                                  : '',
+                              errorText: validate['notas']!.value ? 'Campo requerido' : '',
                               onChanged: (value) {
                                 controller.updateField('notas', value);
                                 validate['notas']!.value = value.isEmpty;
@@ -190,8 +193,7 @@ class FormularioDiario extends StatelessWidget {
                               label: 'Adjuntar imagen',
                               placeholderSvg: 'assets/icons/svg/imagen2.svg',
                               placeholder: 'Añadir imagen',
-                              placeholderSuffixSvg:
-                                  'assets/icons/svg/vector_select_images.svg',
+                              placeholderSuffixSvg: 'assets/icons/svg/vector_select_images.svg',
                               isImagePicker: true,
                               onChanged: (value) {
                                 controller.updateField('image', value);
@@ -207,19 +209,14 @@ class FormularioDiario extends StatelessWidget {
                                   width: width,
                                   height: 220,
                                   fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                    return loadingProgress == null
-                                        ? child
-                                        : const Center(
-                                            child: CircularProgressIndicator());
+                                  loadingBuilder: (context, child, loadingProgress) {
+                                    return loadingProgress == null ? child : const Center(child: CircularProgressIndicator());
                                   },
                                   errorBuilder: (context, error, stackTrace) {
                                     return Container(
                                       width: 250,
                                       height: 150,
-                                      child: const Icon(Icons.image,
-                                          color: Colors.blue),
+                                      child: const Icon(Icons.image, color: Colors.blue),
                                     );
                                   },
                                 ),
@@ -240,30 +237,22 @@ class FormularioDiario extends StatelessWidget {
                                         ? 'Cargando ...'
                                         : 'Finalizar',
                                 callback: () {
-                                  if (validate['actividad']!.value ||
-                                      validate['date']!.value ||
-                                      validate['notas']!.value) {
+                                  if (validate['actividad']!.value || validate['date']!.value || validate['notas']!.value) {
                                     CustomSnackbar.show(
                                       title: 'Error',
-                                      message:
-                                          'Por favor, rellene todos los campos requeridos',
+                                      message: 'Por favor, rellene todos los campos requeridos',
                                       isError: true,
                                     );
                                     return;
                                   }
                                   //este es el id del animal
-                                  controller.updateField(
-                                      'pet_id',
-                                      homeController.selectedProfile.value!.id
-                                          .toString());
+                                  controller.updateField('pet_id', homeController.selectedProfile.value!.id.toString());
                                   isEdit
                                       ? controller.editPetActivity2(
                                           "${controller.activitiesOne.value!.id}",
-                                          File(
-                                              controller.diario['image'] ?? ''),
+                                          File(controller.diario['image'] ?? ''),
                                         )
-                                      : controller.addPetActivity(File(
-                                          controller.diario['image'] ?? ''));
+                                      : controller.addPetActivity(File(controller.diario['image'] ?? ''));
                                 },
                               );
                             }),

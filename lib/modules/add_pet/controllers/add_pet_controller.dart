@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/models/brear_model.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart'; // Asegúrate de importar tu servicio
 
@@ -67,8 +67,7 @@ class AddPetController extends GetxController {
     );
     if (picked != null && picked != petBirthDate.value) {
       petBirthDate.value = picked;
-      petBirthDateController.text =
-          petBirthDate.value.toLocal().toString().split(' ')[0];
+      petBirthDateController.text = petBirthDate.value.toLocal().toString().split(' ')[0];
     }
   }
 
@@ -81,7 +80,7 @@ class AddPetController extends GetxController {
       petWeightUnit.value = 'Kg';
     }
   }
-  
+
   void submitForm(GlobalKey<FormState> formKey) async {
     if (formKey.currentState?.validate() ?? false) {
       isLoading(true);
@@ -110,22 +109,10 @@ class AddPetController extends GetxController {
 
         if (newPet != null) {
           final homeController = Get.find<HomeController>();
+          final notificationController = Get.find<NotificationController>();
           homeController.profiles.add(newPet);
           homeController.profiles.refresh();
-
-          Get.dialog(
-            //pisa papel
-            CustomAlertDialog(
-              icon: Icons.check_circle_outline,
-              title: 'Mascota creada',
-              description: 'La mascota ha sido creada exitosamente.',
-              primaryButtonText: 'Continuar',
-              onPrimaryButtonPressed: () {
-                Get.back();
-              },
-            ),
-            barrierDismissible: false,
-          );
+          await notificationController.fetchNotifications();
         } else {
           throw Exception('Error al crear la mascota');
         }
