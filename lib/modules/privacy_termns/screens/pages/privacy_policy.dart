@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
-import 'package:pawlly/components/titulo.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/generated/config.dart';
 import 'package:pawlly/main.dart';
-import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/modules/privacy_termns/screens/pages/terms_conditions.dart';
+import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PrivacyPolicy extends StatelessWidget {
   const PrivacyPolicy({super.key});
@@ -24,21 +24,13 @@ class PrivacyPolicy extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text(
-                locale.value.privacyPolicy,
-                style: Styles.joinTitle,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                child: ButtonDefaultWidget(
-                  title: locale.value.privacyPolicy,
-                  callback: () {
-                    // TermsConditions();
-                  },
-                  defaultColor: const Color.fromARGB(255, 252, 146, 20),
+              GestureDetector(
+                onTap: _launchTermsUrl,
+                behavior: HitTestBehavior.translucent, // para asegurar que el toque funcione
+                child: Text(
+                  locale.value.privacyPolicy,
+                  style: Styles.joinTitle, // sin subrayado ni color azul
+                  textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(
@@ -47,8 +39,7 @@ class PrivacyPolicy extends StatelessWidget {
               Container(
                 child: const Divider(
                   thickness: 0.5, // Make the line thicker
-                  color: Color.fromARGB(
-                      255, 182, 164, 137), // Change the line color
+                  color: Color.fromARGB(255, 182, 164, 137), // Change the line color
                 ),
               ),
               Column(
@@ -84,8 +75,7 @@ class PrivacyPolicy extends StatelessWidget {
                   ),
                   const NumTitle(
                     Title: '6. Sus Derechos',
-                    Descripcion:
-                        'Usted tiene derecho a acceder, corregir o eliminar su información personal que tenemos en archivo.',
+                    Descripcion: 'Usted tiene derecho a acceder, corregir o eliminar su información personal que tenemos en archivo.',
                   ),
                   const NumTitle(
                     Title: '7. Cambios a las Políticas de Privacidad',
@@ -115,6 +105,15 @@ class PrivacyPolicy extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _launchTermsUrl() async {
+    final url = Uri.parse('https://www.myfidoapp.com/privacidad');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication); // abre en el navegador externo
+    } else {
+      throw 'No se pudo abrir la URL: $url';
+    }
   }
 }
 

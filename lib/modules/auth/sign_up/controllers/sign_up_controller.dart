@@ -47,12 +47,16 @@ class SignUpController extends GetxController {
       final value = await AuthServiceApis.createUser(request: req);
       toast(value.message.toString(), print: true);
 
+      var message = mapUserType(userTypeCont.text) != 'user'
+          ? '¡Felicidades! Tu cuenta está pediente de aprobación'
+          : '¡Felicidades! Tu cuenta ha sido creada.';
+
       // Mostrar el diálogo de éxito con dos botones
       Get.dialog(
         CustomAlertDialog(
           icon: Icons.check_circle_outline,
           title: locale.value.actionPerformedSuccessfully,
-          description: "¡Felicidades! Tu cuenta ha sido creada.",
+          description: message,
           primaryButtonText: "Continuar",
           onPrimaryButtonPressed: () {
             // Navegar a la pantalla de inicio de sesión sin iniciar sesión automáticamente

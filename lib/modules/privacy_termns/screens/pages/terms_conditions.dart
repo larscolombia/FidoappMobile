@@ -1,15 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
-import 'package:pawlly/components/titulo.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/generated/config.dart';
 import 'package:pawlly/main.dart';
-import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/modules/privacy_termns/screens/pages/privacy_policy.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TermsConditions extends StatelessWidget {
   const TermsConditions({super.key});
@@ -26,21 +22,13 @@ class TermsConditions extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Text(
-                locale.value.termsAndConditionsTitle,
-                style: Styles.joinTitle,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                child: ButtonDefaultWidget(
-                  title: locale.value.termsAndConditionsTitle,
-                  callback: () {
-                    // PrivacyPolicy();
-                  },
-                  defaultColor: const Color.fromARGB(255, 252, 146, 20),
+              GestureDetector(
+                onTap: _launchTermsUrl,
+                behavior: HitTestBehavior.translucent, // para asegurar que el toque funcione
+                child: Text(
+                  locale.value.termsAndConditionsTitle,
+                  style: Styles.joinTitle, // sin subrayado ni color azul
+                  textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(
@@ -49,8 +37,7 @@ class TermsConditions extends StatelessWidget {
               Container(
                 child: const Divider(
                   thickness: 0.5, // Make the line thicker
-                  color: Color.fromARGB(
-                      255, 182, 164, 137), // Change the line color
+                  color: Color.fromARGB(255, 182, 164, 137), // Change the line color
                 ),
               ),
               const NumTitle(
@@ -99,6 +86,15 @@ class TermsConditions extends StatelessWidget {
       ),
     );
   }
+
+  void _launchTermsUrl() async {
+    final url = Uri.parse('https://www.myfidoapp.com/privacidad');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication); // abre en el navegador externo
+    } else {
+      throw 'No se pudo abrir la URL: $url';
+    }
+  }
 }
 
 class NumTitle extends StatelessWidget {
@@ -116,11 +112,7 @@ class NumTitle extends StatelessWidget {
         child: Text(
           Title,
           textAlign: TextAlign.start,
-          style: const TextStyle(
-              fontFamily: 'Lato',
-              color: Color.fromRGBO(83, 82, 81, 1),
-              fontSize: 14.00,
-              fontWeight: FontWeight.w800),
+          style: const TextStyle(fontFamily: 'Lato', color: Color.fromRGBO(83, 82, 81, 1), fontSize: 14.00, fontWeight: FontWeight.w800),
         ),
       ),
       SizedBox(
