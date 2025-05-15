@@ -1,25 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
-import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/components/avatar_comentario.dart';
 import 'package:pawlly/modules/components/baner_comentarios.dart';
-import 'package:pawlly/modules/components/boton_compartir.dart';
-import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
-import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
-import 'package:pawlly/modules/home/screens/explore/show/video_player.dart';
+import 'package:pawlly/modules/home/screens/explore/show/youtube_video_player.dart';
 import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
-import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
-import 'package:pawlly/services/auth_service_apis.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:http/http.dart' as http;
 
 // CursoVideo
 class CursoVideo extends StatefulWidget {
@@ -66,8 +55,7 @@ class _CursoVideoState extends State<CursoVideo> {
       _commentController.updateField('blog_id', widget.cursoId);
     } else if (widget.tipovideo == "video") {
       _commentController.fetchComments(widget.cursoId, "video");
-      _commentController.updateField(
-          'course_platform_video_id', widget.cursoId);
+      _commentController.updateField('course_platform_video_id', widget.cursoId);
     }
     _commentController.visualizaciones(widget.cursoId);
   }
@@ -97,15 +85,14 @@ class _CursoVideoState extends State<CursoVideo> {
               height: width,
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(color: Colors.white),
-              child: VideoPlayerScreen(
+              child: YouTubeVideoPlayer(
                 videoUrl: widget.videoUrl,
               ),
             ),
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Helper.paddingDefault),
+                  padding: const EdgeInsets.symmetric(horizontal: Helper.paddingDefault),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -250,46 +237,34 @@ class _CursoVideoState extends State<CursoVideo> {
                         return Column(
                           children: [
                             Estadisticas(
-                              comentarios:
-                                  '${_commentController.comments.length} ',
-                              calificacion:
-                                  "${_commentController.calculateAverageRating().toStringAsFixed(2)}",
+                              comentarios: '${_commentController.comments.length} ',
+                              calificacion: "${_commentController.calculateAverageRating().toStringAsFixed(2)}",
                               avatars: _commentController.getTopAvatars(),
                             ),
                             SizedBox(height: margen),
                             BanerComentarios(
                               eventTextChanged: (value) {
-                                _commentController.updateField(
-                                    'review_msg', value);
+                                _commentController.updateField('review_msg', value);
                               },
                               titulo: 'Tu experiencia',
                               onRatingUpdate: (rating) {
-                                _commentController.updateField(
-                                    'rating', rating);
+                                _commentController.updateField('rating', rating);
                               },
                               onEvento: () {
-                                _commentController.updateField(
-                                    'course_platform_video_id', widget.cursoId);
+                                _commentController.updateField('course_platform_video_id', widget.cursoId);
                                 if (widget.tipovideo == 'video') {
-                                  _commentController.postComment(
-                                      'video', context);
+                                  _commentController.postComment('video', context);
                                 } else {
-                                  _commentController.postComment(
-                                      'blog', context);
+                                  _commentController.postComment('blog', context);
                                 }
 
                                 setState(() {
                                   if (widget.tipovideo == "blogs") {
-                                    _commentController.fetchComments(
-                                        widget.cursoId, "blog");
-                                    _commentController.updateField(
-                                        'blog_id', widget.cursoId);
+                                    _commentController.fetchComments(widget.cursoId, "blog");
+                                    _commentController.updateField('blog_id', widget.cursoId);
                                   } else if (widget.tipovideo == "video") {
-                                    _commentController.fetchComments(
-                                        widget.cursoId, "video");
-                                    _commentController.updateField(
-                                        'course_platform_video_id',
-                                        widget.cursoId);
+                                    _commentController.fetchComments(widget.cursoId, "video");
+                                    _commentController.updateField('course_platform_video_id', widget.cursoId);
                                   }
                                   _refreshComments();
                                 });

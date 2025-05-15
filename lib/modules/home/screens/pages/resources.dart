@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
-import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_controller.dart';
 import 'package:pawlly/modules/integracion/controller/recursos_select.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -44,7 +42,7 @@ class Resources extends StatelessWidget {
           }
           if (controller.selectedIndex.value == 6) {
             return BarraBack(
-              titulo: 'Blogs y Vídeos',
+              titulo: 'Blogs y Videos',
               callback: () {
                 controller.updateIndex(0);
               },
@@ -80,17 +78,11 @@ class Resources extends StatelessWidget {
                 }, // Acción al tocar el cuadro
                 child: Container(
                   alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal:
-                          12), // Padding para ajustar al ancho del texto
-                  margin: const EdgeInsets.only(
-                      right:
-                          10), // Espacio entre elementos y margen hacia abajo
+                  padding: const EdgeInsets.symmetric(horizontal: 12), // Padding para ajustar al ancho del texto
+                  margin: const EdgeInsets.only(right: 10), // Espacio entre elementos y margen hacia abajo
 
                   decoration: BoxDecoration(
-                    color: controller.selectedIndex == resources[index]['id']!
-                        ? Styles.fiveColor
-                        : Colors.transparent,
+                    color: controller.selectedIndex == resources[index]['id']! ? Styles.fiveColor : Colors.transparent,
                     borderRadius: BorderRadius.circular(19),
                     border: Border.all(
                       color: Styles.greyTextColor.withOpacity(0.2),
@@ -98,20 +90,17 @@ class Resources extends StatelessWidget {
                     ),
                   ),
                   child: Row(
-                    mainAxisSize:
-                        MainAxisSize.min, // Ajusta al tamaño mínimo necesario
+                    mainAxisSize: MainAxisSize.min, // Ajusta al tamaño mínimo necesario
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Ícono antes del texto
                       Icon(
                         resources[index]['icon'], // Usar el IconData
                         size: 24,
-                        color:
-                            Color(0xFFFC9214), // Puedes personalizar el color
+                        color: Color(0xFFFC9214), // Puedes personalizar el color
                       ),
 
-                      const SizedBox(
-                          width: 5), // Espacio entre el ícono y el texto
+                      const SizedBox(width: 5), // Espacio entre el ícono y el texto
                       Text(
                         resources[index]['label']!,
                         style: const TextStyle(

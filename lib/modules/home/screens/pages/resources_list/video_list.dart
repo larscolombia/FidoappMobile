@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
@@ -12,6 +11,10 @@ class VideoList extends StatelessWidget {
   VideoList({super.key});
   @override
   Widget build(BuildContext context) {
+    // Ejecutar fetchCourses al abrir esta vista
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      blogController.fetchBlogPosts(); // Siempre se ejecuta al entrar a la vista
+    });
     return Center(
       child: Column(
         children: [
@@ -87,8 +90,7 @@ class VideoList extends StatelessWidget {
                                       ? Image.network(
                                           video.blogImage,
                                           fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
+                                          errorBuilder: (context, error, stackTrace) {
                                             return Image.asset(
                                               'assets/images/default_video.png',
                                               fit: BoxFit.cover,
@@ -117,8 +119,7 @@ class VideoList extends StatelessWidget {
                                 bottom: 8,
                                 right: 8,
                                 child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 4, horizontal: 6),
+                                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
                                   decoration: BoxDecoration(
                                     color: Colors.black.withOpacity(0.7),
                                     borderRadius: BorderRadius.circular(5),
