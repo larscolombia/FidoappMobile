@@ -4,16 +4,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pawlly/models/login_response_model.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/auth/model/app_configuration_res.dart';
 import 'package:pawlly/modules/auth/model/change_password_res.dart';
 import 'package:pawlly/modules/auth/model/employee_model.dart';
-import 'package:pawlly/modules/auth/model/login_response_model.dart';
 import 'package:pawlly/modules/auth/model/notification_model.dart';
 
 import '../../../models/base_response_model.dart';
@@ -31,10 +28,7 @@ class AuthServiceApis extends GetxController {
   static const String KEY_API_TOKEN = 'apiToken';
   RxString deviceToken = 'null'.obs;
   static Future<RegUserResp> createUser({required Map request}) async {
-    return RegUserResp.fromJson(await handleResponse(await buildHttpResponse(
-        APIEndPoints.register,
-        request: request,
-        method: HttpMethodType.POST)));
+    return RegUserResp.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.register, request: request, method: HttpMethodType.POST)));
   }
 
   static Future<void> saveToken(String token) async {
@@ -81,8 +75,7 @@ class AuthServiceApis extends GetxController {
       await prefs.setString(KEY_API_TOKEN, response['data']['api_token']);
 
       // Actualizar el estado en memoria
-      currentUser.value =
-          LoginResponse.fromJson(Map<String, dynamic>.from(response));
+      currentUser.value = LoginResponse.fromJson(Map<String, dynamic>.from(response));
       dataCurrentUser = UserData.fromJson(response['data']);
 
       // Marcar como logged in
@@ -92,14 +85,34 @@ class AuthServiceApis extends GetxController {
       // Guardar credenciales si existe remember me
       if (prefs.getBool(SharedPreferenceConst.IS_REMEMBER_ME) == true) {
         if (request.containsKey('email')) {
-          await prefs.setString(
-              SharedPreferenceConst.USER_EMAIL, request['email']);
+          await prefs.setString(SharedPreferenceConst.USER_EMAIL, request['email']);
         }
         if (request.containsKey('password')) {
-          await prefs.setString(
-              SharedPreferenceConst.USER_PASSWORD, request['password']);
+          await prefs.setString(SharedPreferenceConst.USER_PASSWORD, request['password']);
         }
       }
+    } catch (e) {
+      debugPrint('Error saving login data: $e');
+    }
+  }
+
+  static Future<void> saveUpdateProfileData(Map response) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      response['data']['api_token'] = AuthServiceApis.dataCurrentUser.apiToken;
+
+      // Guardar los datos completos del usuario
+      await prefs.setString(KEY_USER_DATA, json.encode(response));
+      await prefs.setString(KEY_API_TOKEN, response['data']['api_token']);
+
+      // Actualizar el estado en memoria
+      currentUser.value = LoginResponse.fromJson(Map<String, dynamic>.from(response));
+
+      dataCurrentUser = UserData.fromJson(response['data']);
+
+      // Marcar como logged in
+      await prefs.setBool(SharedPreferenceConst.IS_LOGGED_IN, true);
+      isLoggedIn(true);
     } catch (e) {
       debugPrint('Error saving login data: $e');
     }
@@ -110,8 +123,7 @@ class AuthServiceApis extends GetxController {
       final prefs = await SharedPreferences.getInstance();
       final userDataStr = prefs.getString(KEY_USER_DATA);
       final apiToken = prefs.getString(KEY_API_TOKEN);
-      final isLogged =
-          prefs.getBool(SharedPreferenceConst.IS_LOGGED_IN) ?? false;
+      final isLogged = prefs.getBool(SharedPreferenceConst.IS_LOGGED_IN) ?? false;
 
       if (userDataStr != null && apiToken != null && isLogged) {
         final userDataMap = json.decode(userDataStr);
@@ -136,14 +148,9 @@ class AuthServiceApis extends GetxController {
       final prefs = await SharedPreferences.getInstance();
 
       // Preservar remember me y credenciales si está activo
-      final isRememberMe =
-          prefs.getBool(SharedPreferenceConst.IS_REMEMBER_ME) ?? false;
-      final savedEmail = isRememberMe
-          ? prefs.getString(SharedPreferenceConst.USER_EMAIL)
-          : null;
-      final savedPassword = isRememberMe
-          ? prefs.getString(SharedPreferenceConst.USER_PASSWORD)
-          : null;
+      final isRememberMe = prefs.getBool(SharedPreferenceConst.IS_REMEMBER_ME) ?? false;
+      final savedEmail = isRememberMe ? prefs.getString(SharedPreferenceConst.USER_EMAIL) : null;
+      final savedPassword = isRememberMe ? prefs.getString(SharedPreferenceConst.USER_PASSWORD) : null;
 
       // Limpiar todos los datos
       await prefs.clear();
@@ -155,8 +162,7 @@ class AuthServiceApis extends GetxController {
           await prefs.setString(SharedPreferenceConst.USER_EMAIL, savedEmail);
         }
         if (savedPassword != null) {
-          await prefs.setString(
-              SharedPreferenceConst.USER_PASSWORD, savedPassword);
+          await prefs.setString(SharedPreferenceConst.USER_PASSWORD, savedPassword);
         }
       }
 
@@ -175,17 +181,13 @@ class AuthServiceApis extends GetxController {
   }
 
   static Future<ChangePassRes> changePasswordAPI({required Map request}) async {
-    return ChangePassRes.fromJson(await handleResponse(await buildHttpResponse(
-        APIEndPoints.changePassword,
-        request: request,
-        method: HttpMethodType.POST)));
+    return ChangePassRes.fromJson(
+        await handleResponse(await buildHttpResponse(APIEndPoints.changePassword, request: request, method: HttpMethodType.POST)));
   }
 
-  static Future<BaseResponseModel> forgotPasswordAPI(
-      {required Map request}) async {
-    return BaseResponseModel.fromJson(await handleResponse(
-        await buildHttpResponse(APIEndPoints.forgotPassword,
-            request: request, method: HttpMethodType.POST)));
+  static Future<BaseResponseModel> forgotPasswordAPI({required Map request}) async {
+    return BaseResponseModel.fromJson(
+        await handleResponse(await buildHttpResponse(APIEndPoints.forgotPassword, request: request, method: HttpMethodType.POST)));
   }
 
   static Future<List<NotificationData>> getNotificationDetail({
@@ -195,14 +197,11 @@ class AuthServiceApis extends GetxController {
     Function(bool)? lastPageCallBack,
   }) async {
     if (isLoggedIn.value) {
-      final notificationRes = NotificationRes.fromJson(await handleResponse(
-          await buildHttpResponse(
-              "${APIEndPoints.getNotification}?per_page=$perPage&page=$page",
-              method: HttpMethodType.GET)));
+      final notificationRes = NotificationRes.fromJson(
+          await handleResponse(await buildHttpResponse("${APIEndPoints.getNotification}?per_page=$perPage&page=$page", method: HttpMethodType.GET)));
       if (page == 1) notifications.clear();
       notifications.addAll(notificationRes.notificationData);
-      lastPageCallBack
-          ?.call(notificationRes.notificationData.length != perPage);
+      lastPageCallBack?.call(notificationRes.notificationData.length != perPage);
       return notifications;
     } else {
       return [];
@@ -210,17 +209,12 @@ class AuthServiceApis extends GetxController {
   }
 
   static Future<NotificationData> clearAllNotification() async {
-    return NotificationData.fromJson(await handleResponse(
-        await buildHttpResponse(APIEndPoints.clearAllNotification,
-            method: HttpMethodType.GET)));
+    return NotificationData.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.clearAllNotification, method: HttpMethodType.GET)));
   }
 
-  static Future<NotificationData> removeNotification(
-      {required String notificationId}) async {
-    return NotificationData.fromJson(await handleResponse(
-        await buildHttpResponse(
-            '${APIEndPoints.removeNotification}?id=$notificationId',
-            method: HttpMethodType.GET)));
+  static Future<NotificationData> removeNotification({required String notificationId}) async {
+    return NotificationData.fromJson(
+        await handleResponse(await buildHttpResponse('${APIEndPoints.removeNotification}?id=$notificationId', method: HttpMethodType.GET)));
   }
 
   static Future<BaseResponseModel> logoutApi() async {
@@ -256,24 +250,20 @@ class AuthServiceApis extends GetxController {
   }
 
   static Future<BaseResponseModel> deleteAccountCompletely() async {
-    return BaseResponseModel.fromJson(await handleResponse(
-        await buildHttpResponse(APIEndPoints.deleteUserAccount,
-            request: {}, method: HttpMethodType.POST)));
+    return BaseResponseModel.fromJson(
+        await handleResponse(await buildHttpResponse(APIEndPoints.deleteUserAccount, request: {}, method: HttpMethodType.POST)));
   }
 
   static Future<ConfigurationResponse> getAppConfigurations() async {
-    return ConfigurationResponse.fromJson(await handleResponse(
-        await buildHttpResponse(
-            '${APIEndPoints.appConfiguration}?is_authenticated=${(getValueFromLocal(SharedPreferenceConst.IS_LOGGED_IN) == true).getIntBool()}',
-            request: {},
-            method: HttpMethodType.GET)));
+    return ConfigurationResponse.fromJson(await handleResponse(await buildHttpResponse(
+        '${APIEndPoints.appConfiguration}?is_authenticated=${(getValueFromLocal(SharedPreferenceConst.IS_LOGGED_IN) == true).getIntBool()}',
+        request: {},
+        method: HttpMethodType.GET)));
   }
 
   static Future<GetUserProfileResponse> viewProfile({int? id}) async {
-    var res = GetUserProfileResponse.fromJson(await handleResponse(
-        await buildHttpResponse(
-            '${APIEndPoints.userDetail}?id=${id ?? loginUserData.value.id}',
-            method: HttpMethodType.GET)));
+    var res = GetUserProfileResponse.fromJson(
+        await handleResponse(await buildHttpResponse('${APIEndPoints.userDetail}?id=${id ?? loginUserData.value.id}', method: HttpMethodType.GET)));
     return res;
   }
 
@@ -287,8 +277,7 @@ class AuthServiceApis extends GetxController {
     Function(dynamic)? onSuccess,
   }) async {
     if (isLoggedIn.value) {
-      MultipartRequest multiPartRequest =
-          await getMultiPartRequest(APIEndPoints.updateProfile);
+      MultipartRequest multiPartRequest = await getMultiPartRequest(APIEndPoints.updateProfile);
       if (firstName.isNotEmpty) {
         multiPartRequest.fields[UserKeys.firstName] = firstName;
       }
@@ -304,8 +293,7 @@ class AuthServiceApis extends GetxController {
       }
 
       if (imageFile != null) {
-        multiPartRequest.files.add(await MultipartFile.fromPath(
-            UserKeys.profileImage, imageFile.path));
+        multiPartRequest.files.add(await MultipartFile.fromPath(UserKeys.profileImage, imageFile.path));
       }
 
       multiPartRequest.headers.addAll(buildHeaderTokens());

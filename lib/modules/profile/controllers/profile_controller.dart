@@ -1,20 +1,15 @@
 import 'dart:convert';
 
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/user_data_model.dart';
-import 'package:pawlly/modules/auth/model/login_response_model.dart';
-import 'package:pawlly/modules/components/style.dart';
-import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
-import 'dart:io';
 import 'package:pawlly/services/auth_service_apis.dart';
-import 'package:pawlly/components/custom_snackbar.dart';
-
-import 'package:http/http.dart' as http;
 
 import '../../auth/sign_in/screens/signin_screen.dart';
 
@@ -25,16 +20,14 @@ class ProfileController extends GetxController {
   var isEditing = false.obs;
   var nameController = TextEditingController().obs;
   var lastNameController = TextEditingController().obs;
-  var passwordController = TextEditingController(text: '')
-      .obs; // Por seguridad, normalmente no se pre-llenaría
+  var passwordController = TextEditingController(text: '').obs; // Por seguridad, normalmente no se pre-llenaría
   var userGenCont = TextEditingController().obs;
   var userTypeCont = TextEditingController().obs;
   var emailController = TextEditingController().obs;
   var sexoValue = ''.obs;
   var duenioValue = ''.obs;
   var profileImagePath = ''.obs;
-  var isPickerActive =
-      false.obs; // Añadir una bandera para el estado activo del picker
+  var isPickerActive = false.obs; // Añadir una bandera para el estado activo del picker
   var userprofile = UserData().obs;
   final ImagePicker _picker = ImagePicker();
 
@@ -42,8 +35,7 @@ class ProfileController extends GetxController {
   void onInit() {
     super.onInit();
     // Cargar los datos del usuario desde AuthServiceApis al iniciar el controlador
-    currentUser = AuthServiceApis
-        .dataCurrentUser; // Asegúrate de que el servicio esté correctamente configurado
+    currentUser = AuthServiceApis.dataCurrentUser; // Asegúrate de que el servicio esté correctamente configurado
     dataUser();
     // Inicializar los controladores con los datos del usuario actual
     nameController.value.text = currentUser.firstName;
@@ -51,16 +43,11 @@ class ProfileController extends GetxController {
     emailController.value.text = currentUser.email;
     userGenCont.value.text = currentUser.gender;
     userTypeCont.value.text = currentUser.userType;
-    profileImagePath.value =
-        currentUser.profileImage; // Imagen de perfil del usuario
+    profileImagePath.value = currentUser.profileImage; // Imagen de perfil del usuario
 
     // Configura los valores iniciales de los campos sexo y dueño
-    sexoValue.value = currentUser.gender.isNotEmpty
-        ? currentUser.gender
-        : 'Femenino'; // Valor predeterminado si no está definido
-    duenioValue.value = currentUser.userType.isNotEmpty
-        ? currentUser.userType
-        : 'Sí'; // Ajusta según el valor de userType o pon un valor por defecto
+    sexoValue.value = currentUser.gender.isNotEmpty ? currentUser.gender : 'Femenino'; // Valor predeterminado si no está definido
+    duenioValue.value = currentUser.userType.isNotEmpty ? currentUser.userType : 'Sí'; // Ajusta según el valor de userType o pon un valor por defecto
   }
 
   void toggleEditing() {
@@ -151,9 +138,7 @@ class ProfileController extends GetxController {
 
           // Serializar como un array JSON limpio
           fields[key] = jsonEncode(cleanTags); // Generará ["hhhj", "hjj"]
-        } else if (value is String &&
-            value.isNotEmpty &&
-            key != 'profile_image') {
+        } else if (value is String && value.isNotEmpty && key != 'profile_image') {
           // Añadir otros campos al request, excluyendo 'profile_image'
           fields[key] = value;
         }
@@ -165,9 +150,7 @@ class ProfileController extends GetxController {
       });
 
       // Agregar la imagen si está disponible
-      if (user['profile_image'] != null &&
-          user['profile_image'] is String &&
-          (user['profile_image'] as String).isNotEmpty) {
+      if (user['profile_image'] != null && user['profile_image'] is String && (user['profile_image'] as String).isNotEmpty) {
         request.files.add(await http.MultipartFile.fromPath(
           'profile_image',
           user['profile_image'] as String,
@@ -183,7 +166,7 @@ class ProfileController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = json.decode(responseBody);
-
+        await AuthServiceApis.saveUpdateProfileData(data);
         Get.dialog(
           //pisa papel
           CustomAlertDialog(
@@ -192,8 +175,7 @@ class ProfileController extends GetxController {
             description: '',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
-              profileController
-                  .fetchUserData("${AuthServiceApis.dataCurrentUser.id}");
+              profileController.fetchUserData("${AuthServiceApis.dataCurrentUser.id}");
               currentUser.profileImage = data['data']['profile_image'];
               //userGenCont.value.text = data['data']['gender';
               //   currentUser.gender = data['data']['gender'].toLowerCase();
@@ -208,8 +190,7 @@ class ProfileController extends GetxController {
         print('Error al actualizar el perfil: $responseBody');
         CustomSnackbar.show(
           title: 'Error',
-          message:
-              'No se pudo actualizar el perfil. Por favor, inténtalo nuevamente.',
+          message: 'No se pudo actualizar el perfil. Por favor, inténtalo nuevamente.',
           isError: true,
         );
       }
@@ -227,13 +208,11 @@ class ProfileController extends GetxController {
 
   Future<void> fetchUserData(String id) async {
     try {
-      print(
-          'Perfil de usuario: ${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=${id}')}');
+      print('Perfil de usuario: ${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=${id}')}');
       final response = await http.get(
         Uri.parse('${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=${id}')}'),
         headers: {
-          'Authorization':
-              'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Reemplaza con tu lógica de token.
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Reemplaza con tu lógica de token.
           'Content-Type': 'application/json',
         },
       );
@@ -241,8 +220,7 @@ class ProfileController extends GetxController {
       print('response profile ${response.statusCode}');
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body)['data'];
-        userprofile.value =
-            UserData.fromJson(data); // Actualiza el modelo con la respuesta.
+        userprofile.value = UserData.fromJson(data); // Actualiza el modelo con la respuesta.
         print('userdata ${userprofile}');
       } else {
         CustomSnackbar.show(
@@ -291,8 +269,7 @@ class ProfileController extends GetxController {
         print('Error al eliminar la cuenta: ${response.body}');
         CustomSnackbar.show(
           title: 'Error',
-          message:
-              'No se pudo eliminar la cuenta. Por favor, inténtalo nuevamente.',
+          message: 'No se pudo eliminar la cuenta. Por favor, inténtalo nuevamente.',
           isError: true,
         );
       }
@@ -312,8 +289,7 @@ class ProfileController extends GetxController {
     Get.dialog(
       CustomAlertDialog(
         title: '¿Estás seguro?',
-        description:
-            'Esta acción eliminará permanentemente tu cuenta y todos tus datos. No podrás recuperarlos después.',
+        description: 'Esta acción eliminará permanentemente tu cuenta y todos tus datos. No podrás recuperarlos después.',
         primaryButtonText: 'Eliminar',
         secondaryButtonText: 'Cancelar',
         onPrimaryButtonPressed: () {
