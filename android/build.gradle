@@ -35,8 +35,17 @@ subprojects {
             }
         }
 
-        if (it.name == "flutter_inappwebview_android") {
-            it.android.buildTypes.release.minifyEnabled = false
+        // Deshabilitar minificación para los plugins problemáticos
+        if (project.name == "flutter_inappwebview" || project.name == "flutter_inappwebview_android") {
+            project.android {
+                buildTypes {
+                    release {
+                        minifyEnabled false
+                        shrinkResources false
+                        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), "${project.rootDir}/app/proguard-rules.pro"
+                    }
+                }
+            }
         }
     }
 }
