@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/models/login_response_model.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
@@ -13,7 +14,6 @@ import 'package:pawlly/utils/common_base.dart';
 import 'package:pawlly/utils/constants.dart';
 import 'package:pawlly/utils/local_storage.dart';
 import 'package:pawlly/utils/social_logins.dart';
-import 'package:pawlly/components/custom_snackbar.dart';
 
 import '../../../welcome/screens/welcome_screen.dart';
 
@@ -125,7 +125,7 @@ class SignInController extends GetxController {
           barrierDismissible:
               false, // No permite cerrar al tocar fuera del diálogo
           builder: (context) => AlertDialog(
-            title: Text('Seleccione su rol'),
+            title: const Text('Seleccione su rol'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -157,12 +157,12 @@ class SignInController extends GetxController {
               TextButton(
                 onPressed: () =>
                     Navigator.of(context).pop(null), // Devolver null si cancela
-                child: Text('Cancelar'),
+                child: const Text('Cancelar'),
               ),
               TextButton(
                 onPressed: () =>
                     Navigator.of(context).pop(LoginTypeConst.LOGIN_TYPE_USER),
-                child: Text('Aceptar'),
+                child: const Text('Aceptar'),
               ),
             ],
           ),
@@ -186,9 +186,7 @@ class SignInController extends GetxController {
         UserKeys.firstName: value.firstName,
         UserKeys.lastName: value.lastName,
         UserKeys.playerId: playerId.value,
-        UserKeys.userType: value.userType ??
-            LoginTypeConst
-                .LOGIN_TYPE_USER, // Usar rol predeterminado si no es nuevo usuario
+        UserKeys.userType: value.userType ?? LoginTypeConst.LOGIN_TYPE_USER,
         UserKeys.username: value.userName,
         UserKeys.profileImage: value.profileImage,
         UserKeys.loginType: LoginTypeConst.LOGIN_TYPE_GOOGLE,
@@ -206,7 +204,8 @@ class SignInController extends GetxController {
       handleLoginResponse(loginResponse: loginResponse, isSocialLogin: true);
     } catch (e) {
       log('Error durante signInWithGoogle: $e');
-      toast(e.toString(), print: true);
+      // toast(e.toString(), print: true);
+      toast('No fue posible acceder a través de Google.', print: true);
     } finally {
       isLoading(false);
     }
@@ -271,7 +270,7 @@ class SignInController extends GetxController {
     setValueToLocal(SharedPreferenceConst.IS_LOGGED_IN, true);
 
     // Navegar a HomeScreen
-    Get.offAll(() => HomeScreen(), binding: BindingsBuilder(() {
+    Get.offAll(() => const HomeScreen(), binding: BindingsBuilder(() {
       Get.put(HomeController());
     }));
   }

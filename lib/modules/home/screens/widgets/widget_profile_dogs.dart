@@ -15,10 +15,8 @@ import 'package:pawlly/styles/styles.dart';
 
 class ProfileModal extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
-  final HistorialClinicoController medicalHistoryController =
-      Get.put(HistorialClinicoController());
-  final PetActivityController activityController =
-      Get.put(PetActivityController());
+  final HistorialClinicoController medicalHistoryController = Get.put(HistorialClinicoController());
+  final PetActivityController activityController = Get.put(PetActivityController());
 
   ProfileModal({super.key});
   @override
@@ -28,8 +26,7 @@ class ProfileModal extends StatelessWidget {
     double minWidth = 100; // Define un mínimo
     double maxWidth = 300; // Define un máximo
 
-    double width =
-        (MediaQuery.sizeOf(context).width * 0.33).clamp(minWidth, maxWidth);
+    double width = (MediaQuery.sizeOf(context).width * 0.33).clamp(minWidth, maxWidth);
     double height = width / aspectRatio;
 
     return FractionallySizedBox(
@@ -69,8 +66,7 @@ class ProfileModal extends StatelessWidget {
                           'assets/icons/svg/x.svg',
                           width: 24, // Ajusta el tamaño si es necesario
                           height: 24,
-                          colorFilter: const ColorFilter.mode(Color(0XFFBEBEBE),
-                              BlendMode.srcIn), // Aplica color rojo
+                          colorFilter: const ColorFilter.mode(Color(0XFFBEBEBE), BlendMode.srcIn), // Aplica color rojo
                         ),
                       ),
                     ],
@@ -144,18 +140,23 @@ class ProfileModal extends StatelessWidget {
                       itemCount: controller.profiles.length,
                       itemBuilder: (context, index) {
                         var profile = controller.profiles[index];
-                        var isSelected =
-                            controller.selectedProfile.value == profile;
+                        var isSelected = controller.selectedProfile.value == profile;
 
                         return GestureDetector(
                           onTap: () {
                             // Actualiza el perfil seleccionado
-                            activityController
-                                .fetchPetActivities(profile.id.toString());
+                            activityController.fetchPetActivities(profile.id.toString());
                             controller.updateProfile(profile);
                             Navigator.of(context).pop(); // Cierra el modal
                           },
-                          child: CardProfileDog(isSelected: isSelected, width: width, height: height, profile: profile, controller: controller, medicalHistoryController: medicalHistoryController),
+                          child: CardProfileDog(
+                            isSelected: isSelected,
+                            width: width,
+                            height: height,
+                            profile: profile,
+                            controller: controller,
+                            medicalHistoryController: medicalHistoryController,
+                          ),
                         );
                       },
                     ),

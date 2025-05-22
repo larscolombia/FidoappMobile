@@ -36,12 +36,10 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
   });
 
   @override
-  _CustomSelectFormFieldWidgetState createState() =>
-      _CustomSelectFormFieldWidgetState();
+  _CustomSelectFormFieldWidgetState createState() => _CustomSelectFormFieldWidgetState();
 }
 
-class _CustomSelectFormFieldWidgetState
-    extends State<CustomSelectFormFieldWidget> {
+class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidget> {
   String? _selectedValue;
   OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
@@ -49,9 +47,7 @@ class _CustomSelectFormFieldWidgetState
   @override
   void initState() {
     super.initState();
-    _selectedValue = widget.controller?.text.isNotEmpty == true
-        ? widget.controller?.text
-        : null;
+    _selectedValue = widget.controller?.text.isNotEmpty == true ? widget.controller?.text : null;
 
     if (widget.autovalidateMode == AutovalidateMode.always ||
         widget.autovalidateMode == AutovalidateMode.onUserInteraction) {
@@ -84,8 +80,7 @@ class _CustomSelectFormFieldWidgetState
     String? errorText;
 
     if (widget.autovalidateMode == AutovalidateMode.always ||
-        (widget.autovalidateMode == AutovalidateMode.onUserInteraction &&
-            _selectedValue != null)) {
+        (widget.autovalidateMode == AutovalidateMode.onUserInteraction && _selectedValue != null)) {
       errorText = _validate();
     }
 
@@ -120,7 +115,7 @@ class _CustomSelectFormFieldWidgetState
                 if (isEnabled) {
                   if (_overlayEntry == null) {
                     _overlayEntry = _createOverlayEntry();
-                    Overlay.of(context)?.insert(_overlayEntry!);
+                    Overlay.of(context).insert(_overlayEntry!);
                   } else {
                     _removeOverlay();
                   }
@@ -134,8 +129,7 @@ class _CustomSelectFormFieldWidgetState
                       filled: true,
                       fillColor: hasText || _selectedValue != null
                           ? Colors.white
-                          : widget.filcolorCustom ??
-                              const Color.fromRGBO(252, 186, 103, 1),
+                          : widget.filcolorCustom ?? const Color.fromRGBO(252, 186, 103, 1),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(
@@ -166,26 +160,21 @@ class _CustomSelectFormFieldWidgetState
                       ),
                       prefixIcon: widget.placeholderSvg != null
                           ? Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 20, right: 15),
+                              padding: const EdgeInsets.only(left: 20, right: 15),
                               child: SizedBox(
                                 width: 24,
                                 height: 24,
                                 child: SvgPicture.asset(
                                   widget.placeholderSvg!,
-                                  colorFilter: widget.placeholderSvgColor !=
-                                          null
-                                      ? ColorFilter.mode(
-                                          widget.placeholderSvgColor!,
-                                          BlendMode.srcIn)
+                                  colorFilter: widget.placeholderSvgColor != null
+                                      ? ColorFilter.mode(widget.placeholderSvgColor!, BlendMode.srcIn)
                                       : null, // Si es null, se mantiene el color original del SVG
                                 ),
                               ),
                             )
                           : widget.icon != null
                               ? Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, right: 20),
+                                  padding: const EdgeInsets.only(left: 20, right: 20),
                                   child: Image.asset(
                                     widget.icon!,
                                     width: 20,
@@ -193,8 +182,7 @@ class _CustomSelectFormFieldWidgetState
                                   ),
                                 )
                               : null,
-                      labelText:
-                          _selectedValue != null ? null : widget.placeholder,
+                      labelText: _selectedValue != null ? null : widget.placeholder,
                       labelStyle: TextStyle(
                         color: widget.textColor ?? Colors.black,
                         fontFamily: 'Lato',
@@ -251,58 +239,74 @@ class _CustomSelectFormFieldWidgetState
     var offset = renderBox.localToGlobal(Offset.zero);
 
     return OverlayEntry(
-      builder: (context) => Positioned(
-        left: offset.dx,
-        width: size.width,
-        top: offset.dy + size.height,
-        child: CompositedTransformFollower(
-          link: _layerLink,
-          showWhenUnlinked: false,
-          child: Material(
-            elevation: 4.0,
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.orange), // Bordes naranjas
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: ListView(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                children: widget.items!.map((item) {
-                  return Column(children: [
-                    ListTile(
-                      title: Text(item,
-                          style: const TextStyle(
-                            fontFamily: 'Lato',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFF535251),
-                          )),
-                      selectedColor: Colors.black,
-                      onTap: () {
-                        setState(() {
-                          _selectedValue = item;
-                          widget.controller?.text = item;
-                          _removeOverlay();
-                        });
-
-                        if (widget.onChange != null) {
-                          widget.onChange!(_selectedValue);
-                        }
-                      },
-                    ),
-                    Divider(
-                      height: 0.2,
-                      color: Color(0xFFFCBA67),
-                    )
-                  ]);
-                }).toList(),
+      builder: (context) => Stack(
+        children: [
+          // Detector de clics para cerrar el overlay cuando se hace clic fuera
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: () => _removeOverlay(),
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                color: Colors.transparent,
               ),
             ),
           ),
-        ),
+          // Menú desplegable
+          Positioned(
+            left: offset.dx,
+            width: size.width,
+            top: offset.dy + size.height,
+            bottom: 0,
+            child: CompositedTransformFollower(
+              link: _layerLink,
+              showWhenUnlinked: false,
+              child: Material(
+                elevation: 4.0,
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.orange),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    children: widget.items!.map((item) {
+                      return Column(children: [
+                        ListTile(
+                          title: Text(item,
+                              style: const TextStyle(
+                                fontFamily: 'Lato',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF535251),
+                              )),
+                          selectedColor: Colors.black,
+                          onTap: () {
+                            setState(() {
+                              _selectedValue = item;
+                              widget.controller?.text = item;
+                              _removeOverlay();
+                            });
+
+                            if (widget.onChange != null) {
+                              widget.onChange!(_selectedValue);
+                            }
+                          },
+                        ),
+                        const Divider(
+                          height: 0.2,
+                          color: Color(0xFFFCBA67),
+                        )
+                      ]);
+                    }).toList(),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -42,10 +42,8 @@ Future<void> main() async {
   await AuthServiceApis.loadLoginData();
 
   // Configurar idioma
-  selectedLanguageCode(
-      getValueFromLocal(SELECTED_LANGUAGE_CODE) ?? DEFAULT_LANGUAGE);
-  BaseLanguage temp =
-      await const AppLocalizations().load(Locale(selectedLanguageCode.value));
+  selectedLanguageCode(getValueFromLocal(SELECTED_LANGUAGE_CODE) ?? DEFAULT_LANGUAGE);
+  BaseLanguage temp = await const AppLocalizations().load(Locale(selectedLanguageCode.value));
   locale = temp.obs;
 
   // Manejo de errores global
@@ -79,8 +77,7 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        localeResolutionCallback: (locale, supportedLocales) =>
-            Locale(selectedLanguageCode.value),
+        localeResolutionCallback: (locale, supportedLocales) => Locale(selectedLanguageCode.value),
         fallbackLocale: const Locale(DEFAULT_LANGUAGE),
         locale: Locale(selectedLanguageCode.value),
         title: APP_NAME,

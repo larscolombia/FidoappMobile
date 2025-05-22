@@ -4,7 +4,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class YouTubeVideoPlayer extends StatefulWidget {
   final String videoUrl;
 
-  const YouTubeVideoPlayer({Key? key, required this.videoUrl}) : super(key: key);
+  const YouTubeVideoPlayer({super.key, required this.videoUrl});
 
   @override
   State<YouTubeVideoPlayer> createState() => _YouTubeVideoPlayerState();
@@ -12,16 +12,23 @@ class YouTubeVideoPlayer extends StatefulWidget {
 
 class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
   late YoutubePlayerController _controller;
+  late bool failVideoId = false;
+  late String? videoId;
 
   @override
   void initState() {
-    final videoId = YoutubePlayer.convertUrlToId(widget.videoUrl);
-    if (videoId == null) {
-      throw Exception('❌ URL inválida de YouTube: ${widget.videoUrl}');
-    }
+    videoId = YoutubePlayer.convertUrlToId(widget.videoUrl);
+    
+    failVideoId = videoId == null;
 
+    if (failVideoId) {
+      // Se agrega video placeholder para evitar que el controlador falle.
+      // el video no se mostrará, se usa para evitar que falle el controlador.
+      videoId = YoutubePlayer.convertUrlToId('https://www.youtube.com/watch?v=ScMzIvxBSi4');
+    }
+    
     _controller = YoutubePlayerController(
-      initialVideoId: videoId,
+      initialVideoId: videoId!,
       flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: false,
@@ -40,6 +47,21 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    if (failVideoId) {
+      return Container(
+        color: Colors.grey[200],
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.videocam_off_outlined, color: Colors.redAccent, size: 50),
+              Text('No se pudo cargar el video.'),
+            ],
+          ),
+        ),
+      );
+    }
+
     return YoutubePlayer(
       controller: _controller,
       showVideoProgressIndicator: true,
