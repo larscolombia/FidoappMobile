@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/input_text.dart';
@@ -18,7 +17,7 @@ class Profecionales extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width - 60;
+    var width = MediaQuery.sizeOf(context).width - 60;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -180,7 +179,7 @@ class Profecionales extends StatelessWidget {
 
                 return SizedBox(
                   width: width + 35,
-                  height: MediaQuery.of(context).size.height *
+                  height: MediaQuery.sizeOf(context).height *
                       0.4, // Altura fija o dinámica
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16),

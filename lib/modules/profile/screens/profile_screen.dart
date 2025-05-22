@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
@@ -113,7 +112,7 @@ class ProfileScreen extends StatelessWidget {
                     bottom: -10,
                     child: Container(
                       height: 50,
-                      width: MediaQuery.of(context).size.width - 100,
+                      width: MediaQuery.sizeOf(context).width - 100,
                       child: Text(
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
@@ -151,7 +150,7 @@ class ProfileScreen extends StatelessWidget {
                               children: [
                                 Container(
                                   width:
-                                      MediaQuery.of(context).size.width - 130,
+                                      MediaQuery.sizeOf(context).width - 130,
                                   child: BarraBack(
                                       titulo: "Perfil de Usuario",
                                       size: 20,
@@ -187,7 +186,7 @@ class ProfileScreen extends StatelessWidget {
                                   height: 30,
                                 ),
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width,
+                                  width: MediaQuery.sizeOf(context).width,
                                   child: ButtonDefaultWidget(
                                     callback: () {
                                       Get.to(FormularioVerificacion());
@@ -345,7 +344,7 @@ class ProfileScreen extends StatelessWidget {
                         }),
                         SizedBox(height: margin),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: GestureDetector(
                             onTap: () {
                               // Navegar a la página de cambiar contraseña
@@ -381,7 +380,7 @@ class ProfileScreen extends StatelessWidget {
                           () => controller.isEditing.value == true
                               ? SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width - 100,
+                                      MediaQuery.sizeOf(context).width - 100,
                                   child: ButtonDefaultWidget(
                                     title: controller.isLoading.value
                                         ? 'Actualizando ...'

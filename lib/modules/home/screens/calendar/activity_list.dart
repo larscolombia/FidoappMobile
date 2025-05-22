@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/calendar/evento_list.dart';
@@ -48,7 +48,7 @@ class ActivityListScreen extends StatelessWidget {
           sortedDates.sort((a, b) =>
               a.compareTo(b)); // Ordenar las fechas en orden ascendente
 
-          final double containerWidth = MediaQuery.of(context).size.width * 0.8;
+          final double containerWidth = MediaQuery.sizeOf(context).width * 0.8;
 
           return SingleChildScrollView(
             child: Column(
@@ -63,7 +63,7 @@ class ActivityListScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Text(
                           textAlign: TextAlign.end,
                           date,

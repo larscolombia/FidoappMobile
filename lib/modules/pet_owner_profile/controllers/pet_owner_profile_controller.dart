@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+
 import 'owner_model.dart';
 
 class PetOwnerProfileController extends GetxController {
@@ -44,7 +44,7 @@ class UserProfileController extends GetxController {
     try {
       isLoading.value = true;
       final response = await http.get(
-        Uri.parse('${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=${id}')}'),
+        Uri.parse('${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id')}'),
         headers: {
           'Authorization':
               'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Reemplaza con tu lógica de token.
@@ -54,7 +54,7 @@ class UserProfileController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body)['data'];
-        print('perfil usuarioss ${data}');
+        print('perfil usuarioss $data');
         user.value =
             UserData.fromJson(data); // Actualiza el modelo con la respuesta.
       } else {}

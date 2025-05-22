@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/generated/assets.dart';
-import 'package:pawlly/modules/apprenticeship/component/cursos.dart';
 import 'package:pawlly/modules/apprenticeship/component/header_title.dart';
 import 'package:pawlly/modules/apprenticeship/component/show_vide_cursos.dart';
 
@@ -48,9 +46,9 @@ class CursoShow extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 width: 180,
-                                child: const Text(
+                                child: Text(
                                   'Información de este Curso',
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
@@ -115,7 +113,7 @@ class CursoShow extends StatelessWidget {
                           color: Color.fromARGB(255, 170, 165, 157),
                         ),
                       ),
-                      HeaderTitle(),
+                      const HeaderTitle(),
                       Container(
                         margin: const EdgeInsets.only(top: 10),
                         width: 30,
@@ -146,11 +144,11 @@ class CursoShow extends StatelessWidget {
                       Container(
                         width: 300,
                         margin: const EdgeInsets.only(top: 20),
-                        child: Column(
+                        child: const Column(
                           children: [
                             SizedBox(
                               width: 30,
-                              child: const Text('Programa de entrenimiento',
+                              child: Text('Programa de entrenimiento',
                                   style: TextStyle(
                                       fontFamily: 'Lato',
                                       fontSize: 12,
@@ -159,7 +157,7 @@ class CursoShow extends StatelessWidget {
                             ),
                             SizedBox(
                               width: 30,
-                              child: const Text('Contenido del Curso',
+                              child: Text('Contenido del Curso',
                                   style: TextStyle(
                                       fontFamily: 'Lato',
                                       fontSize: 13,
@@ -202,7 +200,7 @@ class CursoShow extends StatelessWidget {
                         precio: '20',
                         color: Color.fromRGBO(130, 56, 0, 1),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 30 + 1,
                         child: Column(
                           children: [

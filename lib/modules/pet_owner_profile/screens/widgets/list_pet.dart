@@ -15,7 +15,7 @@ class ListPet extends StatelessWidget {
         children: [
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               child: const Text(
                 'Mascotas',
                 style: TextStyle(

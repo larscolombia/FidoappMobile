@@ -20,7 +20,7 @@ class Styles {
 
   static const widh_pantalla = 380.00;
   static double tamano(context) {
-    return MediaQuery.of(context).size.width - 100;
+    return MediaQuery.sizeOf(context).width - 100;
   }
 
   static const paddingAll = EdgeInsets.only(left: 26, right: 26);

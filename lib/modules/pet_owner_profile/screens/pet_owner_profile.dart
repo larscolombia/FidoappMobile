@@ -1,20 +1,15 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/modules/auth/model/employee_model.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/widgets/comments_section.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/widgets/list_pet.dart';
-import 'package:pawlly/modules/profile/screens/components/profile_action.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_details.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_header.dart';
 import 'package:pawlly/modules/profile/screens/components/sobremi.dart';
 import 'package:pawlly/modules/profile/screens/components/veteinari_info.dart';
 import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 //perfil del usuario
 class PetOwnerProfileScreen extends StatefulWidget {
@@ -57,7 +52,7 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
                   children: [
                     ProfileHeader(
                       profileController: profileController,
-                      headerHeight: MediaQuery.of(context).size.height / 8,
+                      headerHeight: MediaQuery.sizeOf(context).height / 8,
                     ),
                     const SizedBox(height: 20),
                     ProfileDetails(
@@ -70,7 +65,7 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
                           left: Helper.paddingDefault,
                           right: Helper.paddingDefault),
                       child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         height: 20,
                         child: Divider(
                           thickness: 1,

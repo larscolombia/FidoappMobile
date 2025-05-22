@@ -31,7 +31,7 @@ class InformationTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
-    var ancho = MediaQuery.of(context).size.width;
+    var ancho = MediaQuery.sizeOf(context).width;
     var margen = Helper.margenDefault;
     return Obx(() {
       return SingleChildScrollView(
@@ -114,7 +114,7 @@ class InformationTab extends StatelessWidget {
               ),
 
               SizedBox(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: Text(
                   homeController.selectedProfile.value!.description ?? "",
                   style: Styles.textProfile15w400,

@@ -1,10 +1,5 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pawlly/models/user_data_model.dart';
-import 'dart:io';
-
-import 'package:pawlly/modules/auth/model/login_response_model.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 

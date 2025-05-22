@@ -84,7 +84,7 @@ class _CommentsSectionState extends State<CommentsSection> {
             Center(
               child: Container(
                 padding: Styles.paddingAll,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: const Text(
                   'Comentarios',
                   style: TextStyle(
@@ -100,7 +100,7 @@ class _CommentsSectionState extends State<CommentsSection> {
             Center(
               child: Container(
                 padding: Styles.paddingAll,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: const Divider(color: Recursos.ColorBorderSuave, thickness: 1),
               ),
             ),
@@ -108,7 +108,7 @@ class _CommentsSectionState extends State<CommentsSection> {
               child: Container(
                 key: _commentsKey,
                 padding: Styles.paddingAll,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: Obx(() {
                   if (comentariosController.isLoading.value) {
                     return const Center(
@@ -119,7 +119,7 @@ class _CommentsSectionState extends State<CommentsSection> {
                     child: Column(
                       children: comentariosController.comments.map((value) {
                         return Container(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: AvatarComentarios(
                             avatar: value.userAvatar ?? "https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg",
                             name: value.userFullName ?? '',

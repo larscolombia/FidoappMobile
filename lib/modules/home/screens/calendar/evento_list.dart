@@ -3,14 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/editar.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/components/style.dart';
-import 'package:pawlly/modules/components/user_select.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
@@ -76,7 +74,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                         left: 0,
                         right: 0,
                         child: Container(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           height: 100,
                           child: const Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -119,13 +117,13 @@ class _EventoDestallesState extends State<EventoDestalles> {
                           child: Column(
                             children: [
                               SizedBox(
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width -
+                                      width: MediaQuery.sizeOf(context).width -
                                           110,
                                       child: BarraBack(
                                         titulo: 'Sobre este Evento',
@@ -155,7 +153,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                               ),
                               const SizedBox(height: 20),
                               Container(
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                                 height: height,
                                 child: InputText(
                                   placeholder: '',
@@ -167,7 +165,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                               ),
                               SizedBox(height: margen),
                               Container(
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -182,7 +180,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                     ),
                                     SizedBox(height: margen - 8),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width,
+                                      width: MediaQuery.sizeOf(context).width,
                                       child: SelectedAvatar(
                                         nombre: AuthServiceApis
                                                 .dataCurrentUser.firstName ??
@@ -211,7 +209,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                               ),
                               SizedBox(height: margen),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                                 height: height,
                                 child: InputText(
                                   placeholderSvg:
@@ -227,7 +225,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                               ),
                               SizedBox(height: margen),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                                 height: height,
                                 child: InputText(
                                   placeholderSvg: 'assets/icons/svg/hora.svg',
@@ -241,7 +239,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                               ),
                               SizedBox(height: margen),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -281,7 +279,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                               if (event?.invited !=
                                   true) // Verificar si no es invitado
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width,
+                                  width: MediaQuery.sizeOf(context).width,
                                   height: 60,
                                   child: Stack(
                                     children: [
@@ -315,7 +313,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                   ),
                                 ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -349,7 +347,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                   event?.invited !=
                                       true) // Verificar si no es invitado
                                 SizedBox(
-                                  width: MediaQuery.of(context).size.width,
+                                  width: MediaQuery.sizeOf(context).width,
                                   height: 50,
                                   child: ButtonDefaultWidget(
                                     title: 'Editar',

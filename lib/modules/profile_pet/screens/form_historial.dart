@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/input_select.dart';
@@ -12,8 +9,8 @@ import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
-import 'package:pawlly/modules/profile_pet/screens/confirmar_formulario.dart';
 import 'package:pawlly/styles/styles.dart';
+
 import '../../../components/custom_snackbar.dart';
 
 class FormularioRegistro extends StatelessWidget {
@@ -25,7 +22,7 @@ class FormularioRegistro extends StatelessWidget {
   FormularioRegistro({super.key});
   @override
   Widget build(BuildContext context) {
-    var ancho = MediaQuery.of(context).size.width;
+    var ancho = MediaQuery.sizeOf(context).width;
     var margen = Helper.margenDefault;
     controller.updateField("pet_id", homeController.selectedProfile.value!.id);
 

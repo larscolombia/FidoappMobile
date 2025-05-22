@@ -19,7 +19,7 @@ class VeterinarianInfo extends StatelessWidget {
         if (controller.veterinarianLinked.value) {
           return Container(
             height: 54,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             margin: const EdgeInsets.symmetric(vertical: 10.0),
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(

@@ -6,7 +6,7 @@ import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/styles/styles.dart';
-import 'package:pawlly/utils/common_base.dart';
+
 import '../../../../../components/app_scaffold.dart';
 import '../controllers/change_password_controller.dart';
 
@@ -18,8 +18,8 @@ class ChangePasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
 
     return AppScaffold(
       body: Container(

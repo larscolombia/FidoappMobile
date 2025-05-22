@@ -3,14 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
-import 'package:pawlly/components/custom_text_form_field_widget.dart';
-import 'package:pawlly/modules/auth/model/employee_model.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
-import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
 import 'package:pawlly/modules/profile_pet/controllers/pet_owner_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/services/pet_owner_apis.dart';
@@ -28,7 +25,7 @@ class AssociatedPersonsModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var tamano = MediaQuery.of(context).size.width - 100;
+    var tamano = MediaQuery.sizeOf(context).width - 100;
     return FractionallySizedBox(
       heightFactor: 0.7, // Ocupa el 70% de la pantalla
       child: Container(
@@ -72,7 +69,7 @@ class AssociatedPersonsModal extends StatelessWidget {
             // Input de correo electrónico (sin Obx ya que no se utiliza ninguna variable reactiva aquí)
             Center(
               child: Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 margin: const EdgeInsets.only(top: 20),
                 child: InputText(
                   placeholderSvg: 'assets/icons/svg/sms.svg',
@@ -87,7 +84,7 @@ class AssociatedPersonsModal extends StatelessWidget {
             // Selector del rol
             Center(
               child: Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 margin: const EdgeInsets.only(top: 20),
                 child: CustomSelectFormFieldWidget(
                   // Si controller.userTypeCont es reactivo y deseas que el widget se actualice al cambiar su valor,
@@ -130,7 +127,7 @@ class AssociatedPersonsModal extends StatelessWidget {
             // Título: "Invitados:"
             Center(
               child: SizedBox(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: const Text(
                   "Invitados:",
                   style: TextStyle(
@@ -162,7 +159,7 @@ class AssociatedPersonsModal extends StatelessWidget {
                 }
                 return Center(
                   child: Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     child: ListView(
                       children: userController.filteredUsers.map((person) {
                         // Añadir un SizedBox con altura entre cada tarjeta

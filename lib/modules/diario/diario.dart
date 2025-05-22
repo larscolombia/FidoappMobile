@@ -26,7 +26,7 @@ class Diario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var margen = 16.00;
-    var ancho = MediaQuery.of(context).size.width;
+    var ancho = MediaQuery.sizeOf(context).width;
 
     // Asegurarse de no llamar a métodos que alteren el estado durante la construcción
     WidgetsBinding.instance.addPostFrameCallback((_) {

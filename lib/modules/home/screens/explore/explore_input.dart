@@ -24,7 +24,7 @@ class ExploreInput extends StatelessWidget {
       children: [
         // Input de búsqueda con lupa
         SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           child: InputBusqueda(
             onChanged: (value) {
               controller.filterEBooks(value);

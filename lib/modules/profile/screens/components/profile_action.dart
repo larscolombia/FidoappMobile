@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pawlly/modules/components/boton_compartir.dart';
@@ -22,7 +21,7 @@ class ProfileActions extends StatelessWidget {
     return Obx(() {
       return Container(
         padding: Styles.paddingAll,
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         child: Column(
           children: [
             Container(
@@ -59,7 +58,7 @@ class ProfileActions extends StatelessWidget {
             if (profileController.user.value.userType != 'user' &&
                 (profileController.user.value.profile?.expert ?? "").isNotEmpty)
               Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: InputText(
                   placeholder: "",
                   fw: FontWeight.bold,
@@ -79,7 +78,7 @@ class ProfileActions extends StatelessWidget {
             if (profileController.user.value.userType != 'user' &&
                 (profileController.user.value.profile?.tags ?? []).isNotEmpty)
               Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
                   child: Align(
@@ -97,7 +96,7 @@ class ProfileActions extends StatelessWidget {
               ),
             if ((profileController.user.value.profile?.tags ?? []).isNotEmpty)
               Container(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: Wrap(
                   spacing: 8.0,
                   runSpacing: 8.0,

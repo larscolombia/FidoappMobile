@@ -25,14 +25,13 @@ class Explore extends StatelessWidget {
             bottom: 0,
             right: 0,
             child: SizedBox(
-              width: screenWidth * 0.3, // Responsive width for the first image
+              width: screenWidth * 0.3,
               height: screenHeight,
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: Image.asset(
                   Assets.elice,
-                  fit: BoxFit
-                      .contain, // Consider using BoxFit.contain for better fit
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -60,8 +59,7 @@ class Explore extends StatelessWidget {
               children: [
                 // Texto y botón occupying a percentage of the width
                 SizedBox(
-                  width: screenWidth *
-                      0.5, // Increased width to accommodate potentially longer text
+                  width: screenWidth * 0.5, // Increased width to accommodate potentially longer text
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min, // Adjust height dynamically
@@ -92,8 +90,7 @@ class Explore extends StatelessWidget {
                       const SizedBox(height: 10),
                       // Botón para explorar
                       SizedBox(
-                        width:
-                            screenWidth * 0.25, // Make button width responsive
+                        width: screenWidth * 0.32,
                         height: 34,
                         child: ButtonDefaultWidget(
                           textSize: 13,

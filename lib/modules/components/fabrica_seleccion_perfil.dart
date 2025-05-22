@@ -10,7 +10,7 @@ class SelccionarMascota extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     return Obx(() {
       if (controller.selectedProfile.value == null) {
         // Mostrar mensaje si no hay perfil seleccionado
@@ -135,7 +135,7 @@ class SelccionarPerfil extends StatelessWidget {
   final bool? conIcono;
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
+    var width = MediaQuery.sizeOf(context).width;
     return Row(
       children: [
         Container(

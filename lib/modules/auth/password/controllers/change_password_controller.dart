@@ -2,16 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/utils/app_common.dart';
 
-import '../screens/pages/password_set_success.dart';
 import '../../../../../utils/common_base.dart';
 import '../../../../../utils/constants.dart';
 import '../../../../../utils/local_storage.dart';
-import 'package:pawlly/components/custom_snackbar.dart';
+import '../screens/pages/password_set_success.dart';
 
 class ChangePasswordController extends GetxController {
   RxBool isLoading = false.obs;

@@ -30,7 +30,7 @@ class FideCoin extends StatelessWidget {
                     Container(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 32), // Márgenes laterales más amplios
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       child: BarraBack(
                         callback: () {
                           Get.back();
@@ -124,7 +124,7 @@ class Movimientos extends StatelessWidget {
           horizontal: 24,
           vertical: 8), // Márgenes laterales y verticales más amplios
       padding: const EdgeInsets.all(16),
-      width: MediaQuery.of(context).size.width - 40, // Ajustar al nuevo margen
+      width: MediaQuery.sizeOf(context).width - 40, // Ajustar al nuevo margen
       decoration: BoxDecoration(
         border: Border.all(
           width: 1,

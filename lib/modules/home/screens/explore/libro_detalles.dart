@@ -5,14 +5,11 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/avatar_comentario.dart';
 import 'package:pawlly/modules/components/baner_comentarios.dart';
-
 import 'package:pawlly/modules/components/recarga_componente.dart';
-
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'package:pawlly/modules/integracion/controller/balance/producto_pay_controller.dart';
-
 import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
 
@@ -67,7 +64,7 @@ class _LibroDetallesState extends State<LibroDetalles> {
                       right: 0,
                       child: Container(
                         height: 40,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(50),
@@ -120,7 +117,7 @@ class _LibroDetallesState extends State<LibroDetalles> {
                   ]),
                 ),
                 SizedBox(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: 30.0,

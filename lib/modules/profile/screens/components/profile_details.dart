@@ -47,7 +47,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
         children: [
           Container(
             padding: Styles.paddingAll,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             child: Stack(
               children: [
                 Positioned(
@@ -89,7 +89,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                       const SizedBox(height: 10),
                       Container(
                         padding: Styles.paddingAll,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Text(
                           widget.profileController.user.value.firstName ?? "",
                           style: Styles.dashboardTitle20,
@@ -101,7 +101,7 @@ class _ProfileDetailsState extends State<ProfileDetails> {
                 else
                   Container(
                     padding: Styles.paddingAll,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
+import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/privacy_termns/controllers/privacy_terms_controller.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -13,8 +13,8 @@ class PrivacyTermsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
 
     return AppScaffold(
       body: Container(
@@ -130,7 +130,7 @@ class NumTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     return Column(children: [
       Container(
         width: width,

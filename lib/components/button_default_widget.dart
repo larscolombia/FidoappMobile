@@ -50,7 +50,7 @@ class ButtonDefaultWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final resolvedColor = color ?? WidgetStateProperty.all(defaultColor);
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     return Container(
       decoration: showDecoration

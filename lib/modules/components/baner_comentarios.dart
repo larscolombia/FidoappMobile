@@ -22,7 +22,7 @@ class BanerComentarios extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
@@ -65,7 +65,7 @@ class BanerComentarios extends StatelessWidget {
             const SizedBox(height: 20),
             SingleChildScrollView(
               child: SizedBox(
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 child: InputText(
                   onChanged: eventTextChanged,
                   placeholder: 'Describe tu experiencia',
@@ -78,7 +78,7 @@ class BanerComentarios extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             SizedBox(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               height: 42,
               child: ButtonDefaultWidget(
                 title: titulo ?? "Enviar >",
@@ -110,7 +110,7 @@ class Estadisticas extends StatelessWidget {
     print(avatars);
     // TODO: implement build
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       height: 160,
       decoration: BoxDecoration(
         color: Color(0XFFFeF7e5),
@@ -179,7 +179,7 @@ class Estadisticas extends StatelessWidget {
               height: 10,
             ),
             Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               decoration: BoxDecoration(
                 border: Border.all(color: Styles.fiveColor, width: .4),
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class InAppBrowserModal extends StatefulWidget {
   // Cambiado a StatefulWidget
@@ -34,7 +34,7 @@ class _InAppBrowserModalState extends State<InAppBrowserModal> {
         builder: (context, constraints) {
           return Container(
             height:
-                MediaQuery.of(context).size.height * 0.8, // 80% de la pantalla
+                MediaQuery.sizeOf(context).height * 0.8, // 80% de la pantalla
             child: Column(
               children: [
                 Expanded(

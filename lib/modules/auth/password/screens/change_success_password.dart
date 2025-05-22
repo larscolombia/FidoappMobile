@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/app_scaffold.dart';
-import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/components/button_back.dart';
-import 'package:pawlly/components/titulo.dart';
+import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/password/controllers/change_password_controller.dart';
 import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
@@ -14,8 +13,8 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
   const ChangeSuccessPassword({super.key});
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
     return AppScaffold(
         body: Container(
       padding: Styles.paddingAll,

@@ -83,7 +83,7 @@ class _CrearComandoState extends State<CrearComando> {
   @override
   Widget build(BuildContext context) {
     const double margen = 16.0;
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -165,7 +165,7 @@ class _CrearComandoState extends State<CrearComando> {
                       children: [
                         // Barra de Navegación
                         SizedBox(
-                          width: MediaQuery.of(context).size.width,
+                          width: MediaQuery.sizeOf(context).width,
                           child: BarraBack(
                             titulo: 'Crear Comando',
                             size: 20,

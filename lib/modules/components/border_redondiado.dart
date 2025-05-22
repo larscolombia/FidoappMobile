@@ -23,7 +23,7 @@ class BorderRedondiado extends StatelessWidget {
       bottom: 0,
       child: Container(
         height: 100,
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery.sizeOf(context).width,
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(

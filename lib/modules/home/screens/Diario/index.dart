@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/registro.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/Diario/detalles_diario.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
-import 'package:pawlly/styles/recursos.dart';
-import 'package:pawlly/styles/styles.dart';
 
 class DiarioMascotas extends StatefulWidget {
   final PetActivityController controller;
@@ -65,8 +62,8 @@ class _DiarioMascotasState extends State<DiarioMascotas> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 7,
-                childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height /
+                childAspectRatio: MediaQuery.sizeOf(context).width /
+                    (MediaQuery.sizeOf(context).height /
                         2), // Ajuste dinámico del childAspectRatio
               ),
               itemCount: widget.controller.filteredActivities.length,

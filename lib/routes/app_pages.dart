@@ -7,8 +7,9 @@ import 'package:pawlly/modules/auth/password/bindings/change_password_binding.da
 import 'package:pawlly/modules/auth/password/bindings/change_success_password_binding.dart';
 import 'package:pawlly/modules/auth/password/bindings/forget_password_binding.dart';
 import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
-import 'package:pawlly/modules/auth/password/screens/forget_password_screen.dart';
 import 'package:pawlly/modules/auth/password/screens/change_success_password.dart';
+import 'package:pawlly/modules/auth/password/screens/forget_password_screen.dart';
+import 'package:pawlly/modules/auth/sign_in/bindings/sign_in_binding.dart';
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/modules/auth/sign_up/bindings/sign_un_binding.dart';
 import 'package:pawlly/modules/auth/sign_up/screens/signup_screen.dart';
@@ -16,12 +17,13 @@ import 'package:pawlly/modules/dashboard/bindings/dashboard_binding.dart';
 import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:pawlly/modules/home/bindings/home_binding.dart';
 import 'package:pawlly/modules/home/screens/calendar/formulario_evento.dart';
-import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
-import 'package:pawlly/modules/auth/sign_in/bindings/sign_in_binding.dart';
 import 'package:pawlly/modules/pet_owner_profile/bindings/pet_owner_profile_binding.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
 import 'package:pawlly/modules/privacy_termns/bindings/privacy_terms_binding.dart';
+import 'package:pawlly/modules/privacy_termns/screens/pages/privacy_policy.dart';
+import 'package:pawlly/modules/privacy_termns/screens/pages/sobreapp.dart';
+import 'package:pawlly/modules/privacy_termns/screens/pages/terms_conditions.dart';
 import 'package:pawlly/modules/privacy_termns/screens/privacyterms_screen.dart';
 import 'package:pawlly/modules/profile/bindings/profile_binding.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
@@ -29,10 +31,6 @@ import 'package:pawlly/modules/profile_pet/bindings/profile_pet_binding.dart';
 import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
 import 'package:pawlly/modules/welcome/bindings/welcome_binding.dart';
 import 'package:pawlly/modules/welcome/screens/welcome_screen.dart';
-import 'package:pawlly/modules/privacy_termns/screens/pages/privacy_policy.dart';
-import 'package:pawlly/modules/privacy_termns/screens/pages/sobreapp.dart';
-
-import 'package:pawlly/modules/privacy_termns/screens/pages/terms_conditions.dart';
 
 part 'app_routes.dart';
 
@@ -44,7 +42,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: _Paths.HOME,
-      page: () => HomeScreen(),
+      page: () => const HomeScreen(),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -91,12 +89,12 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.APPRENTICESHIP,
-      page: () => ApprenticeshipScreen(),
+      page: () => const ApprenticeshipScreen(),
       binding: ApprenticeshipBinding(),
     ),
     GetPage(
       name: _Paths.DASHBOARD,
-      page: () => DashboardScreen(),
+      page: () => const DashboardScreen(),
       binding: DashboardBinding(),
     ),
     GetPage(
@@ -128,7 +126,7 @@ class AppPages {
     ),
     GetPage(
       name: '/CreateEvent',
-      page: () => CreateEvent(),
+      page: () => const CreateEvent(),
     ),
   ];
 }

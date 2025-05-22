@@ -47,7 +47,7 @@ class VideoList extends StatelessWidget {
                     onTap: () {
                       // Acción al tocar un video
                       print('Video seleccionado: ${video.id}');
-                      Get.to(CursoVideo(
+                      Get.to(() =>CursoVideo(
                         videoId: "",
                         cursoId: video.id.toString(),
                         name: video.name,
@@ -125,7 +125,7 @@ class VideoList extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Text(
-                                    "${video.duration ?? "0"}",
+                                    video.duration ?? "0",
                                     style: const TextStyle(
                                       fontFamily: 'Lato',
                                       fontSize: 12,

@@ -52,7 +52,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
         children: [
           Container(
             height: 200,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             decoration: const BoxDecoration(
               color: Styles.colorContainer,
             ),

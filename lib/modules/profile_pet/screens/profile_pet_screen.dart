@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -104,7 +104,7 @@ class ProfilePetScreen extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width -
+                                      width: MediaQuery.sizeOf(context).width -
                                           100,
                                       child: BarraBack(
                                         titulo: "Perfil de la Mascota",
@@ -150,7 +150,7 @@ class ProfilePetScreen extends StatelessWidget {
                                     title: 'Información',
                                     callback: () => controller.changeTab(0),
                                     widthButtom:
-                                        (MediaQuery.of(context).size.width /
+                                        (MediaQuery.sizeOf(context).width /
                                                 2) -
                                             30,
                                     defaultColor:
@@ -172,7 +172,7 @@ class ProfilePetScreen extends StatelessWidget {
                                     title: 'Historial Médico',
                                     callback: () => controller.changeTab(1),
                                     widthButtom:
-                                        (MediaQuery.of(context).size.width /
+                                        (MediaQuery.sizeOf(context).width /
                                                 2) -
                                             30,
                                     defaultColor:

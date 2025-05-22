@@ -11,7 +11,7 @@ class Resources extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     final RecursosSelect selectRecursos = Get.put(RecursosSelect());
 
     // Lista de recursos (ahora fija, no dinámica)
@@ -50,7 +50,7 @@ class Resources extends StatelessWidget {
           }
           return Center(
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               child: Text(
                 'Recursos',
                 style: Styles.titulorecursos,

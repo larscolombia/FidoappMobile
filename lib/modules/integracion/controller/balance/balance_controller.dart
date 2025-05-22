@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -7,7 +8,6 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart'; // Asegúrate de que este archivo exista y contenga la constante BASE_URL
 import 'package:pawlly/modules/components/style.dart';
-import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_wdget.dart';
 import 'package:pawlly/modules/integracion/controller/balance/producto_pay_controller.dart';
@@ -89,8 +89,8 @@ class UserBalanceController extends GetxController {
 
     Get.bottomSheet(
       Container(
-        height: MediaQuery.of(context).size.height / 1.2,
-        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.sizeOf(context).height / 1.2,
+        width: MediaQuery.sizeOf(context).width,
         padding: Styles.paddingAll,
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -134,7 +134,7 @@ class UserBalanceController extends GetxController {
                       const SizedBox(height: 16),
                       // Imagen del producto
                       SizedBox(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         height: 250,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -160,7 +160,7 @@ class UserBalanceController extends GetxController {
                       const SizedBox(height: 15),
                       // Descripción del producto
                       SizedBox(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Text(
                           productController.selectedProduct.value.descripcion,
                           maxLines: 3,
@@ -188,7 +188,7 @@ class UserBalanceController extends GetxController {
                               child: Container(
                                 padding: const EdgeInsets.all(5),
                                 height:
-                                    MediaQuery.of(context).size.height * 0.23,
+                                    MediaQuery.sizeOf(context).height * 0.23,
                                 decoration: const BoxDecoration(
                                   color: Styles.colorContainer,
                                   borderRadius:
@@ -212,11 +212,11 @@ class UserBalanceController extends GetxController {
                                     ),
                                     SizedBox(
                                       height:
-                                          MediaQuery.of(context).size.height *
+                                          MediaQuery.sizeOf(context).height *
                                               0.01,
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width,
+                                      width: MediaQuery.sizeOf(context).width,
                                       child: Text(
                                         productController
                                             .selectedProduct.value.precio,
@@ -247,7 +247,7 @@ class UserBalanceController extends GetxController {
                               child: Container(
                                 padding: const EdgeInsets.all(14),
                                 height:
-                                    MediaQuery.of(context).size.height * 0.23,
+                                    MediaQuery.sizeOf(context).height * 0.23,
                                 decoration: const BoxDecoration(
                                   color: Styles.colorContainer,
                                   borderRadius:
@@ -262,7 +262,7 @@ class UserBalanceController extends GetxController {
                           ],
                         ),
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height / 15),
+                      SizedBox(height: MediaQuery.sizeOf(context).height / 15),
                       // Botón de compra, deshabilitado si se está en estado de carga
                       ButtonDefaultWidget(
                         callback: loading

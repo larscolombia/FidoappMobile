@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'dart:convert';
+
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-import 'package:pawlly/components/custom_snackbar.dart';
 
 // curso de la plataforma
 class CourseController extends GetxController {

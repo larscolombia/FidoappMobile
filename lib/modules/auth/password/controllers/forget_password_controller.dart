@@ -2,10 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/utils/common_base.dart';
-import 'package:pawlly/components/custom_snackbar.dart';
 
 class ForgetPasswordController extends GetxController {
   RxBool isLoading = false.obs;

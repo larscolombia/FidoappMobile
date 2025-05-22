@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
@@ -31,7 +30,7 @@ class Sobremi extends StatelessWidget {
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Container(
       padding: Styles.paddingAll,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Align(
@@ -52,7 +51,7 @@ class Sobremi extends StatelessWidget {
   Widget _buildInfoRow(BuildContext context, String info) {
     return Container(
       padding: Styles.paddingAll,
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 16.0),
         child: Align(

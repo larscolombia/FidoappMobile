@@ -1,23 +1,15 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/components/custom_select_form_field_widget.dart';
-import 'package:pawlly/modules/components/historia_componente.dart';
 import 'package:pawlly/modules/components/historia_grid.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
-import 'package:pawlly/modules/components/registro.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
-import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
-import 'package:pawlly/modules/profile_pet/screens/confirmar_formulario.dart';
 import 'package:pawlly/modules/profile_pet/screens/form_historial.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/show_filter_dialog.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -47,7 +39,7 @@ class MedicalHistoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     medicalHistoryController.fetchHistorialClinico(controller.petProfile.id);
-    var ancho = MediaQuery.of(context).size.width;
+    var ancho = MediaQuery.sizeOf(context).width;
     var margen = Helper.margenDefault;
     return SingleChildScrollView(
       // Cambiamos a SingleChildScrollView para manejar el contenido desplazable

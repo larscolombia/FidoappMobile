@@ -23,7 +23,7 @@ class CursosEntrenamiento extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       cursosController.fetchCourses(); // Siempre se ejecuta al entrar a la vista
     });
-    final ancho = MediaQuery.of(context).size.width - 50;
+    final ancho = MediaQuery.sizeOf(context).width - 50;
     final margen = 16.00;
 
     return Obx(() {

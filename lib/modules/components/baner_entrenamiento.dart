@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -37,7 +35,7 @@ class BanerEntrenamiento extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenWidth = MediaQuery.sizeOf(context).width;
     // Ajuste dinámico del ancho de la imagen basado en el ancho de la pantalla
     // para diferentes orientaciones (horizontal o vertical)
     final double imageWidth =

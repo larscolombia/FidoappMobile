@@ -13,8 +13,8 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final Size screenSize = MediaQuery.of(context).size;
-    final double height = MediaQuery.of(context).size.height;
-    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.sizeOf(context).height;
+    final double width = MediaQuery.sizeOf(context).width;
     return SizedBox(
       width: width,
       height: height,

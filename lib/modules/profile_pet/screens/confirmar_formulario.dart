@@ -1,10 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
@@ -15,7 +12,6 @@ import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-
 import 'package:pawlly/styles/styles.dart';
 
 class ConfirmarFormulario extends StatelessWidget {
@@ -79,7 +75,7 @@ class ConfirmarFormulario extends StatelessWidget {
                           children: [
                             const SizedBox(height: 30),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: BarraBack(
                                 titulo: isEdit == false
                                     ? "Informe Médico"
@@ -92,7 +88,7 @@ class ConfirmarFormulario extends StatelessWidget {
                             const SizedBox(height: 16),
                             if (isEdit == true)
                               SizedBox(
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                                 child: InputSelect(
                                   onChanged: (value) {
                                     historialClinico!.reportName =
@@ -128,7 +124,7 @@ class ConfirmarFormulario extends StatelessWidget {
                               ),
                             const SizedBox(height: 16),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: InputText(
                                 label: 'Nombre del Informe',
                                 placeholder: '',
@@ -143,7 +139,7 @@ class ConfirmarFormulario extends StatelessWidget {
                             ),
                             const SizedBox(height: 16),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: InputText(
                                 isDateField: true,
                                 label: 'Fecha de aplicación',
@@ -162,7 +158,7 @@ class ConfirmarFormulario extends StatelessWidget {
                             ),
                             const SizedBox(height: 16),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: InputText(
                                 label: 'Fecha de refuerzo',
                                 placeholder: '',
@@ -182,7 +178,7 @@ class ConfirmarFormulario extends StatelessWidget {
                             ),
                             const SizedBox(height: 16),
                             SizedBox(
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: InputText(
                                 label: 'notas',
                                 placeholder: '',
@@ -277,7 +273,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                 'user')
                               isEdit == true
                                   ? SizedBox(
-                                      width: MediaQuery.of(context).size.width -
+                                      width: MediaQuery.sizeOf(context).width -
                                           80,
                                       child: ButtonDefaultWidget(
                                         title: medicalHistoryController

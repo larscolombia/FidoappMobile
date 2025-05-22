@@ -60,7 +60,7 @@ class DetallesDiario extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              width: MediaQuery.of(context).size.width - 130,
+                              width: MediaQuery.sizeOf(context).width - 130,
                               child: BarraBack(
                                 titulo: 'Sobre este Registro',
                                 size: 20,
@@ -177,8 +177,8 @@ class DetallesDiario extends StatelessWidget {
                               if (controller.activitiesOne.value!.image ==
                                   null) {}
                               return Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: MediaQuery.of(context).size.height,
+                                width: MediaQuery.sizeOf(context).width,
+                                height: MediaQuery.sizeOf(context).height,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
                                     fit: BoxFit.cover,

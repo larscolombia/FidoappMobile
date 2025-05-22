@@ -1,11 +1,6 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_tag_wiget.dart';
 import 'package:pawlly/modules/components/input_text.dart';
@@ -19,7 +14,6 @@ import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_header.dart';
 import 'package:pawlly/modules/profile/screens/perfil_publico.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-import 'package:pawlly/styles/recursos.dart';
 
 class FormularioVerificacion extends StatefulWidget {
   const FormularioVerificacion({super.key});
@@ -71,7 +65,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
             children: [
               ProfileHeader(
                 profileController: controller,
-                headerHeight: MediaQuery.of(context).size.height / 8,
+                headerHeight: MediaQuery.sizeOf(context).height / 8,
               ),
               const SizedBox(height: 40),
               Expanded(
@@ -96,7 +90,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           Center(
                             child: Container(
                               padding: Styles.paddingAll,
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: BarraBack(
                                 titulo: 'Perfil de Usuario',
                                 size: 20,
@@ -112,7 +106,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           Center(
                             child: Container(
                               padding: Styles.paddingAll,
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: InputText(
                                 onChanged: (value) => profileController
                                     .user['first_name'] = value,
@@ -129,7 +123,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           Center(
                             child: Container(
                               padding: Styles.paddingAll,
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: InputText(
                                 onChanged: (value) =>
                                     profileController.user['lastName'] = value,
@@ -145,7 +139,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           Center(
                             child: Container(
                               padding: Styles.paddingAll,
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: InputText(
                                 onChanged: (value) => profileController
                                     .user['about_self'] = value,
@@ -160,7 +154,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           Center(
                             child: Container(
                               padding: Styles.paddingAll,
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: const Divider(
                                 thickness: 1,
                                 color: Helper.dividerColor,
@@ -177,7 +171,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
 
                             return Container(
                               padding: Styles.paddingAll,
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: InputSelect(
                                 onChanged: (value) {
                                   profileController.user['expert'] =
@@ -218,7 +212,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
              return Center(
              child: Container(
              padding: Styles.paddingAll,
-             width: MediaQuery.of(context).size.width,
+             width: MediaQuery.sizeOf(context).width,
              child: InputText(
              initialValue:
              controller.user.value.address ?? '',
@@ -237,7 +231,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
              return Center(
              child: Container(
              padding: Styles.paddingAll,
-             width: MediaQuery.of(context).size.width,
+             width: MediaQuery.sizeOf(context).width,
              child: InputText(
              initialValue: controller.user.value.profile
              ?.validationNumber ??
@@ -259,7 +253,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                             return Center(
                               child: Container(
                                 padding: Styles.paddingAll,
-                                width: MediaQuery.of(context).size.width,
+                                width: MediaQuery.sizeOf(context).width,
                                 child: InputText(
                                   initialValue: controller.user.value.address,
                                   onChanged: (value) {
@@ -279,7 +273,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                           Center(
                             child: Container(
                               padding: Styles.paddingAll,
-                              width: MediaQuery.of(context).size.width,
+                              width: MediaQuery.sizeOf(context).width,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -309,7 +303,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                               Center(
                                 child: Container(
                                   padding: Styles.paddingAll,
-                                  width: MediaQuery.of(context).size.width,
+                                  width: MediaQuery.sizeOf(context).width,
                                   child: ButtonDefaultWidget(
                                     callback: () {
                                       Get.to(PublicProfilePage());
@@ -328,7 +322,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                                 () => Center(
                                   child: Container(
                                     padding: Styles.paddingAll,
-                                    width: MediaQuery.of(context).size.width,
+                                    width: MediaQuery.sizeOf(context).width,
                                     child: Stack(
                                       alignment: Alignment.center,
                                       children: [

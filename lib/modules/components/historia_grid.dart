@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/registro.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
-
 import 'package:pawlly/modules/profile_pet/screens/confirmar_formulario.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
@@ -41,8 +40,8 @@ class HistorialGrid extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
-          childAspectRatio: MediaQuery.of(context).size.width /
-              (MediaQuery.of(context).size.height / 2),
+          childAspectRatio: MediaQuery.sizeOf(context).width /
+              (MediaQuery.sizeOf(context).height / 2),
         ),
         itemCount: historial.value.length,
         itemBuilder: (context, index) {

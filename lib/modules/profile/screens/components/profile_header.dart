@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -21,7 +20,7 @@ class ProfileHeader extends StatelessWidget {
       children: [
         Container(
           height: headerHeight + 80,
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           decoration: const BoxDecoration(
               color: Styles.colorContainer, border: Border()),
           child: Stack(

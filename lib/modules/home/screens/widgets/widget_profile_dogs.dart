@@ -29,7 +29,7 @@ class ProfileModal extends StatelessWidget {
     double maxWidth = 300; // Define un máximo
 
     double width =
-        (MediaQuery.of(context).size.width * 0.33).clamp(minWidth, maxWidth);
+        (MediaQuery.sizeOf(context).width * 0.33).clamp(minWidth, maxWidth);
     double height = width / aspectRatio;
 
     return FractionallySizedBox(

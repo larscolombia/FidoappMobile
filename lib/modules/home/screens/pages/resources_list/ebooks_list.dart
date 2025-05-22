@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/input_busqueda.dart';
-import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
-import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/screens/explore/libro_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/libros/libros_controller.dart';
 import 'package:pawlly/modules/integracion/model/libros/libros_model.dart';

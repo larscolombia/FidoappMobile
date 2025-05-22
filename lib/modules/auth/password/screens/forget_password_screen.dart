@@ -1,20 +1,15 @@
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
-import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/main.dart';
-import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
-import 'package:pawlly/modules/auth/password/screens/change_success_password.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 import '../../../../../components/app_scaffold.dart';
 import '../../../../../components/loader_widget.dart';
-import '../../../../../generated/assets.dart';
-import 'package:flutter/material.dart';
-import 'package:nb_utils/nb_utils.dart';
-
 import '../controllers/forget_password_controller.dart';
 
 class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
@@ -23,8 +18,8 @@ class ForgetPasswordScreen extends GetView<ForgetPasswordController> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
     return AppScaffold(
       isCenterTitle: true,
       appBartitleText: locale.value.resetPassword,

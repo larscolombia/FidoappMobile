@@ -1,12 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/components/custom_alert_dialog_widget.dart';
-import 'package:pawlly/modules/components/boton_compartir.dart';
-import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
@@ -15,8 +10,6 @@ import 'package:pawlly/modules/integracion/controller/balance/balance_controller
 import 'package:pawlly/modules/integracion/controller/balance/producto_pay_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
-import 'package:pawlly/modules/integracion/model/balance/producto_pay_model.dart';
-import 'package:pawlly/modules/integracion/model/curosos/cursos_model.dart';
 
 class CursosDetalles extends StatelessWidget {
   final String? cursoId;
@@ -162,7 +155,7 @@ class CursosDetalles extends StatelessWidget {
                                       style: Styles.textTituloLibros),
                                   Container(
                                     width:
-                                        MediaQuery.of(context).size.width / 2,
+                                        MediaQuery.sizeOf(context).width / 2,
                                     child: Text(curso.name,
                                         style: const TextStyle(
                                           fontSize: 18,

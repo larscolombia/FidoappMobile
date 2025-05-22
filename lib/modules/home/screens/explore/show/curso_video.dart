@@ -24,7 +24,7 @@ class CursoVideo extends StatefulWidget {
   final String tipovideo;
   final String? dateCreated;
 
-  CursoVideo({
+  const CursoVideo({
     super.key,
     required this.videoId,
     required this.cursoId,
@@ -50,6 +50,7 @@ class _CursoVideoState extends State<CursoVideo> {
 
   @override
   void initState() {
+    super.initState();
     if (widget.tipovideo == "blogs") {
       _commentController.fetchComments(widget.cursoId, "blog");
       _commentController.updateField('blog_id', widget.cursoId);
@@ -73,7 +74,7 @@ class _CursoVideoState extends State<CursoVideo> {
   @override
   Widget build(BuildContext context) {
     // Llamamos a la función fetchComments solo después de que el widget se haya construido
-    var width = MediaQuery.of(context).size.width;
+    var width = MediaQuery.sizeOf(context).width;
     var margen = Helper.margenDefault;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -83,7 +84,7 @@ class _CursoVideoState extends State<CursoVideo> {
             // Contenedor para el video
             Container(
               height: width,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               decoration: const BoxDecoration(color: Colors.white),
               child: YouTubeVideoPlayer(
                 videoUrl: widget.videoUrl,
@@ -168,7 +169,7 @@ class _CursoVideoState extends State<CursoVideo> {
                       // Botón de compartir
                       /**
                         SizedBox(
-                        width: MediaQuery.of(context).size.width - 100,
+                        width: MediaQuery.sizeOf(context).width - 100,
                         child: BotonCompartir(
                           modo: "compartir",
                           onCompartir: () {
@@ -198,7 +199,7 @@ class _CursoVideoState extends State<CursoVideo> {
                       /**
                       if (widget.tipovideo == "video")
                         Container(
-                          width: MediaQuery.of(context).size.width - 100,
+                          width: MediaQuery.sizeOf(context).width - 100,
                           child: GestureDetector(
                               onTap: () {
                                 print(
@@ -238,7 +239,7 @@ class _CursoVideoState extends State<CursoVideo> {
                           children: [
                             Estadisticas(
                               comentarios: '${_commentController.comments.length} ',
-                              calificacion: "${_commentController.calculateAverageRating().toStringAsFixed(2)}",
+                              calificacion: _commentController.calculateAverageRating().toStringAsFixed(2),
                               avatars: _commentController.getTopAvatars(),
                             ),
                             SizedBox(height: margen),
@@ -319,7 +320,7 @@ class _CursoVideoState extends State<CursoVideo> {
                           ),
                         );
                       }),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       // Componente para recargar comentarios
                       RecargaComponente(
                         callback: () => _refreshComments(),

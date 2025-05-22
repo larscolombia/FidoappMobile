@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
-import 'package:pawlly/modules/components/historia_componente.dart';
 import 'package:pawlly/modules/components/historia_grid.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -35,7 +32,7 @@ class VerPasaporteMascota extends StatelessWidget {
     var mascota = _homeController.selectedProfile.value!;
     var padding = Helper.paddingDefault;
     var margen = Helper.margenDefault;
-    var ancho = MediaQuery.of(context).size.width;
+    var ancho = MediaQuery.sizeOf(context).width;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -44,7 +41,7 @@ class VerPasaporteMascota extends StatelessWidget {
           // Primer contenedor (fondo o header)
           Container(
             height: 160,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.sizeOf(context).width,
             decoration: const BoxDecoration(
               color: Color(0xFFFEF7E5), // Color de fondo ajustado
             ),
@@ -258,7 +255,7 @@ class InfoMascota extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery.sizeOf(context).width,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: const BoxDecoration(
           border: Border(

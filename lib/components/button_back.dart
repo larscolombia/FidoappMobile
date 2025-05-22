@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/generated/assets.dart';
-import 'package:pawlly/styles/styles.dart';
 //import 'package:pawlly_employee/generated/assets.dart';
 
 class ButtonBack extends StatelessWidget {
@@ -21,7 +20,7 @@ class ButtonBack extends StatelessWidget {
                 .flechita, // Asegúrate de que 'flechita' sea un archivo SVG en tu carpeta de assets
             height: 16,
             width: 16,
-            color: Color(0xFF383838),
+            color: const Color(0xFF383838),
             
             fit: BoxFit.contain,
             placeholderBuilder: (context) => const Icon(Icons

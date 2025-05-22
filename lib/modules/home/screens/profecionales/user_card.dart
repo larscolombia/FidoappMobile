@@ -2,17 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/model/user_type/user_model.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
-import 'package:pawlly/services/auth_service_apis.dart';
 
 class UserCard extends StatelessWidget {
   final User user;
 
-  UserCard({Key? key, required this.user}) : super(key: key);
+  UserCard({super.key, required this.user});
   final UserProfileController profileController =
       Get.find<UserProfileController>();
   @override
@@ -37,7 +35,7 @@ class UserCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: Color.fromARGB(255, 179, 173, 173),
+            color: const Color.fromARGB(255, 179, 173, 173),
             width: .2,
           ),
         ),
@@ -102,7 +100,7 @@ class UserCard extends StatelessWidget {
                         color: Colors.orange,
                         size: 16,
                       ),
-                      SizedBox(width: 4),
+                      const SizedBox(width: 4),
                       Text(
                         roundedRating,
                         style: const TextStyle(
@@ -113,7 +111,7 @@ class UserCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      Container(
+                      SizedBox(
                         width: 100,
                         child: Text(
                           user.profile?.expert ?? '',

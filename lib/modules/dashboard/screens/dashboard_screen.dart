@@ -105,7 +105,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(context).size.width - 100,
+                            width: MediaQuery.sizeOf(context).width - 100,
                             child: BarraBack(
                               titulo: 'Dashboard',
                               callback: () {

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/helper/helper.dart';
-
 import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/widgets/comments_section.dart';
-import 'package:pawlly/modules/profile/screens/components/profile_action.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_details.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_header.dart';
 import 'package:pawlly/modules/profile/screens/components/sobremi.dart';
@@ -54,7 +52,7 @@ class _PublicProfilePageState extends State<PublicProfilePage> {
             children: [
               ProfileHeader(
                 profileController: profileController,
-                headerHeight: MediaQuery.of(context).size.height / 8,
+                headerHeight: MediaQuery.sizeOf(context).height / 8,
               ),
               const SizedBox(height: 20),
               ProfileDetails(

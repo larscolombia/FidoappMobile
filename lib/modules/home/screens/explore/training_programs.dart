@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/cursos/cursos_entrenamiento.dart';
-import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
 import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_model.dart';
-import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class TrainingPrograms extends StatelessWidget {
@@ -37,7 +34,7 @@ class TrainingPrograms extends StatelessWidget {
   Widget build(BuildContext context) {
     var margin = 4.00;
 
-    final double screenWidth = MediaQuery.of(context).size.width;
+    final double screenWidth = MediaQuery.sizeOf(context).width;
     // Ajuste dinámico del ancho de la imagen basado en el ancho de la pantalla
     final double imageWidth =
         screenWidth * 0.30; // Reduje el porcentaje para más espacio de texto

@@ -27,7 +27,7 @@ class Training extends StatelessWidget {
         if (miscursos.courses.isNotEmpty) ...[
           Center(
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               child: Text(
                 controller.selectedIndex.value == 0
                     ? 'Entrenamientos'

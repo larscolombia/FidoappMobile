@@ -12,8 +12,8 @@ class Inicio extends StatelessWidget {
           children: [
             HeaderNotification(),
             Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.sizeOf(context).width,
+              height: MediaQuery.sizeOf(context).height,
               color: Colors.white,
             ),
           ],

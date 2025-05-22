@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/main.dart';
-import 'package:pawlly/modules/add_pet/screens/add_pet_screen.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
-import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ProfilesDogs extends StatelessWidget {
@@ -23,7 +19,7 @@ class ProfilesDogs extends StatelessWidget {
   final bool showAge;
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     return PerfilMascotas(
       controller: controller,
       width: width,

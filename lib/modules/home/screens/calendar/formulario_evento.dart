@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
-import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/components/user_select.dart';
 import 'package:pawlly/modules/helper/helper.dart';
@@ -19,9 +18,7 @@ import 'package:pawlly/modules/integracion/controller/lista_categoria_servicio/c
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/integracion/controller/servicio_entrenador_categoria/servicio_entrenador_categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
-import 'package:pawlly/modules/integracion/model/balance/producto_pay_model.dart';
 import 'package:pawlly/modules/integracion/model/lista_categoria_servicio/category_model.dart';
-import 'package:pawlly/components/custom_snackbar.dart';
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({Key? key}) : super(key: key);
@@ -180,7 +177,7 @@ class _CreateEventState extends State<CreateEvent> {
 
   @override
   Widget build(BuildContext context) {
-    final double ancho = MediaQuery.of(context).size.width;
+    final double ancho = MediaQuery.sizeOf(context).width;
     final EdgeInsets defaultPadding =
         const EdgeInsets.symmetric(horizontal: 26.0);
     final double inputWidth = ancho - defaultPadding.horizontal;

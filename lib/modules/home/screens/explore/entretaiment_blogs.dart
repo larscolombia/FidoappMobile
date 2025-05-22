@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
 import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
@@ -55,7 +53,7 @@ class EntertainmentBlogs extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.only(right: 16),
                     padding: const EdgeInsets.all(18),
-                    width: MediaQuery.of(context).size.width * 0.8,
+                    width: MediaQuery.sizeOf(context).width * 0.8,
                     decoration: BoxDecoration(
                       color: Styles.whiteColor,
                       borderRadius: BorderRadius.circular(10),
@@ -122,7 +120,7 @@ class EntertainmentBlogs extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(5),
                                 ),
                                 child: Text(
-                                  "${video.duration ?? "0"}",
+                                  video.duration ?? "0",
                                   style: const TextStyle(
                                     fontFamily: 'Lato',
                                     fontSize: 12,

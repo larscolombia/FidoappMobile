@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/modules/components/checkbox2.dart';
 import 'package:pawlly/modules/components/custom_checkbox.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
@@ -9,8 +8,7 @@ import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_co
 class FiltrarActividad extends StatefulWidget {
   final PetActivityController controller;
 
-  const FiltrarActividad({Key? key, required this.controller})
-      : super(key: key);
+  const FiltrarActividad({super.key, required this.controller});
 
   static void show(BuildContext context, PetActivityController controller) {
     showDialog(
@@ -114,7 +112,7 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
                             });
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                             width: 8), // Espacio entre el checkbox y el texto
                         Text(
                           option,
@@ -205,7 +203,7 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
                           ],
                         ),
                       );
-                    }).toList(),
+                    }),
                     if (controller.categories.length > 3)
                       Align(
                         alignment: Alignment.centerLeft,

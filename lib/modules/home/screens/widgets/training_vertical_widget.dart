@@ -1,15 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/models/training_model.dart';
 import 'package:pawlly/modules/components/baner_entrenamiento.dart';
 import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
 import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_usuarios.dart';
-import 'package:pawlly/styles/styles.dart';
 
 class TrainingVertical extends StatelessWidget {
   final List<CursosUsuarios> cursoslista;
@@ -19,7 +14,7 @@ class TrainingVertical extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double imageWidth = MediaQuery.of(context).size.width * 0.5;
+    final double imageWidth = MediaQuery.sizeOf(context).width * 0.5;
 
     return Column(
       children: cursoslista.map((trainingModel) {

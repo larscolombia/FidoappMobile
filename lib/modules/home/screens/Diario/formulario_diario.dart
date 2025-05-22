@@ -36,7 +36,7 @@ class FormularioDiario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     final margen = 16.0;
     return Scaffold(
       body: Stack(

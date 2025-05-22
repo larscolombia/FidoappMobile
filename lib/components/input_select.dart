@@ -92,7 +92,7 @@ class InputSelect extends StatelessWidget {
         const SizedBox(height: 8),
         ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.90,
+            maxWidth: MediaQuery.sizeOf(context).width * 0.90,
           ),
           child: ButtonTheme(
             alignedDropdown: true,

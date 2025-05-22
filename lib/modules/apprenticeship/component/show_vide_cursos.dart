@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:pawlly/generated/assets.dart';
 
 class ShowVideoCursos extends StatelessWidget {
   final String img;
@@ -9,7 +7,6 @@ class ShowVideoCursos extends StatelessWidget {
   const ShowVideoCursos({super.key, required this.img, this.numero = '1'});
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return SizedBox(
       width: 30,
       child: Row(
@@ -36,13 +33,13 @@ class ShowVideoCursos extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 175,
                   child: Column(
                     children: [
                       SizedBox(
                         width: 148,
-                        child: const Text('Title del curso',
+                        child: Text('Title del curso',
                             style: TextStyle(
                               fontSize: 14,
                               fontFamily: 'Lato',
@@ -51,7 +48,7 @@ class ShowVideoCursos extends StatelessWidget {
                       ),
                       SizedBox(
                         width: 148,
-                        child: const Text(
+                        child: Text(
                           '4 minutos',
                           textAlign: TextAlign.start,
                           style: TextStyle(

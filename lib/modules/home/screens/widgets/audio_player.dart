@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:get/get.dart';
-import 'dart:io'; // Para manejar archivos locales
+import 'package:just_audio/just_audio.dart';
 
 class AudioPlayerController extends GetxController {
   final AudioPlayer player = AudioPlayer();

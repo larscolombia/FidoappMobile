@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/models/pet_list_res_model.dart';
-import 'package:pawlly/modules/components/reportar_mascota.dart';
-
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
-
 import 'package:pawlly/modules/home/screens/calendar/activity_list.dart';
 import 'package:pawlly/modules/home/screens/calendar/calendar.dart';
 import 'package:pawlly/modules/home/screens/explore/entretaiment_blogs.dart';
 import 'package:pawlly/modules/home/screens/explore/explore_input.dart';
 import 'package:pawlly/modules/home/screens/explore/training_programs.dart';
+import 'package:pawlly/modules/home/screens/pages/explorar_container.dart';
+import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
+import 'package:pawlly/modules/home/screens/pages/resources.dart';
 import 'package:pawlly/modules/home/screens/pages/resources_list/ebooks_list.dart';
 import 'package:pawlly/modules/home/screens/pages/resources_list/video_list.dart';
 import 'package:pawlly/modules/home/screens/pages/training.dart';
@@ -22,16 +21,10 @@ import 'package:pawlly/modules/home/screens/widgets/menu_of_navigation.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
-
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
 import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
-
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
-
-import 'package:pawlly/modules/home/screens/pages/explorar_container.dart';
-import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
-import 'package:pawlly/modules/home/screens/pages/resources.dart';
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/provider/push_provider.dart';
@@ -40,7 +33,7 @@ import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -54,8 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
 
   // carga el el historial de las mascotas
-  final PetActivityController historialClinicoController =
-      Get.put(PetActivityController());
+  final PetActivityController historialClinicoController = Get.put(PetActivityController());
 
   //carga los blogs
   final BlogController blogController = Get.put(BlogController());
@@ -63,16 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
   //eventos del calendario
   final CalendarController calendarController = Get.put(CalendarController());
 
-  final UserBalanceController userBalanceController =
-      Get.put(UserBalanceController());
+  final UserBalanceController userBalanceController = Get.put(UserBalanceController());
 
-  final NotificationController notificationController =
-      Get.put(NotificationController());
+  final NotificationController notificationController = Get.put(NotificationController());
 
   final PushProvider pushProvider = Get.put(PushProvider());
 
-  final UserProfileController profileController =
-      Get.put(UserProfileController());
+  final UserProfileController profileController = Get.put(UserProfileController());
   @override
   void initState() {
     super.initState();
@@ -91,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SingleChildScrollView(
             child: Container(
               constraints: BoxConstraints(
-                minHeight: MediaQuery.of(context).size.height,
+                minHeight: MediaQuery.sizeOf(context).height,
               ),
               color: Colors.white,
               child: Column(
@@ -101,18 +90,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Agregar animación para mostrar/ocultar el contenedor de notificaciones
 
                   AnimatedOpacity(
-                    opacity:
-                        AuthServiceApis.dataCurrentUser.deviceToken == 'null'
-                            ? 1.0
-                            : 0.0,
-                    duration:
-                        Duration(milliseconds: 0), // Duración de la animación
+                    opacity: AuthServiceApis.dataCurrentUser.deviceToken == 'null' ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 0), // Duración de la animación
                     child: AuthServiceApis.dataCurrentUser.deviceToken == 'null'
                         ? Center(
                             child: Container(
                               height: 50,
                               width: 300,
-                              margin: EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
                               child: GestureDetector(
                                 onTap: () {
                                   var token = PushProvider();
@@ -127,9 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     child: Obx(() {
                                       return Text(
-                                        pushProvider.isLoading.value
-                                            ? "Cargando..."
-                                            : 'Activar Notificaciones aquí',
+                                        pushProvider.isLoading.value ? "Cargando..." : 'Activar Notificaciones aquí',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -143,8 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                           )
-                        : const SizedBox
-                            .shrink(), // Si el token es 'null', no muestra nada
+                        : const SizedBox.shrink(), // Si el token es 'null', no muestra nada
                   ),
                   Container(
                     decoration: const BoxDecoration(
@@ -180,8 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Obx(() {
-            if (homeController.selectedIndex.value == 5 ||
-                homeController.selectedIndex.value == 6) {
+            if (homeController.selectedIndex.value == 5 || homeController.selectedIndex.value == 6) {
               return const SizedBox(height: 100);
             }
             return Positioned(
@@ -202,8 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (AuthServiceApis.dataCurrentUser.userType != 'user')
-            ProfilesDogs(),
+          if (AuthServiceApis.dataCurrentUser.userType != 'user') ProfilesDogs(),
           if (AuthServiceApis.dataCurrentUser.userType == 'user')
             Container(
               child: Row(
@@ -213,12 +193,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   Flexible(
                     flex: 9,
                     child: Container(
-                      child:
-                          ProfilesDogs(), // Asegúrate de que ProfilesDogs sea completamente responsivo.
+                      child: ProfilesDogs(), // Asegúrate de que ProfilesDogs sea completamente responsivo.
                     ),
                   ),
                   // Widget del 30%
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Flexible(
                     flex: 3,
                     child: GestureDetector(
@@ -248,8 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Text(
                               'Profesionales',
                               maxLines: 1, // Limita el texto a una sola línea
-                              overflow: TextOverflow
-                                  .ellipsis, // Muestra "..." si el texto se desborda
+                              overflow: TextOverflow.ellipsis, // Muestra "..." si el texto se desborda
                               style: TextStyle(
                                 color: Colors.black,
                                 fontFamily: "Lato",
@@ -272,20 +250,18 @@ class _HomeScreenState extends State<HomeScreen> {
           const Explore(),
           const SizedBox(height: 16),
           if (calendarController.filteredCalendars.isNotEmpty)
-            const Text(
-              'Próximos Eventos',
-              style: TextStyle(
-                color: Styles.primaryColor,
-                fontFamily: Styles.fuente2,
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-              ),
+          const Text(
+            'Próximos Eventos',
+            style: TextStyle(
+              color: Styles.primaryColor,
+              fontFamily: Styles.fuente2,
+              fontSize: 20,
+              fontWeight: FontWeight.w400,
             ),
+          ),
           const SizedBox(height: 16),
-          if (calendarController.filteredCalendars.isNotEmpty)
-            EventosProximos(calendarController: calendarController),
-          if (calendarController.filteredCalendars.isNotEmpty)
-            const SizedBox(height: 16),
+          if (calendarController.filteredCalendars.isNotEmpty) EventosProximos(calendarController: calendarController),
+          if (calendarController.filteredCalendars.isNotEmpty) const SizedBox(height: 16),
           Utilities(),
           const SizedBox(height: 16),
           Training(),
@@ -388,8 +364,7 @@ class EventosProximos extends StatelessWidget {
       children: [
         Obx(() {
           // Obtener los eventos más próximos
-          List<CalendarModel> nearestEvents =
-              calendarController.getTwoNearestEvents();
+          List<CalendarModel> nearestEvents = calendarController.getTwoNearestEvents();
 
           if (nearestEvents.isEmpty) {
             return const Text(
@@ -406,7 +381,7 @@ class EventosProximos extends StatelessWidget {
               child: Column(
                 children: nearestEvents.map((event) {
                   return Container(
-                    width: MediaQuery.of(context).size.width * 100,
+                    width: MediaQuery.sizeOf(context).width * 100,
                     decoration: BoxDecoration(
                       color: Styles.fiveColor,
                       borderRadius: BorderRadius.circular(16),
@@ -442,20 +417,13 @@ class EventosProximos extends StatelessWidget {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  calendarController
-                                      .toggleVerMas("${event.id}");
+                                  calendarController.toggleVerMas("${event.id}");
                                 },
                                 child: Obx(() {
                                   return Text(
                                     event.description ?? '',
-                                    maxLines: calendarController
-                                                .isVerMas[event.id ?? ''] ??
-                                            false
-                                        ? 4
-                                        : 1,
-                                    overflow: calendarController
-                                                .isVerMas[event.id ?? 0] ??
-                                            false
+                                    maxLines: calendarController.isVerMas[event.id ?? ''] ?? false ? 4 : 1,
+                                    overflow: calendarController.isVerMas[event.id ?? 0] ?? false
                                         ? TextOverflow.visible
                                         : TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -471,9 +439,7 @@ class EventosProximos extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    calendarController.formatEventTime(
-                                            event.eventime ?? "",
-                                            event.date ?? "") ??
+                                    calendarController.formatEventTime(event.eventime ?? "", event.date ?? "") ??
                                         'Hora no especificada',
                                     style: const TextStyle(
                                       fontSize: 14,

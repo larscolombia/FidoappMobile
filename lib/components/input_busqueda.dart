@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart'; // Import flutter_svg
 import 'package:pawlly/modules/components/input_text.dart';
 
 class InputBusqueda extends StatelessWidget {

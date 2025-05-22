@@ -12,8 +12,8 @@ class TermsConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
     return AppScaffold(
       body: Container(
         padding: Styles.paddingAll,
@@ -104,7 +104,7 @@ class NumTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
     return Column(children: [
       Container(
         width: width,

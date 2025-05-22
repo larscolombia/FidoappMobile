@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
-import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_controller.dart';
 import 'package:pawlly/modules/integracion/controller/soun/soun_controller.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -25,14 +24,14 @@ class _UtilitiesState extends State<Utilities> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.sizeOf(context).width;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Eliminamos el Center para evitar centrar el contenedor completo
         Container(
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery.sizeOf(context).width,
           // Aseguramos la alineación del contenido a la izquierda
           alignment: Alignment.centerLeft,
           child: const Text(
@@ -63,7 +62,7 @@ class _UtilitiesState extends State<Utilities> {
                 final tool = tools[index];
 
                 return Container(
-                  width: MediaQuery.of(context).size.width / 3.7,
+                  width: MediaQuery.sizeOf(context).width / 3.7,
                   child: ToolWidget(
                     index: index,
                     imagePath: _getImageForTool(index),

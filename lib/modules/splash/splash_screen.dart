@@ -5,11 +5,11 @@ import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/welcome/screens/welcome_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/utils/app_common.dart';
+
 import '../../components/app_scaffold.dart';
 import '../../generated/assets.dart';
 import '../home/controllers/home_controller.dart';
 import 'splash_controller.dart';
-import '../../utils/constants.dart';
 
 class SplashScreen extends StatelessWidget {
   final SplashScreenController splashController =
@@ -33,7 +33,7 @@ class SplashScreen extends StatelessWidget {
             if (snapshot.data == true &&
                 AuthServiceApis.currentUser.value != null) {
               await Get.offAll(
-                () => HomeScreen(),
+                () => const HomeScreen(),
                 binding: BindingsBuilder(() {
                   Get.put(HomeController());
                 }),
