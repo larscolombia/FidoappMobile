@@ -238,10 +238,15 @@ class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidge
     var size = renderBox.size;
     var offset = renderBox.localToGlobal(Offset.zero);
 
+    // Para listados de más de 5 elementos se incrementa el tamaño
+    // para lograr un efecto que muestra que existen más elementos
+    final itemHeight = widget.items!.length <= 5 ? 56.0 : 59.0;
+    final maxItems = widget.items!.length > 5 ? 5 : widget.items!.length;
+    final maxHeight = maxItems * itemHeight;
+
     return OverlayEntry(
       builder: (context) => Stack(
         children: [
-          // Detector de clics para cerrar el overlay cuando se hace clic fuera
           Positioned.fill(
             child: GestureDetector(
               onTap: () => _removeOverlay(),
@@ -256,7 +261,6 @@ class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidge
             left: offset.dx,
             width: size.width,
             top: offset.dy + size.height,
-            bottom: 0,
             child: CompositedTransformFollower(
               link: _layerLink,
               showWhenUnlinked: false,
@@ -264,6 +268,10 @@ class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidge
                 elevation: 4.0,
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
+                  constraints: BoxConstraints(
+                    maxHeight: maxHeight,
+                  ),
+                  clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(color: Colors.orange),
@@ -273,6 +281,8 @@ class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidge
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     children: widget.items!.map((item) {
+                      /// `itemHeight` es una constante que es igual
+                      /// a la altura de esta columna.
                       return Column(children: [
                         ListTile(
                           title: Text(item,

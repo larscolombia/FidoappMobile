@@ -63,7 +63,8 @@ class _CustomSelectWidgetState extends State<CustomSelectWidget> {
         _selectedLabel = match.label;
       }
     }
-    if (widget.autovalidateMode == AutovalidateMode.always || widget.autovalidateMode == AutovalidateMode.onUserInteraction) {
+    if (widget.autovalidateMode == AutovalidateMode.always ||
+        widget.autovalidateMode == AutovalidateMode.onUserInteraction) {
       WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
     }
   }
@@ -85,7 +86,8 @@ class _CustomSelectWidgetState extends State<CustomSelectWidget> {
     final isEnabled = widget.enabled ?? true;
     final hasText = _selectedLabel != null && _selectedLabel!.isNotEmpty;
     String? errorText;
-    if (widget.autovalidateMode == AutovalidateMode.always || (widget.autovalidateMode == AutovalidateMode.onUserInteraction && hasText)) {
+    if (widget.autovalidateMode == AutovalidateMode.always ||
+        (widget.autovalidateMode == AutovalidateMode.onUserInteraction && hasText)) {
       errorText = _validate();
     }
 
@@ -113,7 +115,7 @@ class _CustomSelectWidgetState extends State<CustomSelectWidget> {
                 if (!isEnabled) return;
                 if (_overlayEntry == null) {
                   _overlayEntry = _createOverlayEntry();
-                  Overlay.of(context)?.insert(_overlayEntry!);
+                  Overlay.of(context).insert(_overlayEntry!);
                 } else {
                   _removeOverlay();
                 }
@@ -151,7 +153,9 @@ class _CustomSelectWidgetState extends State<CustomSelectWidget> {
                             height: 24,
                             child: SvgPicture.asset(
                               widget.placeholderSvg!,
-                              colorFilter: widget.placeholderSvgColor != null ? ColorFilter.mode(widget.placeholderSvgColor!, BlendMode.srcIn) : null,
+                              colorFilter: widget.placeholderSvgColor != null
+                                  ? ColorFilter.mode(widget.placeholderSvgColor!, BlendMode.srcIn)
+                                  : null,
                             ),
                           ),
                         )
@@ -230,62 +234,79 @@ class _CustomSelectWidgetState extends State<CustomSelectWidget> {
     final size = renderBox.size;
     final offset = renderBox.localToGlobal(Offset.zero);
 
+    // Para listados de más de 5 elementos se incrementa el tamaño
+    // para lograr un efecto que muestra que existen más elementos
+    final itemHeight = widget.items!.length <= 5 ? 56.0 : 59.0;
+    final maxItems = widget.items!.length > 5 ? 5 : widget.items!.length;
+    final maxHeight = maxItems * itemHeight;
+
     return OverlayEntry(
-      builder: (ctx) => Positioned(
-        left: offset.dx,
-        width: size.width,
-        top: offset.dy + size.height + 5,
-        child: CompositedTransformFollower(
-          link: _layerLink,
-          showWhenUnlinked: false,
-          child: Material(
-            elevation: 4,
-            borderRadius: BorderRadius.circular(16),
+      builder: (ctx) => Stack(children: [
+        Positioned.fill(
+          child: GestureDetector(
+            onTap: () => _removeOverlay(),
+            behavior: HitTestBehavior.opaque,
             child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: const Color(0xFFFC9214)),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 250),
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: widget.items?.length ?? 0,
-                  itemBuilder: (_, i) {
-                    final option = widget.items![i];
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Text(option.label,
-                              style: const TextStyle(
-                                fontFamily: 'Lato',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF535251),
-                              )),
-                          onTap: () {
-                            setState(() {
-                              _selectedLabel = option.label;
-                              widget.controller?.text = option.value;
-                              _removeOverlay();
-                            });
-                            widget.onChange?.call(option.value);
-                          },
-                        ),
-                        const Divider(
-                          height: 0.2,
-                          color: Color(0xFFFCBA67),
-                        ),
-                      ],
-                    );
-                  },
+              color: Colors.transparent,
+            ),
+          ),
+        ),
+        Positioned(
+          left: offset.dx,
+          width: size.width,
+          top: offset.dy + size.height + 5,
+          child: CompositedTransformFollower(
+            link: _layerLink,
+            showWhenUnlinked: false,
+            child: Material(
+              elevation: 4,
+              borderRadius: BorderRadius.circular(16),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: const Color(0xFFFC9214)),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: maxHeight),
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: widget.items?.length ?? 0,
+                    itemBuilder: (_, i) {
+                      final option = widget.items![i];
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Text(option.label,
+                                style: const TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color(0xFF535251),
+                                )),
+                            onTap: () {
+                              setState(() {
+                                _selectedLabel = option.label;
+                                widget.controller?.text = option.value;
+                                _removeOverlay();
+                              });
+                              widget.onChange?.call(option.value);
+                            },
+                          ),
+                          const Divider(
+                            height: 0.2,
+                            color: Color(0xFFFCBA67),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
+      ]),
     );
   }
 
