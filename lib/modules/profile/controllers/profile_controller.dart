@@ -41,7 +41,7 @@ class ProfileController extends GetxController {
     nameController.value.text = currentUser.firstName;
     lastNameController.value.text = currentUser.lastName;
     emailController.value.text = currentUser.email;
-    userGenCont.value.text = currentUser.gender;
+    userGenCont.value.text = mapGender(currentUser.gender);
     userTypeCont.value.text = currentUser.userType;
     profileImagePath.value = currentUser.profileImage; // Imagen de perfil del usuario
 
@@ -302,5 +302,18 @@ class ProfileController extends GetxController {
       ),
       barrierDismissible: true,
     );
+  }
+
+  String mapGender(String gender) {
+    switch (gender) {
+      case 'female':
+        return 'Mujer';
+      case 'male':
+        return 'Hombre';
+      case 'others':
+        return 'Prefiero no decirlo';
+      default:
+        return '';
+    }
   }
 }

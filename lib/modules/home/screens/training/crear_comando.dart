@@ -30,14 +30,10 @@ class _CrearComandoState extends State<CrearComando> {
 
   // Validación del formulario
   void validateForm() {
-    nameValid.value =
-        (controller.dataComando['name'] as String?)?.isEmpty ?? true;
-    vozComandoValid.value =
-        (controller.dataComando['voz_comando'] as String?)?.isEmpty ?? true;
-    instructionsValid.value =
-        (controller.dataComando['instructions'] as String?)?.isEmpty ?? true;
-    descriptionValid.value =
-        (controller.dataComando['description'] as String?)?.isEmpty ?? true;
+    nameValid.value = (controller.dataComando['name'] as String?)?.isEmpty ?? true;
+    vozComandoValid.value = (controller.dataComando['voz_comando'] as String?)?.isEmpty ?? true;
+    instructionsValid.value = (controller.dataComando['instructions'] as String?)?.isEmpty ?? true;
+    descriptionValid.value = (controller.dataComando['description'] as String?)?.isEmpty ?? true;
   }
 
   // Método para manejar el proceso de creación
@@ -47,10 +43,7 @@ class _CrearComandoState extends State<CrearComando> {
     validateForm();
 
     // Validar los campos antes de enviar la petición
-    if (nameValid.value ||
-        vozComandoValid.value ||
-        instructionsValid.value ||
-        descriptionValid.value) {
+    if (nameValid.value || vozComandoValid.value || instructionsValid.value || descriptionValid.value) {
       CustomSnackbar.show(
         title: 'Error',
         message: Helper.errorValidate,
@@ -60,8 +53,7 @@ class _CrearComandoState extends State<CrearComando> {
     }
 
     // Actualizar el ID de la mascota seleccionada
-    controller.updateField(
-        'pet_id', homeController.selectedProfile.value?.id ?? '');
+    controller.updateField('pet_id', homeController.selectedProfile.value?.id ?? '');
 
     // Cambiar el estado de carga
     controller.isLoading.value = true;
@@ -69,6 +61,7 @@ class _CrearComandoState extends State<CrearComando> {
     // Llamar a la API para crear el comando
     controller.postCommand(controller.dataComando).then((response) {
       controller.isLoading.value = false; // Terminar carga
+      controller.fetchComandos(homeController.selectedProfile.value!.id.toString());
       // Si necesitas manejar una respuesta, puedes hacerlo aquí.
     }).catchError((error) {
       controller.isLoading.value = false; // Terminar carga
@@ -112,8 +105,7 @@ class _CrearComandoState extends State<CrearComando> {
                         child: const Align(
                           alignment: Alignment.bottomCenter,
                           child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 0, vertical: 15),
+                            padding: EdgeInsets.symmetric(horizontal: 0, vertical: 15),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -207,8 +199,7 @@ class _CrearComandoState extends State<CrearComando> {
                                 return InputText(
                                   label: 'Nombre del Comando',
                                   placeholder: '',
-                                  errorText:
-                                      nameValid.value ? 'Campo requerido' : '',
+                                  errorText: nameValid.value ? 'Campo requerido' : '',
                                   onChanged: (value) {
                                     controller.updateField('name', value);
                                   },
@@ -218,12 +209,9 @@ class _CrearComandoState extends State<CrearComando> {
                                 return InputText(
                                   label: 'Descripción del Comando',
                                   placeholder: '',
-                                  errorText: descriptionValid.value
-                                      ? 'Campo requerido'
-                                      : '',
+                                  errorText: descriptionValid.value ? 'Campo requerido' : '',
                                   onChanged: (value) {
-                                    controller.updateField(
-                                        'description', value);
+                                    controller.updateField('description', value);
                                   },
                                 );
                               }),
@@ -231,12 +219,9 @@ class _CrearComandoState extends State<CrearComando> {
                                 return InputText(
                                   label: 'Voz del Comando',
                                   placeholder: '',
-                                  errorText: vozComandoValid.value
-                                      ? 'Campo requerido'
-                                      : '',
+                                  errorText: vozComandoValid.value ? 'Campo requerido' : '',
                                   onChanged: (value) {
-                                    controller.updateField(
-                                        'voz_comando', value);
+                                    controller.updateField('voz_comando', value);
                                   },
                                 );
                               }),
@@ -244,12 +229,9 @@ class _CrearComandoState extends State<CrearComando> {
                                 return InputText(
                                   label: 'Instrucciones del Comando',
                                   placeholder: '',
-                                  errorText: instructionsValid.value
-                                      ? 'Campo requerido'
-                                      : '',
+                                  errorText: instructionsValid.value ? 'Campo requerido' : '',
                                   onChanged: (value) {
-                                    controller.updateField(
-                                        'instructions', value);
+                                    controller.updateField('instructions', value);
                                   },
                                 );
                               }),
@@ -262,9 +244,7 @@ class _CrearComandoState extends State<CrearComando> {
                           return SizedBox(
                             width: double.infinity,
                             child: ButtonDefaultWidget(
-                              title: controller.isLoading.value
-                                  ? 'Creando...'
-                                  : 'Crear comando',
+                              title: controller.isLoading.value ? 'Creando...' : 'Crear comando',
                               callback: controller.isLoading.value
                                   ? null // Desactiva el botón mientras se carga
                                   : handleCreateCommand,

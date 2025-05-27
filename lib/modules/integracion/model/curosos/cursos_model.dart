@@ -1,15 +1,22 @@
 class Video {
   String id;
+  String title;
+  String thumbnail;
+  String duration;
+  String durationText;
   String coursePlatformId;
   String url;
   String video;
   String? visualizations;
-
   DateTime createdAt;
   DateTime updatedAt;
 
   Video({
     required this.id,
+    required this.title,
+    required this.thumbnail,
+    required this.duration,
+    required this.durationText,
     required this.coursePlatformId,
     required this.url,
     required this.video,
@@ -21,13 +28,22 @@ class Video {
   factory Video.fromJson(Map<String, dynamic> json) {
     return Video(
       id: json['id'].toString(),
+      title: json['title'] ?? '',
+      thumbnail: json['thumbnail'] ?? '',
+      duration: json['duration'] ?? '',
+      durationText: json['duration_text'] ?? '',
       coursePlatformId: json['course_platform_id'].toString(),
-      url: json['url'],
-      video: json['video'],
-      visualizations: json['visualizations'].toString(),
+      url: json['url'] ?? '',
+      video: json['video'] ?? '',
+      visualizations: json['visualizations']?.toString(),
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
     );
+  }
+
+  @override
+  String toString() {
+    return 'Video(id: $id, title: $title, thumbnail: $thumbnail, duration: $duration, durationText: $durationText, coursePlatformId: $coursePlatformId, url: $url, video: $video, visualizations: $visualizations, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 }
 

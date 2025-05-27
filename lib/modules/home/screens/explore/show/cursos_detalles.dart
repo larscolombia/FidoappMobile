@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -14,13 +15,11 @@ import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.d
 class CursosDetalles extends StatelessWidget {
   final String? cursoId;
   CursosDetalles({super.key, this.cursoId});
-  final CourseController controller = Get.put(CourseController());
+  final CourseController controller = Get.find();
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
-  final ProductoPayController compraController =
-      Get.put(ProductoPayController());
+  final ProductoPayController compraController = Get.put(ProductoPayController());
 
-  final UserBalanceController balanceController =
-      Get.put(UserBalanceController());
+  final UserBalanceController balanceController = Get.put(UserBalanceController());
   String dificultad(String dificultad) {
     switch (dificultad) {
       case '1':
@@ -36,6 +35,9 @@ class CursosDetalles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchCourses();
+    });
     return Scaffold(
       body: Obx(() {
         if (controller.isLoading.value || miscursos.isLoading.value) {
@@ -43,6 +45,7 @@ class CursosDetalles extends StatelessWidget {
         }
 
         var curso = controller.getCourseById(int.parse(cursoId!));
+        print(curso.videos);
         // Todos los cursos son gratuitos, por lo que siempre serán considerados como adquiridos
         bool cursoAdquirido = true;
         print('cursoAdquirido s $cursoAdquirido');
@@ -97,11 +100,7 @@ class CursosDetalles extends StatelessWidget {
                         Text(
                           curso.description,
                           textAlign: TextAlign.start,
-                          style: const TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xFF383838)),
+                          style: const TextStyle(fontFamily: 'Lato', fontSize: 15, fontWeight: FontWeight.w400, color: Color(0xFF383838)),
                         ),
                         const SizedBox(height: 20),
                         Center(
@@ -151,11 +150,9 @@ class CursosDetalles extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text('Sección #${curso.id}',
-                                      style: Styles.textTituloLibros),
+                                  Text('Sección #${curso.id}', style: Styles.textTituloLibros),
                                   Container(
-                                    width:
-                                        MediaQuery.sizeOf(context).width / 2,
+                                    width: MediaQuery.sizeOf(context).width / 2,
                                     child: Text(curso.name,
                                         style: const TextStyle(
                                           fontSize: 18,
@@ -188,23 +185,23 @@ class CursosDetalles extends StatelessWidget {
                               Get.to(() => CursoVideo(
                                     videoId: video.url,
                                     cursoId: curso.id.toString(),
-                                    name: curso.name,
+                                    name: video.title,
                                     description: curso.description,
-                                    image: curso.image,
-                                    duration: curso.duration,
-                                    price:
-                                        'Gratis', // Cambiado precio a "Gratis"
+                                    image: video.thumbnail,
+                                    duration: video.duration,
+                                    price: 'Gratis', // Cambiado precio a "Gratis"
                                     difficulty: curso.difficulty,
                                     videoUrl: video.url,
                                     tipovideo: 'video',
+                                    dateCreated: DateFormat('dd-MM-yyyy').format(video.createdAt),
                                   ));
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 20),
                               child: MediaCard(
-                                imageUrl: curso.image,
-                                title: curso.name,
-                                duration: curso.duration,
+                                imageUrl: video.thumbnail,
+                                title: video.title,
+                                duration: video.durationText,
                               ),
                             ),
                           );
@@ -311,19 +308,11 @@ class ElementoInfo extends StatelessWidget {
             children: [
               Text(
                 title ?? 'Programa:',
-                style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                    fontFamily: 'Lato'),
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black, fontFamily: 'Lato'),
               ),
               Text(
                 velue ?? '10 Leciones',
-                style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.black,
-                    fontFamily: 'Lato'),
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: Colors.black, fontFamily: 'Lato'),
               ),
             ],
           )
@@ -388,7 +377,7 @@ class MediaCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Duración: $duration minutos',
+                  'Duración: $duration',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

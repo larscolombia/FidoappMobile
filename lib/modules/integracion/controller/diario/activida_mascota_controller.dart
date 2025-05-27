@@ -193,14 +193,14 @@ class PetActivityController extends GetxController {
       var url = Uri.parse('${BASE_URL}training-diaries/$diaryId');
       var headers = {
         'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-        'Content-Type': 'multipart/form-data',
       };
 
-      var request = http.MultipartRequest('PUT', url);
+      var request = http.MultipartRequest('POST', url);
       request.headers.addAll(headers);
 
       // Campos
       request.fields.addAll({
+        '_method': 'PUT',
         'actividadId': categoria_user_type(),
         'actividad': diario['actividad'],
         'date': diario['date'],
@@ -237,7 +237,7 @@ class PetActivityController extends GetxController {
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
             title: 'Éxito',
-            description: 'El Diario ha sido creado exitosamente.',
+            description: 'El Diario ha sido editado exitosamente.',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
               diario.value = {

@@ -52,11 +52,9 @@ class ProfileScreen extends StatelessWidget {
                             width: 124,
                             height: 124,
                             margin: EdgeInsets.only(top: 40),
-                            padding: const EdgeInsets.all(
-                                4), // Espacio entre la imagen y el borde
+                            padding: const EdgeInsets.all(4), // Espacio entre la imagen y el borde
                             decoration: BoxDecoration(
-                              color:
-                                  Styles.fiveColor, // Color de fondo del borde
+                              color: Styles.fiveColor, // Color de fondo del borde
                               shape: BoxShape.circle,
                               border: Border.all(
                                 color: Styles.iconColorBack, // Color del borde
@@ -70,19 +68,11 @@ class ProfileScreen extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                    image: controller
-                                            .profileImagePath.value.isNotEmpty
-                                        ? (controller.profileImagePath.value
-                                                .startsWith('http')
-                                            ? NetworkImage(controller
-                                                .profileImagePath
-                                                .value) as ImageProvider<Object>
-                                            : FileImage(
-                                                    File(controller.profileImagePath.value))
-                                                as ImageProvider<Object>)
-                                        : const AssetImage(
-                                                'assets/images/avatar.png')
-                                            as ImageProvider<Object>,
+                                    image: controller.profileImagePath.value.isNotEmpty
+                                        ? (controller.profileImagePath.value.startsWith('http')
+                                            ? NetworkImage(controller.profileImagePath.value) as ImageProvider<Object>
+                                            : FileImage(File(controller.profileImagePath.value)) as ImageProvider<Object>)
+                                        : const AssetImage('assets/images/avatar.png') as ImageProvider<Object>,
                                     // Imagen predeterminada
                                     fit: BoxFit.cover,
                                   ),
@@ -90,19 +80,19 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Positioned(
-                            right: 0,
-                            bottom: 0,
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: Styles.fiveColor,
-                                borderRadius: BorderRadius.circular(10),
+                          if (controller.isEditing.value)
+                            Positioned(
+                              right: 0,
+                              bottom: 0,
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                  color: Styles.fiveColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: SvgPicture.asset('assets/icons/svg/edit-2.svg'),
                               ),
-                              child: SvgPicture.asset(
-                                  'assets/icons/svg/edit-2.svg'),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -149,8 +139,7 @@ class ProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
-                                  width:
-                                      MediaQuery.sizeOf(context).width - 130,
+                                  width: MediaQuery.sizeOf(context).width - 130,
                                   child: BarraBack(
                                       titulo: "Perfil de Usuario",
                                       size: 20,
@@ -165,21 +154,16 @@ class ProfileScreen extends StatelessWidget {
                                     child: Container(
                                         padding: const EdgeInsets.all(7),
                                         decoration: BoxDecoration(
-                                          color: controller.isEditing.value
-                                              ? Colors.white
-                                              : Styles.fiveColor,
-                                          borderRadius:
-                                              BorderRadius.circular(10),
+                                          color: controller.isEditing.value ? Colors.white : Styles.fiveColor,
+                                          borderRadius: BorderRadius.circular(10),
                                         ),
-                                        child: SvgPicture.asset(
-                                            'assets/icons/svg/edit-2.svg')),
+                                        child: SvgPicture.asset('assets/icons/svg/edit-2.svg')),
                                   );
                                 }),
                               ],
                             ),
                           ),
-                          if (AuthServiceApis.dataCurrentUser.userRole[0] !=
-                              'user')
+                          if (AuthServiceApis.dataCurrentUser.userRole[0] != 'user')
                             Column(
                               children: [
                                 const SizedBox(
@@ -192,8 +176,7 @@ class ProfileScreen extends StatelessWidget {
                                       Get.to(FormularioVerificacion());
                                     },
                                     title: 'Perfil público',
-                                    svgIconPath:
-                                        'assets/icons/svg/flecha_derecha.svg',
+                                    svgIconPath: 'assets/icons/svg/flecha_derecha.svg',
                                     svgIconColor: Colors.white,
                                     svgIconPathSize: 14,
                                   ),
@@ -217,19 +200,16 @@ class ProfileScreen extends StatelessWidget {
                                           text: 'Solicitud Confirmada, ',
                                           style: TextStyle(
                                             color: Colors.green,
-                                            fontFamily:
-                                                'Lato', // Color verde para la primera parte
+                                            fontFamily: 'Lato', // Color verde para la primera parte
                                             fontSize: 14,
                                             fontWeight: FontWeight.w700,
                                           ),
                                         ),
                                         TextSpan(
-                                          text:
-                                              'visita tu perfil público para configurar cómo se verá',
+                                          text: 'visita tu perfil público para configurar cómo se verá',
                                           style: TextStyle(
                                             color: Color(0xFF383838),
-                                            fontFamily:
-                                                'Lato', // Color verde para la primera parte
+                                            fontFamily: 'Lato', // Color verde para la primera parte
                                             fontSize: 14,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -256,16 +236,12 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         Obx(() {
                           return InputText(
-                            onChanged: (value) =>
-                                controller.user['first_name'] = value,
-                            initialValue:
-                                controller.user['first_name'].toString(),
+                            onChanged: (value) => controller.user['first_name'] = value,
+                            initialValue: controller.user['first_name'].toString(),
                             placeholderSvg: 'assets/icons/svg/profile.svg',
                             placeholder: '',
                             readOnly: !controller.isEditing.value,
-                            fondoColor: controller.isEditing.value == false
-                                ? Colors.white
-                                : Styles.fiveColor,
+                            fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                             borderColor: Styles.iconColorBack,
                           );
                         }),
@@ -274,16 +250,12 @@ class ProfileScreen extends StatelessWidget {
                           return Container(
                             child: InputText(
                               borderColor: Styles.iconColorBack,
-                              onChanged: (value) =>
-                                  controller.user['last_name'] = value,
-                              initialValue:
-                                  controller.user['last_name'].toString(),
+                              onChanged: (value) => controller.user['last_name'] = value,
+                              initialValue: controller.user['last_name'].toString(),
                               placeholder: '',
                               placeholderSvg: 'assets/icons/svg/profile.svg',
                               readOnly: !controller.isEditing.value,
-                              fondoColor: controller.isEditing.value == false
-                                  ? Colors.white
-                                  : Styles.fiveColor,
+                              fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                             ),
                           );
                         }),
@@ -291,15 +263,12 @@ class ProfileScreen extends StatelessWidget {
                         Obx(() {
                           return InputText(
                             borderColor: Styles.iconColorBack,
-                            onChanged: (value) =>
-                                controller.user['email'] = value,
+                            onChanged: (value) => controller.user['email'] = value,
                             initialValue: controller.user['email'].toString(),
                             placeholder: '',
                             placeholderSvg: 'assets/icons/svg/sms.svg',
                             readOnly: !controller.isEditing.value,
-                            fondoColor: controller.isEditing.value == false
-                                ? Colors.white
-                                : Styles.fiveColor,
+                            fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                           );
                         }),
                         SizedBox(
@@ -314,8 +283,7 @@ class ProfileScreen extends StatelessWidget {
                               borderColor: Styles.iconColorBack,
                               onChange: (value) {
                                 controller.user['gender'] = value.toString();
-                                controller.userGenCont.value.text =
-                                    value.toString().toLowerCase();
+                                controller.userGenCont.value.text = value.toString().toLowerCase();
                               },
                               placeholder: 'Género',
                               placeholderSvg: 'assets/icons/svg/tag-user.svg',
@@ -331,15 +299,12 @@ class ProfileScreen extends StatelessWidget {
                         Obx(() {
                           return InputText(
                             borderColor: Styles.iconColorBack,
-                            onChanged: (value) =>
-                                controller.user['password'] = value,
+                            onChanged: (value) => controller.user['password'] = value,
                             initialValue: "********",
                             placeholder: '',
                             placeholderSvg: 'assets/icons/svg/key.svg',
                             readOnly: !controller.isEditing.value,
-                            fondoColor: controller.isEditing.value == false
-                                ? Colors.white
-                                : Styles.fiveColor,
+                            fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                           );
                         }),
                         SizedBox(height: margin),
@@ -379,12 +344,9 @@ class ProfileScreen extends StatelessWidget {
                         Obx(
                           () => controller.isEditing.value == true
                               ? SizedBox(
-                                  width:
-                                      MediaQuery.sizeOf(context).width - 100,
+                                  width: MediaQuery.sizeOf(context).width - 100,
                                   child: ButtonDefaultWidget(
-                                    title: controller.isLoading.value
-                                        ? 'Actualizando ...'
-                                        : 'Editar',
+                                    title: controller.isLoading.value ? 'Actualizando ...' : 'Editar',
                                     callback: () {
                                       controller.updateProfile();
                                     },
@@ -401,11 +363,7 @@ class ProfileScreen extends StatelessWidget {
                             },
                             child: const Text(
                               'Eliminar cuenta',
-                              style: TextStyle(
-                                  color: Styles.primaryColor,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w800,
-                                  fontFamily: 'Lato'),
+                              style: TextStyle(color: Styles.primaryColor, fontSize: 14, fontWeight: FontWeight.w800, fontFamily: 'Lato'),
                             ),
                           ),
                         ),

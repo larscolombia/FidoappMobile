@@ -27,6 +27,8 @@ class FormularioDiario extends StatelessWidget {
 
   final PetActivityController controller = Get.put(PetActivityController());
   final CategoryController categoryController = Get.put(CategoryController());
+  final TextEditingController categoryControllerText = TextEditingController();
+
   final HomeController homeController = Get.put(HomeController());
   final RxMap<String, RxBool> validate = {
     'actividad': false.obs,
@@ -38,8 +40,13 @@ class FormularioDiario extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     final margen = 16.0;
+    if (isEdit && controller.activitiesOne.value?.categoryId != null) {
+      categoryControllerText.text = controller.activitiesOne.value!.categoryId.toString();
+    }
+
     return Scaffold(
-      body: Stack(
+        body: Obx(
+      () => Stack(
         children: [
           Positioned(
             top: 0,
@@ -142,7 +149,7 @@ class FormularioDiario extends StatelessWidget {
                                       return null;
                                     },
                                   ],
-                                  controller: null, // Validación de Campo requerido
+                                  controller: categoryControllerText, // Validación de Campo requerido
                                 );
                               }),
                             ),
@@ -237,7 +244,7 @@ class FormularioDiario extends StatelessWidget {
                                         ? 'Cargando ...'
                                         : 'Finalizar',
                                 callback: () {
-                                  if (validate['actividad']!.value || validate['date']!.value || validate['notas']!.value) {
+                                  if (!validateAllFields()) {
                                     CustomSnackbar.show(
                                       title: 'Error',
                                       message: 'Por favor, rellene todos los campos requeridos',
@@ -247,12 +254,17 @@ class FormularioDiario extends StatelessWidget {
                                   }
                                   //este es el id del animal
                                   controller.updateField('pet_id', homeController.selectedProfile.value!.id.toString());
-                                  isEdit
-                                      ? controller.editPetActivity2(
-                                          "${controller.activitiesOne.value!.id}",
-                                          File(controller.diario['image'] ?? ''),
-                                        )
-                                      : controller.addPetActivity(File(controller.diario['image'] ?? ''));
+                                  final imagePath = controller.diario['image'];
+                                  final imageFile = (imagePath != null && imagePath.toString().isNotEmpty) ? File(imagePath) : null;
+
+                                  if (isEdit) {
+                                    controller.editPetActivity2(
+                                      "${controller.activitiesOne.value!.id}",
+                                      imageFile,
+                                    );
+                                  } else {
+                                    controller.addPetActivity(imageFile);
+                                  }
                                 },
                               );
                             }),
@@ -268,6 +280,18 @@ class FormularioDiario extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
+  }
+
+  bool validateAllFields() {
+    final actividad = controller.diario['actividad']?.toString() ?? '';
+    final date = controller.diario['date']?.toString() ?? '';
+    final notas = controller.diario['notas']?.toString() ?? '';
+
+    validate['actividad']!.value = actividad.trim().isEmpty;
+    validate['date']!.value = date.trim().isEmpty;
+    validate['notas']!.value = notas.trim().isEmpty;
+
+    return !(validate['actividad']!.value || validate['date']!.value || validate['notas']!.value);
   }
 }
