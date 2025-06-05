@@ -24,8 +24,7 @@ class SignInController extends GetxController {
   RxBool isLoading = false.obs;
   RxString userName = "".obs;
 
-  TextEditingController emailCont =
-      TextEditingController(text: Constants.DEFAULT_EMAIL);
+  TextEditingController emailCont = TextEditingController(text: Constants.DEFAULT_EMAIL);
   TextEditingController passwordCont = TextEditingController(text: '');
 
   FocusNode emailFocus = FocusNode();
@@ -40,10 +39,8 @@ class SignInController extends GetxController {
     if (Get.arguments is bool) {
       isNavigateToDashboard(Get.arguments == true);
     }
-    final userIsRemeberMe =
-        getValueFromLocal(SharedPreferenceConst.IS_REMEMBER_ME);
-    final userNameFromLocal =
-        getValueFromLocal(SharedPreferenceConst.USER_NAME);
+    final userIsRemeberMe = getValueFromLocal(SharedPreferenceConst.IS_REMEMBER_ME);
+    final userNameFromLocal = getValueFromLocal(SharedPreferenceConst.USER_NAME);
     if (userNameFromLocal is String) {
       userName(userNameFromLocal);
     }
@@ -52,8 +49,7 @@ class SignInController extends GetxController {
       if (userEmail is String) {
         emailCont.text = userEmail;
       }
-      final userPASSWORD =
-          getValueFromLocal(SharedPreferenceConst.USER_PASSWORD);
+      final userPASSWORD = getValueFromLocal(SharedPreferenceConst.USER_PASSWORD);
       if (userPASSWORD is String) {
         passwordCont.text = userPASSWORD;
       }
@@ -91,8 +87,7 @@ class SignInController extends GetxController {
       );
     } catch (e) {
       // Si el error es de usuario no registrado, mostrar mensaje específico
-      if (e.toString().contains('user not found') ||
-          e.toString().contains('no registered')) {
+      if (e.toString().contains('user not found') || e.toString().contains('no registered')) {
         CustomSnackbar.show(
           title: 'Usuario no registrado',
           message: 'Por favor regístrese antes de iniciar sesión',
@@ -122,8 +117,7 @@ class SignInController extends GetxController {
         // Mostrar el diálogo solo si el usuario es nuevo
         final selectedRole = await showDialog<String?>(
           context: context,
-          barrierDismissible:
-              false, // No permite cerrar al tocar fuera del diálogo
+          barrierDismissible: false, // No permite cerrar al tocar fuera del diálogo
           builder: (context) => AlertDialog(
             title: const Text('Seleccione su rol'),
             content: Column(
@@ -155,13 +149,11 @@ class SignInController extends GetxController {
             ),
             actions: [
               TextButton(
-                onPressed: () =>
-                    Navigator.of(context).pop(null), // Devolver null si cancela
+                onPressed: () => Navigator.of(context).pop(null), // Devolver null si cancela
                 child: const Text('Cancelar'),
               ),
               TextButton(
-                onPressed: () =>
-                    Navigator.of(context).pop(LoginTypeConst.LOGIN_TYPE_USER),
+                onPressed: () => Navigator.of(context).pop(LoginTypeConst.LOGIN_TYPE_USER),
                 child: const Text('Aceptar'),
               ),
             ],
@@ -205,7 +197,7 @@ class SignInController extends GetxController {
     } catch (e) {
       log('Error durante signInWithGoogle: $e');
       // toast(e.toString(), print: true);
-      toast('No fue posible acceder a través de Google.', print: true);
+      toast('Tu cuenta no está configurada para iniciar sesión con Google.', print: true);
     } finally {
       isLoading(false);
     }
@@ -228,8 +220,7 @@ class SignInController extends GetxController {
       log('signInWithGoogle REQUEST: $request');
 
       /// Social Login Api
-      await AuthServiceApis.loginUser(request: request, isSocialLogin: true)
-          .then((value) async {
+      await AuthServiceApis.loginUser(request: request, isSocialLogin: true).then((value) async {
         handleLoginResponse(loginResponse: value, isSocialLogin: true);
         print('VALUEEE LOGIN $value');
       }).catchError((e) {
@@ -242,8 +233,7 @@ class SignInController extends GetxController {
     });
   }
 
-  void handleLoginResponse(
-      {required LoginResponse loginResponse, bool isSocialLogin = false}) {
+  void handleLoginResponse({required LoginResponse loginResponse, bool isSocialLogin = false}) {
     loginUserData(loginResponse.userData);
     loginUserData.value.playerId = playerId.value;
     loginUserData.value.isSocialLogin = isSocialLogin;
@@ -255,8 +245,7 @@ class SignInController extends GetxController {
 
     if (isRememberMe.value && !isSocialLogin) {
       requestData['password'] = passwordCont.text.trim();
-      setValueToLocal(
-          SharedPreferenceConst.USER_PASSWORD, passwordCont.text.trim());
+      setValueToLocal(SharedPreferenceConst.USER_PASSWORD, passwordCont.text.trim());
     }
 
     // Guardar estado de Remember Me

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class Pet {
   final String id;
   final String name;
@@ -55,11 +57,8 @@ class Pet {
       breed: json['breed'] ?? 'no se encontro',
       breedId: json['breed_id'].toString(), // Convertir a String
       size: json['size'],
-      petImage: json['pet_image'] ??
-          'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
-      dateOfBirth: json['date_of_birth'] != null
-          ? DateTime.parse(json['date_of_birth'])
-          : null,
+      petImage: json['pet_image'] ?? 'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
+      dateOfBirth: json['date_of_birth'] != null ? DateFormat('dd-MM-yyyy').parse(json['date_of_birth']) : null,
       age: json['age'] ?? '',
       gender: json['gender'] ?? '',
       weight: (json['weight'] != null) ? json['weight'].toDouble() : 0.0,
@@ -69,12 +68,9 @@ class Pet {
       userId: json['user_id'].toString(), // Convertir a String
       status: json['status'].toString(), // Convertir a String
       qrCode: json['qr_code'] ?? '',
-      createdBy:
-          json['created_by']?.toString(), // Convertir a String si no es nulo
-      updatedBy:
-          json['updated_by']?.toString(), // Convertir a String si no es nulo
-      deletedBy:
-          json['deleted_by']?.toString(), // Convertir a String si no es nulo
+      createdBy: json['created_by']?.toString(), // Convertir a String si no es nulo
+      updatedBy: json['updated_by']?.toString(), // Convertir a String si no es nulo
+      deletedBy: json['deleted_by']?.toString(), // Convertir a String si no es nulo
       description: json['description'],
     );
   }

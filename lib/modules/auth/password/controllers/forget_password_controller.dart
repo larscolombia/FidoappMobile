@@ -26,6 +26,7 @@ class ForgetPasswordController extends GetxController {
         message: 'Se han enviado las instrucciones a tu correo electrónico',
         isError: false,
       );
+      await Future.delayed(Duration(milliseconds: 5000));
       Get.back();
     } catch (e) {
       isLoading(false);

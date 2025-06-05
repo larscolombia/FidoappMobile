@@ -73,10 +73,8 @@ class AddPetController extends GetxController {
 
   void toogleWeightUnit() {
     if (petWeightUnit.value == 'Kg') {
-      petWeightUnit.value = 'gr';
-    } else if (petWeightUnit.value == 'gr') {
-      petWeightUnit.value = 'mg';
-    } else if (petWeightUnit.value == 'mg') {
+      petWeightUnit.value = 'Lb';
+    } else if (petWeightUnit.value == 'Lb') {
       petWeightUnit.value = 'Kg';
     }
   }
