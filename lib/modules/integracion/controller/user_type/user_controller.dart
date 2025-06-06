@@ -27,6 +27,7 @@ class UserController extends GetxController {
   }
 
   Future<void> fetchUsers([String? passedType]) async {
+    print(passedType);
     final userType = passedType ?? type; // usa passedType si no es null, sino usa la propiedad type
 
     try {

@@ -20,6 +20,7 @@ import 'package:pawlly/modules/integracion/controller/servicio_entrenador_catego
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 import 'package:pawlly/modules/integracion/model/lista_categoria_servicio/category_model.dart';
 import 'package:pawlly/modules/integracion/model/lista_categoria_servicio/service_model.dart';
+import 'package:pawlly/modules/integracion/model/servicio_entrenador_categoria/entrenador_servicio_model.dart' as TrainerCategory;
 import 'package:pawlly/modules/integracion/model/servicio_entrenador_categoria/service_duration.dart';
 
 class CreateEvent extends StatefulWidget {
@@ -126,13 +127,14 @@ class _CreateEventState extends State<CreateEvent> {
           SizedBox(
             width: inputWidth,
             child: InputSelect(
-              label: 'Servicio de evento medico',
-              placeholder: calendarController.cateogoryName.value,
+              label: 'Servicio',
+              placeholder: calendarController.serviceName.value,
               TextColor: Colors.black,
               borderColor: Color(0XFFFCBA67),
               onChanged: (value) {
                 final selectedService = categoryController.services.firstWhere((service) => service.id.toString() == value,
                     orElse: () => Service(slug: '', name: '', durationMin: 0, defaultPrice: 0, status: 0));
+                calendarController.serviceName.value = selectedService.name;
                 calendarController.updateField('service_id', value);
                 categoryController.fetchprecio(value ?? "", context);
               },
@@ -173,21 +175,11 @@ class _CreateEventState extends State<CreateEvent> {
               TextColor: Colors.black,
               borderColor: Color(0XFFFCBA67),
               onChanged: (value) {
-                final selectedCategory = categoryController.categories.firstWhere(
-                  (category) => category.id.toString() == value,
-                  orElse: () => Category(
-                    id: 0,
-                    name: '',
-                    slug: '',
-                    status: 1,
-                    categoryImage: '',
-                    createdAt: '',
-                    updatedAt: '',
-                  ),
-                );
+                calendarController.cateogoryName.value = value ?? "";
+                final selectedCategory = serviceController.services.firstWhere((service) => service.id.toString() == value,
+                    orElse: () => TrainerCategory.Service(id: 0, name: '', description: '', status: 0, slug: ''));
                 calendarController.cateogoryName.value = selectedCategory.name;
                 calendarController.updateField('training_id', value);
-                calendarController.updateField('duration_id', value);
               },
               items: serviceController.services
                   .map(
@@ -225,6 +217,7 @@ class _CreateEventState extends State<CreateEvent> {
               TextColor: Colors.black,
               borderColor: Color(0XFFFCBA67),
               onChanged: (value) {
+                calendarController.serviceName.value = value ?? "";
                 final selectedDuration = serviceController.serviceDurations.firstWhere((duration) => duration.id.toString() == value,
                     orElse: () => ServiceDuration(id: 0, duration: '0', price: 0, status: 0));
                 calendarController.updateField('duration_id', value);
@@ -401,10 +394,12 @@ class _CreateEventState extends State<CreateEvent> {
                         ],
                         onChange: (value) {
                           calendarController.updateField('tipo', value);
-                          userController.type.value = value == 'medico' ? 'vet' : 'trainer';
-                          if (value != 'evento') {
-                            userController.fetchUsers();
-                          }
+                          final type = value == 'medico'
+                              ? 'vet'
+                              : value == 'entrenamiento'
+                                  ? 'trainer'
+                                  : 'all';
+                          userController.type.value = type;
                         },
                       ),
                     ),

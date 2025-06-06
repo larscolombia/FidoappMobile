@@ -93,8 +93,7 @@ class Helper extends GetX {
   static Future<void> showMyDialog(BuildContext context, UserController controller) async {
     final UserController userController = Get.put(UserController(), permanent: true);
     final CalendarController calendarController = Get.put(CalendarController());
-    controller.type.value = 'vet';
-    controller.fetchUsers('all');
+    controller.fetchUsers(controller.type.value);
     return showDialog<void>(
       context: context,
       barrierDismissible: false,

@@ -1,7 +1,8 @@
-import 'dart:math';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
@@ -9,17 +10,13 @@ import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
-
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarController extends GetxController {
   var cateogoryName = "".obs;
+  var serviceName = "".obs;
   final userController = Get.put(UserController());
   final HomeController homeController = Get.find();
   final String baseUrl = "$DOMAIN_URL/api";
@@ -71,9 +68,7 @@ class CalendarController extends GetxController {
         // print(
         //    "Respuesta del servidor: $data"); // Imprimir la respuesta completa
 
-        allCalendars.value = (data['data'] as List)
-            .map((item) => CalendarModel.fromJson(item))
-            .toList();
+        allCalendars.value = (data['data'] as List).map((item) => CalendarModel.fromJson(item)).toList();
         filteredCalendars.value = allCalendars;
       } else {
         CustomSnackbar.show(
@@ -108,10 +103,7 @@ class CalendarController extends GetxController {
       filteredCalendars.value = allCalendars;
     } else {
       // Filtrar eventos que contengan la búsqueda en su nombre
-      filteredCalendars.value = allCalendars
-          .where((event) =>
-              event.name.toLowerCase().contains(busqueda.toLowerCase()))
-          .toList();
+      filteredCalendars.value = allCalendars.where((event) => event.name.toLowerCase().contains(busqueda.toLowerCase())).toList();
     }
   }
 
@@ -119,12 +111,10 @@ class CalendarController extends GetxController {
     print('calendario $date');
 
     // Formatear la fecha en el formato 'dd-MM-yyyy'
-    String formattedDate =
-        '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
+    String formattedDate = '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
 
     // Filtrar los eventos por la fecha formateada
-    filteredCalendars.value =
-        allCalendars.where((event) => event.date == formattedDate).toList();
+    filteredCalendars.value = allCalendars.where((event) => event.date == formattedDate).toList();
   }
 
   void toggleVerMas(String eventId) {
@@ -201,24 +191,9 @@ class CalendarController extends GetxController {
   Future<void> postEvent() async {
     isLoading.value = true;
     isSuccess.value = false;
-    await Future.delayed(Duration(seconds: 5));
-    if (event['owner_id'] == "") {
-      updateField(
-        'owner_id',
-        [AuthServiceApis.dataCurrentUser.id],
-      );
-    }
-
-    // Asegurarnos de que todos los eventos médicos y de entrenamiento sean gratuitos
-    if (event['tipo'] == 'medico' || event['tipo'] == 'entrenamiento') {
-      updateField('is_free', true);
-      updateField('payment_status', 'completed');
-      updateField('amount', 0); // Establecer explícitamente el monto a cero
-    }
-
-    print('guardando evento ${event}');
+    print('guardando evento');
+    print(event.toJson());
     try {
-      // Primera intento de creación del evento
       final response = await http.post(
         Uri.parse('$baseUrl/events'),
         headers: {
@@ -227,109 +202,39 @@ class CalendarController extends GetxController {
         },
         body: jsonEncode(event.toJson()),
       );
-
+      final jsonResponse = json.decode(response.body);
       print('response data evento  ${response.body}');
-
-      // Verificar si hay un error de saldo insuficiente
-      if (response.statusCode != 200 && response.statusCode != 201) {
-        try {
-          final responseData = json.decode(response.body);
-          if (responseData['error'] == 'Insufficient balance') {
-            print(
-                'Error de saldo insuficiente detectado. Intentando omitir la verificación de balance...');
-
-            // Guardar el tipo original
-            String originalType = event['tipo'] as String;
-
-            // Cambiar temporalmente a evento regular
-            updateField('tipo', 'evento');
-            updateField('skip_balance_check', true);
-
-            final alternativeResponse = await http.post(
-              Uri.parse('$baseUrl/events'),
-              headers: {
-                'Authorization':
-                    'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-                'Content-Type': 'application/json',
-              },
-              body: jsonEncode(event.toJson()),
-            );
-
-            print('respuesta alternativa: ${alternativeResponse.body}');
-
-            if (alternativeResponse.statusCode == 200 ||
-                alternativeResponse.statusCode == 201) {
-              // Si tenemos éxito, restaurar el tipo original si el backend lo permite
-              try {
-                final eventData = json.decode(alternativeResponse.body);
-                if (eventData['data'] != null &&
-                    eventData['data']['id'] != null) {
-                  String eventId = eventData['data']['id'].toString();
-
-                  // Restaurar el tipo original mediante una actualización
-                  final updateResponse = await http.put(
-                    Uri.parse('$baseUrl/events/$eventId'),
-                    headers: {
-                      'Authorization':
-                          'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-                      'Content-Type': 'application/json',
-                    },
-                    body: jsonEncode({
-                      'tipo': originalType,
-                      'is_free': true,
-                      'payment_status': 'completed',
-                      'amount': 0
-                    }),
-                  );
-
-                  print('respuesta de actualización: ${updateResponse.body}');
-                }
-              } catch (e) {
-                print('Error al actualizar el tipo del evento: $e');
-              }
-
-              handleSuccessfulEventCreation();
-              return;
-            }
-
-            // Si el enfoque alternativo falla, mostrar un mensaje más claro
-            CustomSnackbar.show(
-              title: "Evento creado como regular",
-              message:
-                  "Tu evento fue creado como evento regular debido a restricciones técnicas. Todos los servicios son gratuitos.",
-              isError: false,
-            );
-            handleSuccessfulEventCreation();
-            return;
-          }
-        } catch (e) {
-          print('Error al procesar la respuesta: $e');
-        }
-      }
-
-      if (response.statusCode == 429) {
-        // Lógica para manejar errores de límite de tasa
-        // ...existing code...
-      }
-
       if (response.statusCode == 200 || response.statusCode == 201) {
-        handleSuccessfulEventCreation();
-      } else {
-        // Para cualquier otro error, mostrar un mensaje genérico
-        CustomSnackbar.show(
-          title: "Error",
-          message:
-              "No se pudo crear el evento debido a un problema técnico. Por favor, inténtalo de nuevo.",
-          isError: true,
+        print('response : ${response.statusCode}');
+        userController.selectedUser.value = null;
+        Get.dialog(
+          //pisa papel
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Evento creado',
+            description: 'El evento ha sido creado',
+            primaryButtonText: 'Continuar',
+            onPrimaryButtonPressed: () {
+              getEventos();
+              userController.fetchUsers();
+              homeController.selectedIndex.value = 1;
+              Get.to(() => HomeScreen());
+            },
+          ),
+          barrierDismissible: true,
         );
+
+        isSuccess(true);
+      } else {
+        if (jsonResponse['error'] == 'Insufficient balance') {
+          Get.snackbar("Error", "Saldo insuficiente, por favor recargue");
+        } else {
+          Get.snackbar("Error", "comprueba los datos ");
+        }
       }
     } catch (e) {
       print('Error al enviar los datos: $e');
-      CustomSnackbar.show(
-        title: "Error",
-        message: "Error al enviar los datos: $e",
-        isError: true,
-      );
+      Get.snackbar("Error", "Error al enviar los datos");
     } finally {
       isLoading.value = false;
     }
@@ -365,8 +270,7 @@ class CalendarController extends GetxController {
   // Método para seleccionar un evento por ID y asignarlo a selectedEvents
   void selectEventById(String id) {
     try {
-      CalendarModel selectedEvent =
-          allCalendars.firstWhere((event) => event.id == id);
+      CalendarModel selectedEvent = allCalendars.firstWhere((event) => event.id == id);
       selectedEvents.clear();
       selectedEvents.add(selectedEvent);
     } catch (e) {
@@ -402,11 +306,9 @@ class CalendarController extends GetxController {
         }
 
         // Actualizar la lista filtrada si es necesario
-        int filteredIndex =
-            filteredCalendars.indexWhere((e) => e.id == event.id);
+        int filteredIndex = filteredCalendars.indexWhere((e) => e.id == event.id);
         if (filteredIndex != -1) {
-          filteredCalendars[filteredIndex] =
-              CalendarModel.fromJson(data['data']['event']);
+          filteredCalendars[filteredIndex] = CalendarModel.fromJson(data['data']['event']);
           filteredCalendars.refresh();
         }
 
@@ -460,8 +362,7 @@ class CalendarController extends GetxController {
   List<CalendarModel> getTwoNearestEvents() {
     // Ordenar los eventos por fecha en orden ascendente
     List<CalendarModel> sortedEvents = allCalendars
-        .where((event) =>
-            event.date.isNotEmpty) // Filtrar eventos con fecha válida
+        .where((event) => event.date.isNotEmpty) // Filtrar eventos con fecha válida
         .toList()
       ..sort((a, b) {
         DateTime dateA = DateFormat('dd-MM-yyyy').parse(a.date);
@@ -480,12 +381,10 @@ class CalendarController extends GetxController {
 
       // Obtenemos el día y el mes en el formato deseado
       String day = DateFormat('dd').format(parsedDate);
-      String month =
-          DateFormat('MMMM', 'es_ES').format(parsedDate); // Mes en español
+      String month = DateFormat('MMMM', 'es_ES').format(parsedDate); // Mes en español
 
       // Formateamos la hora del evento (eventTime)
-      String time =
-          DateFormat('hh:mm a').format(DateFormat('HH:mm').parse(eventTime));
+      String time = DateFormat('hh:mm a').format(DateFormat('HH:mm').parse(eventTime));
 
       // Retornamos la cadena en el formato: "02 de Agosto 08:00 am"
       return "$day de ${month[0].toUpperCase()}${month.substring(1)} ";
