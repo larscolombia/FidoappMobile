@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'dart:math';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
@@ -147,7 +148,12 @@ class Helper extends GetX {
                   Obx(() {
                     var filteredUsers = userController.filteredUsers;
                     if (filteredUsers.isEmpty) {
-                      return const Text("No se encontraron usuarios");
+                      final tipo = calendarController.event['tipo'];
+                      final message =
+                          tipo == 'evento'
+                              ? 'No se encontró el usuario, el evento se creará sin invitado'
+                              : 'El usuario no se encuentra registrado en la plataforma, se asignará un profesional aleatoriamente';
+                      return Text(message);
                     }
                     return Column(
                       children: [
@@ -189,11 +195,30 @@ class Helper extends GetX {
                           userController.selectUser(userController.filteredUsers.first);
                           Navigator.of(context).pop();
                         } else {
-                          CustomSnackbar.show(
-                            title: 'Error',
-                            message: 'No hay usuarios disponibles para invitar',
-                            isError: true,
-                          );
+                          final tipo = calendarController.event['tipo'];
+                          if (tipo == 'evento') {
+                            // Permitir crear el evento sin invitado
+                            userController.deselectUser();
+                            calendarController.updateField('owner_id', []);
+                            CustomSnackbar.show(
+                              title: 'Aviso',
+                              message: 'No se encontró el usuario, el evento se creará sin invitado',
+                              isError: false,
+                            );
+                            Navigator.of(context).pop();
+                          } else {
+                            CustomSnackbar.show(
+                              title: 'Aviso',
+                              message: 'El usuario no se encuentra registrado en la plataforma, se asignará un profesional aleatoriamente',
+                              isError: false,
+                            );
+                            if (userController.users.isNotEmpty) {
+                              final randomUser = userController.users[Random().nextInt(userController.users.length)];
+                              calendarController.updateField('owner_id', [randomUser.id]);
+                              userController.selectUser(randomUser);
+                            }
+                            Navigator.of(context).pop();
+                          }
                         }
                       },
                     ),
