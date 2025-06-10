@@ -1,0 +1,95 @@
+name: pawlly
+description: "A new Flutter project."
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.11.0+10
+
+environment:
+  sdk: ">=3.2.1 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  badges: ^3.1.2
+  cached_network_image: ^3.4.1
+  carousel_slider: ^5.0.0
+  cupertino_icons: ^1.0.6
+  dotted_border: ^2.1.0
+  eva_icons_flutter: ^3.1.0
+  file_picker: ^8.0.6
+  firebase_auth: ^5.1.2
+  firebase_core: ^3.8.1
+  firebase_messaging: ^15.1.6
+  flutter_html: ^3.0.0-beta.2
+  flutter_local_notifications: ^19.0.0
+  flutter_rating_bar: ^4.0.1
+  flutter_stripe: ^11.4.0
+  flutter_svg: ^2.0.17
+  get_storage: ^2.1.1
+  get: ^4.6.6
+  google_fonts: ^6.2.1
+  google_sign_in: ^6.2.1
+  http: ^1.2.2
+  image_picker: ^1.1.2
+  intl: ^0.19.0
+  just_audio: ^0.9.40
+  nb_utils: ^7.0.3
+  onesignal_flutter: ^5.2.2
+  share_plus: ^10.1.2
+  smooth_page_indicator: ^1.2.0+3
+  soundpool: ^2.4.1
+  table_calendar: ^3.1.2
+  the_apple_sign_in: ^1.1.1
+  url_launcher: ^6.3.0
+  video_player: ^2.5.0
+  webview_flutter: ^4.8.0
+  youtube_player_flutter: 8.1.2
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.14.3
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: PoetsenOne
+      fonts:
+        - asset: assets/fonts/PoetsenOne-Regular.ttf
+  assets:
+    - assets/
+    - assets/flags/
+    - assets/soun/leash.mp3
+    - assets/soun/silbato.mp3
+    - assets/soun/click4.mp3
+    - assets/images/
+    - assets/icons/
+    - assets/images/walkthrough_images/
+    - assets/images/dog_paw/
+    - assets/images/pet_profile/
+    - assets/images/sitter/
+    - assets/images/notification/
+    - assets/images/shop/
+    - assets/images/choosepet/
+    - assets/icons/svg/
+    - assets/icons/profile_icons/
+    - assets/icons/service_icons/
+    - assets/icons/navigation/
+    - assets/icons/upi_payment/
+    - assets/images/brand/
+    - assets/lottie/
+    - assets/icons/svg/mascotas.svg
+    - assets/icons/svg/google_1.svg
+
+flutter_icons:
+  android: true
+
+  image_path: "assets/icon/fidoapp.png"
+
+flutter_launcher_icons:
+  android: true
+  image_path: "assets/icon/fidoapp.png"

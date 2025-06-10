@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "632749727924",
+    "project_id": "fidoappv2",
+    "storage_bucket": "fidoappv2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632749727924:android:3c1f6006aedfa86fdfb7e1",
+        "android_client_info": {
+          "package_name": "com.fidoapp.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "632749727924-9tnfcdkqiidrd0cak5mbb9trh4t2sijt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fidoapp.customer",
+            "certificate_hash": "53fa436039bd52b24cf8716406a1d052bbb87478"
+          }
+        },
+        {
+          "client_id": "632749727924-c3647ijetsap4s6fgaa4j0fmsnsl9r45.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fidoapp.customer",
+            "certificate_hash": "f4100bc8e20f2f5f655d715d23e2b53e00c2fc93"
+          }
+        },
+        {
+          "client_id": "632749727924-lrmfn3dmdo0ccf72ov2649nsnc8lp2dh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6aTIJVigBlyecGSonA8RX1OYu9718DoM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "632749727924-lrmfn3dmdo0ccf72ov2649nsnc8lp2dh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
