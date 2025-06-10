@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
@@ -8,6 +9,7 @@ import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/components/user_select.dart';
+import 'package:pawlly/modules/components/custom_checkbox.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
@@ -39,6 +41,7 @@ class _CreateEventState extends State<CreateEvent> {
   final ServiceEntrenadorController serviceController = Get.put(ServiceEntrenadorController());
   final UserBalanceController balanceController = Get.put(UserBalanceController());
   final ProductoPayController payController = Get.put(ProductoPayController());
+  bool _selectRandomUser = true;
   Map<String, bool> validate = {
     'name': false,
     'date': false,
@@ -55,8 +58,19 @@ class _CreateEventState extends State<CreateEvent> {
   @override
   void initState() {
     super.initState();
-    // Llamamos a fetchUsers solo una vez cuando el widget se carga
-    // userController.fetchUsers();
+    userController.fetchUsers(userController.type.value).then((_) {
+      if (_selectRandomUser) {
+        _assignRandomUser();
+      }
+    });
+  }
+
+  void _assignRandomUser() {
+    if (userController.users.isNotEmpty) {
+      final randomUser = userController.users[Random().nextInt(userController.users.length)];
+      userController.selectUser(randomUser);
+      calendarController.updateField('owner_id', [randomUser.id]);
+    }
   }
 
   // Widget para mostrar el servicio de evento médico
@@ -400,6 +414,11 @@ class _CreateEventState extends State<CreateEvent> {
                                   ? 'trainer'
                                   : 'all';
                           userController.type.value = type;
+                          userController.fetchUsers(type).then((_) {
+                            if (_selectRandomUser) {
+                              _assignRandomUser();
+                            }
+                          });
                         },
                       ),
                     ),
@@ -492,32 +511,62 @@ class _CreateEventState extends State<CreateEvent> {
                         thickness: 0.2,
                       ),
                     ),
-                    const SizedBox(height: defaultMargin),
-                    // Invitación de personas
-                    SizedBox(
-                      width: inputWidth,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Invitar Personas a este Evento',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontFamily: 'Lato',
-                              fontWeight: FontWeight.w800,
-                            ),
+                    SizedBox(height: defaultMargin),
+                    Row(
+                      children: [
+                        CustomCheckbox(
+                          isChecked: _selectRandomUser,
+                          onChanged: (v) {
+                            setState(() {
+                              _selectRandomUser = v;
+                              if (_selectRandomUser) {
+                                _assignRandomUser();
+                              } else {
+                                userController.deselectUser();
+                                calendarController.updateField('owner_id', []);
+                              }
+                            });
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Asignar usuario aleatoriamente',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w500,
                           ),
-                          FloatingActionButton(
-                            elevation: 0,
-                            backgroundColor: Styles.fiveColor,
-                            onPressed: () => Helper.showMyDialog(context, userController),
-                            child: const Icon(Icons.add, color: Colors.white),
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: defaultMargin + 15),
+                    SizedBox(height: defaultMargin),
+                    // Invitación de personas
+                    if (!_selectRandomUser)
+                      SizedBox(
+                        width: inputWidth,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Invitar Personas a este Evento',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            FloatingActionButton(
+                              elevation: 0,
+                              backgroundColor: Styles.fiveColor,
+                              onPressed: () => Helper.showMyDialog(context, userController),
+                              child: const Icon(Icons.add, color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
+                    SizedBox(height: defaultMargin + 15),
                     UserEventoSeleccionado(),
                     const SizedBox(height: defaultMargin + 20),
                     // Botón Finalizar o Guardando
