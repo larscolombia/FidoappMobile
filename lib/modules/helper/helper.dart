@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'dart:math';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
@@ -93,6 +94,7 @@ class Helper extends GetX {
   static Future<void> showMyDialog(BuildContext context, UserController controller) async {
     final UserController userController = Get.put(UserController(), permanent: true);
     final CalendarController calendarController = Get.put(CalendarController());
+    String typedEmail = '';
     controller.fetchUsers(controller.type.value);
     return showDialog<void>(
       context: context,
@@ -142,12 +144,20 @@ class Helper extends GetX {
                     label: '',
                     placeholder: 'Correo Electrónico',
                     placeholderSvg: 'assets/icons/svg/sms.svg',
-                    onChanged: (value) => userController.filterUsers(value),
+                    onChanged: (value) {
+                      typedEmail = value;
+                      userController.filterUsers(value);
+                    },
                   ),
                   Obx(() {
                     var filteredUsers = userController.filteredUsers;
                     if (filteredUsers.isEmpty) {
-                      return const Text("No se encontraron usuarios");
+                      final tipo = calendarController.event['tipo'];
+                      final message =
+                          tipo == 'evento'
+                              ? 'No se encontró el usuario, el evento se creará sin invitado'
+                              : 'El usuario no se encuentra registrado en la plataforma, se asignará un profesional aleatoriamente';
+                      return Text(message);
                     }
                     return Column(
                       children: [
@@ -185,15 +195,37 @@ class Helper extends GetX {
                             'owner_id',
                             [userController.filteredUsers.first.id],
                           );
+                          calendarController.updateField('user_email', '');
                           userController.deselectUser();
                           userController.selectUser(userController.filteredUsers.first);
                           Navigator.of(context).pop();
                         } else {
-                          CustomSnackbar.show(
-                            title: 'Error',
-                            message: 'No hay usuarios disponibles para invitar',
-                            isError: true,
-                          );
+                          final tipo = calendarController.event['tipo'];
+                          if (tipo == 'evento') {
+                            // Permitir crear el evento sin invitado
+                            userController.deselectUser();
+                            calendarController.updateField('owner_id', []);
+                            calendarController.updateField('user_email', typedEmail);
+                            CustomSnackbar.show(
+                              title: 'Aviso',
+                              message: 'No se encontró el usuario, el evento se creará sin invitado',
+                              isError: false,
+                            );
+                            Navigator.of(context).pop();
+                          } else {
+                            CustomSnackbar.show(
+                              title: 'Aviso',
+                              message: 'El usuario no se encuentra registrado en la plataforma, se asignará un profesional aleatoriamente',
+                              isError: false,
+                            );
+                            calendarController.updateField('user_email', typedEmail);
+                            if (userController.users.isNotEmpty) {
+                              final randomUser = userController.users[Random().nextInt(userController.users.length)];
+                              calendarController.updateField('owner_id', [randomUser.id]);
+                              userController.selectUser(randomUser);
+                            }
+                            Navigator.of(context).pop();
+                          }
                         }
                       },
                     ),
