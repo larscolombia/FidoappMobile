@@ -1,6 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'dart:math';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
@@ -94,6 +95,7 @@ class Helper extends GetX {
   static Future<void> showMyDialog(BuildContext context, UserController controller) async {
     final UserController userController = Get.put(UserController(), permanent: true);
     final CalendarController calendarController = Get.put(CalendarController());
+    String typedEmail = '';
     controller.fetchUsers(controller.type.value);
     return showDialog<void>(
       context: context,
@@ -143,16 +145,18 @@ class Helper extends GetX {
                     label: '',
                     placeholder: 'Correo Electrónico',
                     placeholderSvg: 'assets/icons/svg/sms.svg',
-                    onChanged: (value) => userController.filterUsers(value),
+                    onChanged: (value) {
+                      typedEmail = value;
+                      userController.filterUsers(value);
+                    },
                   ),
                   Obx(() {
                     var filteredUsers = userController.filteredUsers;
                     if (filteredUsers.isEmpty) {
                       final tipo = calendarController.event['tipo'];
-                      final message =
-                          tipo == 'evento'
-                              ? 'No se encontró el usuario, el evento se creará sin invitado'
-                              : 'El usuario no se encuentra registrado en la plataforma, se asignará un profesional aleatoriamente';
+                      final message = tipo == 'evento'
+                          ? 'No se encontró el usuario, el evento se creará sin invitado'
+                          : 'El usuario no se encuentra registrado en la plataforma, se asignará un profesional aleatoriamente';
                       return Text(message);
                     }
                     return Column(
@@ -191,6 +195,7 @@ class Helper extends GetX {
                             'owner_id',
                             [userController.filteredUsers.first.id],
                           );
+                          calendarController.updateField('user_email', '');
                           userController.deselectUser();
                           userController.selectUser(userController.filteredUsers.first);
                           Navigator.of(context).pop();
