@@ -205,6 +205,9 @@ class Helper extends GetX {
                             // Permitir crear el evento sin invitado
                             userController.deselectUser();
                             calendarController.updateField('owner_id', []);
+                            if (typedEmail.isNotEmpty) {
+                              calendarController.updateField('user_email', typedEmail);
+                            }
                             CustomSnackbar.show(
                               title: 'Aviso',
                               message: 'No se encontró el usuario, el evento se creará sin invitado',
@@ -221,6 +224,9 @@ class Helper extends GetX {
                               final randomUser = userController.users[Random().nextInt(userController.users.length)];
                               calendarController.updateField('owner_id', [randomUser.id]);
                               userController.selectUser(randomUser);
+                            }
+                            if (typedEmail.isNotEmpty) {
+                              calendarController.updateField('user_email', typedEmail);
                             }
                             Navigator.of(context).pop();
                           }
