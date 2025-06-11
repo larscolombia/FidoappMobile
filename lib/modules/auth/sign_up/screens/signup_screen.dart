@@ -202,6 +202,19 @@ class SignUpScreen extends GetView<SignUpController> {
                                       controller.cvPath.value = value;
                                     },
                                   ),
+                                  const SizedBox(height: 16),
+                                  CustomTextFormFieldWidget(
+                                    controller: controller.paymentAccountCont,
+                                    placeholder: 'Cuenta paypal',
+                                    placeholderSvg: 'assets/icons/svg/sms.svg',
+                                    colorSVG: Color(0xFFFCBA67),
+                                    validators: [
+                                      (value) =>
+                                          value!.isNotEmpty && !value.contains('@')
+                                              ? 'Ingrese un correo válido'
+                                              : null,
+                                    ],
+                                  ),
                                 ],
                               );
                             }),

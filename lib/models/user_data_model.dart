@@ -16,6 +16,7 @@ class UserData {
   String gender; // Campo "gender" agregado
   bool isNewUser;
   String? deviceToken;
+  String paymentAccount;
   UserData({
     this.id = -1,
     this.firstName = "",
@@ -34,6 +35,7 @@ class UserData {
     this.gender = "", // Inicialización del campo gender
     this.isNewUser = true,
     this.deviceToken,
+    this.paymentAccount = "",
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -61,7 +63,10 @@ class UserData {
         gender: json['gender'] is String
             ? json['gender']
             : "", // Campo gender añadido
-        deviceToken: json['device_token'].toString());
+        deviceToken: json['device_token'].toString(),
+        paymentAccount: json['payment_account'] is String
+            ? json['payment_account']
+            : "");
   }
 
   Map<String, dynamic> toJson() {
@@ -81,6 +86,7 @@ class UserData {
       'is_social_login': isSocialLogin,
       'user_type': userType,
       'gender': gender, // Agregado a la serialización
+      'payment_account': paymentAccount,
     };
   }
 }

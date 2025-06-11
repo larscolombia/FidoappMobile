@@ -49,6 +49,7 @@ class UserData {
   String? fullName;
   String? profileImage;
   String? publicProfile;
+  String? paymentAccount;
   Profile? profile;
   List<Pets>? pets;
 
@@ -82,6 +83,7 @@ class UserData {
     this.fullName,
     this.profileImage,
     this.publicProfile,
+    this.paymentAccount,
     this.profile,
     this.pets,
   });
@@ -115,6 +117,7 @@ class UserData {
       fullName: json['full_name'],
       profileImage: json['profile_image'],
       publicProfile: json['public_profile'],
+      paymentAccount: json['payment_account'],
       profile:
           json['profile'] != null ? Profile.fromJson(json['profile']) : null,
       pets: json['pets'] != null
@@ -154,6 +157,7 @@ class UserData {
       'full_name': fullName,
       'profile_image': profileImage,
       'public_profile': publicProfile,
+      'payment_account': paymentAccount,
       'profile': profile?.toJson(),
       'pets': pets != null
           ? List<dynamic>.from(pets!.map((x) => x.toJson()))

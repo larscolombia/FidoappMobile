@@ -94,7 +94,8 @@ class ProfileController extends GetxController {
     'about_self': "",
     'address': "",
     'tags': <String>[], // Lista de cadenas
-    'validation_number': ""
+    'validation_number': "",
+    'payment_account': ""
   };
 
   void addUserTag(Map<String, dynamic> user, String tag) {
@@ -110,6 +111,7 @@ class ProfileController extends GetxController {
     user['gender'] = currentUser.gender;
     user['userType'] = currentUser.userType;
     user['profileImage'] = currentUser.profileImage;
+    user['payment_account'] = currentUser.paymentAccount;
   }
 
   Future<void> updateProfile() async {
@@ -181,6 +183,8 @@ class ProfileController extends GetxController {
               //   currentUser.gender = data['data']['gender'].toLowerCase();
               user['lastName'] = data['data']['last_name'];
               currentUser.lastName = data['data']['last_name'];
+              user['payment_account'] = data['data']['payment_account'];
+              currentUser.paymentAccount = data['data']['payment_account'];
               Get.back();
             },
           ),
