@@ -31,6 +31,33 @@ class AuthServiceApis extends GetxController {
     return RegUserResp.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.register, request: request, method: HttpMethodType.POST)));
   }
 
+  static Future<RegUserResp> createUserWithFiles({
+    required Map<String, dynamic> request,
+    required String certificationPath,
+    required String cvPath,
+  }) async {
+    MultipartRequest multiPartRequest =
+        await getMultiPartRequest(APIEndPoints.register);
+
+    multiPartRequest.fields.addAll(await getMultipartFields(val: request));
+    multiPartRequest.files
+        .add(await MultipartFile.fromPath('certification', certificationPath));
+    multiPartRequest.files
+        .add(await MultipartFile.fromPath('curriculum_vitae', cvPath));
+
+    multiPartRequest.headers
+        .addAll(buildHeaderTokens(endPoint: APIEndPoints.register));
+
+    RegUserResp response = RegUserResp(userData: UserData());
+    await sendMultiPartRequest(multiPartRequest, onSuccess: (data) async {
+      response = RegUserResp.fromJson(jsonDecode(data));
+    }, onError: (error) {
+      throw error;
+    });
+
+    return response;
+  }
+
   static Future<void> saveToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('apiToken', token);

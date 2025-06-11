@@ -21,6 +21,22 @@ class SignUpController extends GetxController {
   TextEditingController password2Cont = TextEditingController();
   TextEditingController userTypeCont = TextEditingController();
   TextEditingController genCont = TextEditingController();
+  TextEditingController certificationNumberCont = TextEditingController();
+  TextEditingController certificationNameCont = TextEditingController();
+  TextEditingController cvNameCont = TextEditingController();
+
+  RxString certificationPath = ''.obs;
+  RxString cvPath = ''.obs;
+  RxBool isProfessional = false.obs;
+
+  void onUserTypeChanged(String? value) {
+    userTypeCont.text = value ?? '';
+    if (value == 'Veterinario' || value == 'Entrenador') {
+      isProfessional.value = true;
+    } else {
+      isProfessional.value = false;
+    }
+  }
 
   Future<void> saveForm() async {
     if (!isAcceptedTc.value) {
@@ -44,7 +60,26 @@ class SignUpController extends GetxController {
         "user_type": mapUserType(userTypeCont.text)
       };
 
-      final value = await AuthServiceApis.createUser(request: req);
+      if (isProfessional.value) {
+        if (certificationPath.value.isEmpty ||
+            certificationNumberCont.text.trim().isEmpty ||
+            cvPath.value.isEmpty) {
+          CustomSnackbar.show(
+            title: 'Campos incompletos',
+            message: 'Complete la información profesional requerida',
+            isError: true,
+          );
+          return;
+        }
+        req['certificate_number'] = certificationNumberCont.text.trim();
+      }
+      final value = isProfessional.value
+          ? await AuthServiceApis.createUserWithFiles(
+              request: req,
+              certificationPath: certificationPath.value,
+              cvPath: cvPath.value,
+            )
+          : await AuthServiceApis.createUser(request: req);
       toast(value.message.toString(), print: true);
 
       var message = mapUserType(userTypeCont.text) != 'user'
