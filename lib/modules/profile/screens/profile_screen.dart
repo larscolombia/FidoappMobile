@@ -271,6 +271,23 @@ class ProfileScreen extends StatelessWidget {
                             fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                           );
                         }),
+                        if (AuthServiceApis.dataCurrentUser.userRole[0] != 'user')
+                          Column(
+                            children: [
+                              SizedBox(height: margin),
+                              Obx(() {
+                                return InputText(
+                                  borderColor: Styles.iconColorBack,
+                                  onChanged: (value) => controller.user['payment_account'] = value,
+                                  initialValue: controller.user['payment_account'].toString(),
+                                  placeholder: 'Cuenta paypal',
+                                  placeholderSvg: 'assets/icons/svg/sms.svg',
+                                  readOnly: !controller.isEditing.value,
+                                  fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
+                                );
+                              }),
+                            ],
+                          ),
                         SizedBox(
                           height: margin,
                         ),

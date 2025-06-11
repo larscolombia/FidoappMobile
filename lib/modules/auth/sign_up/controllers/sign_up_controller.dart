@@ -24,6 +24,7 @@ class SignUpController extends GetxController {
   TextEditingController certificationNumberCont = TextEditingController();
   TextEditingController certificationNameCont = TextEditingController();
   TextEditingController cvNameCont = TextEditingController();
+  TextEditingController paymentAccountCont = TextEditingController();
 
   RxString certificationPath = ''.obs;
   RxString cvPath = ''.obs;
@@ -72,6 +73,9 @@ class SignUpController extends GetxController {
           return;
         }
         req['certificate_number'] = certificationNumberCont.text.trim();
+        if (paymentAccountCont.text.trim().isNotEmpty) {
+          req['payment_account'] = paymentAccountCont.text.trim();
+        }
       }
       final value = isProfessional.value
           ? await AuthServiceApis.createUserWithFiles(
