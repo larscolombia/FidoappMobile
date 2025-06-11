@@ -10,14 +10,14 @@ import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_up/controllers/sign_up_controller.dart';
+import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class SignUpScreen extends GetView<SignUpController> {
   SignUpScreen({super.key});
   final GlobalKey<FormState> _signUpformKey = GlobalKey();
-  final RxBool _autoValidate =
-      false.obs; // Observador para activar auto validación
+  final RxBool _autoValidate = false.obs; // Observador para activar auto validación
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +53,8 @@ class SignUpScreen extends GetView<SignUpController> {
                       ),
                       Form(
                         key: _signUpformKey,
-                        autovalidateMode: _autoValidate.value
-                            ? AutovalidateMode.onUserInteraction
-                            : AutovalidateMode
-                                .disabled, // Modo de auto validación
+                        autovalidateMode:
+                            _autoValidate.value ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled, // Modo de auto validación
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -70,9 +68,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholderSvg: 'assets/icons/svg/profile.svg',
                                 colorSVG: Color(0xFFFCBA67),
                                 validators: [
-                                  (value) => (value?.isEmpty ?? true)
-                                      ? 'El nombre es requerido'
-                                      : null,
+                                  (value) => (value?.isEmpty ?? true) ? 'El nombre es requerido' : null,
                                 ],
                               ),
                             ),
@@ -85,9 +81,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholderSvg: 'assets/icons/svg/profile.svg',
                                 colorSVG: Color(0xFFFCBA67),
                                 validators: [
-                                  (value) => (value?.isEmpty ?? true)
-                                      ? 'El apellido es requerido'
-                                      : null,
+                                  (value) => (value?.isEmpty ?? true) ? 'El apellido es requerido' : null,
                                 ],
                               ),
                             ),
@@ -100,12 +94,8 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholderSvg: 'assets/icons/svg/sms.svg',
                                 colorSVG: Color(0xFFFCBA67),
                                 validators: [
-                                  (value) => (value?.isEmpty ?? true)
-                                      ? 'El correo es requerido'
-                                      : null,
-                                  (value) => !value!.contains('@')
-                                      ? 'Ingrese un correo válido'
-                                      : null,
+                                  (value) => (value?.isEmpty ?? true) ? 'El correo es requerido' : null,
+                                  (value) => !value!.contains('@') ? 'Ingrese un correo válido' : null,
                                 ],
                               ),
                             ),
@@ -121,15 +111,9 @@ class SignUpScreen extends GetView<SignUpController> {
                                 filcolorCustom: Styles.fiveColor,
                                 textColor: Color(0xFF383838),
                                 borderColor: Color(0xFFFCBA67),
-                                items: const [
-                                  'Mujer',
-                                  'Hombre',
-                                  'Prefiero no decirlo'
-                                ],
+                                items: const ['Mujer', 'Hombre', 'Prefiero no decirlo'],
                                 validators: [
-                                  (value) => (value?.isEmpty ?? true)
-                                      ? 'Seleccione su género'
-                                      : null,
+                                  (value) => (value?.isEmpty ?? true) ? 'Seleccione su género' : null,
                                 ],
                               ),
                             ),
@@ -143,13 +127,8 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholderSvg: 'assets/icons/svg/key.svg',
                                 colorSVG: Color(0xFFFCBA67),
                                 validators: [
-                                  (value) => (value?.isEmpty ?? true)
-                                      ? 'La contraseña es requerida'
-                                      : null,
-                                  (value) => value!.length < 8 ||
-                                          value.length > 15
-                                      ? 'La contraseña debe tener entre 8 y 15 caracteres'
-                                      : null,
+                                  (value) => (value?.isEmpty ?? true) ? 'La contraseña es requerida' : null,
+                                  (value) => value!.length < 8 || value.length > 15 ? 'La contraseña debe tener entre 8 y 15 caracteres' : null,
                                 ],
                               ),
                             ),
@@ -163,10 +142,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholderSvg: 'assets/icons/svg/key.svg',
                                 colorSVG: Color(0xFFFCBA67),
                                 validators: [
-                                  (value) =>
-                                      (value != controller.passwordCont.text)
-                                          ? 'Las contraseñas no coinciden'
-                                          : null,
+                                  (value) => (value != controller.passwordCont.text) ? 'Las contraseñas no coinciden' : null,
                                 ],
                               ),
                             ),
@@ -181,18 +157,54 @@ class SignUpScreen extends GetView<SignUpController> {
                                 placeholderSvgColor: Color(0xFFFCBA67),
                                 textColor: Color(0xFF383838),
                                 borderColor: Color(0xFFFCBA67),
-                                items: const [
-                                  'Entrenador',
-                                  'Veterinario',
-                                  'Dueño de Mascota'
-                                ],
+                                items: const ['Entrenador', 'Veterinario', 'Dueño de Mascota'],
                                 validators: [
-                                  (value) => (value?.isEmpty ?? true)
-                                      ? 'Seleccione su género'
-                                      : null,
+                                  (value) => (value?.isEmpty ?? true) ? 'Seleccione su género' : null,
                                 ],
+                                onChange: controller.onUserTypeChanged,
                               ),
                             ),
+                            Obx(() {
+                              if (!controller.isProfessional.value) {
+                                return const SizedBox.shrink();
+                              }
+                              return Column(
+                                children: [
+                                  const SizedBox(height: 16),
+                                  CustomTextFormFieldWidget(
+                                    controller: controller.certificationNumberCont,
+                                    placeholder: 'Número Certificado',
+                                    placeholderSvg: 'assets/icons/svg/profile.svg',
+                                    colorSVG: Color(0xFFFCBA67),
+                                    validators: [
+                                      (value) => controller.isProfessional.value && (value?.isEmpty ?? true) ? 'Campo requerido' : null,
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  InputText(
+                                    controller: controller.certificationNameCont,
+                                    isFilePicker: true,
+                                    label: 'Certificación (PDF)',
+                                    placeholder: 'Añadir archivo .pdf',
+                                    placeholderSvg: 'assets/icons/svg/imagen2.svg',
+                                    onChanged: (value) {
+                                      controller.certificationPath.value = value;
+                                    },
+                                  ),
+                                  const SizedBox(height: 16),
+                                  InputText(
+                                    controller: controller.cvNameCont,
+                                    isFilePicker: true,
+                                    label: 'Currículum Vitae (PDF)',
+                                    placeholder: 'Añadir archivo .pdf',
+                                    placeholderSvg: 'assets/icons/svg/imagen2.svg',
+                                    onChanged: (value) {
+                                      controller.cvPath.value = value;
+                                    },
+                                  ),
+                                ],
+                              );
+                            }),
                             // Aceptar términos y condiciones
                             Column(
                               children: [
@@ -203,35 +215,24 @@ class SignUpScreen extends GetView<SignUpController> {
                                       () => Container(
                                         width: 305,
                                         alignment: Alignment.center,
-                                        padding: const EdgeInsets.only(
-                                            bottom: 10, top: 10),
+                                        padding: const EdgeInsets.only(bottom: 10, top: 10),
                                         child: CheckboxListTile(
                                           checkColor: Colors.amber,
                                           value: controller.isAcceptedTc.value,
-                                          activeColor: const Color.fromARGB(
-                                              255, 253, 252, 250),
+                                          activeColor: const Color.fromARGB(255, 253, 252, 250),
                                           visualDensity: VisualDensity.compact,
                                           dense: true,
-                                          controlAffinity:
-                                              ListTileControlAffinity.leading,
+                                          controlAffinity: ListTileControlAffinity.leading,
                                           contentPadding: EdgeInsets.zero,
                                           onChanged: (val) async {
-                                            controller.isAcceptedTc.value =
-                                                !controller.isAcceptedTc.value;
+                                            controller.isAcceptedTc.value = !controller.isAcceptedTc.value;
                                           },
-                                          checkboxShape:
-                                              const RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(5))),
-                                          side: const BorderSide(
-                                              color: Color(0XFFBEBEBE),
-                                              width: 1.5),
+                                          checkboxShape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                                          side: const BorderSide(color: Color(0XFFBEBEBE), width: 1.5),
                                           title: RichTextWidget(
                                             list: [
                                               TextSpan(
-                                                text:
-                                                    '${locale.value.iAcceptThe} ',
+                                                text: '${locale.value.iAcceptThe} ',
                                                 style: const TextStyle(
                                                   fontSize: 14,
                                                   fontFamily: "Lato",
@@ -240,20 +241,17 @@ class SignUpScreen extends GetView<SignUpController> {
                                                 ),
                                               ),
                                               TextSpan(
-                                                text: locale
-                                                    .value.termsAndConditions,
+                                                text: locale.value.termsAndConditions,
                                                 style: const TextStyle(
                                                   fontSize: 14,
                                                   fontFamily: 'Lato',
                                                   fontWeight: FontWeight.w700,
                                                   color: Color(0XFFFF4831),
                                                 ),
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        Get.toNamed(Routes
-                                                            .PRIVACYTERMS);
-                                                      },
+                                                recognizer: TapGestureRecognizer()
+                                                  ..onTap = () {
+                                                    Get.toNamed(Routes.PRIVACYTERMS);
+                                                  },
                                               ),
                                             ],
                                           ),
@@ -291,8 +289,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                 // Mostrar Snackbar cuando la validación falla
                                 CustomSnackbar.show(
                                   title: 'Campos incompletos',
-                                  message:
-                                      'Por favor complete todos los campos obligatorios',
+                                  message: 'Por favor complete todos los campos obligatorios',
                                   isError: true,
                                 );
                               }
