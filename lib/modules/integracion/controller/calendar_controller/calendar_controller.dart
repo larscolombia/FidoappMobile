@@ -27,6 +27,8 @@ class CalendarController extends GetxController {
   RxList<CalendarModel> filteredCalendars = <CalendarModel>[].obs;
   RxList<CalendarModel> selectedEvents = <CalendarModel>[].obs;
   RxInt selectedPetId = 0.obs;
+  Rxn<DateTime> selectedDate = Rxn<DateTime>();
+
 
   var EvenName = TextEditingController();
   var fechaEvento = TextEditingController();
@@ -70,7 +72,7 @@ class CalendarController extends GetxController {
         //    "Respuesta del servidor: $data"); // Imprimir la respuesta completa
 
         allCalendars.value = (data['data'] as List).map((item) => CalendarModel.fromJson(item)).toList();
-        filteredCalendars.value = allCalendars;
+        _applyFilters();
       } else {
         CustomSnackbar.show(
           title: "Error",
@@ -112,13 +114,27 @@ class CalendarController extends GetxController {
   }
 
   void filterByDate(DateTime date) {
-    print('calendario $date');
+    selectedDate.value = date;
+    _applyFilters();
+  }
 
-    // Formatear la fecha en el formato 'dd-MM-yyyy'
-    String formattedDate = '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
+  void filterByPet(int? petId) {
+    selectedPetId.value = petId ?? 0;
+    _applyFilters();
+  }
 
-    // Filtrar los eventos por la fecha formateada
-    filteredCalendars.value = allCalendars.where((event) => event.date == formattedDate).toList();
+  void _applyFilters() {
+    Iterable<CalendarModel> events = allCalendars;
+    if (selectedPetId.value != 0) {
+      events = events.where((e) => e.petId == selectedPetId.value);
+    }
+    if (selectedDate.value != null) {
+      final d = selectedDate.value!;
+      final formattedDate =
+          '${d.day.toString().padLeft(2, '0')}-${d.month.toString().padLeft(2, '0')}-${d.year}';
+      events = events.where((e) => e.date == formattedDate);
+    }
+    filteredCalendars.value = events.toList();
   }
 
   void filterByPet(int? petId) {
