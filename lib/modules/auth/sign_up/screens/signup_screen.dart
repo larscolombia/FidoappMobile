@@ -8,6 +8,7 @@ import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
+import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_up/controllers/sign_up_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
@@ -191,8 +192,57 @@ class SignUpScreen extends GetView<SignUpController> {
                                       ? 'Seleccione su género'
                                       : null,
                                 ],
+                                onChange: controller.onUserTypeChanged,
                               ),
                             ),
+                            Obx(() {
+                              if (!controller.isProfessional.value) {
+                                return const SizedBox.shrink();
+                              }
+                              return Column(
+                                children: [
+                                  const SizedBox(height: 16),
+                                  InputText(
+                                    controller: controller.certificationNameCont,
+                                    isFilePicker: true,
+                                    label: 'Certificación (PDF)',
+                                    placeholder: 'Añadir archivo .pdf',
+                                    placeholderSvg:
+                                        'assets/icons/svg/imagen2.svg',
+                                    onChanged: (value) {
+                                      controller.certificationPath.value = value;
+                                    },
+                                  ),
+                                  const SizedBox(height: 16),
+                                  CustomTextFormFieldWidget(
+                                    controller:
+                                        controller.certificationNumberCont,
+                                    placeholder: 'Número Certificado',
+                                    placeholderSvg:
+                                        'assets/icons/svg/profile.svg',
+                                    colorSVG: Color(0xFFFCBA67),
+                                    validators: [
+                                      (value) => controller.isProfessional.value &&
+                                              (value?.isEmpty ?? true)
+                                          ? 'Campo requerido'
+                                          : null,
+                                    ],
+                                  ),
+                                  const SizedBox(height: 16),
+                                  InputText(
+                                    controller: controller.cvNameCont,
+                                    isFilePicker: true,
+                                    label: 'Currículum Vitae (PDF)',
+                                    placeholder: 'Añadir archivo .pdf',
+                                    placeholderSvg:
+                                        'assets/icons/svg/imagen2.svg',
+                                    onChanged: (value) {
+                                      controller.cvPath.value = value;
+                                    },
+                                  ),
+                                ],
+                              );
+                            }),
                             // Aceptar términos y condiciones
                             Column(
                               children: [
