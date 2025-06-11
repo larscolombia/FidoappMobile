@@ -276,6 +276,8 @@ class _HomeScreenState extends State<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 16),
+        ProfilesDogs(),
+        const SizedBox(height: 16),
         Calendar(),
         const SizedBox(height: 16),
         ActivityListScreen(),

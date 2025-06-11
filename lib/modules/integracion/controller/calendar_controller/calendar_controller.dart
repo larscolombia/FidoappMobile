@@ -26,6 +26,7 @@ class CalendarController extends GetxController {
   RxList<CalendarModel> allCalendars = <CalendarModel>[].obs;
   RxList<CalendarModel> filteredCalendars = <CalendarModel>[].obs;
   RxList<CalendarModel> selectedEvents = <CalendarModel>[].obs;
+  RxInt selectedPetId = 0.obs;
 
   var EvenName = TextEditingController();
   var fechaEvento = TextEditingController();
@@ -87,13 +88,16 @@ class CalendarController extends GetxController {
   List<CalendarModel> getEventsForDay(DateTime day) {
     return allCalendars.where((event) {
       try {
-        // Convertir la fecha del evento (string) a DateTime
         final eventDate = DateFormat('dd-MM-yyyy').parse(event.date);
-        return isSameDay(eventDate, day); // Comparar con el día actual
+        if (!isSameDay(eventDate, day)) return false;
+        if (selectedPetId.value != 0 && event.petId != selectedPetId.value) {
+          return false;
+        }
+        return true;
       } catch (e) {
         print('Error al analizar la fecha: $e');
         return false;
-      } // Comparar con el día actual
+      }
     }).toList();
   }
 
@@ -115,6 +119,16 @@ class CalendarController extends GetxController {
 
     // Filtrar los eventos por la fecha formateada
     filteredCalendars.value = allCalendars.where((event) => event.date == formattedDate).toList();
+  }
+
+  void filterByPet(int? petId) {
+    selectedPetId.value = petId ?? 0;
+    if (petId == null || petId == 0) {
+      filteredCalendars.value = allCalendars;
+    } else {
+      filteredCalendars.value =
+          allCalendars.where((event) => event.petId == petId).toList();
+    }
   }
 
   void toggleVerMas(String eventId) {

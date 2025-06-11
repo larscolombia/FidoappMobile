@@ -9,6 +9,7 @@ import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/widgets/card_profile_dog.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
+import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -86,7 +87,14 @@ class ProfileModal extends StatelessWidget {
                   Row(
                     children: [
                       CustomCheckbox(
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          if (Get.isRegistered<CalendarController>()) {
+                            final calendarController =
+                                Get.find<CalendarController>();
+                            calendarController.filterByPet(0);
+                          }
+                          Navigator.of(context).pop();
+                        },
                         isChecked: false,
                       ),
                       const SizedBox(width: 16),
@@ -144,10 +152,13 @@ class ProfileModal extends StatelessWidget {
 
                         return GestureDetector(
                           onTap: () {
-                            // Actualiza el perfil seleccionado
                             activityController.fetchPetActivities(profile.id.toString());
                             controller.updateProfile(profile);
-                            Navigator.of(context).pop(); // Cierra el modal
+                            if (Get.isRegistered<CalendarController>()) {
+                              final calendarController = Get.find<CalendarController>();
+                              calendarController.filterByPet(profile.id);
+                            }
+                            Navigator.of(context).pop();
                           },
                           child: CardProfileDog(
                             isSelected: isSelected,
