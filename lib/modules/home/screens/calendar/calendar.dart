@@ -39,6 +39,7 @@ class Calendar extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Obx(() {
+            final _selectedPet = calendarController.selectedPetId.value;
             return Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(

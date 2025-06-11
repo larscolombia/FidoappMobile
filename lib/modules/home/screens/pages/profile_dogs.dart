@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
+import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class ProfilesDogs extends StatelessWidget {
@@ -10,13 +11,15 @@ class ProfilesDogs extends StatelessWidget {
       {super.key,
       this.isSelect = false,
       this.disableTap = false,
-      this.showAge = false}); // Añadir el parámetro opcional
+      this.showAge = false,
+      this.showAllLabel = false}); // Añadir el parámetro opcional
 
   // Instancia del controlador para manejar el estado
   final HomeController controller = Get.put(HomeController());
   final bool isSelect; // Declarar el campo
   final bool disableTap; // Declarar el campo opcional
   final bool showAge;
+  final bool showAllLabel;
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
@@ -26,6 +29,7 @@ class ProfilesDogs extends StatelessWidget {
       isSelect: isSelect,
       disableTap: disableTap,
       showAge: showAge, // Pasar el campo
+      showAllLabel: showAllLabel,
     );
   }
 }
@@ -38,8 +42,8 @@ class PerfilMascotas extends StatelessWidget {
       this.formulario = false,
       this.isSelect = false, // Campo opcional con valor predeterminado
       this.disableTap = false,
-      this.showAge = false // Campo opcional con valor predeterminado
-      });
+      this.showAge = false, // Campo opcional con valor predeterminado
+      this.showAllLabel = false});
 
   final HomeController controller;
   final double width;
@@ -47,6 +51,7 @@ class PerfilMascotas extends StatelessWidget {
   final bool isSelect; // Campo opcional
   final bool disableTap;
   final bool showAge; // Campo opcional
+  final bool showAllLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +81,57 @@ class PerfilMascotas extends StatelessWidget {
           ),
         ),
         child: Obx(() {
-          if (controller.selectedProfile.value == null) {
+          final calendarController = showAllLabel && Get.isRegistered<CalendarController>()
+              ? Get.find<CalendarController>()
+              : null;
+
+          if (calendarController != null &&
+              calendarController.selectedPetId.value == 0) {
+            return Row(
+              children: [
+                Container(
+                  width: 41,
+                  height: 41,
+                  padding: const EdgeInsets.all(3),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Styles.primaryColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.pets,
+                    color: Styles.primaryColor,
+                  ),
+                ),
+                const SizedBox(width: 15),
+                Expanded(
+                  child: Text(
+                    'Todos los perros',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      color: Styles.primaryColor,
+                      fontFamily: 'PoetsenOne',
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Padding(
+                  padding: const EdgeInsets.only(right: 5.0),
+                  child: SvgPicture.asset(
+                    'assets/icons/svg/arrow_profile.svg',
+                    height: 16,
+                    width: 16,
+                  ),
+                ),
+              ],
+            );
+          } else if (controller.selectedProfile.value == null) {
             // Mostrar mensaje si no hay perfil seleccionado
             return const Center(
               child: Text(
