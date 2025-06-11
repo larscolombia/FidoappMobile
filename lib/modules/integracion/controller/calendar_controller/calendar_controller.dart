@@ -27,6 +27,7 @@ class CalendarController extends GetxController {
   RxList<CalendarModel> filteredCalendars = <CalendarModel>[].obs;
   RxList<CalendarModel> selectedEvents = <CalendarModel>[].obs;
   RxInt selectedPetId = 0.obs;
+  Rxn<DateTime> selectedDate = Rxn<DateTime>();
 
   var EvenName = TextEditingController();
   var fechaEvento = TextEditingController();
@@ -70,7 +71,7 @@ class CalendarController extends GetxController {
         //    "Respuesta del servidor: $data"); // Imprimir la respuesta completa
 
         allCalendars.value = (data['data'] as List).map((item) => CalendarModel.fromJson(item)).toList();
-        filteredCalendars.value = allCalendars;
+        _applyFilters();
       } else {
         CustomSnackbar.show(
           title: "Error",
@@ -112,23 +113,27 @@ class CalendarController extends GetxController {
   }
 
   void filterByDate(DateTime date) {
-    print('calendario $date');
-
-    // Formatear la fecha en el formato 'dd-MM-yyyy'
-    String formattedDate = '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
-
-    // Filtrar los eventos por la fecha formateada
-    filteredCalendars.value = allCalendars.where((event) => event.date == formattedDate).toList();
+    selectedDate.value = date;
+    _applyFilters();
   }
 
   void filterByPet(int? petId) {
     selectedPetId.value = petId ?? 0;
-    if (petId == null || petId == 0) {
-      filteredCalendars.value = allCalendars;
-    } else {
-      filteredCalendars.value =
-          allCalendars.where((event) => event.petId == petId).toList();
+    _applyFilters();
+  }
+
+  void _applyFilters() {
+    Iterable<CalendarModel> events = allCalendars;
+    if (selectedPetId.value != 0) {
+      events = events.where((e) => e.petId == selectedPetId.value);
     }
+    if (selectedDate.value != null) {
+      final d = selectedDate.value!;
+      final formattedDate =
+          '${d.day.toString().padLeft(2, '0')}-${d.month.toString().padLeft(2, '0')}-${d.year}';
+      events = events.where((e) => e.date == formattedDate);
+    }
+    filteredCalendars.value = events.toList();
   }
 
   void toggleVerMas(String eventId) {
