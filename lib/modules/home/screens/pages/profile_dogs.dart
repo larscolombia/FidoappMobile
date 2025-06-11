@@ -8,11 +8,7 @@ import 'package:pawlly/styles/styles.dart';
 
 class ProfilesDogs extends StatelessWidget {
   ProfilesDogs(
-      {super.key,
-      this.isSelect = false,
-      this.disableTap = false,
-      this.showAge = false,
-      this.showAllLabel = false}); // Añadir el parámetro opcional
+      {super.key, this.isSelect = false, this.disableTap = false, this.showAge = false, this.showAllLabel = false}); // Añadir el parámetro opcional
 
   // Instancia del controlador para manejar el estado
   final HomeController controller = Get.put(HomeController());
@@ -75,18 +71,13 @@ class PerfilMascotas extends StatelessWidget {
           color: disableTap ? Colors.white : Styles.fiveColor,
           borderRadius: const BorderRadius.all(Radius.circular(16)),
           border: Border.all(
-            color: disableTap
-                ? Colors.transparent
-                : Styles.iconColorBack, // Borde con color específico
+            color: disableTap ? Colors.transparent : Styles.iconColorBack, // Borde con color específico
           ),
         ),
         child: Obx(() {
-          final calendarController = showAllLabel && Get.isRegistered<CalendarController>()
-              ? Get.find<CalendarController>()
-              : null;
+          final calendarController = showAllLabel && Get.isRegistered<CalendarController>() ? Get.find<CalendarController>() : null;
 
-          if (calendarController != null &&
-              calendarController.selectedPetId.value == 0) {
+          if (calendarController != null && calendarController.selectedPetId.value == 0) {
             return Row(
               children: [
                 Container(
@@ -109,7 +100,7 @@ class PerfilMascotas extends StatelessWidget {
                 const SizedBox(width: 15),
                 Expanded(
                   child: Text(
-                    'Todos los perros',
+                    'Todos',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: const TextStyle(
@@ -152,8 +143,7 @@ class PerfilMascotas extends StatelessWidget {
                 Container(
                   width: 41,
                   height: 41,
-                  padding: const EdgeInsets.all(
-                      3), // Espacio entre la imagen y el borde
+                  padding: const EdgeInsets.all(3), // Espacio entre la imagen y el borde
                   decoration: BoxDecoration(
                     color: Colors.white, // Fondo del borde
                     shape: BoxShape.circle,
@@ -163,16 +153,11 @@ class PerfilMascotas extends StatelessWidget {
                     ),
                   ),
                   child: CircleAvatar(
-                    radius:
-                        26, // Ajustar el radio para que la imagen se adapte mejor al contenedor
-                    backgroundImage: profile.petImage != null &&
-                            profile.petImage!.isNotEmpty
+                    radius: 26, // Ajustar el radio para que la imagen se adapte mejor al contenedor
+                    backgroundImage: profile.petImage != null && profile.petImage!.isNotEmpty
                         ? NetworkImage(profile.petImage!)
-                        : const NetworkImage(
-                                'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg')
-                            as ImageProvider,
-                    backgroundColor: Colors
-                        .transparent, // Fondo transparente si la imagen no se carga
+                        : const NetworkImage('https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg') as ImageProvider,
+                    backgroundColor: Colors.transparent, // Fondo transparente si la imagen no se carga
                   ),
                 ),
                 const SizedBox(width: 15),
@@ -201,9 +186,7 @@ class PerfilMascotas extends StatelessWidget {
                       SizedBox(
                         width: width / 2.5,
                         child: Text(
-                          disableTap == false && showAge == false
-                              ? 'Perfil de ${profile.name}'
-                              : '${profile.age}',
+                          disableTap == false && showAge == false ? 'Perfil de ${profile.name}' : '${profile.age}',
                           textAlign: TextAlign.left,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,

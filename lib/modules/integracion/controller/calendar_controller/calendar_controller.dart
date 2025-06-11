@@ -29,7 +29,6 @@ class CalendarController extends GetxController {
   RxInt selectedPetId = 0.obs;
   Rxn<DateTime> selectedDate = Rxn<DateTime>();
 
-
   var EvenName = TextEditingController();
   var fechaEvento = TextEditingController();
   var isVerMas = <String, bool>{}.obs;
@@ -130,21 +129,10 @@ class CalendarController extends GetxController {
     }
     if (selectedDate.value != null) {
       final d = selectedDate.value!;
-      final formattedDate =
-          '${d.day.toString().padLeft(2, '0')}-${d.month.toString().padLeft(2, '0')}-${d.year}';
+      final formattedDate = '${d.day.toString().padLeft(2, '0')}-${d.month.toString().padLeft(2, '0')}-${d.year}';
       events = events.where((e) => e.date == formattedDate);
     }
     filteredCalendars.value = events.toList();
-  }
-
-  void filterByPet(int? petId) {
-    selectedPetId.value = petId ?? 0;
-    if (petId == null || petId == 0) {
-      filteredCalendars.value = allCalendars;
-    } else {
-      filteredCalendars.value =
-          allCalendars.where((event) => event.petId == petId).toList();
-    }
   }
 
   void toggleVerMas(String eventId) {
