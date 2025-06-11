@@ -14,8 +14,7 @@ import 'package:pawlly/styles/styles.dart';
 
 class NotificationsScreen extends StatelessWidget {
   final NotificationsController controller = Get.put(NotificationsController());
-  final NotificationController notificationController =
-      Get.find<NotificationController>();
+  final NotificationController notificationController = Get.find<NotificationController>();
   final PushProvider tokenDevice = Get.put(PushProvider());
   NotificationsScreen({super.key});
 
@@ -35,25 +34,15 @@ class NotificationsScreen extends StatelessWidget {
           () => ListView(
             children: [
               _buildSectionTitle('Hoy'),
-              _buildNotificationList(
-                  notificationController.getTodayNotifications(),
-                  showTime: true),
-              notificationController.getYesterdayNotifications().isNotEmpty
-                  ? _buildSectionTitle('Ayer')
-                  : Container(),
-              _buildNotificationList(
-                  notificationController.getYesterdayNotifications(),
-                  showTime: true),
+              _buildNotificationList(notificationController.getTodayNotifications(), showTime: true),
+              notificationController.getYesterdayNotifications().isNotEmpty ? _buildSectionTitle('Ayer') : Container(),
+              _buildNotificationList(notificationController.getYesterdayNotifications(), showTime: true),
               const Divider(
                 thickness: .1,
                 color: Colors.black,
               ),
-              notificationController.getOlderNotifications().isNotEmpty
-                  ? _buildSectionTitle('Anteriores')
-                  : Container(),
-              _buildNotificationList(
-                  notificationController.getOlderNotifications(),
-                  showTime: true),
+              notificationController.getOlderNotifications().isNotEmpty ? _buildSectionTitle('Anteriores') : Container(),
+              _buildNotificationList(notificationController.getOlderNotifications(), showTime: true),
             ],
           ),
         ),
@@ -74,18 +63,14 @@ class NotificationsScreen extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     color: title == "Hoy" ? Colors.orange : Styles.fiveColor,
-                    borderRadius: BorderRadius.horizontal(
-                        left: Radius.circular(50), right: Radius.circular(50)),
+                    borderRadius: BorderRadius.horizontal(left: Radius.circular(50), right: Radius.circular(50)),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Center(
                     child: Text(
                       title,
                       style: TextStyle(
-                        color: title == "Hoy"
-                            ? Colors.white
-                            : Styles.iconColorBack,
+                        color: title == "Hoy" ? Colors.white : Styles.iconColorBack,
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         fontFamily: 'Lato',
@@ -101,8 +86,7 @@ class NotificationsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildNotificationList(List<NotificationData> notifications,
-      {required bool showTime}) {
+  Widget _buildNotificationList(List<NotificationData> notifications, {required bool showTime}) {
     // ignore: unused_local_variable
     NotificationController controller = Get.put(NotificationController());
     return ListView.builder(
@@ -114,21 +98,16 @@ class NotificationsScreen extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             // Mostrar el detalle de la notificación
-            notification.isRead == 0
-                ? controller.updateNotification(notification.id)
-                : null;
+            notification.isRead == 0 ? controller.updateNotification(notification.id) : null;
 
             _showNotificationDetails(context, notification);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 12),
-            width:
-                double.infinity, // Asegurar que ocupe todo el ancho disponible
+            width: double.infinity, // Asegurar que ocupe todo el ancho disponible
             //margin: const EdgeInsets.symmetric(vertical: 1.0), //margen notificaciones
             decoration: BoxDecoration(
-              color: notification.isRead == 0
-                  ? Styles.fiveColor
-                  : Styles.whiteColor,
+              color: notification.isRead == 0 ? Styles.fiveColor : Styles.whiteColor,
             ),
             child: Row(
               children: [
@@ -157,8 +136,7 @@ class NotificationsScreen extends StatelessWidget {
                 if (notification.type != 'fidocoin')
                   CircleAvatar(
                     radius: 30, // Aumenta el tamaño de la imagen
-                    backgroundImage: NetworkImage(notification.userAvatar ??
-                        'https://via.placeholder.com/150'), // URL por defecto
+                    backgroundImage: NetworkImage(notification.userAvatar ?? 'https://via.placeholder.com/150'), // URL por defecto
                     backgroundColor: Colors.transparent,
                     child: Container(
                       decoration: BoxDecoration(
@@ -177,11 +155,7 @@ class NotificationsScreen extends StatelessWidget {
                     children: [
                       Text(
                         notification.title ?? '',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Lato',
-                            fontSize: 14,
-                            color: Color(0xFF000000)),
+                        style: const TextStyle(fontWeight: FontWeight.w700, fontFamily: 'Lato', fontSize: 14, color: Color(0xFF000000)),
                       ),
                       const SizedBox(height: 4.0),
                       Row(
@@ -198,10 +172,8 @@ class NotificationsScreen extends StatelessWidget {
                           ),
                           Text(
                             showTime
-                                ? DateFormat('HH:mm').format(
-                                    DateTime.parse(notification.createdAt!))
-                                : DateFormat('dd MMM').format(
-                                    DateTime.parse(notification.createdAt!)),
+                                ? DateFormat('HH:mm').format(DateTime.parse(notification.createdAt!))
+                                : DateFormat('dd MMM').format(DateTime.parse(notification.createdAt!)),
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontFamily: 'Lato',
@@ -223,8 +195,7 @@ class NotificationsScreen extends StatelessWidget {
   }
 
   // Método para mostrar el detalle de la notificación en un modal
-  void _showNotificationDetails(
-      BuildContext context, NotificationData notification) {
+  void _showNotificationDetails(BuildContext context, NotificationData notification) {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
@@ -234,8 +205,7 @@ class NotificationsScreen extends StatelessWidget {
       isScrollControlled: true, // Permite que el contenido sea scrollable
       builder: (BuildContext context) {
         return DraggableScrollableSheet(
-          initialChildSize:
-              0.8, // Altura inicial del modal (50% de la pantalla)
+          initialChildSize: 0.8, // Altura inicial del modal (50% de la pantalla)
           minChildSize: 0.3, // Altura mínima al deslizar hacia abajo
           maxChildSize: 0.9, // Altura máxima al deslizar hacia arriba
           expand: false,
@@ -322,8 +292,7 @@ class NotificationsScreen extends StatelessWidget {
                     ),
                     // Texto de la fecha
                     Text(
-                      DateFormat('dd MMM yyyy HH:mm')
-                          .format(DateTime.parse(notification.createdAt!)),
+                      DateFormat('dd MMM yyyy HH:mm').format(DateTime.parse(notification.createdAt!)),
                       style: const TextStyle(
                         fontSize: 14,
                         fontFamily: 'Lato',
@@ -351,9 +320,7 @@ class NotificationsScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 24.0),
-                    if (notification.type == 'medico' ||
-                        notification.type == "entrenamiento" &&
-                            AuthServiceApis.dataCurrentUser.userType != "user")
+                    if ((notification.type == 'medico' || notification.type == "entrenamiento") && AuthServiceApis.dataCurrentUser.userType != "user")
                       Row(
                         children: [
                           if (notification.status == "pending")
@@ -366,14 +333,11 @@ class NotificationsScreen extends StatelessWidget {
                                     CustomAlertDialog(
                                       icon: Icons.confirmation_num,
                                       title: 'Confirmación',
-                                      description:
-                                          '¿Quieres Aceptar este Evento?',
+                                      description: '¿Quieres Aceptar este Evento?',
                                       primaryButtonText: 'Continuar',
                                       secondaryButtonText: 'Cancelar',
                                       onPrimaryButtonPressed: () {
-                                        notificationController.acceptBooking(
-                                            notification.eventId ?? "-1",
-                                            context);
+                                        notificationController.acceptBooking(notification.eventId ?? "-1", context);
                                         Get.back();
                                       },
                                     ),
@@ -393,8 +357,7 @@ class NotificationsScreen extends StatelessWidget {
                                     CustomAlertDialog(
                                       icon: Icons.confirmation_num,
                                       title: 'Confirmación',
-                                      description:
-                                          '¿Quieres rechazar este evento?',
+                                      description: '¿Quieres rechazar este evento?',
                                       primaryButtonText: 'Continuar',
                                       secondaryButtonText: 'Cancelar',
                                       onPrimaryButtonPressed: () {
