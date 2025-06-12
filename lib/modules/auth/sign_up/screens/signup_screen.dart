@@ -10,7 +10,7 @@ import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_up/controllers/sign_up_controller.dart';
-import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/components/input_text_full_width.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -181,7 +181,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                     ],
                                   ),
                                   const SizedBox(height: 16),
-                                  InputText(
+                                  InputTextFullWidth(
                                     controller: controller.certificationNameCont,
                                     isFilePicker: true,
                                     label: 'Certificación (PDF)',
@@ -192,7 +192,7 @@ class SignUpScreen extends GetView<SignUpController> {
                                     },
                                   ),
                                   const SizedBox(height: 16),
-                                  InputText(
+                                  InputTextFullWidth(
                                     controller: controller.cvNameCont,
                                     isFilePicker: true,
                                     label: 'Currículum Vitae (PDF)',
