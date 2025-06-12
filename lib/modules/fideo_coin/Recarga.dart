@@ -9,6 +9,7 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:pawlly/modules/fideo_coin/recarga_controller.dart';
 import 'package:pawlly/styles/recursos.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 class RecargarSaldoScreen extends StatefulWidget {
   final bool isWithdraw;
@@ -178,6 +179,16 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                         CustomSnackbar.show(
                           title: 'Error',
                           message: 'Debe ingresar un monto mayor a 0',
+                          isError: true,
+                        );
+                        return;
+                      }
+
+                      if (widget.isWithdraw &&
+                          AuthServiceApis.dataCurrentUser.paymentAccount.isEmpty) {
+                        CustomSnackbar.show(
+                          title: 'Cuenta de pago requerida',
+                          message: 'Debes agregar una cuenta de pago desde tu perfil',
                           isError: true,
                         );
                         return;
