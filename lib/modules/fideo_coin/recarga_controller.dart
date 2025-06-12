@@ -57,6 +57,15 @@ class StripeController extends GetxController {
   }
 
   Future<void> withdrawBalance(String amount, BuildContext context) async {
+    if (AuthServiceApis.dataCurrentUser.paymentAccount.isEmpty) {
+      CustomSnackbar.show(
+        title: 'Cuenta de pago requerida',
+        message: 'Debes agregar una cuenta de pago desde tu perfil',
+        isError: true,
+      );
+      return;
+    }
+
     isLoading.value = true;
     try {
       var response = await http.post(
