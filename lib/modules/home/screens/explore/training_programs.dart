@@ -201,19 +201,8 @@ class TrainingPrograms extends StatelessWidget {
                                 height: 30, // Reduje la altura del botón
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    // Navegar a detalles del curso
-                                    Get.to(() => CursosDetalles(
-                                          cursoId: "${course.id.toString()}",
-                                        ));
-                                    // Navegar a video del curso
-                                    var video = cursosController.findVideoById(
-                                      courseId: course.id,
-                                      videoId: course.id.toString(),
-                                    );
-
-                                    Get.to(() => CursosDetalles(
-                                          cursoId: course.id.toString(),
-                                        ));
+                                    Get.to(() =>
+                                        CursosDetalles(cursoId: course.id.toString()));
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Styles.primaryColor,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -46,9 +47,11 @@ class CursosDetalles extends StatelessWidget {
 
         var curso = controller.getCourseById(int.parse(cursoId!));
         print(curso.videos);
-        // Todos los cursos son gratuitos, por lo que siempre serán considerados como adquiridos
-        bool cursoAdquirido = true;
-        print('cursoAdquirido s $cursoAdquirido');
+        bool cursoGratis =
+            curso.price == '0' || curso.price == '0.00' || curso.price.toLowerCase() == 'gratis';
+        bool cursoAdquirido = miscursos.hasCourse(curso.id.toString());
+        bool puedeVerVideos = cursoGratis || cursoAdquirido;
+        print('cursoAdquirido $cursoAdquirido, cursoGratis $cursoGratis');
         return Stack(
           children: [
             Positioned(
@@ -170,31 +173,49 @@ class CursosDetalles extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                                 child: Text(
-                                  'Gratis', // Cambiado de precio a "Gratis"
+                                  cursoGratis ? 'Gratis' : curso.price,
                                   style: Styles.textTituloLibros,
                                 ),
                               ),
                             ],
                           ),
                         ),
+                        if (!puedeVerVideos)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: ButtonDefaultWidget(
+                              title: 'Comprar Curso',
+                              callback: () {
+                                miscursos.subscribeToCourse(curso.id);
+                              },
+                            ),
+                          ),
                         ...curso.videos.map((video) {
                           return GestureDetector(
                             onTap: () {
-                              // Se eliminó la comprobación de si el curso está adquirido
-                              // ya que todos los cursos serán gratuitos
-                              Get.to(() => CursoVideo(
-                                    videoId: video.url,
-                                    cursoId: curso.id.toString(),
-                                    name: video.title,
-                                    description: curso.description,
-                                    image: video.thumbnail,
-                                    duration: video.duration,
-                                    price: 'Gratis', // Cambiado precio a "Gratis"
-                                    difficulty: curso.difficulty,
-                                    videoUrl: video.url,
-                                    tipovideo: 'video',
-                                    dateCreated: DateFormat('dd-MM-yyyy').format(video.createdAt),
-                                  ));
+                              if (puedeVerVideos) {
+                                Get.to(() => CursoVideo(
+                                      videoId: video.url,
+                                      cursoId: curso.id.toString(),
+                                      name: video.title,
+                                      description: curso.description,
+                                      image: video.thumbnail,
+                                      duration: video.duration,
+                                      price: curso.price,
+                                      difficulty: curso.difficulty,
+                                      videoUrl: video.url,
+                                      tipovideo: 'video',
+                                      dateCreated:
+                                          DateFormat('dd-MM-yyyy').format(video.createdAt),
+                                    ));
+                              } else {
+                                CustomSnackbar.show(
+                                  title: 'Curso no adquirido',
+                                  message:
+                                      'Debes comprar el curso para ver este video',
+                                  isError: true,
+                                );
+                              }
                             },
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 20),
