@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/fideo_coin/navegador.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
+import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'dart:convert';
 
 import 'package:pawlly/configs.dart';
@@ -49,6 +51,43 @@ class StripeController extends GetxController {
       }
     } catch (e) {
       print('stripe url:4 $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> withdrawBalance(String amount, BuildContext context) async {
+    isLoading.value = true;
+    try {
+      var response = await http.post(
+        Uri.parse('${BASE_URL}wallet/withdraw'),
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        },
+        body: {
+          'user_id': '${AuthServiceApis.dataCurrentUser.id}',
+          'amount': amount.split(',')[0],
+        },
+      );
+      if (response.statusCode == 200) {
+        CustomSnackbar.show(title: 'Éxito', message: 'Solicitud exitosa');
+        final balanceController = Get.put(UserBalanceController());
+        await balanceController.fetchUserBalance();
+        Get.off(() => FideCoin());
+      } else if (response.statusCode == 400) {
+        CustomSnackbar.show(
+            title: 'Saldo insuficiente',
+            message: 'No cuentas con suficiente saldo',
+            isError: true);
+      } else {
+        CustomSnackbar.show(
+            title: 'Error',
+            message: 'Error en la solicitud de retiro',
+            isError: true);
+      }
+    } catch (e) {
+      CustomSnackbar.show(
+          title: 'Error', message: 'Error en la solicitud de retiro', isError: true);
     } finally {
       isLoading.value = false;
     }

@@ -11,7 +11,9 @@ import 'package:pawlly/modules/fideo_coin/recarga_controller.dart';
 import 'package:pawlly/styles/recursos.dart';
 
 class RecargarSaldoScreen extends StatefulWidget {
-  RecargarSaldoScreen({super.key});
+  final bool isWithdraw;
+
+  RecargarSaldoScreen({super.key, this.isWithdraw = false});
 
   @override
   _RecargarSaldoScreenState createState() => _RecargarSaldoScreenState();
@@ -59,31 +61,30 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
             child: Stack(
               children: [
                 Center(
-                  child: Container(
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Completa la información',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: Recursos.fuente2,
-                          ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Completa la información',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: Recursos.fuente2,
                         ),
-                        Text(
-                          'Digita la cantidad que deseas recargar',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: Recursos.fuente1,
-                          ),
+                      ),
+                      Text(
+                        'Digita la cantidad que deseas '
+                        '${widget.isWithdraw ? 'retirar' : 'recargar'}',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: Recursos.fuente1,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
                 BorderRedondiado(top: 180)
@@ -98,7 +99,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                 children: [
                   BarraBack(
                     size: 20,
-                    titulo: 'Recarga',
+                    titulo: widget.isWithdraw ? 'Retiro' : 'Recarga',
                     callback: () {
                       Get.off(() => DashboardScreen());
                     },
@@ -188,13 +189,19 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                           title: 'Confirmación',
                           buttonCancelar: true,
                           description: controller.isLoading.value
-                              ? "Procesando tu compra..."
-                              : 'Estás a punto de adquirir \$ ${_formattedInput(_input)} . ¿Deseas continuar?',
+                              ? "Procesando..."
+                              : widget.isWithdraw
+                                  ? 'Estás a punto de retirar \$ ${_formattedInput(_input)} . ¿Deseas continuar?'
+                                  : 'Estás a punto de adquirir \$ ${_formattedInput(_input)} . ¿Deseas continuar?',
                           primaryButtonText: 'Continuar',
                           onPrimaryButtonPressed: () async {
-                            print('dew');
-                            controller.GetUrlPayment(
-                                _formattedInput(_input), context);
+                            if (widget.isWithdraw) {
+                              await controller.withdrawBalance(
+                                  _formattedInput(_input), context);
+                            } else {
+                              controller.GetUrlPayment(
+                                  _formattedInput(_input), context);
+                            }
                           },
                         ),
                         barrierDismissible: true,
