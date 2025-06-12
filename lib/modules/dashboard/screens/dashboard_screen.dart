@@ -6,6 +6,7 @@ import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pacientes.dart';
 import 'package:pawlly/modules/diario/diario.dart';
+import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
@@ -61,10 +62,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     () => CircleAvatar(
                       radius: 46,
                       backgroundImage: controller.profileImagePath.isNotEmpty
-                          ? NetworkImage(
-                              AuthServiceApis.dataCurrentUser.profileImage)
-                          : const AssetImage('assets/images/avatar.png')
-                              as ImageProvider,
+                          ? NetworkImage(AuthServiceApis.dataCurrentUser.profileImage)
+                          : const AssetImage('assets/images/avatar.png') as ImageProvider,
                       backgroundColor: Colors.transparent,
                     ),
                   ),
@@ -131,6 +130,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           _buildMenuItem(4, context),
                           // Opción 5 - Sobre la app
                           _buildMenuItem(5, context),
+                          // Opción 6 - Sobre la app
+                          _buildMenuItem(6, context),
                           // Opción 7 - Cerrar Sesión (notese que saltamos el 6 - FidoCoins)
                           _buildMenuItem(7, context),
                         ],
@@ -199,9 +200,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case 0:
         return 'Mi perfil';
       case 1:
-        return roleUser.roleUser() == roleUser.tipoUsuario('vet')
-            ? 'Pacientes'
-            : 'Mascotas';
+        return roleUser.roleUser() == roleUser.tipoUsuario('vet') ? 'Pacientes' : 'Mascotas';
       case 2:
         return 'Diario de Mascotas';
       case 3:
@@ -210,6 +209,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return 'Políticas de privacidad';
       case 5:
         return 'Sobre la app';
+      case 6:
+        return 'FidoCoin';
       case 7:
         return 'Cerrar Sesión';
       default:
@@ -270,8 +271,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Object _getPageForIndex(int index) {
     final HomeController homeController = Get.find<HomeController>();
-    final PetActivityController historialClinicoController =
-        Get.put(PetActivityController());
+    final PetActivityController historialClinicoController = Get.put(PetActivityController());
     switch (index) {
       case 0:
         return Routes.PROFILE;
@@ -285,6 +285,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return Routes.PRIVACYPOLICY;
       case 5:
         return Routes.SOBREAPP;
+      case 6:
+        return FideCoin();
       case 7:
         return "";
       default:
@@ -307,6 +309,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         return 'assets/icons/svg/book.svg';
       case 5:
         return 'assets/icons/svg/info-circle.svg';
+      case 6:
+        return 'assets/icons/svg/moneda.svg';
       case 7:
         return 'assets/icons/svg/logout.svg';
       default:
