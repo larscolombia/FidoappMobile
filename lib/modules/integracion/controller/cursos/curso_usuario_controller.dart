@@ -7,6 +7,7 @@ import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/home/screens/explore/show/cursos_detalles.dart';
 import 'package:pawlly/modules/integracion/model/curosos/cursos_usuarios.dart';
+import '../balance/balance_controller.dart';
 
 import '../../../../services/auth_service_apis.dart';
 
@@ -26,6 +27,7 @@ class CursoUsuarioController extends GetxController {
     userName: '',
     avatar: '',
   ).obs;
+  final UserBalanceController balanceController = Get.put(UserBalanceController());
   @override
   void onInit() {
     super.onInit();
@@ -152,7 +154,9 @@ class CursoUsuarioController extends GetxController {
               description: 'El curso ha sido adquirido con exito.',
               primaryButtonText: 'Continuar',
               onPrimaryButtonPressed: () {
+                Get.back();
                 fetchCourses();
+                balanceController.fetchUserBalance();
                 print('curo id ${courseId}');
                 Get.to(() => CursosDetalles(
                       cursoId: courseId.toString(),
