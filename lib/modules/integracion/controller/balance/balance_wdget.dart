@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/fideo_coin/Recarga.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 import '../../../components/style.dart';
 
@@ -111,9 +112,14 @@ class Balance extends StatelessWidget {
                       textSize: 12,
                       defaultColor: Color(0xff37AE4D),
                       callback: () {
-                        Get.off(RecargarSaldoScreen());
+                        bool isWithdraw = AuthServiceApis.dataCurrentUser.userType == 'vet' ||
+                            AuthServiceApis.dataCurrentUser.userType == 'trainer';
+                        Get.off(RecargarSaldoScreen(isWithdraw: isWithdraw));
                       },
-                      title: 'Recargar Saldo',
+                      title: AuthServiceApis.dataCurrentUser.userType == 'vet' ||
+                              AuthServiceApis.dataCurrentUser.userType == 'trainer'
+                          ? 'Retirar Saldo'
+                          : 'Recargar Saldo',
                     ),
                   ),
                 ],
