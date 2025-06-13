@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/historia_grid.dart';
 import 'package:pawlly/modules/components/input_text.dart';
+import 'package:pawlly/modules/components/input_select.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
@@ -14,6 +15,7 @@ import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controll
 import 'package:pawlly/modules/profile_pet/screens/form_historial.dart';
 import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/modules/add_pet/controllers/add_pet_controller.dart';
 
 class PasaporteMascota extends StatelessWidget {
   PasaporteMascota({super.key});
@@ -21,6 +23,7 @@ class PasaporteMascota extends StatelessWidget {
       Get.put(HistorialClinicoController());
   final HomeController _homeController = Get.find<HomeController>();
   final PetControllerv2 petController = Get.put(PetControllerv2());
+  final AddPetController addPetController = Get.put(AddPetController());
 
   @override
   Widget build(BuildContext context) {
@@ -114,11 +117,16 @@ class PasaporteMascota extends StatelessWidget {
                       SizedBox(
                         width: ancho,
                         height: altoInput,
-                        child: InputText(
-                          placeholder: '',
+                        child: InputSelect(
                           label: 'Especie',
-                          initialValue: pet.pettype ?? "",
-                          onChanged: (value) => pet.pettype = value,
+                          value: pet.pettype,
+                          onChanged: (value) => pet.pettype = value ?? '',
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'Perro',
+                              child: Text('Perro', style: Helper.selectStyle),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
@@ -135,12 +143,20 @@ class PasaporteMascota extends StatelessWidget {
                       SizedBox(
                         width: ancho,
                         height: altoInput,
-                        child: InputText(
-                          label: 'Raza',
-                          placeholder: '',
-                          initialValue: pet.breed ?? "",
-                          onChanged: (value) => pet.petFur = value,
-                        ),
+                        child: Obx(() {
+                          return InputSelect(
+                            label: 'Raza',
+                            value: pet.breed,
+                            onChanged: (value) => pet.breed = value ?? '',
+                            items: addPetController.breedList
+                                .map((breed) => DropdownMenuItem(
+                                      value: breed.name,
+                                      child: Text(breed.name,
+                                          style: Helper.selectStyle),
+                                    ))
+                                .toList(),
+                          );
+                        }),
                       ),
                       SizedBox(
                         width: ancho,
@@ -149,6 +165,7 @@ class PasaporteMascota extends StatelessWidget {
                           isDateField: true,
                           label: 'Fecha de nacimiento',
                           placeholder: '',
+                          controller: dateController,
                           onChanged: (value) {
                             pet.dateOfBirth = value;
                             print(
@@ -182,19 +199,28 @@ class PasaporteMascota extends StatelessWidget {
                         child: InputText(
                             label: 'Altura',
                             placeholder: "Altura",
-                            initialValue: pet.height.toString(),
+                            initialValue: pet.height?.toString(),
                             onChanged: (value) => pet.height = value),
                       ),
                       SizedBox(
                         width: ancho,
                         height: altoInput,
-                        child: InputText(
+                        child: InputSelect(
                           label: 'Unidad de la Altura',
-                          placeholder: "m/cm",
-                          initialValue: pet.heightUnit.toString(),
+                          value: pet.heightUnit,
                           onChanged: (value) {
-                            pet.heightUnit = value;
+                            pet.heightUnit = value ?? '';
                           },
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'cm',
+                              child: Text('cm', style: Helper.selectStyle),
+                            ),
+                            DropdownMenuItem(
+                              value: 'm',
+                              child: Text('m', style: Helper.selectStyle),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
@@ -203,35 +229,31 @@ class PasaporteMascota extends StatelessWidget {
                         child: InputText(
                           label: 'Peso',
                           placeholder: "Peso",
-                          initialValue:
-                              pet.weight.toString() ?? "no lo ha colocado aún",
+                          initialValue: pet.weight.toString(),
                           onChanged: (value) {
-                            pet.weight = double.parse(value);
+                            pet.weight = double.tryParse(value) ?? 0;
                           },
                         ),
                       ),
                       SizedBox(
                         width: ancho,
                         height: altoInput,
-                        child: InputText(
+                        child: InputSelect(
                           label: 'Unidad de Peso',
-                          placeholder: "Peso",
-                          initialValue: pet.weightUnit.toString() ?? "",
+                          value: pet.weightUnit,
                           onChanged: (value) {
-                            pet.weightUnit = value;
+                            pet.weightUnit = value ?? '';
                           },
-                        ),
-                      ),
-                      SizedBox(
-                        width: ancho,
-                        height: altoInput,
-                        child: InputText(
-                          label: 'Tamaño',
-                          placeholder: "",
-                          initialValue: pet.size.toString(),
-                          onChanged: (value) {
-                            pet.size = value;
-                          },
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'Kg',
+                              child: Text('Kg', style: Helper.selectStyle),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Lb',
+                              child: Text('Lb', style: Helper.selectStyle),
+                            ),
+                          ],
                         ),
                       ),
                       SizedBox(
@@ -325,7 +347,7 @@ class PasaporteMascota extends StatelessWidget {
                                   "weight": pet.weight,
                                   "weight_unit": pet.weightUnit,
                                   "height_unit": pet.heightUnit,
-                                  "height": num.parse(pet.size ?? "0"),
+                                  "height": num.parse(pet.height ?? "0"),
                                   "user_id": pet.userId,
                                   // "age": pet.age,
                                   "pet_fur": pet.petFur,
