@@ -6,6 +6,7 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/model/user_type/user_model.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 
 class UserCard extends StatelessWidget {
   final User user;
@@ -13,6 +14,7 @@ class UserCard extends StatelessWidget {
   UserCard({super.key, required this.user});
   final UserProfileController profileController =
       Get.find<UserProfileController>();
+  final HomeController homeController = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     double rating = double.parse(user.rating.toString());
@@ -25,7 +27,7 @@ class UserCard extends StatelessWidget {
             .fetchUserData('${user.id}'); // Obtener los datos del usuario
         print('perfil usuario ${jsonEncode(profileController.user.value)}');
         if (users?.id != null) {
-          Get.to(() => PetOwnerProfileScreen(id: '${user.id}'));
+          Get.to(() => PetOwnerProfileScreen(id: '${user.id}', pets: user.pets));
         } else {}
       },
       child: Container(
@@ -111,7 +113,7 @@ class UserCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 4),
-                      SizedBox(
+                  SizedBox(
                         width: 100,
                         child: Text(
                           user.profile?.expert ?? '',
@@ -126,6 +128,40 @@ class UserCard extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 4),
+                  Builder(builder: (context) {
+                    final selectedId = homeController.selectedProfile.value?.id;
+                    final linked = selectedId != null &&
+                        (user.pets?.contains(selectedId) ?? false);
+                    if (!linked) return const SizedBox.shrink();
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE5FEED),
+                        border: Border.all(color: const Color(0xFF19A02F), width: 0.5),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Image.asset('assets/icons/palomiar.png'),
+                          const SizedBox(width: 4),
+                          Text(
+                            user.userType == 'vet'
+                                ? 'Veterinario asignado a tu mascota'
+                                : 'Entrenador asignado a tu mascota',
+                            style: const TextStyle(
+                              color: Color(0xFF19A02F),
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'lato',
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),

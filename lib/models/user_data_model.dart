@@ -66,7 +66,9 @@ class UserData {
         deviceToken: json['device_token'].toString(),
         paymentAccount: json['payment_account'] is String
             ? json['payment_account']
-            : "");
+            : (json['profile'] != null && json['profile']['payment_account'] is String
+                ? json['profile']['payment_account']
+                : ""));
   }
 
   Map<String, dynamic> toJson() {

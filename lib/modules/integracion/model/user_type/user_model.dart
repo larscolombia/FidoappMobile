@@ -10,6 +10,7 @@ class User {
   double? rating; // Cambiado de String a double
   String? address;
   Profile? profile; // Nuevo campo para el objeto anidado 'profile'
+  List<int>? pets; // IDs de mascotas vinculadas al usuario autenticado
 
   User({
     this.id,
@@ -23,6 +24,7 @@ class User {
     this.rating,
     this.address,
     this.profile,
+    this.pets,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,9 @@ class User {
       address: json['address']?.toString(),
       profile:
           json['profile'] != null ? Profile.fromJson(json['profile']) : null,
+      pets: json['pets'] != null
+          ? List<int>.from(json['pets'].map((x) => int.tryParse('$x') ?? 0))
+          : null,
     );
   }
 }
@@ -58,6 +63,9 @@ class Profile {
   DateTime? createdAt;
   DateTime? updatedAt;
   DateTime? deletedAt;
+  String? paymentAccount;
+  int? specialityId;
+  List<String>? tags;
 
   Profile({
     this.id,
@@ -72,6 +80,9 @@ class Profile {
     this.createdAt,
     this.updatedAt,
     this.deletedAt,
+    this.paymentAccount,
+    this.specialityId,
+    this.tags,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
@@ -93,6 +104,11 @@ class Profile {
           : null,
       deletedAt: json['deleted_at'] != null
           ? DateTime.parse(json['deleted_at'])
+          : null,
+      paymentAccount: json['payment_account'],
+      specialityId: json['speciality_id'],
+      tags: json['tags'] != null
+          ? json['tags'].toString().split(',').map((e) => e.trim()).toList()
           : null,
     );
   }

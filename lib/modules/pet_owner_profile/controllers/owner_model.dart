@@ -117,7 +117,8 @@ class UserData {
       fullName: json['full_name'],
       profileImage: json['profile_image'],
       publicProfile: json['public_profile'],
-      paymentAccount: json['payment_account'],
+      paymentAccount: json['payment_account'] ??
+          (json['profile'] != null ? json['profile']['payment_account'] : null),
       profile:
           json['profile'] != null ? Profile.fromJson(json['profile']) : null,
       pets: json['pets'] != null
@@ -182,6 +183,8 @@ class Profile {
   String? validationNumber;
   String? profecionalTitle;
   List<String>? tags;
+  String? paymentAccount;
+  int? specialityId;
   Profile({
     this.id,
     this.aboutSelf,
@@ -198,6 +201,8 @@ class Profile {
     this.validationNumber,
     this.profecionalTitle,
     this.tags,
+    this.paymentAccount,
+    this.specialityId,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
@@ -216,7 +221,13 @@ class Profile {
       deletedAt: json['deleted_at'],
       validationNumber: json['validation_number'],
       profecionalTitle: json['profecional_title'],
-      tags: json['tags'] != null ? List<String>.from(json['tags']) : null,
+      tags: json['tags'] != null
+          ? (json['tags'] is List
+              ? List<String>.from(json['tags'])
+              : json['tags'].toString().split(',').map((e) => e.trim()).toList())
+          : null,
+      paymentAccount: json['payment_account'],
+      specialityId: json['speciality_id'],
     );
   }
 
@@ -237,6 +248,8 @@ class Profile {
       'validation_number': validationNumber,
       'profecional_title': profecionalTitle,
       'tags': tags,
+      'payment_account': paymentAccount,
+      'speciality_id': specialityId,
     };
   }
 }

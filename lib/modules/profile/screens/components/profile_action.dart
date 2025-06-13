@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:get/get.dart';
 import 'package:pawlly/modules/components/boton_compartir.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/integracion/controller/especialidades_controller/epeciality_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileActions extends StatelessWidget {
   final PetOwnerProfileController controller;
   final UserProfileController profileController;
+  final SpecialityController specialityController = Get.put(SpecialityController());
 
   const ProfileActions({
     Key? key,
@@ -56,7 +58,7 @@ class ProfileActions extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             if (profileController.user.value.userType != 'user' &&
-                (profileController.user.value.profile?.expert ?? "").isNotEmpty)
+                (profileController.user.value.profile?.specialityId != null))
               Container(
                 width: MediaQuery.sizeOf(context).width,
                 child: InputText(
@@ -65,8 +67,10 @@ class ProfileActions extends StatelessWidget {
                   placeholderSvg: 'assets/icons/svg/genero.svg',
                   placeholderFontFamily: "Lato",
                   label: 'Área de especialización',
-                  initialValue:
-                      profileController.user.value.profile?.expert ?? "",
+                  initialValue: specialityController.getNameById(
+                          profileController
+                              .user.value.profile?.specialityId) ??
+                      '',
                   isTextArea: true,
                   onChanged: (value) {
                     controller.specializationArea.value = value;
