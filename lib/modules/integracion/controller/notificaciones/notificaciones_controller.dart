@@ -216,6 +216,7 @@ class NotificationController extends GetxController {
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
               Get.back();
+              fetchNotifications();
             },
           ),
           barrierDismissible: true,
@@ -266,6 +267,7 @@ class NotificationController extends GetxController {
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
               Get.back();
+              fetchNotifications();
             },
           ),
           barrierDismissible: true,
