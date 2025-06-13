@@ -34,13 +34,14 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
     super.initState();
     profileController.fetchUserData(widget.id).then((_) {
       final selectedId = homeController.selectedProfile.value?.id;
-      final petIds = profileController.user.value.pets
-              ?.map((e) => e.id)
-              .whereType<int>()
-              .toList() ??
-          [];
+      final petIds = widget.pets ?? [];
       controller.veterinarianLinked.value =
           selectedId != null && petIds.contains(selectedId);
+
+      controller.veterinarianVerified.value =
+          (profileController.user.value.profile?.validationNumber != null &&
+              profileController
+                  .user.value.profile!.validationNumber!.isNotEmpty);
     });
   }
 
