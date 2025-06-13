@@ -145,6 +145,8 @@ class PasaporteMascota extends StatelessWidget {
                         child: InputSelect(
                           label: 'Especie',
                           value: pet.pettype,
+                          TextColor: Colors.black,
+                          borderColor: const Color(0xFFFCBA67),
                           onChanged: (value) => pet.pettype = value ?? '',
                           items: const [
                             DropdownMenuItem(
@@ -157,86 +159,38 @@ class PasaporteMascota extends StatelessWidget {
                       SizedBox(
                         width: ancho,
                         height: altoInput,
-                        child: Obx(() {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    genderValue.value = 'female';
-                                    pet.gender = 'female';
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      color: genderValue.value == 'female'
-                                          ? Colors.white
-                                          : const Color.fromRGBO(254, 247, 229, 1),
-                                      border: Border.all(
-                                        color: genderValue.value == 'female'
-                                            ? Styles.iconColorBack
-                                            : Colors.transparent,
-                                      ),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        'Hembra',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'Lato',
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    genderValue.value = 'male';
-                                    pet.gender = 'male';
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(16),
-                                    decoration: BoxDecoration(
-                                      color: genderValue.value == 'male'
-                                          ? Colors.white
-                                          : const Color.fromRGBO(254, 247, 229, 1),
-                                      border: Border.all(
-                                          color: genderValue.value == 'male'
-                                              ? Styles.iconColorBack
-                                              : Colors.transparent),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        'Macho',
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'Lato',
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
+                        child: InputSelect(
+                          label: 'Sexo',
+                          value: genderToSpanish(pet.gender),
+                          TextColor: Colors.black,
+                          borderColor: const Color(0xFFFCBA67),
+                          onChanged: (value) {
+                            genderValue.value = genderToEnglish(value ?? '');
+                            pet.gender = genderToEnglish(value ?? '');
+                          },
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'Hembra',
+                              child: Text('Hembra', style: Helper.selectStyle),
+                            ),
+                            DropdownMenuItem(
+                              value: 'Macho',
+                              child: Text('Macho', style: Helper.selectStyle),
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         width: ancho,
                         height: altoInput,
                         child: Obx(() {
                           return InputSelect(
-                            key: ValueKey(addPetController.breedList.length),
+                            key: ValueKey(
+                                '${addPetController.breedList.length}-${pet.breed}'),
                             label: 'Raza',
                             value: pet.breed,
+                            TextColor: Colors.black,
+                            borderColor: const Color(0xFFFCBA67),
                             onChanged: (value) => pet.breed = value ?? '',
                             items: addPetController.breedList
                                 .map((breed) => DropdownMenuItem(
@@ -288,6 +242,8 @@ class PasaporteMascota extends StatelessWidget {
                         child: InputSelect(
                           label: 'Unidad de la Altura',
                           value: pet.heightUnit,
+                          TextColor: Colors.black,
+                          borderColor: const Color(0xFFFCBA67),
                           onChanged: (value) {
                             pet.heightUnit = value ?? '';
                           },
@@ -321,6 +277,8 @@ class PasaporteMascota extends StatelessWidget {
                         child: InputSelect(
                           label: 'Unidad de Peso',
                           value: pet.weightUnit,
+                          TextColor: Colors.black,
+                          borderColor: const Color(0xFFFCBA67),
                           onChanged: (value) {
                             pet.weightUnit = value ?? '';
                           },
