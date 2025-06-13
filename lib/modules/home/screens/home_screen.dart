@@ -88,46 +88,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   HeaderNotification(),
                   // Agregar animación para mostrar/ocultar el contenedor de notificaciones
-
-                  AnimatedOpacity(
-                    opacity: AuthServiceApis.dataCurrentUser.deviceToken == 'null' ? 1.0 : 0.0,
-                    duration: const Duration(milliseconds: 0), // Duración de la animación
-                    child: AuthServiceApis.dataCurrentUser.deviceToken == 'null'
-                        ? Center(
-                            child: Container(
-                              height: 50,
-                              width: 300,
-                              margin: const EdgeInsets.all(10),
-                              child: GestureDetector(
-                                onTap: () {
-                                  var token = PushProvider();
-                                  token.setupFCM();
-                                },
-                                child: Center(
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: Styles.iconColorBack,
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: Obx(() {
-                                      return Text(
-                                        pushProvider.isLoading.value ? "Cargando..." : 'Activar Notificaciones aquí',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: 'Lato',
-                                        ),
-                                      );
-                                    }),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : const SizedBox.shrink(), // Si el token es 'null', no muestra nada
-                  ),
                   Container(
                     decoration: const BoxDecoration(
                       color: Colors.white,
@@ -250,15 +210,15 @@ class _HomeScreenState extends State<HomeScreen> {
           const Explore(),
           const SizedBox(height: 16),
           if (calendarController.filteredCalendars.isNotEmpty)
-          const Text(
-            'Próximos Eventos',
-            style: TextStyle(
-              color: Styles.primaryColor,
-              fontFamily: Styles.fuente2,
-              fontSize: 20,
-              fontWeight: FontWeight.w400,
+            const Text(
+              'Próximos Eventos',
+              style: TextStyle(
+                color: Styles.primaryColor,
+                fontFamily: Styles.fuente2,
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+              ),
             ),
-          ),
           const SizedBox(height: 16),
           if (calendarController.filteredCalendars.isNotEmpty) EventosProximos(calendarController: calendarController),
           if (calendarController.filteredCalendars.isNotEmpty) const SizedBox(height: 16),
@@ -425,9 +385,7 @@ class EventosProximos extends StatelessWidget {
                                   return Text(
                                     event.description ?? '',
                                     maxLines: calendarController.isVerMas[event.id ?? ''] ?? false ? 4 : 1,
-                                    overflow: calendarController.isVerMas[event.id ?? 0] ?? false
-                                        ? TextOverflow.visible
-                                        : TextOverflow.ellipsis,
+                                    overflow: calendarController.isVerMas[event.id ?? 0] ?? false ? TextOverflow.visible : TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
@@ -441,8 +399,7 @@ class EventosProximos extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    calendarController.formatEventTime(event.eventime ?? "", event.date ?? "") ??
-                                        'Hora no especificada',
+                                    calendarController.formatEventTime(event.eventime ?? "", event.date ?? "") ?? 'Hora no especificada',
                                     style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,

@@ -1,15 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
+import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/fideo_coin/navegador.dart';
-import 'package:pawlly/components/custom_snackbar.dart';
-import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
-import 'dart:convert';
-
-import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
+import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -22,20 +22,14 @@ class StripeController extends GetxController {
   // ignore: non_constant_identifier_names
   Future<void> GetUrlPayment(String amount, context) async {
     isLoading.value = true;
-    print({
-      "quantity": amount.split(',')[0],
-      "user_id": "${AuthServiceApis.dataCurrentUser.id}"
-    });
+    print({"quantity": amount.split(',')[0], "user_id": "${AuthServiceApis.dataCurrentUser.id}"});
     try {
       var response = await http.post(
         Uri.parse('${BASE_URL}checkout'),
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
         },
-        body: {
-          "quantity": amount.split(',')[0],
-          "user_id": "${AuthServiceApis.dataCurrentUser.id}"
-        },
+        body: {"quantity": amount.split(',')[0], "user_id": "${AuthServiceApis.dataCurrentUser.id}"},
       );
       print('response ${response.body}');
       if (response.statusCode == 200) {
@@ -84,19 +78,13 @@ class StripeController extends GetxController {
         await balanceController.fetchUserBalance();
         Get.off(() => FideCoin());
       } else if (response.statusCode == 400) {
-        CustomSnackbar.show(
-            title: 'Saldo insuficiente',
-            message: 'No cuentas con suficiente saldo',
-            isError: true);
+        CustomSnackbar.show(title: 'Saldo insuficiente', message: 'No cuentas con suficiente saldo', isError: true);
       } else {
-        CustomSnackbar.show(
-            title: 'Error',
-            message: 'Error en la solicitud de retiro',
-            isError: true);
+        CustomSnackbar.show(title: 'Error', message: 'Error en la solicitud de retiro', isError: true);
       }
     } catch (e) {
-      CustomSnackbar.show(
-          title: 'Error', message: 'Error en la solicitud de retiro', isError: true);
+      print("Error en el retiro $e");
+      CustomSnackbar.show(title: 'Error', message: 'Error en la solicitud de retiro', isError: true);
     } finally {
       isLoading.value = false;
     }
@@ -136,8 +124,7 @@ class StripeController extends GetxController {
           await Future.delayed(Duration(seconds: 2));
 
           // 4. Redirige a la ruta de balance
-          Get.off(() =>
-              HomeScreen()); // Cambia '/balance' por la ruta que necesites
+          Get.off(() => HomeScreen()); // Cambia '/balance' por la ruta que necesites
 
           // 5. (Opcional) Aquí puedes abrir el navegador con tu lógica
           // Por ejemplo, usando url_launcher
