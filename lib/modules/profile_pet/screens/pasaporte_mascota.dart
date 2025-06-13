@@ -17,6 +17,30 @@ import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/modules/add_pet/controllers/add_pet_controller.dart';
 
+
+String genderToSpanish(String gender) {
+  switch (gender) {
+    case 'female':
+      return 'Hembra';
+    case 'male':
+      return 'Macho';
+    default:
+      return '';
+  }
+}
+
+String genderToEnglish(String gender) {
+  switch (gender) {
+    case 'Hembra':
+      return 'female';
+    case 'Macho':
+      return 'male';
+    default:
+      return '';
+  }
+}
+
+
 class PasaporteMascota extends StatelessWidget {
   PasaporteMascota({super.key});
   final HistorialClinicoController historiaClinicaController =
@@ -32,6 +56,7 @@ class PasaporteMascota extends StatelessWidget {
     var altoInput = 107.0;
     var peso = pet.weight.toString().obs;
     final TextEditingController dateController = TextEditingController();
+    final RxString genderValue = pet.gender.obs;
 
     var margin = Helper.margenDefault;
     if (pet.dateOfBirth != null) {
@@ -132,19 +157,84 @@ class PasaporteMascota extends StatelessWidget {
                       SizedBox(
                         width: ancho,
                         height: altoInput,
-                        child: InputText(
-                          label: 'Sexo',
-                          initialValue:
-                              pet.gender == 'female' ? 'Mujer' : 'Hombre',
-                          placeholder: '',
-                          onChanged: (value) => pet.gender = value,
-                        ),
+                        child: Obx(() {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    genderValue.value = 'female';
+                                    pet.gender = 'female';
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: genderValue.value == 'female'
+                                          ? Colors.white
+                                          : const Color.fromRGBO(254, 247, 229, 1),
+                                      border: Border.all(
+                                        color: genderValue.value == 'female'
+                                            ? Styles.iconColorBack
+                                            : Colors.transparent,
+                                      ),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Hembra',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'Lato',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    genderValue.value = 'male';
+                                    pet.gender = 'male';
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      color: genderValue.value == 'male'
+                                          ? Colors.white
+                                          : const Color.fromRGBO(254, 247, 229, 1),
+                                      border: Border.all(
+                                          color: genderValue.value == 'male'
+                                              ? Styles.iconColorBack
+                                              : Colors.transparent),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Macho',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'Lato',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }),
                       ),
                       SizedBox(
                         width: ancho,
                         height: altoInput,
                         child: Obx(() {
                           return InputSelect(
+                            key: ValueKey(addPetController.breedList.length),
                             label: 'Raza',
                             value: pet.breed,
                             onChanged: (value) => pet.breed = value ?? '',
@@ -183,16 +273,6 @@ class PasaporteMascota extends StatelessWidget {
                           onChanged: (value) => pet.petFur = value,
                         ),
                       ),
-                      // SizedBox(
-                      //   width: ancho,
-                      //   height: altoInput,
-                      //   child: InputText(
-                      //     label: 'Edad',
-                      //     placeholder: '',
-                      //     initialValue: pet.age ?? "",
-                      //     onChanged: (value) => pet.age = value,
-                      //   ),
-                      // ),
                       SizedBox(
                         width: ancho,
                         height: altoInput,
@@ -352,7 +432,6 @@ class PasaporteMascota extends StatelessWidget {
                                   // "age": pet.age,
                                   "pet_fur": pet.petFur,
                                   "chip": pet.chip,
-                                  "size": "${pet.size}",
                                 },
                               );
 
