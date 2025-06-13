@@ -26,8 +26,8 @@ class UserCard extends StatelessWidget {
         profileController
             .fetchUserData('${user.id}'); // Obtener los datos del usuario
         print('perfil usuario ${jsonEncode(profileController.user.value)}');
-        if (users?.id != null) {
-          Get.to(() => PetOwnerProfileScreen(id: '${user.id}', pets: user.pets));
+          if (users?.id != null) {
+          Get.to(() => PetOwnerProfileScreen(id: '${user.id}'));
         } else {}
       },
       child: Container(
