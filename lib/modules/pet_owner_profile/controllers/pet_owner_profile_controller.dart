@@ -19,7 +19,7 @@ class PetOwnerProfileController extends GetxController {
   var description =
       'Descripción del usuario aquí... Esta es una breve descripción de la persona asociada.'
           .obs;
-  var veterinarianLinked = true.obs; // Condición si está vinculado
+  var veterinarianLinked = false.obs; // Condición si está vinculado
   var specializationArea = 'Cirugía'.obs; // Área de especialización principal
   var otherAreas = ['Cardiología', 'Dermatología', 'Oftalmología']
       .obs; // Lista de otras áreas de especialización
