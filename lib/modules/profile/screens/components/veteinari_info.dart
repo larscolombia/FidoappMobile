@@ -16,7 +16,7 @@ class VeterinarianInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     if (profileController.user.value.userType != 'user') {
       return Obx(() {
-        if (controller.veterinarianLinked.value) {
+        if (controller.veterinarianVerified.value) {
           return Container(
             height: 54,
             width: MediaQuery.sizeOf(context).width,
@@ -37,8 +37,8 @@ class VeterinarianInfo extends StatelessWidget {
                 SizedBox(width: 8),
                 Text(
                   profileController.user.value.userType == 'vet'
-                      ? 'Veterinario Calificado'
-                      : "Entrenador Calificado",
+                      ? 'Veterinario certificado'
+                      : "Entrenador verificado",
                   style: const TextStyle(
                     color: Color(0xFF19A02F),
                     fontWeight: FontWeight.bold,
