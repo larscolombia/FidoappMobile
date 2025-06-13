@@ -15,7 +15,8 @@ import '../../home/controllers/home_controller.dart';
 //perfil del usuario
 class PetOwnerProfileScreen extends StatefulWidget {
   final String id;
-  PetOwnerProfileScreen({super.key, required this.id});
+  final List<int>? pets;
+  PetOwnerProfileScreen({super.key, required this.id, this.pets});
 
   @override
   _PetOwnerProfileScreenState createState() => _PetOwnerProfileScreenState();
