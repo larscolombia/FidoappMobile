@@ -223,29 +223,28 @@ class InformationTab extends StatelessWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            const SizedBox(
-                                width: 10), // Espacio después de la línea
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .start, // Alineación izquierda
-                              children: [
-                                Text(
-                                  'Fecha de nacimiento:',
-                                  style: Styles.textProfile14w400,
-                                ),
-                                const SizedBox(height: 4),
-                                Flexible(
-                                  child: Text(
-                                    Helper.formatDateToSpanish(homeController
-                                            .selectedProfile
-                                            .value!
-                                            .dateOfBirth) ??
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Fecha de nacimiento:',
+                                    style: Styles.textProfile14w400,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    Helper.formatDateToSpanish(
+                                            homeController
+                                                .selectedProfile
+                                                .value!
+                                                .dateOfBirth) ??
                                         "",
                                     style: Styles.textProfile14w800,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
                         ),
