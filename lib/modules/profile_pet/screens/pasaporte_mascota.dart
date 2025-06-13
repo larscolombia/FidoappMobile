@@ -17,6 +17,7 @@ import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/modules/add_pet/controllers/add_pet_controller.dart';
 
+
 String genderToSpanish(String gender) {
   switch (gender) {
     case 'female':
@@ -38,6 +39,7 @@ String genderToEnglish(String gender) {
       return '';
   }
 }
+
 
 class PasaporteMascota extends StatelessWidget {
   PasaporteMascota({super.key});
@@ -271,16 +273,6 @@ class PasaporteMascota extends StatelessWidget {
                           onChanged: (value) => pet.petFur = value,
                         ),
                       ),
-                      // SizedBox(
-                      //   width: ancho,
-                      //   height: altoInput,
-                      //   child: InputText(
-                      //     label: 'Edad',
-                      //     placeholder: '',
-                      //     initialValue: pet.age ?? "",
-                      //     onChanged: (value) => pet.age = value,
-                      //   ),
-                      // ),
                       SizedBox(
                         width: ancho,
                         height: altoInput,
