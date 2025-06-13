@@ -272,6 +272,9 @@ class SignInController extends GetxController {
       // Primero llamar al API de logout
       final result = await AuthServiceApis.logoutApi();
 
+      // Cerrar sesión de Google/Firebase en caso de haber iniciado con ellos
+      await GoogleSignInAuthService.signOutGoogle();
+
       if (result.status) {
         // Si el logout fue exitoso, navegar a WelcomeScreen
         isLoading(false);

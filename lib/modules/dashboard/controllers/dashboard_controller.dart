@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/utils/social_logins.dart';
 
 class DashboardController extends GetxController {
   late UserData currentUser;
@@ -22,8 +23,11 @@ class DashboardController extends GetxController {
   }
 
   Future<void> logoutUser() async {
-    // Llama a la función para cerrar sesión
+    // Llama a la función para cerrar sesión en backend
     await AuthServiceApis.logoutApi();
+
+    // Cerrar sesión de Google/Firebase para permitir seleccionar otra cuenta
+    await GoogleSignInAuthService.signOutGoogle();
 
     // Agregar un pequeño retraso antes de redirigir
     Future.delayed(const Duration(milliseconds: 500), () {

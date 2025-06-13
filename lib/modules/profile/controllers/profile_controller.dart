@@ -10,6 +10,7 @@ import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/utils/social_logins.dart';
 
 import '../../auth/sign_in/screens/signin_screen.dart';
 
@@ -261,6 +262,9 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Logout the user and clear data
         await AuthServiceApis.logoutApi();
+
+        // Cerrar sesión de Google/Firebase si corresponde
+        await GoogleSignInAuthService.signOutGoogle();
 
         Get.offAll(() => SignInScreen());
 
