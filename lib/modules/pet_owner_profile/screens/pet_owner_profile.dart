@@ -10,11 +10,13 @@ import 'package:pawlly/modules/profile/screens/components/sobremi.dart';
 import 'package:pawlly/modules/profile/screens/components/veteinari_info.dart';
 import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
+import '../../home/controllers/home_controller.dart';
 
 //perfil del usuario
 class PetOwnerProfileScreen extends StatefulWidget {
   final String id;
-  PetOwnerProfileScreen({super.key, required this.id});
+  final List<int>? pets;
+  PetOwnerProfileScreen({super.key, required this.id, this.pets});
 
   @override
   _PetOwnerProfileScreenState createState() => _PetOwnerProfileScreenState();
@@ -25,11 +27,15 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
       Get.put(PetOwnerProfileController());
   final UserProfileController profileController =
       Get.put(UserProfileController());
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   void initState() {
     super.initState();
     profileController.fetchUserData(widget.id);
+    final selectedId = homeController.selectedProfile.value?.id;
+    controller.veterinarianLinked.value = selectedId != null &&
+        (widget.pets?.contains(selectedId) ?? false);
   }
 
   @override

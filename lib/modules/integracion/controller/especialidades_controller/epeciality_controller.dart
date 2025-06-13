@@ -45,4 +45,13 @@ class SpecialityController extends GetxController {
       isLoading(false); // Cambia el estado a no cargando
     }
   }
+
+  String? getNameById(int? id) {
+    if (id == null) return null;
+    try {
+      return specialities.firstWhere((e) => e.id == id).description;
+    } catch (_) {
+      return null;
+    }
+  }
 }
