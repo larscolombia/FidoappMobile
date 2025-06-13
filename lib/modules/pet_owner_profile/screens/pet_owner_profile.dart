@@ -15,8 +15,7 @@ import '../../home/controllers/home_controller.dart';
 //perfil del usuario
 class PetOwnerProfileScreen extends StatefulWidget {
   final String id;
-  final List<int>? pets;
-  PetOwnerProfileScreen({super.key, required this.id, this.pets});
+  PetOwnerProfileScreen({super.key, required this.id});
 
   @override
   _PetOwnerProfileScreenState createState() => _PetOwnerProfileScreenState();
@@ -32,10 +31,16 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
   @override
   void initState() {
     super.initState();
-    profileController.fetchUserData(widget.id);
-    final selectedId = homeController.selectedProfile.value?.id;
-    controller.veterinarianLinked.value = selectedId != null &&
-        (widget.pets?.contains(selectedId) ?? false);
+    profileController.fetchUserData(widget.id).then((_) {
+      final selectedId = homeController.selectedProfile.value?.id;
+      final petIds = profileController.user.value.pets
+              ?.map((e) => e.id)
+              .whereType<int>()
+              .toList() ??
+          [];
+      controller.veterinarianLinked.value =
+          selectedId != null && petIds.contains(selectedId);
+    });
   }
 
   @override
