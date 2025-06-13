@@ -63,6 +63,21 @@ class GoogleSignInAuthService {
     }
   }
 
+  /// Sign out from Firebase and Google to clear any persisted session
+  static Future<void> signOutGoogle() async {
+    try {
+      await googleSignIn.signOut();
+    } catch (e) {
+      log('Google sign out error: $e');
+    }
+
+    try {
+      await auth.signOut();
+    } catch (e) {
+      log('Firebase sign out error: $e');
+    }
+  }
+
   // region Apple Sign
   static Future<UserData> signInWithApple() async {
     if (await TheAppleSignIn.isAvailable()) {
