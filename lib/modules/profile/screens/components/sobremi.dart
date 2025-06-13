@@ -16,12 +16,69 @@ class Sobremi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      final tags = profileController.user.value.profile?.tags ?? [];
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionTitle(
               context, 'Sobre ${profileController.user.value.fullName}'),
           _buildInfoRow(
               context, profileController.user.value.profile?.aboutSelf ?? ""),
+          if (controller.veterinarianLinked.value)
+            Container(
+              margin: const EdgeInsets.only(bottom: 12.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFE5FEED),
+                border: Border.all(color: const Color(0xFF19A02F), width: 0.5),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset('assets/icons/palomiar.png'),
+                  const SizedBox(width: 8),
+                  Text(
+                    profileController.user.value.userType == 'vet'
+                        ? 'Veterinario asignado a tu mascota'
+                        : 'Entrenador asignado a tu mascota',
+                    style: const TextStyle(
+                      color: Color(0xFF19A02F),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'lato',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          if (tags.isNotEmpty)
+            Container(
+              width: MediaQuery.sizeOf(context).width,
+              padding: Styles.paddingAll,
+              child: Wrap(
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children: tags.map((area) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 26.0),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFEF7E5),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      area,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFFFC9214),
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'lato',
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
         ],
       );
     });
