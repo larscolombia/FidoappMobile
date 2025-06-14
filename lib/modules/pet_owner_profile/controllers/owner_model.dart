@@ -37,6 +37,7 @@ class UserData {
   int? isBanned;
   int? isSubscribe;
   int? status;
+  int? verified;
   String? lastNotificationSeen;
   String? userSetting;
   String? address;
@@ -81,6 +82,7 @@ class UserData {
     this.latitude,
     this.longitude,
     this.fullName,
+    this.verified,
     this.profileImage,
     this.publicProfile,
     this.paymentAccount,
@@ -110,6 +112,7 @@ class UserData {
       address: json['address'],
       userType: json['user_type'],
       createdAt: json['created_at'],
+      verified: json['verified'],
       updatedAt: json['updated_at'],
       deletedAt: json['deleted_at'],
       latitude: json['latitude'],
@@ -117,13 +120,9 @@ class UserData {
       fullName: json['full_name'],
       profileImage: json['profile_image'],
       publicProfile: json['public_profile'],
-      paymentAccount: json['payment_account'] ??
-          (json['profile'] != null ? json['profile']['payment_account'] : null),
-      profile:
-          json['profile'] != null ? Profile.fromJson(json['profile']) : null,
-      pets: json['pets'] != null
-          ? List<Pets>.from(json['pets'].map((x) => Pets.fromJson(x)))
-          : null,
+      paymentAccount: json['payment_account'] ?? (json['profile'] != null ? json['profile']['payment_account'] : null),
+      profile: json['profile'] != null ? Profile.fromJson(json['profile']) : null,
+      pets: json['pets'] != null ? List<Pets>.from(json['pets'].map((x) => Pets.fromJson(x))) : null,
     );
   }
 
@@ -160,9 +159,7 @@ class UserData {
       'public_profile': publicProfile,
       'payment_account': paymentAccount,
       'profile': profile?.toJson(),
-      'pets': pets != null
-          ? List<dynamic>.from(pets!.map((x) => x.toJson()))
-          : null,
+      'pets': pets != null ? List<dynamic>.from(pets!.map((x) => x.toJson())) : null,
     };
   }
 }
@@ -222,9 +219,7 @@ class Profile {
       validationNumber: json['validation_number'],
       profecionalTitle: json['profecional_title'],
       tags: json['tags'] != null
-          ? (json['tags'] is List
-              ? List<String>.from(json['tags'])
-              : json['tags'].toString().split(',').map((e) => e.trim()).toList())
+          ? (json['tags'] is List ? List<String>.from(json['tags']) : json['tags'].toString().split(',').map((e) => e.trim()).toList())
           : null,
       paymentAccount: json['payment_account'],
       specialityId: json['speciality_id'],

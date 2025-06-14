@@ -10,6 +10,7 @@ import 'package:pawlly/modules/profile/screens/components/sobremi.dart';
 import 'package:pawlly/modules/profile/screens/components/veteinari_info.dart';
 import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
+
 import '../../home/controllers/home_controller.dart';
 
 //perfil del usuario
@@ -23,10 +24,8 @@ class PetOwnerProfileScreen extends StatefulWidget {
 }
 
 class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
-  final PetOwnerProfileController controller =
-      Get.put(PetOwnerProfileController());
-  final UserProfileController profileController =
-      Get.put(UserProfileController());
+  final PetOwnerProfileController controller = Get.put(PetOwnerProfileController());
+  final UserProfileController profileController = Get.put(UserProfileController());
   final HomeController homeController = Get.find<HomeController>();
 
   @override
@@ -35,13 +34,7 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
     profileController.fetchUserData(widget.id).then((_) {
       final selectedId = homeController.selectedProfile.value?.id;
       final petIds = widget.pets ?? [];
-      controller.veterinarianLinked.value =
-          selectedId != null && petIds.contains(selectedId);
-
-      controller.veterinarianVerified.value =
-          (profileController.user.value.profile?.validationNumber != null &&
-              profileController
-                  .user.value.profile!.validationNumber!.isNotEmpty);
+      controller.veterinarianLinked.value = selectedId != null && petIds.contains(selectedId);
     });
   }
 
@@ -74,9 +67,7 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
                       id: '${widget.id}',
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: Helper.paddingDefault,
-                          right: Helper.paddingDefault),
+                      padding: const EdgeInsets.only(left: Helper.paddingDefault, right: Helper.paddingDefault),
                       child: SizedBox(
                         width: MediaQuery.sizeOf(context).width,
                         height: 20,
@@ -88,18 +79,14 @@ class _PetOwnerProfileScreenState extends State<PetOwnerProfileScreen> {
                     ),
                     const SizedBox(height: 20),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: Helper.paddingDefault,
-                          right: Helper.paddingDefault),
+                      padding: const EdgeInsets.only(left: Helper.paddingDefault, right: Helper.paddingDefault),
                       child: VeterinarianInfo(
                         controller: controller,
                         profileController: profileController,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Sobremi(
-                        profileController: profileController,
-                        controller: controller),
+                    Sobremi(profileController: profileController, controller: controller),
                     /**
                     const SizedBox(height: 20),
                     ProfileActions(

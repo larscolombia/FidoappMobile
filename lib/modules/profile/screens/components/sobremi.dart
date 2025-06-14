@@ -20,13 +20,12 @@ class Sobremi extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionTitle(
-              context, 'Sobre ${profileController.user.value.fullName}'),
-          _buildInfoRow(
-              context, profileController.user.value.profile?.aboutSelf ?? ""),
+          _buildSectionTitle(context, 'Sobre ${profileController.user.value.fullName}'),
+          _buildInfoRow(context, profileController.user.value.profile?.aboutSelf ?? ""),
           if (controller.veterinarianLinked.value)
             Container(
-              margin: const EdgeInsets.only(bottom: 12.0),
+              margin: const EdgeInsets.only(bottom: 12.0, left: 30, right: 30),
+              width: MediaQuery.sizeOf(context).width,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
                 color: const Color(0xFFE5FEED),
@@ -39,9 +38,7 @@ class Sobremi extends StatelessWidget {
                   Image.asset('assets/icons/palomiar.png'),
                   const SizedBox(width: 8),
                   Text(
-                    profileController.user.value.userType == 'vet'
-                        ? 'Veterinario asignado a tu mascota'
-                        : 'Entrenador asignado a tu mascota',
+                    profileController.user.value.userType == 'vet' ? 'Veterinario asignado a tu mascota' : 'Entrenador asignado a tu mascota',
                     style: const TextStyle(
                       color: Color(0xFF19A02F),
                       fontWeight: FontWeight.bold,
@@ -60,8 +57,7 @@ class Sobremi extends StatelessWidget {
                 runSpacing: 8.0,
                 children: tags.map((area) {
                   return Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 26.0),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 26.0),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFEF7E5),
                       borderRadius: BorderRadius.circular(20),

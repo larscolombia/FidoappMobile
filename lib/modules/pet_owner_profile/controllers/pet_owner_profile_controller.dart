@@ -16,14 +16,11 @@ class PetOwnerProfileController extends GetxController {
   var relation = 'Dueño'.obs;
   var rating = 4.5.obs; // Clasificación
   var userType = 'Veterinario'.obs; // Tipo de usuario
-  var description =
-      'Descripción del usuario aquí... Esta es una breve descripción de la persona asociada.'
-          .obs;
+  var description = 'Descripción del usuario aquí... Esta es una breve descripción de la persona asociada.'.obs;
   var veterinarianLinked = false.obs; // Condición si está vinculado
   var veterinarianVerified = false.obs; // Condición si está verificado
   var specializationArea = 'Cirugía'.obs; // Área de especialización principal
-  var otherAreas = ['Cardiología', 'Dermatología', 'Oftalmología']
-      .obs; // Lista de otras áreas de especialización
+  var otherAreas = ['Cardiología', 'Dermatología', 'Oftalmología'].obs; // Lista de otras áreas de especialización
   var commentCount = 456.obs; // Número de comentarios
   var commenterImages = [
     'https://example.com/img1.jpg',
@@ -47,8 +44,7 @@ class UserProfileController extends GetxController {
       final response = await http.get(
         Uri.parse('${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id')}'),
         headers: {
-          'Authorization':
-              'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Reemplaza con tu lógica de token.
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Reemplaza con tu lógica de token.
           'Content-Type': 'application/json',
         },
       );
@@ -56,8 +52,7 @@ class UserProfileController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body)['data'];
         print('perfil usuarioss $data');
-        user.value =
-            UserData.fromJson(data); // Actualiza el modelo con la respuesta.
+        user.value = UserData.fromJson(data); // Actualiza el modelo con la respuesta.
       } else {}
     } catch (e) {
       print('Error al obtener datos del usuario: $e');

@@ -16,7 +16,7 @@ class VeterinarianInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     if (profileController.user.value.userType != 'user') {
       return Obx(() {
-        if (controller.veterinarianVerified.value) {
+        if (profileController.user.value.verified == 1) {
           return Container(
             height: 54,
             width: MediaQuery.sizeOf(context).width,
@@ -36,9 +36,7 @@ class VeterinarianInfo extends StatelessWidget {
                 Image.asset('assets/icons/palomiar.png'),
                 SizedBox(width: 8),
                 Text(
-                  profileController.user.value.userType == 'vet'
-                      ? 'Veterinario certificado'
-                      : "Entrenador verificado",
+                  profileController.user.value.userType == 'vet' ? 'Veterinario certificado' : "Entrenador verificado",
                   style: const TextStyle(
                     color: Color(0xFF19A02F),
                     fontWeight: FontWeight.bold,
