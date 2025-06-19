@@ -7,6 +7,7 @@ import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/user_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
 import 'package:pawlly/modules/profile_pet/controllers/pet_owner_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';

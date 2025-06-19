@@ -10,6 +10,7 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/integracion/controller/especialidades_controller/epeciality_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/user_profile_controller.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_header.dart';
 import 'package:pawlly/modules/profile/screens/perfil_publico.dart';

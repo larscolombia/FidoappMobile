@@ -19,12 +19,11 @@ class HomeController extends GetxController {
   var filterPet = <PetData>[].obs; // Lista de resultados filtrados
   var titulo = "Bienvenido de vuelta".obs;
   var subtitle = "¿Qué haremos hoy?".obs;
-  var selectedProfile =
-      Rxn<PetData>(); // Perfil seleccionado, inicialmente null
+  var selectedProfile = Rxn<PetData>(); // Perfil seleccionado, inicialmente null
 
   var training = <TrainingModel>[].obs;
   late UserData currentUser;
-  var profileImagePath = AuthServiceApis.dataCurrentUser.profileImage.obs;
+  var profileImagePath = ''.obs;
   var isLoading = false.obs;
   var selectedDay = DateTime.now().obs;
   var focusedDay = DateTime.now().obs;
@@ -40,9 +39,15 @@ class HomeController extends GetxController {
     super.onInit();
     currentUser = AuthServiceApis.dataCurrentUser;
     profileImagePath.value = currentUser.profileImage;
+    
     fetchProfiles();
     //   fetchTraining();
     _loadEventsFromService();
+
+    ever(AuthServiceApis.profileChange, (DateTime time) {
+      currentUser = AuthServiceApis.dataCurrentUser;
+      profileImagePath.value = currentUser.profileImage;
+    });
   }
 
   // Método para actualizar el índice seleccionado

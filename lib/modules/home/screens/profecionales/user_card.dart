@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/model/user_type/user_model.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/user_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
 
 class UserCard extends StatelessWidget {

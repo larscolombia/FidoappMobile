@@ -8,7 +8,7 @@ import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/helper/helper.dart';
-import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/user_profile_controller.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/formulario_verificacion.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
@@ -81,19 +81,27 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          // if (controller.isEditing.value)
-                          // Positioned(
-                          //   right: 0,
-                          //   bottom: 0,
-                          //   child: Container(
-                          //     padding: const EdgeInsets.all(4),
-                          //     decoration: BoxDecoration(
-                          //       color: Styles.fiveColor,
-                          //       borderRadius: BorderRadius.circular(10),
-                          //     ),
-                          //     child: SvgPicture.asset('assets/icons/svg/edit-2.svg'),
-                          //   ),
-                          // ),
+                          if (controller.isLoadingPhoto.value)
+                          const Positioned(
+                            right: 0,
+                            bottom: 0,
+                            child: SizedBox(
+                              height: 30,
+                              width: 30,
+                              child: CircularProgressIndicator(
+                                color: Styles.primaryColor,
+                                strokeWidth: 4,
+                              ),
+                            ),
+                            // child: Container(
+                            //   padding: const EdgeInsets.all(4),
+                            //   decoration: BoxDecoration(
+                            //     color: Styles.fiveColor,
+                            //     borderRadius: BorderRadius.circular(10),
+                            //   ),
+                            //   child: SvgPicture.asset('assets/icons/svg/edit-2.svg'),
+                            // ),
+                          ),
                         ],
                       ),
                     );

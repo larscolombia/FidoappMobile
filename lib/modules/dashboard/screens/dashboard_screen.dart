@@ -60,10 +60,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     () => CircleAvatar(
                       radius: 46,
                       backgroundImage: controller.profileImagePath.isNotEmpty
-                          ? NetworkImage(
-                              AuthServiceApis.dataCurrentUser.profileImage)
-                          : const AssetImage('assets/images/avatar.png')
-                              as ImageProvider,
+                        ? NetworkImage(AuthServiceApis.dataCurrentUser.profileImage)
+                        : const AssetImage('assets/images/avatar.png') as ImageProvider,
                       backgroundColor: Colors.transparent,
                     ),
                   ),

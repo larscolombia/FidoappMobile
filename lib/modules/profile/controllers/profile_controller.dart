@@ -8,7 +8,7 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/user_data_model.dart';
-import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/user_profile_controller.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
 import '../../auth/sign_in/screens/signin_screen.dart';
@@ -18,6 +18,7 @@ class ProfileController extends GetxController {
   late UserData currentUser; // Instancia del modelo de datos de usuario
   
   var isLoading = false.obs;
+  var isLoadingPhoto = false.obs;
   var isEditing = false.obs;
 
   var nameController = TextEditingController().obs;
@@ -78,9 +79,10 @@ class ProfileController extends GetxController {
       if (pickedFile != null) {
         profileImagePath.value = pickedFile.path;
         user['profile_image'] = pickedFile.path;
+        await updateProfilePhoto();
       }
     } finally {
-      isPickerActive.value = false; // Marcar el picker como inactivo
+      isPickerActive.value = false;
     }
   }
 
@@ -208,11 +210,64 @@ class ProfileController extends GetxController {
     }
   }
 
+  Future<void> updateProfilePhoto() async {
+    try {
+      isLoadingPhoto.value = true;
+
+      final url = Uri.parse('$DOMAIN_URL/api/update-profile');
+
+      // Crear la solicitud multipart
+      final request = http.MultipartRequest('POST', url);
+
+      // Agregar encabezados
+      request.headers.addAll({
+        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+      });
+
+      // Agregar la imagen si está disponible
+      if (user['profile_image'] != null && user['profile_image'] is String && (user['profile_image'] as String).isNotEmpty) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'profile_image',
+          user['profile_image'] as String,
+        ));
+      }
+
+      // Enviar la solicitud
+      final response = await request.send();
+
+      // Manejar la respuesta
+      final responseBody = await response.stream.bytesToString();
+      print('Response body: $responseBody');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = json.decode(responseBody);
+        await AuthServiceApis.saveUpdateProfileData(data);
+      } else {
+        print('Error al actualizar la foto del perfil: $responseBody');
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'No se pudo actualizar el perfil. Por favor, inténtalo nuevamente.',
+          isError: true,
+        );
+      }
+    } catch (e) {
+      print('Excepción: $e');
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Ocurrió un error al actualizar la foto del perfil',
+        isError: true,
+      );
+    } finally {
+      isLoadingPhoto.value = false;
+    }
+  }
+
   Future<void> fetchUserData(String id) async {
     try {
       print('Perfil de usuario: ${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id')}');
       final response = await http.get(
-        Uri.parse('${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id')}'),
+        Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id'),
+        // Uri.parse('${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id')}'),
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Reemplaza con tu lógica de token.
           'Content-Type': 'application/json',
