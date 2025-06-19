@@ -202,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     flex: 3,
                     child: GestureDetector(
                       onTap: () {
-                        Get.to(() => Profecionales());
+                        Get.to(() => Profesionales());
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -247,7 +247,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 16),
           Resources(),
           const SizedBox(height: 16),
-          const Explore(),
+          Explore(homeController: homeController),
           const SizedBox(height: 16),
           if (calendarController.filteredCalendars.isNotEmpty)
           const Text(

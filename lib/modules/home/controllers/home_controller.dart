@@ -5,6 +5,8 @@ import 'package:pawlly/models/event_model.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/training_model.dart';
 import 'package:pawlly/models/user_data_model.dart';
+import 'package:pawlly/modules/diario/diario.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/event_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
@@ -45,7 +47,36 @@ class HomeController extends GetxController {
 
   // Método para actualizar el índice seleccionado
   void updateIndex(int index) {
+    switch (index) {
+      case 0:
+        titulo.value = "Bienvenido de vuelta";
+        subtitle.value = "¿Qué haremos hoy?";
+        break;
+      case 1:
+        titulo.value = "Agenda";
+        subtitle.value = "¿Qué haremos hoy?";
+        break;
+      case 2:
+        titulo.value = "Entrenamiento";
+        subtitle.value = "para tu mascota";
+        break;
+      case 3:
+        titulo.value = "Explorar Contenido";
+        subtitle.value = "y consejos para tu mascota";
+        break;
+      case 4:
+        titulo.value = "Diario";
+        subtitle.value = "de tu mascota";
+        break;
+    }
+
     selectedIndex.value = index;
+
+    if (index == 4) {
+      Get.to(() => Diario());
+    } else {
+      Get.to(() => const HomeScreen());
+    }
   }
 
   void selectType(int type) {

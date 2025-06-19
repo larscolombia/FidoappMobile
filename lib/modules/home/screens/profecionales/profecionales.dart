@@ -9,8 +9,8 @@ import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/home/screens/profecionales/user_card.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 
-class Profecionales extends StatelessWidget {
-  Profecionales({super.key});
+class Profesionales extends StatelessWidget {
+  Profesionales({super.key});
 
   // Instancia del controlador
   final UserController controller = Get.put(UserController());
@@ -48,7 +48,7 @@ class Profecionales extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
+              SizedBox(
                 width: width,
                 child: BarraBack(
                   titulo: 'Profesionales',
@@ -58,7 +58,7 @@ class Profecionales extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Container(
+              SizedBox(
                 width: width,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,9 +124,9 @@ class Profecionales extends StatelessWidget {
                                 tag; // Marca el tag como seleccionado
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 8),
-                            margin: EdgeInsets.only(right: 8),
+                            margin: const EdgeInsets.only(right: 8),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? Styles.colorContainer
@@ -196,7 +196,7 @@ class Profecionales extends StatelessWidget {
                   controller.fetchUsers();
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           ),
         ),
@@ -226,7 +226,7 @@ class Selecboton extends StatelessWidget {
         height: 34,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: selected ? Color(0XFFFC9214) : Colors.white,
+          color: selected ? const Color(0XFFFC9214) : Colors.white,
         ),
         child: Center(
           child: Text(
