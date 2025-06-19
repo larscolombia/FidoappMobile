@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
-import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/helper/helper.dart';
@@ -17,13 +16,13 @@ import 'package:pawlly/styles/styles.dart';
 
 class ProfileScreen extends StatelessWidget {
   final ProfileController controller = Get.put(ProfileController());
-  final UserProfileController userCpntroller = Get.put(UserProfileController());
+  final UserProfileController userController = Get.put(UserProfileController());
   ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final imageSize = 260.0;
+    const imageSize = 260.0;
     var margin = Helper.margenDefault;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -33,6 +32,7 @@ class ProfileScreen extends StatelessWidget {
           color: Styles.fiveColor,
           child: Column(
             children: [
+              // Header
               Stack(
                 alignment: Alignment.center,
                 children: [
@@ -43,15 +43,15 @@ class ProfileScreen extends StatelessWidget {
                     color: Styles.fiveColor,
                   ),
                   // Imagen Circular con Borde
-                  Obx(
-                    () => GestureDetector(
+                  Obx(() {
+                    return GestureDetector(
                       onTap: () => controller.pickImage(),
                       child: Stack(
                         children: [
                           Container(
                             width: 124,
                             height: 124,
-                            margin: EdgeInsets.only(top: 40),
+                            margin: const EdgeInsets.only(top: 40),
                             padding: const EdgeInsets.all(4), // Espacio entre la imagen y el borde
                             decoration: BoxDecoration(
                               color: Styles.fiveColor, // Color de fondo del borde
@@ -71,7 +71,8 @@ class ProfileScreen extends StatelessWidget {
                                     image: controller.profileImagePath.value.isNotEmpty
                                         ? (controller.profileImagePath.value.startsWith('http')
                                             ? NetworkImage(controller.profileImagePath.value) as ImageProvider<Object>
-                                            : FileImage(File(controller.profileImagePath.value)) as ImageProvider<Object>)
+                                            : FileImage(File(controller.profileImagePath.value))
+                                                as ImageProvider<Object>)
                                         : const AssetImage('assets/images/avatar.png') as ImageProvider<Object>,
                                     // Imagen predeterminada
                                     fit: BoxFit.cover,
@@ -80,34 +81,34 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          if (controller.isEditing.value)
-                            Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: Styles.fiveColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: SvgPicture.asset('assets/icons/svg/edit-2.svg'),
-                              ),
-                            ),
+                          // if (controller.isEditing.value)
+                          // Positioned(
+                          //   right: 0,
+                          //   bottom: 0,
+                          //   child: Container(
+                          //     padding: const EdgeInsets.all(4),
+                          //     decoration: BoxDecoration(
+                          //       color: Styles.fiveColor,
+                          //       borderRadius: BorderRadius.circular(10),
+                          //     ),
+                          //     child: SvgPicture.asset('assets/icons/svg/edit-2.svg'),
+                          //   ),
+                          // ),
                         ],
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                   // Nombre del Usuario
                   Positioned(
                     bottom: -10,
-                    child: Container(
+                    child: SizedBox(
                       height: 50,
                       width: MediaQuery.sizeOf(context).width - 100,
                       child: Text(
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        '${controller.user['first_name'].toString()}',
+                        controller.user['first_name'].toString(),
                         style: Styles.dashboardTitle24,
                       ),
                     ),
@@ -134,34 +135,36 @@ class ProfileScreen extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Column(
                         children: [
-                          Container(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
                                   width: MediaQuery.sizeOf(context).width - 130,
-                                  child: BarraBack(
-                                      titulo: "Perfil de Usuario",
+                                  child: Obx(() {
+                                    String titulo =
+                                        controller.isEditing.value ? 'Editando perfil...' : 'Perfil de Usuario';
+                                    return BarraBack(
+                                      titulo: titulo,
                                       size: 20,
                                       color: const Color(0xFFFF4931),
                                       callback: () {
                                         Navigator.pop(context);
-                                      }),
-                                ),
-                                Obx(() {
-                                  return GestureDetector(
-                                    onTap: () => controller.toggleEditing(),
-                                    child: Container(
-                                        padding: const EdgeInsets.all(7),
-                                        decoration: BoxDecoration(
-                                          color: controller.isEditing.value ? Colors.white : Styles.fiveColor,
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: SvgPicture.asset('assets/icons/svg/edit-2.svg')),
-                                  );
-                                }),
-                              ],
-                            ),
+                                      },
+                                    );
+                                  })),
+                              Obx(() {
+                                return GestureDetector(
+                                  onTap: () => controller.toggleEditing(),
+                                  child: Container(
+                                      padding: const EdgeInsets.all(7),
+                                      decoration: BoxDecoration(
+                                        color: controller.isEditing.value ? Colors.white : Styles.fiveColor,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: SvgPicture.asset('assets/icons/svg/edit-2.svg')),
+                                );
+                              }),
+                            ],
                           ),
                           if (AuthServiceApis.dataCurrentUser.userRole[0] != 'user')
                             Column(
@@ -173,7 +176,7 @@ class ProfileScreen extends StatelessWidget {
                                   width: MediaQuery.sizeOf(context).width,
                                   child: ButtonDefaultWidget(
                                     callback: () {
-                                      Get.to(FormularioVerificacion());
+                                      Get.to(const FormularioVerificacion());
                                     },
                                     title: 'Perfil público',
                                     svgIconPath: 'assets/icons/svg/flecha_derecha.svg',
@@ -200,7 +203,7 @@ class ProfileScreen extends StatelessWidget {
                                           text: 'Solicitud Confirmada, ',
                                           style: TextStyle(
                                             color: Colors.green,
-                                            fontFamily: 'Lato', // Color verde para la primera parte
+                                            fontFamily: 'Lato',
                                             fontSize: 14,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -209,7 +212,7 @@ class ProfileScreen extends StatelessWidget {
                                           text: 'visita tu perfil público para configurar cómo se verá',
                                           style: TextStyle(
                                             color: Color(0xFF383838),
-                                            fontFamily: 'Lato', // Color verde para la primera parte
+                                            fontFamily: 'Lato',
                                             fontSize: 14,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -234,6 +237,7 @@ class ProfileScreen extends StatelessWidget {
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
+                        // first_name
                         Obx(() {
                           return InputText(
                             onChanged: (value) => controller.user['first_name'] = value,
@@ -246,6 +250,7 @@ class ProfileScreen extends StatelessWidget {
                           );
                         }),
                         SizedBox(height: margin),
+                        // last_name
                         Obx(() {
                           return Container(
                             child: InputText(
@@ -260,6 +265,7 @@ class ProfileScreen extends StatelessWidget {
                           );
                         }),
                         SizedBox(height: margin),
+                        // email
                         Obx(() {
                           return InputText(
                             borderColor: Styles.iconColorBack,
@@ -274,28 +280,28 @@ class ProfileScreen extends StatelessWidget {
                         SizedBox(
                           height: margin,
                         ),
-                        Obx(
-                          () => Container(
-                            child: CustomSelectFormFieldWidget(
-                              enabled: controller.isEditing.value,
-                              controller: controller.userGenCont.value,
-                              filcolorCustom: Colors.white,
-                              borderColor: Styles.iconColorBack,
-                              onChange: (value) {
-                                controller.user['gender'] = value.toString();
-                                controller.userGenCont.value.text = value.toString().toLowerCase();
-                              },
-                              placeholder: 'Género',
-                              placeholderSvg: 'assets/icons/svg/tag-user.svg',
-                              items: const [
-                                'Femenino',
-                                'Masculino',
-                                'Prefiero no decirlo',
-                              ],
-                            ),
-                          ),
-                        ),
+                        // gender
+                        Obx(() {
+                          return CustomSelectFormFieldWidget(
+                            enabled: controller.isEditing.value,
+                            controller: controller.userGenCont.value,
+                            filcolorCustom: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
+                            borderColor: Styles.iconColorBack,
+                            onChange: (value) {
+                              controller.user['gender'] = value.toString();
+                              controller.userGenCont.value.text = value.toString().toLowerCase();
+                            },
+                            placeholder: 'Género',
+                            placeholderSvg: 'assets/icons/svg/tag-user.svg',
+                            items: const [
+                              'Femenino',
+                              'Masculino',
+                              'Prefiero no decirlo',
+                            ],
+                          );
+                        }),
                         SizedBox(height: margin),
+                        // password
                         Obx(() {
                           return InputText(
                             borderColor: Styles.iconColorBack,
@@ -308,53 +314,28 @@ class ProfileScreen extends StatelessWidget {
                           );
                         }),
                         SizedBox(height: margin),
-                        SizedBox(
-                          width: MediaQuery.sizeOf(context).width,
-                          child: GestureDetector(
-                            onTap: () {
-                              // Navegar a la página de cambiar contraseña
-                              Get.to(() => ChangePasswordScreen());
-                            },
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Cambiar Contraseña',
-                                    style: TextStyle(
-                                      color: Styles.primaryColor,
-                                      fontFamily: 'Lato',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                  SizedBox(width: 4),
-                                  SvgPicture.asset(
-                                    'assets/icons/svg/flecha_derecha.svg', // Ruta del ícono
-                                    height: 10,
-                                    color: Color(0xFFFF4931),
-                                  ),
-                                ],
-                              ),
+                        // Botón Actualizar
+                        Obx(() {
+                          String title = controller.isEditing.value ? 'Guardar' : 'Editar';
+                          if (controller.isLoading.value) title = 'Actualizando...';
+
+                          return SizedBox(
+                            width: MediaQuery.sizeOf(context).width - 100,
+                            child: ButtonDefaultWidget(
+                              title: title,
+                              callback: () {
+                                if (controller.isEditing.value) {
+                                  controller.updateProfile();
+                                  controller.isEditing.value = false;
+                                } else {
+                                  controller.toggleEditing();
+                                }
+                              },
                             ),
-                          ),
-                        ),
+                          );
+                        }),
                         SizedBox(height: margin),
-                        Obx(
-                          () => controller.isEditing.value == true
-                              ? SizedBox(
-                                  width: MediaQuery.sizeOf(context).width - 100,
-                                  child: ButtonDefaultWidget(
-                                    title: controller.isLoading.value ? 'Actualizando ...' : 'Editar',
-                                    callback: () {
-                                      controller.updateProfile();
-                                    },
-                                  ),
-                                )
-                              : const SizedBox(),
-                        ),
-                        SizedBox(height: margin),
+                        // Botón de Texto > Eliminar cuenta
                         Align(
                           alignment: Alignment.center,
                           child: TextButton(
@@ -363,10 +344,15 @@ class ProfileScreen extends StatelessWidget {
                             },
                             child: const Text(
                               'Eliminar cuenta',
-                              style: TextStyle(color: Styles.primaryColor, fontSize: 14, fontWeight: FontWeight.w800, fontFamily: 'Lato'),
+                              style: TextStyle(
+                                  color: Styles.primaryColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800,
+                                  fontFamily: 'Lato'),
                             ),
                           ),
                         ),
+                        SizedBox(height: margin / 2),
                       ],
                     ),
                   ],

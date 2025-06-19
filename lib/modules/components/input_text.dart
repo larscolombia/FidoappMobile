@@ -303,29 +303,29 @@ class _InputTextState extends State<InputText> {
           // Mensaje de error
 
           if (_imageFile != null)
-            SizedBox(
-              height: 220,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 200,
-                    width: double
-                        .infinity, // Para que ocupe todo el ancho disponible
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        _imageFile!,
-                        fit: BoxFit.contain,
-                        alignment: Alignment
-                            .center, // Asegura que la imagen esté centrada
-                      ),
+          SizedBox(
+            height: 220,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 200,
+                  width: double
+                      .infinity, // Para que ocupe todo el ancho disponible
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(
+                      _imageFile!,
+                      fit: BoxFit.contain,
+                      alignment: Alignment
+                          .center, // Asegura que la imagen esté centrada
                     ),
                   ),
-                ],
-              ),
-            )
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -354,7 +354,7 @@ class _InputTextState extends State<InputText> {
               onSurface: Colors.black, // Texto del calendario
               secondary: Color(0xFFFC9214), // Color para selección de días
             ),
-            dividerColor: Color(0xFFFC9214),
+            dividerColor: const Color(0xFFFC9214),
             appBarTheme: const AppBarTheme(
               backgroundColor: Color(0xFFFC9214), // Color del header
               foregroundColor: Colors.white, // Color del texto del header
@@ -384,7 +384,7 @@ class _InputTextState extends State<InputText> {
               ),
             ),
             textTheme: TextTheme(
-              titleLarge: TextStyle(
+              titleLarge: const TextStyle(
                 // Fuente para el día, mes y año
                 fontFamily: 'PoetsenOne',
                 fontSize: 24,
@@ -400,8 +400,8 @@ class _InputTextState extends State<InputText> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Color(0xFFFF4931), // Color de los botones
-                textStyle: TextStyle(
+                foregroundColor: const Color(0xFFFF4931), // Color de los botones
+                textStyle: const TextStyle(
                   fontFamily: 'PoetsenOne',
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
@@ -420,7 +420,7 @@ class _InputTextState extends State<InputText> {
 
       setState(() {
         // Actualizamos el controlador con la fecha formateada como DD/MM/YYYY
-        print('fecha ${formattedDate}');
+        print('fecha $formattedDate');
         _textController.text = Helper.formatDate(formattedDate);
       });
     }
@@ -479,7 +479,7 @@ class _InputTextState extends State<InputText> {
               ),
             ),
             textTheme: TextTheme(
-              titleLarge: TextStyle(
+              titleLarge: const TextStyle(
                 fontFamily: 'PoetsenOne',
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
@@ -493,8 +493,8 @@ class _InputTextState extends State<InputText> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Color(0xFFFF4931),
-                textStyle: TextStyle(
+                foregroundColor: const Color(0xFFFF4931),
+                textStyle: const TextStyle(
                   fontFamily: 'PoetsenOne',
                   fontWeight: FontWeight.w400,
                   fontSize: 16,

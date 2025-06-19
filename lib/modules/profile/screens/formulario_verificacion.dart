@@ -34,7 +34,6 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
     "Dermatología": "Dermatología",
     "Emergencias y Cuidados Críticos": "Emergencias y Cuidados Críticos",
     "Cirugía Ortopédica": "Cirugía Ortopédica",
-    "Cirugía Ortopédica": "c",
     "Anestesiología": "Anestesiología",
   };
 
@@ -70,7 +69,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
               const SizedBox(height: 40),
               Expanded(
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
                   child: CustomScrollView(

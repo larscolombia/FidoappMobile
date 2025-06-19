@@ -16,8 +16,10 @@ import '../../auth/sign_in/screens/signin_screen.dart';
 class ProfileController extends GetxController {
   var profileController = Get.put(UserProfileController());
   late UserData currentUser; // Instancia del modelo de datos de usuario
+  
   var isLoading = false.obs;
   var isEditing = false.obs;
+
   var nameController = TextEditingController().obs;
   var lastNameController = TextEditingController().obs;
   var passwordController = TextEditingController(text: '').obs; // Por seguridad, normalmente no se pre-llenaría
@@ -208,9 +210,9 @@ class ProfileController extends GetxController {
 
   Future<void> fetchUserData(String id) async {
     try {
-      print('Perfil de usuario: ${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=${id}')}');
+      print('Perfil de usuario: ${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id')}');
       final response = await http.get(
-        Uri.parse('${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=${id}')}'),
+        Uri.parse('${Uri.parse('$DOMAIN_URL/api/user-profile?user_id=$id')}'),
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Reemplaza con tu lógica de token.
           'Content-Type': 'application/json',
@@ -221,7 +223,7 @@ class ProfileController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var data = json.decode(response.body)['data'];
         userprofile.value = UserData.fromJson(data); // Actualiza el modelo con la respuesta.
-        print('userdata ${userprofile}');
+        print('userdata $userprofile');
       } else {
         CustomSnackbar.show(
           title: 'Error',

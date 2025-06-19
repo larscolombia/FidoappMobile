@@ -14,7 +14,7 @@ class CustomSelectFormFieldWidget extends StatefulWidget {
   final void Function(String?)? onChange;
   final Color? filcolorCustom;
   final Color? textColor;
-  final Color? borderColor; // Color del borde
+  final Color? borderColor;
   final String? label;
 
   const CustomSelectFormFieldWidget({
@@ -96,19 +96,19 @@ class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidge
         child: Column(
           children: [
             if (widget.label != null)
-              Container(
-                padding: const EdgeInsets.only(left: 5),
-                width: double.infinity,
-                child: Text(
-                  widget.label!,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF383838),
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w500,
-                  ),
+            Container(
+              padding: const EdgeInsets.only(left: 5),
+              width: double.infinity,
+              child: Text(
+                widget.label!,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Color(0xFF383838),
+                  fontFamily: 'Lato',
+                  fontWeight: FontWeight.w500,
                 ),
               ),
+            ),
             if (widget.label != null) const SizedBox(height: 8),
             GestureDetector(
               onTap: () {
@@ -127,9 +127,7 @@ class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidge
                   InputDecorator(
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: hasText || _selectedValue != null
-                          ? Colors.white
-                          : widget.filcolorCustom ?? const Color.fromRGBO(252, 186, 103, 1),
+                      fillColor: widget.filcolorCustom ?? (hasText || _selectedValue != null ? Colors.white : const Color.fromRGBO(252, 186, 103, 1)),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(
@@ -159,29 +157,29 @@ class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidge
                         ),
                       ),
                       prefixIcon: widget.placeholderSvg != null
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 15),
+                            child: SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: SvgPicture.asset(
+                                widget.placeholderSvg!,
+                                colorFilter: widget.placeholderSvgColor != null
+                                  ? ColorFilter.mode(widget.placeholderSvgColor!, BlendMode.srcIn)
+                                  : null, // Si es null, se mantiene el color original del SVG
+                              ),
+                            ),
+                          )
+                        : widget.icon != null
                           ? Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 15),
-                              child: SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: SvgPicture.asset(
-                                  widget.placeholderSvg!,
-                                  colorFilter: widget.placeholderSvgColor != null
-                                      ? ColorFilter.mode(widget.placeholderSvgColor!, BlendMode.srcIn)
-                                      : null, // Si es null, se mantiene el color original del SVG
-                                ),
+                              padding: const EdgeInsets.only(left: 20, right: 20),
+                              child: Image.asset(
+                                widget.icon!,
+                                width: 20,
+                                height: 20,
                               ),
                             )
-                          : widget.icon != null
-                              ? Padding(
-                                  padding: const EdgeInsets.only(left: 20, right: 20),
-                                  child: Image.asset(
-                                    widget.icon!,
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                )
-                              : null,
+                          : null,
                       labelText: _selectedValue != null ? null : widget.placeholder,
                       labelStyle: TextStyle(
                         color: widget.textColor ?? Colors.black,
@@ -195,35 +193,40 @@ class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidge
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          _selectedValue ?? '',
-                          style: TextStyle(
-                            color: isEnabled ? Colors.black : Colors.grey,
-                            fontFamily: 'Lato',
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: Text(
+                            _selectedValue ?? '',
+                            style: const TextStyle(
+                              // color: isEnabled ? Colors.black : Colors.grey,
+                              color: Color(0XFF383838),
+                              fontFamily: 'Lato',
+                            ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 10),
                           child: SizedBox(
-                              width: 20,
-                              child: SvgPicture.asset(
-                                'assets/icons/svg/vector_flecha.svg',
-                              )),
+                            width: 20,
+                            child: SvgPicture.asset(
+                              'assets/icons/svg/vector_flecha.svg',
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
                   if (errorText != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8, left: 12),
-                      child: Text(
-                        errorText,
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontSize: 12.0,
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 12),
+                    child: Text(
+                      errorText,
+                      style: const TextStyle(
+                        color: Colors.red,
+                        fontSize: 12.0,
                       ),
                     ),
+                  ),
                 ],
               ),
             ),
