@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
-import 'package:pawlly/components/custom_snackbar.dart';
+
 
 class ProfilePetController extends GetxController {
   final TextEditingController searchController = TextEditingController();
@@ -31,9 +32,7 @@ class ProfilePetController extends GetxController {
   ].obs;
   var profileImagePath = ''.obs;
   var isPickerActive = false.obs;
-  var medicalHistory = [
-    // Agrega más registros según sea necesario
-  ].obs;
+  var medicalHistory = [].obs;
 
   var userTypeCont = TextEditingController().obs;
   var emailController = TextEditingController().obs;
@@ -115,8 +114,7 @@ class ProfilePetController extends GetxController {
       'weight': double.tryParse(petWeight.value) ?? 0.0,
       'user_id': petProfile.userId,
       'additional_info': petDescription.value,
-      'pet_image':
-          profileImagePath.value.isNotEmpty ? profileImagePath.value : null,
+      'pet_image': profileImagePath.value.isNotEmpty ? profileImagePath.value : null,
       'age': petAge.value,
     };
 
@@ -195,7 +193,7 @@ class ProfilePetController extends GetxController {
     );
   }
 
-// Función para eliminar la mascota a través del API
+  // Función para eliminar la mascota a través del API
   Future<bool> _deletePetApi() async {
     try {
       final response = await PetService.deletePetApi(id: petProfile.id);

@@ -128,12 +128,13 @@ class PasaporteMascota extends StatelessWidget {
                         onChanged: (value) => pet.pettype = value,
                       ),
                     ),
+                    // Sexo
                     SizedBox(
                       width: ancho,
                       height: altoInput,
                       child: InputText(
                         label: 'Sexo',
-                        initialValue: pet.gender == 'female' ? 'Mujer' : 'Hombre',
+                        initialValue: pet.gender == 'female' ? 'Hembra' : 'Macho',
                         placeholder: '',
                         onChanged: (value) => pet.gender = value,
                       ),
@@ -255,32 +256,33 @@ class PasaporteMascota extends StatelessWidget {
                       ),
                     ),
                     // Adjuntar archivo
-                    SizedBox(
-                      width: ancho,
-                      height: altoInput,
-                      child: InputText(
-                        isFilePicker: true,
-                        placeholderSvg: 'assets/icons/svg/imagen2.svg',
-                        placeholder: 'Añadir archivo .pdf',
-                        label: 'Adjuntar archivo',
-                        onChanged: (value) {},
-                      ),
-                    ),
-                    SizedBox(
-                      width: ancho,
-                      height: altoInput,
-                      child: InputText(
-                        placeholderSvg: 'assets/icons/svg/imagen2.svg',
-                        isFilePicker: true,
-                        label: 'Adjuntar archivo',
-                        placeholder: 'Añadir archivo .pdf',
-                        onChanged: (value) {},
-                      ),
-                    ),
+                    // SizedBox(
+                    //   width: ancho,
+                    //   height: altoInput,
+                    //   child: InputText(
+                    //     isFilePicker: true,
+                    //     placeholderSvg: 'assets/icons/svg/imagen2.svg',
+                    //     placeholder: 'Añadir archivo .pdf',
+                    //     label: 'Adjuntar archivo',
+                    //     onChanged: (value) {},
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   width: ancho,
+                    //   height: altoInput,
+                    //   child: InputText(
+                    //     placeholderSvg: 'assets/icons/svg/imagen2.svg',
+                    //     isFilePicker: true,
+                    //     label: 'Adjuntar archivo',
+                    //     placeholder: 'Añadir archivo .pdf',
+                    //     onChanged: (value) {},
+                    //   ),
+                    // ),
                     const SizedBox(height: 10),
                     
                     Helper.titulo('Datos de Vacunación y Tratamientos'),
                     SizedBox(height: margin),
+                    // Añadir informe
                     if (AuthServiceApis.dataCurrentUser.userType != 'user')
                     ButtonDefaultWidget(
                       title: 'Añadir Informe >',
@@ -324,6 +326,7 @@ class PasaporteMascota extends StatelessWidget {
                             // Verifica si pet.dateOfBirth no es nulo o vacío
                             print('objeto actulizado ${jsonEncode(pet)}');
                             // Actualizar los datos de la mascota
+
                             _petController.updatePet(
                               pet.id,
                               {
@@ -331,13 +334,13 @@ class PasaporteMascota extends StatelessWidget {
                                 "additional_info": pet.description,
                                 "date_of_birth": pet.dateOfBirth,
                                 "breed_name": pet.breed,
-                                //"gender": pet.gender,
+                                "gender": pet.gender,
                                 "weight": pet.weight,
                                 "weight_unit": pet.weightUnit,
                                 "height_unit": pet.heightUnit,
                                 "height": num.parse(pet.size ?? "0"),
                                 "user_id": pet.userId,
-                                // "age": pet.age,
+                                "age": pet.age,
                                 "pet_fur": pet.petFur,
                                 "chip": pet.chip,
                                 "size": "${pet.size}",

@@ -61,7 +61,7 @@ class VerPasaporteMascota extends StatelessWidget {
               color: Colors.white,
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     right: 26,
                     left: 26,
                   ),
@@ -80,7 +80,7 @@ class VerPasaporteMascota extends StatelessWidget {
                                 titulo: 'Pasaporte',
                                 size: 20,
                                 callback: () {
-                                  Get.off(HomeScreen());
+                                  Get.off(const HomeScreen());
                                 },
                               ),
                             ),
@@ -107,7 +107,7 @@ class VerPasaporteMascota extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                           height:
                               12), // Reducción del espacio debajo del "Pasaporte"
                       Container(
@@ -118,13 +118,12 @@ class VerPasaporteMascota extends StatelessWidget {
                         ),
                         clipBehavior: Clip.hardEdge,
                         child: Obx(() {
-                          final imageUrl =
-                              _homeController.selectedProfile.value!.petImage ??
-                                  'https://via.placeholder.com/600x400';
+                          final imageUrl = _homeController.selectedProfile.value!.petImage ??
+                            'https://via.placeholder.com/600x400';
 
                           return CachedNetworkImage(
                             imageUrl: imageUrl,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.cover,
                             placeholder: (context, url) => const Center(
                               child: CircularProgressIndicator(),
                             ),
@@ -139,42 +138,42 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       SizedBox(height: margen),
                       if (_homeController.selectedProfile.value!.chip != null)
-                        Container(
-                          width: ancho,
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Styles.colorContainer,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Row(
-                            children: [
-                              SvgPicture.asset(
-                                'assets/icons/svg/code-pet.svg',
-                              ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'ID del Microchip:',
-                                    style: Styles.descripcion,
-                                  ),
-                                  Text(
-                                    _homeController
-                                            .selectedProfile.value!.chip ??
-                                        "",
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Styles.iconColorBack,
-                                      fontFamily: 'Lato',
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                      Container(
+                        width: ancho,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Styles.colorContainer,
+                          borderRadius: BorderRadius.circular(16),
                         ),
+                        child: Row(
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/svg/code-pet.svg',
+                            ),
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'ID del Microchip:',
+                                  style: Styles.descripcion,
+                                ),
+                                Text(
+                                  _homeController
+                                          .selectedProfile.value!.chip ??
+                                      "",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Styles.iconColorBack,
+                                    fontFamily: 'Lato',
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                       SizedBox(height: margen),
                       const Text(
                         'Información del Perro',
@@ -197,8 +196,8 @@ class VerPasaporteMascota extends StatelessWidget {
                       InfoMascota(
                         titulo: 'Sexo',
                         value: mascota.gender == "female"
-                            ? 'Femenino'
-                            : 'Masculino',
+                            ? 'Hembra'
+                            : 'Macho',
                       ),
                       InfoMascota(
                         titulo: 'Raza',
@@ -207,7 +206,7 @@ class VerPasaporteMascota extends StatelessWidget {
                       InfoMascota(
                         titulo: 'Fecha de nacimiento',
                         value:
-                            '${_homeController.selectedProfile.value!.dateOfBirth ?? "no lo ha colocado aún"}',
+                            _homeController.selectedProfile.value!.dateOfBirth ?? "no lo ha colocado aún",
                       ),
                       InfoMascota(
                         titulo: 'Color del pelaje',

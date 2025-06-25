@@ -19,21 +19,19 @@ import 'package:share_plus/share_plus.dart';
 
 class InformationTab extends StatelessWidget {
   final ProfilePetController controller;
-  final PetOwnerController petcontroller = Get.put(PetOwnerController());
-  // ignore: non_constant_identifier_names
-  final PetOwnerProfileController OnewrProfileController =
-      Get.put(PetOwnerProfileController());
-
-  final HomeController homeController = Get.put(HomeController());
   InformationTab({super.key, required this.controller});
 
-  final UserProfileController profileController =
-      Get.put(UserProfileController());
+  final HomeController homeController = Get.put(HomeController());
+  final PetOwnerController petcontroller = Get.put(PetOwnerController());
+  final PetOwnerProfileController onewrProfileController = Get.put(PetOwnerProfileController());
+  final UserProfileController profileController = Get.put(UserProfileController());
+
   @override
   Widget build(BuildContext context) {
     var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
     var ancho = MediaQuery.sizeOf(context).width;
     var margen = Helper.margenDefault;
+
     return Obx(() {
       return SingleChildScrollView(
         child: Container(
@@ -83,25 +81,23 @@ class InformationTab extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
-                height: margen,
-              ),
+              SizedBox(height: margen),
               if (AuthServiceApis.dataCurrentUser.userType == 'user')
-                Center(
-                  child: SizedBox(
-                    height: 54,
-                    child: ButtonDefaultWidget(
-                      iconAfterText: false,
-                      title: 'Pasaporte',
-                      svgIconPath: 'assets/icons/svg/mdi_passport.svg',
-                      callback: () {
-                        Get.to(
-                          VerPasaporteMascota(),
-                        );
-                      },
-                    ),
+              Center(
+                child: SizedBox(
+                  height: 54,
+                  child: ButtonDefaultWidget(
+                    iconAfterText: false,
+                    title: 'Pasaporte',
+                    svgIconPath: 'assets/icons/svg/mdi_passport.svg',
+                    callback: () {
+                      Get.to(
+                        VerPasaporteMascota(),
+                      );
+                    },
                   ),
                 ),
+              ),
               SizedBox(height: margen),
               // Card de la raza
 
@@ -185,11 +181,9 @@ class InformationTab extends StatelessWidget {
                 color: Styles.fiveColor,
                 elevation: 0.0,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .spaceBetween, // Distribuir los elementos
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       /// Sección de Edad
                       Row(
@@ -301,11 +295,9 @@ class InformationTab extends StatelessWidget {
                           'Sexo:',
                           style: Styles.textProfile14w400,
                         ),
-                        subtitle: Text(
-                          homeController.selectedProfile.value!.gender ==
-                                  "female"
-                              ? 'Femenino'
-                              : 'Masculino',
+                        subtitle: Text(homeController.selectedProfile.value!.gender == "female"
+                            ? 'Hembra'
+                            : 'Macho',
                           style: Styles.textProfile13w800,
                         ),
                       ),
@@ -414,86 +406,86 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 22),
+
               // Personas asociadas a la mascota
               if (AuthServiceApis.dataCurrentUser.userType != 'user')
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Personas Asociadas a\nesta Mascota',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontFamily: 'Lato',
-                          height: 1.3,
-                        ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Personas Asociadas a\nesta Mascota',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontFamily: 'Lato',
+                        height: 1.3,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
 
               if (AuthServiceApis.dataCurrentUser.userType == 'user')
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        'Personas Asociadas a\nesta Mascota',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontFamily: 'Lato',
-                          height: 1.3,
-                        ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Personas Asociadas a\nesta Mascota',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontFamily: 'Lato',
+                        height: 1.3,
                       ),
                     ),
-                    SizedBox(
-                      width: 44, // Ancho fijo
-                      height: 44, // Alto fijo
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20)),
-                            ),
-                            builder: (context) {
-                              return AssociatedPersonsModal(
-                                  controller: controller);
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFC9214),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                  ),
+                  SizedBox(
+                    width: 44, // Ancho fijo
+                    height: 44, // Alto fijo
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20)),
                           ),
-                          padding: EdgeInsets.zero,
-                          shadowColor: Colors.transparent, // Elimina la sombra
-                          elevation: 0, // Evita cualquier sombra residual
+                          builder: (context) {
+                            return AssociatedPersonsModal(
+                                controller: controller);
+                          },
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFC9214),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(Icons.add,
-                            color: Colors.white, size: 24), // Centrado
+                        padding: EdgeInsets.zero,
+                        shadowColor: Colors.transparent, // Elimina la sombra
+                        elevation: 0, // Evita cualquier sombra residual
                       ),
+                      child: const Icon(Icons.add,
+                          color: Colors.white, size: 24), // Centrado
                     ),
-                  ],
-                ),
-
+                  ),
+                ],
+              ),
               const SizedBox(height: 10),
 
               Column(
                 children: petcontroller.associatedPersons.map((person) {
                   return GestureDetector(
                       onTap: () {
-                        OnewrProfileController.ownerName.value = person['name'];
-                        OnewrProfileController.relation.value =
+                        onewrProfileController.ownerName.value = person['name'];
+                        onewrProfileController.relation.value =
                             person['relation'];
-                        OnewrProfileController.profileImagePath.value =
+                        onewrProfileController.profileImagePath.value =
                             person['profile_image'];
                         // Navegar a la ruta 'PETOWNERPROFILE' y pasar los datos del perfil si es necesario
                         //Get.toNamed(Routes.PETOWNERPROFILE, arguments: person);
@@ -521,16 +513,16 @@ class InformationTab extends StatelessWidget {
               // Botón de eliminar mascota
               /**  */
               if (AuthServiceApis.dataCurrentUser.userType == 'user')
-                Center(
-                  child: TextButton(
-                    onPressed: controller
-                        .deletePet, // Llamar a la función para mostrar el modal
-                    child: const Text(
-                      'Eliminar animal',
-                      style: TextStyle(color: Colors.red, fontFamily: "Lato"),
-                    ),
+              Center(
+                child: TextButton(
+                  onPressed: controller
+                      .deletePet, // Llamar a la función para mostrar el modal
+                  child: const Text(
+                    'Eliminar animal',
+                    style: TextStyle(color: Colors.red, fontFamily: "Lato"),
                   ),
                 ),
+              ),
               const SizedBox(height: 20),
             ],
           ),

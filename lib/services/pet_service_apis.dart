@@ -127,10 +127,8 @@ class PetService {
             AuthServiceApis.dataCurrentUser.userType == 'trainer') {
           // Estructura para vet y trainer: data es una lista de owners que contiene listas de pets
           final owners = (jsonResponse['data'] as List);
-          final petDataList =
-              owners.expand((owner) => owner['pets'] as List).toList();
-          final res =
-              petDataList.map((item) => PetData.fromJson(item)).toList();
+          final petDataList = owners.expand((owner) => owner['pets'] as List).toList();
+          final res = petDataList.map((item) => PetData.fromJson(item)).toList();
 
           pets.clear();
           pets.addAll(res);

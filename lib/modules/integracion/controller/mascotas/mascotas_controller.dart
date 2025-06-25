@@ -116,8 +116,8 @@ class PetControllerv2 extends GetxController {
     "breed_name": "",
     "gender": "",
     "weight": "",
-    "eweightUnit": "",
-    "heheightUnit": "",
+    "eweightUnit": "", // Confirmar el nombre de estos campos, es raro
+    "heheightUnit": "", // Confirmar el nombre de estos campos, es raro
     "height": "",
     "user_id": "",
     "age": "",

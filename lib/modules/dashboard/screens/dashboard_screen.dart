@@ -122,7 +122,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           _buildMenuItem(DashboardMenuItem.patientsOrPets, context),
                           _buildMenuItem(DashboardMenuItem.diary, context),
                           _buildMenuItem(DashboardMenuItem.termsAndConditions, context),
-                          _buildMenuItem(DashboardMenuItem.termsAndConditions, context),
+                          _buildMenuItem(DashboardMenuItem.privacyPolicy, context),
                           _buildMenuItem(DashboardMenuItem.aboutApp, context),
                           _buildMenuItem(DashboardMenuItem.logout, context),
                         ],

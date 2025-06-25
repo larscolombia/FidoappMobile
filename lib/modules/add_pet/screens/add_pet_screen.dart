@@ -174,9 +174,10 @@ class AddPetScreen extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(top: 20),
                         child: CustomDateFormFieldWidget(
-                            controller: controller.petBirthDateController,
-                            placeholder: 'Fecha de nacimiento',
-                            imagePath: 'assets/icons/calendar2.png'),
+                          controller: controller.petBirthDateController,
+                          placeholder: 'Fecha de nacimiento',
+                          imagePath: 'assets/icons/calendar2.png',
+                        ),
                       ),
 
                       // Campo para seleccionar la raza de la mascota

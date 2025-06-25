@@ -13,6 +13,7 @@ import 'package:pawlly/services/pet_service_apis.dart';
 import 'package:pawlly/services/training_service_apis.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+
 class HomeController extends GetxController {
   var selectedIndex = 0.obs;
   var profiles = <PetData>[].obs; // Lista de perfiles usando el modelo

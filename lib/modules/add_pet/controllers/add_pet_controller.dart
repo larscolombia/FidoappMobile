@@ -88,6 +88,7 @@ class AddPetController extends GetxController {
       Map<String, String> petData = {
         'name': petName.text,
         'additional_info': petDescription.text,
+        // 'pettype': 'Perro',
         'date_of_birth': petBirthDateController.text,
         'breed_name': petBreed.text,
         'gender': petGender.value,
