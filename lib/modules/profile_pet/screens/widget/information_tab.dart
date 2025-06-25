@@ -200,14 +200,19 @@ class InformationTab extends StatelessWidget {
                             height: 20,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            'Edad:',
-                            style: Styles.textProfile14w400,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            homeController.selectedProfile.value!.age ?? "",
-                            style: Styles.textProfile14w800,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Edad:',
+                                style: Styles.textProfile14w400,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                homeController.selectedProfile.value!.age,
+                                style: Styles.textProfile14w800,
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -273,7 +278,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          '${homeController.selectedProfile.value!.weight}${homeController.selectedProfile.value!.weightUnit}',
+                          '${homeController.selectedProfile.value!.weight} ${homeController.selectedProfile.value!.weightUnit}',
                           style: Styles.textProfile13w800,
                         ),
                       ),

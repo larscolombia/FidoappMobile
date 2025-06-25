@@ -38,8 +38,9 @@ class InputText extends StatefulWidget {
     this.fw,
     this.controller,
     this.isRequired = false,
-    this.errorText, // Nuevo parámetro para mensajes de error
+    this.errorText,
     this.errorPadding = false,
+    this.keyboardType,
   });
 
   final FontWeight? fw;
@@ -70,6 +71,7 @@ class InputText extends StatefulWidget {
   final bool isRequired;
   final String? errorText; // Mensaje de error externo
   final bool errorPadding;
+  final TextInputType? keyboardType;
   @override
   _InputTextState createState() => _InputTextState();
 }
@@ -231,8 +233,7 @@ class _InputTextState extends State<InputText> {
                           ? OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(
-                                color: Color(
-                                    0xFFFCBA67), // Color del borde cuando no está seleccionado
+                                color: Color(0xFFFCBA67), // Color del borde cuando no está seleccionado
                                 width: 1,
                               ),
                             )
@@ -297,6 +298,7 @@ class _InputTextState extends State<InputText> {
                   widget.onChanged(value);
                 },
                 readOnly: widget.readOnly,
+                keyboardType: widget.keyboardType,
               ),
             ),
           ),

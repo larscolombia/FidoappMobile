@@ -13,7 +13,7 @@ import 'package:pawlly/modules/profile_pet/screens/widget/medical_histor_tab.dar
 import 'package:pawlly/services/auth_service_apis.dart';
 
 class ProfilePetScreen extends StatelessWidget {
-  ProfilePetScreen({super.key});
+  const ProfilePetScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +86,7 @@ class ProfilePetScreen extends StatelessWidget {
                     child: Container(
                       padding: Styles.paddingAll,
                       decoration: const BoxDecoration(
-                        color: Colors.white,
+                        // color: Colors.white,
                         borderRadius:
                             BorderRadius.vertical(top: Radius.circular(40)),
                       ),
@@ -100,40 +100,34 @@ class ProfilePetScreen extends StatelessWidget {
                             child: Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     SizedBox(
-                                      width: MediaQuery.sizeOf(context).width -
-                                          100,
+                                      width: MediaQuery.sizeOf(context).width - 100,
                                       child: BarraBack(
                                         titulo: "Perfil de la Mascota",
                                         size: 20,
                                         callback: () => Get.back(),
                                       ),
                                     ),
-                                    if (AuthServiceApis
-                                            .dataCurrentUser.userType ==
-                                        'user')
-                                      ElevatedButton(
-                                        onPressed: () {
-                                          Get.to(PasaporteMascota());
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          elevation: 0,
-                                          padding: EdgeInsets.zero,
-                                          backgroundColor:
-                                              Styles.colorContainer,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                          ),
-                                          minimumSize: const Size(48, 48),
+                                    if (AuthServiceApis.dataCurrentUser.userType == 'user')
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Get.to(PasaporteMascota());
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        padding: EdgeInsets.zero,
+                                        backgroundColor: Styles.colorContainer,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(15),
                                         ),
-                                        child: SvgPicture.asset(
-                                          'assets/icons/svg/edit-2.svg',
-                                        ),
-                                      )
+                                        minimumSize: const Size(48, 48),
+                                      ),
+                                      child: SvgPicture.asset(
+                                        'assets/icons/svg/edit-2.svg',
+                                      ),
+                                    )
                                   ],
                                 ),
                               ],
@@ -145,47 +139,39 @@ class ProfilePetScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
+                                // Información
                                 Obx(
                                   () => ButtonDefaultWidget(
                                     title: 'Información',
                                     callback: () => controller.changeTab(0),
-                                    widthButtom:
-                                        (MediaQuery.sizeOf(context).width /
-                                                2) -
-                                            30,
-                                    defaultColor:
-                                        controller.selectedTab.value == 0
-                                            ? Styles.iconColorBack
-                                            : Colors.white,
+                                    widthButtom: (MediaQuery.sizeOf(context).width / 2) - 30,
+                                    defaultColor: controller.selectedTab.value == 0
+                                      ? Styles.iconColorBack
+                                      : Colors.white,
                                     textColor: controller.selectedTab.value == 0
-                                        ? Styles.whiteColor
-                                        : Colors.black,
+                                      ? Styles.whiteColor
+                                      : Colors.black,
                                     border: controller.selectedTab.value == 0
-                                        ? null
-                                        : const BorderSide(
-                                            color: Color(0xFFEFEFEF), width: 1),
+                                      ? null
+                                      : const BorderSide(color: Color(0xFFEFEFEF), width: 1),
                                     textSize: 14,
                                   ),
                                 ),
+                                // Historial Médico
                                 Obx(
                                   () => ButtonDefaultWidget(
                                     title: 'Historial Médico',
                                     callback: () => controller.changeTab(1),
-                                    widthButtom:
-                                        (MediaQuery.sizeOf(context).width /
-                                                2) -
-                                            30,
-                                    defaultColor:
-                                        controller.selectedTab.value == 1
-                                            ? Styles.iconColorBack
-                                            : Colors.white,
+                                    widthButtom: (MediaQuery.sizeOf(context).width / 2) - 30,
+                                    defaultColor: controller.selectedTab.value == 1
+                                      ? Styles.iconColorBack
+                                      : Colors.white,
                                     textColor: controller.selectedTab.value == 1
-                                        ? Styles.whiteColor
-                                        : Colors.black,
+                                      ? Styles.whiteColor
+                                      : Colors.black,
                                     border: controller.selectedTab.value == 1
-                                        ? null
-                                        : const BorderSide(
-                                            color: Color(0xFFEFEFEF), width: 1),
+                                      ? null
+                                      : const BorderSide(color: Color(0xFFEFEFEF), width: 1),
                                     textSize: 14,
                                   ),
                                 ),

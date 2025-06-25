@@ -22,7 +22,7 @@ class AddPetController extends GetxController {
   var petGender = ''.obs;
   var petWeight = 0.0.obs;
   var petWeightUnit = 'Kg'.obs;
-  var breedList = <BreedModel>[].obs; // Observable para la lista de razas
+  var breedList = <BreedModel>[].obs;
   var petImage = Rx<XFile?>(null);
   var base64Image = ''.obs;
 

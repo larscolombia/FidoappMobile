@@ -80,6 +80,7 @@ class AddPetScreen extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.only(top: 16),
                     children: [
+                      // Información general
                       Container(
                         padding: const EdgeInsets.only(
                           top: 20,
@@ -136,6 +137,7 @@ class AddPetScreen extends StatelessWidget {
                           placeholder: locale.value.addYourPetInformation,
                         ),
                       ),
+
                       // Selector de imagen
                       GestureDetector(
                         onTap: () => controller.pickImage(),
@@ -167,6 +169,7 @@ class AddPetScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+
                       // Selector de fecha de nacimiento
                       Container(
                         margin: const EdgeInsets.only(top: 20),
@@ -175,6 +178,7 @@ class AddPetScreen extends StatelessWidget {
                             placeholder: 'Fecha de nacimiento',
                             imagePath: 'assets/icons/calendar2.png'),
                       ),
+
                       // Campo para seleccionar la raza de la mascota
                       Container(
                         margin: const EdgeInsets.only(top: 20),
@@ -268,26 +272,28 @@ class AddPetScreen extends StatelessWidget {
 
                       // Campo para el peso de la mascota
                       Container(
-                          margin: const EdgeInsets.only(top: 20),
-                          child: Obx(() {
-                            return CustomTextFormFieldWidget(
-                              controller: controller.petWeightController,
-                              placeholder: locale.value.weight,
-                              isNumeric: true,
-                              icon: 'assets/icons/weight.png',
-                              suffixText: controller.petWeightUnit.value,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  controller.toogleWeightUnit();
-                                },
-                                icon: const Icon(
-                                  Icons.swap_horiz,
-                                  color: Styles.iconColorBack,
-                                ),
+                        margin: const EdgeInsets.only(top: 20),
+                        child: Obx(() {
+                          return CustomTextFormFieldWidget(
+                            controller: controller.petWeightController,
+                            placeholder: locale.value.weight,
+                            isNumeric: true,
+                            icon: 'assets/icons/weight.png',
+                            suffixText: controller.petWeightUnit.value,
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                controller.toogleWeightUnit();
+                              },
+                              icon: const Icon(
+                                Icons.swap_horiz,
+                                color: Styles.iconColorBack,
                               ),
-                            );
-                          })),
+                            ),
+                          );
+                        }),
+                      ),
                       const SizedBox(height: 20),
+
                       // Botón para enviar el formulario
                       Obx(
                         () => ButtonDefaultWidget(

@@ -55,16 +55,15 @@ class MenuOfNavigation extends GetView<HomeController> {
                   labelFontSize: labelFontSize,
                 ),
                 if (roleUser.roleUser.value == roleUser.tipoUsuario('user') ||
-                    roleUser.roleUser.value ==
-                        roleUser.tipoUsuario('entrenador'))
-                  _buildNavItem(
-                    path: 'assets/icons/svg/Vector1.svg',
-                    label: 'Entrenamientos',
-                    index: 2,
-                    controller: controller,
-                    iconSize: iconSize,
-                    labelFontSize: labelFontSize,
-                  ),
+                    roleUser.roleUser.value == roleUser.tipoUsuario('entrenador'))
+                _buildNavItem(
+                  path: 'assets/icons/svg/Vector1.svg',
+                  label: 'Entrenamientos',
+                  index: 2,
+                  controller: controller,
+                  iconSize: iconSize,
+                  labelFontSize: labelFontSize,
+                ),
                 _buildNavItem(
                   path: 'assets/icons/svg/Group 1000003080.svg',
                   label: 'Explorar',

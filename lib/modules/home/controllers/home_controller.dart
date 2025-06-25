@@ -135,8 +135,7 @@ class HomeController extends GetxController {
     filterPet.value = petsData;
     // Verificar si la lista no está vacía y actualizar el perfil seleccionado
     if (petsData.isNotEmpty) {
-      selectedProfile.value =
-          petsData.first; // Asignar el primer perfil completo
+      selectedProfile.value = petsData.first; // Asignar el primer perfil completo
     }
   }
 

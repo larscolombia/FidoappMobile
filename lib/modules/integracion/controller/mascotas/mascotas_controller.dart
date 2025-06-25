@@ -1,25 +1,29 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
-import 'package:pawlly/configs.dart';
-import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
-
+import 'package:pawlly/configs.dart';
+import 'package:pawlly/models/brear_model.dart';
+import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-import 'dart:convert';
+import 'package:pawlly/services/pet_service_apis.dart';
 
 class PetControllerv2 extends GetxController {
   var pets = <Pet>[].obs;
   var isLoading = true.obs;
   var selectedPet = Rxn<Pet>();
-  var url =
-      '$DOMAIN_URL/api/pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
+  var url = '$DOMAIN_URL/api/pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
   var succesApdate = false.obs;
   get selectedPetIds => null;
+  var breedList = <BreedModel>[].obs;
+
   @override
   void onInit() {
     fetchPets();
+    fetchBreedsList();
     super.onInit();
   }
 
@@ -89,6 +93,21 @@ class PetControllerv2 extends GetxController {
     }
   }
 
+    // Método para obtener la lista de razas desde la API
+  Future<void> fetchBreedsList() async {
+    final breeds = await PetService.getBreedsListApi();
+    if (breeds.isNotEmpty) {
+      breedList.assignAll(breeds);
+    } else {
+      // Manejar el error si la lista está vacía
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'No se pudo cargar la lista de razas',
+        isError: true,
+      );
+    }
+  }
+  
   //actilizar mascota
   var metatdat = {
     "name": "",
