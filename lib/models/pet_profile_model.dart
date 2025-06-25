@@ -61,7 +61,7 @@ class PetProfile {
   void updateFromPetData(PetData petData) {
     name = petData.name;
     breed = petData.breed;
-    description =
+    description = 
         petData.description ?? 'Una mascota muy amigable y juguetona.';
     age = petData.age;
     birthDate = petData.dateOfBirth ?? '01/01/2021';

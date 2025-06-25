@@ -59,7 +59,7 @@ class InputText extends StatefulWidget {
   final Icon? prefiIcon;
   final bool isTimeField;
   final bool readOnly;
-  final String? initialValue;
+  final dynamic initialValue;
   final Color? fondoColor;
   final Color borderColor;
   final Color? labelColor;

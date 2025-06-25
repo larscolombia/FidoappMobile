@@ -14,11 +14,10 @@ import 'package:pawlly/modules/integracion/controller/historial_clinico/historia
 import 'package:pawlly/modules/profile_pet/screens/pasaporte_mascota.dart';
 
 class VerPasaporteMascota extends StatelessWidget {
-  final HomeController _homeController = Get.find<HomeController>();
-  final HistorialClinicoController historiaClinicaController =
-      Get.put(HistorialClinicoController());
-
   VerPasaporteMascota({super.key});
+  
+  final _homeController = Get.find<HomeController>();
+  final _historiaClinicaController = Get.put(HistorialClinicoController());
 
   String formatFecha(String fecha) {
     DateFormat inputFormat = DateFormat('dd/MM/yyyy');
@@ -29,10 +28,10 @@ class VerPasaporteMascota extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mascota = _homeController.selectedProfile.value!;
-    var padding = Helper.paddingDefault;
-    var margen = Helper.margenDefault;
     var ancho = MediaQuery.sizeOf(context).width;
+    var margen = Helper.margenDefault;
+
+    var mascota = _homeController.selectedProfile.value!;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -107,9 +106,8 @@ class VerPasaporteMascota extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(
-                          height:
-                              12), // Reducción del espacio debajo del "Pasaporte"
+                      const SizedBox(height:12),
+
                       Container(
                         width: ancho,
                         height: 200,
@@ -137,6 +135,7 @@ class VerPasaporteMascota extends StatelessWidget {
                         }),
                       ),
                       SizedBox(height: margen),
+
                       if (_homeController.selectedProfile.value!.chip != null)
                       Container(
                         width: ancho,
@@ -175,6 +174,7 @@ class VerPasaporteMascota extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: margen),
+
                       const Text(
                         'Información del Perro',
                         style: TextStyle(
@@ -189,9 +189,10 @@ class VerPasaporteMascota extends StatelessWidget {
                         titulo: 'Nombre',
                         value: mascota.name,
                       ),
-                      const InfoMascota(
+                      InfoMascota(
                         titulo: 'Especie',
-                        value: 'Canino',
+                        // value: 'Canino',
+                        value: mascota.pettype,
                       ),
                       InfoMascota(
                         titulo: 'Sexo',
@@ -199,35 +200,45 @@ class VerPasaporteMascota extends StatelessWidget {
                             ? 'Hembra'
                             : 'Macho',
                       ),
+                      
                       InfoMascota(
                         titulo: 'Raza',
-                        value: _homeController.selectedProfile.value!.breed,
+                        value: mascota.breed,
                       ),
+                      
                       InfoMascota(
                         titulo: 'Fecha de nacimiento',
-                        value:
-                            _homeController.selectedProfile.value!.dateOfBirth ?? "no lo ha colocado aún",
+                        value: mascota.birthDateFormatted,
                       ),
+                      
                       InfoMascota(
                         titulo: 'Color del pelaje',
-                        value: _homeController.selectedProfile.value!.petFur,
+                        value: mascota.petFur ?? '',
                       ),
+                      
+                      InfoMascota(
+                        titulo: 'Peso',
+                        value: '${mascota.weight} ${mascota.weightUnit}',
+                      ),
+                      
                       InfoMascota(
                         titulo: 'Altura',
-                        value:
-                            '${mascota.height ?? ""}${mascota.heightUnit ?? ""}',
+                        value: '${mascota.height} ${mascota.heightUnit}',
                       ),
+                      
                       InfoMascota(
                         titulo: 'Marcas distintivas',
                         value: mascota.description ??
                             "No se ha definido una descripción",
                       ),
                       const SizedBox(height: 20),
+
                       Helper.titulo(
                         'Datos de Vacunación y Tratamientos',
                       ),
                       SizedBox(height: margen),
-                      HistorialGrid(controller: historiaClinicaController),
+
+                      HistorialGrid(controller: _historiaClinicaController),
                       SizedBox(height: margen),
                     ],
                   ),

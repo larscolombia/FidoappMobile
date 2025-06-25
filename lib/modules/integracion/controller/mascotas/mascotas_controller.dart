@@ -108,23 +108,6 @@ class PetControllerv2 extends GetxController {
     }
   }
   
-  //actilizar mascota
-  var metatdat = {
-    "name": "",
-    "additional_info": "",
-    "date_of_birth": "",
-    "breed_name": "",
-    "gender": "",
-    "weight": "",
-    "eweightUnit": "", // Confirmar el nombre de estos campos, es raro
-    "heheightUnit": "", // Confirmar el nombre de estos campos, es raro
-    "height": "",
-    "user_id": "",
-    "age": "",
-    "pet_fur": "",
-    "chip": "",
-    "size": "",
-  }.obs;
   // Método para actualizar la información de una mascota
   Future<void> updatePet(int id, Map<String, dynamic> body) async {
     try {

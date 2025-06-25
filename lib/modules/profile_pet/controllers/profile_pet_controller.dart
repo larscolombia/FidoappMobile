@@ -159,7 +159,7 @@ class ProfilePetController extends GetxController {
           if (success) {
             // Actualiza la lista en HomeController
             final homeController = Get.find<HomeController>();
-            homeController.profiles.removeWhere((pet) => pet.id == petProfile.id);
+            homeController.removePetProfileById(petProfile.id);
 
             // Muestra un mensaje de éxito
             Get.dialog(

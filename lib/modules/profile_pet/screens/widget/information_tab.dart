@@ -235,11 +235,7 @@ class InformationTab extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  Helper.formatDateToSpanish(homeController
-                                          .selectedProfile
-                                          .value!
-                                          .dateOfBirth) ??
-                                      "",
+                                  homeController.selectedProfile.value!.birthDateFormatted,
                                   style: Styles.textProfile14w800,
                                 ),
                               ],

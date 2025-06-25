@@ -24,17 +24,17 @@ class PasaporteMascota extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var ancho = MediaQuery.sizeOf(context).width;
+    var altoInput = 107.0;
+    var margin = Helper.margenDefault;
+
     final dateController = TextEditingController();
     final heightUnitController = TextEditingController();
     final petBreedController = TextEditingController();
+    final sexController = TextEditingController();
     final weightUnitController = TextEditingController();
 
-    var altoInput = 107.0;
-    var ancho = MediaQuery.sizeOf(context).width;
-    var margin = Helper.margenDefault;
-
     var pet = _homeController.selectedProfile.value!;
-    var peso = pet.weight.toString().obs;
 
     if (pet.dateOfBirth != null) {
       dateController.text = pet.dateOfBirth!;
@@ -43,6 +43,7 @@ class PasaporteMascota extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
+          // Header
           Positioned(
             top: 0,
             left: 0,
@@ -77,6 +78,7 @@ class PasaporteMascota extends StatelessWidget {
               ),
             ),
           ),
+          
           Positioned(
             top: 150,
             left: 0,
@@ -124,21 +126,29 @@ class PasaporteMascota extends StatelessWidget {
                       child: InputText(
                         placeholder: '',
                         label: 'Especie',
-                        initialValue: pet.pettype ?? "",
-                        onChanged: (value) => pet.pettype = value,
+                        initialValue: pet.pettype,
+                        readOnly: true,
+                        onChanged: (_) {},
                       ),
                     ),
                     // Sexo
-                    SizedBox(
-                      width: ancho,
-                      height: altoInput,
-                      child: InputText(
-                        label: 'Sexo',
-                        initialValue: pet.gender == 'female' ? 'Hembra' : 'Macho',
+                    Obx(() {
+                      return CustomSelectFormFieldWidget(
+                        controller: sexController,
                         placeholder: '',
-                        onChanged: (value) => pet.gender = value,
-                      ),
-                    ),
+                        label: 'Sexo',
+                        // icon: 'assets/icons/patica.png',
+                        filcolorCustom: Styles.colorContainer,
+                        borderColor: Styles.colorContainer,
+                        items: const ['Hembra', 'Macho'],
+                        onChange: (value) {
+                          pet.gender = value == 'Hembra'
+                            ? 'female'
+                            : 'male';
+                        }
+                      );
+                    }),
+                    SizedBox(height: margin),
                     // Raza
                     Obx(() {
                       return CustomSelectFormFieldWidget(
@@ -188,7 +198,7 @@ class PasaporteMascota extends StatelessWidget {
                         label: 'Altura',
                         placeholder: "",
                         initialValue: pet.height.toString(),
-                        onChanged: (value) => pet.height = value,
+                        onChanged: (value) => pet.height = value.isEmpty ? 0 : num.parse(value),
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
                           signed: false,
@@ -212,7 +222,7 @@ class PasaporteMascota extends StatelessWidget {
                       child: InputText(
                         label: 'Peso',
                         placeholder: "",
-                        initialValue: pet.weight.toString() ?? "no lo ha colocado aún",
+                        initialValue: pet.weight,
                         onChanged: (value) => pet.weight = double.parse(value),
                         keyboardType: const TextInputType.numberWithOptions(
                           decimal: true,
@@ -255,29 +265,6 @@ class PasaporteMascota extends StatelessWidget {
                         },
                       ),
                     ),
-                    // Adjuntar archivo
-                    // SizedBox(
-                    //   width: ancho,
-                    //   height: altoInput,
-                    //   child: InputText(
-                    //     isFilePicker: true,
-                    //     placeholderSvg: 'assets/icons/svg/imagen2.svg',
-                    //     placeholder: 'Añadir archivo .pdf',
-                    //     label: 'Adjuntar archivo',
-                    //     onChanged: (value) {},
-                    //   ),
-                    // ),
-                    // SizedBox(
-                    //   width: ancho,
-                    //   height: altoInput,
-                    //   child: InputText(
-                    //     placeholderSvg: 'assets/icons/svg/imagen2.svg',
-                    //     isFilePicker: true,
-                    //     label: 'Adjuntar archivo',
-                    //     placeholder: 'Añadir archivo .pdf',
-                    //     onChanged: (value) {},
-                    //   ),
-                    // ),
                     const SizedBox(height: 10),
                     
                     Helper.titulo('Datos de Vacunación y Tratamientos'),
@@ -297,6 +284,7 @@ class PasaporteMascota extends StatelessWidget {
                     //pisa papel
                     HistorialGrid(controller: _historiaClinicaController),
                     SizedBox(height: margin + margin),
+                    // Botón para finalizar
                     SizedBox(
                       width: ancho,
                       child: Obx(() {
@@ -306,6 +294,7 @@ class PasaporteMascota extends StatelessWidget {
                             callback: () {},
                           );
                         }
+
                         if (_petController.succesApdate.value) {
                           return ButtonDefaultWidget(
                             title: 'ok',
@@ -315,6 +304,7 @@ class PasaporteMascota extends StatelessWidget {
                             },
                           );
                         }
+
                         return ButtonDefaultWidget(
                           title: _petController.isLoading.value
                               ? 'Actualizando ...'

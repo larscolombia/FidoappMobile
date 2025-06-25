@@ -111,7 +111,7 @@ class HomeController extends GetxController {
   void updateProfile(PetData profile) {
     print('info pert 3 ${(jsonEncode(profile.name))}');
 
-    if (profiles.value.isNotEmpty) {
+    if (profiles.isNotEmpty) {
       selectedProfile.value = profile;
     } else {
       selectedProfile.value = selectedProfile.value;
@@ -227,7 +227,7 @@ class HomeController extends GetxController {
         gender: '',
         weight: 0.0,
         weightUnit: '',
-        height: '0',
+        height: 0,
         heightUnit: '',
         userId: 0,
         status: -1,
@@ -251,6 +251,18 @@ class HomeController extends GetxController {
       // Imprimir cualquier error y limpiar la lista en caso de error
       print('Error en la búsqueda de mascotas: $e');
       filterPet.value = [];
+    }
+  }
+
+  void removePetProfileById(int id) {
+    // Eliminar el perfil de mascota por ID
+    profiles.removeWhere((pet) => pet.id == id);
+
+
+    if (profiles.isEmpty) {
+      selectedProfile.value = null;
+    } else {
+      selectedProfile.value = profiles.first;
     }
   }
 }
