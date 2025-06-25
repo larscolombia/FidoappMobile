@@ -39,9 +39,14 @@ class ProfilePetScreen extends StatelessWidget {
             right: 0,
             height: topImageHeight,
             child: Obx(() {
-              final imageUrl = controller.profileImagePath.value.isNotEmpty
-                  ? controller.profileImagePath.value
-                  : 'https://via.placeholder.com/600x400';
+              if (controller.profileImagePath.value.isEmpty) {
+                return Image.asset(
+                  'assets/images/404.jpg', // Ruta de la imagen predeterminada
+                  fit: BoxFit.cover,
+                );
+              }
+
+              final imageUrl = controller.profileImagePath.value;
 
               return CachedNetworkImage(
                 imageUrl: imageUrl,

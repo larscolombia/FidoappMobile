@@ -63,7 +63,7 @@ class AddPetController extends GetxController {
       context: context,
       initialDate: petBirthDate.value,
       firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
+      lastDate: DateTime.now().subtract(const Duration(days: 1)),
     );
     if (picked != null && picked != petBirthDate.value) {
       petBirthDate.value = picked;
@@ -88,7 +88,7 @@ class AddPetController extends GetxController {
       Map<String, String> petData = {
         'name': petName.text,
         'additional_info': petDescription.text,
-        // 'pettype': 'Perro',
+        // 'pettype': '...', Se va a utilizar posteriormente para indicar la especie
         'date_of_birth': petBirthDateController.text,
         'breed_name': petBreed.text,
         'gender': petGender.value,
