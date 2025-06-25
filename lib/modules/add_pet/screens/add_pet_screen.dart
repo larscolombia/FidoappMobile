@@ -303,6 +303,7 @@ class AddPetScreen extends StatelessWidget {
                           callback: () {
                             if (_formKey.currentState!.validate()) {
                               controller.submitForm(_formKey);
+                              controller.resetForm();
                             }
                           },
                         ),

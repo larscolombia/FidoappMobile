@@ -58,18 +58,18 @@ class AddPetController extends GetxController {
   }
 
   // Método para seleccionar la fecha de nacimiento
-  Future<void> pickDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: petBirthDate.value,
-      firstDate: DateTime(2000),
-      lastDate: DateTime.now().subtract(const Duration(days: 1)),
-    );
-    if (picked != null && picked != petBirthDate.value) {
-      petBirthDate.value = picked;
-      petBirthDateController.text = petBirthDate.value.toLocal().toString().split(' ')[0];
-    }
-  }
+  // Future<void> pickDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: petBirthDate.value,
+  //     firstDate: DateTime(2000),
+  //     lastDate: DateTime.now().subtract(const Duration(days: 1)),
+  //   );
+  //   if (picked != null && picked != petBirthDate.value) {
+  //     petBirthDate.value = picked;
+  //     petBirthDateController.text = petBirthDate.value.toLocal().toString().split(' ')[0];
+  //   }
+  // }
 
   void toogleWeightUnit() {
     if (petWeightUnit.value == 'Kg') {
@@ -135,7 +135,19 @@ class AddPetController extends GetxController {
       }
     }
   }
-  //Actualizar mascota
+  
+  void resetForm() {
+    petName.clear();
+    petDescription.clear();
+    petWeightController.clear();
+    petBirthDateController.clear();
+    petBreed.clear();
+    petGender.value = '';
+    petWeight.value = 0.0;
+    petWeightUnit.value = 'Kg';
+    petImage.value = null;
+    base64Image.value = '';
+  }
 
   @override
   void onClose() {
