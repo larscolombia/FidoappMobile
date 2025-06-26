@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:intl/intl.dart';
 
 class PetListRes {
@@ -89,15 +90,6 @@ class PetData {
     return dateTime == null ? '' : outputFormat.format(dateTime);
   }
 
-  // DateTime? setBirthDate(String date) {
-  //   try {
-  //     return dateOfBirth!;
-  //   } catch (e) {
-  //     dateOfBirth = null;
-  //     return null;
-  //   }
-  // }
-
   factory PetData.fromJson(Map<String, dynamic> json) {
     return PetData(
       id: int.tryParse(json['id'].toString()) ?? -1,
@@ -111,11 +103,11 @@ class PetData {
       dateOfBirth: json['date_of_birth'],
       age: json['age'] ?? "",
       gender: json['gender'] ?? "",
-      weight: num.tryParse(json['weight']) ?? 0,
+      weight: json['weight'] as num? ?? 0,
       weightUnit: json['weight_unit'] ?? "",
-      height: double.tryParse(json['height']) ?? 0,
-      heightUnit: json['height_unit'] ?? "",
-      userId: int.tryParse(json['user_id']) ?? -1,
+      height: json['height'] as num? ?? 0,
+      heightUnit: json['height_unit'] ?? 0,
+      userId: json['user_id'] ?? -1,
       status: json['status'] ?? -1,
       qrCode: json['qr_code'],
       createdBy: json['created_by'],
@@ -123,7 +115,8 @@ class PetData {
       deletedBy: json['deleted_by'],
       description: json['description'],
       petFur: json['pet_fur'],
-      chip: json['chip']);
+      chip: json['chip']
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -151,5 +144,73 @@ class PetData {
       'updated_by': updatedBy,
       'deleted_by': deletedBy,
     };
+  }
+
+  Map<String, dynamic> mapToUpdate() {
+    return {
+      'name': name,
+      'pettype': pettype,
+      'breed': breed,
+      'date_of_birth': dateOfBirth,
+      'gender': gender,
+      'weight': weight,
+      'weight_unit': weightUnit,
+      'height': height,
+      'height_unit': heightUnit,
+      'description': description,
+    };
+  }
+
+  PetData copyWith({
+    String? name,
+    String? slug,
+    String? pettype,
+    String? breed,
+    int? breedId,
+    dynamic size,
+    String? petImage,
+    String? dateOfBirth,
+    String? age,
+    String? gender,
+    num? weight,
+    String? weightUnit,
+    num? height,
+    String? heightUnit,
+    int? userId,
+    int? status,
+    String? qrCode,
+    int? createdBy,
+    int? updatedBy,
+    int? deletedBy,
+    String? petFur,
+    String? description,
+    String? chip,
+  }) {
+    return PetData(
+      id: id,
+      name: name ?? this.name,
+      slug: slug ?? this.slug,
+      pettype: pettype ?? this.pettype,
+      breed: breed ?? this.breed,
+      breedId: breedId ?? this.breedId,
+      size: size ?? this.size,
+      petImage: petImage ?? this.petImage,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      age: age ?? this.age,
+      gender: gender ?? this.gender,
+      weight: weight ?? this.weight,
+      weightUnit: weightUnit ?? this.weightUnit,
+      height: height ?? this.height,
+      heightUnit: heightUnit ?? this.heightUnit,
+      userId: userId ?? this.userId,
+      status: status ?? this.status,
+      qrCode: qrCode ?? this.qrCode,
+      createdBy: createdBy ?? this.createdBy,
+      updatedBy: updatedBy ?? this.updatedBy,
+      deletedBy: deletedBy ?? this.deletedBy,
+      petFur: petFur ?? this.petFur,
+      description: description ?? this.description,
+      chip: chip ?? this.chip,
+    );
   }
 }

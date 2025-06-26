@@ -23,6 +23,7 @@ import '../../../utils/constants.dart';
 
 class PetService {
   final RoleUser roleUser = Get.put(RoleUser());
+
   static Future<PetTypeRes> getPetTypeApi() async {
     return PetTypeRes.fromJson(await handleResponse(await buildHttpResponse(
         APIEndPoints.getPetTypeList,
@@ -222,7 +223,7 @@ class PetService {
                 Get.back();
                 // final HomeController homeController = Get.put(HomeController());
                 // homeController.fetchProfiles();
-                Get.to(() => HomeScreen());
+                Get.to(() => const HomeScreen());
               },
             ),
             barrierDismissible: false,

@@ -7,6 +7,7 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/brear_model.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
@@ -109,16 +110,16 @@ class PetControllerv2 extends GetxController {
   }
   
   // Método para actualizar la información de una mascota
-  Future<void> updatePet(int id, Map<String, dynamic> body) async {
+  Future<void> updatePet(int id, Map<String, dynamic> petData) async {
     try {
       succesApdate(false);
       isLoading(true);
       final url = Uri.parse('${BASE_URL}pets/$id');
       print('URL completa: $url');
-      print('Cuerpo de la solicitud (JSON): ${jsonEncode(body)}');
+      print('Cuerpo de la solicitud (JSON): ${jsonEncode(petData)}');
 
       // Convertir todos los valores a cadenas
-      Map<String, String> stringBody = body.map((key, value) {
+      Map<String, String> stringBody = petData.map((key, value) {
         return MapEntry(key, value?.toString() ?? '');
       });
 
@@ -134,13 +135,18 @@ class PetControllerv2 extends GetxController {
       print('responseee ${response.statusCode}');
       print('Respuesta completa: ${response.body}');
 
+      final homeController = Get.find<HomeController>();
+
       if (response.statusCode == 200) {
+
+        homeController.updateSelectedProfile(petData);
+
         Get.dialog(
           //pisa papel
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
             title: 'Acción Realizada Exitosamente',
-            description: 'Felicidades ¡Tu cuenta ha sido creada!',
+            description: 'Felicidades ¡La información se actualizó!',
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
               Get.back();

@@ -85,7 +85,7 @@ class VerPasaporteMascota extends StatelessWidget {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Get.to(() => PasaporteMascota());
+                                Get.to(() => const PasaporteMascota());
                               },
                               child: Container(
                                 width: 42.4,

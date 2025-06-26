@@ -118,6 +118,25 @@ class HomeController extends GetxController {
     }
   }
 
+  void updateSelectedProfile(Map<String, dynamic> petData) {
+    // Actualizar el perfil seleccionado con los datos de la mascota
+    if (selectedProfile.value == null) {
+      selectedProfile.value = PetData.fromJson(petData);
+      return;
+    }
+    // Use named parameters for the copyWith method
+    selectedProfile.value = selectedProfile.value!.copyWith(
+      name: petData['name'],
+      breed: petData['breed'],
+      dateOfBirth: petData['date_of_birth'],
+      gender: petData['gender'],
+      weight: petData['weight'],
+      weightUnit: petData['weight_unit'],
+      height: petData['height'],
+      heightUnit: petData['height_unit'],
+    );
+  }
+
   // Método para agregar un nuevo perfil con datos de mascota
   void addProfile(Map<String, dynamic> petData) {
     profiles.add(PetData.fromJson(petData));

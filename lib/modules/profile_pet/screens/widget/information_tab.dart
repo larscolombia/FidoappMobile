@@ -220,28 +220,26 @@ class InformationTab extends StatelessWidget {
                       ),
 
                       /// Sección de Fecha de Nacimiento
-                      Expanded(
-                        child: Row(
-                          children: [
-                            const SizedBox(
-                                width: 10), // Espacio después de la línea
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .start, // Alineación izquierda
-                              children: [
-                                Text(
-                                  'Fecha de nacimiento:',
-                                  style: Styles.textProfile14w400,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  homeController.selectedProfile.value!.birthDateFormatted,
-                                  style: Styles.textProfile14w800,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      Row(
+                        children: [
+                          const SizedBox(
+                              width: 10), // Espacio después de la línea
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment
+                                .start, // Alineación izquierda
+                            children: [
+                              Text(
+                                'Fecha de nacimiento:',
+                                style: Styles.textProfile14w400,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                homeController.selectedProfile.value!.birthDateFormatted,
+                                style: Styles.textProfile14w800,
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),

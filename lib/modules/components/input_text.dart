@@ -337,12 +337,15 @@ class _InputTextState extends State<InputText> {
     // Remueve el foco para evitar que el teclado aparezca
     _focusNode.unfocus();
 
+    // Validar si es fecha y usarlo
+    final initialDate = DateFormat('dd-MM-yyyy').tryParse(widget.initialValue ?? '') ?? DateTime.now();
+
     final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
+      initialDate: initialDate,
+      firstDate: DateTime(1970),
+      lastDate: DateTime.now(),
       confirmText: 'Aceptar',
       cancelText: 'Cancelar',
       builder: (BuildContext context, Widget? child) {
