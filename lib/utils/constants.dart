@@ -21,6 +21,7 @@ class Constants {
 //region DateFormats
 class DateFormatConst {
   static const DD_MM_YY = "dd-MM-yy"; //TODO Use to show only in UI
+  static const DD_MM_YYYY = "dd-MM-yyyy"; //TODO Use to show only in UI
   static const MMMM_D_yyyy = "MMMM d, y"; //TODO Use to show only in UI
   static const D_MMMM_yyyy = "d MMMM, y"; //TODO Use to show only in UI
   static const MMMM_D_yyyy_At_HH_mm_a =
