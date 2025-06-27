@@ -108,6 +108,7 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       const SizedBox(height:12),
 
+                      // Imagen de la mascota
                       Container(
                         width: ancho,
                         height: 200,
@@ -136,6 +137,7 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       SizedBox(height: margen),
 
+                      // Chip
                       if (_homeController.selectedProfile.value!.chip != null)
                       Container(
                         width: ancho,
@@ -185,47 +187,50 @@ class VerPasaporteMascota extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: margen),
+                      // Nombre
                       InfoMascota(
                         titulo: 'Nombre',
                         value: mascota.name,
                       ),
+                      // Especie
                       InfoMascota(
                         titulo: 'Especie',
                         // value: 'Canino',
                         value: mascota.pettype,
                       ),
+                      // Sexo
                       InfoMascota(
                         titulo: 'Sexo',
                         value: mascota.gender == "female"
                             ? 'Hembra'
                             : 'Macho',
                       ),
-                      
+                      // Raza
                       InfoMascota(
                         titulo: 'Raza',
                         value: mascota.breed,
                       ),
-                      
+                      // Fecha de nacimiento
                       InfoMascota(
                         titulo: 'Fecha de nacimiento',
                         value: mascota.birthDateFormatted,
                       ),
-                      
+                      // Color del pelaje
                       InfoMascota(
                         titulo: 'Color del pelaje',
                         value: mascota.petFur ?? '',
                       ),
-                      
+                      // Peso
                       InfoMascota(
                         titulo: 'Peso',
                         value: '${mascota.weight} ${mascota.weightUnit}',
                       ),
-                      
+                      // Altura
                       InfoMascota(
                         titulo: 'Altura',
                         value: '${mascota.height} ${mascota.heightUnit}',
                       ),
-                      
+                      // Marcas distintivas
                       InfoMascota(
                         titulo: 'Marcas distintivas',
                         value: mascota.description ??
@@ -233,9 +238,7 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
 
-                      Helper.titulo(
-                        'Datos de Vacunación y Tratamientos',
-                      ),
+                      Helper.titulo('Datos de Vacunación y Tratamientos'),
                       SizedBox(height: margen),
 
                       HistorialGrid(controller: _historiaClinicaController),

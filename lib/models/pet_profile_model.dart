@@ -1,3 +1,4 @@
+import 'package:pawlly/models/pet_data.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 
 class PetProfile {

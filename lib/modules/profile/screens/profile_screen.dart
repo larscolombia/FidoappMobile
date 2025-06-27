@@ -21,9 +21,9 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     const imageSize = 260.0;
     var margin = Helper.margenDefault;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -82,25 +82,17 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                           if (controller.isLoadingPhoto.value)
-                          const Positioned(
-                            right: 0,
-                            bottom: 0,
-                            child: SizedBox(
-                              height: 30,
-                              width: 30,
+                          Positioned.directional(
+                            textDirection: Directionality.of(context),
+                            top: 40,
+                            child: const SizedBox(
+                              height: 124,
+                              width: 124,
                               child: CircularProgressIndicator(
                                 color: Styles.primaryColor,
-                                strokeWidth: 4,
+                                strokeWidth: 3,
                               ),
                             ),
-                            // child: Container(
-                            //   padding: const EdgeInsets.all(4),
-                            //   decoration: BoxDecoration(
-                            //     color: Styles.fiveColor,
-                            //     borderRadius: BorderRadius.circular(10),
-                            //   ),
-                            //   child: SvgPicture.asset('assets/icons/svg/edit-2.svg'),
-                            // ),
                           ),
                         ],
                       ),
@@ -147,19 +139,20 @@ class ProfileScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
-                                  width: MediaQuery.sizeOf(context).width - 130,
-                                  child: Obx(() {
-                                    String titulo =
-                                        controller.isEditing.value ? 'Editando perfil...' : 'Perfil de Usuario';
-                                    return BarraBack(
-                                      titulo: titulo,
-                                      size: 20,
-                                      color: const Color(0xFFFF4931),
-                                      callback: () {
-                                        Navigator.pop(context);
-                                      },
-                                    );
-                                  })),
+                                width: MediaQuery.sizeOf(context).width - 130,
+                                child: Obx(() {
+                                  String titulo =
+                                      controller.isEditing.value ? 'Editando perfil...' : 'Perfil de Usuario';
+                                  return BarraBack(
+                                    titulo: titulo,
+                                    size: 20,
+                                    color: const Color(0xFFFF4931),
+                                    callback: () {
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                }),
+                              ),
                               Obx(() {
                                 return GestureDetector(
                                   onTap: () => controller.toggleEditing(),
@@ -260,16 +253,14 @@ class ProfileScreen extends StatelessWidget {
                         SizedBox(height: margin),
                         // last_name
                         Obx(() {
-                          return Container(
-                            child: InputText(
-                              borderColor: Styles.iconColorBack,
-                              onChanged: (value) => controller.user['last_name'] = value,
-                              initialValue: controller.user['last_name'].toString(),
-                              placeholder: '',
-                              placeholderSvg: 'assets/icons/svg/profile.svg',
-                              readOnly: !controller.isEditing.value,
-                              fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
-                            ),
+                          return InputText(
+                            borderColor: Styles.iconColorBack,
+                            onChanged: (value) => controller.user['last_name'] = value,
+                            initialValue: controller.user['last_name'].toString(),
+                            placeholder: '',
+                            placeholderSvg: 'assets/icons/svg/profile.svg',
+                            readOnly: !controller.isEditing.value,
+                            fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                           );
                         }),
                         SizedBox(height: margin),
@@ -296,8 +287,26 @@ class ProfileScreen extends StatelessWidget {
                             filcolorCustom: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                             borderColor: Styles.iconColorBack,
                             onChange: (value) {
-                              controller.user['gender'] = value.toString();
-                              controller.userGenCont.value.text = value.toString().toLowerCase();
+                              if (value != null) {
+                                String genderValue;
+                                switch (value.toLowerCase()) {
+                                  case 'femenino':
+                                    genderValue = 'female';
+                                    break;
+                                  case 'masculino':
+                                    genderValue = 'male';
+                                    break;
+                                  case 'prefiero no decirlo':
+                                    genderValue = 'others';
+                                    break;
+                                  default:
+                                    genderValue = value.toLowerCase();
+                                }
+                                controller.user['gender'] = genderValue;
+                                // No actualizamos el valor del controlador aquí para evitar ciclos
+                                // El valor ya fue seleccionado por el usuario en el componente
+                                controller.sexoValue.value = genderValue;
+                              }
                             },
                             placeholder: 'Género',
                             placeholderSvg: 'assets/icons/svg/tag-user.svg',

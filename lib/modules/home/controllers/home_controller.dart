@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:pawlly/models/event_model.dart';
-import 'package:pawlly/models/pet_list_res_model.dart';
+import 'package:pawlly/models/pet_data.dart';
 import 'package:pawlly/models/training_model.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/diario/diario.dart';
@@ -32,7 +32,7 @@ class HomeController extends GetxController {
   var calendarFormat = CalendarFormat.month.obs;
   var events = <DateTime, List<EventData>>{}.obs;
 
-  var SelectType = 0.obs;
+  var rxSelectType = 0.obs;
 
 // Llamar al método cuando el controlador se inicializa
   @override
@@ -86,35 +86,17 @@ class HomeController extends GetxController {
   }
 
   void selectType(int type) {
-    SelectType.value = type;
-  }
-
-  // Método para navegar a diferentes pantallas
-  void pantallas(index) {
-    switch (index) {
-      case 0:
-        // Get.toNamed(Routes.HOME);
-        break;
-      case 1:
-        // Get.toNamed(Routes.CALENDAR);
-        break;
-      case 2:
-        // Get.toNamed(Routes.TRAINING);
-        break;
-      case 4:
-        //   Get.to(DiarioMascotas());
-        break;
-    }
+    rxSelectType.value = type;
   }
 
   // Método para actualizar el perfil seleccionado
   void updateProfile(PetData profile) {
     print('info pert 3 ${(jsonEncode(profile.name))}');
 
-    if (profiles.isNotEmpty) {
-      selectedProfile.value = profile;
-    } else {
+    if (profiles.isEmpty) {
       selectedProfile.value = selectedProfile.value;
+    } else {
+      selectedProfile.value = profile;
     }
   }
 

@@ -49,7 +49,8 @@ class ProfileController extends GetxController {
     profileImagePath.value = currentUser.profileImage; // Imagen de perfil del usuario
 
     // Configura los valores iniciales de los campos sexo y dueño
-    sexoValue.value = currentUser.gender.isNotEmpty ? currentUser.gender : 'Femenino'; // Valor predeterminado si no está definido
+    // Asegurarnos que el valor del género coincida con lo que la API espera
+    sexoValue.value = currentUser.gender.isNotEmpty ? currentUser.gender : 'female'; // Valor predeterminado si no está definido
     duenioValue.value = currentUser.userType.isNotEmpty ? currentUser.userType : 'Sí'; // Ajusta según el valor de userType o pon un valor por defecto
   }
 
@@ -114,6 +115,9 @@ class ProfileController extends GetxController {
     user['gender'] = currentUser.gender;
     user['userType'] = currentUser.userType;
     user['profileImage'] = currentUser.profileImage;
+    
+    // Asegurar que userGenCont refleje correctamente el género
+    userGenCont.value.text = mapGender(currentUser.gender);
   }
 
   Future<void> updateProfile() async {
@@ -181,8 +185,13 @@ class ProfileController extends GetxController {
             onPrimaryButtonPressed: () {
               profileController.fetchUserData("${AuthServiceApis.dataCurrentUser.id}");
               currentUser.profileImage = data['data']['profile_image'];
-              //userGenCont.value.text = data['data']['gender';
-              //   currentUser.gender = data['data']['gender'].toLowerCase();
+              
+              // Actualizar correctamente el género del usuario
+              if (data['data']['gender'] != null) {
+                currentUser.gender = data['data']['gender'];
+                userGenCont.value.text = mapGender(data['data']['gender']);
+              }
+              
               user['lastName'] = data['data']['last_name'];
               currentUser.lastName = data['data']['last_name'];
               Get.back();
@@ -362,11 +371,11 @@ class ProfileController extends GetxController {
   }
 
   String mapGender(String gender) {
-    switch (gender) {
+    switch (gender.toLowerCase()) {
       case 'female':
-        return 'Mujer';
+        return 'Femenino';
       case 'male':
-        return 'Hombre';
+        return 'Masculino';
       case 'others':
         return 'Prefiero no decirlo';
       default:

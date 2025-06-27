@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
+import 'package:pawlly/models/pet_data.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/modules/components/historia_grid.dart';
 import 'package:pawlly/modules/components/input_text.dart';
