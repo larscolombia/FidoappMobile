@@ -200,6 +200,8 @@ class InformationTab extends StatelessWidget {
                               Text(
                                 'Edad:',
                                 style: Styles.textProfile14w400,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(width: 5),
                               Text(
@@ -214,32 +216,31 @@ class InformationTab extends StatelessWidget {
 
                       /// Línea Divisora
                       Container(
-                        height: 30, // Ajustar la altura de la línea divisora
-                        width: 1, // Grosor de la línea
+                        height: 30,
+                        width: 1,
                         color: Styles.iconColorBack,
                       ),
 
+                      const SizedBox(width: 10),
                       /// Sección de Fecha de Nacimiento
-                      Row(
-                        children: [
-                          const SizedBox(
-                              width: 10), // Espacio después de la línea
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment
-                                .start, // Alineación izquierda
-                            children: [
-                              Text(
-                                'Fecha de nacimiento:',
-                                style: Styles.textProfile14w400,
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                homeController.selectedProfile.value!.birthDateFormatted,
-                                style: Styles.textProfile14w800,
-                              ),
-                            ],
-                          ),
-                        ],
+                      Expanded(
+                        flex: 0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start, 
+                          children: [
+                            Text(
+                              'Fecha de nacimiento:',
+                              style: Styles.textProfile14w400,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              homeController.selectedProfile.value!.birthDateFormatted,
+                              style: Styles.textProfile14w800,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

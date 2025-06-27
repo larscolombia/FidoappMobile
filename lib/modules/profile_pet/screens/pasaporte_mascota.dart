@@ -29,31 +29,20 @@ class _PasaporteMascotaState extends State<PasaporteMascota> {
   final _homeController = Get.find<HomeController>();
   final _petController = Get.put(PetControllerv2());
 
-  // name
-  // especie
-  final sexTextController = TextEditingController(); // sexo
-  final petBreedTextController = TextEditingController(); // raza
-  // fecha de nacimiento
-  // color de pelaje
-  // Altura
-  final heightUnitTextController = TextEditingController(); // unidad de altura
-
-
+  final sexTextController = TextEditingController();
+  final petBreedTextController = TextEditingController();
+  final heightUnitTextController = TextEditingController();
   final weightUnitTextController = TextEditingController();
-
-  late final PetData pet;
 
   @override
   void initState() {
     super.initState();
-    // Cargar la mascota seleccionada al iniciar
+    final PetData petData = _homeController.selectedProfile.value!;
 
-    pet = _homeController.selectedProfile.value!;
-
-    sexTextController.text = pet.gender == 'female' ? 'Hembra' : 'Macho';
-    petBreedTextController.text = pet.breed;
-    heightUnitTextController.text = pet.heightUnit.isNotEmpty ? pet.heightUnit : 'cm';
-    weightUnitTextController.text = pet.weightUnit.isNotEmpty ? pet.weightUnit : 'Kg';
+    sexTextController.text = petData.gender == 'female' ? 'Hembra' : 'Macho';
+    petBreedTextController.text = petData.breed;
+    heightUnitTextController.text = petData.heightUnit.isNotEmpty ? petData.heightUnit : 'cm';
+    weightUnitTextController.text = petData.weightUnit.isNotEmpty ? petData.weightUnit : 'Kg';
   }
 
   @override
@@ -128,276 +117,274 @@ class _PasaporteMascotaState extends State<PasaporteMascota> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    // Barra de navegación hacia atrás
-                    SizedBox(
-                      width: ancho,
-                      child: BarraBack(
-                        callback: () {
-                          Get.off(VerPasaporteMascota());
-                        },
-                        titulo: 'Información del Perro',
+                child: Obx(() {
+                  
+                  final PetData editablePet = _homeController.selectedProfile.value!.copyWith();
+                  
+                  return Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      // Barra de navegación hacia atrás
+                      SizedBox(
+                        width: ancho,
+                        child: BarraBack(
+                          callback: () {
+                            Get.off(VerPasaporteMascota());
+                          },
+                          titulo: 'Información del Perro',
+                        ),
                       ),
-                    ),
-                    SizedBox(height: margin),
-                    
-                    // Nombre de la mascota
-                    SizedBox(
-                      width: ancho,
-                      height: altoInput,
-                      child: InputText(
-                        placeholder: '',
-                        label: 'Nombre',
-                        initialValue: pet.name,
-                        onChanged: (value) => pet.name = value,
+                      SizedBox(height: margin),
+                      
+                      // Nombre de la mascota
+                      SizedBox(
+                        width: ancho,
+                        height: altoInput,
+                        child: InputText(
+                          placeholder: '',
+                          label: 'Nombre',
+                          initialValue: editablePet.name,
+                          onChanged: (value) => editablePet.name = value,
+                        ),
                       ),
-                    ),
-                    
-                    // Especie
-                    SizedBox(
-                      width: ancho,
-                      height: altoInput,
-                      child: InputText(
-                        placeholder: '',
-                        label: 'Especie',
-                        initialValue: pet.pettype,
-                        readOnly: true,
-                        onChanged: (_) {},
+                      
+                      // Especie
+                      SizedBox(
+                        width: ancho,
+                        height: altoInput,
+                        child: InputText(
+                          placeholder: '',
+                          label: 'Especie',
+                          initialValue: editablePet.pettype,
+                          readOnly: true,
+                          onChanged: (_) {},
+                        ),
                       ),
-                    ),
-                    
-                    // Sexo
-                    CustomSelectFormFieldWidget(
-                      controller: sexTextController,
-                      placeholder: '',
-                      label: 'Sexo',
-                      filcolorCustom: Styles.colorContainer,
-                      borderColor: Styles.colorContainer,
-                      items: const ['Hembra', 'Macho'],
-                      onChange: (value) {
-                        pet.gender = value == 'Hembra'
-                          ? 'female'
-                          : 'male';
-                      }
-                    ),
-                    SizedBox(height: margin),
-                    
-                    // Raza
-                    Obx(() {
-                      return CustomSelectFormFieldWidget(
-                        controller: petBreedTextController,
+                      
+                      // Sexo
+                      CustomSelectFormFieldWidget(
+                        controller: sexTextController,
                         placeholder: '',
-                        label: 'Raza',
-                        // icon: 'assets/icons/patica.png',
+                        label: 'Sexo',
                         filcolorCustom: Styles.colorContainer,
                         borderColor: Styles.colorContainer,
-                        items: _petController.breedList.isEmpty ? ['No disponible'] : _petController.breedList.map((breed) => breed.name).toList(),
-                        onChange: (value) => pet.breed = value ?? '',
-                      );
-                    }),
-                    const SizedBox(height: 5),
-                    
-                    // Fecha de nacimiento
-                    SizedBox(
-                      width: ancho,
-                      height: altoInput,
-                      child: InputText(
-                        isDateField: true,
-                        label: 'Fecha de nacimiento',
-                        placeholder: '',
-                        initialValue: pet.dateOfBirth ?? "",
-                        borderColor: Styles.colorContainer,
-                        onChanged: (value) {
-                          pet.dateOfBirth = value;
-                          print('Fecha de nacimiento actualizada: ${pet.dateOfBirth}');
-                        },
+                        items: const ['Hembra', 'Macho'],
+                        onChange: (value) {
+                          editablePet.gender = value == 'Hembra'
+                            ? 'female'
+                            : 'male';
+                        }
                       ),
-                    ),
-                    
-                    // Color de pelaje
-                    SizedBox(
-                      width: ancho,
-                      height: altoInput,
-                      child: InputText(
-                        label: 'Color del pelaje',
-                        placeholder: '',
-                        initialValue: pet.petFur ?? "",
-                        onChanged: (value) => pet.petFur = value,
-                        keyboardType: TextInputType.text,
+                      SizedBox(height: margin),
+                      
+                      // Raza
+                      CustomSelectFormFieldWidget(
+                          controller: petBreedTextController,
+                          placeholder: '',
+                          label: 'Raza',
+                          // icon: 'assets/icons/patica.png',
+                          filcolorCustom: Styles.colorContainer,
+                          borderColor: Styles.colorContainer,
+                          items: _petController.breedList.isEmpty ? ['No disponible'] : _petController.breedList.map((breed) => breed.name).toList(),
+                          onChange: (value) => editablePet.breed = value ?? '',
                       ),
-                    ),
-                    
-                    // Altura
-                    SizedBox(
-                      width: ancho,
-                      height: altoInput,
-                      child: InputText(
-                        label: 'Altura',
-                        placeholder: "",
-                        initialValue: pet.height.toString(),
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                          signed: false,
+                      const SizedBox(height: 5),
+                      
+                      // Fecha de nacimiento
+                      SizedBox(
+                        width: ancho,
+                        height: altoInput,
+                        child: InputText(
+                          isDateField: true,
+                          label: 'Fecha de nacimiento',
+                          placeholder: '',
+                          initialValue: editablePet.dateOfBirth ?? "",
+                          borderColor: Styles.colorContainer,
+                          onChanged: (value) {
+                            editablePet.dateOfBirth = value;
+                            print('Fecha de nacimiento actualizada: ${editablePet.dateOfBirth}');
+                          },
                         ),
-                        onChanged: (value) {
-                          if (value.isEmpty) {
-                            pet.height = 0;
-                          } else {
-                            double parsedValue = double.parse(value);
-                            
-                            // Si tiene decimales, redondear a 2 decimales
-                            if (parsedValue % 1 != 0) {
-                              // Redondear a 2 decimales
-                              pet.height = double.parse(parsedValue.toStringAsFixed(2));
+                      ),
+                      
+                      // Color de pelaje
+                      SizedBox(
+                        width: ancho,
+                        height: altoInput,
+                        child: InputText(
+                          label: 'Color del pelaje',
+                          placeholder: '',
+                          initialValue: editablePet.petFur ?? "",
+                          onChanged: (value) => editablePet.petFur = value,
+                          keyboardType: TextInputType.text,
+                        ),
+                      ),
+                      
+                      // Altura
+                      SizedBox(
+                        width: ancho,
+                        height: altoInput,
+                        child: InputText(
+                          label: 'Altura',
+                          placeholder: "",
+                          initialValue: editablePet.height.toString(),
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                            signed: false,
+                          ),
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              editablePet.height = 0;
                             } else {
-                              pet.height = parsedValue.toInt();
+                              double parsedValue = double.parse(value);
+                              
+                              // Si tiene decimales, redondear a 2 decimales
+                              if (parsedValue % 1 != 0) {
+                                // Redondear a 2 decimales
+                                editablePet.height = double.parse(parsedValue.toStringAsFixed(2));
+                              } else {
+                                editablePet.height = parsedValue.toInt();
+                              }
                             }
                           }
-                        }
-                      ),
-                    ),
-                    
-                    // Unidad de altura
-                    CustomSelectFormFieldWidget(
-                      controller: heightUnitTextController,
-                      placeholder: '',
-                      label: 'Unidad de la Altura',
-                      filcolorCustom: Styles.colorContainer,
-                      borderColor: Styles.colorContainer,
-                      items: const ['cm', 'in'],
-                      onChange: (value) {
-                        pet.heightUnit = value ?? '';
-                      }
-                    ),
-                    
-                    // Peso
-                    SizedBox(
-                      width: ancho,
-                      height: altoInput,
-                      child: InputText(
-                        label: 'Peso',
-                        placeholder: "",
-                        initialValue: pet.weight.toString(),
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                          signed: false,
                         ),
-                        onChanged: (value) {
-                          if (value.isEmpty) {
-                            pet.weight = 0;
-                          } else {
-                            double parsedValue = double.parse(value);
-                            
-                            // Si tiene decimales, redondear a 2 decimales
-                            if (parsedValue % 1 != 0) {
-                              // Redondear a 2 decimales
-                              pet.weight = double.parse(parsedValue.toStringAsFixed(2));
+                      ),
+                      
+                      // Unidad de altura
+                      CustomSelectFormFieldWidget(
+                        controller: heightUnitTextController,
+                        placeholder: '',
+                        label: 'Unidad de la Altura',
+                        filcolorCustom: Styles.colorContainer,
+                        borderColor: Styles.colorContainer,
+                        items: const ['cm', 'in'],
+                        onChange: (value) {
+                          editablePet.heightUnit = value ?? '';
+                        }
+                      ),
+                      
+                      // Peso
+                      SizedBox(
+                        width: ancho,
+                        height: altoInput,
+                        child: InputText(
+                          label: 'Peso',
+                          placeholder: "",
+                          initialValue: editablePet.weight.toString(),
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true,
+                            signed: false,
+                          ),
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              editablePet.weight = 0;
+                            } else {
+                              double parsedValue = double.parse(value);
+                              
+                              // Si tiene decimales, redondear a 2 decimales
+                              if (parsedValue % 1 != 0) {
+                                // Redondear a 2 decimales
+                                editablePet.weight = double.parse(parsedValue.toStringAsFixed(2));
+                              }
+                              editablePet.weight = parsedValue.toInt();
                             }
-                            pet.weight = parsedValue.toInt();
                           }
+                        ),
+                      ),
+                      
+                      // Selector de unidad de peso
+                      CustomSelectFormFieldWidget(
+                        controller: weightUnitTextController,
+                        placeholder: '',
+                        label: 'Unidad de Peso',
+                        filcolorCustom: Styles.colorContainer,
+                        borderColor: Styles.colorContainer,
+                        items: const ['Kg', 'Lb'],
+                        onChange: (value) {
+                          editablePet.weightUnit = value ?? 'Kg';
                         }
                       ),
-                    ),
-                    
-                    // Selector de unidad de peso
-                    CustomSelectFormFieldWidget(
-                      controller: weightUnitTextController,
-                      placeholder: '',
-                      label: 'Unidad de Peso',
-                      filcolorCustom: Styles.colorContainer,
-                      borderColor: Styles.colorContainer,
-                      items: const ['Kg', 'Lb'],
-                      onChange: (value) {
-                        pet.weightUnit = value ?? 'Kg';
-                      }
-                    ),
-                    
-                    // Descripción
-                    SizedBox(
-                      width: ancho,
-                      height: altoInput,
-                      child: InputText(
-                        label: 'Descripción',
-                        placeholder: "",
-                        initialValue: pet.description,
-                        onChanged: (value) {
-                          pet.description = value;
-                        },
+                      
+                      // Descripción
+                      SizedBox(
+                        width: ancho,
+                        height: altoInput,
+                        child: InputText(
+                          label: 'Descripción',
+                          placeholder: "",
+                          initialValue: editablePet.description,
+                          onChanged: (value) {
+                            editablePet.description = value;
+                          },
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    
-                    Helper.titulo('Datos de Vacunación y Tratamientos'),
-                    SizedBox(height: margin),
-                    
-                    // Añadir informe
-                    if (AuthServiceApis.dataCurrentUser.userType != 'user')
-                    ButtonDefaultWidget(
-                      title: 'Añadir Informe >',
-                      callback: () {
-                        Get.to(
-                          () => FormularioRegistro(),
-                        );
-                      },
-                      defaultColor: Styles.fiveColor,
-                    ),
-                    SizedBox(height: margin + margin),
-                    
-                    // Pisa papel
-                    HistorialGrid(controller: _historiaClinicaController),
-                    SizedBox(height: margin + margin),
-                    
-                    // Botón para finalizar
-                    SizedBox(
-                      width: ancho,
-                      child: Obx(() {
-                        if (_petController.isLoading.value) {
-                          return ButtonDefaultWidget(
-                            title: 'Actualizando ...',
-                            callback: () {},
+                      const SizedBox(height: 10),
+                      
+                      Helper.titulo('Datos de Vacunación y Tratamientos'),
+                      SizedBox(height: margin),
+                      
+                      // Añadir informe
+                      if (AuthServiceApis.dataCurrentUser.userType != 'user')
+                      ButtonDefaultWidget(
+                        title: 'Añadir Informe >',
+                        callback: () {
+                          Get.to(
+                            () => FormularioRegistro(),
                           );
-                        }
+                        },
+                        defaultColor: Styles.fiveColor,
+                      ),
+                      SizedBox(height: margin + margin),
+                      
+                      // Pisa papel
+                      HistorialGrid(controller: _historiaClinicaController),
+                      SizedBox(height: margin + margin),
+                      
+                      // Botón para finalizar
+                      SizedBox(
+                        width: ancho,
+                        child: Obx(() {
+                          if (_petController.isLoading.value) {
+                            return ButtonDefaultWidget(
+                              title: 'Actualizando ...',
+                              callback: () {},
+                            );
+                          }
 
-                        // Este código no tiene efecto, la variable nunca es true
-                        if (_petController.succesApdate.value) {
+                          // Este código no tiene efecto, la variable nunca es true
+                          if (_petController.succesUpdate.value) {
+                            return ButtonDefaultWidget(
+                              title: 'ok',
+                              callback: () {
+                                _petController.succesUpdate(false);
+                                Get.off(VerPasaporteMascota());
+                              },
+                            );
+                          }
+
                           return ButtonDefaultWidget(
-                            title: 'ok',
+                            title: _petController.isLoading.value
+                              ? 'Actualizando ...'
+                              : 'Finalizar',
+                            svgIconPath: 'assets/icons/svg/flecha_derecha.svg',
+                            svgIconColor: Colors.white,
+                            svgIconPathSize: 12,
                             callback: () {
-                              _petController.succesApdate(false);
-                              Get.off(VerPasaporteMascota());
+                              print('objeto actulizado ${jsonEncode(editablePet)}');
+
+                              // Actualizar los datos de la mascota
+                              _petController.updatePet(editablePet.id, editablePet);
+
+                              // Imprimir metadatos para depuración
+                              print('Metadatos: ${json.encode(editablePet)}');
                             },
                           );
-                        }
-
-                        return ButtonDefaultWidget(
-                          title: _petController.isLoading.value
-                            ? 'Actualizando ...'
-                            : 'Finalizar',
-                          svgIconPath: 'assets/icons/svg/flecha_derecha.svg',
-                          svgIconColor: Colors.white,
-                          svgIconPathSize: 12,
-                          callback: () {
-                            // Verifica si pet.dateOfBirth no es nulo o vacío
-                            final body = pet.mapToUpdate();
-                            print('objeto actulizado ${jsonEncode(pet)}');
-                            // Actualizar los datos de la mascota
-
-                            _petController.updatePet(
-                              pet.id,
-                              body
-                            );
-
-                            // Imprimir metadatos para depuración
-                            print('Metadatos: ${json.encode(pet)}');
-                          },
-                        );
-                      }),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
+                        }),
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  );
+                }),
               ),
             ),
           ),

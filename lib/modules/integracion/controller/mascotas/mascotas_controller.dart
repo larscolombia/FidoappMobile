@@ -7,6 +7,7 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/brear_model.dart';
+import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
@@ -17,7 +18,7 @@ class PetControllerv2 extends GetxController {
   var isLoading = true.obs;
   var selectedPet = Rxn<Pet>();
   var url = '$DOMAIN_URL/api/pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
-  var succesApdate = false.obs;
+  var succesUpdate = false.obs;
   get selectedPetIds => null;
   var breedList = <BreedModel>[].obs;
 
@@ -110,35 +111,28 @@ class PetControllerv2 extends GetxController {
   }
   
   // Método para actualizar la información de una mascota
-  Future<void> updatePet(int id, Map<String, dynamic> petData) async {
+  Future<void> updatePet(int id, PetData petData) async {
     try {
-      succesApdate(false);
+      succesUpdate(false);
       isLoading(true);
+
       final url = Uri.parse('${BASE_URL}pets/$id');
-      print('URL completa: $url');
-      print('Cuerpo de la solicitud (JSON): ${jsonEncode(petData)}');
-
-      // Convertir todos los valores a cadenas
-      Map<String, String> stringBody = petData.map((key, value) {
-        return MapEntry(key, value?.toString() ?? '');
-      });
-
+      final body = json.encode(petData.mapToUpdate());
       final response = await http.post(
         url,
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
         },
-        body: json.encode(stringBody),
+        body: body,
       );
 
-      print('responseee ${response.statusCode}');
-      print('Respuesta completa: ${response.body}');
-
-      final homeController = Get.find<HomeController>();
+      // print('responseee ${response.statusCode}');
+      // print('Respuesta completa: ${response.body}');
 
       if (response.statusCode == 200) {
 
+        final homeController = Get.find<HomeController>();
         homeController.updateSelectedProfile(petData);
 
         Get.dialog(
