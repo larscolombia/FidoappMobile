@@ -16,6 +16,9 @@ class GoogleSignInAuthService {
   );
 
   static Future<UserData> signInWithGoogle() async {
+    // Limpiar la caché de inicio de sesión de Google si existe
+    await googleSignIn.signOut();
+
     GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
 
     if (googleSignInAccount != null) {
