@@ -340,7 +340,6 @@ class _InputTextState extends State<InputText> {
     // Validar si es fecha y usarlo
     final initialDate = DateFormat('dd-MM-yyyy').tryParse(widget.initialValue ?? '') ?? DateTime.now();
 
-    final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate,
@@ -420,6 +419,7 @@ class _InputTextState extends State<InputText> {
     );
 
     if (picked != null) {
+      final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
       final formattedDate = dateFormat.format(picked);
       widget.onChanged(formattedDate); // Notifica el cambio
 

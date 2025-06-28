@@ -76,7 +76,7 @@ class AddPetScreen extends StatelessWidget {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
                 ),
                 child: Form(
-                  key: _formKey, // Asignar la clave del formulario
+                  key: _formKey,
                   child: ListView(
                     padding: const EdgeInsets.only(top: 16),
                     children: [

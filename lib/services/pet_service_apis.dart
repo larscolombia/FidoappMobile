@@ -31,27 +31,6 @@ class PetService {
         method: HttpMethodType.GET)));
   }
 
-  // ignore: slash_for_doc_comments
-  /*** 
-  Future<PetService?> fetchPetData(int petId) async {
-    final url = Uri.parse('$baseUrl/pets/$petId');
-
-    try {
-      final response = await http.get(url);
-
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        return PetService.fromJson(jsonResponse);
-      } else {
-        print('Failed to load pet data. Status code: ${response.statusCode}');
-        return null;
-      }
-    } catch (e) {
-      print('Error fetching pet data: $e');
-      return null;
-    }
-  }
-  */
   static Future<List<NotePetModel>> getNoteApi({
     int page = 1,
     required int petId,
@@ -390,8 +369,4 @@ class PetService {
       loaderOff.call();
     });
   }
-
-  //Actualizar mascota
-
-  // Método para actualizar la información de una mascota
 }

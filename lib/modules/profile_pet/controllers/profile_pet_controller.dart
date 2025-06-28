@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/models/pet_data.dart';
-import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
 

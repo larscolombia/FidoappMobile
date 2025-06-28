@@ -46,8 +46,7 @@ class _CustomDateFormFieldWidgetState extends State<CustomDateFormFieldWidget> {
                 lastDate: widget.lastDate ?? DateTime.now(),
               );
               if (pickedDate != null) {
-                widget.controller?.text =
-                    pickedDate.toLocal().toString().split(' ')[0];
+                widget.controller?.text = pickedDate.toLocal().toString().split(' ')[0];
               }
             }
           },

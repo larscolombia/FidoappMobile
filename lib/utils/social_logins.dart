@@ -6,9 +6,7 @@ import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/utils/constants.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
-//region FIREBASE AUTH
 final FirebaseAuth auth = FirebaseAuth.instance;
-//endregion
 
 class GoogleSignInAuthService {
   static final GoogleSignIn googleSignIn = GoogleSignIn(
@@ -66,7 +64,6 @@ class GoogleSignInAuthService {
     }
   }
 
-  // region Apple Sign
   static Future<UserData> signInWithApple() async {
     if (await TheAppleSignIn.isAvailable()) {
       AuthorizationResult result = await TheAppleSignIn.performRequests([

@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/editar.dart';
+import 'package:pawlly/modules/components/input_date.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/helper/date_helper.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
@@ -19,7 +21,7 @@ import 'package:pawlly/modules/integracion/model/user_type/user_datails.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
 class EventoDestalles extends StatefulWidget {
-  EventoDestalles({super.key});
+  const EventoDestalles({super.key});
 
   @override
   _EventoDestallesState createState() => _EventoDestallesState();
@@ -73,7 +75,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                         top: 50,
                         left: 0,
                         right: 0,
-                        child: Container(
+                        child: SizedBox(
                           width: MediaQuery.sizeOf(context).width,
                           height: 100,
                           child: const Column(
@@ -109,7 +111,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                   children: [
                     Obx(() {
                       return Padding(
-                        padding: EdgeInsets.only(
+                        padding: const EdgeInsets.only(
                           left: Styles.padding,
                           right: Styles.padding,
                         ),
@@ -152,7 +154,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                 ),
                               ),
                               const SizedBox(height: 20),
-                              Container(
+                              SizedBox(
                                 width: MediaQuery.sizeOf(context).width,
                                 height: height,
                                 child: InputText(
@@ -164,7 +166,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                 ),
                               ),
                               SizedBox(height: margen),
-                              Container(
+                              SizedBox(
                                 width: MediaQuery.sizeOf(context).width,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,16 +213,16 @@ class _EventoDestallesState extends State<EventoDestalles> {
                               SizedBox(
                                 width: MediaQuery.sizeOf(context).width,
                                 height: height,
-                                child: InputText(
-                                  placeholderSvg:
-                                      'assets/icons/svg/calendar.svg',
-                                  placeholder: '',
-                                  isDateField: true,
-                                  onChanged: (value) =>
-                                      event?.startDate = value,
-                                  initialValue: event?.date ?? "",
+                                child: InputDate(
                                   label: 'Fecha del evento',
+                                  placeholderSvg: 'assets/icons/svg/calendar.svg',
                                   readOnly: !calendarController.isEdit.value,
+                                  initialValue: DateHelper.dateFromUiShortString(event?.date) ?? DateTime.now(),
+                                  firstDate: DateHelper.firstDate,
+                                  lastDate: DateHelper.lastDate,
+                                  onChanged: (value) {
+                                    event?.startDate = DateHelper.formatUiDateShort(value);
+                                  }
                                 ),
                               ),
                               SizedBox(height: margen),
@@ -268,9 +270,9 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                       ),
                                     ),
                                     const SizedBox(height: 10),
-                                    Divider(
+                                    const Divider(
                                       thickness: 1,
-                                      color: const Color(0xFFEFEFEF),
+                                      color: Color(0xFFEFEFEF),
                                     ),
                                   ],
                                 ),
@@ -319,7 +321,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                   children: [
                                     Obx(() {
                                       if (userController.isLoading.value) {
-                                        return CircularProgressIndicator();
+                                        return const CircularProgressIndicator();
                                       }
 
                                       return Column(
@@ -335,7 +337,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                               profesion: Helper.tipoUsuario(
                                                   user.userType ?? ''),
                                             );
-                                          }).toList()
+                                          })
                                         ],
                                       );
                                     }),

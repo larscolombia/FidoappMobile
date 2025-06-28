@@ -57,20 +57,6 @@ class AddPetController extends GetxController {
     }
   }
 
-  // Método para seleccionar la fecha de nacimiento
-  // Future<void> pickDate(BuildContext context) async {
-  //   final DateTime? picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: petBirthDate.value,
-  //     firstDate: DateTime(2000),
-  //     lastDate: DateTime.now().subtract(const Duration(days: 1)),
-  //   );
-  //   if (picked != null && picked != petBirthDate.value) {
-  //     petBirthDate.value = picked;
-  //     petBirthDateController.text = petBirthDate.value.toLocal().toString().split(' ')[0];
-  //   }
-  // }
-
   void toogleWeightUnit() {
     if (petWeightUnit.value == 'Kg') {
       petWeightUnit.value = 'Lb';
@@ -89,7 +75,7 @@ class AddPetController extends GetxController {
         'name': petName.text,
         'additional_info': petDescription.text,
         // 'pettype': '...', Se va a utilizar posteriormente para indicar la especie
-        'date_of_birth': petBirthDateController.text,
+        'date_of_birth': petBirthDateController.text, // Se envía en formato 2025-06-27
         'breed_name': petBreed.text,
         'gender': petGender.value,
         'weight': petWeight.value.toString(),
@@ -107,10 +93,12 @@ class AddPetController extends GetxController {
         );
 
         if (newPet != null) {
+          // Actualizar la información del perfil en el HomeController
           final homeController = Get.find<HomeController>();
-          final notificationController = Get.find<NotificationController>();
           homeController.profiles.add(newPet);
           homeController.profiles.refresh();
+          
+          final notificationController = Get.find<NotificationController>();
           await notificationController.fetchNotifications();
         } else {
           throw Exception('Error al crear la mascota');

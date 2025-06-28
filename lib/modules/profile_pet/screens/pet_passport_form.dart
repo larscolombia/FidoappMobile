@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/models/pet_data.dart';
-import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/modules/components/historia_grid.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
@@ -15,17 +14,17 @@ import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 import 'package:pawlly/modules/integracion/controller/mascotas/mascotas_controller.dart';
 import 'package:pawlly/modules/profile_pet/screens/form_historial.dart';
-import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
+import 'package:pawlly/modules/profile_pet/screens/pet_passport_view.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
-class PasaporteMascota extends StatefulWidget {
-  const PasaporteMascota({super.key});
+class PetPassportForm extends StatefulWidget {
+  const PetPassportForm({super.key});
 
   @override
-  State<PasaporteMascota> createState() => _PasaporteMascotaState();
+  State<PetPassportForm> createState() => _PetPassportFormState();
 }
 
-class _PasaporteMascotaState extends State<PasaporteMascota> {
+class _PetPassportFormState extends State<PetPassportForm> {
   final _historiaClinicaController = Get.put(HistorialClinicoController());
   final _homeController = Get.find<HomeController>();
   final _petController = Get.put(PetControllerv2());
@@ -130,7 +129,7 @@ class _PasaporteMascotaState extends State<PasaporteMascota> {
                         width: ancho,
                         child: BarraBack(
                           callback: () {
-                            Get.off(VerPasaporteMascota());
+                            Get.off(PetPassportView());
                           },
                           titulo: 'Información del Perro',
                         ),
@@ -200,7 +199,6 @@ class _PasaporteMascotaState extends State<PasaporteMascota> {
                           label: 'Fecha de nacimiento',
                           placeholder: '',
                           initialValue: editablePet.dateOfBirth ?? "",
-                          borderColor: Styles.colorContainer,
                           onChanged: (value) {
                             editablePet.dateOfBirth = value;
                             print('Fecha de nacimiento actualizada: ${editablePet.dateOfBirth}');
@@ -358,7 +356,7 @@ class _PasaporteMascotaState extends State<PasaporteMascota> {
                               title: 'ok',
                               callback: () {
                                 _petController.succesUpdate(false);
-                                Get.off(VerPasaporteMascota());
+                                Get.off(PetPassportView());
                               },
                             );
                           }
