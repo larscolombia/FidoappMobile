@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:intl/intl.dart';
+import 'package:pawlly/modules/helper/date_helper.dart';
 
 class PetData {
   int id;
@@ -11,7 +12,7 @@ class PetData {
   int breedId;
   dynamic size;
   String? petImage;
-  String? dateOfBirth;
+  DateTime? dateOfBirth;
   String age;
   String gender;
   num weight;
@@ -56,12 +57,9 @@ class PetData {
 
   String get birthDateFormatted {
     if (dateOfBirth == null) return "Sin fecha de nacimiento";
-
-    DateFormat inputFormat = DateFormat("dd-MM-yyyy");
-    final dateTime = inputFormat.tryParse(dateOfBirth!);
     
     DateFormat outputFormat = DateFormat("d 'de' MMMM 'de' yyyy", 'es_ES');
-    return dateTime == null ? '' : outputFormat.format(dateTime);
+    return outputFormat.format(dateOfBirth!);
   }
 
   factory PetData.fromJson(Map<String, dynamic> json) {
@@ -74,7 +72,7 @@ class PetData {
       breedId: json['breed_id'] ?? -1,
       size: json['size'],
       petImage: json['pet_image'],
-      dateOfBirth: json['date_of_birth'],
+      dateOfBirth: DateHelper.dateFromApi(json['date_of_birth']),
       age: json['age'] ?? "",
       gender: json['gender'] ?? "",
       weight: json['weight'] as num? ?? 0,
@@ -103,7 +101,7 @@ class PetData {
       'breed_id': breedId,
       'size': size,
       'pet_image': petImage,
-      'date_of_birth': dateOfBirth,
+      'date_of_birth': DateHelper.formatApiDate(dateOfBirth),
       'age': age,
       'gender': gender,
       'weight': weight,
@@ -127,7 +125,7 @@ class PetData {
       'name': name,
       'pettype': pettype,
       'breed': breed,
-      'date_of_birth': dateOfBirth,
+      'date_of_birth': DateHelper.formatApiDate(dateOfBirth),
       'pet_fur': petFur,
       'gender': gender,
       'weight': weight,
@@ -146,7 +144,7 @@ class PetData {
     int? breedId,
     dynamic size,
     String? petImage,
-    String? dateOfBirth,
+    DateTime? dateOfBirth,
     String? age,
     String? gender,
     num? weight,

@@ -47,7 +47,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
     final eventos = calendarController.selectedEvents.first;
     var petData = homeController.getPetById(eventos.petId);
     final event = Get.arguments as CalendarModel?;
-    homeController.updateProfile(petData);
+    homeController.updateSelectedProfile(petData);
 
     if (eventos.owners.isNotEmpty) {
       userController.filterUsers(eventos.owners.first.email);

@@ -84,7 +84,7 @@ class SelccionarMascota extends StatelessWidget {
 
                     return GestureDetector(
                       onTap: () {
-                        controller.updateProfile(profile); // Seleccionar mascota
+                        controller.updateSelectedProfile(profile); // Seleccionar mascota
                         Navigator.of(context).pop(); // Cerrar el modal
                       },
                       child: SelccionarPerfil(

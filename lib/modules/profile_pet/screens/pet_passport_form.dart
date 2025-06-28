@@ -6,9 +6,11 @@ import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/models/pet_data.dart';
 import 'package:pawlly/modules/components/historia_grid.dart';
+import 'package:pawlly/modules/components/input_date.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/helper/date_helper.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
@@ -194,14 +196,14 @@ class _PetPassportFormState extends State<PetPassportForm> {
                       SizedBox(
                         width: ancho,
                         height: altoInput,
-                        child: InputText(
-                          isDateField: true,
+                        child: InputDate(
                           label: 'Fecha de nacimiento',
-                          placeholder: '',
-                          initialValue: editablePet.dateOfBirth ?? "",
+                          initialValue: editablePet.dateOfBirth ?? DateTime.now(),
+                          firstDate: DateHelper.firstDate,
+                          lastDate: DateTime.now(),
                           onChanged: (value) {
                             editablePet.dateOfBirth = value;
-                            print('Fecha de nacimiento actualizada: ${editablePet.dateOfBirth}');
+                            print('Fecha de nacimiento actualizada: ${editablePet.dateOfBirth.toString()}');
                           },
                         ),
                       ),

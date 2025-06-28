@@ -5,6 +5,32 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/date_helper.dart';
 
 class InputDate extends StatefulWidget {
+  final ValueChanged<DateTime> onChanged;
+  final DateTime initialValue;
+  final DateTime firstDate;
+  final DateTime lastDate;
+
+  final bool errorPadding;
+  final bool isRequired;
+  final bool placeHolderColor;
+  final bool readOnly;
+  final Color borderColor;
+  final Color? fondoColor;
+  final Color? labelColor;
+  final double? height;
+  final double? labelFontSize;
+  final FontWeight? fw;
+  final Icon? prefiIcon;
+  final Image? placeholderImage;
+  final String? errorText;
+  final String? label;
+  final String? placeholder;
+  final String? placeholderFontFamily;
+  final String? placeholderSuffixSvg;
+  final String? placeholderSvg;
+  final TextEditingController? controller;
+  final Widget? suffixIcon;
+
   const InputDate({
     super.key,
     required this.onChanged,
@@ -33,31 +59,6 @@ class InputDate extends StatefulWidget {
     this.suffixIcon,
   });
 
-  final ValueChanged<DateTime> onChanged;
-  
-  final bool errorPadding;
-  final bool isRequired;
-  final bool placeHolderColor;
-  final bool readOnly;
-  final Color borderColor;
-  final Color? fondoColor;
-  final Color? labelColor;
-  final DateTime initialValue;
-  final DateTime firstDate;
-  final DateTime lastDate;
-  final double? height;
-  final double? labelFontSize;
-  final FontWeight? fw;
-  final Icon? prefiIcon;
-  final Image? placeholderImage;
-  final String? errorText;
-  final String? label;
-  final String? placeholder;
-  final String? placeholderFontFamily;
-  final String? placeholderSuffixSvg;
-  final String? placeholderSvg;
-  final TextEditingController? controller;
-  final Widget? suffixIcon;
 
   @override
   _InputDateState createState() => _InputDateState();

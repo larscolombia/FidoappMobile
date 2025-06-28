@@ -2,17 +2,33 @@ import 'package:intl/intl.dart';
 
 class DateHelper {
   // Reemplazar por un valor global configurable
-  static String locale = 'es_ES';
+  static const String locale = 'es_ES';
 
-  static String dateShortForUi = 'dd-MM-yyyy';
+  static const String dateShortForUi = 'dd-MM-yyyy';
 
-  static String dateShortForApi = 'yyyy-MM-dd';
+  static const String dateShortForApi = 'yyyy-MM-dd';
 
-  static DateTime firstDate = DateTime(1900);
+  static final DateTime firstDate = DateTime(1900);
   
-  static DateTime lastDate = DateTime(2100, 12, 31);
+  static final DateTime lastDate = DateTime(2100, 12, 31);
 
-  static DateTime lastBirthDate = DateTime.now();
+  static DateTime? dateFromApi(String? date) {
+    if (date == null || date.isEmpty) {
+      return null;
+    }
+
+    try {
+      // La api entrega los datos con el mismo formato
+      // que se usa en la UI 28-04-1981 dd-MM-yyyy
+      DateFormat inputFormat = DateFormat(dateShortForUi, locale);
+
+      // Analizar la fecha de entrada
+      return inputFormat.parse(date);
+    } catch (e) {
+      print("Error al analizar la fecha: $e");
+      return null; // Retornar null si la fecha es inválida
+    }
+  }
 
   static DateTime? dateFromUiShortString(String? date) {
     if (date == null || date.isEmpty) {
@@ -33,6 +49,20 @@ class DateHelper {
     }
   }
 
+  static String? formatApiDate(DateTime? date) {
+    if (date == null) return null;
+
+    try {
+      // Definir el formato de salida
+      DateFormat outputFormat = DateFormat(dateShortForApi, locale);
+
+      // Formatear la fecha al formato deseado
+      return outputFormat.format(date);
+    } catch (e) {
+      return null;
+    }
+  }
+  
   static String formatUiDateShort(DateTime? date) {
     if (date == null) return "Fecha no disponible";
 

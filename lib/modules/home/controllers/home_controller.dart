@@ -90,19 +90,17 @@ class HomeController extends GetxController {
   }
 
   // Método para actualizar el perfil seleccionado
-  void updateProfile(PetData profile) {
-    print('info pert 3 ${(jsonEncode(profile.name))}');
-
-    if (profiles.isEmpty) {
-      selectedProfile.value = selectedProfile.value;
-    } else {
-      selectedProfile.value = profile;
-    }
-  }
-
   void updateSelectedProfile(PetData petData) {
+    print('info pert 3 ${(jsonEncode(petData.name))}');
+
     // Actualizar el perfil seleccionado con los datos de la mascota
     selectedProfile.value = petData;
+
+    // Actualizar los datos de la mascota en la lista de perfiles
+    int index = profiles.indexWhere((pet) => pet.id == petData.id);
+    if (index != -1) {
+      profiles[index] = petData; // Actualizar el perfil existente
+    }
   }
 
   // Método para agregar un nuevo perfil con datos de mascota
