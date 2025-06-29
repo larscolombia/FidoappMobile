@@ -88,7 +88,7 @@ class ProfilePetController extends GetxController {
     isEditing.value = !isEditing.value;
   }
 
-  // Seleccionar imagen
+  // Seleccionar imagen y actualizar perfil
   Future<void> pickImage() async {
     if (isPickerActive.value) return;
     isPickerActive.value = true;
@@ -97,6 +97,7 @@ class ProfilePetController extends GetxController {
       final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         profileImagePath.value = pickedFile.path;
+        await updatePetProfile();
       }
     } finally {
       isPickerActive.value = false;

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -38,26 +39,45 @@ class ProfilePetScreen extends StatelessWidget {
             left: 0,
             right: 0,
             height: topImageHeight,
-            child: Obx(() {
-              final imageUrl = controller.profileImagePath.value.isNotEmpty
-                  ? controller.profileImagePath.value
-                  : 'https://via.placeholder.com/600x400';
+            child: GestureDetector(
+              onTap: () => controller.pickImage(),
+              child: Obx(() {
+                final imagePath = controller.profileImagePath.value;
 
-              return CachedNetworkImage(
-                imageUrl: imageUrl,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                errorWidget: (context, url, error) {
-                  // Imagen predeterminada si falla la carga
-                  return Image.asset(
-                    'assets/images/404.jpg', // Ruta de la imagen predeterminada
+                if (imagePath.isNotEmpty) {
+                  if (imagePath.startsWith('http')) {
+                    return CachedNetworkImage(
+                      imageUrl: imagePath,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) => Image.asset(
+                        'assets/images/404.jpg',
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  } else {
+                    return Image.file(
+                      File(imagePath),
+                      fit: BoxFit.cover,
+                    );
+                  }
+                }
+
+                return CachedNetworkImage(
+                  imageUrl: 'https://via.placeholder.com/600x400',
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/images/404.jpg',
                     fit: BoxFit.cover,
-                  );
-                },
-              );
-            }),
+                  ),
+                );
+              }),
+            ),
           ),
 
           /// 2) Contenedor blanco superpuesto
