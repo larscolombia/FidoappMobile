@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/models/pet_list_res_model.dart';
+import 'package:pawlly/models/pet_data.dart';
 import 'package:pawlly/modules/components/custom_checkbox.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
@@ -104,7 +104,7 @@ class CardProfileDog extends StatelessWidget {
                     ),
                     CustomCheckbox(
                       onChanged: (value) {
-                        controller.updateProfile(profile);
+                        controller.updateSelectedProfile(profile);
                         Navigator.of(context)
                             .pop(); // Cierra el modal
                       },
@@ -129,8 +129,8 @@ class CardProfileDog extends StatelessWidget {
                 // Breed
                 Text(
                   profile.gender == "female"
-                      ? 'Femenino'
-                      : 'Masculino',
+                      ? 'Hembra'
+                      : 'Macho',
                   style: const TextStyle(
                     fontFamily: 'Lato',
                     fontSize: 12,
@@ -153,7 +153,7 @@ class CardProfileDog extends StatelessWidget {
                     callback: () {
                       print('info pert 2 ${jsonEncode(profile.id)}');
     
-                      controller.updateProfile(profile);
+                      controller.updateSelectedProfile(profile);
     
                       medicalHistoryController.updateField("pet_id", profile.id.toString());
     

@@ -70,35 +70,30 @@ class SelccionarMascota extends StatelessWidget {
                 // Verifica si hay perfiles disponibles
                 if (controller.profiles.isEmpty) {
                   return const Center(
-                      child: Text('No hay mascotas disponibles.'));
+                    child: Text('No hay mascotas disponibles.'),
+                  );
                 }
 
                 return ListView.builder(
-                  shrinkWrap:
-                      true, // Permite que la lista ocupe solo el espacio necesario
-                  physics:
-                      const NeverScrollableScrollPhysics(), // Deshabilita el desplazamiento de la lista
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: controller.profiles.length,
                   itemBuilder: (context, index) {
                     var profile = controller.profiles[index];
-                    var isSelected =
-                        controller.selectedProfile.value == profile;
+                    var isSelected = controller.selectedProfile.value == profile;
 
                     return GestureDetector(
                       onTap: () {
-                        controller
-                            .updateProfile(profile); // Seleccionar mascota
+                        controller.updateSelectedProfile(profile); // Seleccionar mascota
                         Navigator.of(context).pop(); // Cerrar el modal
                       },
                       child: SelccionarPerfil(
                         conIcono: false,
                         nombre: profile.name,
                         age: profile.age,
-                        avatar: profile.petImage != null &&
-                                profile.petImage!.isNotEmpty
-                            ? NetworkImage(profile.petImage!)
-                            : const NetworkImage(
-                                'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg'),
+                        avatar: profile.petImage != null && profile.petImage!.isNotEmpty
+                          ? NetworkImage(profile.petImage!)
+                          : const NetworkImage('https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg'),
                       ),
                     );
                   },

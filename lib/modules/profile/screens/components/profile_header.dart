@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/user_profile_controller.dart';
 
 class ProfileHeader extends StatelessWidget {
   final UserProfileController profileController;

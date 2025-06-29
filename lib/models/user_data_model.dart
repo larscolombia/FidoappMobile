@@ -13,7 +13,7 @@ class UserData {
   String playerId;
   bool isSocialLogin;
   String userType;
-  String gender; // Campo "gender" agregado
+  String gender;
   bool isNewUser;
   String? deviceToken;
   UserData({
@@ -31,7 +31,7 @@ class UserData {
     this.playerId = "",
     this.isSocialLogin = false,
     this.userType = "",
-    this.gender = "", // Inicialización del campo gender
+    this.gender = "",
     this.isNewUser = true,
     this.deviceToken,
   });
@@ -80,7 +80,7 @@ class UserData {
       'player_id': playerId,
       'is_social_login': isSocialLogin,
       'user_type': userType,
-      'gender': gender, // Agregado a la serialización
+      'gender': gender,
     };
   }
 }

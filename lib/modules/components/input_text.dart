@@ -38,8 +38,9 @@ class InputText extends StatefulWidget {
     this.fw,
     this.controller,
     this.isRequired = false,
-    this.errorText, // Nuevo parámetro para mensajes de error
+    this.errorText,
     this.errorPadding = false,
+    this.keyboardType,
   });
 
   final FontWeight? fw;
@@ -58,7 +59,7 @@ class InputText extends StatefulWidget {
   final Icon? prefiIcon;
   final bool isTimeField;
   final bool readOnly;
-  final String? initialValue;
+  final dynamic initialValue;
   final Color? fondoColor;
   final Color borderColor;
   final Color? labelColor;
@@ -70,6 +71,7 @@ class InputText extends StatefulWidget {
   final bool isRequired;
   final String? errorText; // Mensaje de error externo
   final bool errorPadding;
+  final TextInputType? keyboardType;
   @override
   _InputTextState createState() => _InputTextState();
 }
@@ -231,8 +233,7 @@ class _InputTextState extends State<InputText> {
                           ? OutlineInputBorder(
                               borderRadius: BorderRadius.circular(16),
                               borderSide: const BorderSide(
-                                color: Color(
-                                    0xFFFCBA67), // Color del borde cuando no está seleccionado
+                                color: Color(0xFFFCBA67), // Color del borde cuando no está seleccionado
                                 width: 1,
                               ),
                             )
@@ -297,35 +298,36 @@ class _InputTextState extends State<InputText> {
                   widget.onChanged(value);
                 },
                 readOnly: widget.readOnly,
+                keyboardType: widget.keyboardType,
               ),
             ),
           ),
           // Mensaje de error
 
           if (_imageFile != null)
-            SizedBox(
-              height: 220,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 200,
-                    width: double
-                        .infinity, // Para que ocupe todo el ancho disponible
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        _imageFile!,
-                        fit: BoxFit.contain,
-                        alignment: Alignment
-                            .center, // Asegura que la imagen esté centrada
-                      ),
+          SizedBox(
+            height: 220,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 200,
+                  width: double
+                      .infinity, // Para que ocupe todo el ancho disponible
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(
+                      _imageFile!,
+                      fit: BoxFit.contain,
+                      alignment: Alignment
+                          .center, // Asegura que la imagen esté centrada
                     ),
                   ),
-                ],
-              ),
-            )
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -335,12 +337,14 @@ class _InputTextState extends State<InputText> {
     // Remueve el foco para evitar que el teclado aparezca
     _focusNode.unfocus();
 
-    final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
+    // Validar si es fecha y usarlo
+    final initialDate = DateFormat('dd-MM-yyyy').tryParse(widget.initialValue ?? '') ?? DateTime.now();
+
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2100),
+      initialDate: initialDate,
+      firstDate: DateTime(1970),
+      lastDate: DateTime.now(),
       confirmText: 'Aceptar',
       cancelText: 'Cancelar',
       builder: (BuildContext context, Widget? child) {
@@ -354,7 +358,7 @@ class _InputTextState extends State<InputText> {
               onSurface: Colors.black, // Texto del calendario
               secondary: Color(0xFFFC9214), // Color para selección de días
             ),
-            dividerColor: Color(0xFFFC9214),
+            dividerColor: const Color(0xFFFC9214),
             appBarTheme: const AppBarTheme(
               backgroundColor: Color(0xFFFC9214), // Color del header
               foregroundColor: Colors.white, // Color del texto del header
@@ -384,7 +388,7 @@ class _InputTextState extends State<InputText> {
               ),
             ),
             textTheme: TextTheme(
-              titleLarge: TextStyle(
+              titleLarge: const TextStyle(
                 // Fuente para el día, mes y año
                 fontFamily: 'PoetsenOne',
                 fontSize: 24,
@@ -400,8 +404,8 @@ class _InputTextState extends State<InputText> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Color(0xFFFF4931), // Color de los botones
-                textStyle: TextStyle(
+                foregroundColor: const Color(0xFFFF4931), // Color de los botones
+                textStyle: const TextStyle(
                   fontFamily: 'PoetsenOne',
                   fontWeight: FontWeight.w400,
                   fontSize: 14,
@@ -415,12 +419,13 @@ class _InputTextState extends State<InputText> {
     );
 
     if (picked != null) {
+      final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
       final formattedDate = dateFormat.format(picked);
       widget.onChanged(formattedDate); // Notifica el cambio
 
       setState(() {
         // Actualizamos el controlador con la fecha formateada como DD/MM/YYYY
-        print('fecha ${formattedDate}');
+        print('fecha $formattedDate');
         _textController.text = Helper.formatDate(formattedDate);
       });
     }
@@ -479,7 +484,7 @@ class _InputTextState extends State<InputText> {
               ),
             ),
             textTheme: TextTheme(
-              titleLarge: TextStyle(
+              titleLarge: const TextStyle(
                 fontFamily: 'PoetsenOne',
                 fontSize: 24,
                 fontWeight: FontWeight.w400,
@@ -493,8 +498,8 @@ class _InputTextState extends State<InputText> {
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
-                foregroundColor: Color(0xFFFF4931),
-                textStyle: TextStyle(
+                foregroundColor: const Color(0xFFFF4931),
+                textStyle: const TextStyle(
                   fontFamily: 'PoetsenOne',
                   fontWeight: FontWeight.w400,
                   fontSize: 16,

@@ -27,6 +27,7 @@ import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_co
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/user_profile_controller.dart';
 import 'package:pawlly/modules/provider/push_provider.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/recursos.dart';
@@ -202,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     flex: 3,
                     child: GestureDetector(
                       onTap: () {
-                        Get.to(() => Profecionales());
+                        Get.to(() => Profesionales());
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -247,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 16),
           Resources(),
           const SizedBox(height: 16),
-          const Explore(),
+          Explore(homeController: homeController),
           const SizedBox(height: 16),
           if (calendarController.filteredCalendars.isNotEmpty)
           const Text(

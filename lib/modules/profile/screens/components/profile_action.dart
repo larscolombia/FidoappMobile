@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:pawlly/modules/components/boton_compartir.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/user_profile_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 

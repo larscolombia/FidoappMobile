@@ -28,7 +28,7 @@ import 'package:pawlly/modules/privacy_termns/screens/privacyterms_screen.dart';
 import 'package:pawlly/modules/profile/bindings/profile_binding.dart';
 import 'package:pawlly/modules/profile/screens/profile_screen.dart';
 import 'package:pawlly/modules/profile_pet/bindings/profile_pet_binding.dart';
-import 'package:pawlly/modules/profile_pet/screens/profile_pet_screen.dart';
+import 'package:pawlly/modules/profile_pet/screens/pet_profile_screen.dart';
 import 'package:pawlly/modules/welcome/bindings/welcome_binding.dart';
 import 'package:pawlly/modules/welcome/screens/welcome_screen.dart';
 
@@ -104,7 +104,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PROFILEPET,
-      page: () => ProfilePetScreen(),
+      page: () => const PetProfileScreen(),
       binding: ProfilePetBinding(),
     ),
     GetPage(

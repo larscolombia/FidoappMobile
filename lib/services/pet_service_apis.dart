@@ -8,6 +8,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/models/brear_model.dart';
+import 'package:pawlly/models/pet_data.dart';
 import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/models/pet_note_model.dart';
 import 'package:pawlly/models/pet_type_model.dart';
@@ -23,31 +24,13 @@ import '../../../utils/constants.dart';
 
 class PetService {
   final RoleUser roleUser = Get.put(RoleUser());
+
   static Future<PetTypeRes> getPetTypeApi() async {
-    return PetTypeRes.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.getPetTypeList, method: HttpMethodType.GET)));
+    return PetTypeRes.fromJson(await handleResponse(await buildHttpResponse(
+        APIEndPoints.getPetTypeList,
+        method: HttpMethodType.GET)));
   }
 
-  // ignore: slash_for_doc_comments
-  /*** 
-  Future<PetService?> fetchPetData(int petId) async {
-    final url = Uri.parse('$baseUrl/pets/$petId');
-
-    try {
-      final response = await http.get(url);
-
-      if (response.statusCode == 200) {
-        final jsonResponse = jsonDecode(response.body);
-        return PetService.fromJson(jsonResponse);
-      } else {
-        print('Failed to load pet data. Status code: ${response.statusCode}');
-        return null;
-      }
-    } catch (e) {
-      print('Error fetching pet data: $e');
-      return null;
-    }
-  }
-  */
   static Future<List<NotePetModel>> getNoteApi({
     int page = 1,
     required int petId,
@@ -57,7 +40,9 @@ class PetService {
   }) async {
     if (isLoggedIn.value) {
       final petNoteRes = PetNoteRes.fromJson(await handleResponse(
-          await buildHttpResponse("${APIEndPoints.getNote}?pet_id=$petId&per_page=$perPage&page=$page", method: HttpMethodType.GET)));
+          await buildHttpResponse(
+              "${APIEndPoints.getNote}?pet_id=$petId&per_page=$perPage&page=$page",
+              method: HttpMethodType.GET)));
       if (page == 1) notes.clear();
       notes.addAll(petNoteRes.data);
       lastPageCallBack?.call(petNoteRes.data.length != perPage);
@@ -67,17 +52,23 @@ class PetService {
     }
   }
 
-  static Future<BaseResponseModel> addNoteApi({required Map<String, dynamic> request}) async {
-    return BaseResponseModel.fromJson(
-        await handleResponse(await buildHttpResponse(APIEndPoints.addNote, request: request, method: HttpMethodType.POST)));
+  static Future<BaseResponseModel> addNoteApi(
+      {required Map<String, dynamic> request}) async {
+    return BaseResponseModel.fromJson(await handleResponse(
+        await buildHttpResponse(APIEndPoints.addNote,
+            request: request, method: HttpMethodType.POST)));
   }
 
   static Future<BaseResponseModel> deleteNote({required int id}) async {
-    return BaseResponseModel.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.deleteNote}/$id", method: HttpMethodType.POST)));
+    return BaseResponseModel.fromJson(await handleResponse(
+        await buildHttpResponse("${APIEndPoints.deleteNote}/$id",
+            method: HttpMethodType.POST)));
   }
 
   static Future<BaseResponseModel> deletePet({required int id}) async {
-    return BaseResponseModel.fromJson(await handleResponse(await buildHttpResponse("${APIEndPoints.addPet}/$id", method: HttpMethodType.DELETE)));
+    return BaseResponseModel.fromJson(await handleResponse(
+        await buildHttpResponse("${APIEndPoints.addPet}/$id",
+            method: HttpMethodType.DELETE)));
   }
 
   static Future<List<PetData>> getPetListApi({
@@ -85,14 +76,18 @@ class PetService {
   }) async {
     if (isLoggedIn.value) {
       var urlRole = '';
-      if (AuthServiceApis.dataCurrentUser.userType == 'vet' || AuthServiceApis.dataCurrentUser.userType == 'trainer') {
-        urlRole = '${BASE_URL}owner-pets?employee_id=${AuthServiceApis.dataCurrentUser.id}';
+      if (AuthServiceApis.dataCurrentUser.userType == 'vet') {
+        urlRole =
+            '${BASE_URL}owner-pets?employee_id=${AuthServiceApis.dataCurrentUser.id}';
+      } else if (AuthServiceApis.dataCurrentUser.userRole == 'trainer') {
+        urlRole =
+            '${BASE_URL}trainer-pets?employee_id=${AuthServiceApis.dataCurrentUser.id}';
       } else {
-        urlRole = '${BASE_URL}pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
+        urlRole =
+            '${BASE_URL}pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
       }
       // Construir la URL completa con el método getApiUrl
       final url = Uri.parse(urlRole);
-      print(AuthServiceApis.dataCurrentUser.userRole[0]);
 
       // Realizar la solicitud con el token en los headers
       final response = await http.get(
@@ -106,9 +101,11 @@ class PetService {
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
         print('JSON RESPONSE: $jsonResponse');
-        print('JSON RESPONSE Role: ${AuthServiceApis.dataCurrentUser.userType}');
+        print(
+            'JSON RESPONSE Role: ${AuthServiceApis.dataCurrentUser.userType}');
         // Verificar la estructura de la respuesta para vet y trainer
-        if (AuthServiceApis.dataCurrentUser.userType == 'vet' || AuthServiceApis.dataCurrentUser.userType == 'trainer') {
+        if (AuthServiceApis.dataCurrentUser.userType == 'vet' ||
+            AuthServiceApis.dataCurrentUser.userType == 'trainer') {
           // Estructura para vet y trainer: data es una lista de owners que contiene listas de pets
           final owners = (jsonResponse['data'] as List);
           final petDataList = owners.expand((owner) => owner['pets'] as List).toList();
@@ -143,7 +140,8 @@ class PetService {
     final response = await http.get(
       url,
       headers: {
-        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Ajusta según tu autenticación
+        'Authorization':
+            'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}', // Ajusta según tu autenticación
       },
     );
 
@@ -205,7 +203,7 @@ class PetService {
                 Get.back();
                 // final HomeController homeController = Get.put(HomeController());
                 // homeController.fetchProfiles();
-                Get.to(() => HomeScreen());
+                Get.to(() => const HomeScreen());
               },
             ),
             barrierDismissible: false,
@@ -344,13 +342,15 @@ class PetService {
     log('FILES: $files');
     log('FILES length: ${files.validate().length}');
     String petIdparam = petId != null ? "/$petId" : "";
-    var multiPartRequest = await getMultiPartRequest(APIEndPoints.addPet + petIdparam);
+    var multiPartRequest =
+        await getMultiPartRequest(APIEndPoints.addPet + petIdparam);
     if (!isUpdateProfilePic) {
       multiPartRequest.fields.addAll(await getMultipartFields(val: request));
     }
 
     if (files.validate().isNotEmpty) {
-      multiPartRequest.files.add(await http.MultipartFile.fromPath('pet_image', files.validate().first.path.validate()));
+      multiPartRequest.files.add(await http.MultipartFile.fromPath(
+          'pet_image', files.validate().first.path.validate()));
     }
 
     // log("Multipart ${jsonEncode(multiPartRequest.fields)}");
@@ -369,8 +369,4 @@ class PetService {
       loaderOff.call();
     });
   }
-
-  //Actualizar mascota
-
-  // Método para actualizar la información de una mascota
 }

@@ -2,14 +2,17 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:pawlly/models/event_model.dart';
-import 'package:pawlly/models/pet_list_res_model.dart';
+import 'package:pawlly/models/pet_data.dart';
 import 'package:pawlly/models/training_model.dart';
 import 'package:pawlly/models/user_data_model.dart';
+import 'package:pawlly/modules/diario/diario.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/event_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
 import 'package:pawlly/services/training_service_apis.dart';
 import 'package:table_calendar/table_calendar.dart';
+
 
 class HomeController extends GetxController {
   var selectedIndex = 0.obs;
@@ -17,12 +20,11 @@ class HomeController extends GetxController {
   var filterPet = <PetData>[].obs; // Lista de resultados filtrados
   var titulo = "Bienvenido de vuelta".obs;
   var subtitle = "¿Qué haremos hoy?".obs;
-  var selectedProfile =
-      Rxn<PetData>(); // Perfil seleccionado, inicialmente null
+  var selectedProfile = Rxn<PetData>(); // Perfil seleccionado, inicialmente null
 
   var training = <TrainingModel>[].obs;
   late UserData currentUser;
-  var profileImagePath = AuthServiceApis.dataCurrentUser.profileImage.obs;
+  var profileImagePath = ''.obs;
   var isLoading = false.obs;
   var selectedDay = DateTime.now().obs;
   var focusedDay = DateTime.now().obs;
@@ -30,7 +32,7 @@ class HomeController extends GetxController {
   var calendarFormat = CalendarFormat.month.obs;
   var events = <DateTime, List<EventData>>{}.obs;
 
-  var SelectType = 0.obs;
+  var rxSelectType = 0.obs;
 
 // Llamar al método cuando el controlador se inicializa
   @override
@@ -38,46 +40,66 @@ class HomeController extends GetxController {
     super.onInit();
     currentUser = AuthServiceApis.dataCurrentUser;
     profileImagePath.value = currentUser.profileImage;
+    
     fetchProfiles();
     //   fetchTraining();
     _loadEventsFromService();
+
+    ever(AuthServiceApis.profileChange, (DateTime time) {
+      currentUser = AuthServiceApis.dataCurrentUser;
+      profileImagePath.value = currentUser.profileImage;
+    });
   }
 
   // Método para actualizar el índice seleccionado
   void updateIndex(int index) {
-    selectedIndex.value = index;
-  }
-
-  void selectType(int type) {
-    SelectType.value = type;
-  }
-
-  // Método para navegar a diferentes pantallas
-  void pantallas(index) {
     switch (index) {
       case 0:
-        // Get.toNamed(Routes.HOME);
+        titulo.value = "Bienvenido de vuelta";
+        subtitle.value = "¿Qué haremos hoy?";
         break;
       case 1:
-        // Get.toNamed(Routes.CALENDAR);
+        titulo.value = "Agenda";
+        subtitle.value = "¿Qué haremos hoy?";
         break;
       case 2:
-        // Get.toNamed(Routes.TRAINING);
+        titulo.value = "Entrenamiento";
+        subtitle.value = "para tu mascota";
+        break;
+      case 3:
+        titulo.value = "Explorar Contenido";
+        subtitle.value = "y consejos para tu mascota";
         break;
       case 4:
-        //   Get.to(DiarioMascotas());
+        titulo.value = "Diario";
+        subtitle.value = "de tu mascota";
         break;
+    }
+
+    selectedIndex.value = index;
+
+    if (index == 4) {
+      Get.to(() => Diario());
+    } else {
+      Get.to(() => const HomeScreen());
     }
   }
 
-  // Método para actualizar el perfil seleccionado
-  void updateProfile(PetData profile) {
-    print('info pert 3 ${(jsonEncode(profile.name))}');
+  void selectType(int type) {
+    rxSelectType.value = type;
+  }
 
-    if (profiles.value.isNotEmpty) {
-      selectedProfile.value = profile;
-    } else {
-      selectedProfile.value = selectedProfile.value;
+  // Método para actualizar el perfil seleccionado
+  void updateSelectedProfile(PetData petData) {
+    print('info pert 3 ${(jsonEncode(petData.name))}');
+
+    // Actualizar el perfil seleccionado con los datos de la mascota
+    selectedProfile.value = petData;
+
+    // Actualizar los datos de la mascota en la lista de perfiles
+    int index = profiles.indexWhere((pet) => pet.id == petData.id);
+    if (index != -1) {
+      profiles[index] = petData; // Actualizar el perfil existente
     }
   }
 
@@ -99,8 +121,7 @@ class HomeController extends GetxController {
     filterPet.value = petsData;
     // Verificar si la lista no está vacía y actualizar el perfil seleccionado
     if (petsData.isNotEmpty) {
-      selectedProfile.value =
-          petsData.first; // Asignar el primer perfil completo
+      selectedProfile.value = petsData.first; // Asignar el primer perfil completo
     }
   }
 
@@ -191,7 +212,7 @@ class HomeController extends GetxController {
         gender: '',
         weight: 0.0,
         weightUnit: '',
-        height: '0',
+        height: 0,
         heightUnit: '',
         userId: 0,
         status: -1,
@@ -215,6 +236,18 @@ class HomeController extends GetxController {
       // Imprimir cualquier error y limpiar la lista en caso de error
       print('Error en la búsqueda de mascotas: $e');
       filterPet.value = [];
+    }
+  }
+
+  void removePetProfileById(int id) {
+    // Eliminar el perfil de mascota por ID
+    profiles.removeWhere((pet) => pet.id == id);
+
+
+    if (profiles.isEmpty) {
+      selectedProfile.value = null;
+    } else {
+      selectedProfile.value = profiles.first;
     }
   }
 }

@@ -20,8 +20,7 @@ import 'package:pawlly/styles/styles.dart';
 class Diario extends StatelessWidget {
   Diario({super.key});
   final HomeController homeController = Get.find<HomeController>();
-  final PetActivityController historialClinicoController =
-      Get.put(PetActivityController());
+  final PetActivityController historialClinicoController = Get.put(PetActivityController());
 
   @override
   Widget build(BuildContext context) {

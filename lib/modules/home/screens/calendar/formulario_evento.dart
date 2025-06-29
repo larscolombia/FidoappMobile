@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
@@ -8,6 +9,7 @@ import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/components/user_select.dart';
+import 'package:pawlly/modules/components/custom_checkbox.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
@@ -24,7 +26,7 @@ import 'package:pawlly/modules/integracion/model/servicio_entrenador_categoria/e
 import 'package:pawlly/modules/integracion/model/servicio_entrenador_categoria/service_duration.dart';
 
 class CreateEvent extends StatefulWidget {
-  const CreateEvent({Key? key}) : super(key: key);
+  const CreateEvent({super.key});
 
   @override
   _CreateEventState createState() => _CreateEventState();
@@ -39,6 +41,7 @@ class _CreateEventState extends State<CreateEvent> {
   final ServiceEntrenadorController serviceController = Get.put(ServiceEntrenadorController());
   final UserBalanceController balanceController = Get.put(UserBalanceController());
   final ProductoPayController payController = Get.put(ProductoPayController());
+  bool _selectRandomUser = true;
   Map<String, bool> validate = {
     'name': false,
     'date': false,
@@ -55,8 +58,19 @@ class _CreateEventState extends State<CreateEvent> {
   @override
   void initState() {
     super.initState();
-    // Llamamos a fetchUsers solo una vez cuando el widget se carga
-    // userController.fetchUsers();
+    userController.fetchUsers(userController.type.value).then((_) {
+      if (_selectRandomUser) {
+        _assignRandomUser();
+      }
+    });
+  }
+
+  void _assignRandomUser() {
+    if (userController.users.isNotEmpty) {
+      final randomUser = userController.users[Random().nextInt(userController.users.length)];
+      userController.selectUser(randomUser);
+      calendarController.updateField('owner_id', [randomUser.id]);
+    }
   }
 
   // Widget para mostrar el servicio de evento médico
@@ -75,7 +89,7 @@ class _CreateEventState extends State<CreateEvent> {
               label: 'Categoría de evento medico',
               placeholder: calendarController.cateogoryName.value,
               TextColor: Colors.black,
-              borderColor: Color(0XFFFCBA67),
+              borderColor: const Color(0XFFFCBA67),
               onChanged: (value) {
                 calendarController.cateogoryName.value = value ?? "";
                 final selectedCategory = categoryController.categories.firstWhere(
@@ -101,7 +115,7 @@ class _CreateEventState extends State<CreateEvent> {
                       value: category.id.toString(),
                       child: Text(
                         category.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.normal,
                         ),
@@ -130,7 +144,7 @@ class _CreateEventState extends State<CreateEvent> {
               label: 'Servicio',
               placeholder: calendarController.serviceName.value,
               TextColor: Colors.black,
-              borderColor: Color(0XFFFCBA67),
+              borderColor: const Color(0XFFFCBA67),
               onChanged: (value) {
                 final selectedService = categoryController.services.firstWhere((service) => service.id.toString() == value,
                     orElse: () => Service(slug: '', name: '', durationMin: 0, defaultPrice: 0, status: 0));
@@ -144,7 +158,7 @@ class _CreateEventState extends State<CreateEvent> {
                       value: Service.id.toString(),
                       child: Text(
                         Service.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.normal,
                         ),
@@ -173,7 +187,7 @@ class _CreateEventState extends State<CreateEvent> {
               label: 'Servicio',
               placeholder: calendarController.cateogoryName.value,
               TextColor: Colors.black,
-              borderColor: Color(0XFFFCBA67),
+              borderColor: const Color(0XFFFCBA67),
               onChanged: (value) {
                 calendarController.cateogoryName.value = value ?? "";
                 final selectedCategory = serviceController.services.firstWhere((service) => service.id.toString() == value,
@@ -187,7 +201,7 @@ class _CreateEventState extends State<CreateEvent> {
                       value: category.id.toString(),
                       child: Text(
                         category.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.normal,
                         ),
@@ -215,7 +229,7 @@ class _CreateEventState extends State<CreateEvent> {
               label: 'Duración',
               placeholder: '',
               TextColor: Colors.black,
-              borderColor: Color(0XFFFCBA67),
+              borderColor: const Color(0XFFFCBA67),
               onChanged: (value) {
                 calendarController.serviceName.value = value ?? "";
                 final selectedDuration = serviceController.serviceDurations.firstWhere((duration) => duration.id.toString() == value,
@@ -229,7 +243,7 @@ class _CreateEventState extends State<CreateEvent> {
                       value: duration.id.toString(),
                       child: Text(
                         duration.duration,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.normal,
                         ),
@@ -247,7 +261,7 @@ class _CreateEventState extends State<CreateEvent> {
   @override
   Widget build(BuildContext context) {
     final double ancho = MediaQuery.sizeOf(context).width;
-    final EdgeInsets defaultPadding = const EdgeInsets.symmetric(horizontal: 26.0);
+    const EdgeInsets defaultPadding = EdgeInsets.symmetric(horizontal: 26.0);
     final double inputWidth = ancho - defaultPadding.horizontal;
     const double defaultMargin = 1.0;
     const alto = 105.0;
@@ -266,7 +280,7 @@ class _CreateEventState extends State<CreateEvent> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30),
                   Text(
                     'Completa la Información',
                     style: TextStyle(
@@ -305,7 +319,7 @@ class _CreateEventState extends State<CreateEvent> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    SizedBox(height: 34),
+                    const SizedBox(height: 34),
                     SizedBox(
                       width: inputWidth,
                       child: BarraBack(
@@ -314,14 +328,14 @@ class _CreateEventState extends State<CreateEvent> {
                         callback: () => Get.back(),
                       ),
                     ),
-                    SizedBox(height: 26),
+                    const SizedBox(height: 26),
 
                     SizedBox(
                       width: inputWidth,
                       height: alto,
                       child: InputText(
                         label: 'Nombre del Evento',
-                        labelColor: Color(0xFF383838),
+                        labelColor: const Color(0xFF383838),
                         placeholder: (validate['name'] ?? false) ? 'Campo requerido' : '',
                         errorPadding: (validate['name'] ?? false),
                         errorText: (validate['name'] ?? false) ? 'Campo requerido' : '', // Mensaje de error
@@ -336,14 +350,14 @@ class _CreateEventState extends State<CreateEvent> {
                         },
                       ),
                     ),
-                    SizedBox(height: defaultMargin),
+                    const SizedBox(height: defaultMargin),
                     // Descripción del evento
                     SizedBox(
                       width: inputWidth,
                       child: InputText(
                           isTextArea: true,
                           label: 'Descripción del evento ',
-                          labelColor: Color(0xFF383838),
+                          labelColor: const Color(0xFF383838),
                           errorPadding: (validate['description'] ?? false),
                           errorText: (validate['description'] ?? false) ? 'Campo requerido' : '', // Mensaje de error
                           placeholder: 'Describe el evento',
@@ -356,14 +370,14 @@ class _CreateEventState extends State<CreateEvent> {
                             }
                           }),
                     ),
-                    SizedBox(height: defaultMargin),
+                    const SizedBox(height: defaultMargin),
                     // Ubicación
                     SizedBox(
                       width: inputWidth,
                       height: alto,
                       child: InputText(
                           label: 'Ubicación',
-                          labelColor: Color(0xFF383838),
+                          labelColor: const Color(0xFF383838),
                           placeholder: '',
                           errorPadding: (validate['location'] ?? false),
                           errorText: (validate['location'] ?? false) ? 'Campo requerido' : '', // Mensaje de error
@@ -376,7 +390,7 @@ class _CreateEventState extends State<CreateEvent> {
                             }
                           }),
                     ),
-                    SizedBox(height: defaultMargin + 10),
+                    const SizedBox(height: defaultMargin + 10),
                     // Selección de categoria del evento
                     SizedBox(
                       width: inputWidth,
@@ -385,7 +399,7 @@ class _CreateEventState extends State<CreateEvent> {
                         label: 'Tipo de evento',
                         placeholder: 'Tipo de evento ',
                         filcolorCustom: Styles.colorContainer,
-                        borderColor: Color(0XFFFCBA67),
+                        borderColor: const Color(0XFFFCBA67),
                         controller: null,
                         items: const [
                           'evento',
@@ -400,6 +414,11 @@ class _CreateEventState extends State<CreateEvent> {
                                   ? 'trainer'
                                   : 'all';
                           userController.type.value = type;
+                          userController.fetchUsers(type).then((_) {
+                            if (_selectRandomUser) {
+                              _assignRandomUser();
+                            }
+                          });
                         },
                       ),
                     ),
@@ -421,10 +440,9 @@ class _CreateEventState extends State<CreateEvent> {
                       child: InputText(
                         label: 'Fecha del evento',
                         placeholder: '',
-                        borderColor: Color(0XFFFCBA67),
-                        labelColor: Color(0xFF383838),
+                        borderColor: const Color(0XFFFCBA67),
+                        labelColor: const Color(0xFF383838),
 
-                        isDateField: true,
                         errorPadding: (validate['start_date'] ?? false),
                         errorText: (validate['start_date'] ?? false) ? 'Campo requerido' : '', // Mensaje de error
                         suffixIcon: Image.asset('assets/icons/flecha_select.png'),
@@ -444,7 +462,7 @@ class _CreateEventState extends State<CreateEvent> {
                         },
                       ),
                     ),
-                    SizedBox(height: defaultMargin),
+                    const SizedBox(height: defaultMargin),
 
                     SizedBox(
                       width: inputWidth,
@@ -452,10 +470,10 @@ class _CreateEventState extends State<CreateEvent> {
                       child: InputText(
                           label: 'Hora del evento',
                           placeholder: '',
-                          labelColor: Color(0xFF383838),
+                          labelColor: const Color(0xFF383838),
                           errorText: (validate['event_time'] ?? false) ? 'Campo requerido' : "",
                           isTimeField: true,
-                          borderColor: Color(0XFFFCBA67),
+                          borderColor: const Color(0XFFFCBA67),
                           errorPadding: (validate['event_time'] ?? false),
                           suffixIcon: Image.asset('assets/icons/flecha_select.png'),
                           placeholderSvg: 'assets/icons/svg/time.svg',
@@ -468,7 +486,7 @@ class _CreateEventState extends State<CreateEvent> {
                             }
                           }),
                     ),
-                    SizedBox(height: defaultMargin + 10),
+                    const SizedBox(height: defaultMargin + 10),
                     // Texto para selección de mascota vinculada
                     SizedBox(
                       width: inputWidth,
@@ -477,7 +495,7 @@ class _CreateEventState extends State<CreateEvent> {
                         style: TextStyle(fontFamily: 'Lato', fontSize: 14, fontWeight: FontWeight.w500, color: Color(0xFF383838)),
                       ),
                     ),
-                    SizedBox(height: defaultMargin + 10),
+                    const SizedBox(height: defaultMargin + 10),
                     // Perfiles de mascotas
                     Container(
                       width: inputWidth,
@@ -494,33 +512,63 @@ class _CreateEventState extends State<CreateEvent> {
                       ),
                     ),
                     SizedBox(height: defaultMargin),
-                    // Invitación de personas
-                    SizedBox(
-                      width: inputWidth,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Invitar Personas a este Evento',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontFamily: 'Lato',
-                              fontWeight: FontWeight.w800,
-                            ),
+                    Row(
+                      children: [
+                        CustomCheckbox(
+                          isChecked: _selectRandomUser,
+                          onChanged: (v) {
+                            setState(() {
+                              _selectRandomUser = v;
+                              if (_selectRandomUser) {
+                                _assignRandomUser();
+                              } else {
+                                userController.deselectUser();
+                                calendarController.updateField('owner_id', []);
+                              }
+                            });
+                          },
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Asignar usuario aleatoriamente',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w500,
                           ),
-                          FloatingActionButton(
-                            elevation: 0,
-                            backgroundColor: Styles.fiveColor,
-                            onPressed: () => Helper.showMyDialog(context, userController),
-                            child: const Icon(Icons.add, color: Colors.white),
-                          )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: defaultMargin),
+                    // Invitación de personas
+                    if (!_selectRandomUser)
+                      SizedBox(
+                        width: inputWidth,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Invitar Personas a este Evento',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontFamily: 'Lato',
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            FloatingActionButton(
+                              elevation: 0,
+                              backgroundColor: Styles.fiveColor,
+                              onPressed: () => Helper.showMyDialog(context, userController),
+                              child: const Icon(Icons.add, color: Colors.white),
+                            )
+                          ],
+                        ),
+                      ),
                     SizedBox(height: defaultMargin + 15),
                     UserEventoSeleccionado(),
-                    SizedBox(height: defaultMargin + 20),
+                    const SizedBox(height: defaultMargin + 20),
                     // Botón Finalizar o Guardando
                     Obx(() {
                       return SizedBox(
@@ -585,7 +633,7 @@ class _CreateEventState extends State<CreateEvent> {
                         ),
                       );
                     }),
-                    SizedBox(height: defaultMargin + 30),
+                    const SizedBox(height: defaultMargin + 30),
                   ],
                 ),
               ),

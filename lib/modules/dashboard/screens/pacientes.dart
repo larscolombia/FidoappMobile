@@ -90,7 +90,7 @@ class Pacientes extends StatelessWidget {
                             onTap: () {
                               // Navegar a la vista correspondiente
 
-                              _homeController.updateProfile(profile);
+                              _homeController.updateSelectedProfile(profile);
                               medicalHistoryController.updateField(
                                   "pet_id", profile.id.toString());
 

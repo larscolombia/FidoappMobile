@@ -7,10 +7,11 @@ import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/user_profile_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/screens/pet_owner_profile.dart';
 import 'package:pawlly/modules/profile_pet/controllers/pet_owner_controller.dart';
 import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
-import 'package:pawlly/modules/profile_pet/screens/ver_pasaporte_mascota.dart';
+import 'package:pawlly/modules/profile_pet/screens/pet_passport_view.dart';
 import 'package:pawlly/modules/profile_pet/screens/widget/associated_persons_modal.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -18,21 +19,19 @@ import 'package:share_plus/share_plus.dart';
 
 class InformationTab extends StatelessWidget {
   final ProfilePetController controller;
-  final PetOwnerController petcontroller = Get.put(PetOwnerController());
-  // ignore: non_constant_identifier_names
-  final PetOwnerProfileController OnewrProfileController =
-      Get.put(PetOwnerProfileController());
-
-  final HomeController homeController = Get.put(HomeController());
   InformationTab({super.key, required this.controller});
 
-  final UserProfileController profileController =
-      Get.put(UserProfileController());
+  final HomeController homeController = Get.put(HomeController());
+  final PetOwnerController petcontroller = Get.put(PetOwnerController());
+  final PetOwnerProfileController onewrProfileController = Get.put(PetOwnerProfileController());
+  final UserProfileController profileController = Get.put(UserProfileController());
+
   @override
   Widget build(BuildContext context) {
-    var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
+    petcontroller.fetchOwnersList(controller.petProfile.id);
     var ancho = MediaQuery.sizeOf(context).width;
     var margen = Helper.margenDefault;
+
     return Obx(() {
       return SingleChildScrollView(
         child: Container(
@@ -55,55 +54,55 @@ class InformationTab extends StatelessWidget {
                         Text(
                           homeController.selectedProfile.value!.name,
                           style: Styles.dashboardTitle20,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                     if (AuthServiceApis.dataCurrentUser.userType == 'user')
-                      ButtonDefaultWidget(
-                        title: 'Compartir perfil',
-                        callback: () {
-                          // Lógica para compartir
-                          Share.share(
-                            'Esta es mi mascota: ${homeController.selectedProfile.value!.petImage}',
-                            subject: AuthServiceApis.dataCurrentUser.userName,
-                          );
-                        },
-                        defaultColor: Colors.transparent,
-                        border: const BorderSide(color: Colors.grey, width: 1),
-                        textColor: Colors.black,
-                        icon: Icons.share,
-                        iconAfterText: true,
-                        widthButtom: 200,
-                        textSize: 14,
-                        borderSize: 25,
-                        heigthButtom: 40,
-                        svgIconPath: 'assets/icons/svg/compartir2.svg',
-                      ),
+                    ButtonDefaultWidget(
+                      title: 'Compartir perfil',
+                      callback: () {
+                        // Lógica para compartir
+                        Share.share(
+                          'Esta es mi mascota: ${homeController.selectedProfile.value!.petImage}',
+                          subject: AuthServiceApis.dataCurrentUser.userName,
+                        );
+                      },
+                      defaultColor: Colors.transparent,
+                      border: const BorderSide(color: Colors.grey, width: 1),
+                      textColor: Colors.black,
+                      icon: Icons.share,
+                      iconAfterText: true,
+                      widthButtom: 200,
+                      textSize: 14,
+                      borderSize: 25,
+                      heigthButtom: 40,
+                      svgIconPath: 'assets/icons/svg/compartir2.svg',
+                    ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: margen,
-              ),
+              SizedBox(height: margen),
+
+              // Botón de editar perfil de mascota
               if (AuthServiceApis.dataCurrentUser.userType == 'user')
-                Center(
-                  child: SizedBox(
-                    height: 54,
-                    child: ButtonDefaultWidget(
-                      iconAfterText: false,
-                      title: 'Pasaporte',
-                      svgIconPath: 'assets/icons/svg/mdi_passport.svg',
-                      callback: () {
-                        Get.to(
-                          VerPasaporteMascota(),
-                        );
-                      },
-                    ),
+              Center(
+                child: SizedBox(
+                  height: 54,
+                  child: ButtonDefaultWidget(
+                    iconAfterText: false,
+                    title: 'Pasaporte',
+                    svgIconPath: 'assets/icons/svg/mdi_passport.svg',
+                    callback: () {
+                      Get.to(
+                        PetPassportView(),
+                      );
+                    },
                   ),
                 ),
+              ),
               SizedBox(height: margen),
-              // Card de la raza
-
+              // Nombre de la mascota
               SizedBox(
                 width: ancho,
                 child: Text(
@@ -112,7 +111,7 @@ class InformationTab extends StatelessWidget {
                   textAlign: TextAlign.start,
                 ),
               ),
-
+              // Descripción de la mascota
               SizedBox(
                 width: MediaQuery.sizeOf(context).width,
                 child: Text(
@@ -122,7 +121,7 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               SizedBox(height: margen),
-
+              // Botón de Diario de Actividad
               SizedBox(
                 width: ancho,
                 child: ButtonDefaultWidget(
@@ -138,6 +137,7 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               SizedBox(height: margen),
+              // ID del Microchip
               SizedBox(
                 width: ancho,
                 child: Row(
@@ -158,6 +158,7 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               SizedBox(height: margen),
+              // Raza
               Card(
                 margin: const EdgeInsets.only(top: 0),
                 color: Styles.fiveColor,
@@ -178,17 +179,15 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               SizedBox(height: margen),
-
+              // Edad y Fecha de Nacimiento
               Card(
                 margin: const EdgeInsets.only(top: 0),
                 color: Styles.fiveColor,
                 elevation: 0.0,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .spaceBetween, // Distribuir los elementos
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       /// Sección de Edad
                       Row(
@@ -199,14 +198,21 @@ class InformationTab extends StatelessWidget {
                             height: 20,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            'Edad:',
-                            style: Styles.textProfile14w400,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            homeController.selectedProfile.value!.age ?? "",
-                            style: Styles.textProfile14w800,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Edad:',
+                                style: Styles.textProfile14w400,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                homeController.selectedProfile.value!.age,
+                                style: Styles.textProfile14w800,
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -214,35 +220,28 @@ class InformationTab extends StatelessWidget {
 
                       /// Línea Divisora
                       Container(
-                        height: 30, // Ajustar la altura de la línea divisora
-                        width: 1, // Grosor de la línea
+                        height: 30,
+                        width: 1,
                         color: Styles.iconColorBack,
                       ),
 
+                      const SizedBox(width: 10),
                       /// Sección de Fecha de Nacimiento
                       Expanded(
-                        child: Row(
+                        flex: 0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start, 
                           children: [
-                            const SizedBox(
-                                width: 10), // Espacio después de la línea
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .start, // Alineación izquierda
-                              children: [
-                                Text(
-                                  'Fecha de nacimiento:',
-                                  style: Styles.textProfile14w400,
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  Helper.formatDateToSpanish(homeController
-                                          .selectedProfile
-                                          .value!
-                                          .dateOfBirth) ??
-                                      "",
-                                  style: Styles.textProfile14w800,
-                                ),
-                              ],
+                            Text(
+                              'Fecha de nacimiento:',
+                              style: Styles.textProfile14w400,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              homeController.selectedProfile.value!.birthDateFormatted,
+                              style: Styles.textProfile14w800,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             ),
                           ],
                         ),
@@ -251,8 +250,8 @@ class InformationTab extends StatelessWidget {
                   ),
                 ),
               ),
-
               SizedBox(height: margen),
+              // Peso y Sexo
               Row(
                 children: [
                   Expanded(
@@ -272,7 +271,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          '${homeController.selectedProfile.value!.weight}${homeController.selectedProfile.value!.weightUnit}',
+                          '${homeController.selectedProfile.value!.weight} ${homeController.selectedProfile.value!.weightUnit}',
                           style: Styles.textProfile13w800,
                         ),
                       ),
@@ -295,11 +294,9 @@ class InformationTab extends StatelessWidget {
                           'Sexo:',
                           style: Styles.textProfile14w400,
                         ),
-                        subtitle: Text(
-                          homeController.selectedProfile.value!.gender ==
-                                  "female"
-                              ? 'Femenino'
-                              : 'Masculino',
+                        subtitle: Text(homeController.selectedProfile.value!.gender == "female"
+                            ? 'Hembra'
+                            : 'Macho',
                           style: Styles.textProfile13w800,
                         ),
                       ),
@@ -317,62 +314,8 @@ class InformationTab extends StatelessWidget {
                   textAlign: TextAlign.start,
                 ),
               ),
-              const SizedBox(height: 10),
-              /** 
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 180,
-                        child: CustomSelectFormFieldWidget(
-                          placeholder: 'Permisología',
-                          controller: null,
-                          filcolorCustom: Colors.white,
-                          borderColor: Colors.grey,
-                          items: const [
-                            'Datos médicos',
-                            'Entrenamientos',
-                            'Administrador',
-                            'Visualizar perfil'
-                          ],
-                          onChange: (value) {},
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: CustomSelectFormFieldWidget(
-                          placeholder: 'Caducidad',
-                          controller: null,
-                          borderColor: Colors.grey,
-                          filcolorCustom: Colors.white,
-                          items: const [
-                            '2 días',
-                            '5 días',
-                            '1 semana',
-                            '2 semanas'
-                          ],
-                          onChange: (value) {},
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Antes de compartir el perfil de tu perro elige que datos quieres mostrarle a los demás y la fecha de caducidad del enlace',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                      fontFamily: 'Lato',
-                      color: Color(0xFF959595),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-             
-              */
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
+              // QR Code
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(28),
@@ -408,91 +351,91 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 22),
+
               // Personas asociadas a la mascota
               if (AuthServiceApis.dataCurrentUser.userType != 'user')
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Personas Asociadas a\nesta Mascota',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontFamily: 'Lato',
-                          height: 1.3,
-                        ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Personas Asociadas a\nesta Mascota',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontFamily: 'Lato',
+                        height: 1.3,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
 
+              // Botón para agregar personas asociadas (solo si el usuario es un propietario)
               if (AuthServiceApis.dataCurrentUser.userType == 'user')
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        'Personas Asociadas a\nesta Mascota',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w800,
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontFamily: 'Lato',
-                          height: 1.3,
-                        ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'Personas Asociadas a\nesta Mascota',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontFamily: 'Lato',
+                        height: 1.3,
                       ),
                     ),
-                    SizedBox(
-                      width: 44, // Ancho fijo
-                      height: 44, // Alto fijo
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20)),
-                            ),
-                            builder: (context) {
-                              return AssociatedPersonsModal(
-                                  controller: controller);
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFC9214),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                  ),
+                  SizedBox(
+                    width: 44, // Ancho fijo
+                    height: 44, // Alto fijo
+                    child: ElevatedButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20)),
                           ),
-                          padding: EdgeInsets.zero,
-                          shadowColor: Colors.transparent, // Elimina la sombra
-                          elevation: 0, // Evita cualquier sombra residual
+                          builder: (context) {
+                            return AssociatedPersonsModal(
+                                controller: controller);
+                          },
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFC9214),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(Icons.add,
-                            color: Colors.white, size: 24), // Centrado
+                        padding: EdgeInsets.zero,
+                        shadowColor: Colors.transparent, // Elimina la sombra
+                        elevation: 0, // Evita cualquier sombra residual
                       ),
+                      child: const Icon(Icons.add,
+                          color: Colors.white, size: 24), // Centrado
                     ),
-                  ],
-                ),
-
+                  ),
+                ],
+              ),
               const SizedBox(height: 10),
 
+              // Lista de personas asociadas
               Column(
                 children: petcontroller.associatedPersons.map((person) {
                   return GestureDetector(
                       onTap: () {
-                        OnewrProfileController.ownerName.value = person['name'];
-                        OnewrProfileController.relation.value =
-                            person['relation'];
-                        OnewrProfileController.profileImagePath.value =
-                            person['profile_image'];
+                        onewrProfileController.ownerName.value = person['name'];
+                        onewrProfileController.relation.value = person['relation'];
+                        onewrProfileController.profileImagePath.value = person['profile_image'];
                         // Navegar a la ruta 'PETOWNERPROFILE' y pasar los datos del perfil si es necesario
                         //Get.toNamed(Routes.PETOWNERPROFILE, arguments: person);
-                        profileController
-                            .fetchUserData(person['id'].toString());
+                        profileController.fetchUserData(person['id'].toString());
+
                         Get.to(
                           PetOwnerProfileScreen(id: person['id'].toString()),
                         );
@@ -512,19 +455,18 @@ class InformationTab extends StatelessWidget {
                 }).toList(),
               ),
               SizedBox(height: margen),
+              
               // Botón de eliminar mascota
-              /**  */
               if (AuthServiceApis.dataCurrentUser.userType == 'user')
-                Center(
-                  child: TextButton(
-                    onPressed: controller
-                        .deletePet, // Llamar a la función para mostrar el modal
-                    child: const Text(
-                      'Eliminar animal',
-                      style: TextStyle(color: Colors.red, fontFamily: "Lato"),
-                    ),
+              Center(
+                child: TextButton(
+                  onPressed: controller.deletePet,
+                  child: const Text(
+                    'Eliminar animal',
+                    style: TextStyle(color: Colors.red, fontFamily: "Lato"),
                   ),
                 ),
+              ),
               const SizedBox(height: 20),
             ],
           ),

@@ -1,25 +1,31 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
-import 'package:pawlly/configs.dart';
-import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
-
+import 'package:pawlly/configs.dart';
+import 'package:pawlly/models/brear_model.dart';
+import 'package:pawlly/models/pet_data.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-import 'dart:convert';
+import 'package:pawlly/services/pet_service_apis.dart';
 
 class PetControllerv2 extends GetxController {
   var pets = <Pet>[].obs;
   var isLoading = true.obs;
   var selectedPet = Rxn<Pet>();
-  var url =
-      '$DOMAIN_URL/api/pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
-  var succesApdate = false.obs;
+  var url = '$DOMAIN_URL/api/pets?user_id=${AuthServiceApis.dataCurrentUser.id}';
+  var succesUpdate = false.obs;
   get selectedPetIds => null;
+  var breedList = <BreedModel>[].obs;
+
   @override
   void onInit() {
     fetchPets();
+    fetchBreedsList();
     super.onInit();
   }
 
@@ -89,56 +95,52 @@ class PetControllerv2 extends GetxController {
     }
   }
 
-  //actilizar mascota
-  var metatdat = {
-    "name": "",
-    "additional_info": "",
-    "date_of_birth": "",
-    "breed_name": "",
-    "gender": "",
-    "weight": "",
-    "eweightUnit": "",
-    "heheightUnit": "",
-    "height": "",
-    "user_id": "",
-    "age": "",
-    "pet_fur": "",
-    "chip": "",
-    "size": "",
-  }.obs;
+    // Método para obtener la lista de razas desde la API
+  Future<void> fetchBreedsList() async {
+    final breeds = await PetService.getBreedsListApi();
+    if (breeds.isNotEmpty) {
+      breedList.assignAll(breeds);
+    } else {
+      // Manejar el error si la lista está vacía
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'No se pudo cargar la lista de razas',
+        isError: true,
+      );
+    }
+  }
+  
   // Método para actualizar la información de una mascota
-  Future<void> updatePet(int id, Map<String, dynamic> body) async {
+  Future<void> updatePet(int id, PetData petData) async {
     try {
-      succesApdate(false);
+      succesUpdate(false);
       isLoading(true);
+
       final url = Uri.parse('${BASE_URL}pets/$id');
-      print('URL completa: $url');
-      print('Cuerpo de la solicitud (JSON): ${jsonEncode(body)}');
-
-      // Convertir todos los valores a cadenas
-      Map<String, String> stringBody = body.map((key, value) {
-        return MapEntry(key, value?.toString() ?? '');
-      });
-
+      final body = json.encode(petData.mapToUpdate());
       final response = await http.post(
         url,
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
         },
-        body: json.encode(stringBody),
+        body: body,
       );
 
-      print('responseee ${response.statusCode}');
-      print('Respuesta completa: ${response.body}');
+      // print('responseee ${response.statusCode}');
+      // print('Respuesta completa: ${response.body}');
 
       if (response.statusCode == 200) {
+
+        final homeController = Get.find<HomeController>();
+        homeController.updateSelectedProfile(petData);
+
         Get.dialog(
           //pisa papel
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
             title: 'Acción Realizada Exitosamente',
-            description: 'Felicidades ¡Tu cuenta ha sido creada!',
+            description: 'Felicidades ¡La información se actualizó!',
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
               Get.back();

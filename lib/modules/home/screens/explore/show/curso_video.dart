@@ -5,6 +5,7 @@ import 'package:pawlly/modules/components/baner_comentarios.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/helper/date_helper.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/screens/explore/show/youtube_video_player.dart';
 import 'package:pawlly/modules/integracion/controller/comentarios/ranting_controller.dart';
@@ -121,7 +122,8 @@ class _CursoVideoState extends State<CursoVideo> {
                         child: Row(
                           children: [
                             Text(
-                              Helper.formatDateToSpanish(widget.dateCreated),
+                              // TODO: Validar el formato recibido en dateCreated
+                              DateHelper.formatUiDateLongFromString(widget.dateCreated),
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,

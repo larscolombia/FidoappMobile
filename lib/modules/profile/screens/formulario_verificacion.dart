@@ -10,6 +10,7 @@ import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/integracion/controller/especialidades_controller/epeciality_controller.dart';
 import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/user_profile_controller.dart';
 import 'package:pawlly/modules/profile/controllers/profile_controller.dart';
 import 'package:pawlly/modules/profile/screens/components/profile_header.dart';
 import 'package:pawlly/modules/profile/screens/perfil_publico.dart';
@@ -34,7 +35,6 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
     "Dermatología": "Dermatología",
     "Emergencias y Cuidados Críticos": "Emergencias y Cuidados Críticos",
     "Cirugía Ortopédica": "Cirugía Ortopédica",
-    "Cirugía Ortopédica": "c",
     "Anestesiología": "Anestesiología",
   };
 
@@ -70,7 +70,7 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
               const SizedBox(height: 40),
               Expanded(
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
                   child: CustomScrollView(

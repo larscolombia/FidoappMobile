@@ -22,7 +22,7 @@ class AddPetController extends GetxController {
   var petGender = ''.obs;
   var petWeight = 0.0.obs;
   var petWeightUnit = 'Kg'.obs;
-  var breedList = <BreedModel>[].obs; // Observable para la lista de razas
+  var breedList = <BreedModel>[].obs;
   var petImage = Rx<XFile?>(null);
   var base64Image = ''.obs;
 
@@ -57,20 +57,6 @@ class AddPetController extends GetxController {
     }
   }
 
-  // Método para seleccionar la fecha de nacimiento
-  Future<void> pickDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: petBirthDate.value,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null && picked != petBirthDate.value) {
-      petBirthDate.value = picked;
-      petBirthDateController.text = petBirthDate.value.toLocal().toString().split(' ')[0];
-    }
-  }
-
   void toogleWeightUnit() {
     if (petWeightUnit.value == 'Kg') {
       petWeightUnit.value = 'Lb';
@@ -88,7 +74,8 @@ class AddPetController extends GetxController {
       Map<String, String> petData = {
         'name': petName.text,
         'additional_info': petDescription.text,
-        'date_of_birth': petBirthDateController.text,
+        // 'pettype': '...', Se va a utilizar posteriormente para indicar la especie
+        'date_of_birth': petBirthDateController.text, // Se envía en formato 2025-06-27
         'breed_name': petBreed.text,
         'gender': petGender.value,
         'weight': petWeight.value.toString(),
@@ -106,10 +93,12 @@ class AddPetController extends GetxController {
         );
 
         if (newPet != null) {
+          // Actualizar la información del perfil en el HomeController
           final homeController = Get.find<HomeController>();
-          final notificationController = Get.find<NotificationController>();
           homeController.profiles.add(newPet);
           homeController.profiles.refresh();
+          
+          final notificationController = Get.find<NotificationController>();
           await notificationController.fetchNotifications();
         } else {
           throw Exception('Error al crear la mascota');
@@ -134,7 +123,19 @@ class AddPetController extends GetxController {
       }
     }
   }
-  //Actualizar mascota
+  
+  void resetForm() {
+    petName.clear();
+    petDescription.clear();
+    petWeightController.clear();
+    petBirthDateController.clear();
+    petBreed.clear();
+    petGender.value = '';
+    petWeight.value = 0.0;
+    petWeightUnit.value = 'Kg';
+    petImage.value = null;
+    base64Image.value = '';
+  }
 
   @override
   void onClose() {

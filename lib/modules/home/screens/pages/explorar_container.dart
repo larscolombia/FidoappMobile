@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/generated/assets.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
 class Explore extends StatelessWidget {
-  const Explore({super.key});
+  HomeController homeController;
+  
+  Explore({super.key, required this.homeController});
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +98,9 @@ class Explore extends StatelessWidget {
                         child: ButtonDefaultWidget(
                           textSize: 13,
                           title: 'Explorar >',
-                          callback: () {},
+                          callback: () {
+                            homeController.updateIndex(3);
+                          },
                         ),
                       ),
                     ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:pawlly/styles/styles.dart';
 
 class CustomDateFormFieldWidget extends StatefulWidget {
@@ -8,14 +7,20 @@ class CustomDateFormFieldWidget extends StatefulWidget {
   final bool? enabled;
   final Color placeholderColor; // Color del placeholder
   final String? imagePath; // Ruta de la imagen para el prefixIcon
+  final DateTime? initialDate;
+  final DateTime? firstDate;
+  final DateTime? lastDate;
 
   const CustomDateFormFieldWidget({
     super.key,
     required this.placeholder,
     required this.controller,
     this.enabled,
-    this.placeholderColor = Colors.black, // Valor por defecto: negro
-    this.imagePath, // Imagen opcional para el prefixIcon
+    this.placeholderColor = Colors.black,
+    this.imagePath,
+    this.initialDate,
+    this.firstDate,
+    this.lastDate,
   });
 
   @override
@@ -36,13 +41,12 @@ class _CustomDateFormFieldWidgetState extends State<CustomDateFormFieldWidget> {
             if (widget.enabled ?? true) {
               DateTime? pickedDate = await showDatePicker(
                 context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(1900),
-                lastDate: DateTime(2100),
+                initialDate: widget.initialDate ??  DateTime.now(),
+                firstDate: widget.firstDate ?? DateTime(2000),
+                lastDate: widget.lastDate ?? DateTime.now(),
               );
               if (pickedDate != null) {
-                widget.controller?.text =
-                    pickedDate.toLocal().toString().split(' ')[0];
+                widget.controller?.text = pickedDate.toLocal().toString().split(' ')[0];
               }
             }
           },

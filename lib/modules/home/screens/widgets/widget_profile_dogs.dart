@@ -146,7 +146,7 @@ class ProfileModal extends StatelessWidget {
                           onTap: () {
                             // Actualiza el perfil seleccionado
                             activityController.fetchPetActivities(profile.id.toString());
-                            controller.updateProfile(profile);
+                            controller.updateSelectedProfile(profile);
                             Navigator.of(context).pop(); // Cierra el modal
                           },
                           child: CardProfileDog(
