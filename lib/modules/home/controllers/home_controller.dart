@@ -7,48 +7,57 @@ import 'package:pawlly/models/training_model.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
+import 'package:pawlly/repositories/pets_repository.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/event_service_apis.dart';
-import 'package:pawlly/services/pet_service_apis.dart';
 import 'package:pawlly/services/training_service_apis.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 
 class HomeController extends GetxController {
+  final petsRepository = Get.put(PetsRepository());
+  
   var selectedIndex = 0.obs;
-  var profiles = <PetData>[].obs; // Lista de perfiles usando el modelo
-  var filterPet = <PetData>[].obs; // Lista de resultados filtrados
   var titulo = "Bienvenido de vuelta".obs;
   var subtitle = "¿Qué haremos hoy?".obs;
-  var selectedProfile = Rxn<PetData>(); // Perfil seleccionado, inicialmente null
+
+  // Variables observables para el estado de carga y los perfiles
+  var isLoading = false.obs;
+  Rxn<PetData> get selectedProfile => petsRepository.selectedPet;
+  RxList<PetData> get profiles => petsRepository.petsProfiles;
+  var filterPet = <PetData>[].obs;
 
   var training = <TrainingModel>[].obs;
   late UserData currentUser;
   var profileImagePath = ''.obs;
-  var isLoading = false.obs;
   var selectedDay = DateTime.now().obs;
   var focusedDay = DateTime.now().obs;
 
   var calendarFormat = CalendarFormat.month.obs;
   var events = <DateTime, List<EventData>>{}.obs;
 
-  var rxSelectType = 0.obs;
-
 // Llamar al método cuando el controlador se inicializa
   @override
   void onInit() {
     super.onInit();
+
+    // Datos del usuario actual
     currentUser = AuthServiceApis.dataCurrentUser;
     profileImagePath.value = currentUser.profileImage;
-    
-    fetchProfiles();
-    //   fetchTraining();
-    _loadEventsFromService();
-
     ever(AuthServiceApis.profileChange, (DateTime time) {
       currentUser = AuthServiceApis.dataCurrentUser;
       profileImagePath.value = currentUser.profileImage;
     });
+
+    // Mascotas y eventos
+    loadPetsProfiles();
+    // fetchTraining();
+    _loadEventsFromService();
+  }
+
+  // Método para cargar los perfiles desde el servicio
+  void loadPetsProfiles() async {
+    petsRepository.loadPetsData();
   }
 
   // Método para actualizar el índice seleccionado
@@ -85,44 +94,34 @@ class HomeController extends GetxController {
     }
   }
 
-  void selectType(int type) {
-    rxSelectType.value = type;
-  }
-
+  // Método relativos a las mascotas
   // Método para actualizar el perfil seleccionado
   void updateSelectedProfile(PetData petData) {
     print('info pert 3 ${(jsonEncode(petData.name))}');
+    petsRepository.selectPet(petData);
+  }
 
-    // Actualizar el perfil seleccionado con los datos de la mascota
-    selectedProfile.value = petData;
-
-    // Actualizar los datos de la mascota en la lista de perfiles
-    int index = profiles.indexWhere((pet) => pet.id == petData.id);
-    if (index != -1) {
-      profiles[index] = petData; // Actualizar el perfil existente
+  // Método para filtrar por nombre
+  // Método para buscar una mascota por su nombre
+  void searchPetByName(String name) {
+    try {
+      // Filtrar las mascotas cuyo nombre contenga la cadena proporcionada (insensible a mayúsculas)
+      filterPet.value = profiles
+          .where((pet) => pet.name.toLowerCase().contains(name.toLowerCase()))
+          .toList();
+    } catch (e) {
+      // Imprimir cualquier error y limpiar la lista en caso de error
+      print('Error en la búsqueda de mascotas: $e');
+      filterPet.value = [];
     }
   }
 
-  // Método para agregar un nuevo perfil con datos de mascota
-  void addProfile(Map<String, dynamic> petData) {
-    profiles.add(PetData.fromJson(petData));
-  }
-
-  // Método para cargar los perfiles desde el servicio
-  void fetchProfiles() async {
-    // Crear una lista temporal para pasarla al servicio
-    List<PetData> tempProfiles = [];
-
-    // Llamar al servicio para obtener los perfiles
-    final petsData = await PetService.getPetListApi(pets: tempProfiles);
-
-    // Actualizar la lista observable con los datos obtenidos
-    profiles.value = petsData;
-    filterPet.value = petsData;
-    // Verificar si la lista no está vacía y actualizar el perfil seleccionado
-    if (petsData.isNotEmpty) {
-      selectedProfile.value = petsData.first; // Asignar el primer perfil completo
-    }
+  //metodo para obtener el perfil de mascota por su id
+  PetData getPetById(int? id) {
+    return profiles.firstWhere(
+      (pet) => pet.id == id,
+      orElse: () => PetData.empty(),
+    );
   }
 
   void fetchTraining() async {
@@ -132,6 +131,7 @@ class HomeController extends GetxController {
     // Actualizar la lista observable con los datos obtenidos
     training.value = trainingData;
   }
+
 
   // Calendar
   // Método para cargar los eventos desde el servicio
@@ -169,15 +169,6 @@ class HomeController extends GetxController {
     return events[eventDate] ?? [];
   }
 
-  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    this.selectedDay.value = selectedDay;
-    this.focusedDay.value = focusedDay;
-  }
-
-  void onFormatChanged(CalendarFormat format) {
-    calendarFormat.value = format;
-  }
-
   // Método para obtener eventos para el día seleccionado
   List<Map<String, dynamic>> getEventsForSelectedDay() {
     final selectedEvents = getEventsForDay(selectedDay.value);
@@ -189,65 +180,12 @@ class HomeController extends GetxController {
     }).toList();
   }
 
-//metodo para obtener el perfil de mascota por su id
-  PetData getPetById(int? id) {
-    try {
-      // Intentar encontrar la mascota con el ID proporcionado
-      return profiles.firstWhere((pet) => pet.id == id);
-    } catch (e) {
-      // Imprimir el error en caso de que ocurra
-      print('Error al recuperar la mascota: $e');
-      // Devolver una instancia de Pet con valores predeterminados si ocurre un error
-      return PetData(
-        id: 0,
-        name: '',
-        slug: '',
-        pettype: '',
-        breed: '',
-        breedId: 0,
-        size: null,
-        petImage: null,
-        dateOfBirth: null,
-        age: '',
-        gender: '',
-        weight: 0.0,
-        weightUnit: '',
-        height: 0,
-        heightUnit: '',
-        userId: 0,
-        status: -1,
-        qrCode: '',
-        createdBy: null,
-        updatedBy: null,
-        deletedBy: null,
-      );
-    }
+  void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    this.selectedDay.value = selectedDay;
+    this.focusedDay.value = focusedDay;
   }
 
-  //metodo para filtrar por nombre
-  // Método para buscar una mascota por su nombre
-  void searchPetByName(String name) {
-    try {
-      // Filtrar las mascotas cuyo nombre contenga la cadena proporcionada (insensible a mayúsculas)
-      filterPet.value = profiles
-          .where((pet) => pet.name.toLowerCase().contains(name.toLowerCase()))
-          .toList();
-    } catch (e) {
-      // Imprimir cualquier error y limpiar la lista en caso de error
-      print('Error en la búsqueda de mascotas: $e');
-      filterPet.value = [];
-    }
-  }
-
-  void removePetProfileById(int id) {
-    // Eliminar el perfil de mascota por ID
-    profiles.removeWhere((pet) => pet.id == id);
-
-
-    if (profiles.isEmpty) {
-      selectedProfile.value = null;
-    } else {
-      selectedProfile.value = profiles.first;
-    }
+  void onFormatChanged(CalendarFormat format) {
+    calendarFormat.value = format;
   }
 }

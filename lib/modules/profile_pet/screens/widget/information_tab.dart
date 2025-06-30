@@ -28,7 +28,7 @@ class InformationTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    petcontroller.fetchOwnersList(controller.petProfile.id);
+    petcontroller.fetchOwnersList(controller.petProfile.value.id);
     var ancho = MediaQuery.sizeOf(context).width;
     var margen = Helper.margenDefault;
 

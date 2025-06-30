@@ -3,12 +3,15 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/models/brear_model.dart';
-import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
+import 'package:pawlly/repositories/pets_repository.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-import 'package:pawlly/services/pet_service_apis.dart'; // Asegúrate de importar tu servicio
+import 'package:pawlly/services/breeds_service_apis.dart';
+
 
 class AddPetController extends GetxController {
+  final petsRepository = Get.put(PetsRepository());
+
   RxBool isLoading = false.obs;
   // Controladores para los campos de texto
   TextEditingController petName = TextEditingController();
@@ -34,7 +37,7 @@ class AddPetController extends GetxController {
 
   // Método para obtener la lista de razas desde la API
   Future<void> fetchBreedsList() async {
-    final breeds = await PetService.getBreedsListApi();
+    final breeds = await BreedsServiceApis.getBreedsListApi();
     if (breeds.isNotEmpty) {
       breedList.assignAll(breeds);
     } else {
@@ -87,17 +90,12 @@ class AddPetController extends GetxController {
       petData.removeWhere((key, value) => value.isEmpty);
 
       try {
-        final newPet = await PetService.postCreatePetApi(
+        final newPet = await petsRepository.createPet(
           body: petData,
           imagePath: petImage.value?.path ?? '', // Añadir la ruta de la imagen
         );
 
         if (newPet != null) {
-          // Actualizar la información del perfil en el HomeController
-          final homeController = Get.find<HomeController>();
-          homeController.profiles.add(newPet);
-          homeController.profiles.refresh();
-          
           final notificationController = Get.find<NotificationController>();
           await notificationController.fetchNotifications();
         } else {

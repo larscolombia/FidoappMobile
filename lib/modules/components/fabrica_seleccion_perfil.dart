@@ -80,7 +80,7 @@ class SelccionarMascota extends StatelessWidget {
                   itemCount: controller.profiles.length,
                   itemBuilder: (context, index) {
                     var profile = controller.profiles[index];
-                    var isSelected = controller.selectedProfile.value == profile;
+                    // var isSelected = controller.selectedProfile.value == profile;
 
                     return GestureDetector(
                       onTap: () {

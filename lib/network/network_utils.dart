@@ -152,10 +152,11 @@ Future<void> reGenerateToken() async {
   });
 }
 
-Future handleResponse(Response response,
-    {HttpResponseType httpResponseType = HttpResponseType.JSON,
-    bool? avoidTokenError,
-    bool? isFlutterWave}) async {
+Future handleResponse(Response response, {
+  HttpResponseType httpResponseType = HttpResponseType.JSON,
+  bool? avoidTokenError,
+  bool? isFlutterWave
+}) async {
   if (!await isNetworkAvailable()) {
     throw errorInternetNotAvailable;
   }
