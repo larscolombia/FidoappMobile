@@ -1,0 +1,12 @@
+- [ ] Revisar método "addPetDetailsApi" - pet_service_unused.md
+- [ ] Añadir soporte de archivos en PetsRepository - pets_repo_anexar_archivos.md
+- [ ] Limpiar TODO de plantillas - remover_todos_build.md
+- [ ] Verificar cierre de modales en ProfilePetController - profile_pet_modales.md
+- [ ] Revisar dependencia de PetControllerv2 en PetPassportForm - petpassportform_refactor.md
+- [ ] Validar formato de fecha en CursoVideo - curso_video_fecha.md
+- [ ] Simplificar paso de datos en Pacientes - pacientes_inyeccion_id.md
+- [ ] Implementar onInit en HistorialClinicoController - historial_clinico_oninit.md
+- [ ] Refactorizar PetControllerv2 - refactor_petcontrollerv2.md
+- [ ] Revisar conversión de fecha en CommonBase - common_base_tz.md
+- [ ] Migrar DateTimeExt a un helper - datetimeext_helper.md
+- [ ] Unificar modelos Pet - unificar_modelos_pet.md
