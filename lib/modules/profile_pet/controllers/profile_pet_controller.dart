@@ -6,15 +6,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/models/pet_data.dart';
-import 'package:pawlly/modules/home/controllers/home_controller.dart';
-import 'package:pawlly/services/pet_service_apis.dart';
+import 'package:pawlly/repositories/pets_repository.dart';
 
 
 class ProfilePetController extends GetxController {
+  final petsRepository = Get.put(PetsRepository());
+  
   final TextEditingController searchController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
 
-  late PetData petProfile;
+  final Rx<PetData> petProfile = PetData.empty().obs;
+
   var isEditing = false.obs;
   var selectedTab = 0.obs;
   var petName = ''.obs;
@@ -47,16 +49,16 @@ class ProfilePetController extends GetxController {
   void onInit() {
     super.onInit();
     // Recibe el perfil de la mascota desde los argumentos
-    petProfile = Get.arguments as PetData;
+    petProfile.value = Get.arguments as PetData;
     print('controlador del perfil onInit ${jsonEncode(petProfile)}');
     // Ahora puedes inicializar las variables con los datos del perfil recibido
-    petName.value = petProfile.name;
-    petBreed.value = petProfile.breed;
-    petDescription.value = petProfile.description ?? '';
+    petName.value = petProfile.value.name;
+    petBreed.value = petProfile.value.breed;
+    petDescription.value = petProfile.value.description ?? '';
 
-    petAge.value = petProfile.age;
-    petGender.value = petProfile.gender;
-    profileImagePath.value = petProfile.petImage ?? '';
+    petAge.value = petProfile.value.age;
+    petGender.value = petProfile.value.gender;
+    profileImagePath.value = petProfile.value.petImage ?? '';
     // Puedes agregar más inicializaciones según los datos disponibles en PetData
   }
 
@@ -103,30 +105,27 @@ class ProfilePetController extends GetxController {
   }
 
   // Función para actualizar el perfil de la mascota
-  Future<void> updatePetProfile() async {
+  Future<void> updatePetProfile(PetData petData) async {
     // Recoger los datos actualizados en un Map
-    Map<String, dynamic> updatedData = {
-      'name': petName.value,
-      'breed_name': petBreed.value,
-      'size': 'Medium', // Ejemplo, podrías agregar un controlador para esto
-      'date_of_birth': petBirthDate.value,
-      'gender': petGender.value,
-      'weight': double.tryParse(petWeight.value) ?? 0.0,
-      'user_id': petProfile.userId,
-      'additional_info': petDescription.value,
-      'pet_image': profileImagePath.value.isNotEmpty ? profileImagePath.value : null,
-      'age': petAge.value,
-    };
+    // Map<String, dynamic> updatedData = {
+    //   'name': petName.value,
+    //   'breed_name': petBreed.value,
+    //   'size': 'Medium', // Ejemplo, podrías agregar un controlador para esto
+    //   'date_of_birth': petBirthDate.value,
+    //   'gender': petGender.value,
+    //   'weight': double.tryParse(petWeight.value) ?? 0.0,
+    //   'user_id': petProfile.userId,
+    //   'additional_info': petDescription.value,
+    //   'pet_image': profileImagePath.value.isNotEmpty ? profileImagePath.value : null,
+    //   'age': petAge.value,
+    // };
 
     // Llamar al servicio para editar el perfil de la mascota
-    final updatedPet = await PetServiceApis.postEditPetApi(
-      petId: petProfile.id,
-      body: updatedData,
-    );
+    final updatedPet = await petsRepository.updatePet(petData);
 
     if (updatedPet != null) {
       // Actualización exitosa, puedes actualizar el perfil localmente o realizar alguna otra acción
-      petProfile = updatedPet;
+      petProfile.value = updatedPet;
       CustomSnackbar.show(
         title: 'Éxito',
         message: 'Perfil de la mascota actualizado con éxito',
@@ -154,13 +153,9 @@ class ProfilePetController extends GetxController {
         onPrimaryButtonPressed: () async {
           Get.back(); // Cierra el modal antes de ejecutar la eliminación
 
-          final success = await _deletePetApi(); // Ejecuta la eliminación
+          final success = await petsRepository.deletePet(petProfile.value.id);
 
           if (success) {
-            // Actualiza la lista en HomeController
-            final homeController = Get.find<HomeController>();
-            homeController.removePetProfileById(petProfile.id);
-
             // Muestra un mensaje de éxito
             Get.dialog(
               CustomAlertDialog(
@@ -169,6 +164,7 @@ class ProfilePetController extends GetxController {
                 description: "La mascota ha sido eliminada exitosamente.",
                 primaryButtonText: "Aceptar",
                 onPrimaryButtonPressed: () {
+                  // TODO: Verificar cuántos modales están abiertos en este punto
                   Get.close(3); // Cierra todos los modales abiertos
                 },
               ),
@@ -190,16 +186,5 @@ class ProfilePetController extends GetxController {
         },
       ),
     );
-  }
-
-  // Función para eliminar la mascota a través del API
-  Future<bool> _deletePetApi() async {
-    try {
-      final response = await PetServiceApis.deletePetApi(id: petProfile.id);
-      return response != null;
-    } catch (e) {
-      print('Error al eliminar la mascota: $e');
-      return false;
-    }
   }
 }

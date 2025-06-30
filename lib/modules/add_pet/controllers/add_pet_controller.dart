@@ -7,7 +7,6 @@ import 'package:pawlly/modules/integracion/controller/notificaciones/notificacio
 import 'package:pawlly/repositories/pets_repository.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/breeds_service_apis.dart';
-import 'package:pawlly/services/pet_service_apis.dart'; // Asegúrate de importar tu servicio
 
 
 class AddPetController extends GetxController {
@@ -91,17 +90,12 @@ class AddPetController extends GetxController {
       petData.removeWhere((key, value) => value.isEmpty);
 
       try {
-        final newPet = await PetServiceApis.createPet(
+        final newPet = await petsRepository.createPet(
           body: petData,
           imagePath: petImage.value?.path ?? '', // Añadir la ruta de la imagen
         );
 
         if (newPet != null) {
-          // Actualizar la información del perfil en el HomeController
-          // final homeController = Get.find<HomeController>();
-          // homeController.profiles.add(newPet);
-          // homeController.profiles.refresh();
-          
           final notificationController = Get.find<NotificationController>();
           await notificationController.fetchNotifications();
         } else {

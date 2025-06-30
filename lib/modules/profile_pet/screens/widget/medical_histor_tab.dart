@@ -38,7 +38,7 @@ class MedicalHistoryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    medicalHistoryController.fetchHistorialClinico(controller.petProfile.id);
+    medicalHistoryController.fetchHistorialClinico(controller.petProfile.value.id);
     var ancho = MediaQuery.sizeOf(context).width;
     var margen = Helper.margenDefault;
     return SingleChildScrollView(

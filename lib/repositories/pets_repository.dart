@@ -13,60 +13,25 @@ class PetsRepository extends GetxService {
   /// Listado de mascotas del usuario.
   final RxList<PetData> petsProfiles = <PetData>[].obs;
 
-  /// Obtiene la lista de mascotas desde el backend y actualiza los
-  /// observables correspondientes. Si no hay mascota seleccionada se
-  /// asigna la primera disponible.
-  Future<void> loadPetsData() async {
-    final loadedPets = await PetServiceApis.getPets();
-
-    petsProfiles.assignAll(loadedPets);
-    
-    if (petsProfiles.isNotEmpty && selectedPet.value == null) {
-      selectedPet.value = petsProfiles.first;
-    }
-  }
-
-  /// Establece la mascota seleccionada.
-  void selectPet(PetData pet) {
-    selectedPet.value = pet;
-  }
-
+  // TODO: Implementar un método para anexar los archivos
+  // y conectarlo con el método addPetDetailsApi del servicio.
+  
   /// Crea una nueva mascota en el backend y la agrega al listado local.
   /// También se establece como mascota seleccionada.
   Future<PetData?> createPet({
-    required PetData petData,
+    required Map<String, String> body,
     required String imagePath,
   }) async {
     final pet = await PetServiceApis.createPet(
-      body: petData.mapToCreate(),
+      body: body,
       imagePath: imagePath,
     );
+
     if (pet != null) {
       petsProfiles.add(pet);
       selectedPet.value = pet;
     }
     return pet;
-  }
-
-  /// Actualiza una mascota en el backend y en el listado local.
-  Future<PetData?> updatePet({
-    required PetData petData,
-  }) async {
-    final updated = await PetServiceApis.postEditPetApi(
-      petId: petData.id,
-      body: petData.mapToUpdate(),
-    );
-    if (updated != null) {
-      final index = petsProfiles.indexWhere((p) => p.id == updated.id);
-      if (index != -1) {
-        petsProfiles[index] = updated;
-        petsProfiles.refresh();
-      }
-      if (selectedPet.value?.id == updated.id) {
-        selectedPet.value = updated;
-      }
-    }
-    return updated;
   }
 
   /// Elimina una mascota del backend y la remueve del listado local.
@@ -81,5 +46,42 @@ class PetsRepository extends GetxService {
       return true;
     }
     return false;
+  }
+
+  /// Obtiene la lista de mascotas desde el backend y actualiza los
+  /// observables correspondientes. Si no hay mascota seleccionada se
+  /// asigna la primera disponible.
+  Future<void> loadPetsData() async {
+    final loadedPets = await PetServiceApis.getPets();
+
+    petsProfiles.assignAll(loadedPets);
+    
+    if (petsProfiles.isNotEmpty && selectedPet.value == null) {
+      selectedPet.value = petsProfiles.first;
+    }
+  }
+
+  /// Actualiza una mascota en el backend y en el listado local.
+  Future<PetData?> updatePet(PetData petData) async {
+    final updated = await PetServiceApis.updatePet(
+      petId: petData.id,
+      body: petData.mapToUpdate(),
+    );
+    if (updated != null) {
+      final index = petsProfiles.indexWhere((p) => p.id == updated.id);
+      if (index != -1) {
+        petsProfiles[index] = updated;
+        petsProfiles.refresh();
+      }
+      if (selectedPet.value?.id == petData.id) {
+        selectedPet.value = updated;
+      }
+    }
+    return updated;
+  }
+
+  /// Establece la mascota seleccionada.
+  void selectPet(PetData pet) {
+    selectedPet.value = pet;
   }
 }

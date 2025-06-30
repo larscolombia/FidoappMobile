@@ -13,7 +13,6 @@ import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 
-import '../../../models/base_response_model.dart';
 import '../../../network/network_utils.dart';
 import '../../../utils/api_end_points.dart';
 import '../../../utils/app_common.dart';
@@ -21,6 +20,47 @@ import '../../../utils/app_common.dart';
 
 class PetServiceApis {
   final RoleUser roleUser = Get.put(RoleUser());
+
+  // TODO: Este método no se está utilizando
+  static Future<void> addPetDetailsApi({
+    int? petId,
+    required Map<String, dynamic> request,
+    bool isUpdateProfilePic = false,
+    List<XFile>? files,
+    required VoidCallback onPetAdd,
+    required VoidCallback loaderOff
+  }) async {
+    log('FILES: $files');
+    log('FILES length: ${files.validate().length}');
+
+    String petIdparam = petId != null ? "/$petId" : "";
+    var multiPartRequest = await getMultiPartRequest(APIEndPoints.addPet + petIdparam);
+
+    if (!isUpdateProfilePic) {
+      multiPartRequest.fields.addAll(await getMultipartFields(val: request));
+    }
+
+    if (files.validate().isNotEmpty) {
+      multiPartRequest.files.add(await http.MultipartFile.fromPath(
+          'pet_image', files.validate().first.path.validate()));
+    }
+
+    // log("Multipart ${jsonEncode(multiPartRequest.fields)}");
+    log("Multipart Images ${multiPartRequest.files.map((e) => e.filename)}");
+
+    multiPartRequest.headers.addAll(buildHeaderTokens());
+
+    // BaseResponseModel baseResponseModel = BaseResponseModel();
+    await sendMultiPartRequest(multiPartRequest, onSuccess: (temp) async {
+      log("Response: ${jsonDecode(temp)}");
+      // baseResponseModel = BaseResponseModel.fromJson(jsonDecode(temp));
+      // toast(baseResponseModel.message, print: true);
+      onPetAdd.call();
+    }, onError: (error) {
+      toast(error.toString(), print: true);
+      loaderOff.call();
+    });
+  }
 
   static Future<PetData?> createPet({
     required Map<String, String> body, // Recibe el body ya validado
@@ -148,38 +188,6 @@ class PetServiceApis {
     }
   }
 
-  static Future<PetData?> getPetDetails({required int petId}) async {
-    if (isLoggedIn.value) {
-      // Construir la URL completa con el ID de la mascota
-      final url = Uri.parse('$BASE_URL${APIEndPoints.getPetList}/$petId');
-
-      // Realizar la solicitud GET con el token en los headers
-      final response = await http.get(
-        url,
-        headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        // Parsear la respuesta JSON y retornar el objeto PetData
-        final petData = PetData.fromJson(jsonDecode(response.body)['data']);
-        return petData;
-      } else if (response.statusCode == 404) {
-        // Manejo del caso donde la mascota no es encontrada
-        print('Mascota no encontrada.');
-        return null;
-      } else {
-        // Manejo de otros errores
-        print('Error en la solicitud: ${response.statusCode}');
-        print('Respuesta: ${response.body}');
-        return null;
-      }
-    } else {
-      return null;
-    }
-  }
-
   static Future deletePetApi({
     required int id, // Recibe el body ya validado
   }) async {
@@ -217,7 +225,7 @@ class PetServiceApis {
     }
   }
 
-  static Future<PetData?> postEditPetApi({
+  static Future<PetData?> updatePet({
     required int petId, // ID de la mascota a editar
     required Map<String, dynamic> body, // Recibe el body ya validado
   }) async {
@@ -248,51 +256,5 @@ class PetServiceApis {
     } else {
       return null;
     }
-  }
-
-  static Future<void> addPetDetailsApi({
-    int? petId,
-    required Map<String, dynamic> request,
-    bool isUpdateProfilePic = false,
-    List<XFile>? files,
-    required VoidCallback onPetAdd,
-    required VoidCallback loaderOff
-  }) async {
-    log('FILES: $files');
-    log('FILES length: ${files.validate().length}');
-
-    String petIdparam = petId != null ? "/$petId" : "";
-    var multiPartRequest = await getMultiPartRequest(APIEndPoints.addPet + petIdparam);
-
-    if (!isUpdateProfilePic) {
-      multiPartRequest.fields.addAll(await getMultipartFields(val: request));
-    }
-
-    if (files.validate().isNotEmpty) {
-      multiPartRequest.files.add(await http.MultipartFile.fromPath(
-          'pet_image', files.validate().first.path.validate()));
-    }
-
-    // log("Multipart ${jsonEncode(multiPartRequest.fields)}");
-    log("Multipart Images ${multiPartRequest.files.map((e) => e.filename)}");
-
-    multiPartRequest.headers.addAll(buildHeaderTokens());
-
-    // BaseResponseModel baseResponseModel = BaseResponseModel();
-    await sendMultiPartRequest(multiPartRequest, onSuccess: (temp) async {
-      log("Response: ${jsonDecode(temp)}");
-      // baseResponseModel = BaseResponseModel.fromJson(jsonDecode(temp));
-      // toast(baseResponseModel.message, print: true);
-      onPetAdd.call();
-    }, onError: (error) {
-      toast(error.toString(), print: true);
-      loaderOff.call();
-    });
-  }
-
-  static Future<BaseResponseModel> deletePet({required int id}) async {
-    return BaseResponseModel.fromJson(await handleResponse(
-        await buildHttpResponse("${APIEndPoints.addPet}/$id",
-            method: HttpMethodType.DELETE)));
   }
 }

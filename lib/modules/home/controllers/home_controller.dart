@@ -23,9 +23,9 @@ class HomeController extends GetxController {
 
   // Variables observables para el estado de carga y los perfiles
   var isLoading = false.obs;
-  var selectedProfile = Rxn<PetData>(); // Perfil seleccionado, inicialmente null
-  RxList<PetData> get profiles => petsRepository.petsProfiles; // Lista de perfiles usando el modelo
-  var filterPet = <PetData>[].obs; // Lista de resultados filtrados
+  Rxn<PetData> get selectedProfile => petsRepository.selectedPet;
+  RxList<PetData> get profiles => petsRepository.petsProfiles;
+  var filterPet = <PetData>[].obs;
 
   var training = <TrainingModel>[].obs;
   late UserData currentUser;
@@ -98,15 +98,7 @@ class HomeController extends GetxController {
   // Método para actualizar el perfil seleccionado
   void updateSelectedProfile(PetData petData) {
     print('info pert 3 ${(jsonEncode(petData.name))}');
-
-    // Actualizar el perfil seleccionado con los datos de la mascota
-    selectedProfile.value = petData;
-
-    // Actualizar los datos de la mascota en la lista de perfiles
-    int index = profiles.indexWhere((pet) => pet.id == petData.id);
-    if (index != -1) {
-      profiles[index] = petData; // Actualizar el perfil existente
-    }
+    petsRepository.selectPet(petData);
   }
 
   // Método para filtrar por nombre
@@ -121,18 +113,6 @@ class HomeController extends GetxController {
       // Imprimir cualquier error y limpiar la lista en caso de error
       print('Error en la búsqueda de mascotas: $e');
       filterPet.value = [];
-    }
-  }
-
-  void removePetProfileById(int id) {
-    // Eliminar el perfil de mascota por ID
-    profiles.removeWhere((pet) => pet.id == id);
-
-
-    if (profiles.isEmpty) {
-      selectedProfile.value = null;
-    } else {
-      selectedProfile.value = profiles.first;
     }
   }
 

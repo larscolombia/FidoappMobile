@@ -13,6 +13,7 @@ import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/breeds_service_apis.dart';
 
+// Refactorizar: Esta clase tiene nombre de controlador pero implementa métodos api
 class PetControllerv2 extends GetxController {
   var pets = <Pet>[].obs;
   var isLoading = true.obs;
@@ -29,6 +30,9 @@ class PetControllerv2 extends GetxController {
     super.onInit();
   }
 
+  // TODO: Verificar, aparentemente este método vuelve a cargar las mascotas
+  // desde el controlador pero no usa el mismo modelo PetData aunque tienen
+  // casi los mismo campos, analizarlos con codex
   void fetchPets() async {
     try {
       isLoading(true);
@@ -111,6 +115,8 @@ class PetControllerv2 extends GetxController {
   }
   
   // Método para actualizar la información de una mascota
+  // TODO: Este método está enviando la información directamente al backend
+  // debe ser modificado para que se actualice usando el repositorio de mascotas
   Future<void> updatePet(int id, PetData petData) async {
     try {
       succesUpdate(false);
