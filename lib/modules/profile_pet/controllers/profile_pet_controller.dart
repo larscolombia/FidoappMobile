@@ -119,7 +119,7 @@ class ProfilePetController extends GetxController {
     };
 
     // Llamar al servicio para editar el perfil de la mascota
-    final updatedPet = await PetService.postEditPetApi(
+    final updatedPet = await PetServiceApis.postEditPetApi(
       petId: petProfile.id,
       body: updatedData,
     );
@@ -195,7 +195,7 @@ class ProfilePetController extends GetxController {
   // Función para eliminar la mascota a través del API
   Future<bool> _deletePetApi() async {
     try {
-      final response = await PetService.deletePetApi(id: petProfile.id);
+      final response = await PetServiceApis.deletePetApi(id: petProfile.id);
       return response != null;
     } catch (e) {
       print('Error al eliminar la mascota: $e');

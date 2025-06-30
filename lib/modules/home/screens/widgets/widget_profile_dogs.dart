@@ -104,7 +104,7 @@ class ProfileModal extends StatelessWidget {
                   const SizedBox(height: 10),
                   RecargaComponente(
                     callback: () {
-                      controller.fetchProfiles();
+                      controller.loadPetsProfiles();
                       CustomSnackbar.show(
                         title: 'Actualizando',
                         message: 'Espere mientras se actualiza la información.',
@@ -170,10 +170,7 @@ class ProfileModal extends StatelessWidget {
                 child: ButtonDefaultWidget(
                   title: 'Nueva Mascota +',
                   callback: () async {
-                    var result = await Get.toNamed(Routes.ADDPET);
-                    if (result != null) {
-                      controller.addProfile(result);
-                    }
+                    await Get.toNamed(Routes.ADDPET);
                   },
                 ),
               ),

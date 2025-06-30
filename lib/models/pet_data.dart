@@ -62,6 +62,32 @@ class PetData {
     return outputFormat.format(dateOfBirth!);
   }
 
+  factory PetData.empty() {
+    return PetData(
+        id: 0,
+        name: '',
+        slug: '',
+        pettype: '',
+        breed: '',
+        breedId: 0,
+        size: null,
+        petImage: null,
+        dateOfBirth: null,
+        age: '',
+        gender: '',
+        weight: 0.0,
+        weightUnit: '',
+        height: 0,
+        heightUnit: '',
+        userId: 0,
+        status: -1,
+        qrCode: '',
+        createdBy: null,
+        updatedBy: null,
+        deletedBy: null
+    );
+  }
+  
   factory PetData.fromJson(Map<String, dynamic> json) {
     return PetData(
       id: int.tryParse(json['id'].toString()) ?? -1,

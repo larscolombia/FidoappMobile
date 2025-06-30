@@ -11,7 +11,7 @@ import 'package:pawlly/models/pet_data.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
-import 'package:pawlly/services/pet_service_apis.dart';
+import 'package:pawlly/services/breeds_service_apis.dart';
 
 class PetControllerv2 extends GetxController {
   var pets = <Pet>[].obs;
@@ -97,7 +97,7 @@ class PetControllerv2 extends GetxController {
 
     // Método para obtener la lista de razas desde la API
   Future<void> fetchBreedsList() async {
-    final breeds = await PetService.getBreedsListApi();
+    final breeds = await BreedsServiceApis.getBreedsListApi();
     if (breeds.isNotEmpty) {
       breedList.assignAll(breeds);
     } else {
