@@ -29,6 +29,7 @@ class PetPassportForm extends StatefulWidget {
 class _PetPassportFormState extends State<PetPassportForm> {
   final _historiaClinicaController = Get.put(HistorialClinicoController());
   final _homeController = Get.find<HomeController>();
+  // TODO: Revisa los comentarios en la clase PetControllerv2
   final _petController = Get.put(PetControllerv2());
 
   final sexTextController = TextEditingController();

@@ -13,7 +13,9 @@ import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/breeds_service_apis.dart';
 
-// Refactorizar: Esta clase tiene nombre de controlador pero implementa métodos api
+/// TODO: Ojo con esta clase
+/// Refactorizar: Esta clase tiene nombre de controlador pero implementa métodos api
+/// Utiliza un modelo diferente a PetData, lo que puede causar confusión
 class PetControllerv2 extends GetxController {
   var pets = <Pet>[].obs;
   var isLoading = true.obs;
