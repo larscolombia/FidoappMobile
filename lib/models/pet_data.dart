@@ -136,6 +136,29 @@ class PetData {
     };
   }
 
+  /// Prepara el cuerpo necesario para las peticiones de creación.
+  /// Se basa en los campos usados en el flujo de "Añadir mascota".
+  Map<String, String> mapToCreate() {
+    final formattedDate = DateHelper.formatApiDate(dateOfBirth);
+
+    final Map<String, String> data = {
+      'name': name,
+      'breed_name': breed,
+      'gender': gender,
+      'weight': weight.toString(),
+      'weight_unit': weightUnit,
+      'user_id': userId.toString(),
+      // Estos campos deben enviarse siempre, incluso si están vacíos
+      'date_of_birth': formattedDate ?? '',
+      'additional_info': description ?? '',
+    };
+
+    // Eliminamos solo los campos con valores vacíos, exceptuando los requeridos
+    data.removeWhere((key, value) =>
+        value.isEmpty && key != 'date_of_birth' && key != 'additional_info');
+    return data;
+  }
+
   PetData copyWith({
     String? name,
     String? slug,
