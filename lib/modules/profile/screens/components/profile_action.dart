@@ -12,8 +12,8 @@ class ProfileActions extends StatelessWidget {
   final UserProfileController profileController;
   final SpecialityController specialityController = Get.put(SpecialityController());
 
-  ProfileActions({
-    super.key,
+   ProfileActions({
+    Key? key,
     required this.controller,
     required this.profileController,
   });
