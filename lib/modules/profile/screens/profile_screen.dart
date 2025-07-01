@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
-import 'package:pawlly/modules/auth/password/screens/change_password_screen.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/helper/helper.dart';
@@ -23,7 +22,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final imageSize = 260.0;
+    const imageSize = 260.0;
     var margin = Helper.margenDefault;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -33,6 +32,7 @@ class ProfileScreen extends StatelessWidget {
           color: Styles.fiveColor,
           child: Column(
             children: [
+              // Header
               Stack(
                 alignment: Alignment.center,
                 children: [
@@ -43,15 +43,15 @@ class ProfileScreen extends StatelessWidget {
                     color: Styles.fiveColor,
                   ),
                   // Imagen Circular con Borde
-                  Obx(
-                    () => GestureDetector(
+                  Obx(() {
+                    return GestureDetector(
                       onTap: () => controller.pickImage(),
                       child: Stack(
                         children: [
                           Container(
                             width: 124,
                             height: 124,
-                            margin: EdgeInsets.only(top: 40),
+                            margin: const EdgeInsets.only(top: 40),
                             padding: const EdgeInsets.all(4), // Espacio entre la imagen y el borde
                             decoration: BoxDecoration(
                               color: Styles.fiveColor, // Color de fondo del borde
@@ -71,7 +71,8 @@ class ProfileScreen extends StatelessWidget {
                                     image: controller.profileImagePath.value.isNotEmpty
                                         ? (controller.profileImagePath.value.startsWith('http')
                                             ? NetworkImage(controller.profileImagePath.value) as ImageProvider<Object>
-                                            : FileImage(File(controller.profileImagePath.value)) as ImageProvider<Object>)
+                                            : FileImage(File(controller.profileImagePath.value))
+                                                as ImageProvider<Object>)
                                         : const AssetImage('assets/images/avatar.png') as ImageProvider<Object>,
                                     // Imagen predeterminada
                                     fit: BoxFit.cover,
@@ -80,34 +81,34 @@ class ProfileScreen extends StatelessWidget {
                               ),
                             ),
                           ),
-                          if (controller.isEditing.value)
-                            Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                  color: Styles.fiveColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: SvgPicture.asset('assets/icons/svg/edit-2.svg'),
+                          if (controller.isLoadingPhoto.value)
+                          Positioned.directional(
+                            textDirection: Directionality.of(context),
+                            top: 40,
+                            child: const SizedBox(
+                              height: 124,
+                              width: 124,
+                              child: CircularProgressIndicator(
+                                color: Styles.primaryColor,
+                                strokeWidth: 3,
                               ),
                             ),
+                          ),
                         ],
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                   // Nombre del Usuario
                   Positioned(
                     bottom: -10,
-                    child: Container(
+                    child: SizedBox(
                       height: 50,
                       width: MediaQuery.sizeOf(context).width - 100,
                       child: Text(
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
-                        '${controller.user['first_name'].toString()}',
+                        controller.user['first_name'].toString(),
                         style: Styles.dashboardTitle24,
                       ),
                     ),
@@ -138,7 +139,7 @@ class ProfileScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
+                                SizedBox(
                                   width: MediaQuery.sizeOf(context).width - 130,
                                   child: BarraBack(
                                       titulo: "Perfil de Usuario",
@@ -173,7 +174,7 @@ class ProfileScreen extends StatelessWidget {
                                   width: MediaQuery.sizeOf(context).width,
                                   child: ButtonDefaultWidget(
                                     callback: () {
-                                      Get.to(FormularioVerificacion());
+                                      Get.to(const FormularioVerificacion());
                                     },
                                     title: 'Perfil público',
                                     svgIconPath: 'assets/icons/svg/flecha_derecha.svg',
@@ -271,7 +272,8 @@ class ProfileScreen extends StatelessWidget {
                             fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                           );
                         }),
-                        if (AuthServiceApis.dataCurrentUser.userRole[0] != 'user') SizedBox(height: margin),
+                        if (AuthServiceApis.dataCurrentUser.userRole[0] != 'user') SizedBox(height: margin), ...[
+                        SizedBox(height: margin),
                         Obx(() {
                           return InputText(
                             borderColor: Styles.iconColorBack,
@@ -282,10 +284,8 @@ class ProfileScreen extends StatelessWidget {
                             readOnly: !controller.isEditing.value,
                             fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                           );
-                        }),
-                        SizedBox(
-                          height: margin,
-                        ),
+                        })],
+                        SizedBox(height: margin),
                         Obx(
                           () => Container(
                             child: CustomSelectFormFieldWidget(
@@ -307,51 +307,51 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        SizedBox(height: margin),
-                        Obx(() {
-                          return InputText(
-                            borderColor: Styles.iconColorBack,
-                            onChanged: (value) => controller.user['password'] = value,
-                            initialValue: "********",
-                            placeholder: '',
-                            placeholderSvg: 'assets/icons/svg/key.svg',
-                            readOnly: !controller.isEditing.value,
-                            fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
-                          );
-                        }),
-                        SizedBox(height: margin),
-                        SizedBox(
-                          width: MediaQuery.sizeOf(context).width,
-                          child: GestureDetector(
-                            onTap: () {
-                              // Navegar a la página de cambiar contraseña
-                              Get.to(() => ChangePasswordScreen());
-                            },
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Cambiar Contraseña',
-                                    style: TextStyle(
-                                      color: Styles.primaryColor,
-                                      fontFamily: 'Lato',
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                  SizedBox(width: 4),
-                                  SvgPicture.asset(
-                                    'assets/icons/svg/flecha_derecha.svg', // Ruta del ícono
-                                    height: 10,
-                                    color: Color(0xFFFF4931),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        // SizedBox(height: margin),
+                        // Obx(() {
+                        //   return InputText(
+                        //     borderColor: Styles.iconColorBack,
+                        //     onChanged: (value) => controller.user['password'] = value,
+                        //     initialValue: "********",
+                        //     placeholder: '',
+                        //     placeholderSvg: 'assets/icons/svg/key.svg',
+                        //     readOnly: !controller.isEditing.value,
+                        //     fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
+                        //   );
+                        // }),
+                        // SizedBox(height: margin),
+                        // SizedBox(
+                        //   width: MediaQuery.sizeOf(context).width,
+                        //   child: GestureDetector(
+                        //     onTap: () {
+                        //       // Navegar a la página de cambiar contraseña
+                        //       Get.to(() => ChangePasswordScreen());
+                        //     },
+                        //     child: Align(
+                        //       alignment: Alignment.centerRight,
+                        //       child: Row(
+                        //         mainAxisSize: MainAxisSize.min,
+                        //         children: [
+                        //           const Text(
+                        //             'Cambiar Contraseña',
+                        //             style: TextStyle(
+                        //               color: Styles.primaryColor,
+                        //               fontFamily: 'Lato',
+                        //               fontSize: 14,
+                        //               fontWeight: FontWeight.w800,
+                        //             ),
+                        //           ),
+                        //           const SizedBox(width: 4),
+                        //           SvgPicture.asset(
+                        //             'assets/icons/svg/flecha_derecha.svg', // Ruta del ícono
+                        //             height: 10,
+                        //             color: const Color(0xFFFF4931),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(height: margin),
                         Obx(
                           () => controller.isEditing.value == true
