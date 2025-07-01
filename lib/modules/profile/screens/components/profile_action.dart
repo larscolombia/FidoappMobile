@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/components/boton_compartir.dart';
 import 'package:pawlly/modules/components/input_text.dart';
-import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/modules/integracion/controller/especialidades_controller/epeciality_controller.dart';
+import 'package:pawlly/modules/pet_owner_profile/controllers/pet_owner_profile_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,11 +12,11 @@ class ProfileActions extends StatelessWidget {
   final UserProfileController profileController;
   final SpecialityController specialityController = Get.put(SpecialityController());
 
-  const ProfileActions({
-    Key? key,
+  ProfileActions({
+    super.key,
     required this.controller,
     required this.profileController,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class ProfileActions extends StatelessWidget {
             const SizedBox(height: 20),
             if (profileController.user.value.userType != 'user' &&
                 (profileController.user.value.profile?.specialityId != null))
-              Container(
+              SizedBox(
                 width: MediaQuery.sizeOf(context).width,
                 child: InputText(
                   placeholder: "",
@@ -81,7 +81,7 @@ class ProfileActions extends StatelessWidget {
             const SizedBox(height: 20),
             if (profileController.user.value.userType != 'user' &&
                 (profileController.user.value.profile?.tags ?? []).isNotEmpty)
-              Container(
+              SizedBox(
                 width: MediaQuery.sizeOf(context).width,
                 child: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -99,7 +99,7 @@ class ProfileActions extends StatelessWidget {
                 ),
               ),
             if ((profileController.user.value.profile?.tags ?? []).isNotEmpty)
-              Container(
+              SizedBox(
                 width: MediaQuery.sizeOf(context).width,
                 child: Wrap(
                   spacing: 8.0,

@@ -6,10 +6,7 @@ import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pacientes.dart';
 import 'package:pawlly/modules/diario/diario.dart';
-import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
-import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
-import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
@@ -36,6 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         color: Styles.fiveColor,
         child: Column(
           children: [
+            // Header section
             Stack(
               alignment: Alignment.center,
               children: [
@@ -62,8 +60,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     () => CircleAvatar(
                       radius: 46,
                       backgroundImage: controller.profileImagePath.isNotEmpty
-                          ? NetworkImage(AuthServiceApis.dataCurrentUser.profileImage)
-                          : const AssetImage('assets/images/avatar.png') as ImageProvider,
+                        ? NetworkImage(AuthServiceApis.dataCurrentUser.profileImage)
+                        : const AssetImage('assets/images/avatar.png') as ImageProvider,
                       backgroundColor: Colors.transparent,
                     ),
                   ),
@@ -115,25 +113,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ],
                       ),
                     ),
+                    // Menu List
                     Expanded(
                       child: ListView(
                         children: [
-                          // Opción 0 - Mi Perfil
-                          _buildMenuItem(0, context),
-                          // Opción 1 - Mascotas o Pacientes
-                          _buildMenuItem(1, context),
-                          // Opción 2 - Diario de Mascotas
-                          _buildMenuItem(2, context),
-                          // Opción 3 - Términos y Condiciones
-                          _buildMenuItem(3, context),
-                          // Opción 4 - Políticas de privacidad
-                          _buildMenuItem(4, context),
-                          // Opción 5 - Sobre la app
-                          _buildMenuItem(5, context),
-                          // Opción 6 - Sobre la app
-                          _buildMenuItem(6, context),
-                          // Opción 7 - Cerrar Sesión (notese que saltamos el 6 - FidoCoins)
-                          _buildMenuItem(7, context),
+                          _buildMenuItem(DashboardMenuItem.profile, context),
+                          _buildMenuItem(DashboardMenuItem.changePassword, context),
+                          _buildMenuItem(DashboardMenuItem.patientsOrPets, context),
+                          _buildMenuItem(DashboardMenuItem.diary, context),
+                          _buildMenuItem(DashboardMenuItem.termsAndConditions, context),
+                          _buildMenuItem(DashboardMenuItem.privacyPolicy, context),
+                          _buildMenuItem(DashboardMenuItem.aboutApp, context),
+                          _buildMenuItem(DashboardMenuItem.logout, context),
                         ],
                       ),
                     ),
@@ -148,10 +139,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   // Método auxiliar para construir un elemento de menú
-  Widget _buildMenuItem(int index, BuildContext context) {
+  Widget _buildMenuItem(DashboardMenuItem item, BuildContext context) {
     return InkWell(
       onTap: () {
-        _onItemTap(index, context);
+        _onItemTap(item, context);
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 2),
@@ -170,7 +161,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: SvgPicture.asset(
-                    _getItemIcon(index),
+                    _getItemIcon(item),
                     width: 24,
                     height: 24,
                     color: Styles.iconColorBack,
@@ -178,7 +169,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 const SizedBox(width: 16),
                 Text(
-                  _getItemTitle(index),
+                  _getItemTitle(item),
                   style: Styles.boxTitleDashboard,
                 ),
               ],
@@ -195,34 +186,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   // Helper method to get item title
-  String _getItemTitle(int index) {
-    switch (index) {
-      case 0:
+  String _getItemTitle(DashboardMenuItem item) {
+    switch (item) {
+      case DashboardMenuItem.profile:
         return 'Mi perfil';
-      case 1:
-        return roleUser.roleUser() == roleUser.tipoUsuario('vet') ? 'Pacientes' : 'Mascotas';
-      case 2:
+
+      case DashboardMenuItem.changePassword:
+        return 'Cambiar contraseña';
+      
+      case DashboardMenuItem.patientsOrPets:
+        return roleUser.roleUser() == roleUser.tipoUsuario('vet')
+            ? 'Pacientes'
+            : 'Mascotas';
+
+      case DashboardMenuItem.diary:
         return 'Diario de Mascotas';
-      case 3:
+
+      case DashboardMenuItem.termsAndConditions:
         return 'Términos y Condiciones';
-      case 4:
+
+      case DashboardMenuItem.privacyPolicy:
         return 'Políticas de privacidad';
-      case 5:
+
+      case DashboardMenuItem.aboutApp:
         return 'Sobre la app';
-      case 6:
-        return 'FidoCoin';
-      case 7:
+
+      case DashboardMenuItem.logout:
         return 'Cerrar Sesión';
-      default:
-        return '';
+
     }
   }
 
-  void _onItemTap(int index, BuildContext context) {
-    if (index == 7) {
-      // Get.to(Pacientes());
-    }
-    if (index == 1) {
+  void _onItemTap(DashboardMenuItem item, BuildContext context) {
+    if (item == DashboardMenuItem.patientsOrPets) {
       // Show modal for item 1
       if (roleUser.roleUser() == roleUser.tipoUsuario('vet')) {
         Get.to(() => Pacientes());
@@ -236,12 +232,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
           },
         );
       }
-    } else if (index == 7) {
+    } else if (item == DashboardMenuItem.logout) {
       // Show logout confirmation dialog
       _showLogoutConfirmationDialog(context);
     } else {
       // Navigate to corresponding view for other cases
-      var route = _getPageForIndex(index);
+      var route = _getPageForIndex(item);
+
       if (route is String) {
         Get.toNamed(route);
       } else if (route is Widget) {
@@ -269,52 +266,74 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Object _getPageForIndex(int index) {
-    final HomeController homeController = Get.find<HomeController>();
-    final PetActivityController historialClinicoController = Get.put(PetActivityController());
+  Object _getPageForIndex(DashboardMenuItem index) {
+    // final HomeController homeController = Get.find<HomeController>();
+    // final PetActivityController historialClinicoController = Get.put(PetActivityController());
     switch (index) {
-      case 0:
+      case DashboardMenuItem.profile:
         return Routes.PROFILE;
-      case 1:
+
+      case DashboardMenuItem.changePassword:
+        return Routes.CHANGEPASSWORD;
+      
+      case DashboardMenuItem.patientsOrPets:
         return '';
-      case 2:
+
+      case DashboardMenuItem.diary:
         return Diario();
-      case 3:
+
+      case DashboardMenuItem.termsAndConditions:
         return Routes.TERMSCONDITIONS;
-      case 4:
+
+      case DashboardMenuItem.privacyPolicy:
         return Routes.PRIVACYPOLICY;
-      case 5:
+
+      case DashboardMenuItem.aboutApp:
         return Routes.SOBREAPP;
-      case 6:
-        return FideCoin();
-      case 7:
-        return "";
-      default:
+
+      case DashboardMenuItem.logout:
         return Container();
     }
   }
 
   // Helper method to get item icon
-  String _getItemIcon(int index) {
+  String _getItemIcon(DashboardMenuItem index) {
     switch (index) {
-      case 0:
+      case DashboardMenuItem.profile:
         return 'assets/icons/svg/frame.svg';
-      case 1:
+
+      case DashboardMenuItem.changePassword:
+        return 'assets/icons/svg/key.svg';
+      
+      case DashboardMenuItem.patientsOrPets:
         return 'assets/icons/svg/dashicons_pets.svg';
-      case 2:
+
+      case DashboardMenuItem.diary:
         return 'assets/icons/svg/archive-book.svg';
-      case 3:
+
+      case DashboardMenuItem.termsAndConditions:
         return 'assets/icons/svg/note-2.svg';
-      case 4:
+
+      case DashboardMenuItem.privacyPolicy:
         return 'assets/icons/svg/book.svg';
-      case 5:
+
+      case DashboardMenuItem.aboutApp:
         return 'assets/icons/svg/info-circle.svg';
-      case 6:
-        return 'assets/icons/svg/moneda.svg';
-      case 7:
+
+      case DashboardMenuItem.logout:
         return 'assets/icons/svg/logout.svg';
-      default:
-        return 'assets/icons/svg/logout.svg';
+
     }
   }
+}
+
+enum DashboardMenuItem {
+  profile,
+  changePassword,
+  patientsOrPets,
+  diary,
+  termsAndConditions,
+  privacyPolicy,
+  aboutApp,
+  logout,
 }
