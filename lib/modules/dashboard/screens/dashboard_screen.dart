@@ -6,6 +6,7 @@ import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pacientes.dart';
 import 'package:pawlly/modules/diario/diario.dart';
+import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/home/screens/widgets/widget_profile_dogs.dart';
 import 'package:pawlly/modules/integracion/util/role_user.dart';
 import 'package:pawlly/routes/app_pages.dart';
@@ -124,6 +125,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           _buildMenuItem(DashboardMenuItem.termsAndConditions, context),
                           _buildMenuItem(DashboardMenuItem.privacyPolicy, context),
                           _buildMenuItem(DashboardMenuItem.aboutApp, context),
+                          _buildMenuItem(DashboardMenuItem.fidoCoin, context),
                           _buildMenuItem(DashboardMenuItem.logout, context),
                         ],
                       ),
@@ -202,6 +204,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case DashboardMenuItem.diary:
         return 'Diario de Mascotas';
 
+      case DashboardMenuItem.fidoCoin:
+        return 'FidoCoin';
+      
       case DashboardMenuItem.termsAndConditions:
         return 'Términos y Condiciones';
 
@@ -282,6 +287,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case DashboardMenuItem.diary:
         return Diario();
 
+      case DashboardMenuItem.fidoCoin:
+        return FideCoin();
+      
       case DashboardMenuItem.termsAndConditions:
         return Routes.TERMSCONDITIONS;
 
@@ -311,6 +319,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
       case DashboardMenuItem.diary:
         return 'assets/icons/svg/archive-book.svg';
 
+      case DashboardMenuItem.fidoCoin:
+        return 'assets/icons/svg/moneda.svg';
+      
       case DashboardMenuItem.termsAndConditions:
         return 'assets/icons/svg/note-2.svg';
 
@@ -332,6 +343,7 @@ enum DashboardMenuItem {
   changePassword,
   patientsOrPets,
   diary,
+  fidoCoin,
   termsAndConditions,
   privacyPolicy,
   aboutApp,
