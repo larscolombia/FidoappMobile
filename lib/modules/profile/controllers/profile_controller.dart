@@ -181,13 +181,13 @@ class ProfileController extends GetxController {
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
               profileController.fetchUserData("${AuthServiceApis.dataCurrentUser.id}");
-              currentUser.profileImage = data['data']['profile_image'];
+              currentUser.profileImage = data['data']['profile_image'] ?? '';
               //userGenCont.value.text = data['data']['gender';
               //   currentUser.gender = data['data']['gender'].toLowerCase();
               user['lastName'] = data['data']['last_name'];
               currentUser.lastName = data['data']['last_name'];
-              user['payment_account'] = data['data']['payment_account'];
-              currentUser.paymentAccount = data['data']['payment_account'];
+              user['payment_account'] = data['data']['payment_account'] ?? '';
+              currentUser.paymentAccount = data['data']['payment_account'] ?? '';
               Get.back();
             },
           ),

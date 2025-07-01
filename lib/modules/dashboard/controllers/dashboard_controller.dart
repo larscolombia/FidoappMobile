@@ -13,14 +13,18 @@ class DashboardController extends GetxController {
   void onInit() {
     super.onInit();
     // Cargar los datos del usuario desde AuthServiceApis al iniciar el controlador
-    currentUser = AuthServiceApis
-        .dataCurrentUser; // Asegúrate de que el servicio esté correctamente configurado
+    currentUser = AuthServiceApis.dataCurrentUser; // Asegúrate de que el servicio esté correctamente configurado
 
     // Inicializar los controladores con los datos del usuario actual
     name.value = currentUser.firstName;
-    profileImagePath.value =
-        currentUser.profileImage; // Imagen de perfil del usuario
+    profileImagePath.value = currentUser.profileImage; // Imagen de perfil del usuario
+  
+    ever(AuthServiceApis.profileChange, (DateTime time) {
+      currentUser = AuthServiceApis.dataCurrentUser;
+      profileImagePath.value = currentUser.profileImage;
+    });
   }
+
 
   Future<void> logoutUser() async {
     // Llama a la función para cerrar sesión en backend
@@ -32,8 +36,7 @@ class DashboardController extends GetxController {
     // Agregar un pequeño retraso antes de redirigir
     Future.delayed(const Duration(milliseconds: 500), () {
       // Redirigir al usuario a la pantalla de inicio de sesión
-      Get.offAllNamed(
-          Routes.SIGNIN); // Limpia el historial de rutas y redirige al login
+      Get.offAllNamed(Routes.SIGNIN); // Limpia el historial de rutas y redirige al login
     });
   }
 }

@@ -291,7 +291,7 @@ class ProfileScreen extends StatelessWidget {
                             child: CustomSelectFormFieldWidget(
                               enabled: controller.isEditing.value,
                               controller: controller.userGenCont.value,
-                              filcolorCustom: Colors.white,
+                              filcolorCustom: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                               borderColor: Styles.iconColorBack,
                               onChange: (value) {
                                 controller.user['gender'] = value.toString();
@@ -353,19 +353,25 @@ class ProfileScreen extends StatelessWidget {
                         //   ),
                         // ),
                         SizedBox(height: margin),
-                        Obx(
-                          () => controller.isEditing.value == true
-                              ? SizedBox(
-                                  width: MediaQuery.sizeOf(context).width - 100,
-                                  child: ButtonDefaultWidget(
-                                    title: controller.isLoading.value ? 'Actualizando ...' : 'Editar',
-                                    callback: () {
-                                      controller.updateProfile();
-                                    },
-                                  ),
-                                )
-                              : const SizedBox(),
-                        ),
+                        Obx(() {
+                          String title = controller.isEditing.value ? 'Guardar' : 'Editar';
+                          if (controller.isLoading.value) title = 'Actualizando...';
+
+                          return SizedBox(
+                            width: MediaQuery.sizeOf(context).width - 100,
+                            child: ButtonDefaultWidget(
+                              title: title,
+                              callback: () {
+                                if (controller.isEditing.value) {
+                                  controller.updateProfile();
+                                  controller.isEditing.value = false;
+                                } else {
+                                  controller.toggleEditing();
+                                }
+                              },
+                            ),
+                          );
+                        }),
                         SizedBox(height: margin),
                         Align(
                           alignment: Alignment.center,

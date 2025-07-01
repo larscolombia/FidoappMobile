@@ -41,6 +41,11 @@ class HomeController extends GetxController {
     fetchProfiles();
     //   fetchTraining();
     _loadEventsFromService();
+
+    ever(AuthServiceApis.profileChange, (DateTime time) {
+      currentUser = AuthServiceApis.dataCurrentUser;
+      profileImagePath.value = currentUser.profileImage;
+    });
   }
 
   // Método para actualizar el índice seleccionado

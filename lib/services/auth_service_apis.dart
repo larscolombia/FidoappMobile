@@ -22,11 +22,16 @@ import '../../../utils/constants.dart';
 import '../../../utils/local_storage.dart';
 
 class AuthServiceApis extends GetxController {
+  static const String KEY_API_TOKEN = 'apiToken';
+  static const String KEY_USER_DATA = 'lastLoginResponse';
+  
+  static Rx<DateTime> profileChange = DateTime.now().obs;
+
   static ValueNotifier<LoginResponse?> currentUser = ValueNotifier(null);
   static UserData dataCurrentUser = UserData();
-  static const String KEY_USER_DATA = 'lastLoginResponse';
-  static const String KEY_API_TOKEN = 'apiToken';
+  
   RxString deviceToken = 'null'.obs;
+
   static Future<RegUserResp> createUser({required Map request}) async {
     return RegUserResp.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.register, request: request, method: HttpMethodType.POST)));
   }
@@ -136,6 +141,8 @@ class AuthServiceApis extends GetxController {
       currentUser.value = LoginResponse.fromJson(Map<String, dynamic>.from(response));
 
       dataCurrentUser = UserData.fromJson(response['data']);
+
+      profileChange.value = DateTime.now();
 
       // Marcar como logged in
       await prefs.setBool(SharedPreferenceConst.IS_LOGGED_IN, true);
