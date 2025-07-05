@@ -7,9 +7,16 @@ class SelectedAvatar extends StatelessWidget {
   final String? imageUrl;
   final String? profesion;
   final double? width;
+  final bool showArrow;
 
-  const SelectedAvatar(
-      {super.key, this.imageUrl, this.nombre, this.profesion, this.width});
+  const SelectedAvatar({
+    super.key, 
+    this.imageUrl, 
+    this.nombre, 
+    this.profesion, 
+    this.width,
+    this.showArrow = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -89,16 +96,17 @@ class SelectedAvatar extends StatelessWidget {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: SizedBox(
-                  // Usamos SizedBox para controlar el tamaño del icono de flecha si es necesario
-                  width: 24, // Ancho fijo para el icono, puedes ajustarlo
-                  height: 24, // Alto fijo para el icono, puedes ajustarlo
-                  child:
-                      SvgPicture.asset('assets/icons/svg/flecha_derecha.svg'),
+              if (showArrow)
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: SizedBox(
+                    // Usamos SizedBox para controlar el tamaño del icono de flecha si es necesario
+                    width: 24, // Ancho fijo para el icono, puedes ajustarlo
+                    height: 24, // Alto fijo para el icono, puedes ajustarlo
+                    child:
+                        SvgPicture.asset('assets/icons/svg/flecha_derecha.svg'),
+                  ),
                 ),
-              ),
             ],
           ),
         );

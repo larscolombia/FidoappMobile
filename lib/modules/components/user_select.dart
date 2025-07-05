@@ -37,6 +37,7 @@ class UserEventoSeleccionado extends StatelessWidget {
               nombre: user.value!.firstName,
               imageUrl: user.value!.profileImage,
               profesion: Helper.tipoUsuario(user.value!.userType ?? ""),
+              showArrow: false,
             ),
           ),
           const SizedBox(width: 10),

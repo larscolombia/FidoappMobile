@@ -68,8 +68,8 @@ class Helper extends GetX {
       // Analizar la fecha de entrada
       DateTime parsedDate = inputFormat.parse(date);
 
-      // Definir el formato de salida
-      DateFormat outputFormat = DateFormat("d 'de' MMMM 'de' yyyy", 'es_ES');
+      // Definir el formato de salida como dd/mm/yyyy
+      DateFormat outputFormat = DateFormat('dd/MM/yyyy');
 
       // Formatear la fecha al formato deseado
       String formattedDate = outputFormat.format(parsedDate);
@@ -180,6 +180,7 @@ class Helper extends GetX {
                           nombre: filteredUsers.first.firstName,
                           imageUrl: filteredUsers.first.profileImage,
                           profesion: Helper.tipoUsuario(filteredUsers.first.userType ?? ""),
+                          showArrow: false,
                         ),
                         const SizedBox(height: 20),
                       ],

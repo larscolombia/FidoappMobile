@@ -334,6 +334,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                               imageUrl: user.profileImage ?? '',
                                               profesion: Helper.tipoUsuario(
                                                   user.userType ?? ''),
+                                              showArrow: false,
                                             );
                                           }).toList()
                                         ],

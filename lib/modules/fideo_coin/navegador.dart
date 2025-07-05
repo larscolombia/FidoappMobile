@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/components/style.dart';
+import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
+import 'package:pawlly/modules/integracion/controller/transaccion/transaction_controller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class InAppBrowserModal extends StatefulWidget {
@@ -49,7 +52,12 @@ class _InAppBrowserModalState extends State<InAppBrowserModal> {
                 Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      // Actualizar balance y transacciones antes de cerrar
+                      final balanceController = Get.put(UserBalanceController());
+                      final transactionController = Get.put(TransactionController());
+                      await balanceController.fetchUserBalance();
+                      await transactionController.fetchTransactions();
                       Navigator.of(context).pop();
                     },
                     child: ButtonDefaultWidget(

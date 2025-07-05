@@ -10,6 +10,7 @@ import 'package:pawlly/modules/fideo_coin/FideCoin.dart';
 import 'package:pawlly/modules/fideo_coin/navegador.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
+import 'package:pawlly/modules/integracion/controller/transaccion/transaction_controller.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -35,7 +36,6 @@ class StripeController extends GetxController {
       if (response.statusCode == 200) {
         var data = json.decode(response.body);
         url_pago_stripe.value = data['url'];
-        Get.off(() => FideCoin());
         print('contexto ${url_pago_stripe.toString()}');
         abrirNavegador(context, url_pago_stripe.toString());
         //openStripeCheckout(url_pago_stripe.toString());
@@ -75,8 +75,10 @@ class StripeController extends GetxController {
       if (response.statusCode == 200) {
         CustomSnackbar.show(title: 'Éxito', message: 'Solicitud exitosa');
         final balanceController = Get.put(UserBalanceController());
+        final transactionController = Get.put(TransactionController());
         await balanceController.fetchUserBalance();
-        Get.off(() => FideCoin());
+        await transactionController.fetchTransactions();
+        Get.back();
       } else if (response.statusCode == 400) {
         CustomSnackbar.show(title: 'Saldo insuficiente', message: 'No cuentas con suficiente saldo', isError: true);
       } else {
@@ -143,6 +145,12 @@ class StripeController extends GetxController {
       builder: (BuildContext context) {
         return InAppBrowserModal(url: url);
       },
-    );
+    ).then((_) {
+      // Cuando se cierra el navegador, actualizar balance y transacciones
+      final balanceController = Get.put(UserBalanceController());
+      final transactionController = Get.put(TransactionController());
+      balanceController.fetchUserBalance();
+      transactionController.fetchTransactions();
+    });
   }
 }

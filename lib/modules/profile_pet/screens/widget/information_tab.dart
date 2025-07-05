@@ -65,7 +65,7 @@ class InformationTab extends StatelessWidget {
                     ),
                     if (AuthServiceApis.dataCurrentUser.userType == 'user')
                       ButtonDefaultWidget(
-                        title: 'Compartir',
+                        title: 'Compartir perfil',
                         callback: () {
                           // Lógica para compartir
                           Share.share(
@@ -78,7 +78,7 @@ class InformationTab extends StatelessWidget {
                         textColor: Colors.black,
                         icon: Icons.share,
                         iconAfterText: true,
-                        widthButtom: 150,
+                        widthButtom: 160,
                         textSize: 12,
                         borderSize: 25,
                         heigthButtom: 40,
@@ -196,24 +196,31 @@ class InformationTab extends StatelessWidget {
                         .spaceBetween, // Distribuir los elementos
                     children: [
                       /// Sección de Edad
-                      Row(
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/svg/mdi_cake-variant.svg',
-                            width: 20,
-                            height: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Edad:',
-                            style: Styles.textProfile14w400,
-                          ),
-                          const SizedBox(width: 5),
-                          Text(
-                            homeController.selectedProfile.value!.age ?? "",
-                            style: Styles.textProfile14w800,
-                          ),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/svg/mdi_cake-variant.svg',
+                                  width: 20,
+                                  height: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Edad:',
+                                  style: Styles.textProfile14w400,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              homeController.selectedProfile.value!.age ?? "",
+                              style: Styles.textProfile14w800,
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(width: 10),
 
@@ -527,7 +534,7 @@ class InformationTab extends StatelessWidget {
                     onPressed: controller
                         .deletePet, // Llamar a la función para mostrar el modal
                     child: const Text(
-                      'Eliminar animal',
+                      'Eliminar mascota',
                       style: TextStyle(color: Colors.red, fontFamily: "Lato"),
                     ),
                   ),

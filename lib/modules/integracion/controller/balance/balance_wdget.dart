@@ -114,7 +114,7 @@ class Balance extends StatelessWidget {
                       callback: () {
                         bool isWithdraw = AuthServiceApis.dataCurrentUser.userType == 'vet' ||
                             AuthServiceApis.dataCurrentUser.userType == 'trainer';
-                        Get.off(RecargarSaldoScreen(isWithdraw: isWithdraw));
+                        Get.to(() => RecargarSaldoScreen(isWithdraw: isWithdraw));
                       },
                       title: AuthServiceApis.dataCurrentUser.userType == 'vet' ||
                               AuthServiceApis.dataCurrentUser.userType == 'trainer'

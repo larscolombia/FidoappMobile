@@ -47,8 +47,9 @@ class ProfilePetController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Recibe el perfil de la mascota desde los argumentos
-    petProfile = Get.arguments as PetData;
+    // Obtener el perfil de la mascota desde HomeController
+    final homeController = Get.find<HomeController>();
+    petProfile = homeController.selectedProfile.value!;
     print('controlador del perfil onInit ${jsonEncode(petProfile)}');
     
     // Inicializar las variables con los datos del perfil recibido
@@ -154,8 +155,22 @@ class ProfilePetController extends GetxController {
     );
 
     if (updatedPet != null) {
-      // Actualización exitosa, puedes actualizar el perfil localmente o realizar alguna otra acción
+      // Actualización exitosa
       petProfile = updatedPet;
+      
+      // Actualizar también en HomeController
+      final homeController = Get.find<HomeController>();
+      final index = homeController.profiles.indexWhere((pet) => pet.id == petProfile.id);
+      if (index != -1) {
+        homeController.profiles[index] = updatedPet;
+        homeController.profiles.refresh();
+      }
+      
+      // Actualizar la imagen en el controlador local
+      if (updatedPet.petImage != null && updatedPet.petImage!.isNotEmpty) {
+        profileImagePath.value = updatedPet.petImage!;
+      }
+      
       CustomSnackbar.show(
         title: 'Éxito',
         message: 'Perfil de la mascota actualizado con éxito',

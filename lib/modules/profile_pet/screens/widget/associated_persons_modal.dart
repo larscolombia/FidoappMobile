@@ -172,6 +172,7 @@ class AssociatedPersonsModal extends StatelessWidget {
                             imageUrl: person.profileImage ?? '',
                             profesion:
                                 Helper.tipoUsuario(person.userType ?? ''),
+                            showArrow: false,
                           ),
                         );
                       }).toList(),

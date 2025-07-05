@@ -102,7 +102,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                     size: 20,
                     titulo: widget.isWithdraw ? 'Retiro' : 'Recarga',
                     callback: () {
-                      Get.off(() => DashboardScreen());
+                      Get.back();
                     },
                   ),
 

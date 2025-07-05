@@ -123,7 +123,7 @@ class PasaporteMascota extends StatelessWidget {
                         width: ancho,
                         child: BarraBack(
                           callback: () {
-                            Get.off(VerPasaporteMascota());
+                            Get.back();
                           },
                           titulo: 'Información del Perro',
                         ),
@@ -359,7 +359,7 @@ class PasaporteMascota extends StatelessWidget {
                               title: 'ok',
                               callback: () {
                                 petController.succesApdate(false);
-                                Get.off(VerPasaporteMascota());
+                                Get.back();
                               },
                             );
                           }

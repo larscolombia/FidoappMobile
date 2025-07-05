@@ -38,26 +38,81 @@ class ProfilePetScreen extends StatelessWidget {
             left: 0,
             right: 0,
             height: topImageHeight,
-            child: Obx(() {
-              final imageUrl = controller.profileImagePath.value.isNotEmpty
-                  ? controller.profileImagePath.value
-                  : 'https://via.placeholder.com/600x400';
+            child: Stack(
+              children: [
+                Obx(() {
+                  final imageUrl = controller.profileImagePath.value.isNotEmpty
+                      ? controller.profileImagePath.value
+                      : 'https://via.placeholder.com/600x400';
 
-              return CachedNetworkImage(
-                imageUrl: imageUrl,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                errorWidget: (context, url, error) {
-                  // Imagen predeterminada si falla la carga
-                  return Image.asset(
-                    'assets/images/404.jpg', // Ruta de la imagen predeterminada
+                  return CachedNetworkImage(
+                    imageUrl: imageUrl,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) {
+                      // Imagen predeterminada si falla la carga
+                      return Image.asset(
+                        'assets/images/404.jpg', // Ruta de la imagen predeterminada
+                        fit: BoxFit.cover,
+                      );
+                    },
                   );
-                },
-              );
-            }),
+                }),
+                // Botón flotante para editar imagen
+                Positioned(
+                  bottom: 50,
+                  right: 20,
+                  child: Obx(() => GestureDetector(
+                    onTap: () async {
+                      if (controller.isPickerActive.value) return; // Evitar múltiples taps
+                      
+                      await controller.pickImage();
+                      
+                      // Si se seleccionó una imagen y es diferente a la actual, actualizar el perfil
+                      if (controller.profileImagePath.value.isNotEmpty && 
+                          controller.profileImagePath.value != pet.petImage) {
+                        await controller.updatePetProfile();
+                        // Actualizar la imagen en HomeController también
+                        final homeController = Get.find<HomeController>();
+                        homeController.refresh();
+                      }
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Styles.iconColorBack,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: controller.isPickerActive.value
+                          ? const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Icon(
+                              Icons.camera_alt,
+                              color: Colors.white,
+                              size: 24,
+                            ),
+                    ),
+                  )),
+                ),
+              ],
+            ),
           ),
 
           /// 2) Contenedor blanco superpuesto

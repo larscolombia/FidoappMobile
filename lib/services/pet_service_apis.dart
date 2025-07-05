@@ -277,24 +277,52 @@ class PetService {
       // Construir la URL completa para la edición, incluyendo el ID de la mascota
       final url = Uri.parse('$BASE_URL${APIEndPoints.getPetList}/$petId');
 
-      // Realizar la solicitud POST con el token en los headers
-      final response = await http.post(
-        url,
-        headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode(body), // Convertir el body a JSON
-      );
+      try {
+        var request = http.MultipartRequest('POST', url);
 
-      if (response.statusCode == 200) {
-        // Parsear la respuesta JSON y retornar el objeto PetData actualizado
-        final petData = PetData.fromJson(jsonDecode(response.body)['data']);
-        return petData;
-      } else {
-        // Manejo de error
-        print('Error en la solicitud: ${response.statusCode}');
-        print('Respuesta: ${response.body}');
+        request.headers.addAll({
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        });
+
+        // Agregar campos de texto
+        body.forEach((key, value) {
+          if (key != 'pet_image' && value != null) {
+            request.fields[key] = value.toString();
+          }
+        });
+
+        // Agregar imagen si existe
+        if (body['pet_image'] != null && body['pet_image'].toString().isNotEmpty) {
+          request.files.add(await http.MultipartFile.fromPath(
+            'pet_image',
+            body['pet_image'],
+          ));
+        }
+
+        var response = await request.send();
+        var responseData = await http.Response.fromStream(response);
+        
+        print('Response status: ${responseData.statusCode}');
+        print('Response body: ${responseData.body}');
+
+        if (responseData.statusCode == 200) {
+          // Parsear la respuesta JSON y retornar el objeto PetData actualizado
+          final responseJson = jsonDecode(responseData.body);
+          if (responseJson.containsKey('data')) {
+            final petData = PetData.fromJson(responseJson['data']);
+            return petData;
+          } else {
+            print('Error: La respuesta no contiene el campo "data"');
+            return null;
+          }
+        } else {
+          // Manejo de error
+          print('Error en la solicitud: ${responseData.statusCode}');
+          print('Respuesta: ${responseData.body}');
+          return null;
+        }
+      } catch (e) {
+        print('Error al actualizar la mascota: $e');
         return null;
       }
     } else {

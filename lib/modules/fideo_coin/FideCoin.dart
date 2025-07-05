@@ -10,9 +10,14 @@ import 'package:pawlly/modules/integracion/controller/transaccion/transaction_co
 class FideCoin extends StatelessWidget {
   FideCoin({super.key});
   final TransactionController controller = Get.put(TransactionController());
-
+  
   @override
   Widget build(BuildContext context) {
+    // Asegurar que se actualicen las transacciones al entrar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.fetchTransactions();
+    });
+    
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
