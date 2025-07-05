@@ -102,10 +102,19 @@ class HomeController extends GetxController {
     // Actualizar la lista observable con los datos obtenidos
     profiles.value = petsData;
     filterPet.value = petsData;
+    
     // Verificar si la lista no está vacía y actualizar el perfil seleccionado
     if (petsData.isNotEmpty) {
-      selectedProfile.value =
-          petsData.first; // Asignar el primer perfil completo
+      // Si hay un perfil seleccionado, buscar su versión actualizada
+      if (selectedProfile.value != null) {
+        final updatedSelectedPet = petsData.firstWhere(
+          (pet) => pet.id == selectedProfile.value!.id,
+          orElse: () => petsData.first,
+        );
+        selectedProfile.value = updatedSelectedPet;
+      } else {
+        selectedProfile.value = petsData.first; // Asignar el primer perfil completo
+      }
     }
   }
 

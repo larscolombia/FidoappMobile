@@ -46,21 +46,26 @@ class InformationTab extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      children: [
-                        Text(
-                          'Nombre',
-                          style: Styles.textProfile14w400,
-                        ),
-                        Text(
-                          homeController.selectedProfile.value!.name,
-                          style: Styles.dashboardTitle20,
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Nombre',
+                            style: Styles.textProfile14w400,
+                          ),
+                          Text(
+                            homeController.selectedProfile.value!.name,
+                            style: Styles.dashboardTitle20,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
                     ),
                     if (AuthServiceApis.dataCurrentUser.userType == 'user')
                       ButtonDefaultWidget(
-                        title: 'Compartir perfil',
+                        title: 'Compartir',
                         callback: () {
                           // Lógica para compartir
                           Share.share(
@@ -73,8 +78,8 @@ class InformationTab extends StatelessWidget {
                         textColor: Colors.black,
                         icon: Icons.share,
                         iconAfterText: true,
-                        widthButtom: 200,
-                        textSize: 14,
+                        widthButtom: 150,
+                        textSize: 12,
                         borderSize: 25,
                         heigthButtom: 40,
                         svgIconPath: 'assets/icons/svg/compartir2.svg',

@@ -83,7 +83,7 @@ class PetData {
         name: json['name'] ?? "",
         slug: json['slug'] ?? "",
         pettype: json['pettype'] ?? "",
-        breed: json['breed'] ?? "no se pudo encontrar",
+        breed: json['breed']?.toString().isNotEmpty == true ? json['breed'] : "Raza no disponible",
         breedId: json['breed_id'] ?? -1,
         size: json['size'],
         petImage: json['pet_image'],

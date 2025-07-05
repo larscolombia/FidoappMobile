@@ -110,7 +110,12 @@ class AddPetController extends GetxController {
           final notificationController = Get.find<NotificationController>();
           homeController.profiles.add(newPet);
           homeController.profiles.refresh();
+          // Actualizar la lista completa de perfiles para asegurar datos frescos
+          homeController.fetchProfiles();
           await notificationController.fetchNotifications();
+          
+          // Limpiar todos los campos del formulario después de crear exitosamente
+          resetForm();
         } else {
           throw Exception('Error al crear la mascota');
         }
@@ -134,6 +139,22 @@ class AddPetController extends GetxController {
       }
     }
   }
+
+  // Método para limpiar todos los campos del formulario
+  void resetForm() {
+    petName.clear();
+    petDescription.clear();
+    petWeightController.clear();
+    petBreed.clear();
+    petBirthDateController.clear();
+    petGender.value = '';
+    petWeight.value = 0.0;
+    petWeightUnit.value = 'Kg';
+    petBirthDate.value = DateTime.now();
+    petImage.value = null;
+    base64Image.value = '';
+  }
+
   //Actualizar mascota
 
   @override

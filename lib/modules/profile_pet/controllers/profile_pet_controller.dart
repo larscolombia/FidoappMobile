@@ -50,11 +50,38 @@ class ProfilePetController extends GetxController {
     // Recibe el perfil de la mascota desde los argumentos
     petProfile = Get.arguments as PetData;
     print('controlador del perfil onInit ${jsonEncode(petProfile)}');
-    // Ahora puedes inicializar las variables con los datos del perfil recibido
-    petName.value = petProfile.name;
-    petBreed.value = petProfile.breed;
-    petDescription.value = petProfile.description ?? '';
+    
+    // Inicializar las variables con los datos del perfil recibido
+    _initializePetData();
+    
+    // Actualizar los datos de la mascota desde la API para asegurar información fresca
+    _refreshPetData();
+  }
 
+  // Método para actualizar los datos de la mascota desde la API
+  void _refreshPetData() {
+    // Obtener la lista actualizada de mascotas
+    final homeController = Get.find<HomeController>();
+    homeController.fetchProfiles();
+    
+    // Usar un timer para esperar a que se complete la carga
+    Future.delayed(const Duration(milliseconds: 500), () {
+      // Buscar la mascota actualizada por ID
+      final updatedPet = homeController.getPetById(petProfile.id);
+      if (updatedPet.id != 0) { // Verificar que se encontró la mascota
+        petProfile = updatedPet;
+        print('Datos de mascota actualizados: ${jsonEncode(petProfile)}');
+        // Actualizar las variables observables con los nuevos datos
+        _initializePetData();
+      }
+    });
+  }
+
+  // Método para inicializar las variables con los datos del perfil
+  void _initializePetData() {
+    petName.value = petProfile.name;
+    petBreed.value = petProfile.breed.isNotEmpty ? petProfile.breed : "Raza no disponible";
+    petDescription.value = petProfile.description ?? '';
     petAge.value = petProfile.age;
     petGender.value = petProfile.gender;
     profileImagePath.value = petProfile.petImage ?? '';
@@ -142,6 +169,23 @@ class ProfilePetController extends GetxController {
         isError: true,
       );
     }
+  }
+
+  // Método para forzar la actualización de datos de la mascota
+  void refreshPetData() {
+    final homeController = Get.find<HomeController>();
+    homeController.fetchProfiles();
+    
+    // Usar un timer para esperar a que se complete la carga
+    Future.delayed(const Duration(milliseconds: 500), () {
+      // Buscar la mascota actualizada por ID
+      final updatedPet = homeController.getPetById(petProfile.id);
+      if (updatedPet.id != 0) {
+        petProfile = updatedPet;
+        _initializePetData();
+        print('Datos de mascota actualizados manualmente: ${jsonEncode(petProfile)}');
+      }
+    });
   }
 
   // Eliminar mascota con confirmación
