@@ -133,6 +133,31 @@ class PetActivityController extends GetxController {
       var petId = diario['pet_id'];
 
       petId = petId != null ? petId.toString() : '';
+      
+      // Obtener el category_id según el tipo de usuario
+      final userType = AuthServiceApis.dataCurrentUser.userType;
+      var categoryIdToSend = '';
+      
+      if (userType == 'user') {
+        // Para usuarios tipo "user", usar la categoría seleccionada
+        categoryIdToSend = diario['category_id'] ?? '';
+      } else {
+        // Para vet/trainer, usar la categoría automática
+        categoryIdToSend = categoria_user_type();
+      }
+      
+      // Log para debuggear
+      print('=== DATOS DEL FORMULARIO DIARIO ===');
+      print('Tipo de usuario: $userType');
+      print('Actividad: ${diario['actividad']}');
+      print('Fecha: ${diario['date']}');
+      print('Categoría seleccionada: ${diario['category_id']}');
+      print('Categoría que se enviará: $categoryIdToSend');
+      print('Notas: ${diario['notas']}');
+      print('Pet ID: ${homeController.selectedProfile.value!.id}');
+      print('Categoría por tipo de usuario: ${categoria_user_type()}');
+      print('=====================================');
+      
       var request = http.MultipartRequest('POST', Uri.parse(createUrl))
         ..headers.addAll({
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
@@ -140,9 +165,16 @@ class PetActivityController extends GetxController {
         })
         ..fields['actividad'] = diario['actividad'] ?? ''
         ..fields['date'] = diario['date'] ?? ''
-        ..fields['category_id'] = categoria_user_type()
+        ..fields['category_id'] = categoryIdToSend
         ..fields['notas'] = diario['notas'] ?? ''
         ..fields['pet_id'] = homeController.selectedProfile.value!.id.toString();
+
+      // Log del body que se envía
+      print('=== BODY ENVIADO AL API ===');
+      request.fields.forEach((key, value) {
+        print('$key: $value');
+      });
+      print('============================');
 
       if (imageFile != null) {
         var stream = http.ByteStream(imageFile.openRead());
@@ -154,8 +186,12 @@ class PetActivityController extends GetxController {
       var response = await request.send();
       var responseBody = await http.Response.fromStream(response);
 
+      print('=== RESPUESTA DEL API ===');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${responseBody.body}');
+      print('==========================');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('response actividades ${jsonEncode(responseBody.body)}');
         Get.dialog(
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
@@ -355,7 +391,27 @@ class PetActivityController extends GetxController {
   }
 
   void updateCategoryField(dynamic value) {
+    print('=== ACTUALIZANDO CATEGORÍA ===');
+    print('Valor seleccionado: $value');
+    print('Tipo de valor: ${value.runtimeType}');
     diario["category_id"] = value;
+    print('Categoría guardada en diario: ${diario["category_id"]}');
+    print('==============================');
+  }
+
+  // Método para obtener el nombre de la categoría automática según el tipo de usuario
+  String getAutoCategoryName() {
+    final userType = AuthServiceApis.dataCurrentUser.userType;
+    switch (userType) {
+      case 'vet':
+        return 'Informe médico';
+      case 'trainer':
+        return 'Entrenamiento';
+      case 'user':
+        return 'Actividad';
+      default:
+        return 'Actividad';
+    }
   }
 
   void searchActivities(String query) {
@@ -470,5 +526,86 @@ class PetActivityController extends GetxController {
     print('filtro ${jsonEncode(result)}');
     // Asignamos a filteredActivities
     filteredActivities.value = result;
+  }
+
+  // Método para eliminar una actividad del diario
+  Future<void> deletePetActivity(int diaryId) async {
+    try {
+      isLoading(true);
+      final url = Uri.parse('${BASE_URL}training-diaries/$diaryId');
+      
+      final response = await http.delete(
+        url,
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      print('Response Status: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Eliminar la actividad de la lista local
+        activities.removeWhere((activity) => activity.id == diaryId);
+        filteredActivities.removeWhere((activity) => activity.id == diaryId);
+        
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Éxito',
+            description: 'El registro ha sido eliminado exitosamente.',
+            primaryButtonText: 'Aceptar',
+            onPrimaryButtonPressed: () {
+              Get.back(); // Cerrar el modal de éxito
+              Get.back(); // Regresar a la pantalla anterior
+            },
+          ),
+          barrierDismissible: false,
+        );
+      } else {
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.error_outline,
+            title: 'Error',
+            description: 'Hubo un problema al eliminar el registro.',
+            primaryButtonText: 'Aceptar',
+            onPrimaryButtonPressed: () => Get.back(),
+          ),
+          barrierDismissible: false,
+        );
+      }
+    } catch (e) {
+      print('Error al eliminar la actividad: $e');
+      Get.dialog(
+        CustomAlertDialog(
+          icon: Icons.error_outline,
+          title: 'Error',
+          description: 'Error al eliminar el registro: $e',
+          primaryButtonText: 'Aceptar',
+          onPrimaryButtonPressed: () => Get.back(),
+        ),
+        barrierDismissible: false,
+      );
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  // Método para mostrar confirmación de eliminación
+  void showDeleteConfirmation(int diaryId, String activityName) {
+    Get.dialog(
+      CustomAlertDialog(
+        icon: Icons.delete_outline,
+        title: "Confirmar eliminación",
+        description: "¿Estás seguro de que deseas eliminar '$activityName'?",
+        buttonCancelar: true,
+        primaryButtonText: "Eliminar",
+        onPrimaryButtonPressed: () async {
+          Get.back(); // Cierra el modal de confirmación
+          await deletePetActivity(diaryId);
+        },
+      ),
+    );
   }
 }

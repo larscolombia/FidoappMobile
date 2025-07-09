@@ -102,7 +102,8 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                     size: 20,
                     titulo: widget.isWithdraw ? 'Retiro' : 'Recarga',
                     callback: () {
-                      Get.back();
+                      // Navegar directamente al dashboard desde el menú
+                      Get.until((route) => route.settings.name == '/dashboard');
                     },
                   ),
 

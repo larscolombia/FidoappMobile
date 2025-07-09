@@ -86,6 +86,8 @@ class ProfilePetController extends GetxController {
     petAge.value = petProfile.age;
     petGender.value = petProfile.gender;
     profileImagePath.value = petProfile.petImage ?? '';
+    petBirthDate.value = petProfile.dateOfBirth ?? '';
+    petWeight.value = petProfile.weight?.toString() ?? '';
     // Puedes agregar más inicializaciones según los datos disponibles en PetData
   }
 
@@ -138,7 +140,6 @@ class ProfilePetController extends GetxController {
       'name': petName.value,
       'breed_name': petBreed.value,
       'size': 'Medium', // Ejemplo, podrías agregar un controlador para esto
-      'date_of_birth': petBirthDate.value,
       'gender': petGender.value,
       'weight': double.tryParse(petWeight.value) ?? 0.0,
       'user_id': petProfile.userId,
@@ -147,6 +148,11 @@ class ProfilePetController extends GetxController {
           profileImagePath.value.isNotEmpty ? profileImagePath.value : null,
       'age': petAge.value,
     };
+
+    // Solo agregar date_of_birth si no está vacío
+    if (petBirthDate.value.isNotEmpty) {
+      updatedData['date_of_birth'] = petBirthDate.value;
+    }
 
     // Llamar al servicio para editar el perfil de la mascota
     final updatedPet = await PetService.postEditPetApi(

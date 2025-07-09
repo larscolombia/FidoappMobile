@@ -10,8 +10,11 @@ import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
+import 'package:pawlly/modules/integracion/model/availability/availability_model.dart';
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
+import 'package:pawlly/modules/components/availability_modal.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/utils/api_end_points.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarController extends GetxController {
@@ -258,6 +261,136 @@ class CalendarController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  // Método para verificar disponibilidad del profesional
+  Future<AvailabilityResponse?> checkProfessionalAvailability({
+    required int employeeId,
+    required String date,
+    required String time,
+    required int serviceId,
+  }) async {
+    try {
+      // Construir la URL con query parameters
+      final uri = Uri.parse('$baseUrl/${APIEndPoints.professionalAvailability}').replace(
+        queryParameters: {
+          'employee_id': employeeId.toString(),
+          'date': date,
+          'time': time,
+          'service_id': serviceId.toString(),
+        },
+      );
+
+      print('URL de disponibilidad: $uri');
+      print('Datos enviados: employee_id=$employeeId, date=$date, time=$time, service_id=$serviceId');
+
+      final response = await http.get(
+        uri,
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      print('Respuesta del servidor: ${response.statusCode} - ${response.body}');
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        return AvailabilityResponse.fromJson(jsonResponse);
+      } else {
+        print('Error al verificar disponibilidad: ${response.statusCode}');
+        print('Cuerpo de respuesta: ${response.body}');
+        return null;
+      }
+    } catch (e) {
+      print('Error al verificar disponibilidad: $e');
+      return null;
+    }
+  }
+
+  // Método para crear evento con verificación de disponibilidad
+  Future<void> createEventWithAvailabilityCheck(BuildContext context) async {
+    // Obtener los datos necesarios del evento
+    final employeeId = userController.selectedUser.value?.id ?? 0;
+    final date = event.value['date']?.toString() ?? '';
+    final time = event.value['event_time']?.toString() ?? '';
+    
+    // Obtener el service_id según el tipo de evento
+    int serviceId = 1; // Valor por defecto
+    if (event.value['tipo'] == 'medico') {
+      serviceId = event.value['service_id'] is int 
+          ? event.value['service_id'] as int 
+          : 1;
+    } else if (event.value['tipo'] == 'entrenamiento') {
+      serviceId = event.value['training_id'] is int 
+          ? event.value['training_id'] as int 
+          : 1;
+    }
+
+    if (employeeId == 0 || date.isEmpty || time.isEmpty) {
+      CustomSnackbar.show(
+        title: "Error",
+        message: "Faltan datos para verificar disponibilidad",
+        isError: true,
+      );
+      return;
+    }
+
+    // Convertir el formato de fecha SOLO para el endpoint de disponibilidad
+    String availabilityDate = _convertDateForAvailability(date);
+
+    print('Fecha original del evento: $date');
+    print('Fecha para disponibilidad: $availabilityDate');
+    print('Hora: $time');
+    print('Employee ID: $employeeId');
+    print('Service ID: $serviceId');
+
+    // Verificar disponibilidad
+    final availabilityResponse = await checkProfessionalAvailability(
+      employeeId: employeeId,
+      date: availabilityDate,
+      time: time,
+      serviceId: serviceId,
+    );
+
+    if (availabilityResponse == null) {
+      CustomSnackbar.show(
+        title: "Error",
+        message: "No se pudo verificar la disponibilidad",
+        isError: true,
+      );
+      return;
+    }
+
+    // Si está disponible, proceder directamente a crear el evento
+    if (!availabilityResponse.isOccupied) {
+      postEvent();
+    } else {
+      // Si está ocupado, mostrar modal con los horarios ocupados
+      AvailabilityModal.showAvailabilityModal(
+        context,
+        availabilityResponse,
+        () {
+          // Callback vacío ya que no se debe continuar si está ocupado
+        },
+      );
+    }
+  }
+
+  // Método auxiliar para convertir fecha solo para disponibilidad
+  String _convertDateForAvailability(String originalDate) {
+    try {
+      if (originalDate.contains('-')) {
+        final parts = originalDate.split('-');
+        if (parts.length == 3) {
+          // Convertir de dd-MM-yyyy a yyyy-MM-dd solo para disponibilidad
+          return '${parts[2]}-${parts[1]}-${parts[0]}';
+        }
+      }
+    } catch (e) {
+      print('Error al convertir fecha para disponibilidad: $e');
+    }
+    return originalDate; // Si no se puede convertir, devolver la original
   }
 
   // Método auxiliar para manejar la creación exitosa de eventos

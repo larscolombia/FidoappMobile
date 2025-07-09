@@ -52,80 +52,75 @@ class DetallesDiario extends StatelessWidget {
                 child: Padding(
                   padding: Styles.paddingAll, // Aplicando el padding global
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(height: 20),
-                      SizedBox(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.sizeOf(context).width - 130,
-                              child: BarraBack(
-                                titulo: 'Sobre este Registro',
-                                size: 20,
-                                callback: () {
-                                  Get.back();
+                      // Header con botón de regresar y editar
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.sizeOf(context).width - 130,
+                            child: BarraBack(
+                              titulo: 'Sobre este Registro',
+                              size: 20,
+                              callback: () {
+                                Get.back();
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            child: Container(
+                              height: 50,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Styles.colorContainer,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  controller.updateField(
+                                    'actividad',
+                                    controller.activitiesOne.value!.actividad,
+                                  );
+                                  controller.updateField(
+                                    'date',
+                                    controller.activitiesOne.value!.date,
+                                  );
+                                  controller.updateField(
+                                    'category_id',
+                                    controller.activitiesOne.value!.categoryId
+                                        .toString(),
+                                  );
+                                  controller.updateField(
+                                    'notas',
+                                    controller.activitiesOne.value!.notas,
+                                  );
+                                  controller.updateField(
+                                    'pet_id',
+                                    controller.activitiesOne.value!.petId
+                                        .toString(),
+                                  );
+                                  controller.updateField(
+                                    'image',
+                                    controller.activitiesOne.value!.image ??
+                                        "",
+                                  );
+                                  Get.to(() => FormularioDiario(isEdit: true));
                                 },
+                                child: SvgPicture.asset(
+                                  'assets/icons/svg/edit-2.svg',
+                                  width: 40,
+                                ),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 20),
-                              child: Container(
-                                height: 50,
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Styles.colorContainer,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    controller.updateField(
-                                      'actividad',
-                                      controller.activitiesOne.value!.actividad,
-                                    );
-                                    controller.updateField(
-                                      'date',
-                                      controller.activitiesOne.value!.date,
-                                    );
-                                    controller.updateField(
-                                      'category_id',
-                                      controller.activitiesOne.value!.categoryId
-                                          .toString(),
-                                    );
-                                    controller.updateField(
-                                      'notas',
-                                      controller.activitiesOne.value!.notas,
-                                    );
-                                    controller.updateField(
-                                      'pet_id',
-                                      controller.activitiesOne.value!.petId
-                                          .toString(),
-                                    );
-                                    controller.updateField(
-                                      'image',
-                                      controller.activitiesOne.value!.image ??
-                                          "",
-                                    );
-                                    //print(controller.diario);
-                                    Get.to(
-                                        () => FormularioDiario(isEdit: true));
-                                  },
-                                  child: SvgPicture.asset(
-                                    'assets/icons/svg/edit-2.svg',
-                                    width:
-                                        40, // Ajusta el tamaño según sea necesario
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
+                      // Título centrado
                       Obx(() {
-                        return SizedBox(
-                          width: 250,
+                        return Center(
                           child: Text(
                             controller.activitiesOne.value!.actividad,
                             textAlign: TextAlign.center,
@@ -138,61 +133,81 @@ class DetallesDiario extends StatelessWidget {
                           ),
                         );
                       }),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Obx(() {
-                              return Text(
-                                'Sobre ${homeController.selectedProfile.value!.name}',
+                      const SizedBox(height: 30),
+                      // Contenido alineado a la izquierda
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Subtítulo "Sobre [nombre mascota]"
+                          Obx(() {
+                            return Text(
+                              'Sobre ${homeController.selectedProfile.value!.name}',
+                              style: TextStyle(
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                  color: Colors.black),
+                            );
+                          }),
+                          const SizedBox(height: 15),
+                          // Descripción
+                          Obx(() {
+                            return Text(
+                              controller.activitiesOne.value!.notas,
+                              textAlign: TextAlign.start,
+                              style: Styles.AvatarComentario,
+                            );
+                          }),
+                          const SizedBox(height: 30),
+                          // Fecha
+                          Obx(() {
+                            return Text(
+                                'Fecha: ${controller.activitiesOne.value!.date}',
                                 style: TextStyle(
                                     fontFamily: 'Lato',
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14,
-                                    color: Colors.black),
-                              );
-                            }),
-                            const SizedBox(height: 10),
-                            Obx(() {
-                              return Text(
-                                controller.activitiesOne.value!.notas,
-                                textAlign: TextAlign.start,
-                                style: Styles.AvatarComentario,
-                              );
-                            }),
-                            const SizedBox(height: 26),
-                            Obx(() {
-                              return Text(
-                                  'Fecha: ${controller.activitiesOne.value!.date}',
-                                  style: TextStyle(
-                                      fontFamily: 'Lato',
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: Colors.black));
-                            }),
-                            const SizedBox(height: 26),
-                            Obx(() {
-                              if (controller.activitiesOne.value!.image ==
-                                  null) {}
-                              return Container(
-                                width: MediaQuery.sizeOf(context).width,
-                                height: MediaQuery.sizeOf(context).height,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: NetworkImage(
-                                        controller.activitiesOne.value!.image ??
-                                            ''),
+                                    color: Colors.black));
+                          }),
+                          const SizedBox(height: 30),
+                          // Imagen centrada (solo si existe)
+                          Obx(() {
+                            if (controller.activitiesOne.value!.image != null && 
+                                controller.activitiesOne.value!.image!.isNotEmpty) {
+                              return Center(
+                                child: Container(
+                                  width: MediaQuery.sizeOf(context).width,
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(controller.activitiesOne.value!.image!),
+                                    ),
+                                    borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                  borderRadius: BorderRadius.circular(20.0),
                                 ),
                               );
-                            }),
-                            const SizedBox(height: 50),
-                          ],
-                        ),
+                            }
+                            return const SizedBox.shrink();
+                          }),
+                          const SizedBox(height: 40),
+                          // Botón de eliminar centrado
+                          Center(
+                            child: TextButton(
+                              onPressed: () {
+                                controller.showDeleteConfirmation(
+                                  controller.activitiesOne.value!.id,
+                                  controller.activitiesOne.value!.actividad,
+                                );
+                              },
+                              child: const Text(
+                                'Eliminar registro',
+                                style: TextStyle(color: Colors.red, fontFamily: "Lato"),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                        ],
                       ),
                     ],
                   ),

@@ -284,9 +284,9 @@ class PetService {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
         });
 
-        // Agregar campos de texto
+        // Agregar campos de texto (solo los que no estén vacíos)
         body.forEach((key, value) {
-          if (key != 'pet_image' && value != null) {
+          if (key != 'pet_image' && value != null && value.toString().isNotEmpty) {
             request.fields[key] = value.toString();
           }
         });

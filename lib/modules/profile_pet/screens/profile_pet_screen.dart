@@ -45,19 +45,40 @@ class ProfilePetScreen extends StatelessWidget {
                       ? controller.profileImagePath.value
                       : 'https://via.placeholder.com/600x400';
 
-                  return CachedNetworkImage(
-                    imageUrl: imageUrl,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    errorWidget: (context, url, error) {
-                      // Imagen predeterminada si falla la carga
-                      return Image.asset(
-                        'assets/images/404.jpg', // Ruta de la imagen predeterminada
+                  return Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.zero, // Sin bordes redondeados para mantener consistencia
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
                         fit: BoxFit.cover,
-                      );
-                    },
+                        width: double.infinity,
+                        height: double.infinity,
+                        placeholder: (context, url) => Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          color: Colors.grey[300],
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) {
+                          // Imagen predeterminada si falla la carga
+                          return Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            color: Colors.grey[300],
+                            child: Image.asset(
+                              'assets/images/404.jpg',
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   );
                 }),
                 // Botón flotante para editar imagen

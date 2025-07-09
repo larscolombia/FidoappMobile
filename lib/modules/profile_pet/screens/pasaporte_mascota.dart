@@ -373,25 +373,30 @@ class PasaporteMascota extends StatelessWidget {
                             callback: () {
                               // Verifica si pet.dateOfBirth no es nulo o vacío
                               print('objeto actulizado ${jsonEncode(pet)}');
+                              
+                              // Crear el mapa de datos para actualizar
+                              Map<String, dynamic> updateData = {
+                                "name": pet.name,
+                                "additional_info": pet.description,
+                                "breed_name": pet.breed,
+                                //"gender": pet.gender,
+                                "weight": pet.weight,
+                                "weight_unit": pet.weightUnit,
+                                "height_unit": pet.heightUnit,
+                                "height": num.parse(pet.height ?? "0"),
+                                "user_id": pet.userId,
+                                // "age": pet.age,
+                                "pet_fur": pet.petFur,
+                                "chip": pet.chip,
+                              };
+                              
+                              // Solo agregar date_of_birth si no está vacío
+                              if (pet.dateOfBirth != null && pet.dateOfBirth!.isNotEmpty) {
+                                updateData["date_of_birth"] = pet.dateOfBirth;
+                              }
+                              
                               // Actualizar los datos de la mascota
-                              petController.updatePet(
-                                pet.id,
-                                {
-                                  "name": pet.name,
-                                  "additional_info": pet.description,
-                                  "date_of_birth": pet.dateOfBirth,
-                                  "breed_name": pet.breed,
-                                  //"gender": pet.gender,
-                                  "weight": pet.weight,
-                                  "weight_unit": pet.weightUnit,
-                                  "height_unit": pet.heightUnit,
-                                  "height": num.parse(pet.height ?? "0"),
-                                  "user_id": pet.userId,
-                                  // "age": pet.age,
-                                  "pet_fur": pet.petFur,
-                                  "chip": pet.chip,
-                                },
-                              );
+                              petController.updatePet(pet.id, updateData);
 
                               // Imprimir metadatos para depuración
                               print('Metadatos: ${json.encode(pet)}');

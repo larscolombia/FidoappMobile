@@ -5,6 +5,7 @@ import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/model/mascotas/mascotas_model.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
 
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'dart:convert';
@@ -115,9 +116,13 @@ class PetControllerv2 extends GetxController {
       print('URL completa: $url');
       print('Cuerpo de la solicitud (JSON): ${jsonEncode(body)}');
 
-      // Convertir todos los valores a cadenas
-      Map<String, String> stringBody = body.map((key, value) {
-        return MapEntry(key, value?.toString() ?? '');
+      // Convertir todos los valores a cadenas y filtrar los vacíos
+      Map<String, String> stringBody = {};
+      body.forEach((key, value) {
+        final stringValue = value?.toString() ?? '';
+        if (stringValue.isNotEmpty) {
+          stringBody[key] = stringValue;
+        }
       });
 
       final response = await http.post(
@@ -133,15 +138,22 @@ class PetControllerv2 extends GetxController {
       print('Respuesta completa: ${response.body}');
 
       if (response.statusCode == 200) {
+        // Actualizar los datos en el controlador
+        fetchPets(); // Recargar la lista de mascotas
+        
+        // Actualizar también el HomeController
+        final homeController = Get.find<HomeController>();
+        homeController.fetchProfiles();
+        
         Get.dialog(
-          //pisa papel
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
-            title: 'Acción Realizada Exitosamente',
-            description: 'Felicidades ¡Tu cuenta ha sido creada!',
+            title: 'Información Actualizada',
+            description: 'La información de la mascota ha sido actualizada correctamente',
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
-              Get.back();
+              Get.back(); // Cerrar el modal
+              Get.back(); // Regresar a la pantalla anterior
             },
           ),
           barrierDismissible: true,

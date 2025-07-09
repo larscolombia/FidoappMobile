@@ -56,19 +56,35 @@ class CourseController extends GetxController {
           'ngrok-skip-browser-warning': 'true',
         },
       );
-      print('Solicitud a: ${Uri.parse(url)}');
-      print('Respuesta HTTP: $response');
 
       if (response.statusCode == 200) {
-        var jsonData = json.decode(response.body);
-        var coursesData = jsonData['data']['courses'] as List;
-        var coursesList =
-            coursesData.map((course) => Course.fromJson(course)).toList();
-        courses.assignAll(coursesList);
+        try {
+          var jsonData = json.decode(response.body);
+          
+          if (jsonData['data'] != null && jsonData['data']['courses'] != null) {
+            var coursesData = jsonData['data']['courses'] as List;
+            var coursesList =
+                coursesData.map((course) => Course.fromJson(course)).toList();
+            courses.assignAll(coursesList);
+          } else {
+            CustomSnackbar.show(
+              title: 'Error',
+              message: 'Estructura de datos inesperada en la respuesta',
+              isError: true,
+            );
+          }
+        } catch (e) {
+          print('Error parsing JSON: $e');
+          CustomSnackbar.show(
+            title: 'Error',
+            message: 'Error al procesar la respuesta del servidor',
+            isError: true,
+          );
+        }
       } else {
         CustomSnackbar.show(
           title: 'Error',
-          message: 'No se pudieron recuperar los cursos',
+          message: 'No se pudieron recuperar los cursos (${response.statusCode})',
           isError: true,
         );
       }

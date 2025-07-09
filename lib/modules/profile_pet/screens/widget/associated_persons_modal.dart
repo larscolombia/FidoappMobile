@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 import 'package:pawlly/components/custom_select_form_field_widget.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/select_user.dart';
@@ -191,8 +192,40 @@ class AssociatedPersonsModal extends StatelessWidget {
                 width: tamano,
                 child: ButtonDefaultWidget(
                   title: 'Invitar Persona ',
-                  callback: () {
-                    Navigator.of(context).pop(); // Cierra el modal
+                  callback: () async {
+                    // Verificar si hay un usuario seleccionado
+                    if (userController.filteredUsers.isNotEmpty) {
+                      final selectedUser = userController.filteredUsers.first;
+                      final email = selectedUser.email ?? '';
+                      
+                      if (email.isNotEmpty) {
+                        // Llamar al endpoint para invitar a la persona
+                        await userController.getSharedOwnersWithEmail(
+                          homeController.selectedProfile.value!.id.toString(),
+                          email,
+                        );
+                        
+                        // Cerrar el modal después de la invitación
+                        Navigator.of(context).pop();
+                        
+                        // Actualizar la lista de personas asociadas
+                        petcontroller.fetchOwnersList(homeController.selectedProfile.value!.id);
+                      } else {
+                        // Mostrar error si no hay email
+                        CustomSnackbar.show(
+                          title: 'Error',
+                          message: 'No se pudo obtener el email del usuario seleccionado',
+                          isError: true,
+                        );
+                      }
+                    } else {
+                      // Mostrar error si no hay usuario seleccionado
+                      CustomSnackbar.show(
+                        title: 'Error',
+                        message: 'Debe seleccionar una persona para invitar',
+                        isError: true,
+                      );
+                    }
                   },
                 ),
               ),

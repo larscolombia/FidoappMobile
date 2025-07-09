@@ -624,9 +624,8 @@ class _CreateEventState extends State<CreateEvent> {
                             }
 
                             if (calendarController.event.value['tipo'] != 'evento') {
-                              // En lugar de mostrar el modal de pago, simplemente publicamos el evento
-                              // ya que ahora todos los eventos son gratuitos
-                              calendarController.postEvent();
+                              // Verificar disponibilidad antes de crear el evento
+                              calendarController.createEventWithAvailabilityCheck(context);
                             } else {
                               calendarController.postEvent();
                             }

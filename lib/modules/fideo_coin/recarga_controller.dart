@@ -151,6 +151,10 @@ class StripeController extends GetxController {
       final transactionController = Get.put(TransactionController());
       balanceController.fetchUserBalance();
       transactionController.fetchTransactions();
+      
+      // Navegar al dashboard y luego a FideCoin
+      Get.until((route) => route.settings.name == '/dashboard');
+      Get.to(() => FideCoin());
     });
   }
 }

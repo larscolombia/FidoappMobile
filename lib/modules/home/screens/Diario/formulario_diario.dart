@@ -12,6 +12,7 @@ import 'package:pawlly/modules/helper/helper.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/categoria/categoria_controller.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 class FormularioDiario extends StatelessWidget {
   final bool isEdit;
@@ -126,34 +127,42 @@ class FormularioDiario extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: margen),
-                          // Categoría
-                          SizedBox(
-                            width: width,
-                            child: // Campo para seleccionar la categoría
-                                Container(
-                              margin: const EdgeInsets.only(top: 20),
-                              child: Obx(() {
-                                return CustomSelectWidget(
-                                  onChange: controller.updateCategoryField,
-                                  placeholder: 'Seleccionar categoría',
-                                  icon: 'assets/icons/patica.png',
-                                  filcolorCustom: Styles.colorContainer,
-                                  items: categoryController.diaryCategories.isNotEmpty
-                                      ? categoryController.diaryCategories.map((b) => SelectItem(label: b.name, value: b.id.toString())).toList()
-                                      : [SelectItem(label: 'No disponible', value: '')],
-                                  validators: [
-                                    (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'El campo categoría es requerido'; // Mensaje de error personalizado
-                                      }
-                                      return null;
-                                    },
-                                  ],
-                                  controller: categoryControllerText, // Validación de Campo requerido
-                                );
-                              }),
-                            ),
-                          ),
+                          // Categoría - Solo mostrar select para usuarios tipo "user"
+                          Builder(builder: (context) {
+                            final userType = AuthServiceApis.dataCurrentUser.userType;
+                            final isUserType = userType == 'user';
+                            
+                            if (isUserType) {
+                              // Mostrar select para usuarios tipo "user"
+                              return Obx(() => SizedBox(
+                                width: width,
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 20),
+                                  child: CustomSelectWidget(
+                                    onChange: controller.updateCategoryField,
+                                    placeholder: 'Seleccionar categoría',
+                                    icon: 'assets/icons/patica.png',
+                                    filcolorCustom: Styles.colorContainer,
+                                    items: categoryController.diaryCategories.isNotEmpty
+                                        ? categoryController.diaryCategories.map((b) => SelectItem(label: b.name, value: b.id.toString())).toList()
+                                        : [SelectItem(label: 'No disponible', value: '')],
+                                    validators: [
+                                      (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'El campo categoría es requerido';
+                                        }
+                                        return null;
+                                      },
+                                    ],
+                                    controller: categoryControllerText,
+                                  ),
+                                ),
+                              ));
+                            } else {
+                              // Para vet/trainer, no mostrar nada relacionado con categoría
+                              return const SizedBox.shrink();
+                            }
+                          }),
                           SizedBox(height: margen),
                           // Fecha
                           SizedBox(
