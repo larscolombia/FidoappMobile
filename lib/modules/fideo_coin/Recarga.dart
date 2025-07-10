@@ -10,6 +10,7 @@ import 'package:pawlly/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:pawlly/modules/fideo_coin/recarga_controller.dart';
 import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RecargarSaldoScreen extends StatefulWidget {
   final bool isWithdraw;
@@ -102,8 +103,8 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                     size: 20,
                     titulo: widget.isWithdraw ? 'Retiro' : 'Recarga',
                     callback: () {
-                      // Navegar directamente al dashboard desde el menú
-                      Get.until((route) => route.settings.name == '/dashboard');
+                      // Regresar a la pantalla anterior
+                      Get.back();
                     },
                   ),
 
@@ -127,6 +128,35 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  
+                  // Ver ofertas link
+                  if (!widget.isWithdraw)
+                    GestureDetector(
+                      onTap: () async {
+                        final Uri url = Uri.parse('https://admin.myfidoapp.com/get-package-list');
+                        if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+                          CustomSnackbar.show(
+                            title: 'Error',
+                            message: 'No se pudo abrir el enlace',
+                            isError: true,
+                          );
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        child: Text(
+                          'Ver ofertas',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Styles.primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  
+                  if (!widget.isWithdraw) const SizedBox(height: 20),
+                  
                   Expanded(
                     child: GridView.builder(
                       itemCount: 12,
