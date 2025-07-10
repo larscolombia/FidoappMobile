@@ -7,6 +7,7 @@ import 'package:pawlly/models/pet_list_res_model.dart';
 import 'package:pawlly/modules/components/custom_checkbox.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
+import 'package:pawlly/modules/profile_pet/controllers/profile_pet_controller.dart';
 import 'package:pawlly/routes/app_pages.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -150,18 +151,26 @@ class CardProfileDog extends StatelessWidget {
                     borderSize: 30,
                     title: 'Ver perfil >',
                     textSize: 12,
-                    callback: () {
-                      print('info pert 2 ${jsonEncode(profile.id)}');
-    
+                    callback: () async {
+                      // Cierra el modal si está abierto
+                      Navigator.of(context).pop();
+
+                      // Elimina el controlador anterior si existe
+                      if (Get.isRegistered<ProfilePetController>()) {
+                        await Get.delete<ProfilePetController>(force: true);
+                      }
+
                       controller.updateProfile(profile);
-    
                       medicalHistoryController.updateField("pet_id", profile.id.toString());
-    
-                      Get.toNamed(
+
+                      // Navega al perfil
+                      await Get.toNamed(
                         Routes.PROFILEPET,
-                        arguments:
-                            profile, // Pasar el perfil de la mascota como argumento
+                        arguments: profile,
                       );
+
+                      // Al volver, refresca el estado si es necesario
+                      controller.fetchProfiles();
                     },
                   ),
                 ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pawlly/components/button_default_widget.dart';
-import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_controller.dart';
 import 'package:pawlly/modules/integracion/controller/transaccion/transaction_controller.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -38,21 +36,20 @@ class _InAppBrowserModalState extends State<InAppBrowserModal> {
           return Container(
             height:
                 MediaQuery.sizeOf(context).height * 0.8, // 80% de la pantalla
-            child: Column(
+            child: Stack(
               children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(16)),
-                    child: WebViewWidget(
-                        controller:
-                            controller), // Usando el controller inicializado
-                  ),
+                // WebView principal
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: WebViewWidget(
+                      controller: controller), // Usando el controller inicializado
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: TextButton(
-                    onPressed: () async {
+                // Botón X en la esquina superior derecha
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: () async {
                       // Actualizar balance y transacciones antes de cerrar
                       final balanceController = Get.put(UserBalanceController());
                       final transactionController = Get.put(TransactionController());
@@ -60,13 +57,18 @@ class _InAppBrowserModalState extends State<InAppBrowserModal> {
                       await transactionController.fetchTransactions();
                       Navigator.of(context).pop();
                     },
-                    child: ButtonDefaultWidget(
-                      title: 'Cerrar',
-                      defaultColor: const Color(0xFFFC9214),
-                      textColor: Styles.whiteColor,
-                      heigthButtom: 48,
-                      borderSize: 12,
-                      showDecoration: true,
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.7),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ),

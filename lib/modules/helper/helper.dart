@@ -11,6 +11,7 @@ import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 class Helper extends GetX {
   const Helper({super.key, required super.builder});
@@ -222,9 +223,21 @@ class Helper extends GetX {
                               isError: false,
                             );
                             if (userController.users.isNotEmpty) {
-                              final randomUser = userController.users[Random().nextInt(userController.users.length)];
-                              calendarController.updateField('owner_id', [randomUser.id]);
-                              userController.selectUser(randomUser);
+                              // Filtrar usuarios excluyendo al usuario actual
+                              final currentUserId = AuthServiceApis.dataCurrentUser.id;
+                              final availableUsers = userController.users.where((user) => user.id != currentUserId).toList();
+                              
+                              if (availableUsers.isNotEmpty) {
+                                final randomUser = availableUsers[Random().nextInt(availableUsers.length)];
+                                calendarController.updateField('owner_id', [randomUser.id]);
+                                userController.selectUser(randomUser);
+                              } else {
+                                CustomSnackbar.show(
+                                  title: 'Aviso',
+                                  message: 'No hay otros usuarios disponibles para asignar aleatoriamente',
+                                  isError: false,
+                                );
+                              }
                             }
                             if (typedEmail.isNotEmpty) {
                               calendarController.updateField('user_email', typedEmail);

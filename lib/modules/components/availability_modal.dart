@@ -34,7 +34,7 @@ class AvailabilityModal {
     description += 'Duración del servicio: ${response.serviceDuration} minutos\n\n';
     
     if (response.occupiedIntervals.isNotEmpty) {
-      description += 'Horarios ocupados:\n';
+      description += 'Este profesional solo estará disponible fuera de estos horarios:\n';
       for (var interval in response.occupiedIntervals) {
         description += '• ${interval.start} - ${interval.end}\n';
       }

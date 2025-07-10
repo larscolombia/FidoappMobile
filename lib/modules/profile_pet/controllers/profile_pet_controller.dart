@@ -49,14 +49,35 @@ class ProfilePetController extends GetxController {
     super.onInit();
     // Obtener el perfil de la mascota desde HomeController
     final homeController = Get.find<HomeController>();
-    petProfile = homeController.selectedProfile.value!;
-    print('controlador del perfil onInit ${jsonEncode(petProfile)}');
-    
-    // Inicializar las variables con los datos del perfil recibido
-    _initializePetData();
-    
-    // Actualizar los datos de la mascota desde la API para asegurar información fresca
-    _refreshPetData();
+    if (homeController.selectedProfile.value != null) {
+      petProfile = homeController.selectedProfile.value!;
+      print('controlador del perfil onInit ${jsonEncode(petProfile)}');
+      
+      // Inicializar las variables con los datos del perfil recibido
+      _initializePetData();
+      
+      // Actualizar los datos de la mascota desde la API para asegurar información fresca
+      _refreshPetData();
+    } else {
+      print('Error: No hay perfil seleccionado en HomeController');
+    }
+  }
+
+  // Método para forzar la reinicialización del controlador
+  void forceReinitialize() {
+    final homeController = Get.find<HomeController>();
+    if (homeController.selectedProfile.value != null) {
+      petProfile = homeController.selectedProfile.value!;
+      _initializePetData();
+      _refreshPetData();
+    }
+  }
+
+  @override
+  void onClose() {
+    // Limpiar recursos cuando se cierre el controlador
+    searchController.dispose();
+    super.onClose();
   }
 
   // Método para actualizar los datos de la mascota desde la API
@@ -229,6 +250,17 @@ class ProfilePetController extends GetxController {
             homeController.profiles
                 .removeWhere((pet) => pet.id == petProfile.id);
 
+            // Verificar si la mascota eliminada era la seleccionada
+            if (homeController.selectedProfile.value?.id == petProfile.id) {
+              // Si hay otras mascotas disponibles, seleccionar la primera
+              if (homeController.profiles.isNotEmpty) {
+                homeController.selectedProfile.value = homeController.profiles.first;
+              } else {
+                // Si no hay más mascotas, limpiar la selección
+                homeController.selectedProfile.value = null;
+              }
+            }
+
             // Muestra un mensaje de éxito
             Get.dialog(
               CustomAlertDialog(
@@ -238,6 +270,8 @@ class ProfilePetController extends GetxController {
                 primaryButtonText: "Aceptar",
                 onPrimaryButtonPressed: () {
                   Get.close(3); // Cierra todos los modales abiertos
+                  // Navegar de vuelta a la pantalla anterior
+                  Get.back();
                 },
               ),
               barrierDismissible: false,

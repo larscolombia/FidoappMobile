@@ -24,6 +24,7 @@ import 'package:pawlly/modules/integracion/model/lista_categoria_servicio/catego
 import 'package:pawlly/modules/integracion/model/lista_categoria_servicio/service_model.dart';
 import 'package:pawlly/modules/integracion/model/servicio_entrenador_categoria/entrenador_servicio_model.dart' as TrainerCategory;
 import 'package:pawlly/modules/integracion/model/servicio_entrenador_categoria/service_duration.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({Key? key}) : super(key: key);
@@ -67,9 +68,22 @@ class _CreateEventState extends State<CreateEvent> {
 
   void _assignRandomUser() {
     if (userController.users.isNotEmpty) {
-      final randomUser = userController.users[Random().nextInt(userController.users.length)];
-      userController.selectUser(randomUser);
-      calendarController.updateField('owner_id', [randomUser.id]);
+      // Filtrar usuarios excluyendo al usuario actual
+      final currentUserId = AuthServiceApis.dataCurrentUser.id;
+      final availableUsers = userController.users.where((user) => user.id != currentUserId).toList();
+      
+      if (availableUsers.isNotEmpty) {
+        final randomUser = availableUsers[Random().nextInt(availableUsers.length)];
+        userController.selectUser(randomUser);
+        calendarController.updateField('owner_id', [randomUser.id]);
+      } else {
+        // Si no hay usuarios disponibles (solo está el usuario actual), mostrar mensaje
+        CustomSnackbar.show(
+          title: 'Aviso',
+          message: 'No hay otros usuarios disponibles para asignar aleatoriamente',
+          isError: false,
+        );
+      }
     }
   }
 
