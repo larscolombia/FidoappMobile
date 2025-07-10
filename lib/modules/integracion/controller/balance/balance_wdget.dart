@@ -94,32 +94,36 @@ class Balance extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: 140,
-                    height: 46,
-                    child: ButtonDefaultWidget(
-                      textSize: 12,
-                      callback: () {
-                        controller.fetchUserBalance();
-                      },
-                      title: 'Actualizar Saldo',
+                  Expanded(
+                    child: Container(
+                      height: 46,
+                      margin: EdgeInsets.only(right: 5),
+                      child: ButtonDefaultWidget(
+                        textSize: screenWidth < 360 ? 10 : 12,
+                        callback: () {
+                          controller.fetchUserBalance();
+                        },
+                        title: 'Actualizar',
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    width: 140,
-                    height: 46,
-                    child: ButtonDefaultWidget(
-                      textSize: 12,
-                      defaultColor: Color(0xff37AE4D),
-                      callback: () {
-                        bool isWithdraw = AuthServiceApis.dataCurrentUser.userType == 'vet' ||
-                            AuthServiceApis.dataCurrentUser.userType == 'trainer';
-                        Get.to(() => RecargarSaldoScreen(isWithdraw: isWithdraw));
-                      },
-                      title: AuthServiceApis.dataCurrentUser.userType == 'vet' ||
-                              AuthServiceApis.dataCurrentUser.userType == 'trainer'
-                          ? 'Retirar Saldo'
-                          : 'Recargar Saldo',
+                  Expanded(
+                    child: Container(
+                      height: 46,
+                      margin: EdgeInsets.only(left: 5),
+                      child: ButtonDefaultWidget(
+                        textSize: screenWidth < 360 ? 10 : 12,
+                        defaultColor: Color(0xff37AE4D),
+                        callback: () {
+                          bool isWithdraw = AuthServiceApis.dataCurrentUser.userType == 'vet' ||
+                              AuthServiceApis.dataCurrentUser.userType == 'trainer';
+                          Get.to(() => RecargarSaldoScreen(isWithdraw: isWithdraw));
+                        },
+                        title: AuthServiceApis.dataCurrentUser.userType == 'vet' ||
+                                AuthServiceApis.dataCurrentUser.userType == 'trainer'
+                            ? 'Retirar Saldo'
+                            : 'Recargar Saldo',
+                      ),
                     ),
                   ),
                 ],

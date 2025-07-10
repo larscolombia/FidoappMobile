@@ -185,45 +185,82 @@ class UserController extends GetxController {
     isLoading.value = true;
 
     try {
+      final requestBody = json.encode({
+        "email": email,
+      });
+      
+      print('Enviando petición a: $url');
+      print('Body de la petición: $requestBody');
+      print('Email a enviar: $email');
+
       final response = await http.post(
         url,
         headers: {
           'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
           'Content-Type': 'application/json',
         },
-        body: json.encode({
-          // Corregido: "email" en lugar de "emaul"
-          "email": email,
-        }),
+        body: requestBody,
       );
 
-      print('Respuesta agregar usuario: ${response}');
+      print('Respuesta agregar usuario: ${response.statusCode} - ${response.body}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         // Decodificamos la respuesta si es exitosa
         final data = json.decode(response.body);
-
+        print('Respuesta del servidor: $data');
+        
+        // Verificar si la respuesta indica éxito
+        if (data['success'] == true || data['status'] == true || data['message']?.toString().toLowerCase().contains('exitosamente') == true) {
+          final message = data['message'] ?? 'Persona agregada exitosamente';
+          CustomSnackbar.show(
+            title: 'Éxito',
+            message: message,
+            isError: false,
+          );
+        } else {
+          // El backend respondió con éxito pero indicó que algo falló
+          final message = data['message'] ?? 'Hubo un error al agregar la persona';
+          CustomSnackbar.show(
+            title: 'Error',
+            message: message,
+            isError: true,
+          );
+        }
+      } else if (response.statusCode == 404) {
+        // Usuario no encontrado - esto es esperado cuando el usuario no existe
+        final data = json.decode(response.body);
+        final message = data['message'] ?? 'Usuario no encontrado. Se ha enviado una invitación.';
         CustomSnackbar.show(
-          title: 'Éxito',
-          message: 'Persona agregada exitosamente',
+          title: 'Invitación enviada',
+          message: message,
           isError: false,
         );
-
-        // Aquí puedes retornar o manipular la data obtenida
+      } else if (response.statusCode == 422) {
+        // Error de validación
+        final data = json.decode(response.body);
+        final message = data['message'] ?? 'Datos inválidos';
+        CustomSnackbar.show(
+          title: 'Error de validación',
+          message: message,
+          isError: true,
+        );
       } else {
+        // Otros errores
+        final data = json.decode(response.body);
+        final message = data['message'] ?? 'Hubo un error al agregar la persona';
         CustomSnackbar.show(
           title: 'Error',
-          message: 'Hubo un error al agregar la persona',
+          message: message,
           isError: true,
         );
       }
     } catch (error) {
+      print('Error de conexión: $error');
       CustomSnackbar.show(
         title: 'Error',
-        message: 'Error del servidor',
+        message: 'Error de conexión con el servidor',
         isError: true,
       );
-      print('Error de conexión: $error');
     } finally {
       isLoading.value = false;
     }

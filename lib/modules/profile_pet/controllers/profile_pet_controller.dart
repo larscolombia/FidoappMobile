@@ -50,14 +50,14 @@ class ProfilePetController extends GetxController {
     // Obtener el perfil de la mascota desde HomeController
     final homeController = Get.find<HomeController>();
     if (homeController.selectedProfile.value != null) {
-      petProfile = homeController.selectedProfile.value!;
-      print('controlador del perfil onInit ${jsonEncode(petProfile)}');
-      
-      // Inicializar las variables con los datos del perfil recibido
-      _initializePetData();
-      
-      // Actualizar los datos de la mascota desde la API para asegurar información fresca
-      _refreshPetData();
+    petProfile = homeController.selectedProfile.value!;
+    print('controlador del perfil onInit ${jsonEncode(petProfile)}');
+    
+    // Inicializar las variables con los datos del perfil recibido
+    _initializePetData();
+    
+    // Actualizar los datos de la mascota desde la API para asegurar información fresca
+    _refreshPetData();
     } else {
       print('Error: No hay perfil seleccionado en HomeController');
     }

@@ -74,8 +74,8 @@ class _CreateEventState extends State<CreateEvent> {
       
       if (availableUsers.isNotEmpty) {
         final randomUser = availableUsers[Random().nextInt(availableUsers.length)];
-        userController.selectUser(randomUser);
-        calendarController.updateField('owner_id', [randomUser.id]);
+      userController.selectUser(randomUser);
+      calendarController.updateField('owner_id', [randomUser.id]);
       } else {
         // Si no hay usuarios disponibles (solo está el usuario actual), mostrar mensaje
         CustomSnackbar.show(

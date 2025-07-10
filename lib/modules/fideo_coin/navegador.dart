@@ -41,9 +41,9 @@ class _InAppBrowserModalState extends State<InAppBrowserModal> {
                 // WebView principal
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: WebViewWidget(
+                    child: WebViewWidget(
                       controller: controller), // Usando el controller inicializado
-                ),
+                  ),
                 // Botón X en la esquina superior derecha
                 Positioned(
                   top: 8,

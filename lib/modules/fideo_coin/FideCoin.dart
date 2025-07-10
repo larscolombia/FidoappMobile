@@ -158,7 +158,7 @@ class Movimientos extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 SizedBox(
-                  width: 180,
+                  width: 160,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -190,9 +190,10 @@ class Movimientos extends StatelessWidget {
           Expanded(
             child: Text(
               '\$ ${(amount)}',
+              textAlign: TextAlign.right,
               style: TextStyle(
                 fontFamily: 'Lato',
-                fontSize: 18,
+                fontSize: MediaQuery.sizeOf(context).width < 360 ? 12 : 14,
                 fontWeight: FontWeight.w700,
                 color: Colors.black,
               ),

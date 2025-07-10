@@ -114,35 +114,35 @@ class VerPasaporteMascota extends StatelessWidget {
                         width: ancho,
                         height: 200,
                         child: Center(
-                          child: Obx(() {
-                            final imageUrl =
-                                _homeController.selectedProfile.value!.petImage ??
-                                    'https://via.placeholder.com/600x400';
+                        child: Obx(() {
+                          final imageUrl =
+                              _homeController.selectedProfile.value!.petImage ??
+                                  'https://via.placeholder.com/600x400';
 
                             return CircleAvatar(
                               radius: 80, // Radio del círculo
                               backgroundColor: Colors.grey[200], // Color de fondo
                               child: ClipOval(
                                 child: CachedNetworkImage(
-                                  imageUrl: imageUrl,
+                            imageUrl: imageUrl,
                                   width: 160, // Ancho del círculo
                                   height: 160, // Alto del círculo
                                   fit: BoxFit.cover, // Mantener proporciones
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                  errorWidget: (context, url, error) {
-                                    return Image.asset(
-                                      'assets/images/404.jpg',
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            errorWidget: (context, url, error) {
+                              return Image.asset(
+                                'assets/images/404.jpg',
                                       width: 160,
                                       height: 160,
-                                      fit: BoxFit.cover,
-                                    );
-                                  },
+                                fit: BoxFit.cover,
+                              );
+                            },
                                 ),
                               ),
-                            );
-                          }),
+                          );
+                        }),
                         ),
                       ),
                       SizedBox(height: margen),

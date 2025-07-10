@@ -67,12 +67,13 @@ class AssociatedPersonsModal extends StatelessWidget {
               ],
             ),
 
-            // Input de correo electrónico (sin Obx ya que no se utiliza ninguna variable reactiva aquí)
+            // Input de correo electrónico
             Center(
               child: Container(
                 width: MediaQuery.sizeOf(context).width,
                 margin: const EdgeInsets.only(top: 20),
                 child: InputText(
+                  controller: controller.emailController.value,
                   placeholderSvg: 'assets/icons/svg/sms.svg',
                   placeholder: 'Correo electrónico',
                   onChanged: (value) {
@@ -185,7 +186,7 @@ class AssociatedPersonsModal extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Botón de Cerrar
+            // Botón de Invitar
             Align(
               alignment: Alignment.center,
               child: SizedBox(
@@ -193,17 +194,33 @@ class AssociatedPersonsModal extends StatelessWidget {
                 child: ButtonDefaultWidget(
                   title: 'Invitar Persona ',
                   callback: () async {
-                    // Verificar si hay un usuario seleccionado
+                    // Obtener el email del input
+                    final email = controller.emailController.value.text.trim();
+                    print('Email obtenido del input: $email');
+                    
+                    if (email.isEmpty) {
+                      CustomSnackbar.show(
+                        title: 'Error',
+                        message: 'Debe ingresar un correo electrónico',
+                        isError: true,
+                      );
+                      return;
+                    }
+                    
+                    // Verificar si hay un usuario seleccionado (usuario existente)
                     if (userController.filteredUsers.isNotEmpty) {
                       final selectedUser = userController.filteredUsers.first;
-                      final email = selectedUser.email ?? '';
+                      final selectedEmail = selectedUser.email ?? '';
                       
-                      if (email.isNotEmpty) {
-                        // Llamar al endpoint para invitar a la persona
+                      if (selectedEmail.isNotEmpty) {
+                        // Usuario existe, proceder normalmente
                         await userController.getSharedOwnersWithEmail(
                           homeController.selectedProfile.value!.id.toString(),
-                          email,
+                          selectedEmail,
                         );
+                        
+                        // Limpiar el campo de email
+                        controller.emailController.value.clear();
                         
                         // Cerrar el modal después de la invitación
                         Navigator.of(context).pop();
@@ -211,7 +228,6 @@ class AssociatedPersonsModal extends StatelessWidget {
                         // Actualizar la lista de personas asociadas
                         petcontroller.fetchOwnersList(homeController.selectedProfile.value!.id);
                       } else {
-                        // Mostrar error si no hay email
                         CustomSnackbar.show(
                           title: 'Error',
                           message: 'No se pudo obtener el email del usuario seleccionado',
@@ -219,11 +235,43 @@ class AssociatedPersonsModal extends StatelessWidget {
                         );
                       }
                     } else {
-                      // Mostrar error si no hay usuario seleccionado
-                      CustomSnackbar.show(
-                        title: 'Error',
-                        message: 'Debe seleccionar una persona para invitar',
-                        isError: true,
+                      // Usuario no existe, mostrar alerta y enviar invitación
+                      Get.dialog(
+                        AlertDialog(
+                          title: const Text('Usuario no encontrado'),
+                          content: const Text(
+                            'El usuario no se encuentra inscrito en la plataforma. Se enviará una invitación al correo ingresado.',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Get.back(),
+                              child: const Text('Cancelar'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                Get.back(); // Cerrar el diálogo
+                                
+                                print('Enviando invitación para usuario no existente con email: $email');
+                                
+                                // Enviar invitación con el email ingresado
+                                await userController.getSharedOwnersWithEmail(
+                                  homeController.selectedProfile.value!.id.toString(),
+                                  email,
+                                );
+                                
+                                // Limpiar el campo de email
+                                controller.emailController.value.clear();
+                                
+                                // Cerrar el modal después de la invitación
+                                Navigator.of(context).pop();
+                                
+                                // Actualizar la lista de personas asociadas
+                                petcontroller.fetchOwnersList(homeController.selectedProfile.value!.id);
+                              },
+                              child: const Text('Enviar Invitación'),
+                            ),
+                          ],
+                        ),
                       );
                     }
                   },

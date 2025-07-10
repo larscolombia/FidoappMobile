@@ -159,10 +159,10 @@ class CardProfileDog extends StatelessWidget {
                       if (Get.isRegistered<ProfilePetController>()) {
                         await Get.delete<ProfilePetController>(force: true);
                       }
-
+    
                       controller.updateProfile(profile);
                       medicalHistoryController.updateField("pet_id", profile.id.toString());
-
+    
                       // Navega al perfil
                       await Get.toNamed(
                         Routes.PROFILEPET,

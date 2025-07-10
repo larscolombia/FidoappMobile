@@ -229,8 +229,8 @@ class Helper extends GetX {
                               
                               if (availableUsers.isNotEmpty) {
                                 final randomUser = availableUsers[Random().nextInt(availableUsers.length)];
-                                calendarController.updateField('owner_id', [randomUser.id]);
-                                userController.selectUser(randomUser);
+                              calendarController.updateField('owner_id', [randomUser.id]);
+                              userController.selectUser(randomUser);
                               } else {
                                 CustomSnackbar.show(
                                   title: 'Aviso',
