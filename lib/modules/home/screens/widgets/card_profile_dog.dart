@@ -130,8 +130,8 @@ class CardProfileDog extends StatelessWidget {
                 // Breed
                 Text(
                   profile.gender == "female"
-                      ? 'Femenino'
-                      : 'Masculino',
+                      ? 'Hembra'
+                      : 'Macho',
                   style: const TextStyle(
                     fontFamily: 'Lato',
                     fontSize: 12,

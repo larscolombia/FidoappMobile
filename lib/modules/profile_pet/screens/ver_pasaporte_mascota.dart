@@ -205,8 +205,8 @@ class VerPasaporteMascota extends StatelessWidget {
                       InfoMascota(
                         titulo: 'Sexo',
                         value: mascota.gender == "female"
-                            ? 'Femenino'
-                            : 'Masculino',
+                            ? 'Hembra'
+                            : 'Macho',
                       ),
                       InfoMascota(
                         titulo: 'Raza',

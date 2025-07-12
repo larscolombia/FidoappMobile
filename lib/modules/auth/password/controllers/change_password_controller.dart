@@ -20,8 +20,10 @@ class ChangePasswordController extends GetxController {
 
   @override
   void onInit() {
-    oldPasswordCont.text =
-        getValueFromLocal(SharedPreferenceConst.USER_PASSWORD);
+    final userPassword = getValueFromLocal(SharedPreferenceConst.USER_PASSWORD);
+    if (userPassword is String) {
+      oldPasswordCont.text = userPassword;
+    }
     super.onInit();
   }
 
@@ -29,8 +31,8 @@ class ChangePasswordController extends GetxController {
     try {
       isLoading(true);
 
-      if (getValueFromLocal(SharedPreferenceConst.USER_PASSWORD) !=
-          oldPasswordCont.text.trim()) {
+      final currentPassword = getValueFromLocal(SharedPreferenceConst.USER_PASSWORD);
+      if (currentPassword != oldPasswordCont.text.trim()) {
         CustomSnackbar.show(
           title: 'Error',
           message: locale.value.yourOldPasswordDoesnT,
@@ -55,8 +57,9 @@ class ChangePasswordController extends GetxController {
       }
 
       hideKeyBoardWithoutContext();
+      final storedPassword = getValueFromLocal(SharedPreferenceConst.USER_PASSWORD);
       Map<String, dynamic> req = {
-        'old_password': getValueFromLocal(SharedPreferenceConst.USER_PASSWORD),
+        'old_password': storedPassword,
         'new_password': confirmPasswordCont.text.trim(),
       };
 

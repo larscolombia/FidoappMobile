@@ -40,6 +40,29 @@ String genderToEnglish(String gender) {
   }
 }
 
+// Función para normalizar el formato de fecha
+String normalizeDateFormat(String? date) {
+  if (date == null || date.isEmpty) return '';
+  
+  // Si ya está en formato yyyy/mm/dd, devolverlo tal como está
+  if (date.contains('/') && date.split('/').length == 3) {
+    return date;
+  }
+  
+  // Si está en formato dd-mm-yyyy, convertirlo a yyyy/mm/dd
+  if (date.contains('-') && date.split('-').length == 3) {
+    List<String> parts = date.split('-');
+    if (parts.length == 3) {
+      String day = parts[0];
+      String month = parts[1];
+      String year = parts[2];
+      return '$year/$month/$day';
+    }
+  }
+  
+  return date; // Si no coincide con ningún formato, devolver original
+}
+
 
 class PasaporteMascota extends StatelessWidget {
   PasaporteMascota({super.key});
@@ -59,9 +82,19 @@ class PasaporteMascota extends StatelessWidget {
     final RxString genderValue = pet.gender.obs;
 
     var margin = Helper.margenDefault;
+    print('=== LOG INICIAL FECHA DE NACIMIENTO ===');
+    print('pet.dateOfBirth inicial: "${pet.dateOfBirth}"');
+    print('Tipo de pet.dateOfBirth inicial: ${pet.dateOfBirth.runtimeType}');
     if (pet.dateOfBirth != null) {
-      dateController.text = pet.dateOfBirth!;
+      String normalizedDate = normalizeDateFormat(pet.dateOfBirth);
+      dateController.text = normalizedDate;
+      pet.dateOfBirth = normalizedDate; // Actualizar también el objeto pet
+      print('✅ dateController.text asignado: "${dateController.text}"');
+      print('✅ pet.dateOfBirth normalizado: "${pet.dateOfBirth}"');
+    } else {
+      print('❌ pet.dateOfBirth es null, no se asigna al dateController');
     }
+    print('================================');
 
     return Scaffold(
       body: Stack(
@@ -211,9 +244,16 @@ class PasaporteMascota extends StatelessWidget {
                           placeholder: '',
                           controller: dateController,
                           onChanged: (value) {
-                            pet.dateOfBirth = value;
-                            print(
-                                'Fecha de nacimiento actualizada: ${pet.dateOfBirth}');
+                            pet.dateOfBirth = normalizeDateFormat(value);
+                            print('=== LOG FECHA DE NACIMIENTO ===');
+                            print('Valor recibido en onChanged: "$value"');
+                            print('Valor normalizado: "${normalizeDateFormat(value)}"');
+                            print('Tipo de valor: ${value.runtimeType}');
+                            print('pet.dateOfBirth después de asignar: "${pet.dateOfBirth}"');
+                            print('Tipo de pet.dateOfBirth: ${pet.dateOfBirth.runtimeType}');
+                            print('Es null? ${pet.dateOfBirth == null}');
+                            print('Es vacío? ${pet.dateOfBirth?.isEmpty}');
+                            print('================================');
                           },
                         ),
                       ),
@@ -379,7 +419,7 @@ class PasaporteMascota extends StatelessWidget {
                                 "name": pet.name,
                                 "additional_info": pet.description,
                                 "breed_name": pet.breed,
-                                //"gender": pet.gender,
+                                "gender": pet.gender,
                                 "weight": pet.weight,
                                 "weight_unit": pet.weightUnit,
                                 "height_unit": pet.heightUnit,
@@ -390,10 +430,30 @@ class PasaporteMascota extends StatelessWidget {
                                 "chip": pet.chip,
                               };
                               
+                              // Logs para diagnosticar la fecha de nacimiento
+                              print('=== LOG ENVÍO FECHA DE NACIMIENTO ===');
+                              print('pet.dateOfBirth: "${pet.dateOfBirth}"');
+                              print('Tipo de pet.dateOfBirth: ${pet.dateOfBirth.runtimeType}');
+                              print('Es null? ${pet.dateOfBirth == null}');
+                              print('Es vacío? ${pet.dateOfBirth?.isEmpty}');
+                              print('dateController.text: "${dateController.text}"');
+                              print('Tipo de dateController.text: ${dateController.text.runtimeType}');
+                              print('dateController.text es vacío? ${dateController.text.isEmpty}');
+                              
                               // Solo agregar date_of_birth si no está vacío
                               if (pet.dateOfBirth != null && pet.dateOfBirth!.isNotEmpty) {
                                 updateData["date_of_birth"] = pet.dateOfBirth;
+                                print('✅ Fecha agregada al updateData: "${pet.dateOfBirth}"');
+                              } else {
+                                print('❌ Fecha NO agregada al updateData - es null o vacía');
+                                // Intentar usar el valor del controlador si pet.dateOfBirth está vacío
+                                if (dateController.text.isNotEmpty) {
+                                  String normalizedDate = normalizeDateFormat(dateController.text);
+                                  updateData["date_of_birth"] = normalizedDate;
+                                  print('✅ Usando dateController.text normalizado: "$normalizedDate"');
+                                }
                               }
+                              print('================================');
                               
                               // Actualizar los datos de la mascota
                               petController.updatePet(pet.id, updateData);

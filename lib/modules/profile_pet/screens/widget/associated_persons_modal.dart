@@ -67,22 +67,6 @@ class AssociatedPersonsModal extends StatelessWidget {
               ],
             ),
 
-            // Input de correo electrónico
-            Center(
-              child: Container(
-                width: MediaQuery.sizeOf(context).width,
-                margin: const EdgeInsets.only(top: 20),
-                child: InputText(
-                  controller: controller.emailController.value,
-                  placeholderSvg: 'assets/icons/svg/sms.svg',
-                  placeholder: 'Correo electrónico',
-                  onChanged: (value) {
-                    userController.filterUsers(value);
-                  },
-                ),
-              ),
-            ),
-
             // Selector del rol
             Center(
               child: Container(
@@ -101,18 +85,51 @@ class AssociatedPersonsModal extends StatelessWidget {
                     switch (value) {
                       case 'Veterinario':
                         userController.type.value = 'vet';
-                        userController.fetchUsers();
+                        userController.fetchUsers().then((_) {
+                          // Mantener el filtro de correo después de cambiar el rol
+                          final currentEmail = controller.emailController.value.text.trim();
+                          if (currentEmail.isNotEmpty) {
+                            userController.filterUsers(currentEmail);
+                          }
+                          // Limpiar selección cuando cambia el rol
+                          userController.deselectUserForInvitation();
+                        });
                         break;
                       case 'Entrenador':
                         userController.type.value = 'trainer';
-                        userController.fetchUsers();
+                        userController.fetchUsers().then((_) {
+                          // Mantener el filtro de correo después de cambiar el rol
+                          final currentEmail = controller.emailController.value.text.trim();
+                          if (currentEmail.isNotEmpty) {
+                            userController.filterUsers(currentEmail);
+                          }
+                          // Limpiar selección cuando cambia el rol
+                          userController.deselectUserForInvitation();
+                        });
                         break;
                       case 'Dueño':
                         userController.type.value = 'User';
-                        userController.fetchUsers();
+                        userController.fetchUsers().then((_) {
+                          // Mantener el filtro de correo después de cambiar el rol
+                          final currentEmail = controller.emailController.value.text.trim();
+                          if (currentEmail.isNotEmpty) {
+                            userController.filterUsers(currentEmail);
+                          }
+                          // Limpiar selección cuando cambia el rol
+                          userController.deselectUserForInvitation();
+                        });
                         break;
                       default:
                         userController.type.value = 'vet';
+                        userController.fetchUsers().then((_) {
+                          // Mantener el filtro de correo después de cambiar el rol
+                          final currentEmail = controller.emailController.value.text.trim();
+                          if (currentEmail.isNotEmpty) {
+                            userController.filterUsers(currentEmail);
+                          }
+                          // Limpiar selección cuando cambia el rol
+                          userController.deselectUserForInvitation();
+                        });
                     }
                   },
                   items: const [
@@ -120,6 +137,24 @@ class AssociatedPersonsModal extends StatelessWidget {
                     'Entrenador',
                     'Dueño',
                   ],
+                ),
+              ),
+            ),
+
+            // Input de correo electrónico
+            Center(
+              child: Container(
+                width: MediaQuery.sizeOf(context).width,
+                margin: const EdgeInsets.only(top: 20),
+                child: InputText(
+                  controller: controller.emailController.value,
+                  placeholderSvg: 'assets/icons/svg/sms.svg',
+                  placeholder: 'Correo electrónico',
+                  onChanged: (value) {
+                    userController.filterUsers(value);
+                    // Limpiar selección cuando cambia el filtro
+                    userController.deselectUserForInvitation();
+                  },
                 ),
               ),
             ),
@@ -169,12 +204,29 @@ class AssociatedPersonsModal extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               bottom:
                                   10), // Espacio vertical entre las tarjetas
-                          child: SelectedAvatar(
-                            nombre: person.fullName ?? '',
-                            imageUrl: person.profileImage ?? '',
-                            profesion:
-                                Helper.tipoUsuario(person.userType ?? ''),
-                            showArrow: false,
+                          child: GestureDetector(
+                            onTap: () {
+                              // Seleccionar usuario para invitación
+                              userController.selectUserForInvitation(person);
+                            },
+                            child: Obx(() {
+                              final isSelected = userController.selectedUserForInvitation.value?.id == person.id;
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: isSelected ? const Color(0xFFFC9214) : const Color(0xFFEFEFEF),
+                                    width: isSelected ? 2 : 1,
+                                  ),
+                                ),
+                                child: SelectedAvatar(
+                                  nombre: person.fullName ?? '',
+                                  imageUrl: person.profileImage ?? '',
+                                  profesion: Helper.tipoUsuario(person.userType ?? ''),
+                                  showArrow: false,
+                                ),
+                              );
+                            }),
                           ),
                         );
                       }).toList(),
@@ -194,11 +246,23 @@ class AssociatedPersonsModal extends StatelessWidget {
                 child: ButtonDefaultWidget(
                   title: 'Invitar Persona ',
                   callback: () async {
-                    // Obtener el email del input
-                    final email = controller.emailController.value.text.trim();
-                    print('Email obtenido del input: $email');
+                    // Determinar qué email usar: del usuario seleccionado o del input
+                    String emailToSend;
+                    String emailSource;
                     
-                    if (email.isEmpty) {
+                    if (userController.selectedUserForInvitation.value != null) {
+                      // Usar el email del usuario seleccionado
+                      emailToSend = userController.selectedUserEmail.value;
+                      emailSource = 'usuario seleccionado';
+                    } else {
+                      // Usar el email del input
+                      emailToSend = controller.emailController.value.text.trim();
+                      emailSource = 'input';
+                    }
+                    
+                    print('Email a enviar: $emailToSend (fuente: $emailSource)');
+                    
+                    if (emailToSend.isEmpty) {
                       CustomSnackbar.show(
                         title: 'Error',
                         message: 'Debe ingresar un correo electrónico',
@@ -207,33 +271,33 @@ class AssociatedPersonsModal extends StatelessWidget {
                       return;
                     }
                     
+                    // Verificar si hay un usuario seleccionado cuando hay resultados filtrados
+                    if (userController.filteredUsers.isNotEmpty && userController.selectedUserForInvitation.value == null) {
+                      CustomSnackbar.show(
+                        title: 'Error',
+                        message: 'Debe seleccionar una persona de la lista',
+                        isError: true,
+                      );
+                      return;
+                    }
+                    
                     // Verificar si hay un usuario seleccionado (usuario existente)
-                    if (userController.filteredUsers.isNotEmpty) {
-                      final selectedUser = userController.filteredUsers.first;
-                      final selectedEmail = selectedUser.email ?? '';
+                    if (userController.selectedUserForInvitation.value != null) {
+                      // Usuario existe, proceder normalmente
+                      await userController.getSharedOwnersWithEmail(
+                        homeController.selectedProfile.value!.id.toString(),
+                        emailToSend,
+                      );
                       
-                      if (selectedEmail.isNotEmpty) {
-                        // Usuario existe, proceder normalmente
-                        await userController.getSharedOwnersWithEmail(
-                          homeController.selectedProfile.value!.id.toString(),
-                          selectedEmail,
-                        );
-                        
-                        // Limpiar el campo de email
-                        controller.emailController.value.clear();
-                        
-                        // Cerrar el modal después de la invitación
-                        Navigator.of(context).pop();
-                        
-                        // Actualizar la lista de personas asociadas
-                        petcontroller.fetchOwnersList(homeController.selectedProfile.value!.id);
-                      } else {
-                        CustomSnackbar.show(
-                          title: 'Error',
-                          message: 'No se pudo obtener el email del usuario seleccionado',
-                          isError: true,
-                        );
-                      }
+                      // Limpiar el campo de email y la selección
+                      controller.emailController.value.clear();
+                      userController.deselectUserForInvitation();
+                      
+                      // Cerrar el modal después de la invitación
+                      Navigator.of(context).pop();
+                      
+                      // Actualizar la lista de personas asociadas
+                      petcontroller.fetchOwnersList(homeController.selectedProfile.value!.id);
                     } else {
                       // Usuario no existe, mostrar alerta y enviar invitación
                       Get.dialog(
@@ -251,16 +315,17 @@ class AssociatedPersonsModal extends StatelessWidget {
                               onPressed: () async {
                                 Get.back(); // Cerrar el diálogo
                                 
-                                print('Enviando invitación para usuario no existente con email: $email');
+                                print('Enviando invitación para usuario no existente con email: $emailToSend');
                                 
                                 // Enviar invitación con el email ingresado
                                 await userController.getSharedOwnersWithEmail(
                                   homeController.selectedProfile.value!.id.toString(),
-                                  email,
+                                  emailToSend,
                                 );
                                 
-                                // Limpiar el campo de email
+                                // Limpiar el campo de email y la selección
                                 controller.emailController.value.clear();
+                                userController.deselectUserForInvitation();
                                 
                                 // Cerrar el modal después de la invitación
                                 Navigator.of(context).pop();

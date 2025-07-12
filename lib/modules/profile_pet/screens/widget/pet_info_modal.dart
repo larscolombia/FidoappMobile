@@ -130,8 +130,8 @@ class _PetInfoModalState extends State<PetInfoModal> {
                   border: OutlineInputBorder(),
                 ),
                 items: const [
-                  DropdownMenuItem(value: 'male', child: Text('Masculino')),
-                  DropdownMenuItem(value: 'female', child: Text('Femenino')),
+                  DropdownMenuItem(value: 'male', child: Text('Macho')),
+                  DropdownMenuItem(value: 'female', child: Text('Hembra')),
                 ],
                 onChanged: (value) {
                   setState(() {

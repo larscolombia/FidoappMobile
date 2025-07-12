@@ -65,7 +65,7 @@ class InformationTab extends StatelessWidget {
                     ),
                     if (AuthServiceApis.dataCurrentUser.userType == 'user')
                       ButtonDefaultWidget(
-                        title: 'Compartir perfil',
+                        title: 'Compartir',
                         callback: () {
                           // Lógica para compartir
                           Share.share(
@@ -312,8 +312,8 @@ class InformationTab extends StatelessWidget {
                         subtitle: Text(
                           homeController.selectedProfile.value!.gender ==
                                   "female"
-                              ? 'Femenino'
-                              : 'Masculino',
+                              ? 'Hembra'
+                              : 'Macho',
                           style: Styles.textProfile13w800,
                         ),
                       ),

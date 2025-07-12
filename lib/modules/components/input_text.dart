@@ -166,8 +166,10 @@ class _InputTextState extends State<InputText> {
               child: TextFormField(
                 controller: _textController,
                 focusNode: _focusNode,
-                maxLines: widget.isTextArea ? null : 5,
+                maxLines: widget.isTextArea ? null : 1, // Cambiar a 1 línea para scroll horizontal
                 minLines: widget.isTextArea ? 3 : 1,
+                scrollPhysics: const ClampingScrollPhysics(), // Habilitar scroll horizontal
+                textAlign: TextAlign.start, // Alinear texto a la izquierda
                 style: const TextStyle(
                   fontFamily: 'Lato',
                   fontSize: 15,

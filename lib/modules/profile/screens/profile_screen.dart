@@ -272,7 +272,7 @@ class ProfileScreen extends StatelessWidget {
                             fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                           );
                         }),
-                        if (AuthServiceApis.dataCurrentUser.userRole[0] != 'user') SizedBox(height: margin), ...[
+                        if (AuthServiceApis.dataCurrentUser.userType == 'vet' || AuthServiceApis.dataCurrentUser.userType == 'trainer') ...[
                         SizedBox(height: margin),
                         Obx(() {
                           return InputText(
@@ -284,7 +284,8 @@ class ProfileScreen extends StatelessWidget {
                             readOnly: !controller.isEditing.value,
                             fondoColor: controller.isEditing.value == false ? Colors.white : Styles.fiveColor,
                           );
-                        })],
+                        }),
+                        ],
                         SizedBox(height: margin),
                         Obx(
                           () => Container(

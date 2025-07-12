@@ -17,6 +17,8 @@ class UserController extends GetxController {
 
   var selectedButton = 'Veterinarios'.obs;
   var selectedUser = Rxn<User>(); // Variable observable para el usuario seleccionado
+  var selectedUserForInvitation = Rxn<User>(); // Variable específica para invitación
+  var selectedUserEmail = ''.obs; // Variable para almacenar el email del usuario seleccionado
   var type = 'vet'.obs;
   var expertTags = <String>[].obs;
 
@@ -178,6 +180,17 @@ class UserController extends GetxController {
 
   void deselectUser() {
     selectedUser.value = null;
+  }
+
+  // Métodos específicos para invitación
+  void selectUserForInvitation(User user) {
+    selectedUserForInvitation.value = user;
+    selectedUserEmail.value = user.email ?? ''; // Almacenar el email del usuario seleccionado
+  }
+
+  void deselectUserForInvitation() {
+    selectedUserForInvitation.value = null;
+    selectedUserEmail.value = ''; // Limpiar el email cuando se deselecciona
   }
 
   Future<void> getSharedOwnersWithEmail(String petId, String email) async {
