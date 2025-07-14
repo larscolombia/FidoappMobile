@@ -156,11 +156,10 @@ class FormularioRegistro extends StatelessWidget {
                           width: ancho,
                           child: InputText(
                             label: "Adjuntar imagen",
-                            placeholder: "Añadir imagen",
-                            isFilePicker: true,
+                            isImagePicker: true,
                             placeholderSvg: 'assets/icons/svg/imagen2.svg',
                             onChanged: (filePath) {
-                              print("Archivo seleccionado: $filePath");
+                              print("Imagen seleccionada: $filePath");
                             },
                           ),
                         ),
@@ -169,11 +168,10 @@ class FormularioRegistro extends StatelessWidget {
                           width: ancho,
                           child: InputText(
                             label: "Adjuntar archivo",
-                            placeholder: "Añadir imagen",
                             isFilePicker: true,
                             placeholderSvg: 'assets/icons/svg/imagen2.svg',
                             onChanged: (filePath) {
-                              print("Archivo seleccionado: $filePath");
+                              print("Archivo PDF seleccionado: $filePath");
                             },
                           ),
                         ),

@@ -168,9 +168,7 @@ class VerPasaporteMascota extends StatelessWidget {
                                     style: Styles.descripcion,
                                   ),
                                   Text(
-                                    _homeController
-                                            .selectedProfile.value!.chip ??
-                                        "",
+                                    _homeController.selectedProfile.value!.chip?.numIdentificacion?.toString() ?? "",
                                     style: const TextStyle(
                                       fontSize: 12,
                                       color: Styles.iconColorBack,

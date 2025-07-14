@@ -125,6 +125,7 @@ class _CommandsState extends State<Commands> {
                       DataColumn(label: Text('Comando')),
                       DataColumn(label: Text('Acción')),
                       DataColumn(label: Text('Aprendido')),
+                      DataColumn(label: Text('Editar')),
                     ],
                     rows: controller.comandoList.map((comando) {
                       return DataRow(
@@ -160,6 +161,18 @@ class _CommandsState extends State<Commands> {
                           ),
                           DataCell(Text(comando.description)),
                           DataCell(Text(comando.isFavorite ? 'Sí' : 'No')),
+                          DataCell(
+                            IconButton(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Styles.primaryColor,
+                                size: 20,
+                              ),
+                              onPressed: () {
+                                controller.editComando(comando);
+                              },
+                            ),
+                          ),
                         ],
                         onSelectChanged: (isSelected) {
                           if (isSelected ?? false) {

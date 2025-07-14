@@ -9,6 +9,7 @@ import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/modules/integracion/util/util.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/modules/home/screens/training/crear_comando.dart';
 import 'dart:convert';
 
 import '../../model/comandos_model/comandos_model.dart';
@@ -45,6 +46,29 @@ class ComandoController extends GetxController {
 
   void deselectComando() {
     selectedComando.value = null;
+  }
+
+  void editComando(Comando comando) {
+    // Cargar los datos del comando en el formulario de edición
+    dataComando['name'] = comando.name;
+    dataComando['description'] = comando.description;
+    dataComando['type'] = comando.type;
+    dataComando['is_favorite'] = comando.isFavorite;
+    dataComando['category_id'] = comando.categoryId;
+    dataComando['voz_comando'] = comando.vozComando;
+    dataComando['instructions'] = comando.instructions;
+    dataComando['pet_id'] = homeController.selectedProfile.value?.id ?? '';
+    
+    // Debug: imprimir los datos cargados
+    print('=== DATOS CARGADOS PARA EDICIÓN ===');
+    print('name: ${dataComando['name']}');
+    print('description: ${dataComando['description']}');
+    print('voz_comando: ${dataComando['voz_comando']}');
+    print('instructions: ${dataComando['instructions']}');
+    print('====================================');
+    
+    // Navegar a la pantalla de edición
+    Get.to(() => CrearComando(isEditing: true, comandoId: comando.id));
   }
 
   void fetchComandos(String petId) async {
@@ -248,6 +272,67 @@ class ComandoController extends GetxController {
       CustomSnackbar.show(
         title: 'Error',
         message: 'Error al crear el comando: ${e.toString()}',
+        isError: true,
+      );
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  // Actualizar comando
+  Future<void> updateCommand(int comandoId, Map<String, dynamic> dataComando) async {
+    final url = Uri.parse('${BASE_URL}comandos/$comandoId');
+    isLoading.value = true;
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          'Authorization':
+              'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(dataComando),
+      );
+
+      if (response.statusCode == 200) {
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Éxito',
+            description: 'Comando actualizado con éxito',
+            primaryButtonText: 'Aceptar',
+            onPrimaryButtonPressed: () {
+              dataComando = {
+                "name": "",
+                "description": "",
+                "type": "especializado",
+                "is_favorite": true,
+                "category_id": 1,
+                "voz_comando": "",
+                "instructions": "",
+                "pet_id": ''
+              };
+              Get.off(HomeScreen()); // Cerrar el diálogo
+              CustomSnackbar.show(
+                title: 'Éxito',
+                message: 'Comando actualizado correctamente',
+                isError: false,
+              );
+            },
+          ),
+          barrierDismissible: false,
+        );
+      } else {
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'Error al actualizar el comando',
+          isError: true,
+        );
+      }
+    } catch (e) {
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Error al actualizar el comando: ${e.toString()}',
         isError: true,
       );
     } finally {

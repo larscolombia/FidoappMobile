@@ -12,7 +12,10 @@ import 'package:pawlly/modules/home/screens/pages/profile_dogs.dart';
 import 'package:pawlly/modules/integracion/controller/comandos/comandos_controller.dart';
 
 class CrearComando extends StatefulWidget {
-  CrearComando({super.key});
+  final bool isEditing;
+  final int? comandoId;
+  
+  CrearComando({super.key, this.isEditing = false, this.comandoId});
 
   @override
   State<CrearComando> createState() => _CrearComandoState();
@@ -30,13 +33,21 @@ class _CrearComandoState extends State<CrearComando> {
 
   // Validación del formulario
   void validateForm() {
-    nameValid.value = (controller.dataComando['name'] as String?)?.isEmpty ?? true;
-    vozComandoValid.value = (controller.dataComando['voz_comando'] as String?)?.isEmpty ?? true;
-    instructionsValid.value = (controller.dataComando['instructions'] as String?)?.isEmpty ?? true;
-    descriptionValid.value = (controller.dataComando['description'] as String?)?.isEmpty ?? true;
+    nameValid.value = (controller.dataComando.value['name'] as String?)?.isEmpty ?? true;
+    vozComandoValid.value = (controller.dataComando.value['voz_comando'] as String?)?.isEmpty ?? true;
+    instructionsValid.value = (controller.dataComando.value['instructions'] as String?)?.isEmpty ?? true;
+    descriptionValid.value = (controller.dataComando.value['description'] as String?)?.isEmpty ?? true;
   }
 
-  // Método para manejar el proceso de creación
+  // Método para obtener el valor inicial de un campo
+  String getInitialValue(String fieldName) {
+    if (widget.isEditing) {
+      return controller.dataComando.value[fieldName]?.toString() ?? '';
+    }
+    return '';
+  }
+
+  // Método para manejar el proceso de creación o edición
   void handleCreateCommand() {
     if (controller.isLoading.value) return; // Evitar múltiples envíos
 
@@ -58,19 +69,51 @@ class _CrearComandoState extends State<CrearComando> {
     // Cambiar el estado de carga
     controller.isLoading.value = true;
 
-    // Llamar a la API para crear el comando
-    controller.postCommand(controller.dataComando).then((response) {
-      controller.isLoading.value = false; // Terminar carga
-      controller.fetchComandos(homeController.selectedProfile.value!.id.toString());
-      // Si necesitas manejar una respuesta, puedes hacerlo aquí.
-    }).catchError((error) {
-      controller.isLoading.value = false; // Terminar carga
-      CustomSnackbar.show(
-        title: 'Error',
-        message: 'Hubo un error al crear el comando.',
-        isError: true,
-      );
-    });
+    if (widget.isEditing && widget.comandoId != null) {
+      // Llamar a la API para actualizar el comando
+      controller.updateCommand(widget.comandoId!, controller.dataComando).then((response) {
+        controller.isLoading.value = false; // Terminar carga
+        controller.fetchComandos(homeController.selectedProfile.value!.id.toString());
+      }).catchError((error) {
+        controller.isLoading.value = false; // Terminar carga
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'Hubo un error al actualizar el comando.',
+          isError: true,
+        );
+      });
+    } else {
+      // Llamar a la API para crear el comando
+      controller.postCommand(controller.dataComando).then((response) {
+        controller.isLoading.value = false; // Terminar carga
+        controller.fetchComandos(homeController.selectedProfile.value!.id.toString());
+      }).catchError((error) {
+        controller.isLoading.value = false; // Terminar carga
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'Hubo un error al crear el comando.',
+          isError: true,
+        );
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Si estamos editando, cargar los datos del comando
+    if (widget.isEditing && widget.comandoId != null) {
+      // Los datos ya están cargados en el controlador desde editComando
+      // Debug: verificar que los datos estén disponibles
+      print('=== VERIFICANDO DATOS EN FORMULARIO ===');
+      print('isEditing: ${widget.isEditing}');
+      print('comandoId: ${widget.comandoId}');
+      print('dataComando name: ${controller.dataComando.value['name']}');
+      print('dataComando description: ${controller.dataComando.value['description']}');
+      print('dataComando voz_comando: ${controller.dataComando.value['voz_comando']}');
+      print('dataComando instructions: ${controller.dataComando.value['instructions']}');
+      print('========================================');
+    }
   }
 
   @override
@@ -159,7 +202,7 @@ class _CrearComandoState extends State<CrearComando> {
                         SizedBox(
                           width: MediaQuery.sizeOf(context).width,
                           child: BarraBack(
-                            titulo: 'Crear Comando',
+                            titulo: widget.isEditing ? 'Editar Comando' : 'Crear Comando',
                             size: 20,
                             callback: () {
                               Get.off(HomeScreen());
@@ -196,9 +239,12 @@ class _CrearComandoState extends State<CrearComando> {
                               ),
                               const SizedBox(height: margen),
                               Obx(() {
+                                String initialName = widget.isEditing ? (controller.dataComando.value['name']?.toString() ?? '') : '';
+                                print('Initial name value: $initialName');
                                 return InputText(
                                   label: 'Nombre del Comando',
                                   placeholder: '',
+                                  initialValue: initialName,
                                   errorText: nameValid.value ? 'Campo requerido' : '',
                                   onChanged: (value) {
                                     controller.updateField('name', value);
@@ -209,6 +255,7 @@ class _CrearComandoState extends State<CrearComando> {
                                 return InputText(
                                   label: 'Descripción del Comando',
                                   placeholder: '',
+                                  initialValue: getInitialValue('description'),
                                   errorText: descriptionValid.value ? 'Campo requerido' : '',
                                   onChanged: (value) {
                                     controller.updateField('description', value);
@@ -219,6 +266,7 @@ class _CrearComandoState extends State<CrearComando> {
                                 return InputText(
                                   label: 'Voz del Comando',
                                   placeholder: '',
+                                  initialValue: getInitialValue('voz_comando'),
                                   errorText: vozComandoValid.value ? 'Campo requerido' : '',
                                   onChanged: (value) {
                                     controller.updateField('voz_comando', value);
@@ -229,6 +277,7 @@ class _CrearComandoState extends State<CrearComando> {
                                 return InputText(
                                   label: 'Instrucciones del Comando',
                                   placeholder: '',
+                                  initialValue: getInitialValue('instructions'),
                                   errorText: instructionsValid.value ? 'Campo requerido' : '',
                                   onChanged: (value) {
                                     controller.updateField('instructions', value);
@@ -239,12 +288,14 @@ class _CrearComandoState extends State<CrearComando> {
                           ),
                         ),
                         const SizedBox(height: margen),
-                        // Botón de Crear
+                        // Botón de Crear o Editar
                         Obx(() {
                           return SizedBox(
                             width: double.infinity,
                             child: ButtonDefaultWidget(
-                              title: controller.isLoading.value ? 'Creando...' : 'Crear comando',
+                              title: controller.isLoading.value 
+                                  ? (widget.isEditing ? 'Actualizando...' : 'Creando...') 
+                                  : (widget.isEditing ? 'Actualizar comando' : 'Crear comando'),
                               callback: controller.isLoading.value
                                   ? null // Desactiva el botón mientras se carga
                                   : handleCreateCommand,

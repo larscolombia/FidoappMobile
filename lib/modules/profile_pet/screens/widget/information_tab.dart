@@ -156,7 +156,7 @@ class InformationTab extends StatelessWidget {
                       width: 10,
                     ),
                     Text(
-                      homeController.selectedProfile.value!.chip ?? "",
+                      homeController.selectedProfile.value!.chip?.numIdentificacion?.toString() ?? "",
                       style: Styles.chiptitle,
                     ),
                   ],

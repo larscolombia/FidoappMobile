@@ -26,6 +26,54 @@ class PetListRes {
   }
 }
 
+class ChipData {
+  int? id;
+  int? petId;
+  int? numIdentificacion;
+  String? fechaImplantacion;
+  int? fabricanteId;
+  String? numContacto;
+  String? createdAt;
+  String? updatedAt;
+
+  ChipData({
+    this.id,
+    this.petId,
+    this.numIdentificacion,
+    this.fechaImplantacion,
+    this.fabricanteId,
+    this.numContacto,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory ChipData.fromJson(Map<String, dynamic> json) {
+    return ChipData(
+      id: json['id'],
+      petId: json['pet_id'],
+      numIdentificacion: json['num_identificacion'],
+      fechaImplantacion: json['fecha_implantacion'],
+      fabricanteId: json['fabricante_id'],
+      numContacto: json['num_contacto'],
+      createdAt: json['created_at'],
+      updatedAt: json['updated_at'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'pet_id': petId,
+      'num_identificacion': numIdentificacion,
+      'fecha_implantacion': fechaImplantacion,
+      'fabricante_id': fabricanteId,
+      'num_contacto': numContacto,
+      'created_at': createdAt,
+      'updated_at': updatedAt,
+    };
+  }
+}
+
 class PetData {
   int id;
   String name;
@@ -50,7 +98,7 @@ class PetData {
   int? deletedBy;
   String? petFur;
   String? description;
-  String? chip;
+  ChipData? chip;
   PetData(
       {required this.id,
       required this.name,
@@ -102,7 +150,7 @@ class PetData {
         deletedBy: json['deleted_by'],
         description: json['description'],
         petFur: json['pet_fur'],
-        chip: json['chip']);
+        chip: json['chip'] != null ? ChipData.fromJson(json['chip']) : null);
   }
 
   Map<String, dynamic> toJson() {
@@ -129,6 +177,8 @@ class PetData {
       'created_by': createdBy,
       'updated_by': updatedBy,
       'deleted_by': deletedBy,
+      'pet_fur': petFur,
+      'chip': chip?.toJson(),
     };
   }
 }

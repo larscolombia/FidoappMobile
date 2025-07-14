@@ -179,9 +179,13 @@ class _InputTextState extends State<InputText> {
                 decoration: InputDecoration(
                   labelText: widget.isTextArea
                       ? null
-                      : (widget.placeholder ?? 'placeholder'),
+                      : (widget.isImagePicker || widget.isFilePicker 
+                          ? null 
+                          : (widget.placeholder ?? 'placeholder')),
                   hintText: widget.isTextArea
-                      ? (widget.placeholder ?? 'placeholder')
+                      ? (widget.isImagePicker || widget.isFilePicker 
+                          ? null 
+                          : (widget.placeholder ?? 'placeholder'))
                       : null,
                   hintStyle: const TextStyle(
                     fontSize: 14,

@@ -427,7 +427,7 @@ class PasaporteMascota extends StatelessWidget {
                                 "user_id": pet.userId,
                                 // "age": pet.age,
                                 "pet_fur": pet.petFur,
-                                "chip": pet.chip,
+                                "chip": pet.chip?.toJson(),
                               };
                               
                               // Logs para diagnosticar la fecha de nacimiento

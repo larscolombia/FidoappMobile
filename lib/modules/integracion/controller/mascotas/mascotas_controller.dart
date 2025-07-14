@@ -104,7 +104,7 @@ class PetControllerv2 extends GetxController {
     "user_id": "",
     "age": "",
     "pet_fur": "",
-    "chip": "",
+    "chip": null,
     "size": "",
   }.obs;
   // Método para actualizar la información de una mascota
