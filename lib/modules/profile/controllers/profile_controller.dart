@@ -48,7 +48,7 @@ class ProfileController extends GetxController {
     profileImagePath.value = currentUser.profileImage; // Imagen de perfil del usuario
 
     // Configura los valores iniciales de los campos sexo y dueño
-    sexoValue.value = currentUser.gender.isNotEmpty ? currentUser.gender : 'Femenino'; // Valor predeterminado si no está definido
+    sexoValue.value = currentUser.gender.isNotEmpty ? mapGender(currentUser.gender) : 'Femenino'; // Valor predeterminado si no está definido
     duenioValue.value = currentUser.userType.isNotEmpty ? currentUser.userType : 'Sí'; // Ajusta según el valor de userType o pon un valor por defecto
   }
 
@@ -111,7 +111,7 @@ class ProfileController extends GetxController {
     user['first_name'] = currentUser.firstName;
     user['last_name'] = currentUser.lastName;
     user['email'] = currentUser.email;
-    user['gender'] = currentUser.gender;
+    user['gender'] = mapGender(currentUser.gender); // Convertir al formato de la UI
     user['userType'] = currentUser.userType;
     user['profileImage'] = currentUser.profileImage;
     user['payment_account'] = currentUser.paymentAccount;
@@ -144,14 +144,25 @@ class ProfileController extends GetxController {
           // Serializar como un array JSON limpio
           fields[key] = jsonEncode(cleanTags); // Generará ["hhhj", "hjj"]
         } else if (value is String && value.isNotEmpty && key != 'profile_image') {
-          // Añadir otros campos al request, excluyendo 'profile_image'
-          fields[key] = value;
+          // Convertir el género al formato de la API si es necesario
+          if (key == 'gender') {
+            fields[key] = mapGenderToApi(value);
+            print('Género convertido: $value -> ${mapGenderToApi(value)}');
+          } else {
+            // Añadir otros campos al request, excluyendo 'profile_image'
+            fields[key] = value;
+          }
         }
       });
 
       // Añadir los campos al request
+      print('=== DEBUG UPDATE PROFILE ===');
+      print('User object: $user');
+      print('Fields to send: $fields');
+      
       fields.forEach((key, value) {
         request.fields[key] = value;
+        print('Field $key: $value');
       });
 
       // Agregar la imagen si está disponible
@@ -366,14 +377,29 @@ class ProfileController extends GetxController {
     );
   }
 
+  // Mapeo de inglés a español (para mostrar en UI)
   String mapGender(String gender) {
     switch (gender) {
       case 'female':
-        return 'Mujer';
+        return 'Femenino';
       case 'male':
-        return 'Hombre';
+        return 'Masculino';
       case 'others':
         return 'Prefiero no decirlo';
+      default:
+        return '';
+    }
+  }
+
+  // Mapeo de español a inglés (para enviar a API)
+  String mapGenderToApi(String gender) {
+    switch (gender) {
+      case 'Femenino':
+        return 'female';
+      case 'Masculino':
+        return 'male';
+      case 'Prefiero no decirlo':
+        return 'others';
       default:
         return '';
     }

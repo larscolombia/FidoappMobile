@@ -111,6 +111,10 @@ class PetActivityController extends GetxController {
         if (jsonResponse['success']) {
           List<dynamic> data = jsonResponse['data'];
           activities.value = data.map((activity) => PetActivity.fromJson(activity)).toList();
+          
+          // Ordenar las actividades por fecha de creación (más recientes primero)
+          activities.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+          
           // print('actividades ${jsonEncode(activities)}');
           filteredActivities.value = activities;
         } else {
@@ -192,6 +196,9 @@ class PetActivityController extends GetxController {
       print('==========================');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        // Recargar las actividades para mostrar la nueva
+        await fetchPetActivities(homeController.selectedProfile.value!.id.toString());
+        
         Get.dialog(
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
@@ -269,6 +276,9 @@ class PetActivityController extends GetxController {
       var response = await request.send();
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        // Recargar las actividades para mostrar los cambios
+        await fetchPetActivities(homeController.selectedProfile.value!.id.toString());
+        
         Get.dialog(
           CustomAlertDialog(
             icon: Icons.check_circle_outline,

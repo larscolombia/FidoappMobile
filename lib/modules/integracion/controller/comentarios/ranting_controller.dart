@@ -49,20 +49,51 @@ class CommentController extends GetxController {
     try {
       comments.value = [];
       isLoading(true);
+      
+      // Logs para debugging fetchComments
+      print('=== DEBUG FETCH COMMENTS ===');
+      print('ItemId: $itemId');
+      print('Tipo: $tipo');
+      print('Endpoint: ${getEndpoint(tipo, itemId)}');
+      print('URL completa: $baseUrl${getEndpoint(tipo, itemId)}');
+      print('Token: ${AuthServiceApis.dataCurrentUser.apiToken}');
+      
       final response = await http.get(Uri.parse('$baseUrl${getEndpoint(tipo, itemId)}'), headers: {
         'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
         'Content-Type': 'application/json',
       });
 
+      print('=== FETCH RESPONSE DEBUG ===');
+      print('Status Code: ${response.statusCode}');
+      print('Response Headers: ${response.headers}');
+      print('Response Body: ${response.body}');
+      print('Response Body Length: ${response.body.length}');
+      print('Response Body (first 500 chars): ${response.body.substring(0, response.body.length > 500 ? 500 : response.body.length)}');
+
       var data = json.decode(response.body);
 
       if (response.statusCode == 200) {
-        comments.value = (data['data'] as List).map((item) => Comment.fromJson(item)).toList();
+        print('=== SUCCESS FETCH COMMENTS ===');
+        print('Parsed data: $data');
+        
+        try {
+          comments.value = (data['data'] as List).map((item) => Comment.fromJson(item)).toList();
+          print('Comments loaded successfully: ${comments.length} comments');
+        } catch (parseError) {
+          print('=== ERROR PARSING COMMENTS ===');
+          print('Parse error: $parseError');
+          print('Data that failed to parse: $data');
+        }
       } else {
-        throw Exception('Failed to load comments');
+        print('=== ERROR FETCH COMMENTS ===');
+        print('Status code: ${response.statusCode}');
+        print('Error response: ${response.body}');
+        throw Exception('Failed to load comments: ${response.statusCode}');
       }
     } catch (e) {
-      print('error en comentarios $e');
+      print('=== CATCH ERROR FETCH COMMENTS ===');
+      print('Error en comentarios: $e');
+      print('Error type: ${e.runtimeType}');
     } finally {
       isLoading(false);
       isComentarioPosrLoading(false);
@@ -167,6 +198,15 @@ class CommentController extends GetxController {
     try {
       isComentarioPosrLoading(true);
 
+      // Logs para debugging
+      print('=== DEBUG POST COMMENT ===');
+      print('Tipo: $tipo');
+      print('Endpoint: ${postEnpoint(tipo)}');
+      print('URL completa: ${Uri.parse(postEnpoint(tipo))}');
+      print('Token: ${AuthServiceApis.dataCurrentUser.apiToken}');
+      print('Body a enviar: ${jsonEncode(comentario)}');
+      print('Comentario object: $comentario');
+
       final response = await http.post(
         Uri.parse(postEnpoint(tipo)),
         headers: <String, String>{
@@ -176,40 +216,96 @@ class CommentController extends GetxController {
         body: jsonEncode(comentario),
       );
 
+      print('=== RESPONSE DEBUG ===');
+      print('Status Code: ${response.statusCode}');
+      print('Response Headers: ${response.headers}');
+      print('Response Body: ${response.body}');
+      print('Response Body Length: ${response.body.length}');
+      print('Response Body (first 500 chars): ${response.body.substring(0, response.body.length > 500 ? 500 : response.body.length)}');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var rating = json.decode(response.body)['data']['rating'];
-
-        // Limpiar los campos después de enviar exitosamente
-        clearCommentFields();
-
-        // Actualizar la lista de comentarios después de enviar exitosamente
-        String itemId = "";
-        switch (tipo) {
-          case "books":
-            itemId = comentario['e_book_id'].toString();
-            break;
-          case "video":
-            itemId = comentario['course_platform_video_id'].toString();
-            break;
-          case "blog":
-            itemId = comentario['blog_id'].toString();
-            break;
-          case "user":
-            itemId = comentario['employee_id'].toString();
-            break;
-        }
+        print('=== SUCCESS RESPONSE ===');
+        print('Response body for parsing: ${response.body}');
         
-        if (itemId.isNotEmpty) {
-          await fetchComments(itemId, tipo);
-        }
+        try {
+          var responseData = json.decode(response.body);
+          print('Parsed response data: $responseData');
+          
+          var rating = responseData['data']['rating'];
+          print('Rating from response: $rating');
 
+          // Limpiar los campos después de enviar exitosamente
+          clearCommentFields();
+
+          // Actualizar la lista de comentarios después de enviar exitosamente
+          String itemId = "";
+          switch (tipo) {
+            case "books":
+              itemId = comentario['e_book_id'].toString();
+              break;
+            case "video":
+              itemId = comentario['course_platform_video_id'].toString();
+              break;
+            case "blog":
+              itemId = comentario['blog_id'].toString();
+              break;
+            case "user":
+              itemId = comentario['employee_id'].toString();
+              break;
+          }
+          
+          print('ItemId for fetchComments: $itemId');
+          
+          if (itemId.isNotEmpty) {
+            await fetchComments(itemId, tipo);
+          }
+
+          Get.dialog(
+            //pisa papel
+            CustomAlertDialog(
+              icon: Icons.check_circle_outline,
+              title: 'Comentario creado',
+              description: rating < 3 ? "Tu comentario está bajo revisión y esperamos publicarlo pronto." : 'Tu comentario ha sido publicado',
+              primaryButtonText: 'Continuar',
+              onPrimaryButtonPressed: () {
+                isComentarioPosrLoading(false);
+                isLoading(false);
+                Navigator.of(context).pop();
+              },
+            ),
+            barrierDismissible: true,
+          );
+        } catch (parseError) {
+          print('=== ERROR PARSING RESPONSE ===');
+          print('Parse error: $parseError');
+          print('Response body that failed to parse: ${response.body}');
+          
+          Get.dialog(
+            CustomAlertDialog(
+              icon: Icons.error,
+              title: 'Error',
+              description: 'Error al procesar la respuesta del servidor: $parseError',
+              primaryButtonText: 'Ok',
+              onPrimaryButtonPressed: () {
+                isComentarioPosrLoading(false);
+                isLoading(false);
+                Navigator.of(context).pop();
+              },
+            ),
+            barrierDismissible: true,
+          );
+        }
+      } else {
+        print('=== ERROR RESPONSE ===');
+        print('Status code: ${response.statusCode}');
+        print('Error response body: ${response.body}');
+        
         Get.dialog(
-          //pisa papel
           CustomAlertDialog(
-            icon: Icons.check_circle_outline,
-            title: 'Comentario creado',
-            description: rating < 3 ? "Tu comentario está bajo revisión y esperamos publicarlo pronto." : 'Tu comentario ha sido publicado',
-            primaryButtonText: 'Continuar',
+            icon: Icons.error,
+            title: 'Error',
+            description: 'Error del servidor: ${response.statusCode}\n${response.body}',
+            primaryButtonText: 'Ok',
             onPrimaryButtonPressed: () {
               isComentarioPosrLoading(false);
               isLoading(false);

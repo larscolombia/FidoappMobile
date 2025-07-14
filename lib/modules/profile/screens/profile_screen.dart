@@ -296,7 +296,8 @@ class ProfileScreen extends StatelessWidget {
                               borderColor: Styles.iconColorBack,
                               onChange: (value) {
                                 controller.user['gender'] = value.toString();
-                                controller.userGenCont.value.text = value.toString().toLowerCase();
+                                controller.userGenCont.value.text = value.toString();
+                                print('Género seleccionado: $value');
                               },
                               placeholder: 'Género',
                               placeholderSvg: 'assets/icons/svg/tag-user.svg',
