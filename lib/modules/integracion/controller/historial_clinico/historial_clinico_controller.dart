@@ -23,6 +23,7 @@ class HistorialClinicoController extends GetxController {
   var isEditing = false.obs;
   var isLoading = false.obs;
   var isSuccess = false.obs;
+  var vaccineUrl = '$DOMAIN_URL/api/vaccines-given-to-pet';
 
   @override
   void onInit() {
@@ -157,6 +158,7 @@ class HistorialClinicoController extends GetxController {
 
   Future<void> fetchHistorialClinico(int petId) async {
     final url = '$DOMAIN_URL/api/medical-history-per-pet?pet_id=$petId';
+    final vacunasRequest = '$vaccineUrl?pet_id=$petId';
 
     // isLoading.value = true;
     try {
@@ -173,10 +175,30 @@ class HistorialClinicoController extends GetxController {
         final data = json.decode(response.body);
 
         if (data['success'] == true) {
-          historialClinico.value = (data['data'] as List)
+          List<HistorialClinico> list = (data['data'] as List)
               .map((item) => HistorialClinico.fromJson(item))
               .toList();
-          filteredHistorialClinico.value = historialClinico;
+
+          // Obtener vacunas y combinarlas
+          final vacResponse = await http.get(
+            Uri.parse(vacunasRequest),
+            headers: {
+              'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': 'true',
+            },
+          );
+          if (vacResponse.statusCode == 200) {
+            final vacData = json.decode(vacResponse.body);
+            if (vacData['success'] == true) {
+              list.addAll((vacData['data'] as List)
+                  .map((v) => HistorialClinico.fromJson(v))
+                  .toList());
+            }
+          }
+
+          historialClinico.value = list;
+          filteredHistorialClinico.value = list;
         } else {
           print('Error en el servidor: ${data['message']}');
         }
