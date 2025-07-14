@@ -85,7 +85,7 @@ class PrivacyPolicy extends StatelessWidget {
                   const NumTitle(
                     Title: '8. Contacto',
                     Descripcion:
-                        'Si tiene preguntas o comentarios sobre estas políticas, por favor contáctenos en [correo electrónico/ número de teléfono].',
+                        'Si tiene preguntas o comentarios sobre estas políticas, por favor contáctenos en https://www.myfidoapp.com.',
                   ),
                   const SizedBox(
                     height: 30,

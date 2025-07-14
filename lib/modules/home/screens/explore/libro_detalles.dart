@@ -367,10 +367,6 @@ class _LibroDetallesState extends State<LibroDetalles> {
                                         'books',
                                         context,
                                       );
-                                      await commentController.fetchComments(
-                                        id,
-                                        "books",
-                                      );
                                     }
                                   },
                                 ),

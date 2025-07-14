@@ -65,7 +65,6 @@ class BlogController extends GetxController {
   // Método para buscar blogs por nombre (parcial o completo)
   List<BlogPost> getBlogPostsByName(String? name) {
     // Si el texto de búsqueda es nulo, vacío o "0", devuelve todos los blogs.
-
     if (name == null || name.isEmpty || name == "0") {
       print(
           'Texto de búsqueda nulo, vacío o igual a "0". Retornando todos los blogs.');
@@ -78,16 +77,9 @@ class BlogController extends GetxController {
         .where((post) => post.name.toLowerCase().contains(name.toLowerCase()))
         .toList();
 
-    // Si no se encontró ninguna coincidencia, se devuelven todos los blogs.
-    if (filteredBlogs.isEmpty) {
-      print(
-          'No existen blogs que coincidan con el texto: $name. Retornando todos los blogs.');
-      filteredBlogPosts.value = blogPosts;
-      return blogPosts.toList();
-    } else {
-      filteredBlogPosts.value =
-          filteredBlogs; // Actualiza la lista con los resultados
-      return filteredBlogs;
-    }
+    // Actualiza la lista filtrada con los resultados
+    filteredBlogPosts.value = filteredBlogs;
+    print('Búsqueda: "$name" - Encontrados: ${filteredBlogs.length} blogs');
+    return filteredBlogs;
   }
 }

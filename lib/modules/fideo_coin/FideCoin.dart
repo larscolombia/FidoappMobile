@@ -7,16 +7,31 @@ import 'package:pawlly/modules/home/screens/pages/header_notification.dart';
 import 'package:pawlly/modules/integracion/controller/balance/balance_wdget.dart';
 import 'package:pawlly/modules/integracion/controller/transaccion/transaction_controller.dart';
 
-class FideCoin extends StatelessWidget {
+class FideCoin extends StatefulWidget {
   FideCoin({super.key});
+
+  @override
+  State<FideCoin> createState() => _FideCoinState();
+}
+
+class _FideCoinState extends State<FideCoin> {
   final TransactionController controller = Get.put(TransactionController());
-  
+  bool _hasInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Solo ejecutar fetchTransactions una vez al inicializar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_hasInitialized) {
+        controller.fetchTransactions();
+        _hasInitialized = true;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Asegurar que se actualicen las transacciones al entrar
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.fetchTransactions();
-    });
     
     return Scaffold(
       backgroundColor: Colors.white,

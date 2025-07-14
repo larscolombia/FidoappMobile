@@ -124,6 +124,7 @@ class CourseController extends GetxController {
     // Si el query está vacío, se restauran todos los cursos
     if (query.isEmpty) {
       filteredCourses.assignAll(courses);
+      print('Búsqueda vacía - Mostrando todos los cursos: ${courses.length}');
     } else {
       // Se filtran ignorando mayúsculas y minúsculas
       var filteredList = courses
@@ -131,6 +132,7 @@ class CourseController extends GetxController {
               course.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
       filteredCourses.assignAll(filteredList);
+      print('Búsqueda: "$query" - Encontrados: ${filteredList.length} cursos');
     }
   }
 

@@ -32,6 +32,43 @@ class EntertainmentBlogs extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Obx(() {
+            if (blogController.filteredBlogPosts.isEmpty) {
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 50),
+                    Icon(
+                      Icons.search_off,
+                      size: 64,
+                      color: Color(0xFF959595),
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      'No se encontraron blogs',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF959595),
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Intenta con otros términos de búsqueda',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xFF959595),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              );
+            }
+            
             return Row(
               children: blogController.filteredBlogPosts.map((video) {
                 return GestureDetector(

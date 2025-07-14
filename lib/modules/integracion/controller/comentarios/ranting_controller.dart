@@ -133,6 +133,17 @@ class CommentController extends GetxController {
     comentario[key] = value;
   }
 
+  // Función para limpiar los campos de comentario y calificación
+  void clearCommentFields() {
+    comentario['review_msg'] = "";
+    comentario['rating'] = 1;
+    // Mantener los IDs específicos del tipo de contenido
+    // comentario['e_book_id'] = "";
+    // comentario['course_platform_video_id'] = "";
+    // comentario['blog_id'] = "";
+    // comentario['employee_id'] = "";
+  }
+
   Future<void> postComment(String tipo, context) async {
     if (comentario['review_msg'] == "") {
       Get.dialog(
@@ -167,6 +178,30 @@ class CommentController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var rating = json.decode(response.body)['data']['rating'];
+
+        // Limpiar los campos después de enviar exitosamente
+        clearCommentFields();
+
+        // Actualizar la lista de comentarios después de enviar exitosamente
+        String itemId = "";
+        switch (tipo) {
+          case "books":
+            itemId = comentario['e_book_id'].toString();
+            break;
+          case "video":
+            itemId = comentario['course_platform_video_id'].toString();
+            break;
+          case "blog":
+            itemId = comentario['blog_id'].toString();
+            break;
+          case "user":
+            itemId = comentario['employee_id'].toString();
+            break;
+        }
+        
+        if (itemId.isNotEmpty) {
+          await fetchComments(itemId, tipo);
+        }
 
         Get.dialog(
           //pisa papel

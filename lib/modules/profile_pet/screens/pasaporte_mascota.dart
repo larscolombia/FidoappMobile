@@ -272,7 +272,7 @@ class PasaporteMascota extends StatelessWidget {
                         height: altoInput,
                         child: InputText(
                             label: 'Altura',
-                            placeholder: "Altura",
+                            placeholder: "",
                             initialValue: pet.height?.toString(),
                             onChanged: (value) => pet.height = value),
                       ),
@@ -304,7 +304,7 @@ class PasaporteMascota extends StatelessWidget {
                         height: altoInput,
                         child: InputText(
                           label: 'Peso',
-                          placeholder: "Peso",
+                          placeholder: "",
                           initialValue: pet.weight.toString(),
                           onChanged: (value) {
                             pet.weight = double.tryParse(value) ?? 0;

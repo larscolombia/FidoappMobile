@@ -64,11 +64,6 @@ class TermsConditions extends StatelessWidget {
                 Descripcion:
                     "Todo el contenido de Fido App, incluyendo textos, gráficos, logos y software, es propiedad de “AppEjemplo” o sus licenciantes y está protegido por leyes de propiedad intelectual.",
               ),
-              const NumTitle(
-                Title: '4. Propiedad Intelectual ',
-                Descripcion:
-                    "Todo el contenido de Fido App, incluyendo textos, gráficos, logos y software, es propiedad de “AppEjemplo” o sus licenciantes y está protegido por leyes de propiedad intelectual.",
-              ),
               const SizedBox(
                 height: 30,
               ),

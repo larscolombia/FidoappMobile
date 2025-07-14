@@ -5,7 +5,7 @@ import 'package:pawlly/modules/components/circular_avatar_row.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/style.dart';
 
-class BanerComentarios extends StatelessWidget {
+class BanerComentarios extends StatefulWidget {
   const BanerComentarios({
     super.key,
     required this.eventTextChanged,
@@ -18,6 +18,14 @@ class BanerComentarios extends StatelessWidget {
   final String? titulo;
   final void Function(double) onRatingUpdate;
   final void Function() onEvento;
+
+  @override
+  State<BanerComentarios> createState() => _BanerComentariosState();
+}
+
+class _BanerComentariosState extends State<BanerComentarios> {
+  final TextEditingController _commentController = TextEditingController();
+  double _currentRating = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +57,7 @@ class BanerComentarios extends StatelessWidget {
               ),
             ),
             RatingBar.builder(
-              initialRating: 0,
+              initialRating: _currentRating,
               minRating: 1,
               direction: Axis.horizontal,
               allowHalfRating: true,
@@ -60,14 +68,22 @@ class BanerComentarios extends StatelessWidget {
                 Icons.star,
                 color: Color(0xffFC9214),
               ),
-              onRatingUpdate: onRatingUpdate,
+              onRatingUpdate: (rating) {
+                setState(() {
+                  _currentRating = rating;
+                });
+                widget.onRatingUpdate(rating);
+              },
             ),
             const SizedBox(height: 20),
             SingleChildScrollView(
               child: SizedBox(
                 width: MediaQuery.sizeOf(context).width,
                 child: InputText(
-                  onChanged: eventTextChanged,
+                  controller: _commentController,
+                  onChanged: (value) {
+                    widget.eventTextChanged(value);
+                  },
                   placeholder: 'Describe tu experiencia',
                   labelColor: Color(0XFF383838),
                   height: 36,
@@ -81,14 +97,31 @@ class BanerComentarios extends StatelessWidget {
               width: MediaQuery.sizeOf(context).width,
               height: 42,
               child: ButtonDefaultWidget(
-                title: titulo ?? "Enviar >",
-                callback: onEvento,
+                title: widget.titulo ?? "Enviar >",
+                callback: () {
+                  widget.onEvento();
+                  // Limpiar campos después de enviar
+                  _clearFields();
+                },
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void _clearFields() {
+    setState(() {
+      _commentController.clear();
+      _currentRating = 0.0;
+    });
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    super.dispose();
   }
 }
 

@@ -3,18 +3,34 @@ import 'package:get/get.dart';
 import 'package:pawlly/modules/components/input_text_icon.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/home/screens/explore/show/curso_video.dart';
-import 'package:pawlly/modules/integracion/controller/blogs/blogs_controller.dart';
+import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class VideoList extends StatelessWidget {
-  final BlogController blogController = Get.put(BlogController());
+class VideoList extends StatefulWidget {
   VideoList({super.key});
+
+  @override
+  State<VideoList> createState() => _VideoListState();
+}
+
+class _VideoListState extends State<VideoList> {
+  final CourseController courseController = Get.put(CourseController());
+  bool _hasInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Solo ejecutar fetchCourses una vez al inicializar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_hasInitialized) {
+        courseController.fetchCourses();
+        _hasInitialized = true;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Ejecutar fetchCourses al abrir esta vista
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      blogController.fetchBlogPosts(); // Siempre se ejecuta al entrar a la vista
-    });
     return Center(
       child: Column(
         children: [
@@ -26,7 +42,7 @@ class VideoList extends StatelessWidget {
               iconPosition: IconPosition.left,
               height: 60.0, // Altura personalizada
               onChanged: (value) {
-                blogController.getBlogPostsByName(value);
+                courseController.filterCoursesByName(value);
                 print('search: $value');
               },
             ),
@@ -35,30 +51,68 @@ class VideoList extends StatelessWidget {
           SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Obx(() {
-              if (blogController.isLoading.value) {
+              if (courseController.isLoading.value) {
                 return const Center(
                   child: CircularProgressIndicator(color: Colors.green),
                 );
               }
+              
+              if (courseController.filteredCourses.isEmpty) {
+                return const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 50),
+                      Icon(
+                        Icons.search_off,
+                        size: 64,
+                        color: Color(0xFF959595),
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        'No se encontraron videos',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF959595),
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Intenta con otros términos de búsqueda',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Lato',
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF959595),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                );
+              }
+              
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: blogController.filteredBlogPosts.map((video) {
+                children: courseController.filteredCourses.map((course) {
                   return GestureDetector(
                     onTap: () {
-                      // Acción al tocar un video
-                      print('Video seleccionado: ${video.id}');
+                      // Acción al tocar un curso
+                      print('Curso seleccionado: ${course.id}');
                       Get.to(() =>CursoVideo(
                         videoId: "",
-                        cursoId: video.id.toString(),
-                        name: video.name,
-                        description: video.description,
-                        image: video.blogImage,
+                        cursoId: course.id.toString(),
+                        name: course.name,
+                        description: course.description,
+                        image: course.image,
                         duration: "",
                         price: "",
-                        difficulty: "blogs",
+                        difficulty: course.difficulty,
                         videoUrl: "",
-                        tipovideo: 'blogs',
-                        dateCreated: video.createdAt.toString(),
+                        tipovideo: 'video',
+                        dateCreated: DateTime.now().toString(),
                       ));
                     },
                     child: Container(
@@ -76,7 +130,7 @@ class VideoList extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Imagen del video con el icono de reproducción y la duración
+                          // Imagen del curso con el icono de reproducción y la duración
                           Stack(
                             children: [
                               Container(
@@ -86,9 +140,9 @@ class VideoList extends StatelessWidget {
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: video.blogImage != null
+                                  child: course.image != null
                                       ? Image.network(
-                                          video.blogImage,
+                                          course.image,
                                           fit: BoxFit.cover,
                                           errorBuilder: (context, error, stackTrace) {
                                             return Image.asset(
@@ -114,7 +168,7 @@ class VideoList extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              // Duración del video en la esquina superior derecha
+                              // Duración del curso en la esquina superior derecha
                               Positioned(
                                 bottom: 8,
                                 right: 8,
@@ -125,7 +179,7 @@ class VideoList extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Text(
-                                    video.duration ?? "0",
+                                    course.duration ?? "0",
                                     style: const TextStyle(
                                       fontFamily: 'Lato',
                                       fontSize: 12,
@@ -138,9 +192,9 @@ class VideoList extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 8),
-                          // Tema del video
+                          // Tema del curso
                           Text(
-                            video.tags ?? 'Videos de Entrenamiento',
+                            'Cursos de Entrenamiento',
                             style: const TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 12,
@@ -151,7 +205,7 @@ class VideoList extends StatelessWidget {
                           const SizedBox(height: 4),
                           // Fecha y cantidad de visualizaciones
                           Text(
-                            video.createdAt,
+                            'Fecha de creación',
                             style: const TextStyle(
                               fontFamily: 'Lato',
                               fontSize: 12,
@@ -169,9 +223,9 @@ class VideoList extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          // Título del video (máximo 2 líneas)
+                          // Título del curso (máximo 2 líneas)
                           Text(
-                            video.name,
+                            course.name,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
@@ -191,7 +245,7 @@ class VideoList extends StatelessWidget {
           ),
           RecargaComponente(
             callback: () {
-              blogController.fetchBlogPosts();
+              courseController.fetchCourses();
               print('Recargar');
             },
           ),

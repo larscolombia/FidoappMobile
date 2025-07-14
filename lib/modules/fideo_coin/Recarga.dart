@@ -237,6 +237,19 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                                   : 'Estás a punto de adquirir \$ ${_formattedInput(_input)} . ¿Deseas continuar?',
                           primaryButtonText: 'Continuar',
                           onPrimaryButtonPressed: () async {
+                            print('input: $_input');
+                            // Validar que el monto sea mayor o igual a 1 dólar (100 centavos)
+                            double? amount = double.tryParse(_input.replaceAll(',', ''));
+                            if (amount != null && amount < 100) {
+                              Get.back(); // Cerrar el diálogo de confirmación
+                              CustomSnackbar.show(
+                                title: 'Error',
+                                message: 'El valor no puede ser menor a 1.00 USD',
+                                isError: true,
+                              );
+                              return;
+                            }
+
                             if (widget.isWithdraw) {
                               await controller.withdrawBalance(
                                   _formattedInput(_input), context);

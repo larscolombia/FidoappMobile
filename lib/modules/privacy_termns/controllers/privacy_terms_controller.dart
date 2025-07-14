@@ -50,7 +50,7 @@ class PrivacyTermsController extends GetxController {
     NumTitleData(
       title: '8. Contacto',
       description:
-          'Si tiene preguntas o comentarios sobre estas políticas, por favor contáctenos en [correo electrónico/ número de teléfono].',
+          'Si tiene preguntas o comentarios sobre estas políticas, por favor contáctenos en https://www.myfidoapp.com/.',
     ),
     // Agrega aquí cualquier otro ítem necesario
   ];

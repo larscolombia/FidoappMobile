@@ -251,24 +251,14 @@ class _CursoVideoState extends State<CursoVideo> {
                               onRatingUpdate: (rating) {
                                 _commentController.updateField('rating', rating);
                               },
-                              onEvento: () {
-                                _commentController.updateField('course_platform_video_id', widget.cursoId);
+                              onEvento: () async {
                                 if (widget.tipovideo == 'video') {
-                                  _commentController.postComment('video', context);
+                                  _commentController.updateField('course_platform_video_id', widget.cursoId);
+                                  await _commentController.postComment('video', context);
                                 } else {
-                                  _commentController.postComment('blog', context);
+                                  _commentController.updateField('blog_id', widget.cursoId);
+                                  await _commentController.postComment('blog', context);
                                 }
-
-                                setState(() {
-                                  if (widget.tipovideo == "blogs") {
-                                    _commentController.fetchComments(widget.cursoId, "blog");
-                                    _commentController.updateField('blog_id', widget.cursoId);
-                                  } else if (widget.tipovideo == "video") {
-                                    _commentController.fetchComments(widget.cursoId, "video");
-                                    _commentController.updateField('course_platform_video_id', widget.cursoId);
-                                  }
-                                  _refreshComments();
-                                });
                               },
                             ),
                           ],

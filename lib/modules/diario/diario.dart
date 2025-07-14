@@ -17,24 +17,36 @@ import 'package:pawlly/modules/home/screens/widgets/menu_of_navigation.dart';
 import 'package:pawlly/modules/integracion/controller/diario/activida_mascota_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class Diario extends StatelessWidget {
+class Diario extends StatefulWidget {
   Diario({super.key});
+
+  @override
+  State<Diario> createState() => _DiarioState();
+}
+
+class _DiarioState extends State<Diario> {
   final HomeController homeController = Get.find<HomeController>();
   final PetActivityController historialClinicoController =
       Get.put(PetActivityController());
+  bool _hasInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Solo ejecutar fetchPetActivities una vez al inicializar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_hasInitialized && homeController.selectedProfile.value != null) {
+        historialClinicoController.fetchPetActivities(
+            "${homeController.selectedProfile.value?.id ?? '-1'}");
+        _hasInitialized = true;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     var margen = 16.00;
     var ancho = MediaQuery.sizeOf(context).width;
-
-    // Asegurarse de no llamar a métodos que alteren el estado durante la construcción
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (homeController.selectedProfile.value != null) {
-        historialClinicoController.fetchPetActivities(
-            "${homeController.selectedProfile.value?.id ?? '-1'}");
-      }
-    });
 
     return Scaffold(
       backgroundColor: Colors.white,

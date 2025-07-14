@@ -12,17 +12,32 @@ import 'package:pawlly/modules/integracion/controller/cursos/cursos_controller.d
 
 import '../home/screens/widgets/training_horizontal_widget.dart';
 
-class CursosEntrenamiento extends StatelessWidget {
+class CursosEntrenamiento extends StatefulWidget {
   CursosEntrenamiento({super.key});
+
+  @override
+  State<CursosEntrenamiento> createState() => _CursosEntrenamientoState();
+}
+
+class _CursosEntrenamientoState extends State<CursosEntrenamiento> {
   final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
   final CourseController cursosController = Get.find();
+  bool _hasInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Solo ejecutar fetchCourses una vez al inicializar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_hasInitialized) {
+        cursosController.fetchCourses();
+        _hasInitialized = true;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Ejecutar fetchCourses al abrir esta vista
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      cursosController.fetchCourses(); // Siempre se ejecuta al entrar a la vista
-    });
     final ancho = MediaQuery.sizeOf(context).width - 50;
     final margen = 16.00;
 

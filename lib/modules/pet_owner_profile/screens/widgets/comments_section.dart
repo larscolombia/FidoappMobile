@@ -71,12 +71,9 @@ class _CommentsSectionState extends State<CommentsSection> {
                   onRatingUpdate: (rating) {
                     comentariosController.updateField('rating', rating);
                   },
-                  onEvento: () {
+                  onEvento: () async {
                     comentariosController.updateField('employee_id', widget.id);
-                    comentariosController.postComment('user', context);
-                    Future.delayed(Duration(seconds: 5), () {
-                      comentariosController.fetchComments(widget.id, "user");
-                    });
+                    await comentariosController.postComment('user', context);
                   },
                 ),
               ),
