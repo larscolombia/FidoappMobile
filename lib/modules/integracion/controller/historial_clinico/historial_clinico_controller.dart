@@ -157,12 +157,9 @@ class HistorialClinicoController extends GetxController {
 
   Future<void> fetchHistorialClinico(int petId) async {
     final url = '$DOMAIN_URL/api/medical-history-per-pet?pet_id=$petId';
-    final vaccineUrl = '$DOMAIN_URL/api/vaccines-given-to-pet?pet_id=$petId';
 
     // isLoading.value = true;
     try {
-      List<HistorialClinico> items = [];
-
       final response = await http.get(
         Uri.parse(url),
         headers: {
@@ -176,67 +173,16 @@ class HistorialClinicoController extends GetxController {
         final data = json.decode(response.body);
 
         if (data['success'] == true) {
-          items.addAll((data['data'] as List)
+          historialClinico.value = (data['data'] as List)
               .map((item) => HistorialClinico.fromJson(item))
-              .toList());
+              .toList();
+          filteredHistorialClinico.value = historialClinico;
         } else {
           print('Error en el servidor: ${data['message']}');
         }
       } else {
         print('Error HTTP: ${response.statusCode}');
       }
-
-      final vaccineResponse = await http.get(
-        Uri.parse(vaccineUrl),
-        headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true',
-        },
-      );
-
-      if (vaccineResponse.statusCode == 200) {
-        final vaccineData = json.decode(vaccineResponse.body);
-
-        if (vaccineData['success'] == true) {
-          items.addAll((vaccineData['data'] as List).map((item) {
-            return HistorialClinico(
-              id: item['id'] != null ? int.tryParse(item['id'].toString()) : null,
-              reportName: item['vacuna_name'] ?? 'Vacuna',
-              reportType: '1',
-              applicationDate: item['fecha_aplicacion'] ?? '',
-              medicalConditions: null,
-              testResults: null,
-              vetVisits: null,
-              file: null,
-              image: null,
-              petId: item['pet_id'] != null
-                  ? int.tryParse(item['pet_id'].toString())
-                  : null,
-              petName: item['pet'] != null ? item['pet']['name'] ?? '' : '',
-              veterinarianId: null,
-              veterinarianName: '',
-              categoryName: 'Vacuna',
-              detailHistoryId: null,
-              detailHistoryName: null,
-              fechaAplicacion: item['fecha_aplicacion'],
-              fechaRefuerzo: item['fecha_refuerzo_vacuna'],
-              weight: item['weight']?.toString(),
-              notes: item['notes'],
-              createdAt: item['created_at'],
-              updatedAt: item['updated_at'],
-              category: '1',
-            );
-          }).toList());
-        } else {
-          print('Error en el servidor: ${vaccineData['message']}');
-        }
-      } else {
-        print('Error HTTP: ${vaccineResponse.statusCode}');
-      }
-
-      historialClinico.value = items;
-      filteredHistorialClinico.value = historialClinico;
     } catch (e) {
       print('Error al recuperar el historial médico: $e');
     } finally {
