@@ -38,7 +38,14 @@ class BlogController extends GetxController {
           blogPosts.value =
               data.map((post) => BlogPost.fromJson(post)).toList();
           filteredBlogPosts.value = blogPosts;
-          print('Blogs cargados con éxito: ${filteredBlogPosts}');
+          
+          // Debug: Imprimir información detallada de los blogs
+          print('Blogs cargados con éxito: ${filteredBlogPosts.length} blogs');
+          for (var i = 0; i < filteredBlogPosts.length; i++) {
+            var blog = filteredBlogPosts[i];
+            print('Blog $i: ID=${blog.id}, Name="${blog.name}", URL_Video="${blog.url_video}"');
+          }
+          
           print(
               'Blogs cargados con éxito: ${jsonEncode(filteredBlogPosts.map((post) => post.toJson()).toList())}');
         } else {
@@ -53,7 +60,7 @@ class BlogController extends GetxController {
     } catch (e) {
       print('Excepción capturada: $e');
     } finally {
-      isLoading(false); // Asegúrate de cambiar el estado de carga
+      isLoading.value = false; // Corregido: usar .value = false
     }
   }
 

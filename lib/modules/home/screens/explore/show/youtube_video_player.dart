@@ -17,15 +17,33 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
 
   @override
   void initState() {
-    videoId = YoutubePlayer.convertUrlToId(widget.videoUrl);
+    // Debug: Imprimir información detallada de la URL recibida
+    print('=== YOUTUBE VIDEO PLAYER DEBUG ===');
+    print('URL recibida: "${widget.videoUrl}"');
+    print('Longitud de la URL: ${widget.videoUrl.length}');
+    print('¿URL está vacía?: ${widget.videoUrl.isEmpty}');
+    print('¿URL es solo espacios?: ${widget.videoUrl.trim().isEmpty}');
     
-    failVideoId = videoId == null;
+    // Verificar si la URL está vacía o es nula
+    if (widget.videoUrl.isEmpty || widget.videoUrl.trim().isEmpty) {
+      print('YouTubeVideoPlayer - URL vacía detectada');
+      failVideoId = true;
+      videoId = null;
+    } else {
+      videoId = YoutubePlayer.convertUrlToId(widget.videoUrl);
+      print('YouTubeVideoPlayer - Video ID extraído: $videoId');
+      failVideoId = videoId == null;
+    }
 
     if (failVideoId) {
+      print('YouTubeVideoPlayer - Fallback a video placeholder');
       // Se agrega video placeholder para evitar que el controlador falle.
       // el video no se mostrará, se usa para evitar que falle el controlador.
       videoId = YoutubePlayer.convertUrlToId('https://www.youtube.com/watch?v=ScMzIvxBSi4');
     }
+    
+    print('YouTubeVideoPlayer - Video ID final: $videoId');
+    print('YouTubeVideoPlayer - ¿Falló la carga?: $failVideoId');
     
     _controller = YoutubePlayerController(
       initialVideoId: videoId!,
@@ -56,6 +74,11 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
             children: [
               Icon(Icons.videocam_off_outlined, color: Colors.redAccent, size: 50),
               Text('No se pudo cargar el video.'),
+              SizedBox(height: 8),
+              Text(
+                'URL del video no disponible',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ],
           ),
         ),

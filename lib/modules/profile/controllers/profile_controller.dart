@@ -38,6 +38,11 @@ class ProfileController extends GetxController {
     super.onInit();
     // Cargar los datos del usuario desde AuthServiceApis al iniciar el controlador
     currentUser = AuthServiceApis.dataCurrentUser; // Asegúrate de que el servicio esté correctamente configurado
+    
+    print('=== DEBUG ONINIT ===');
+    print('Current user payment account: "${currentUser.paymentAccount}"');
+    print('Current user object: $currentUser');
+    
     dataUser();
     // Inicializar los controladores con los datos del usuario actual
     nameController.value.text = currentUser.firstName;
@@ -50,6 +55,8 @@ class ProfileController extends GetxController {
     // Configura los valores iniciales de los campos sexo y dueño
     sexoValue.value = currentUser.gender.isNotEmpty ? mapGender(currentUser.gender) : 'Femenino'; // Valor predeterminado si no está definido
     duenioValue.value = currentUser.userType.isNotEmpty ? currentUser.userType : 'Sí'; // Ajusta según el valor de userType o pon un valor por defecto
+    
+    print('=== END DEBUG ONINIT ===');
   }
 
   void toggleEditing() {
@@ -108,6 +115,10 @@ class ProfileController extends GetxController {
   }
 
   void dataUser() {
+    print('=== DEBUG DATA USER ===');
+    print('Current user payment account: "${currentUser.paymentAccount}"');
+    print('Current user object: $currentUser');
+    
     user['first_name'] = currentUser.firstName;
     user['last_name'] = currentUser.lastName;
     user['email'] = currentUser.email;
@@ -115,6 +126,10 @@ class ProfileController extends GetxController {
     user['userType'] = currentUser.userType;
     user['profileImage'] = currentUser.profileImage;
     user['payment_account'] = currentUser.paymentAccount;
+    
+    print('User object after dataUser: $user');
+    print('Payment account in user object: "${user['payment_account']}"');
+    print('=== END DEBUG DATA USER ===');
   }
 
   Future<void> updateProfile() async {
@@ -159,6 +174,7 @@ class ProfileController extends GetxController {
       print('=== DEBUG UPDATE PROFILE ===');
       print('User object: $user');
       print('Fields to send: $fields');
+      print('Payment account in fields: "${fields['payment_account']}"');
       
       fields.forEach((key, value) {
         request.fields[key] = value;
@@ -182,6 +198,10 @@ class ProfileController extends GetxController {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = json.decode(responseBody);
+        print('=== SUCCESS UPDATE PROFILE ===');
+        print('Response data: $data');
+        print('Payment account in response: "${data['data']['payment_account']}"');
+        
         await AuthServiceApis.saveUpdateProfileData(data);
         Get.dialog(
           //pisa papel
@@ -197,8 +217,21 @@ class ProfileController extends GetxController {
               //   currentUser.gender = data['data']['gender'].toLowerCase();
               user['lastName'] = data['data']['last_name'];
               currentUser.lastName = data['data']['last_name'];
-              user['payment_account'] = data['data']['payment_account'] ?? '';
-              currentUser.paymentAccount = data['data']['payment_account'] ?? '';
+              // Extract payment account from profile object if available
+              String paymentAccount = "";
+              if (data['data']['payment_account'] is String && data['data']['payment_account'].isNotEmpty) {
+                paymentAccount = data['data']['payment_account'];
+              } else if (data['data']['profile'] != null && data['data']['profile']['payment_account'] is String) {
+                paymentAccount = data['data']['profile']['payment_account'];
+              }
+              
+              user['payment_account'] = paymentAccount;
+              currentUser.paymentAccount = paymentAccount;
+              
+              print('=== AFTER UPDATE ===');
+              print('Current user payment account: "${currentUser.paymentAccount}"');
+              print('User object payment account: "${user['payment_account']}"');
+              
               Get.back();
             },
           ),

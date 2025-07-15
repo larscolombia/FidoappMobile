@@ -7,6 +7,8 @@ import 'package:pawlly/services/auth_service_apis.dart';
 
 class PetOwnerController extends GetxController {
   var associatedPersons = <Map<String, dynamic>>[].obs; // Lista observable
+  var isPrimaryOwner = false.obs; // Variable para verificar si el usuario actual es el dueño principal
+  var primaryOwnerId = 0.obs; // ID del dueño principal
 
   Future<void> fetchOwnersList(int petId) async {
     final url = Uri.parse('${BASE_URL}pets/$petId/owners');
@@ -24,6 +26,11 @@ class PetOwnerController extends GetxController {
 
         // Limpia la lista y agrega el primary_owner
         associatedPersons.clear();
+        primaryOwnerId.value = data['primary_owner']['id'] ?? 0;
+        
+        // Verificar si el usuario actual es el dueño principal
+        isPrimaryOwner.value = (data['primary_owner']['id'] == AuthServiceApis.dataCurrentUser.id);
+        
         associatedPersons.add({
           'id': data['primary_owner']['id'] ?? 0,
           'name': data['primary_owner']['full_name'] ?? '',

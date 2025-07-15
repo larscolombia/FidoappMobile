@@ -140,8 +140,22 @@ class Estadisticas extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    print(avatars);
-    // TODO: implement build
+    print('=== DEBUG ESTADISTICAS ===');
+    print('Comentarios: $comentarios');
+    print('Calificación: $calificacion');
+    print('Avatars: $avatars');
+    
+    // Convertir la calificación de forma segura
+    double ratingValue = 0.0;
+    try {
+      ratingValue = double.parse(calificacion);
+    } catch (e) {
+      print('Error al convertir calificación "$calificacion": $e');
+      ratingValue = 0.0;
+    }
+    
+    print('Rating value convertido: $ratingValue');
+    
     return Container(
       width: MediaQuery.sizeOf(context).width,
       height: 160,
@@ -166,7 +180,7 @@ class Estadisticas extends StatelessWidget {
             Row(
               children: [
                 RatingBar.builder(
-                  initialRating: double.parse(calificacion ?? '0'),
+                  initialRating: ratingValue,
                   minRating: 1,
                   itemSize: 20,
                   direction: Axis.horizontal,
@@ -182,7 +196,7 @@ class Estadisticas extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      '${double.parse(calificacion).toStringAsFixed(1)}',
+                      ratingValue.toStringAsFixed(1),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: const TextStyle(

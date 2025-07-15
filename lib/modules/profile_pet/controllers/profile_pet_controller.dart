@@ -9,6 +9,35 @@ import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
 
+// Función para normalizar el formato de fecha
+String normalizeDateFormat(String? date) {
+  if (date == null || date.isEmpty) return '';
+  
+  // Si ya está en formato yyyy/mm/dd, devolverlo tal como está
+  if (date.contains('/') && date.split('/').length == 3) {
+    List<String> parts = date.split('/');
+    if (parts.length == 3) {
+      // Verificar si está en formato yyyy/mm/dd
+      if (parts[0].length == 4 && parts[1].length == 2 && parts[2].length == 2) {
+        return date; // Ya está en el formato correcto
+      }
+    }
+  }
+  
+  // Si está en formato dd-MM-yyyy, convertirlo a yyyy/mm/dd
+  if (date.contains('-') && date.split('-').length == 3) {
+    List<String> parts = date.split('-');
+    if (parts.length == 3) {
+      String day = parts[0];
+      String month = parts[1];
+      String year = parts[2];
+      return '$year/$month/$day';
+    }
+  }
+  
+  return date; // Si no coincide con ningún formato, devolver original
+}
+
 class ProfilePetController extends GetxController {
   final TextEditingController searchController = TextEditingController();
   final ImagePicker _picker = ImagePicker();
@@ -154,6 +183,51 @@ class ProfilePetController extends GetxController {
     }
   }
 
+  // Función para actualizar solo la foto de perfil de la mascota
+  Future<void> updatePetProfilePhoto() async {
+    // Solo enviar la imagen sin afectar otros campos
+    Map<String, dynamic> updatedData = {
+      'pet_image': profileImagePath.value.isNotEmpty ? profileImagePath.value : null,
+    };
+
+    // Llamar al servicio para editar solo la foto del perfil de la mascota
+    final updatedPet = await PetService.postEditPetApi(
+      petId: petProfile.id,
+      body: updatedData,
+    );
+
+    if (updatedPet != null) {
+      // Actualización exitosa
+      petProfile = updatedPet;
+      
+      // Actualizar también en HomeController
+      final homeController = Get.find<HomeController>();
+      final index = homeController.profiles.indexWhere((pet) => pet.id == petProfile.id);
+      if (index != -1) {
+        homeController.profiles[index] = updatedPet;
+        homeController.profiles.refresh();
+      }
+      
+      // Actualizar la imagen en el controlador local
+      if (updatedPet.petImage != null && updatedPet.petImage!.isNotEmpty) {
+        profileImagePath.value = updatedPet.petImage!;
+      }
+      
+      CustomSnackbar.show(
+        title: 'Éxito',
+        message: 'Foto de perfil actualizada con éxito',
+        isError: false,
+      );
+    } else {
+      // Manejo del error
+      CustomSnackbar.show(
+        title: 'Error',
+        message: 'Hubo un problema al actualizar la foto de perfil',
+        isError: true,
+      );
+    }
+  }
+
   // Función para actualizar el perfil de la mascota
   Future<void> updatePetProfile() async {
     // Recoger los datos actualizados en un Map
@@ -172,7 +246,9 @@ class ProfilePetController extends GetxController {
 
     // Solo agregar date_of_birth si no está vacío
     if (petBirthDate.value.isNotEmpty) {
-      updatedData['date_of_birth'] = petBirthDate.value;
+      // Asegurar que la fecha esté en el formato correcto dd-MM-yyyy
+      String normalizedDate = normalizeDateFormat(petBirthDate.value);
+      updatedData['date_of_birth'] = normalizedDate;
     }
 
     // Llamar al servicio para editar el perfil de la mascota

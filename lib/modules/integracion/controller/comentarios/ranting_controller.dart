@@ -130,24 +130,70 @@ class CommentController extends GetxController {
   }
 
   double calculateAverageRating() {
-    if (comments.isEmpty) return 0.0;
+    print('=== CALCULATE AVERAGE RATING ===');
+    print('Total de comentarios: ${comments.length}');
+    
+    if (comments.isEmpty) {
+      print('No hay comentarios, retornando 0.0');
+      return 0.0;
+    }
 
-    double sum = comments.fold(0.0, (sum, comment) {
-      double rating = 0.0;
-
-      if (comment.rating != null) {
+    double sum = 0.0;
+    int validRatings = 0;
+    
+    for (var i = 0; i < comments.length; i++) {
+      var comment = comments[i];
+      print('Comentario $i: ID=${comment.id}, Rating="${comment.rating}"');
+      
+      if (comment.rating != null && comment.rating!.isNotEmpty) {
         try {
-          rating = double.parse(comment.rating.toString()); // Intentamos convertir a double
+          double rating = double.parse(comment.rating!);
+          sum += rating;
+          validRatings++;
+          print('Rating válido: $rating');
         } catch (e) {
-          print("Error al convertir el rating: $e");
+          print('Error al convertir rating "${comment.rating}": $e');
         }
+      } else {
+        print('Rating nulo o vacío para comentario $i');
       }
+    }
+    
+    if (validRatings == 0) {
+      print('No hay ratings válidos, retornando 0.0');
+      return 0.0;
+    }
+    
+    double average = sum / validRatings;
+    double roundedAverage = double.parse(average.toStringAsFixed(1));
+    
+    print('Suma total: $sum');
+    print('Ratings válidos: $validRatings');
+    print('Promedio: $average');
+    print('Promedio redondeado: $roundedAverage');
+    
+    return roundedAverage;
+  }
 
-      return sum + rating;
-    });
-
-    double average = sum / comments.length;
-    return double.parse(average.toStringAsFixed(1)); // Redondear a una cifra decimal
+  // Método para obtener los avatars de los comentarios
+  List<String> getTopAvatars() {
+    print('=== GET TOP AVATARS ===');
+    print('Total de comentarios: ${comments.length}');
+    
+    List<String> avatars = [];
+    
+    for (var i = 0; i < comments.length && i < 5; i++) {
+      var comment = comments[i];
+      if (comment.userAvatar != null && comment.userAvatar!.isNotEmpty) {
+        avatars.add(comment.userAvatar!);
+        print('Avatar $i: ${comment.userAvatar}');
+      } else {
+        print('Avatar $i: nulo o vacío');
+      }
+    }
+    
+    print('Avatars encontrados: ${avatars.length}');
+    return avatars;
   }
 
   var comentario = {
@@ -319,10 +365,5 @@ class CommentController extends GetxController {
       isComentarioPosrLoading(false);
       isLoading(false);
     }
-  }
-
-  List<String> getTopAvatars() {
-    // Devuelve un máximo de 5 avatares de la lista de comentarios
-    return comments.take(5).map((comment) => comment.userAvatar ?? '').toList();
   }
 }

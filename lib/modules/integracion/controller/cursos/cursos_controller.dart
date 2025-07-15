@@ -66,6 +66,20 @@ class CourseController extends GetxController {
             var coursesList =
                 coursesData.map((course) => Course.fromJson(course)).toList();
             courses.assignAll(coursesList);
+            
+            // Debug: Imprimir información detallada de los cursos
+            print('=== CURSOS CARGADOS ===');
+            print('Total de cursos: ${coursesList.length}');
+            for (var i = 0; i < coursesList.length; i++) {
+              var course = coursesList[i];
+              print('Curso $i: ID=${course.id}, Name="${course.name}", Videos=${course.videos.length}');
+              
+              // Imprimir información de cada video del curso
+              for (var j = 0; j < course.videos.length; j++) {
+                var video = course.videos[j];
+                print('  Video $j: ID=${video.id}, Title="${video.title}", URL="${video.url}"');
+              }
+            }
           } else {
             CustomSnackbar.show(
               title: 'Error',

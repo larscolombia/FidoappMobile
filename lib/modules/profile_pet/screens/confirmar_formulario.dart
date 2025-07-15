@@ -30,6 +30,20 @@ class ConfirmarFormulario extends StatelessWidget {
     // petController.selectType(0);
     print(
         'historial en vista ${AuthServiceApis.dataCurrentUser.userType}  ${isEdit}');
+    
+    // Log para debuggear los datos del historial clínico
+    print('=== DATOS DEL HISTORIAL CLÍNICO ===');
+    print('ID: ${historialClinico.id}');
+    print('Report Name: ${historialClinico.reportName}');
+    print('Report Type: ${historialClinico.reportType}');
+    print('Fecha Aplicación: ${historialClinico.fechaAplicacion}');
+    print('Fecha Refuerzo: ${historialClinico.fechaRefuerzo}');
+    print('Medical Conditions: ${historialClinico.medicalConditions}');
+    print('Notes: ${historialClinico.notes}');
+    print('Category Name: ${historialClinico.categoryName}');
+    print('Created At: ${historialClinico.createdAt}');
+    print('Updated At: ${historialClinico.updatedAt}');
+    print('=====================================');
 
     return Scaffold(
       backgroundColor: Styles.fiveColor,
@@ -129,8 +143,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                 label: 'Nombre del Informe',
                                 placeholder: '',
                                 initialValue:
-                                    historialClinico!.reportName.toString() ??
-                                        '',
+                                    historialClinico!.reportName ?? '',
                                 onChanged: (value) {
                                   historialClinico!.reportName = value;
                                 },
@@ -144,7 +157,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                 isDateField: true,
                                 label: 'Fecha de aplicación',
                                 placeholder: '',
-                                initialValue: historialClinico.fechaAplicacion,
+                                initialValue: historialClinico.fechaAplicacion ?? '',
                                 placeholderSvg: 'assets/icons/svg/calendar.svg',
                                 suffixIcon: const Icon(
                                   Icons.arrow_drop_down,
@@ -164,7 +177,7 @@ class ConfirmarFormulario extends StatelessWidget {
                                 placeholder: '',
                                 isDateField: true,
                                 initialValue:
-                                    historialClinico!.fechaRefuerzo.toString(),
+                                    historialClinico!.fechaRefuerzo ?? '',
                                 placeholderSvg: 'assets/icons/svg/calendar.svg',
                                 suffixIcon: const Icon(
                                   Icons.arrow_drop_down,
@@ -182,9 +195,7 @@ class ConfirmarFormulario extends StatelessWidget {
                               child: InputText(
                                 label: 'notas',
                                 placeholder: '',
-                                initialValue: historialClinico!
-                                    .medicalConditions
-                                    .toString(),
+                                initialValue: historialClinico!.notes ?? historialClinico!.medicalConditions ?? '',
                                 onChanged: (value) {
                                   historialClinico!.medicalConditions = value;
                                   historialClinico!.notes = value;

@@ -42,12 +42,37 @@ class Comment {
   });
 
   Comment.fromJson(Map<String, dynamic> json) {
+    // Debug: Imprimir el JSON recibido
+    print('=== COMMENT FROM JSON ===');
+    print('JSON recibido: $json');
+    
     id = json['id'];
-    rating = json['rating'].toString();
+    
+    // Manejar el rating de forma más robusta
+    if (json['rating'] != null) {
+      rating = json['rating'].toString();
+      print('Rating extraído: $rating');
+    } else {
+      rating = '0';
+      print('Rating nulo, usando valor por defecto: $rating');
+    }
+    
     reviewMsg = json['review_msg'];
     userId = json['user_id'];
     userFullName = json['user_full_name'];
     userAvatar = json['user_avatar'];
+    
+    print('Comment creado: ID=$id, Rating=$rating, ReviewMsg="$reviewMsg"');
+  }
+
+  // Método para obtener el rating como double
+  double getRatingAsDouble() {
+    try {
+      return double.parse(rating ?? '0');
+    } catch (e) {
+      print('Error al convertir rating "$rating" a double: $e');
+      return 0.0;
+    }
   }
 
   Map<String, dynamic> toJson() {

@@ -77,8 +77,9 @@ class FormularioRegistro extends StatelessWidget {
                           child: InputText(
                             placeholder: 'Nombre del informe',
                             onChanged: (value) {
-                              print('value $value');
+                              print('Nombre del informe: $value');
                               controller.updateField("name", value);
+                              controller.updateField("report_name", value);
                             },
                           ),
                         ),
@@ -100,6 +101,7 @@ class FormularioRegistro extends StatelessWidget {
                               prefixIconColor: const Color(0xFFFC9214),
                               iconColor: const Color(0xFFFC9214),
                               onChanged: (value) {
+                                print('Categoría seleccionada: $value');
                                 controller.updateField("category", value);
                               },
                               items: categoryController.categories
@@ -117,26 +119,16 @@ class FormularioRegistro extends StatelessWidget {
                         SizedBox(height: margen),
                         SizedBox(
                           width: ancho,
-                          child: InputSelect(
+                          child: InputText(
                             placeholder: 'Fecha de Aplicación',
-                            prefiIconSVG: 'assets/icons/svg/calendar.svg',
+                            placeholderSvg: 'assets/icons/svg/calendar.svg',
                             borderColor: const Color(0xFFFC9214),
-                            prefixIconColor: const Color(0xFFFC9214),
-                            iconColor: const Color(0xFFFC9214),
-                            TextColor: Colors.black,
+                            isDateField: true,
                             onChanged: (value) {
+                              print('Fecha seleccionada: $value');
                               controller.updateField("fecha_aplicacion", value);
                               controller.updateField("fecha_refuerzo", value);
                             },
-                            items: [
-                              DropdownMenuItem<String>(
-                                value: DateFormat('yyyy-MM-dd')
-                                    .format(DateTime.now()),
-                                child: Text(DateFormat('dd/MM/yyyy')
-                                    .format(DateTime.now())),
-                              ),
-                            ],
-                            textAlignment: TextAlignment.left,
                           ),
                         ),
                         SizedBox(height: margen),
@@ -145,6 +137,7 @@ class FormularioRegistro extends StatelessWidget {
                             isTextArea: true,
                             placeholder: 'Notas adicionales',
                             onChanged: (value) {
+                              print('Notas ingresadas: $value');
                               controller.updateField("notes", value);
                               controller.updateField(
                                   "medical_conditions", value);
@@ -160,6 +153,7 @@ class FormularioRegistro extends StatelessWidget {
                             placeholderSvg: 'assets/icons/svg/imagen2.svg',
                             onChanged: (filePath) {
                               print("Imagen seleccionada: $filePath");
+                              controller.updateField("image", filePath);
                             },
                           ),
                         ),
@@ -172,6 +166,7 @@ class FormularioRegistro extends StatelessWidget {
                             placeholderSvg: 'assets/icons/svg/imagen2.svg',
                             onChanged: (filePath) {
                               print("Archivo PDF seleccionado: $filePath");
+                              controller.updateField("file", filePath);
                             },
                           ),
                         ),

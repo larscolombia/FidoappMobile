@@ -15,6 +15,7 @@ import 'package:pawlly/modules/profile_pet/screens/widget/associated_persons_mod
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class InformationTab extends StatelessWidget {
   final ProfilePetController controller;
@@ -458,37 +459,51 @@ class InformationTab extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 44, // Ancho fijo
-                      height: 44, // Alto fijo
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20)),
+                    Obx(() {
+                      return SizedBox(
+                        width: 44, // Ancho fijo
+                        height: 44, // Alto fijo
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Verificar si el usuario actual es el dueño principal
+                            if (petcontroller.isPrimaryOwner.value) {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20)),
+                                ),
+                                builder: (context) {
+                                  return AssociatedPersonsModal(
+                                      controller: controller);
+                                },
+                              );
+                            } else {
+                              // Mostrar mensaje de que solo el dueño principal puede agregar personas
+                              CustomSnackbar.show(
+                                title: 'Acceso Restringido',
+                                message: 'Solo el dueño principal puede agregar más dueños asociados',
+                                isError: true,
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: petcontroller.isPrimaryOwner.value 
+                                ? const Color(0xFFFC9214) 
+                                : Colors.grey,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            builder: (context) {
-                              return AssociatedPersonsModal(
-                                  controller: controller);
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFC9214),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            padding: EdgeInsets.zero,
+                            shadowColor: Colors.transparent, // Elimina la sombra
+                            elevation: 0, // Evita cualquier sombra residual
                           ),
-                          padding: EdgeInsets.zero,
-                          shadowColor: Colors.transparent, // Elimina la sombra
-                          elevation: 0, // Evita cualquier sombra residual
+                          child: const Icon(Icons.add,
+                              color: Colors.white, size: 24), // Centrado
                         ),
-                        child: const Icon(Icons.add,
-                            color: Colors.white, size: 24), // Centrado
-                      ),
-                    ),
+                      );
+                    }),
                   ],
                 ),
 

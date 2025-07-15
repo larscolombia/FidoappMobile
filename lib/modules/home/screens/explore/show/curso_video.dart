@@ -51,6 +51,21 @@ class _CursoVideoState extends State<CursoVideo> {
   @override
   void initState() {
     super.initState();
+    
+    // Debug: Imprimir información detallada del video
+    print('=== INFORMACIÓN DEL VIDEO RECIBIDA ===');
+    print('Video ID: "${widget.videoId}"');
+    print('Curso ID: "${widget.cursoId}"');
+    print('Nombre: "${widget.name}"');
+    print('Descripción: "${widget.description}"');
+    print('Imagen: "${widget.image}"');
+    print('Duración: "${widget.duration}"');
+    print('Precio: "${widget.price}"');
+    print('Dificultad: "${widget.difficulty}"');
+    print('URL del video: "${widget.videoUrl}"');
+    print('Tipo de video: "${widget.tipovideo}"');
+    print('Fecha creada: "${widget.dateCreated}"');
+    
     if (widget.tipovideo == "blogs") {
       _commentController.fetchComments(widget.cursoId, "blog");
       _commentController.updateField('blog_id', widget.cursoId);

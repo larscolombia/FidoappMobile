@@ -39,7 +39,27 @@ class UserData {
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
-    return UserData(
+    print('=== DEBUG USERDATA FROM JSON ===');
+    print('JSON received: $json');
+    print('Payment account in JSON: "${json['payment_account']}"');
+    print('Profile in JSON: ${json['profile']}');
+    
+    // Improved payment account extraction
+    String paymentAccount = "";
+    if (json['payment_account'] is String && json['payment_account'].isNotEmpty) {
+      paymentAccount = json['payment_account'];
+      print('Found payment_account in root: "$paymentAccount"');
+    } else if (json['profile'] != null && json['profile'] is Map) {
+      var profile = json['profile'] as Map;
+      print('Profile object: $profile');
+      print('Profile payment_account: "${profile['payment_account']}"');
+      if (profile['payment_account'] is String && profile['payment_account'].isNotEmpty) {
+        paymentAccount = profile['payment_account'];
+        print('Found payment_account in profile: "$paymentAccount"');
+      }
+    }
+    
+    var userData = UserData(
         id: json['id'] is int ? json['id'] : -1,
         firstName: json['first_name'] is String ? json['first_name'] : "",
         lastName: json['last_name'] is String ? json['last_name'] : "",
@@ -64,15 +84,19 @@ class UserData {
             ? json['gender']
             : "", // Campo gender añadido
         deviceToken: json['device_token'].toString(),
-        paymentAccount: json['payment_account'] is String
-            ? json['payment_account']
-            : (json['profile'] != null && json['profile']['payment_account'] is String
-                ? json['profile']['payment_account']
-                : ""));
+        paymentAccount: paymentAccount);
+    
+    print('=== USERDATA CREATED ===');
+    print('Payment account in UserData: "${userData.paymentAccount}"');
+    
+    return userData;
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    print('=== DEBUG USERDATA TO JSON ===');
+    print('Payment account being serialized: "$paymentAccount"');
+    
+    var json = {
       'id': id,
       'first_name': firstName,
       'last_name': lastName,
@@ -90,5 +114,10 @@ class UserData {
       'gender': gender, // Agregado a la serialización
       'payment_account': paymentAccount,
     };
+    
+    print('JSON being returned: $json');
+    print('=== END DEBUG USERDATA TO JSON ===');
+    
+    return json;
   }
 }

@@ -26,7 +26,11 @@ class Video {
   });
 
   factory Video.fromJson(Map<String, dynamic> json) {
-    return Video(
+    // Debug: Imprimir el JSON recibido para este video
+    print('=== VIDEO FROM JSON ===');
+    print('JSON recibido: $json');
+    
+    var video = Video(
       id: json['id']?.toString() ?? '',
       title: json['title'] ?? '',
       thumbnail: json['thumbnail'] ?? '',
@@ -39,6 +43,11 @@ class Video {
       createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime.now(),
       updatedAt: DateTime.tryParse(json['updated_at'] ?? '') ?? DateTime.now(),
     );
+    
+    // Debug: Imprimir el objeto Video creado
+    print('Video creado: ID=${video.id}, Title="${video.title}", URL="${video.url}"');
+    
+    return video;
   }
 
   @override

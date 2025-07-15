@@ -99,18 +99,44 @@ class _VideoListState extends State<VideoList> {
                 children: courseController.filteredCourses.map((course) {
                   return GestureDetector(
                     onTap: () {
+                      // Debug: Imprimir información detallada del curso
+                      print('=== INFORMACIÓN DEL CURSO SELECCIONADO ===');
+                      print('ID del curso: ${course.id}');
+                      print('Nombre: "${course.name}"');
+                      print('Descripción: "${course.description}"');
+                      print('Imagen: "${course.image}"');
+                      print('Duración: "${course.duration}"');
+                      print('Dificultad: "${course.difficulty}"');
+                      print('Precio: "${course.price}"');
+                      print('Videos disponibles: ${course.videos.length}');
+                      
+                      // Imprimir información de cada video del curso
+                      for (var i = 0; i < course.videos.length; i++) {
+                        var video = course.videos[i];
+                        print('Video $i: ID=${video.id}, Title="${video.title}", URL="${video.url}"');
+                      }
+                      
+                      // Obtener el primer video del curso si existe
+                      String videoUrl = "";
+                      if (course.videos.isNotEmpty) {
+                        videoUrl = course.videos.first.url;
+                        print('URL del video seleccionado: "$videoUrl"');
+                      } else {
+                        print('ADVERTENCIA: Este curso no tiene videos disponibles');
+                      }
+                      
                       // Acción al tocar un curso
-                      print('Curso seleccionado: ${course.id}');
-                      Get.to(() =>CursoVideo(
-                        videoId: "",
+                      print('Navegando a CursoVideo con URL: "$videoUrl"');
+                      Get.to(() => CursoVideo(
+                        videoId: course.videos.isNotEmpty ? course.videos.first.id : "",
                         cursoId: course.id.toString(),
                         name: course.name,
                         description: course.description,
                         image: course.image,
-                        duration: "",
-                        price: "",
+                        duration: course.duration,
+                        price: course.price,
                         difficulty: course.difficulty,
-                        videoUrl: "",
+                        videoUrl: videoUrl,
                         tipovideo: 'video',
                         dateCreated: DateTime.now().toString(),
                       ));

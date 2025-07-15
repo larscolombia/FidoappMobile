@@ -91,10 +91,10 @@ class ProfilePetScreen extends StatelessWidget {
                       
                       await controller.pickImage();
                       
-                      // Si se seleccionó una imagen y es diferente a la actual, actualizar el perfil
+                      // Si se seleccionó una imagen y es diferente a la actual, actualizar solo la foto
                       if (controller.profileImagePath.value.isNotEmpty && 
                           controller.profileImagePath.value != pet.petImage) {
-                        await controller.updatePetProfile();
+                        await controller.updatePetProfilePhoto();
                         // Actualizar la imagen en HomeController también
                         final homeController = Get.find<HomeController>();
                         homeController.refresh();

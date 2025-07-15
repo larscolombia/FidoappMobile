@@ -78,7 +78,10 @@ class StripeController extends GetxController {
         final transactionController = Get.put(TransactionController());
         await balanceController.fetchUserBalance();
         await transactionController.fetchTransactions();
-        Get.back();
+        
+        // Limpiar el stack de navegación y volver a la pantalla de balance
+        Get.until((route) => route.settings.name == '/dashboard' || route.settings.name == null);
+        Get.to(() => FideCoin());
       } else if (response.statusCode == 400) {
         CustomSnackbar.show(title: 'Saldo insuficiente', message: 'No cuentas con suficiente saldo', isError: true);
       } else {

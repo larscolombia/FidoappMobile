@@ -8,6 +8,8 @@ import 'package:pawlly/modules/home/screens/home_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
 import 'dart:convert';
+import 'dart:io';
+import 'package:path/path.dart' as path;
 import 'package:pawlly/components/custom_snackbar.dart';
 
 class HistorialClinicoController extends GetxController {
@@ -98,7 +100,7 @@ class HistorialClinicoController extends GetxController {
       'vet_visits': "1",
       'date': '',
       'weight': '',
-      'notes': null,
+      'notes': '',
       'file': null,
       'image': null,
     }.obs;
@@ -118,23 +120,125 @@ class HistorialClinicoController extends GetxController {
     final url =
         '$DOMAIN_URL/api/pet-histories?user_id=${AuthServiceApis.dataCurrentUser.id}&pet_id=${reportData['pet_id']}';
     print('url $url');
+    
+    // Log para debuggear los datos que se envían
+    print('=== DATOS DEL INFORME MÉDICO ===');
+    print('URL: $url');
+    print('Datos del reporte: ${jsonEncode(reportData)}');
+    print('Nombre: ${reportData['name']}');
+    print('Report Name: ${reportData['report_name']}');
+    print('Fecha Aplicación: ${reportData['fecha_aplicacion']}');
+    print('Fecha Refuerzo: ${reportData['fecha_refuerzo']}');
+    print('Categoría: ${reportData['category']}');
+    print('Notas: ${reportData['notes']}');
+    print('Medical Conditions: ${reportData['medical_conditions']}');
+    print('Imagen: ${reportData['image']}');
+    print('Archivo PDF: ${reportData['file']}');
+    print('=====================================');
+    
     try {
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': 'true',
-        },
-        body: jsonEncode(reportData),
-      );
+      // Crear MultipartRequest para enviar archivos
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      
+      // Agregar headers
+      request.headers.addAll({
+        'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+        'ngrok-skip-browser-warning': 'true',
+      });
+      
+      // Agregar campos del formulario
+      request.fields.addAll({
+        'pet_id': (reportData['pet_id'] ?? '').toString(),
+        'report_type': (reportData['report_type'] ?? 1).toString(),
+        'veterinarian_id': (reportData['veterinarian_id'] ?? '').toString(),
+        'report_name': (reportData['report_name'] ?? '').toString(),
+        'name': (reportData['name'] ?? '').toString(),
+        'fecha_aplicacion': (reportData['fecha_aplicacion'] ?? '').toString(),
+        'fecha_refuerzo': (reportData['fecha_refuerzo'] ?? '').toString(),
+        'category': (reportData['category'] ?? '').toString(),
+        'medical_conditions': (reportData['medical_conditions'] ?? '').toString(),
+        'notes': (reportData['notes'] ?? '').toString(),
+      });
+      
+      // Log de los campos que se envían
+      print('=== CAMPOS ENVIADOS ===');
+      request.fields.forEach((key, value) {
+        print('$key: $value');
+      });
+      print('========================');
+      
+      // Agregar archivo de imagen si existe
+      if (reportData['image'] != null && (reportData['image'] as String).isNotEmpty) {
+        try {
+          File imageFile = File(reportData['image'] as String);
+          if (await imageFile.exists()) {
+            var stream = http.ByteStream(imageFile.openRead());
+            var length = await imageFile.length();
+            var multipartFile = http.MultipartFile(
+              'image',
+              stream,
+              length,
+              filename: path.basename(imageFile.path),
+            );
+            request.files.add(multipartFile);
+            print('Imagen adjunta: ${imageFile.path}');
+          } else {
+            print('Error: El archivo de imagen no existe: ${reportData['image']}');
+          }
+        } catch (e) {
+          print('Error al procesar imagen: $e');
+        }
+      } else {
+        print('No se seleccionó imagen');
+      }
+      
+      // Agregar archivo PDF si existe
+      if (reportData['file'] != null && (reportData['file'] as String).isNotEmpty) {
+        try {
+          File pdfFile = File(reportData['file'] as String);
+          if (await pdfFile.exists()) {
+            var stream = http.ByteStream(pdfFile.openRead());
+            var length = await pdfFile.length();
+            var multipartFile = http.MultipartFile(
+              'file',
+              stream,
+              length,
+              filename: path.basename(pdfFile.path),
+            );
+            request.files.add(multipartFile);
+            print('PDF adjunto: ${pdfFile.path}');
+          } else {
+            print('Error: El archivo PDF no existe: ${reportData['file']}');
+          }
+        } catch (e) {
+          print('Error al procesar PDF: $e');
+        }
+      } else {
+        print('No se seleccionó PDF');
+      }
+      
+      // Log de archivos adjuntos
+      print('=== ARCHIVOS ADJUNTOS ===');
+      for (var file in request.files) {
+        print('Archivo: ${file.filename}');
+      }
+      print('==========================');
+      
+      // Enviar la solicitud
+      var response = await request.send();
+      var responseBody = await http.Response.fromStream(response);
+      
+      print('=== RESPUESTA DEL API ===');
+      print('Status Code: ${response.statusCode}');
+      print('Response Body: ${responseBody.body}');
+      print('==========================');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         Get.dialog(
           CustomAlertDialog(
             icon: Icons.check_circle_outline,
             title: 'Éxito',
-            description: 'El Historial ha sido eliminado exitosamente.',
+            description: 'El Informe Médico ha sido creado exitosamente.',
             primaryButtonText: 'Aceptar',
             onPrimaryButtonPressed: () {
               Get.off(HomeScreen()); // Cerrar el diálogo
@@ -145,7 +249,7 @@ class HistorialClinicoController extends GetxController {
         );
         isSuccess.value = true;
       } else {
-        print("Error al enviar datos: ${response.body}");
+        print("Error al enviar datos: ${responseBody.body}");
         isSuccess.value = false;
       }
     } catch (e) {
@@ -175,8 +279,17 @@ class HistorialClinicoController extends GetxController {
         final data = json.decode(response.body);
 
         if (data['success'] == true) {
+          // Log para debuggear los datos que llegan del API
+          print('=== DATOS DEL API ===');
+          print('Response body: ${response.body}');
+          print('Data success: ${data['success']}');
+          print('Data length: ${(data['data'] as List).length}');
+          
           List<HistorialClinico> list = (data['data'] as List)
-              .map((item) => HistorialClinico.fromJson(item))
+              .map((item) {
+                print('Item from API: $item');
+                return HistorialClinico.fromJson(item);
+              })
               .toList();
 
           // Obtener vacunas y combinarlas

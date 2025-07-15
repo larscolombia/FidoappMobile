@@ -32,20 +32,31 @@ class EntertainmentBlogs extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Obx(() {
-            if (blogController.filteredBlogPosts.isEmpty) {
+            if (blogController.isLoading.value) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            
+            // Filtrar solo los blogs que tienen URLs de video válidas
+            var blogsWithVideos = blogController.filteredBlogPosts
+                .where((blog) => blog.url_video != null && blog.url_video!.isNotEmpty)
+                .toList();
+            
+            if (blogsWithVideos.isEmpty) {
               return const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(height: 50),
                     Icon(
-                      Icons.search_off,
+                      Icons.videocam_off_outlined,
                       size: 64,
                       color: Color(0xFF959595),
                     ),
                     SizedBox(height: 16),
                     Text(
-                      'No se encontraron blogs',
+                      'No hay videos disponibles',
                       style: TextStyle(
                         fontSize: 18,
                         fontFamily: 'Lato',
@@ -55,7 +66,7 @@ class EntertainmentBlogs extends StatelessWidget {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'Intenta con otros términos de búsqueda',
+                      'Los videos aparecerán aquí cuando estén disponibles',
                       style: TextStyle(
                         fontSize: 14,
                         fontFamily: 'Lato',
@@ -70,9 +81,26 @@ class EntertainmentBlogs extends StatelessWidget {
             }
             
             return Row(
-              children: blogController.filteredBlogPosts.map((video) {
+              children: blogsWithVideos.map((video) {
                 return GestureDetector(
                   onTap: () {
+                    // Debug: Imprimir información del video antes de navegar
+                    print('Navegando a video: ID=${video.id}, Name="${video.name}", URL="${video.url_video}"');
+                    
+                    // Validar si el video tiene una URL válida
+                    if (video.url_video == null || video.url_video!.isEmpty) {
+                      print('Error: Video sin URL válida');
+                      // Mostrar un snackbar o alerta al usuario
+                      Get.snackbar(
+                        'Error',
+                        'Este video no tiene una URL válida',
+                        snackPosition: SnackPosition.BOTTOM,
+                        backgroundColor: Colors.red,
+                        colorText: Colors.white,
+                      );
+                      return;
+                    }
+                    
                     Get.to(() => CursoVideo(
                           videoId: "",
                           cursoId: video.id.toString(),
@@ -82,7 +110,7 @@ class EntertainmentBlogs extends StatelessWidget {
                           duration: "",
                           price: "",
                           difficulty: "blogs",
-                          videoUrl: video.url_video ?? "",
+                          videoUrl: video.url_video!,
                           tipovideo: 'blogs',
                           dateCreated: video.createdAt.toString(),
                         ));

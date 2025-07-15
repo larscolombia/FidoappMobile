@@ -19,6 +19,23 @@ class AvatarComentarios extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('=== AVATAR COMENTARIOS ===');
+    print('Avatar: $avatar');
+    print('Name: $name');
+    print('Date: $date');
+    print('Comment: $comment');
+    print('Rating: $rating');
+    
+    // Convertir el rating de forma segura
+    double ratingValue = 0.0;
+    if (rating != null) {
+      ratingValue = rating!;
+    } else {
+      print('Rating es nulo, usando 0.0');
+    }
+    
+    print('Rating value final: $ratingValue');
+    
     return Container(
       width: 304,
       margin: const EdgeInsets.only(bottom: 30),
@@ -45,66 +62,58 @@ class AvatarComentarios extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 2),
-              Container(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 5),
-                      width: 200,
-                      child: Text(
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        name ?? "",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: 'Lato',
-                          color: Colors.black,
-                        ),
+                    Text(
+                      name ?? 'Usuario',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color(0XFF383838),
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
-                    SizedBox(
-                      width: 200,
-                      child: Row(
-                        children: [
-                          RatingBar.builder(
-                            initialRating: rating ?? 0.0,
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            allowHalfRating: true,
-                            itemCount: 5,
-                            itemPadding:
-                                const EdgeInsets.symmetric(horizontal: 1.0),
-                            itemSize: 16,
-                            itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: Color(0XFFFC9214),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        RatingBar.builder(
+                          initialRating: ratingValue,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemPadding:
+                              const EdgeInsets.symmetric(horizontal: 1.0),
+                          itemSize: 16,
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Color(0XFFFC9214),
+                          ),
+                          onRatingUpdate: (value) {},
+                        ),
+                        Container(
+                          height: 14,
+                          width: 1,
+                          color: Color(0XFFEAEAEA),
+                        ),
+                        const SizedBox(width: 10),
+                        SizedBox(
+                          width: 50,
+                          child: Text(
+                            ratingValue.toStringAsFixed(1),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0XFF383838),
+                              fontFamily: 'Lato',
+                              fontWeight: FontWeight.w800,
                             ),
-                            onRatingUpdate: (value) {},
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
-                          Container(
-                            height: 14,
-                            width: 1,
-                            color: Color(0XFFEAEAEA),
-                          ),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 50,
-                            child: Text(
-                              '${rating ?? 0.0}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0XFF383838),
-                                fontFamily: 'Lato',
-                                fontWeight: FontWeight.w800,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     )
                   ],
                 ),

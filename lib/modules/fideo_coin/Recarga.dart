@@ -250,6 +250,9 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                               return;
                             }
 
+                            // Cerrar el modal antes de ejecutar la operación
+                            Get.back();
+
                             if (widget.isWithdraw) {
                               await controller.withdrawBalance(
                                   _formattedInput(_input), context);

@@ -6,6 +6,8 @@ import 'package:pawlly/configs.dart';
 import 'package:pawlly/modules/integracion/model/banner/banner_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/utils/common_base.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BannerController extends GetxController {
   var banner = Rxn<BannerModel>();
@@ -86,6 +88,13 @@ class BannerController extends GetxController {
   void _navigateToScreen(String action) {
     // Convertir a minúsculas para hacer la comparación insensible a mayúsculas
     final normalizedAction = action.toLowerCase().trim();
+    
+    // Verificar si la acción es una URL válida
+    if (_isValidUrl(action)) {
+      // Abrir URL en navegador externo
+      commonLaunchUrl(action, launchMode: LaunchMode.externalApplication);
+      return;
+    }
     
     switch (normalizedAction) {
       case 'profile':
@@ -183,6 +192,16 @@ class BannerController extends GetxController {
           isError: false,
         );
         break;
+    }
+  }
+
+  /// Verifica si la acción es una URL válida
+  bool _isValidUrl(String action) {
+    try {
+      final uri = Uri.parse(action);
+      return uri.hasScheme && (uri.scheme == 'http' || uri.scheme == 'https');
+    } catch (e) {
+      return false;
     }
   }
 } 

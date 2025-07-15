@@ -109,6 +109,10 @@ class AuthServiceApis extends GetxController {
       // Actualizar el estado en memoria
       currentUser.value = LoginResponse.fromJson(Map<String, dynamic>.from(response));
       dataCurrentUser = UserData.fromJson(response['data']);
+      
+      print('=== DEBUG SAVE LOGIN DATA ===');
+      print('DataCurrentUser payment account: "${dataCurrentUser.paymentAccount}"');
+      print('CurrentUser payment account: "${currentUser.value?.userData.paymentAccount}"');
 
       // Marcar como logged in
       await prefs.setBool(SharedPreferenceConst.IS_LOGGED_IN, true);
@@ -130,6 +134,11 @@ class AuthServiceApis extends GetxController {
 
   static Future<void> saveUpdateProfileData(Map response) async {
     try {
+      print('=== DEBUG SAVE UPDATE PROFILE DATA ===');
+      print('Response received: $response');
+      print('Payment account in response: "${response['data']['payment_account']}"');
+      print('Profile in response: ${response['data']['profile']}');
+      
       final prefs = await SharedPreferences.getInstance();
       response['data']['api_token'] = AuthServiceApis.dataCurrentUser.apiToken;
 
@@ -141,12 +150,22 @@ class AuthServiceApis extends GetxController {
       currentUser.value = LoginResponse.fromJson(Map<String, dynamic>.from(response));
 
       dataCurrentUser = UserData.fromJson(response['data']);
+      
+      print('=== DEBUG SAVE UPDATE PROFILE DATA - AFTER PARSING ===');
+      print('DataCurrentUser payment account: "${dataCurrentUser.paymentAccount}"');
+      print('CurrentUser payment account: "${currentUser.value?.userData.paymentAccount}"');
+      
+      print('=== AFTER SAVE ===');
+      print('DataCurrentUser payment account: "${dataCurrentUser.paymentAccount}"');
+      print('CurrentUser payment account: "${currentUser.value?.userData.paymentAccount}"');
 
       profileChange.value = DateTime.now();
 
       // Marcar como logged in
       await prefs.setBool(SharedPreferenceConst.IS_LOGGED_IN, true);
       isLoggedIn(true);
+      
+      print('=== SAVE COMPLETED ===');
     } catch (e) {
       debugPrint('Error saving login data: $e');
     }
@@ -154,16 +173,29 @@ class AuthServiceApis extends GetxController {
 
   static Future<bool> loadLoginData() async {
     try {
+      print('=== DEBUG LOAD LOGIN DATA ===');
       final prefs = await SharedPreferences.getInstance();
       final userDataStr = prefs.getString(KEY_USER_DATA);
       final apiToken = prefs.getString(KEY_API_TOKEN);
       final isLogged = prefs.getBool(SharedPreferenceConst.IS_LOGGED_IN) ?? false;
 
+      print('User data string exists: ${userDataStr != null}');
+      print('API token exists: ${apiToken != null}');
+      print('Is logged in: $isLogged');
+
       if (userDataStr != null && apiToken != null && isLogged) {
         final userDataMap = json.decode(userDataStr);
+        print('User data map: $userDataMap');
+        print('Payment account in stored data: "${userDataMap['data']['payment_account']}"');
+        print('Profile in stored data: ${userDataMap['data']['profile']}');
+        
         currentUser.value = LoginResponse.fromJson(userDataMap);
         dataCurrentUser = UserData.fromJson(userDataMap['data']);
         isLoggedIn(true);
+
+        print('=== AFTER LOAD ===');
+        print('DataCurrentUser payment account: "${dataCurrentUser.paymentAccount}"');
+        print('CurrentUser payment account: "${currentUser.value?.userData.paymentAccount}"');
 
         // Verificar y actualizar el token en los headers
         await saveToken(apiToken);

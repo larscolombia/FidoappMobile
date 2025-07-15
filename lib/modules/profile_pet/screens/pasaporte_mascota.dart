@@ -46,10 +46,16 @@ String normalizeDateFormat(String? date) {
   
   // Si ya está en formato yyyy/mm/dd, devolverlo tal como está
   if (date.contains('/') && date.split('/').length == 3) {
-    return date;
+    List<String> parts = date.split('/');
+    if (parts.length == 3) {
+      // Verificar si está en formato yyyy/mm/dd
+      if (parts[0].length == 4 && parts[1].length == 2 && parts[2].length == 2) {
+        return date; // Ya está en el formato correcto
+      }
+    }
   }
   
-  // Si está en formato dd-mm-yyyy, convertirlo a yyyy/mm/dd
+  // Si está en formato dd-MM-yyyy, convertirlo a yyyy/mm/dd
   if (date.contains('-') && date.split('-').length == 3) {
     List<String> parts = date.split('-');
     if (parts.length == 3) {
@@ -476,3 +482,4 @@ class PasaporteMascota extends StatelessWidget {
     );
   }
 }
+
