@@ -16,6 +16,7 @@ import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InformationTab extends StatelessWidget {
   final ProfilePetController controller;
@@ -67,12 +68,27 @@ class InformationTab extends StatelessWidget {
                     if (AuthServiceApis.dataCurrentUser.userType == 'user')
                       ButtonDefaultWidget(
                         title: 'Compartir',
-                        callback: () {
-                          // Lógica para compartir
-                          Share.share(
-                            'Esta es mi mascota: ${homeController.selectedProfile.value!.petImage}',
-                            subject: AuthServiceApis.dataCurrentUser.userName,
-                          );
+                        callback: () async {
+                          // Verificar si existe la URL del perfil público
+                          final String? publicProfileUrl = homeController.selectedProfile.value!.publicPetProfile;
+                          if (publicProfileUrl != null && publicProfileUrl.isNotEmpty) {
+                            // Abrir la URL en el navegador
+                            try {
+                              await launchUrl(Uri.parse(publicProfileUrl));
+                            } catch (e) {
+                              CustomSnackbar.show(
+                                title: 'Error',
+                                message: 'No se pudo abrir el enlace',
+                                isError: true,
+                              );
+                            }
+                          } else {
+                            CustomSnackbar.show(
+                              title: 'Error',
+                              message: 'No hay enlace de perfil público disponible',
+                              isError: true,
+                            );
+                          }
                         },
                         defaultColor: Colors.transparent,
                         border: const BorderSide(color: Colors.grey, width: 1),

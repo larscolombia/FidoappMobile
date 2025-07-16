@@ -99,6 +99,7 @@ class PetData {
   String? petFur;
   String? description;
   ChipData? chip;
+  String? publicPetProfile;
   PetData(
       {required this.id,
       required this.name,
@@ -123,7 +124,8 @@ class PetData {
       this.updatedBy,
       this.deletedBy,
       this.petFur,
-      this.chip});
+      this.chip,
+      this.publicPetProfile});
 
   factory PetData.fromJson(Map<String, dynamic> json) {
     return PetData(
@@ -150,7 +152,8 @@ class PetData {
         deletedBy: json['deleted_by'],
         description: json['description'],
         petFur: json['pet_fur'],
-        chip: json['chip'] != null ? ChipData.fromJson(json['chip']) : null);
+        chip: json['chip'] != null ? ChipData.fromJson(json['chip']) : null,
+        publicPetProfile: json['public_pet_profile']);
   }
 
   Map<String, dynamic> toJson() {
@@ -179,6 +182,7 @@ class PetData {
       'deleted_by': deletedBy,
       'pet_fur': petFur,
       'chip': chip?.toJson(),
+      'public_pet_profile': publicPetProfile,
     };
   }
 }

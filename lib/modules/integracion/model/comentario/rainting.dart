@@ -8,7 +8,9 @@ class CommentResponse {
     status = json['status'];
     if (json['data'] != null) {
       data = <Comment>[];
-      json['data'].forEach((v) {
+      // Filtrar elementos null antes de procesarlos
+      List<dynamic> validData = (json['data'] as List).where((item) => item != null).toList();
+      validData.forEach((v) {
         data!.add(Comment.fromJson(v));
       });
     }
@@ -46,7 +48,7 @@ class Comment {
     print('=== COMMENT FROM JSON ===');
     print('JSON recibido: $json');
     
-    id = json['id'];
+    id = json['id'] is int ? json['id'] : (json['id'] is String ? int.tryParse(json['id']) : null);
     
     // Manejar el rating de forma más robusta
     if (json['rating'] != null) {
@@ -57,10 +59,10 @@ class Comment {
       print('Rating nulo, usando valor por defecto: $rating');
     }
     
-    reviewMsg = json['review_msg'];
-    userId = json['user_id'];
-    userFullName = json['user_full_name'];
-    userAvatar = json['user_avatar'];
+    reviewMsg = json['review_msg']?.toString();
+    userId = json['user_id'] is int ? json['user_id'] : (json['user_id'] is String ? int.tryParse(json['user_id']) : null);
+    userFullName = json['user_full_name']?.toString();
+    userAvatar = json['user_avatar']?.toString();
     
     print('Comment creado: ID=$id, Rating=$rating, ReviewMsg="$reviewMsg"');
   }

@@ -52,8 +52,10 @@ class EBookController extends GetxController {
       print('libros $data');
       if (response.statusCode == 200) {
         if (data['success']) {
+          // Filtrar elementos null antes de procesarlos
+          List<dynamic> validData = (data['data'] as List).where((item) => item != null).toList();
           // Mapear la lista de e-books desde el JSON
-          ebooks.value = (data['data'] as List)
+          ebooks.value = validData
               .map((ebook) => EBook.fromJson(ebook))
               .toList();
           print('cargando libros en el sistema ${data['data']}');

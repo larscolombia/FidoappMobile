@@ -162,7 +162,7 @@ class NotificationsScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            notification.type ?? '',
+                            notification.typeText ?? notification.type ?? '',
                             style: const TextStyle(
                               fontWeight: FontWeight.w400,
                               fontFamily: 'Lato',
@@ -250,7 +250,7 @@ class NotificationsScreen extends StatelessWidget {
                     ),
                     // Texto del tipo
                     Text(
-                      notification.type ?? 'Desconocido',
+                      notification.typeText ?? notification.type ?? 'Desconocido',
                       style: TextStyle(
                         fontFamily: 'Lato',
                         fontSize: 14,

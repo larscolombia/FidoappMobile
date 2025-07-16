@@ -29,8 +29,10 @@ class EBook {
 
   factory EBook.fromJson(Map<String, dynamic> json) {
     var list = json['book_ratings'] as List;
+    // Filtrar elementos null antes de procesarlos
+    List<dynamic> validData = list.where((item) => item != null).toList();
     List<BookRating> bookRatingsList =
-        list.map((i) => BookRating.fromJson(i)).toList();
+        validData.map((i) => BookRating.fromJson(i)).toList();
 
     return EBook(
       id: json['id'].toString(),
@@ -88,16 +90,19 @@ class BookRating {
 
   factory BookRating.fromJson(Map<String, dynamic> json) {
     return BookRating(
-      id: json['id'],
-      eBookId: json['e_book_id'],
-      userId: json['user_id'],
-      reviewMsg: json['review_msg'],
+      id: json['id'] is int ? json['id'] : (json['id'] is String ? int.tryParse(json['id']) : null),
+      eBookId: json['e_book_id'] is int ? json['e_book_id'] : (json['e_book_id'] is String ? int.tryParse(json['e_book_id']) : null),
+      userId: json['user_id'] is int ? json['user_id'] : (json['user_id'] is String ? int.tryParse(json['user_id']) : null),
+      reviewMsg: json['review_msg']?.toString(),
       rating: (json['rating'] is double)
           ? json['rating']
-          : (json['rating'] as num?)
-              ?.toDouble(), // Asegúrate de convertir el rating a double si es necesario
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+          : (json['rating'] is num)
+              ? json['rating'].toDouble()
+              : (json['rating'] is String)
+                  ? double.tryParse(json['rating'])
+                  : null,
+      createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at']) : null,
+      updatedAt: json['updated_at'] != null ? DateTime.tryParse(json['updated_at']) : null,
     );
   }
 }

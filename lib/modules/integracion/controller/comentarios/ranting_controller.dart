@@ -77,7 +77,9 @@ class CommentController extends GetxController {
         print('Parsed data: $data');
         
         try {
-          comments.value = (data['data'] as List).map((item) => Comment.fromJson(item)).toList();
+          // Filtrar elementos null antes de procesarlos
+          List<dynamic> validData = (data['data'] as List).where((item) => item != null).toList();
+          comments.value = validData.map((item) => Comment.fromJson(item)).toList();
           print('Comments loaded successfully: ${comments.length} comments');
         } catch (parseError) {
           print('=== ERROR PARSING COMMENTS ===');
