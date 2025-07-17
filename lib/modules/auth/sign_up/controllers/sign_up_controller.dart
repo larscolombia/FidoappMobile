@@ -9,6 +9,11 @@ import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/screens/signin_screen.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/utils/common_base.dart';
+import 'package:pawlly/modules/home/controllers/home_controller.dart';
+import 'package:pawlly/modules/home/screens/home_screen.dart';
+import 'package:pawlly/utils/constants.dart';
+import 'package:pawlly/utils/local_storage.dart';
+import 'package:pawlly/utils/app_common.dart';
 
 class SignUpController extends GetxController {
   RxBool isLoading = false.obs;
@@ -86,7 +91,8 @@ class SignUpController extends GetxController {
           : await AuthServiceApis.createUser(request: req);
       toast(value.message.toString(), print: true);
 
-      var message = mapUserType(userTypeCont.text) != 'user'
+      String userType = mapUserType(userTypeCont.text);
+      var message = userType != 'user'
           ? '¡Felicidades! Tu cuenta está pediente de aprobación'
           : '¡Felicidades! Tu cuenta ha sido creada.';
 
@@ -97,9 +103,15 @@ class SignUpController extends GetxController {
           title: locale.value.actionPerformedSuccessfully,
           description: message,
           primaryButtonText: "Continuar",
-          onPrimaryButtonPressed: () {
-            // Navegar a la pantalla de inicio de sesión sin iniciar sesión automáticamente
-            Get.offUntil(GetPageRoute(page: () => SignInScreen()), (route) => route.isFirst);
+          onPrimaryButtonPressed: () async {
+            Get.back();
+            if (userType == 'user') {
+              // Solo login automático para Dueño de Mascota
+              await performAutoLogin();
+            } else {
+              // Para otros tipos, ir al login como antes
+              Get.offUntil(GetPageRoute(page: () => SignInScreen()), (route) => route.isFirst);
+            }
           },
         ),
         barrierDismissible: false, // No permite cerrar el diálogo tocando fuera
@@ -124,6 +136,69 @@ class SignUpController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  // Método para realizar login automático después del registro
+  Future<void> performAutoLogin() async {
+    try {
+      isLoading(true);
+      
+      // Preparar los datos para el login automático
+      Map<String, dynamic> loginRequest = {
+        'email': emailCont.text.trim(),
+        'password': passwordCont.text.trim(),
+        UserKeys.userType: mapUserType(userTypeCont.text),
+      };
+
+      // Realizar el login automático
+      final loginResponse = await AuthServiceApis.loginUser(request: loginRequest);
+      
+      // Manejar la respuesta del login como en el SignInController
+      handleAutoLoginResponse(loginResponse);
+      
+      CustomSnackbar.show(
+        title: 'Bienvenido',
+        message: 'Has iniciado sesión exitosamente',
+        isError: false,
+      );
+      
+    } catch (e) {
+      log('Error en login automático: $e');
+      CustomSnackbar.show(
+        title: 'Error en login automático',
+        message: 'Tu cuenta fue creada pero hubo un problema al iniciar sesión. Por favor inicia sesión manualmente.',
+        isError: true,
+      );
+      
+      // Navegar a la pantalla de login para que el usuario inicie sesión manualmente
+      Get.offUntil(GetPageRoute(page: () => SignInScreen()), (route) => route.isFirst);
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  // Método para manejar la respuesta del login automático
+  void handleAutoLoginResponse(loginResponse) {
+    loginUserData(loginResponse.userData);
+    loginUserData.value.playerId = playerId.value;
+    loginUserData.value.isSocialLogin = false;
+
+    // Guardar datos de sesión
+    Map<String, dynamic> requestData = {
+      UserKeys.email: loginResponse.userData.email,
+    };
+
+    // Guardar datos de sesión
+    AuthServiceApis.saveLoginData(requestData, loginResponse.toJson());
+
+    // Actualizar estado de sesión
+    isLoggedIn(true);
+    setValueToLocal(SharedPreferenceConst.IS_LOGGED_IN, true);
+
+    // Navegar a HomeScreen
+    Get.offAll(() => const HomeScreen(), binding: BindingsBuilder(() {
+      Get.put(HomeController());
+    }));
   }
 
   String mapGender(String gender) {

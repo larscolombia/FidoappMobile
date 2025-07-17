@@ -437,7 +437,7 @@ class LanguageEs extends BaseLanguage {
 
   @override
   String get yourPasswordHasBeen =>
-      'Tu Contraseña ha sido Restablecida Exitosamente';
+      'Tu Contraseña ha sido restablecida exitosamente';
 
   @override
   String get youCanNowLog =>
