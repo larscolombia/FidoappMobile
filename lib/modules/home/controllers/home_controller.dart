@@ -10,6 +10,7 @@ import 'package:pawlly/services/event_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart';
 import 'package:pawlly/services/training_service_apis.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:pawlly/modules/integracion/controller/calendar_controller/calendar_controller.dart';
 
 class HomeController extends GetxController {
   var selectedIndex = 0.obs;
@@ -81,6 +82,12 @@ class HomeController extends GetxController {
 
     if (profiles.value.isNotEmpty) {
       selectedProfile.value = profile;
+      
+      // Sincronizar con CalendarController si está disponible
+      if (Get.isRegistered<CalendarController>()) {
+        final calendarController = Get.find<CalendarController>();
+        calendarController.filterByPet(profile.id);
+      }
     } else {
       selectedProfile.value = selectedProfile.value;
     }
@@ -89,6 +96,13 @@ class HomeController extends GetxController {
   // Método para agregar un nuevo perfil con datos de mascota
   void addProfile(Map<String, dynamic> petData) {
     profiles.add(PetData.fromJson(petData));
+  }
+
+  // Método para asegurar que siempre haya una mascota seleccionada
+  void ensureDefaultPetSelected() {
+    if (profiles.isNotEmpty && selectedProfile.value == null) {
+      selectedProfile.value = profiles.first;
+    }
   }
 
   // Método para cargar los perfiles desde el servicio
@@ -113,9 +127,13 @@ class HomeController extends GetxController {
         );
         selectedProfile.value = updatedSelectedPet;
       } else {
-        selectedProfile.value = petsData.first; // Asignar el primer perfil completo
+        // Siempre seleccionar la primera mascota por defecto
+        selectedProfile.value = petsData.first;
       }
     }
+    
+    // Asegurar que siempre haya una mascota seleccionada
+    ensureDefaultPetSelected();
   }
 
   void fetchTraining() async {

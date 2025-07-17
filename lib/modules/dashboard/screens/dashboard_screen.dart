@@ -119,7 +119,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: ListView(
                         children: [
                           _buildMenuItem(DashboardMenuItem.profile, context),
-                          _buildMenuItem(DashboardMenuItem.changePassword, context),
+                          if (!AuthServiceApis.dataCurrentUser.isSocialLogin)
+                            _buildMenuItem(DashboardMenuItem.changePassword, context),
                           _buildMenuItem(DashboardMenuItem.patientsOrPets, context),
                           _buildMenuItem(DashboardMenuItem.diary, context),
                           _buildMenuItem(DashboardMenuItem.termsAndConditions, context),

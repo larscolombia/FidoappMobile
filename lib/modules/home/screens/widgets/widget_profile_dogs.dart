@@ -88,11 +88,15 @@ class ProfileModal extends StatelessWidget {
                     children: [
                       CustomCheckbox(
                         onChanged: (value) {
+                          // Limpiar la selección de mascota en HomeController
+                          controller.selectedProfile.value = null;
+                          
+                          // Filtrar para mostrar todos los eventos en CalendarController
                           if (Get.isRegistered<CalendarController>()) {
-                            final calendarController =
-                                Get.find<CalendarController>();
+                            final calendarController = Get.find<CalendarController>();
                             calendarController.filterByPet(0);
                           }
+                          
                           Navigator.of(context).pop();
                         },
                         isChecked: false,
@@ -152,12 +156,18 @@ class ProfileModal extends StatelessWidget {
 
                         return GestureDetector(
                           onTap: () {
-                            activityController.fetchPetActivities(profile.id.toString());
+                            // Actualizar la mascota seleccionada en HomeController
                             controller.updateProfile(profile);
+                            
+                            // Actualizar las actividades del diario
+                            activityController.fetchPetActivities(profile.id.toString());
+                            
+                            // Sincronizar con CalendarController si está disponible
                             if (Get.isRegistered<CalendarController>()) {
                               final calendarController = Get.find<CalendarController>();
                               calendarController.filterByPet(profile.id);
                             }
+                            
                             Navigator.of(context).pop();
                           },
                           child: CardProfileDog(

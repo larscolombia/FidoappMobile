@@ -16,6 +16,7 @@ import 'package:pawlly/modules/components/availability_modal.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/utils/api_end_points.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:pawlly/models/pet_list_res_model.dart';
 
 class CalendarController extends GetxController {
   var cateogoryName = "".obs;
@@ -40,6 +41,19 @@ class CalendarController extends GetxController {
   void onInit() {
     super.onInit();
     getEventos(); // Cargar eventos al iniciar
+    
+    // Sincronizar con la mascota seleccionada en HomeController
+    if (homeController.selectedProfile.value != null) {
+      selectedPetId.value = homeController.selectedProfile.value!.id;
+    }
+    
+    // Escuchar cambios en la mascota seleccionada del HomeController
+    ever(homeController.selectedProfile, (PetData? selectedPet) {
+      if (selectedPet != null) {
+        selectedPetId.value = selectedPet.id;
+        _applyFilters(); // Aplicar filtros cuando cambie la mascota
+      }
+    });
   }
 
   void setEdit() {

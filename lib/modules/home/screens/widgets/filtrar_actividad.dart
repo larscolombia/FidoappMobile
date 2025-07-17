@@ -150,31 +150,10 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
 
                 return Column(
                   children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: Row(
-                        children: [
-                          CustomCheckbox(
-                            isChecked: false,
-                            onChanged: (bool newValue) {},
-                          ),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'Informe médico',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontFamily: 'Lato',
-                              color: Colors.black,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 8),
                     ...categoriesToShow.map((category) {
                       bool isSelected = (selectedCategory == category);
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 8, left: 14.00),
+                        margin: const EdgeInsets.only(bottom: 8),
                         child: Row(
                           children: [
                             CustomCheckbox(

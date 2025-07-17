@@ -56,6 +56,20 @@ class _CreateEventState extends State<CreateEvent> {
     'pet_id': false,
   };
 
+  // Función para convertir valores con acentos a valores del backend
+  String _convertToBackendValue(String? displayValue) {
+    switch (displayValue) {
+      case 'Evento':
+        return 'evento';
+      case 'Médico':
+        return 'medico';
+      case 'Entrenamiento':
+        return 'entrenamiento';
+      default:
+        return displayValue?.toLowerCase() ?? '';
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -90,6 +104,7 @@ class _CreateEventState extends State<CreateEvent> {
   // Widget para mostrar el servicio de evento médico
   Widget _buildMedicoCategory(double inputWidth, double defaultMargin) {
     return Obx(() {
+      print('DEBUG: Comparando tipo de evento: ${calendarController.event['tipo']} con "medico"');
       if (calendarController.event['tipo'] != 'medico') return const SizedBox();
       if (categoryController.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
@@ -416,15 +431,21 @@ class _CreateEventState extends State<CreateEvent> {
                         borderColor: Color(0XFFFCBA67),
                         controller: null,
                         items: const [
-                          'evento',
-                          'medico',
-                          'entrenamiento',
+                          'Evento',
+                          'Médico',
+                          'Entrenamiento',
                         ],
                         onChange: (value) {
-                          calendarController.updateField('tipo', value);
-                          final type = value == 'medico'
+                          // Convertir el valor de display al valor que espera el backend
+                          final backendValue = _convertToBackendValue(value);
+                          print('DEBUG: Valor seleccionado: $value');
+                          print('DEBUG: Valor convertido para backend: $backendValue');
+                          calendarController.updateField('tipo', backendValue);
+                          print('DEBUG: Valor guardado en calendarController: ${calendarController.event['tipo']}');
+                          
+                          final type = value == 'Médico'
                               ? 'vet'
-                              : value == 'entrenamiento'
+                              : value == 'Entrenamiento'
                                   ? 'trainer'
                                   : 'all';
                           userController.type.value = type;

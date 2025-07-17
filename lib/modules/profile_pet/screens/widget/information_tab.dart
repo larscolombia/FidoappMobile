@@ -32,10 +32,26 @@ class InformationTab extends StatelessWidget {
       Get.put(UserProfileController());
   @override
   Widget build(BuildContext context) {
-    var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
-    var ancho = MediaQuery.sizeOf(context).width;
-    var margen = Helper.margenDefault;
     return Obx(() {
+      // Verificar si hay una mascota seleccionada
+      if (homeController.selectedProfile.value == null) {
+        return const Center(
+          child: Text(
+            'No hay mascota seleccionada',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+              fontFamily: 'Lato',
+            ),
+          ),
+        );
+      }
+
+      final selectedPet = homeController.selectedProfile.value!;
+      
+      var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
+      var ancho = MediaQuery.sizeOf(context).width;
+      var margen = Helper.margenDefault;
       return SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(Helper.paddingDefault),
@@ -57,7 +73,7 @@ class InformationTab extends StatelessWidget {
                             style: Styles.textProfile14w400,
                           ),
                           Text(
-                            homeController.selectedProfile.value!.name,
+                            selectedPet.name,
                             style: Styles.dashboardTitle20,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -70,7 +86,7 @@ class InformationTab extends StatelessWidget {
                         title: 'Compartir',
                         callback: () async {
                           // Verificar si existe la URL del perfil público
-                          final String? publicProfileUrl = homeController.selectedProfile.value!.publicPetProfile;
+                          final String? publicProfileUrl = selectedPet.publicPetProfile;
                           if (publicProfileUrl != null && publicProfileUrl.isNotEmpty) {
                             // Abrir la URL en el navegador
                             try {
@@ -129,7 +145,7 @@ class InformationTab extends StatelessWidget {
               SizedBox(
                 width: ancho,
                 child: Text(
-                  'Sobre ${homeController.selectedProfile.value!.name}',
+                  'Sobre ${selectedPet.name}',
                   style: Styles.textProfile15w700,
                   textAlign: TextAlign.start,
                 ),
@@ -138,7 +154,7 @@ class InformationTab extends StatelessWidget {
               SizedBox(
                 width: MediaQuery.sizeOf(context).width,
                 child: Text(
-                  homeController.selectedProfile.value!.description ?? "",
+                  selectedPet.description ?? "",
                   style: Styles.textProfile15w400,
                   textAlign: TextAlign.start,
                 ),
@@ -160,26 +176,28 @@ class InformationTab extends StatelessWidget {
                 ),
               ),
               SizedBox(height: margen),
-              SizedBox(
-                width: ancho,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'ID del Microchip:',
-                      style: Styles.textProfile14w700,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      homeController.selectedProfile.value!.chip?.numIdentificacion?.toString() ?? "",
-                      style: Styles.chiptitle,
-                    ),
-                  ],
+              if (selectedPet.chip != null)
+                SizedBox(
+                  width: ancho,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'ID del Microchip:',
+                        style: Styles.textProfile14w700,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        selectedPet.chip?.numIdentificacion?.toString() ?? "",
+                        style: Styles.chiptitle,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: margen),
+              if (selectedPet.chip != null)
+                SizedBox(height: margen),
               Card(
                 margin: const EdgeInsets.only(top: 0),
                 color: Styles.fiveColor,
@@ -194,7 +212,7 @@ class InformationTab extends StatelessWidget {
                     style: Styles.textProfile14w400,
                   ),
                   subtitle: Text(
-                    homeController.selectedProfile.value!.breed,
+                    selectedPet.breed,
                     style: Styles.textProfile14w800,
                   ),
                 ),
@@ -233,7 +251,7 @@ class InformationTab extends StatelessWidget {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              homeController.selectedProfile.value!.age ?? "",
+                              selectedPet.age ?? "",
                               style: Styles.textProfile14w800,
                             ),
                           ],
@@ -264,9 +282,7 @@ class InformationTab extends StatelessWidget {
                                   const SizedBox(height: 4),
                                   Text(
                                     Helper.formatDateToSpanish(
-                                            homeController
-                                                .selectedProfile
-                                                .value!
+                                            selectedPet
                                                 .dateOfBirth) ??
                                         "",
                                     style: Styles.textProfile14w800,
@@ -303,7 +319,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          '${homeController.selectedProfile.value!.weight}${homeController.selectedProfile.value!.weightUnit}',
+                          '${selectedPet.weight}${selectedPet.weightUnit}',
                           style: Styles.textProfile13w800,
                         ),
                       ),
@@ -327,7 +343,7 @@ class InformationTab extends StatelessWidget {
                           style: Styles.textProfile14w400,
                         ),
                         subtitle: Text(
-                          homeController.selectedProfile.value!.gender ==
+                          selectedPet.gender ==
                                   "female"
                               ? 'Hembra'
                               : 'Macho',
@@ -420,7 +436,7 @@ class InformationTab extends StatelessWidget {
                   aspectRatio: 0.9, // Ajustar el aspect ratio
                   child: FadeInImage.assetNetwork(
                     placeholder: 'assets/images/404.jpg', // Imagen de respaldo
-                    image: homeController.selectedProfile.value!.qrCode ??
+                    image: selectedPet.qrCode ??
                         'https://www.thewall360.com/uploadImages/ExtImages/images1/def-638240706028967470.jpg',
                     width: double.infinity,
                     height: double.infinity,

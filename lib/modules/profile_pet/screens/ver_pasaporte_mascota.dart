@@ -29,124 +29,126 @@ class VerPasaporteMascota extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var mascota = _homeController.selectedProfile.value!;
-    var padding = Helper.paddingDefault;
-    var margen = Helper.margenDefault;
-    var ancho = MediaQuery.sizeOf(context).width;
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          // Primer contenedor (fondo o header)
-          Container(
-            height: 160,
-            width: MediaQuery.sizeOf(context).width,
-            decoration: const BoxDecoration(
-              color: Color(0xFFFEF7E5), // Color de fondo ajustado
-            ),
-            child: const Stack(
-              children: [
-                BorderRedondiado(
-                  top: 130,
-                ),
-              ],
+    return Obx(() {
+      // Verificar si hay una mascota seleccionada
+      if (_homeController.selectedProfile.value == null) {
+        return Scaffold(
+          backgroundColor: Styles.colorContainer,
+          body: const Center(
+            child: Text(
+              'No hay mascota seleccionada',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+                fontFamily: 'Lato',
+              ),
             ),
           ),
+        );
+      }
 
-          // Segundo contenedor (superpuesto con scroll)
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              color: Colors.white,
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    right: 26,
-                    left: 26,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      var mascota = _homeController.selectedProfile.value!;
+      var ancho = MediaQuery.sizeOf(context).width;
+      var margen = Helper.margenDefault;
+      var height = 99.0;
+
+      return Scaffold(
+        backgroundColor: Styles.colorContainer,
+        body: Column(
+          children: [
+            // Primer contenedor (fondo o header)
+            Container(
+              width: ancho,
+              height: 180,
+              decoration: const BoxDecoration(
+                color: Styles.colorContainer,
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  Row(
                     children: [
-                      SizedBox(
-                        width: ancho, // Ajusta el margen
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: BarraBack(
-                                titulo: 'Pasaporte',
-                                size: 20,
-                                callback: () {
-                                  Get.back();
-                                },
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Get.to(() => PasaporteMascota());
+                      const SizedBox(width: 20),
+                      GestureDetector(
+                        onTap: () => Get.back(),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.black,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Text(
+                        'Pasaporte de ${mascota.name}',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontFamily: 'PoetsenOne',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Styles.primaryColor,
+                        width: 3,
+                      ),
+                    ),
+                    child: ClipOval(
+                      child: mascota.petImage != null && mascota.petImage!.isNotEmpty
+                          ? Image.network(
+                              mascota.petImage ?? '',
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Image.asset(
+                                  'assets/images/404.jpg',
+                                  fit: BoxFit.cover,
+                                );
                               },
-                              child: Container(
-                                width: 42.4,
-                                height: 42.4,
-                                decoration: BoxDecoration(
-                                  color: Styles.colorContainer,
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    'assets/icons/svg/edit-2.svg',
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                ),
-                              ),
+                            )
+                          : Image.asset(
+                              'assets/images/404.jpg',
+                              fit: BoxFit.cover,
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                          height:
-                              12), // Reducción del espacio debajo del "Pasaporte"
-                      Container(
-                        width: ancho,
-                        height: 200,
-                        child: Center(
-                        child: Obx(() {
-                          final imageUrl =
-                              _homeController.selectedProfile.value!.petImage ??
-                                  'https://via.placeholder.com/600x400';
+                    ),
+                  ),
+                ],
+              ),
+            ),
 
-                            return CircleAvatar(
-                              radius: 80, // Radio del círculo
-                              backgroundColor: Colors.grey[200], // Color de fondo
-                              child: ClipOval(
-                                child: CachedNetworkImage(
-                            imageUrl: imageUrl,
-                                  width: 160, // Ancho del círculo
-                                  height: 160, // Alto del círculo
-                                  fit: BoxFit.cover, // Mantener proporciones
-                            placeholder: (context, url) => const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            errorWidget: (context, url, error) {
-                              return Image.asset(
-                                'assets/images/404.jpg',
-                                      width: 160,
-                                      height: 160,
-                                fit: BoxFit.cover,
-                              );
-                            },
-                                ),
-                              ),
-                          );
-                        }),
+            // Segundo contenedor (superpuesto con scroll)
+            Expanded(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 26.0),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 34),
+                      SizedBox(
+                        width: ancho,
+                        child: BarraBack(
+                          titulo: 'Información del Pasaporte',
+                          size: 20,
+                          callback: () => Get.back(),
                         ),
                       ),
+                      SizedBox(height: 26),
                       SizedBox(height: margen),
-                      if (_homeController.selectedProfile.value!.chip != null)
+                      if (mascota.chip != null)
                         Container(
                           width: ancho,
                           padding: const EdgeInsets.all(20),
@@ -160,28 +162,25 @@ class VerPasaporteMascota extends StatelessWidget {
                                 'assets/icons/svg/code-pet.svg',
                               ),
                               const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'ID del Microchip:',
-                                    style: Styles.descripcion,
-                                  ),
-                                  Text(
-                                    _homeController.selectedProfile.value!.chip?.numIdentificacion?.toString() ?? "",
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Styles.iconColorBack,
-                                      fontFamily: 'Lato',
-                                      fontWeight: FontWeight.w900,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                'ID del Microchip:',
+                                style: Styles.textProfile14w700,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                mascota.chip?.numIdentificacion?.toString() ?? "",
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                  fontFamily: 'Lato',
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      SizedBox(height: margen),
+                      if (mascota.chip != null)
+                        SizedBox(height: margen),
                       const Text(
                         'Información del Perro',
                         style: TextStyle(
@@ -208,16 +207,16 @@ class VerPasaporteMascota extends StatelessWidget {
                       ),
                       InfoMascota(
                         titulo: 'Raza',
-                        value: _homeController.selectedProfile.value!.breed,
+                        value: mascota.breed,
                       ),
                       InfoMascota(
                         titulo: 'Fecha de nacimiento',
                         value:
-                            '${_homeController.selectedProfile.value!.dateOfBirth ?? "no lo ha colocado aún"}',
+                            '${mascota.dateOfBirth ?? "no lo ha colocado aún"}',
                       ),
                       InfoMascota(
                         titulo: 'Color del pelaje',
-                        value: _homeController.selectedProfile.value!.petFur,
+                        value: mascota.petFur,
                       ),
                       InfoMascota(
                         titulo: 'Altura',
@@ -241,10 +240,10 @@ class VerPasaporteMascota extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }
 

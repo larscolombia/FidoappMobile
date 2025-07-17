@@ -323,17 +323,39 @@ class ProfilePetController extends GetxController {
           if (success) {
             // Actualiza la lista en HomeController
             final homeController = Get.find<HomeController>();
-            homeController.profiles
-                .removeWhere((pet) => pet.id == petProfile.id);
+            
+            // Verificar si la mascota eliminada era la seleccionada ANTES de eliminarla
+            final wasSelectedPet = homeController.selectedProfile.value?.id == petProfile.id;
+            
+            // Remover la mascota de la lista
+            homeController.profiles.removeWhere((pet) => pet.id == petProfile.id);
 
-            // Verificar si la mascota eliminada era la seleccionada
-            if (homeController.selectedProfile.value?.id == petProfile.id) {
-              // Si hay otras mascotas disponibles, seleccionar la primera
+            // Manejar la selección después de eliminar
+            if (wasSelectedPet) {
               if (homeController.profiles.isNotEmpty) {
+                // Si hay otras mascotas, seleccionar la primera
                 homeController.selectedProfile.value = homeController.profiles.first;
+                print('Mascota seleccionada cambiada a: ${homeController.selectedProfile.value?.name}');
               } else {
                 // Si no hay más mascotas, limpiar la selección
                 homeController.selectedProfile.value = null;
+                print('No hay más mascotas disponibles, selección limpiada');
+                
+                // Mostrar mensaje especial cuando se elimina la última mascota
+                Get.dialog(
+                  CustomAlertDialog(
+                    icon: Icons.pets,
+                    title: "Última mascota eliminada",
+                    description: "Has eliminado tu última mascota. Puedes agregar una nueva mascota desde el menú principal.",
+                    primaryButtonText: "Entendido",
+                    onPrimaryButtonPressed: () {
+                      Get.close(3); // Cierra todos los modales abiertos
+                      Get.back(); // Regresar a la pantalla anterior
+                    },
+                  ),
+                  barrierDismissible: false,
+                );
+                return; // Salir aquí para no mostrar el mensaje de éxito normal
               }
             }
 

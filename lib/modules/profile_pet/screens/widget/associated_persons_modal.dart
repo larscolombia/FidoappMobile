@@ -302,14 +302,36 @@ class AssociatedPersonsModal extends StatelessWidget {
                       // Usuario no existe, mostrar alerta y enviar invitación
                       Get.dialog(
                         AlertDialog(
-                          title: const Text('Usuario no encontrado'),
+                          title: const Text(
+                            'Usuario no encontrado',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Lato',
+                              color: Colors.black,
+                            ),
+                          ),
                           content: const Text(
                             'El usuario no se encuentra inscrito en la plataforma. Se enviará una invitación al correo ingresado.',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: 'Lato',
+                              color: Colors.black87,
+                            ),
                           ),
                           actions: [
                             TextButton(
                               onPressed: () => Get.back(),
-                              child: const Text('Cancelar'),
+                              child: const Text(
+                                'Cancelar',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'Lato',
+                                  color: Color(0xFFFC9214),
+                                ),
+                              ),
                             ),
                             TextButton(
                               onPressed: () async {
@@ -333,7 +355,15 @@ class AssociatedPersonsModal extends StatelessWidget {
                                 // Actualizar la lista de personas asociadas
                                 petcontroller.fetchOwnersList(homeController.selectedProfile.value!.id);
                               },
-                              child: const Text('Enviar Invitación'),
+                              child: const Text(
+                                'Enviar Invitación',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'Lato',
+                                  color: Color(0xFFFC9214),
+                                ),
+                              ),
                             ),
                           ],
                         ),

@@ -326,30 +326,6 @@ class NotificationsScreen extends StatelessWidget {
                           if (notification.status == "pending")
                             Expanded(
                               child: ButtonDefaultWidget(
-                                title: 'Aceptar',
-                                callback: () {
-                                  Navigator.of(context).pop();
-                                  Get.dialog(
-                                    CustomAlertDialog(
-                                      icon: Icons.confirmation_num,
-                                      title: 'Confirmación',
-                                      description: '¿Quieres Aceptar este Evento?',
-                                      primaryButtonText: 'Continuar',
-                                      secondaryButtonText: 'Cancelar',
-                                      onPrimaryButtonPressed: () {
-                                        notificationController.acceptBooking(notification.eventId ?? "-1", context);
-                                        Get.back();
-                                      },
-                                    ),
-                                    barrierDismissible: true,
-                                  );
-                                },
-                              ),
-                            ),
-                          const SizedBox(width: 8.0),
-                          if (notification.status == "pending")
-                            Expanded(
-                              child: ButtonDefaultWidget(
                                 title: 'Rechazar',
                                 callback: () {
                                   Navigator.of(context).pop();
@@ -365,6 +341,33 @@ class NotificationsScreen extends StatelessWidget {
                                           notification.eventId ?? "-1",
                                           context,
                                         );
+                                        Get.back();
+                                      },
+                                    ),
+                                    barrierDismissible: true,
+                                  );
+                                },
+                              ),
+                            ),
+                          const SizedBox(width: 8.0),
+                          if (notification.status == "pending")
+                            Expanded(
+                              child: ButtonDefaultWidget(
+                                title: 'Aceptar',
+                                callback: () {
+                                  Navigator.of(context).pop();
+                                  Get.dialog(
+                                    CustomAlertDialog(
+                                      icon: Icons.confirmation_num,
+                                      title: 'Confirmación',
+                                      description: '¿Quieres Aceptar este Evento?',
+                                      primaryButtonText: 'Continuar',
+                                      secondaryButtonText: 'Cancelar',
+                                      onPrimaryButtonPressed: () {
+                                        notificationController.acceptBooking(notification.eventId ?? "-1", context);
+                                        Get.back();
+                                      },
+                                      onSecondaryButtonPressed: () {
                                         Get.back();
                                       },
                                     ),

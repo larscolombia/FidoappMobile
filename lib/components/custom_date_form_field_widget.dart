@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:pawlly/modules/helper/helper.dart';
 
 import 'package:pawlly/styles/styles.dart';
+import 'package:pawlly/utils/common_base.dart';
 
 class CustomDateFormFieldWidget extends StatefulWidget {
   final String placeholder;
@@ -34,15 +38,87 @@ class _CustomDateFormFieldWidgetState extends State<CustomDateFormFieldWidget> {
         return GestureDetector(
           onTap: () async {
             if (widget.enabled ?? true) {
+              final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
               DateTime? pickedDate = await showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime(1900),
                 lastDate: DateTime(2100),
+                confirmText: 'Aceptar',
+                cancelText: 'Cancelar',
+                builder: (BuildContext context, Widget? child) {
+                  return Theme(
+                    data: ThemeData(
+                      useMaterial3: true,
+                      colorScheme: const ColorScheme.light(
+                        primary: Color(0xFFFC9214), // Color del header
+                        onPrimary: Colors.white, // Texto en el header
+                        surface: Colors.white, // Fondo del calendario
+                        onSurface: Colors.black, // Texto del calendario
+                        secondary: Color(0xFFFC9214), // Color para selección de días
+                      ),
+                      dividerColor: Color(0xFFFC9214),
+                      appBarTheme: const AppBarTheme(
+                        backgroundColor: Color(0xFFFC9214), // Color del header
+                        foregroundColor: Colors.white, // Color del texto del header
+                        surfaceTintColor: Color(0xFFFC9214),
+                        titleTextStyle: TextStyle(
+                          // Fuente del header
+                          fontFamily: 'PoetsenOne',
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      datePickerTheme: const DatePickerThemeData(
+                        headerBackgroundColor: Color(0xFFFF4931),
+                        headerForegroundColor: Colors.white,
+                        dividerColor: Color(0xFFFF4931),
+                        backgroundColor: Colors.white,
+                        headerHeadlineStyle: TextStyle(
+                          fontFamily: 'PoetsenOne',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 26,
+                        ),
+                        headerHelpStyle: TextStyle(
+                          fontFamily: 'PoetsenOne',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
+                      ),
+                      textTheme: TextTheme(
+                        titleLarge: TextStyle(
+                          // Fuente para el día, mes y año
+                          fontFamily: 'PoetsenOne',
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                        ),
+                        labelLarge: GoogleFonts.lato(
+                          // Fuente para los botones Aceptar/Cancelar
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.orange,
+                        ),
+                      ),
+                      textButtonTheme: TextButtonThemeData(
+                        style: TextButton.styleFrom(
+                          foregroundColor: Color(0xFFFF4931), // Color de los botones
+                          textStyle: TextStyle(
+                            fontFamily: 'PoetsenOne',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                    child: child ?? const SizedBox(),
+                  );
+                },
               );
               if (pickedDate != null) {
-                widget.controller?.text =
-                    pickedDate.toLocal().toString().split(' ')[0];
+                final formattedDate = dateFormat.format(pickedDate);
+                widget.controller?.text = Helper.formatDate(formattedDate);
               }
             }
           },

@@ -77,7 +77,8 @@ class PerfilMascotas extends StatelessWidget {
         child: Obx(() {
           final calendarController = showAllLabel && Get.isRegistered<CalendarController>() ? Get.find<CalendarController>() : null;
 
-          if (calendarController != null && calendarController.selectedPetId.value == 0) {
+          // En la agenda, mostrar "Todos" solo si no hay mascota seleccionada en HomeController
+          if (calendarController != null && controller.selectedProfile.value == null) {
             return Row(
               children: [
                 Container(
