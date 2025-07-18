@@ -8,6 +8,49 @@ import 'package:pawlly/modules/integracion/controller/notificaciones/notificacio
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/services/pet_service_apis.dart'; // Asegúrate de importar tu servicio
 
+// Función para normalizar el formato de fecha
+String normalizeDateFormat(String? date) {
+  if (date == null || date.isEmpty) return '';
+  
+  // Si ya está en formato yyyy/mm/dd, devolverlo tal como está
+  if (date.contains('/') && date.split('/').length == 3) {
+    List<String> parts = date.split('/');
+    if (parts.length == 3) {
+      // Verificar si está en formato yyyy/mm/dd
+      if (parts[0].length == 4 && parts[1].length == 2 && parts[2].length == 2) {
+        return date; // Ya está en el formato correcto
+      }
+    }
+  }
+  
+  // Si está en formato dd-MM-yyyy, convertirlo a yyyy/mm/dd
+  if (date.contains('-') && date.split('-').length == 3) {
+    List<String> parts = date.split('-');
+    if (parts.length == 3) {
+      String day = parts[0];
+      String month = parts[1];
+      String year = parts[2];
+      return '$year/$month/$day';
+    }
+  }
+  
+  // Si está en formato dd/mm/yyyy, convertirlo a yyyy/mm/dd
+  if (date.contains('/') && date.split('/').length == 3) {
+    List<String> parts = date.split('/');
+    if (parts.length == 3) {
+      // Verificar si está en formato dd/mm/yyyy
+      if (parts[0].length == 2 && parts[1].length == 2 && parts[2].length == 4) {
+        String day = parts[0];
+        String month = parts[1];
+        String year = parts[2];
+        return '$year/$month/$day';
+      }
+    }
+  }
+  
+  return date; // Si no coincide con ningún formato, devolver original
+}
+
 class AddPetController extends GetxController {
   RxBool isLoading = false.obs;
   // Controladores para los campos de texto
@@ -88,7 +131,7 @@ class AddPetController extends GetxController {
       Map<String, String> petData = {
         'name': petName.text,
         'additional_info': petDescription.text,
-        'date_of_birth': petBirthDateController.text,
+        'date_of_birth': normalizeDateFormat(petBirthDateController.text),
         'breed_name': petBreed.text,
         'gender': petGender.value,
         'weight': petWeight.value.toString(),

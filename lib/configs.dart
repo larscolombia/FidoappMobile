@@ -13,7 +13,7 @@ const DOMINIO_PRUEBA = "https://balance.healtheworld.com.co";
 
 const DOMINIO_PRODUCTION = "";
 const DOMINIO = "https://admin.myfidoapp.com";
-const DOMAIN_URL = DOMINIO_PRUEBA; // DOMINIO_PRUEBA; //DOMINIO_LOCAL; //aqui va la url
+const DOMAIN_URL = DOMINIO; // DOMINIO_PRUEBA; //DOMINIO_LOCAL; //aqui va la url
 
 const BASE_URL = '$DOMAIN_URL/api/';
 
