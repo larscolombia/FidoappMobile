@@ -24,6 +24,8 @@ class RecargarSaldoScreen extends StatefulWidget {
 class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
   String _input = "";
 
+  final StripeController controller = Get.put(StripeController());
+
   // Formatear la entrada
   String _formattedInput(String input) {
     if (input.isEmpty) return "0,00";
@@ -33,7 +35,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
     return formatted;
   }
 
-  final StripeController controller = Get.put(StripeController());
+
 
   // Manejar teclas
   void _onPressedKey(String key) {
@@ -257,8 +259,12 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                               await controller.withdrawBalance(
                                   _formattedInput(_input), context);
                             } else {
-                              controller.GetUrlPayment(
-                                  _formattedInput(_input), context);
+                              // TODO: Implement recharge functionality without Stripe
+                              CustomSnackbar.show(
+                                title: 'Función no disponible',
+                                message: 'La función de recarga no está disponible en este momento',
+                                isError: true,
+                              );
                             }
                           },
                         ),
