@@ -62,8 +62,8 @@ class Calendar extends StatelessWidget {
                   calendarController.filterByDate(selectedDay);
                   calendarController.gg(selectedDay);
                   // Actualiza la fecha seleccionada
-                  controller.selectedDay.value =
-                      selectedDay; // Actualiza la fecha seleccionada
+                  controller.selectedDay.value = selectedDay;
+                  controller.focusedDay.value = focusedDay; // Actualiza el día enfocado
                 },
                 eventLoader: (day) => calendarController.getEventsForDay(day),
                 calendarStyle: CalendarStyle(

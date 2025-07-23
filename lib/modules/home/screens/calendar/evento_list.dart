@@ -42,13 +42,18 @@ class _EventoDestallesState extends State<EventoDestalles> {
 
   @override
   Widget build(BuildContext context) {
-    final eventos = calendarController.selectedEvents.first;
-    var petData = homeController.getPetById(eventos.petId);
     final event = Get.arguments as CalendarModel?;
-    homeController.updateProfile(petData);
+    var petData = homeController.getPetById(event?.petId);
+    
+    // Usar addPostFrameCallback para evitar actualizaciones durante el build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (petData != null && petData.id != 0) {
+        homeController.updateProfile(petData);
+      }
+    });
 
-    if (eventos.owners.isNotEmpty) {
-      userController.filterUsers(eventos.owners.first.email);
+    if (event?.owners.isNotEmpty == true) {
+      userController.filterUsers(event!.owners.first.email);
     }
 
     //print('evento en la pantalla ${json.encode(event)}');
@@ -142,7 +147,7 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                                   : Styles.colorContainer,
                                           callback: () {
                                             userController.filterUsers(
-                                                '${eventos.owners.first.email}');
+                                                '${event?.owners.first.email}');
 
                                             calendarController.setEdit();
                                           },

@@ -84,10 +84,29 @@ class CalendarController extends GetxController {
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        // print(
-        //    "Respuesta del servidor: $data"); // Imprimir la respuesta completa
-
+        print("=== LOG EVENTOS CARGADOS ===");
+        print("Respuesta completa del servidor: $data");
+        
         allCalendars.value = (data['data'] as List).map((item) => CalendarModel.fromJson(item)).toList();
+        
+        print("=== EVENTOS PROCESADOS ===");
+        print("Total de eventos cargados: ${allCalendars.value.length}");
+        
+        for (int i = 0; i < allCalendars.value.length; i++) {
+          final event = allCalendars.value[i];
+          print("Evento ${i + 1}:");
+          print("  - ID: ${event.id}");
+          print("  - Nombre: ${event.name}");
+          print("  - Fecha: ${event.date}");
+          print("  - Pet ID: ${event.petId}");
+          print("  - Tipo: ${event.tipo}");
+          print("  - Status: ${event.status}");
+          print("  - Invitados: ${event.owners.length}");
+          print("  - Invited: ${event.invited}");
+          print("  - Owners: ${event.owners.map((o) => '${o.email}').toList()}");
+          print("  ---");
+        }
+        
         _applyFilters();
       } else {
         CustomSnackbar.show(
@@ -140,16 +159,32 @@ class CalendarController extends GetxController {
   }
 
   void _applyFilters() {
+    print("=== APLICANDO FILTROS ===");
+    print("Total eventos antes de filtrar: ${allCalendars.length}");
+    print("Pet ID seleccionado: ${selectedPetId.value}");
+    print("Fecha seleccionada: ${selectedDate.value}");
+    
     Iterable<CalendarModel> events = allCalendars;
     if (selectedPetId.value != 0) {
       events = events.where((e) => e.petId == selectedPetId.value);
+      print("Eventos después de filtrar por mascota: ${events.length}");
     }
     if (selectedDate.value != null) {
       final d = selectedDate.value!;
       final formattedDate = '${d.day.toString().padLeft(2, '0')}-${d.month.toString().padLeft(2, '0')}-${d.year}';
       events = events.where((e) => e.date == formattedDate);
+      print("Eventos después de filtrar por fecha: ${events.length}");
     }
+    
     filteredCalendars.value = events.toList();
+    print("Total eventos después de filtrar: ${filteredCalendars.length}");
+    
+    // Mostrar detalles de los eventos filtrados
+    for (int i = 0; i < filteredCalendars.length; i++) {
+      final event = filteredCalendars[i];
+      print("Evento filtrado ${i + 1}: ${event.name} (${event.owners.length} invitados)");
+    }
+    print("=== FIN FILTROS ===");
   }
 
   void toggleVerMas(String eventId) {

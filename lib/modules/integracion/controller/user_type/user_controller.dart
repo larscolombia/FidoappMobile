@@ -206,14 +206,51 @@ class UserController extends GetxController {
       print('Body de la petición: $requestBody');
       print('Email a enviar: $email');
 
-      final response = await http.post(
-        url,
-        headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-          'Content-Type': 'application/json',
-        },
-        body: requestBody,
-      );
+      // Agregar un delay antes de enviar la petición para evitar rate limiting
+      await Future.delayed(const Duration(milliseconds: 1000));
+
+      // Implementar reintentos con backoff exponencial
+      int maxRetries = 3;
+      int retryCount = 0;
+      http.Response? response;
+
+      while (retryCount < maxRetries) {
+        try {
+          response = await http.post(
+            url,
+            headers: {
+              'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+              'Content-Type': 'application/json',
+            },
+            body: requestBody,
+          );
+
+          // Si la respuesta es exitosa o no es 429, salir del bucle
+          if (response.statusCode != 429) {
+            break;
+          }
+
+          // Si es 429, esperar antes del siguiente intento
+          retryCount++;
+          if (retryCount < maxRetries) {
+            int delayMs = 2000 * retryCount; // Backoff exponencial: 2s, 4s, 6s
+            print('Error 429, reintentando en ${delayMs}ms (intento ${retryCount + 1}/$maxRetries)');
+            await Future.delayed(Duration(milliseconds: delayMs));
+          }
+        } catch (e) {
+          print('Error en intento ${retryCount + 1}: $e');
+          retryCount++;
+          if (retryCount < maxRetries) {
+            int delayMs = 2000 * retryCount;
+            await Future.delayed(Duration(milliseconds: delayMs));
+          }
+        }
+      }
+
+      // Si después de todos los reintentos no hay respuesta, lanzar error
+      if (response == null) {
+        throw Exception('No se pudo completar la petición después de $maxRetries intentos');
+      }
 
       print('Respuesta agregar usuario: ${response.statusCode} - ${response.body}');
 
@@ -248,6 +285,13 @@ class UserController extends GetxController {
           message: message,
           isError: false,
         );
+      } else if (response.statusCode == 429) {
+        // Error de demasiadas peticiones
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'El servidor está muy ocupado. La invitación se enviará automáticamente en unos momentos.',
+          isError: false, // Cambiar a false para que no parezca un error crítico
+        );
       } else if (response.statusCode == 422) {
         // Error de validación
         final data = json.decode(response.body);
@@ -269,11 +313,21 @@ class UserController extends GetxController {
       }
     } catch (error) {
       print('Error de conexión: $error');
-      CustomSnackbar.show(
-        title: 'Error',
-        message: 'Error de conexión con el servidor',
-        isError: true,
-      );
+      
+      // Si el error es por demasiados reintentos, mostrar mensaje específico
+      if (error.toString().contains('No se pudo completar la petición después de')) {
+        CustomSnackbar.show(
+          title: 'Servidor ocupado',
+          message: 'El servidor está muy ocupado. La invitación se procesará automáticamente en unos momentos.',
+          isError: false,
+        );
+      } else {
+        CustomSnackbar.show(
+          title: 'Error',
+          message: 'Error de conexión con el servidor',
+          isError: true,
+        );
+      }
     } finally {
       isLoading.value = false;
     }

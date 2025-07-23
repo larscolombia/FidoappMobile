@@ -14,7 +14,9 @@
         android:label="FidoApp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:theme="@style/LaunchTheme">
+        android:theme="@style/LaunchTheme"
+        android:allowBackup="false"
+        android:fullBackupContent="false">
 
         <!-- Main Activity -->
         <activity

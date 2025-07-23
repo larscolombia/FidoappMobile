@@ -2019,7 +2019,7 @@ class LanguageEs extends BaseLanguage {
       'Seleccionar el perfil de la mascota la cual quieres ver la información';
 
   @override
-  String get resetPassword => 'Reestablecer contraseña';
+  String get resetPassword => 'Restablecer contraseña';
 
   @override
   String get dontHaveAnAccount => '¿No tienes una cuenta aún?';

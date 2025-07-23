@@ -9,8 +9,21 @@ class PetOwnerController extends GetxController {
   var associatedPersons = <Map<String, dynamic>>[].obs; // Lista observable
   var isPrimaryOwner = false.obs; // Variable para verificar si el usuario actual es el dueño principal
   var primaryOwnerId = 0.obs; // ID del dueño principal
+  var isLoading = false.obs; // Variable para controlar el estado de carga
+  var hasLoaded = false.obs; // Variable para evitar cargas repetidas
+
+  @override
+  void onInit() {
+    super.onInit();
+    // No cargar datos automáticamente aquí para evitar problemas
+  }
 
   Future<void> fetchOwnersList(int petId) async {
+    // Evitar llamadas repetidas si ya se está cargando
+    if (isLoading.value) return;
+    
+    isLoading.value = true;
+    
     final url = Uri.parse('${BASE_URL}pets/$petId/owners');
 
     try {
@@ -59,6 +72,8 @@ class PetOwnerController extends GetxController {
             });
           }
         }
+        
+        hasLoaded.value = true;
         //pisa papel
         // print('dara ${data['primary_owner']}');
       } else {
@@ -66,6 +81,15 @@ class PetOwnerController extends GetxController {
       }
     } catch (e) {
       print('Error en la solicitud: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Método para cargar datos solo si no se han cargado antes
+  Future<void> loadOwnersIfNeeded(int petId) async {
+    if (!hasLoaded.value && !isLoading.value) {
+      await fetchOwnersList(petId);
     }
   }
 }

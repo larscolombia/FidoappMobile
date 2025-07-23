@@ -170,16 +170,28 @@ class NotificationsScreen extends StatelessWidget {
                               color: Styles.primaryColor,
                             ),
                           ),
-                          Text(
-                            showTime
-                                ? DateFormat('HH:mm').format(DateTime.parse(notification.createdAt!))
-                                : DateFormat('dd MMM').format(DateTime.parse(notification.createdAt!)),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontFamily: 'Lato',
-                              fontSize: 12,
-                              color: Color(0xFF383838),
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                _extractDateFromDate(notification.createdAt!),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Lato',
+                                  fontSize: 12,
+                                  color: Color(0xFF383838),
+                                ),
+                              ),
+                              Text(
+                                _extractTimeFromDate(notification.createdAt!),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Lato',
+                                  fontSize: 10,
+                                  color: Color(0xFF666666),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -292,7 +304,7 @@ class NotificationsScreen extends StatelessWidget {
                     ),
                     // Texto de la fecha
                     Text(
-                      DateFormat('dd MMM yyyy HH:mm').format(DateTime.parse(notification.createdAt!)),
+                      notification.createdAt ?? '',
                       style: const TextStyle(
                         fontSize: 14,
                         fontFamily: 'Lato',
@@ -387,5 +399,38 @@ class NotificationsScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  // Método auxiliar para extraer la fecha del string "dd-MM-yyyy HH:mm"
+  String _extractDateFromDate(String dateString) {
+    try {
+      final parts = dateString.split(' ');
+      if (parts.length == 2) {
+        final datePart = parts[0]; // "dd-MM-yyyy"
+        final dateParts = datePart.split('-');
+        if (dateParts.length == 3) {
+          final day = dateParts[0];
+          final month = dateParts[1];
+          final year = dateParts[2];
+          return '$day/$month/$year';
+        }
+      }
+    } catch (e) {
+      print('Error extracting date: $e');
+    }
+    return dateString;
+  }
+
+  // Método auxiliar para extraer la hora del string "dd-MM-yyyy HH:mm"
+  String _extractTimeFromDate(String dateString) {
+    try {
+      final parts = dateString.split(' ');
+      if (parts.length == 2) {
+        return parts[1]; // "HH:mm"
+      }
+    } catch (e) {
+      print('Error extracting time: $e');
+    }
+    return '';
   }
 }

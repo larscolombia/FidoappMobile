@@ -75,15 +75,47 @@ class NotificationController extends GetxController {
         .length;
   }
 
+  // Método auxiliar para parsear la fecha en formato "dd-MM-yyyy HH:mm"
+  DateTime? parseNotificationDate(String? dateString) {
+    if (dateString == null || dateString.isEmpty) return null;
+    
+    try {
+      // Parsear formato "18-07-2025 17:16"
+      final parts = dateString.split(' ');
+      if (parts.length == 2) {
+        final datePart = parts[0]; // "18-07-2025"
+        final timePart = parts[1]; // "17:16"
+        
+        final dateParts = datePart.split('-');
+        final timeParts = timePart.split(':');
+        
+        if (dateParts.length == 3 && timeParts.length == 2) {
+          final day = int.parse(dateParts[0]);
+          final month = int.parse(dateParts[1]);
+          final year = int.parse(dateParts[2]);
+          final hour = int.parse(timeParts[0]);
+          final minute = int.parse(timeParts[1]);
+          
+          return DateTime(year, month, day, hour, minute);
+        }
+      }
+    } catch (e) {
+      print('Error parsing notification date: $e');
+    }
+    return null;
+  }
+
   // Método para obtener las notificaciones de hoy
   List<NotificationData> getTodayNotifications() {
     DateTime today = DateTime.now();
     return notifications
-        .where((n) =>
-            n.createdAt != null &&
-            DateTime.parse(n.createdAt!).year == today.year &&
-            DateTime.parse(n.createdAt!).month == today.month &&
-            DateTime.parse(n.createdAt!).day == today.day)
+        .where((n) {
+          final notificationDate = parseNotificationDate(n.createdAt);
+          return notificationDate != null &&
+              notificationDate.year == today.year &&
+              notificationDate.month == today.month &&
+              notificationDate.day == today.day;
+        })
         .toList();
   }
 
@@ -91,22 +123,27 @@ class NotificationController extends GetxController {
   List<NotificationData> getYesterdayNotifications() {
     DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
     return notifications
-        .where((n) =>
-            n.createdAt != null &&
-            DateTime.parse(n.createdAt!).year == yesterday.year &&
-            DateTime.parse(n.createdAt!).month == yesterday.month &&
-            DateTime.parse(n.createdAt!).day == yesterday.day)
+        .where((n) {
+          final notificationDate = parseNotificationDate(n.createdAt);
+          return notificationDate != null &&
+              notificationDate.year == yesterday.year &&
+              notificationDate.month == yesterday.month &&
+              notificationDate.day == yesterday.day;
+        })
         .toList();
   }
 
   // Método para obtener las notificaciones anteriores a ayer
   List<NotificationData> getOlderNotifications() {
     DateTime today = DateTime.now();
+    final yesterday = DateTime(today.year, today.month, today.day - 1);
+    
     return notifications
-        .where((n) =>
-            n.createdAt != null &&
-            DateTime.parse(n.createdAt!)
-                .isBefore(DateTime(today.year, today.month, today.day - 1)))
+        .where((n) {
+          final notificationDate = parseNotificationDate(n.createdAt);
+          return notificationDate != null &&
+              notificationDate.isBefore(yesterday);
+        })
         .toList();
   }
 

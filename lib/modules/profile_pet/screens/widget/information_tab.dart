@@ -49,7 +49,8 @@ class InformationTab extends StatelessWidget {
 
       final selectedPet = homeController.selectedProfile.value!;
       
-      var pet = petcontroller.fetchOwnersList(controller.petProfile.id);
+      // Cargar datos solo si es necesario (evita ciclo infinito)
+      petcontroller.loadOwnersIfNeeded(controller.petProfile.id);
       var ancho = MediaQuery.sizeOf(context).width;
       var margen = Helper.margenDefault;
       return SingleChildScrollView(

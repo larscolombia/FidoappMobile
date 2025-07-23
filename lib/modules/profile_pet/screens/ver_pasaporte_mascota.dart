@@ -66,29 +66,7 @@ class VerPasaporteMascota extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: 30),
-                  Row(
-                    children: [
-                      const SizedBox(width: 20),
-                      GestureDetector(
-                        onTap: () => Get.back(),
-                        child: const Icon(
-                          Icons.arrow_back,
-                          color: Colors.black,
-                          size: 24,
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Text(
-                        'Pasaporte de ${mascota.name}',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontFamily: 'PoetsenOne',
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
+
                   const SizedBox(height: 20),
                   Container(
                     width: 100,
@@ -181,15 +159,7 @@ class VerPasaporteMascota extends StatelessWidget {
                         ),
                       if (mascota.chip != null)
                         SizedBox(height: margen),
-                      const Text(
-                        'Información del Perro',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'PoetsenOne',
-                          color: Color(0xFFFF4931),
-                        ),
-                      ),
+
                       SizedBox(height: margen),
                       InfoMascota(
                         titulo: 'Nombre',

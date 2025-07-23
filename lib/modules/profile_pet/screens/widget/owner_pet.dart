@@ -14,8 +14,8 @@ class PetOwnersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final PetOwnerController controller = Get.put(PetOwnerController());
 
-    // Llama al método para obtener los datos
-    controller.fetchOwnersList(petId);
+    // Llama al método para obtener los datos (evita ciclo infinito)
+    controller.loadOwnersIfNeeded(petId);
 
     return Scaffold(
       appBar: AppBar(

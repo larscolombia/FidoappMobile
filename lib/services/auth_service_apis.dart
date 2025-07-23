@@ -1,11 +1,25 @@
 import 'dart:convert';
+import 'dart:developer' as dev;
 import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:nb_utils/nb_utils.dart';
+import 'package:pawlly/configs.dart';
+import 'package:pawlly/main.dart';
+import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/utils/api_end_points.dart';
+import 'package:pawlly/utils/app_common.dart';
+import 'package:pawlly/utils/common_base.dart';
+import 'package:pawlly/utils/constants.dart';
+import 'package:pawlly/utils/local_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:http/http.dart';
-import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/models/login_response_model.dart';
 import 'package:pawlly/models/user_data_model.dart';
 import 'package:pawlly/modules/auth/model/app_configuration_res.dart';
@@ -209,6 +223,38 @@ class AuthServiceApis extends GetxController {
     }
   }
 
+  static bool hasValidUserData() {
+    return currentUser.value != null &&
+           dataCurrentUser.id > 0 &&
+           dataCurrentUser.apiToken.isNotEmpty &&
+           dataCurrentUser.email.isNotEmpty;
+  }
+
+  static Future<void> clearAllDataOnUninstall() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      // Limpiar TODOS los datos sin preservar nada
+      await prefs.clear();
+
+      // Limpiar GetStorage completamente
+      try {
+        await localStorage.erase();
+      } catch (e) {
+        debugPrint('Error clearing GetStorage: $e');
+      }
+
+      // Limpiar datos en memoria
+      currentUser.value = null;
+      dataCurrentUser = UserData();
+      isLoggedIn(false);
+      
+      debugPrint('All data cleared successfully');
+    } catch (e) {
+      debugPrint('Error clearing all data: $e');
+    }
+  }
+
   static Future<void> clearData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -218,8 +264,15 @@ class AuthServiceApis extends GetxController {
       final savedEmail = isRememberMe ? prefs.getString(SharedPreferenceConst.USER_EMAIL) : null;
       final savedPassword = isRememberMe ? prefs.getString(SharedPreferenceConst.USER_PASSWORD) : null;
 
-      // Limpiar todos los datos
+      // Limpiar todos los datos de SharedPreferences
       await prefs.clear();
+
+      // Limpiar GetStorage también
+      try {
+        await localStorage.erase();
+      } catch (e) {
+        debugPrint('Error clearing GetStorage: $e');
+      }
 
       // Restaurar remember me y credenciales si necesario
       if (isRememberMe) {
@@ -241,6 +294,21 @@ class AuthServiceApis extends GetxController {
       currentUser.value = null;
       dataCurrentUser = UserData();
       isLoggedIn(false);
+      
+      // Limpiar datos de nb_utils también
+      try {
+        // Limpiar datos específicos de nb_utils
+        await prefs.remove('IS_LOGGED_IN');
+        await prefs.remove('USER_LOGIN_DATA');
+        await prefs.remove('USER_EMAIL');
+        await prefs.remove('USER_PASSWORD');
+        await prefs.remove('FIRST_TIME');
+        await prefs.remove('IS_REMEMBER_ME');
+        await prefs.remove('USER_NAME');
+        await prefs.remove('AUTO_SLIDER_STATUS');
+      } catch (e) {
+        debugPrint('Error clearing nb_utils data: $e');
+      }
     } catch (e) {
       debugPrint('Error clearing data: $e');
     }

@@ -296,8 +296,11 @@ class AssociatedPersonsModal extends StatelessWidget {
                       // Cerrar el modal después de la invitación
                       Navigator.of(context).pop();
                       
+                      // Esperar un momento antes de actualizar la lista para evitar error 429
+                      await Future.delayed(const Duration(milliseconds: 500));
+                      
                       // Actualizar la lista de personas asociadas
-                      petcontroller.fetchOwnersList(homeController.selectedProfile.value!.id);
+                      await petcontroller.fetchOwnersList(homeController.selectedProfile.value!.id);
                     } else {
                       // Usuario no existe, mostrar alerta y enviar invitación
                       Get.dialog(
@@ -352,8 +355,11 @@ class AssociatedPersonsModal extends StatelessWidget {
                                 // Cerrar el modal después de la invitación
                                 Navigator.of(context).pop();
                                 
+                                // Esperar un momento antes de actualizar la lista para evitar error 429
+                                await Future.delayed(const Duration(milliseconds: 500));
+                                
                                 // Actualizar la lista de personas asociadas
-                                petcontroller.fetchOwnersList(homeController.selectedProfile.value!.id);
+                                await petcontroller.fetchOwnersList(homeController.selectedProfile.value!.id);
                               },
                               child: const Text(
                                 'Enviar Invitación',

@@ -30,8 +30,11 @@ class SplashScreen extends StatelessWidget {
 
         WidgetsBinding.instance.addPostFrameCallback((_) async {
           try {
-            if (snapshot.data == true &&
-                AuthServiceApis.currentUser.value != null) {
+            // Verificar si hay datos válidos de usuario
+            final hasValidUserData = snapshot.data == true &&
+                AuthServiceApis.hasValidUserData();
+
+            if (hasValidUserData) {
               await Get.offAll(
                 () => const HomeScreen(),
                 binding: BindingsBuilder(() {
@@ -40,6 +43,8 @@ class SplashScreen extends StatelessWidget {
                 transition: Transition.fadeIn,
               );
             } else {
+              // Si no hay datos válidos, limpiar todo y ir a welcome
+              await AuthServiceApis.clearAllDataOnUninstall();
               await Get.offAll(
                 () => WelcomeScreen(),
                 transition: Transition.fadeIn,
@@ -47,6 +52,8 @@ class SplashScreen extends StatelessWidget {
             }
           } catch (e) {
             debugPrint('Error en navegación: $e');
+            // En caso de error, limpiar datos y ir a welcome
+            await AuthServiceApis.clearAllDataOnUninstall();
             await Get.offAll(() => WelcomeScreen());
           }
         });
