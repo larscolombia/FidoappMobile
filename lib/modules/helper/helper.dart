@@ -97,6 +97,11 @@ class Helper extends GetX {
     final UserController userController = Get.put(UserController(), permanent: true);
     final CalendarController calendarController = Get.put(CalendarController());
     String typedEmail = '';
+    
+    // Limpiar el estado al abrir el modal
+    userController.deselectUser();
+    userController.filterUsers(''); // Limpiar el filtrado
+    
     controller.fetchUsers(controller.type.value);
     return showDialog<void>(
       context: context,
@@ -154,19 +159,36 @@ class Helper extends GetX {
                   Obx(() {
                     var filteredUsers = userController.filteredUsers;
                     if (filteredUsers.isEmpty) {
+                      // Si no hay búsqueda, mostrar mensaje de instrucción
+                      if (typedEmail.isEmpty) {
+                        return const Text(
+                          'Escribe un correo electrónico para buscar usuarios',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF959595),
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        );
+                      }
+                      
+                      // Si hay búsqueda pero no se encontraron resultados
                       final tipo = calendarController.event['tipo'];
                       final message = tipo == 'evento'
                           ? 'No se encontró el usuario, el evento se creará sin invitado'
                           : 'El usuario no se encuentra registrado en la plataforma, se asignará un profesional aleatoriamente';
                       return Text(message);
                     }
+                    
+                    // Mostrar lista de usuarios encontrados para seleccionar
                     return Column(
                       children: [
                         const SizedBox(height: 20),
                         const SizedBox(
                           width: 300,
                           child: Text(
-                            "Invitados:",
+                            "Usuarios encontrados:",
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
@@ -177,12 +199,32 @@ class Helper extends GetX {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        SelectedAvatar(
-                          nombre: filteredUsers.first.firstName,
-                          imageUrl: filteredUsers.first.profileImage,
-                          profesion: Helper.tipoUsuario(filteredUsers.first.userType ?? ""),
-                          showArrow: false,
-                        ),
+                        ...filteredUsers.map((user) => GestureDetector(
+                          onTap: () {
+                            userController.selectUser(user);
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            child: Obx(() {
+                              final isSelected = userController.selectedUser.value?.id == user.id;
+                              return Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: isSelected ? const Color(0xFFFC9214) : const Color(0xFFEFEFEF),
+                                    width: isSelected ? 2 : 1,
+                                  ),
+                                ),
+                                child: SelectedAvatar(
+                                  nombre: user.firstName,
+                                  imageUrl: user.profileImage,
+                                  profesion: Helper.tipoUsuario(user.userType ?? ""),
+                                  showArrow: false,
+                                ),
+                              );
+                            }),
+                          ),
+                        )).toList(),
                         const SizedBox(height: 20),
                       ],
                     );
@@ -192,15 +234,21 @@ class Helper extends GetX {
                     child: ButtonDefaultWidget(
                       title: 'Invitar Persona',
                       callback: () {
-                        if (userController.filteredUsers.isNotEmpty) {
+                        // Verificar si hay un usuario seleccionado
+                        if (userController.selectedUser.value != null) {
                           calendarController.updateField(
                             'owner_id',
-                            [userController.filteredUsers.first.id],
+                            [userController.selectedUser.value!.id],
                           );
                           calendarController.updateField('user_email', '');
-                          userController.deselectUser();
-                          userController.selectUser(userController.filteredUsers.first);
                           Navigator.of(context).pop();
+                        } else if (userController.filteredUsers.isNotEmpty) {
+                          // Si no hay usuario seleccionado pero hay usuarios filtrados, mostrar alerta
+                          CustomSnackbar.show(
+                            title: 'Aviso',
+                            message: 'Por favor selecciona una persona de la lista',
+                            isError: true,
+                          );
                         } else {
                           final tipo = calendarController.event['tipo'];
                           if (tipo == 'evento') {

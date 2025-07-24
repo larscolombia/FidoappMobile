@@ -13,6 +13,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 class Calendar extends StatelessWidget {
   final HomeController controller = Get.find<HomeController>();
+  final HomeController homeController = Get.find<HomeController>();
   final UserController userController = Get.put(UserController());
   final CalendarController calendarController = Get.put(CalendarController());
 
@@ -107,14 +108,20 @@ class Calendar extends StatelessWidget {
                   ),
                   todayDecoration: BoxDecoration(
                     color: const Color(0xFFFC9214),
-                    shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   selectedDecoration: BoxDecoration(
                     color: isSameDay(controller.selectedDay.value, today)
                         ? const Color(0xFFFC9214)
                         : const Color(0xFFFC9214).withOpacity(0.30),
-                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  defaultDecoration: BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  outsideDecoration: BoxDecoration(
+                    color: Colors.transparent,
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -245,7 +252,11 @@ class Calendar extends StatelessWidget {
           const SizedBox(height: 15),
           RecargaComponente(
             callback: () {
-              calendarController.getEventos();
+              if (homeController.selectedProfile.value != null) {
+                calendarController.getEventosByPet(homeController.selectedProfile.value!.id);
+              } else {
+                calendarController.getEventos(); // Fallback a la función original
+              }
             },
           ),
         ],
@@ -268,14 +279,6 @@ class Calendar extends StatelessWidget {
             decoration: BoxDecoration(
               color: _getEventColor(event),
               shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color:
-                      const Color.fromARGB(255, 182, 41, 41).withOpacity(0.1),
-                  blurRadius: 2,
-                  offset: const Offset(0, 1),
-                )
-              ],
             ),
           );
         }).toList(),

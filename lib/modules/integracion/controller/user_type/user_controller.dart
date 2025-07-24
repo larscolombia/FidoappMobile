@@ -50,7 +50,7 @@ class UserController extends GetxController {
         if (data['success']) {
           print('usuario tipo ${data['data']}');
           users.value = (data['data'] as List).map((user) => User.fromJson(user)).toList();
-          filteredUsers.value = users;
+          filteredUsers.value = []; // Inicialmente vacío, solo se llena con búsquedas
           selecterUser.value = users;
           generateExpertTags();
         }
@@ -132,7 +132,7 @@ class UserController extends GetxController {
 
   void filterUsers(String? query) {
     if (query == null || query.isEmpty) {
-      filteredUsers.value = List.from(users); // Si no hay búsqueda, mostrar todos
+      filteredUsers.value = []; // Si no hay búsqueda, no mostrar nada
     } else {
       var foundUsers = users.where((user) => user.email.toLowerCase().contains(query.toLowerCase())).toList();
       filteredUsers.value = foundUsers.isEmpty ? [] : foundUsers;
@@ -160,7 +160,7 @@ class UserController extends GetxController {
 
   void filterUsersByExpert(String? expertQuery) {
     if (expertQuery == null || expertQuery.isEmpty) {
-      filteredUsers.value = List.from(users); // Mostrar todos si no hay búsqueda
+      filteredUsers.value = []; // No mostrar nada si no hay búsqueda
     } else {
       var foundUsers = users
           .where((user) =>

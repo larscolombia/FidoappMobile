@@ -52,6 +52,22 @@ class HomeController extends GetxController {
   // Método para actualizar el índice seleccionado
   void updateIndex(int index) {
     selectedIndex.value = index;
+    
+    // Si se selecciona el home (índice 0), cargar los eventos filtrados
+    if (index == 0) {
+      if (Get.isRegistered<CalendarController>()) {
+        final calendarController = Get.find<CalendarController>();
+        calendarController.loadEventsForHome();
+      }
+    }
+    
+    // Si se selecciona la agenda (índice 1), cargar todos los eventos
+    if (index == 1) {
+      if (Get.isRegistered<CalendarController>()) {
+        final calendarController = Get.find<CalendarController>();
+        calendarController.loadEventsForAgenda();
+      }
+    }
   }
 
   void selectType(int type) {

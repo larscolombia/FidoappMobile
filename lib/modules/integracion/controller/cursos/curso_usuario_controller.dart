@@ -166,10 +166,27 @@ class CursoUsuarioController extends GetxController {
             barrierDismissible: true,
           );
         } else {
-          print('Error: ${data['message']}');
+          print('Error: ${data['error']}');
+          // Verificar si el error es de saldo insuficiente
+          if (data['error'] == 'Insufficient balance') {
+            CustomSnackbar.show(
+              title: 'Saldo insuficiente',
+              message: 'No tienes suficiente saldo para adquirir este curso. Por favor, recarga tu cuenta.',
+              isError: true,
+            );
+          }
         }
       } else {
-        throw Exception('Failed to subscribe to course');
+        if (data['error'] == 'Insufficient balance') {
+            CustomSnackbar.show(
+              title: 'Saldo insuficiente',
+              message: 'No tienes suficiente saldo para adquirir este curso. Por favor, recarga tu cuenta.',
+              isError: true,
+            );
+          }else{
+            throw Exception('Failed to subscribe to course');
+          }
+        
       }
     } catch (e) {
       CustomSnackbar.show(

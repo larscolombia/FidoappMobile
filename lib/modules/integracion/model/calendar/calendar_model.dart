@@ -29,6 +29,11 @@ class CalendarModel {
   String? deletedAt;
   String? eventImage;
   bool? invited; // Nuevo campo
+  String? bookingStatus; // Campo para el estado de reserva
+  int? serviceId; // Campo para el ID del servicio
+  int? categoryId; // Campo para el ID de la categoría
+  int? trainingId; // Campo para el ID del entrenamiento
+  int? durationId; // Campo para el ID de la duración
 
   CalendarModel({
     this.id,
@@ -51,6 +56,11 @@ class CalendarModel {
     this.deletedAt,
     this.eventImage,
     this.invited, // Nuevo campo
+    this.bookingStatus,
+    this.serviceId,
+    this.categoryId,
+    this.trainingId,
+    this.durationId,
   });
 
   factory CalendarModel.fromJson(Map<String, dynamic> json) {
@@ -75,8 +85,13 @@ class CalendarModel {
       createdAt: json['created_at']?.toString(),
       updatedAt: json['updated_at']?.toString(),
       deletedAt: json['deleted_at']?.toString(),
-      eventImage: json['event_image'],
+      eventImage: json['image'] ?? json['event_image'], // Manejar tanto 'image' como 'event_image'
       invited: json['invited'], // Nuevo campo
+      bookingStatus: json['booking_status']?.toString(),
+      serviceId: json['service_id'],
+      categoryId: json['category_id'],
+      trainingId: json['training_id'],
+      durationId: json['duration_id'],
     );
   }
 
@@ -101,8 +116,13 @@ class CalendarModel {
         "created_at": createdAt,
         "updated_at": updatedAt,
         "deleted_at": deletedAt,
-        "event_image": eventImage,
+        "image": eventImage, // Usar 'image' como campo principal
         "invited": invited, // Nuevo campo
+        "booking_status": bookingStatus,
+        "service_id": serviceId,
+        "category_id": categoryId,
+        "training_id": trainingId,
+        "duration_id": durationId,
       };
 }
 

@@ -25,6 +25,16 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
   }
 
   @override
+  void didUpdateWidget(CustomCheckbox oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.isChecked != widget.isChecked) {
+      setState(() {
+        _isChecked = widget.isChecked;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {

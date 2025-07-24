@@ -16,7 +16,9 @@ import 'package:pawlly/modules/integracion/controller/calendar_controller/calend
 import 'package:pawlly/modules/integracion/controller/user_type/user_controller.dart';
 import 'package:pawlly/modules/integracion/model/calendar/calendar_model.dart';
 import 'package:pawlly/modules/integracion/model/user_type/user_datails.dart';
+import 'package:pawlly/modules/integracion/model/user_type/user_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:pawlly/components/custom_snackbar.dart';
 
 class EventoDestalles extends StatefulWidget {
   EventoDestalles({super.key});
@@ -31,6 +33,8 @@ class _EventoDestallesState extends State<EventoDestalles> {
   final UserController userController = Get.put(UserController());
   final event = Get.arguments as CalendarModel?;
   var userSelected = <UserDetail>[].obs;
+  var eventCreator = Rxn<User>(); // Para almacenar la información del creador del evento
+  
   @override
   void initState() {
     super.initState();
@@ -38,6 +42,76 @@ class _EventoDestallesState extends State<EventoDestalles> {
     var ownerIds = event!.owners.map((owner) => owner.id ?? 0).toList();
 
     userController.fetchMultipleOwners(ownerIds); // Cargar todos los dueños
+    
+    // Cargar información del creador del evento
+    if (event?.userId != null) {
+      _loadEventCreator(event!.userId!);
+    }
+  }
+  
+  // Función para cargar la información del creador del evento
+  Future<void> _loadEventCreator(int userId) async {
+    try {
+      final creator = await userController.fetchUserById(userId);
+      if (creator != null) {
+        eventCreator.value = creator;
+      }
+    } catch (e) {
+      print('Error al cargar creador del evento: $e');
+    }
+  }
+  
+  // Función para convertir el valor del backend al valor de display
+  String _convertBackendValueToDisplay(String? backendValue) {
+    switch (backendValue) {
+      case 'evento':
+        return 'Evento';
+      case 'medico':
+        return 'Médico';
+      case 'entrenamiento':
+        return 'Entrenamiento';
+      default:
+        return 'Evento';
+    }
+  }
+  
+  // Función para guardar los cambios del evento
+  Future<void> _saveEventChanges() async {
+    try {
+      // Actualizar los datos del evento en el calendarController
+      calendarController.updateField('id', event?.id ?? '');
+      calendarController.updateField('name', event?.name ?? '');
+      calendarController.updateField('description', event?.description ?? '');
+      calendarController.updateField('location', event?.location ?? '');
+      calendarController.updateField('date', event?.date ?? '');
+      calendarController.updateField('event_time', event?.eventime ?? '');
+      calendarController.updateField('tipo', event?.tipo ?? '');
+      calendarController.updateField('pet_id', event?.petId ?? '');
+      
+      // Llamar al método de actualización del evento
+      await calendarController.updateEvent();
+      
+      // Salir del modo de edición
+      calendarController.setEdit();
+      
+      // Mostrar mensaje de éxito
+      CustomSnackbar.show(
+        title: "Éxito",
+        message: "Evento actualizado correctamente",
+        isError: false,
+      );
+      
+      // Regresar a la pantalla anterior
+      Get.back();
+      
+    } catch (e) {
+      print('Error al guardar cambios del evento: $e');
+      CustomSnackbar.show(
+        title: "Error",
+        message: "No se pudo actualizar el evento",
+        isError: true,
+      );
+    }
   }
 
   @override
@@ -140,18 +214,16 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                     if (event?.invited !=
                                         true) // Verificar si no es invitado
                                       Obx(() {
-                                        return Editar(
-                                          coloredit:
-                                              !calendarController.isEdit.value
-                                                  ? Colors.white
-                                                  : Styles.colorContainer,
-                                          callback: () {
-                                            userController.filterUsers(
-                                                '${event?.owners.first.email}');
-
-                                            calendarController.setEdit();
-                                          },
-                                        );
+                                        return calendarController.isEdit.value
+                                            ? SizedBox.shrink() // No mostrar nada en modo edición
+                                            : Editar(
+                                                coloredit: Colors.white,
+                                                callback: () {
+                                                  userController.filterUsers(
+                                                      '${event?.owners.first.email}');
+                                                  calendarController.setEdit();
+                                                },
+                                              );
                                       })
                                   ],
                                 ),
@@ -169,40 +241,111 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                 ),
                               ),
                               SizedBox(height: margen),
+                              // Ubicación del evento
+                              SizedBox(
+                                width: MediaQuery.sizeOf(context).width,
+                                height: height,
+                                child: InputText(
+                                  placeholder: '',
+                                  onChanged: (value) => event?.location = value,
+                                  initialValue: event?.location ?? "",
+                                  label: 'Ubicación',
+                                  readOnly: !calendarController.isEdit.value,
+                                ),
+                              ),
+                              SizedBox(height: margen),
+                              // Creador del evento
                               Container(
                                 width: MediaQuery.sizeOf(context).width,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Creador del evento:',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.black,
-                                        fontFamily: 'Lato',
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    SizedBox(height: margen - 8),
-                                    SizedBox(
-                                      width: MediaQuery.sizeOf(context).width,
-                                      child: SelectedAvatar(
-                                        nombre: AuthServiceApis
-                                                .dataCurrentUser.firstName ??
-                                            '',
-                                        imageUrl: AuthServiceApis
-                                                .dataCurrentUser.profileImage ??
-                                            '',
-                                        profesion: Helper.tipoUsuario(
-                                            AuthServiceApis
-                                                    .dataCurrentUser.userType ??
-                                                ''),
-                                      ),
-                                    ),
+                                    Obx(() {
+                                      final creator = eventCreator.value;
+                                      
+                                      // Si aún no se ha cargado la información del creador, mostrar indicador de carga
+                                      if (creator == null && event?.userId != null) {
+                                        return Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Creador del evento:',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black,
+                                                fontFamily: 'Lato',
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            SizedBox(height: margen - 8),
+                                            SizedBox(
+                                              width: MediaQuery.sizeOf(context).width,
+                                              child: Container(
+                                                padding: EdgeInsets.all(16),
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(16),
+                                                  border: Border.all(
+                                                    color: const Color(0xFFEFEFEF),
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    SizedBox(
+                                                      width: 20,
+                                                      height: 20,
+                                                      child: CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                        valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+                                                      ),
+                                                    ),
+                                                    SizedBox(width: 12),
+                                                    Text(
+                                                      'Cargando información del creador...',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.grey,
+                                                        fontFamily: 'Lato',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      }
+                                      
+                                      // Si ya se cargó la información del creador
+                                      return Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Creador del evento:',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.black,
+                                              fontFamily: 'Lato',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          SizedBox(height: margen - 8),
+                                          SizedBox(
+                                            width: MediaQuery.sizeOf(context).width,
+                                            child: SelectedAvatar(
+                                              nombre: creator?.firstName ?? 'Usuario',
+                                              imageUrl: creator?.profileImage ?? '',
+                                              profesion: Helper.tipoUsuario(creator?.userType ?? ''),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }),
                                   ],
                                 ),
                               ),
                               SizedBox(height: margen),
+                              // Descripción del evento
                               InputText(
                                 isTextArea: true,
                                 placeholder: '',
@@ -211,6 +354,19 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                 initialValue: event?.description ?? "",
                                 label: 'Descripción del evento',
                                 readOnly: !calendarController.isEdit.value,
+                              ),
+                              SizedBox(height: margen),
+                              // Tipo de evento
+                              SizedBox(
+                                width: MediaQuery.sizeOf(context).width,
+                                height: height,
+                                child: InputText(
+                                  placeholder: '',
+                                  onChanged: (value) => event?.tipo = value,
+                                  initialValue: _convertBackendValueToDisplay(event?.tipo),
+                                  label: 'Tipo de evento',
+                                  readOnly: true, // Siempre en solo lectura
+                                ),
                               ),
                               SizedBox(height: margen),
                               SizedBox(
@@ -281,8 +437,8 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                 ),
                               ),
                               SizedBox(height: margen),
-                              if (event?.invited !=
-                                  true) // Verificar si no es invitado
+                              // Ocultar "Invitar Personas" en todos los casos
+                              if (false) // Nunca mostrar el botón de invitar personas
                                 SizedBox(
                                   width: MediaQuery.sizeOf(context).width,
                                   height: 60,
@@ -305,6 +461,17 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                         child: FloatingActionButton(
                                           elevation: 0,
                                           onPressed: () {
+                                            // Configurar el tipo de usuario según el tipo del evento
+                                            String userType = 'all'; // Por defecto
+                                            if (event?.tipo == 'medico') {
+                                              userType = 'vet';
+                                            } else if (event?.tipo == 'entrenamiento') {
+                                              userType = 'trainer';
+                                            }
+                                            
+                                            // Configurar el tipo en el userController
+                                            userController.type.value = userType;
+                                            
                                             // Acción al presionar el botón flotante
                                             Helper.showMyDialog(
                                                 context, userController);
@@ -315,6 +482,20 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                         ),
                                       )
                                     ],
+                                  ),
+                                ),
+                              // Mostrar "Personas invitadas" en ambos modos
+                              if (true) // Siempre mostrar el texto
+                                Container(
+                                  width: MediaQuery.sizeOf(context).width,
+                                  child: const Text(
+                                    'Personas invitadas:',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w800,
+                                      fontFamily: 'Lato',
+                                    ),
                                   ),
                                 ),
                               SizedBox(
@@ -349,9 +530,60 @@ class _EventoDestallesState extends State<EventoDestalles> {
                                 ),
                               ),
                               SizedBox(height: margen),
+                              // Botones de acción en modo edición
                               if (calendarController.isEdit.value &&
-                                  event?.invited !=
-                                      true) // Verificar si no es invitado
+                                  event?.invited != true)
+                                Column(
+                                  children: [
+                                    SizedBox(height: 20),
+                                    // Botón Guardar
+                                    SizedBox(
+                                      width: MediaQuery.sizeOf(context).width,
+                                      height: 50,
+                                      child: ButtonDefaultWidget(
+                                        title: 'Guardar',
+                                        callback: () {
+                                          _saveEventChanges();
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    // Botón Cancelar
+                                    SizedBox(
+                                      width: MediaQuery.sizeOf(context).width,
+                                      height: 50,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(color: Colors.grey),
+                                        ),
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            borderRadius: BorderRadius.circular(8),
+                                            onTap: () {
+                                              calendarController.setEdit();
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                'Cancelar',
+                                                style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              // Botón Editar en modo visualización
+                              if (!calendarController.isEdit.value &&
+                                  event?.invited != true)
                                 SizedBox(
                                   width: MediaQuery.sizeOf(context).width,
                                   height: 50,

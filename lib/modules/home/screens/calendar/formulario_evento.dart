@@ -74,9 +74,7 @@ class _CreateEventState extends State<CreateEvent> {
   void initState() {
     super.initState();
     userController.fetchUsers(userController.type.value).then((_) {
-      if (_selectRandomUser) {
-        _assignRandomUser();
-      }
+      // No asignar automáticamente al inicio, solo cuando se seleccione un tipo específico
     });
   }
 
@@ -443,6 +441,10 @@ class _CreateEventState extends State<CreateEvent> {
                           calendarController.updateField('tipo', backendValue);
                           print('DEBUG: Valor guardado en calendarController: ${calendarController.event['tipo']}');
                           
+                          // Limpiar usuario asignado al cambiar tipo de evento
+                          userController.deselectUser();
+                          calendarController.updateField('owner_id', []);
+                          
                           final type = value == 'Médico'
                               ? 'vet'
                               : value == 'Entrenamiento'
@@ -450,8 +452,16 @@ class _CreateEventState extends State<CreateEvent> {
                                   : 'all';
                           userController.type.value = type;
                           userController.fetchUsers(type).then((_) {
-                            if (_selectRandomUser) {
-                              _assignRandomUser();
+                            // Para tipo "Evento", no asignar automáticamente
+                            if (value == 'Evento') {
+                              setState(() {
+                                _selectRandomUser = false;
+                              });
+                            } else {
+                              // Para tipo "Médico" y "Entrenamiento", mantener la asignación automática
+                              if (_selectRandomUser) {
+                                _assignRandomUser();
+                              }
                             }
                           });
                         },
@@ -565,15 +575,17 @@ class _CreateEventState extends State<CreateEvent> {
                           },
                         ),
                         const SizedBox(width: 8),
-                        const Text(
-                          'Asignar usuario aleatoriamente',
+                        Obx(() => Text(
+                          calendarController.event['tipo'] == 'evento' 
+                              ? 'Asignar invitado aleatoriamente'
+                              : 'Asignar usuario aleatoriamente',
                           style: TextStyle(
                             fontSize: 14,
                             color: Colors.black,
                             fontFamily: 'Lato',
                             fontWeight: FontWeight.w500,
                           ),
-                        ),
+                        )),
                       ],
                     ),
                     SizedBox(height: defaultMargin),
@@ -584,19 +596,25 @@ class _CreateEventState extends State<CreateEvent> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'Invitar Personas a este Evento',
+                            Obx(() => Text(
+                              calendarController.event['tipo'] == 'evento' 
+                                  ? 'Invitar Personas a este Evento'
+                                  : 'Seleccionar Profesional',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black,
                                 fontFamily: 'Lato',
                                 fontWeight: FontWeight.w800,
                               ),
-                            ),
+                            )),
                             FloatingActionButton(
                               elevation: 0,
                               backgroundColor: Styles.fiveColor,
-                              onPressed: () => Helper.showMyDialog(context, userController),
+                              onPressed: () {
+                                // Limpiar usuario seleccionado antes de abrir el modal
+                                userController.deselectUser();
+                                Helper.showMyDialog(context, userController);
+                              },
                               child: const Icon(Icons.add, color: Colors.white),
                             )
                           ],
@@ -653,6 +671,16 @@ class _CreateEventState extends State<CreateEvent> {
                               CustomSnackbar.show(
                                 title: "Campos Incompletos",
                                 message: "Por favor, rellene todos los campos requeridos.",
+                                isError: true,
+                              );
+                              return;
+                            }
+
+                            // Validar que se haya seleccionado una persona si no está activado el checkbox de asignación aleatoria
+                            if (!_selectRandomUser && userController.selectedUser.value == null) {
+                              CustomSnackbar.show(
+                                title: "Error",
+                                message: "Por favor selecciona una persona o activa la asignación aleatoria",
                                 isError: true,
                               );
                               return;
