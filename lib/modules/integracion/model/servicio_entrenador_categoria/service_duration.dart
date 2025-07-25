@@ -31,7 +31,7 @@ class ServiceDuration {
       duration: json['duration'],
       price: (json['price'] as num).toDouble(),
       type: json['type'],
-      status: json['status'],
+      status: json['status'] is int ? json['status'] : int.tryParse(json['status'].toString()) ?? 0,
       createdBy: json['created_by'],
       updatedBy: json['updated_by'],
       deletedBy: json['deleted_by'],

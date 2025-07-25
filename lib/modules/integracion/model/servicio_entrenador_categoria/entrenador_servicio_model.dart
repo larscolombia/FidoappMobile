@@ -25,7 +25,7 @@ class Service {
       name: json['name'],
       slug: json['slug'],
       description: json['description'],
-      status: json['status'],
+      status: json['status'] is int ? json['status'] : int.tryParse(json['status'].toString()) ?? 0,
       createdBy: json['created_by'],
       updatedBy: json['updated_by'],
       deletedBy: json['deleted_by'],

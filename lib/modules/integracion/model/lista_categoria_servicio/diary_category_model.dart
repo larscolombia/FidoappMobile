@@ -3,7 +3,7 @@ class DiaryCategory {
   final String slug;
   final String name;
   final int? parentId;
-  final String status;
+  final int status;
   final String? createdBy;
   final String? updatedBy;
   final String? deletedBy;
@@ -31,7 +31,7 @@ class DiaryCategory {
       slug: json['slug'],
       name: json['name'],
       parentId: json['parent_id'],
-      status: json['status'],
+      status: json['status'] is int ? json['status'] : int.tryParse(json['status'].toString()) ?? 0,
       createdBy: json['created_by'],
       updatedBy: json['updated_by'],
       deletedBy: json['deleted_by'],

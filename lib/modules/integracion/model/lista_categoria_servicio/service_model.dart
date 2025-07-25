@@ -44,7 +44,7 @@ class Service {
       durationMin: (json['duration_min'] as num).toDouble(),
       defaultPrice: (json['default_price'] as num).toDouble(),
       type: json['type'],
-      status: json['status'],
+      status: json['status'] is int ? json['status'] : int.tryParse(json['status'].toString()) ?? 0,
       categoryId: json['category_id'],
       subCategoryId: json['sub_category_id'],
       createdBy: json['created_by'],

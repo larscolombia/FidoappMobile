@@ -26,7 +26,7 @@ class Category {
       slug: json['slug'],
       name: json['name'],
       parentId: json['parent_id'],
-      status: json['status'],
+      status: json['status'] is int ? json['status'] : int.tryParse(json['status'].toString()) ?? 0,
       categoryImage: json['category_image'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],

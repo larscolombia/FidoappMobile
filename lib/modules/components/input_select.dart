@@ -22,6 +22,7 @@ class InputSelect extends StatefulWidget {
   final TextStyle? textStyle;
   final Color? iconColor;
   final TextAlignment textAlignment;
+  final double? maxDropdownHeight;
 
   const InputSelect({
     super.key,
@@ -42,6 +43,7 @@ class InputSelect extends StatefulWidget {
     this.textStyle,
     this.iconColor,
     this.textAlignment = TextAlignment.left,
+    this.maxDropdownHeight,
   });
 
   @override
@@ -254,29 +256,36 @@ class _InputSelectState extends State<InputSelect> {
                 border: Border.all(color: Colors.orange),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: ListView(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                children: widget.items.map((item) {
-                  return Column(children: [
-                    ListTile(
-                      title: item.child,
-                      selectedColor: Colors.black,
-                      tileColor: const Color(0xFFFCBA67),
-                      onTap: () {
-                        setState(() {
-                          _selectedValue = item.value;
-                        });
-                        widget.onChanged(item.value);
-                        _removeOverlay();
-                      },
-                    ),
-                    const Divider(
-                      height: 0.2,
-                      color: Colors.orange,
-                    )
-                  ]);
-                }).toList(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: widget.maxDropdownHeight ?? 200.0, // Altura máxima personalizable
+                ),
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  itemCount: widget.items.length,
+                  itemBuilder: (context, index) {
+                    final item = widget.items[index];
+                    return Column(children: [
+                      ListTile(
+                        title: item.child,
+                        selectedColor: Colors.black,
+                        tileColor: const Color(0xFFFCBA67),
+                        onTap: () {
+                          setState(() {
+                            _selectedValue = item.value;
+                          });
+                          widget.onChanged(item.value);
+                          _removeOverlay();
+                        },
+                      ),
+                      const Divider(
+                        height: 0.2,
+                        color: Colors.orange,
+                      )
+                    ]);
+                  },
+                ),
               ),
             ),
           ),
