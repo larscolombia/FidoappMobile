@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
@@ -73,66 +74,105 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     //homeController.SelectType(1);
-    return Scaffold(
-      body: Stack(
-        children: [
-          // Contenido desplazable
-          SingleChildScrollView(
-            child: Container(
-              constraints: BoxConstraints(
-                minHeight: MediaQuery.sizeOf(context).height,
-              ),
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  HeaderNotification(),
-                  // Agregar animación para mostrar/ocultar el contenedor de notificaciones
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40),
-                      ),
-                    ),
-                    padding: Styles.paddingAll,
-                    child: Obx(() {
-                      // Cambiar el contenido basado en el selectedIndex
-                      switch (homeController.selectedIndex.value) {
-                        case 0:
-                          return _buildCase1Content(context);
-                        case 1:
-                          return _buildCase2Content();
-                        case 2:
-                          return _buildCase3Content();
-                        case 3:
-                          return _buildCase4Content();
-                        case 5:
-                          return __Ebooks();
-                        case 6:
-                          return _Youtube();
-                        default:
-                          return _buildCase1Content(context);
-                      }
-                    }),
+    return WillPopScope(
+      onWillPop: () async {
+        // Si estamos en el Home (índice 0), mostrar diálogo de confirmación para salir
+        if (homeController.selectedIndex.value == 0) {
+          // Mostrar diálogo de confirmación
+          bool shouldExit = await showDialog<bool>(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Salir de la aplicación'),
+                content: const Text('¿Estás seguro de que quieres salir de la aplicación?'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child: const Text('Cancelar'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text('Salir'),
                   ),
                 ],
+              );
+            },
+          ) ?? false;
+          
+          if (shouldExit) {
+            // Salir de la aplicación
+            SystemNavigator.pop();
+            return false;
+          }
+          return false;
+        } else {
+          // Si no estamos en el Home, ir al Home
+          homeController.updateIndex(0);
+          return false;
+        }
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            // Contenido desplazable
+            SingleChildScrollView(
+              child: Container(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.sizeOf(context).height,
+                ),
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    HeaderNotification(),
+                    // Agregar animación para mostrar/ocultar el contenedor de notificaciones
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
+                        ),
+                      ),
+                      padding: Styles.paddingAll,
+                      child: Obx(() {
+                        // Cambiar el contenido basado en el selectedIndex
+                        switch (homeController.selectedIndex.value) {
+                          case 0:
+                            return _buildCase1Content(context);
+                          case 1:
+                            return _buildCase2Content();
+                          case 2:
+                            return _buildCase3Content();
+                          case 3:
+                            return _buildCase4Content();
+                          case 5:
+                            return __Ebooks();
+                          case 6:
+                            return _Youtube();
+                          default:
+                            return _buildCase1Content(context);
+                        }
+                      }),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Obx(() {
-            if (homeController.selectedIndex.value == 5 || homeController.selectedIndex.value == 6) {
-              return const SizedBox(height: 100);
-            }
-            return Positioned(
-              left: 25,
-              right: 25,
-              bottom: 30,
-              child: MenuOfNavigation(),
-            );
-          }),
-        ],
+            Obx(() {
+              if (homeController.selectedIndex.value == 5 || homeController.selectedIndex.value == 6) {
+                return const SizedBox(height: 100);
+              }
+              return Positioned(
+                left: 25,
+                right: 25,
+                bottom: 30,
+                child: MenuOfNavigation(),
+              );
+            }),
+          ],
+        ),
       ),
     );
   }

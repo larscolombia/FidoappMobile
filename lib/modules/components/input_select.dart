@@ -240,56 +240,79 @@ class _InputSelectState extends State<InputSelect> {
     var offset = renderBox.localToGlobal(Offset.zero);
 
     return OverlayEntry(
-      builder: (context) => Positioned(
-        left: offset.dx,
-        width: size.width,
-        top: offset.dy + size.height,
-        child: CompositedTransformFollower(
-          link: _layerLink,
-          showWhenUnlinked: false,
-          child: Material(
-            elevation: 4.0,
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white, // Dropdown menu background
-                border: Border.all(color: Colors.orange),
-                borderRadius: BorderRadius.circular(16),
+      builder: (context) => Stack(
+        children: [
+          // GestureDetector que cubre toda la pantalla para detectar toques fuera
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: () {
+                // Cerrar el dropdown cuando se toque fuera de él
+                _removeOverlay();
+              },
+              child: Container(
+                color: Colors.transparent,
               ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: widget.maxDropdownHeight ?? 200.0, // Altura máxima personalizable
-                ),
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  itemCount: widget.items.length,
-                  itemBuilder: (context, index) {
-                    final item = widget.items[index];
-                    return Column(children: [
-                      ListTile(
-                        title: item.child,
-                        selectedColor: Colors.black,
-                        tileColor: const Color(0xFFFCBA67),
-                        onTap: () {
-                          setState(() {
-                            _selectedValue = item.value;
-                          });
-                          widget.onChanged(item.value);
-                          _removeOverlay();
+            ),
+          ),
+          // El dropdown original con su posicionamiento correcto
+          Positioned(
+            left: offset.dx,
+            width: size.width,
+            top: offset.dy + size.height,
+            child: CompositedTransformFollower(
+              link: _layerLink,
+              showWhenUnlinked: false,
+              child: Material(
+                elevation: 4.0,
+                borderRadius: BorderRadius.circular(16),
+                child: GestureDetector(
+                  onTap: () {
+                    // Prevenir que el toque en el dropdown lo cierre
+                    // No hacer nada aquí para que el dropdown permanezca abierto
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Dropdown menu background
+                      border: Border.all(color: Colors.orange),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: widget.maxDropdownHeight ?? 200.0, // Altura máxima personalizable
+                      ),
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        itemCount: widget.items.length,
+                        itemBuilder: (context, index) {
+                          final item = widget.items[index];
+                          return Column(children: [
+                            ListTile(
+                              title: item.child,
+                              selectedColor: Colors.black,
+                              tileColor: const Color(0xFFFCBA67),
+                              onTap: () {
+                                setState(() {
+                                  _selectedValue = item.value;
+                                });
+                                widget.onChanged(item.value);
+                                _removeOverlay();
+                              },
+                            ),
+                            const Divider(
+                              height: 0.2,
+                              color: Colors.orange,
+                            )
+                          ]);
                         },
                       ),
-                      const Divider(
-                        height: 0.2,
-                        color: Colors.orange,
-                      )
-                    ]);
-                  },
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
