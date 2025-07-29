@@ -17,7 +17,7 @@ class CursosDetalles extends StatelessWidget {
   final String? cursoId;
   CursosDetalles({super.key, this.cursoId});
   final CourseController controller = Get.find();
-  final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
+  final CursoUsuarioController miscursos = Get.find<CursoUsuarioController>();
   final ProductoPayController compraController = Get.put(ProductoPayController());
 
   final UserBalanceController balanceController = Get.put(UserBalanceController());
@@ -36,8 +36,11 @@ class CursosDetalles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Solo cargar cursos si están vacíos
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.fetchCourses();
+      if (controller.courses.isEmpty) {
+        controller.fetchCourses();
+      }
     });
     return Scaffold(
       body: Obx(() {

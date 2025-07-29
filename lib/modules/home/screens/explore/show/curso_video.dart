@@ -46,7 +46,7 @@ class CursoVideo extends StatefulWidget {
 class _CursoVideoState extends State<CursoVideo> {
   final CommentController _commentController = Get.put(CommentController());
 
-  var cursoController = Get.put(CursoUsuarioController());
+  var cursoController = Get.find<CursoUsuarioController>();
 
   @override
   void initState() {

@@ -47,21 +47,91 @@ class CalendarController extends GetxController {
       selectedPetId.value = homeController.selectedProfile.value!.id;
     }
     
-    // Cargar todos los eventos para el calendario al iniciar
-    loadAllEventsForCalendar();
+    // Cargar eventos solo una vez al iniciar
+    _loadEventsOnce();
     
     // Escuchar cambios en la mascota seleccionada del HomeController
     ever(homeController.selectedProfile, (PetData? selectedPet) {
       if (selectedPet != null) {
         selectedPetId.value = selectedPet.id;
-        // Recargar eventos según la pantalla actual
-        if (homeController.selectedIndex.value == 0) {
-          loadEventsForHome();
-        } else if (homeController.selectedIndex.value == 1) {
-          loadEventsForAgenda();
+        // Solo recargar si no hay eventos cargados o si cambió la mascota
+        if (allEventsForCalendar.isEmpty) {
+          _loadEventsOnce();
+        } else {
+          _applyFilters();
         }
       }
     });
+  }
+
+  // Función única para cargar eventos una sola vez
+  Future<void> _loadEventsOnce() async {
+    if (isLoading.value) return; // Evita llamadas simultáneas
+    if (homeController.selectedProfile.value == null) {
+      print("No hay mascota seleccionada para cargar eventos");
+      return;
+    }
+
+    await getEventosByPet(homeController.selectedProfile.value!.id);
+  }
+
+  // Función para cargar eventos cuando se selecciona la agenda
+  Future<void> loadEventsForAgenda() async {
+    // Si ya tenemos eventos cargados, solo aplicar filtros
+    if (allEventsForCalendar.isNotEmpty) {
+      _applyFilters();
+    } else {
+      // Solo cargar si no hay eventos
+      await _loadEventsOnce();
+    }
+  }
+
+  // Función para cargar todos los eventos para el calendario
+  Future<void> loadAllEventsForCalendar() async {
+    // Si ya tenemos eventos cargados, solo aplicar filtros
+    if (allEventsForCalendar.isNotEmpty) {
+      _applyFilters();
+    } else {
+      // Solo cargar si no hay eventos
+      await _loadEventsOnce();
+    }
+  }
+
+  // Función para cargar eventos para el home (próximos 5 días)
+  Future<void> loadEventsForHome() async {
+    // Si ya tenemos eventos cargados, solo aplicar filtros para home
+    if (allEventsForCalendar.isNotEmpty) {
+      _applyFiltersForHome();
+    } else {
+      // Solo cargar si no hay eventos
+      await _loadEventsOnce();
+    }
+  }
+
+  // Nueva función para aplicar filtros específicos para el home
+  void _applyFiltersForHome() {
+    if (allEventsForCalendar.isEmpty) return;
+    
+    // Aplicar filtrado por profesional primero
+    List<CalendarModel> professionalFilteredEvents = _filterEventsByProfessional(allEventsForCalendar);
+    
+    // Filtrar eventos de los próximos 5 días solo para la vista del home
+    DateTime now = DateTime.now();
+    DateTime fiveDaysFromNow = now.add(Duration(days: 5));
+    
+    List<CalendarModel> filteredEvents = professionalFilteredEvents.where((event) {
+      try {
+        DateTime eventDate = DateFormat('dd-MM-yyyy').parse(event.date);
+        return eventDate.isAfter(now.subtract(Duration(days: 1))) && 
+               eventDate.isBefore(fiveDaysFromNow.add(Duration(days: 1)));
+      } catch (e) {
+        print('Error al analizar la fecha del evento: $e');
+        return false;
+      }
+    }).toList();
+    
+    allCalendars.value = filteredEvents;
+    _applyFilters();
   }
 
   // Función auxiliar para verificar si el usuario actual es un profesional
@@ -156,129 +226,6 @@ class CalendarController extends GetxController {
       }
     } catch (e) {
       print("Error al obtener eventos por mascota: $e");
-      allCalendars.value = [];
-      filteredCalendars.value = [];
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  // Función para cargar eventos cuando se selecciona la agenda
-  Future<void> loadEventsForAgenda() async {
-    if (homeController.selectedProfile.value != null) {
-      await getEventosByPet(homeController.selectedProfile.value!.id);
-    } else {
-      print("No hay mascota seleccionada para cargar eventos");
-    }
-  }
-
-  // Función para cargar todos los eventos para el calendario
-  Future<void> loadAllEventsForCalendar() async {
-    if (homeController.selectedProfile.value != null) {
-      await getEventosByPet(homeController.selectedProfile.value!.id);
-    } else {
-      print("No hay mascota seleccionada para cargar eventos");
-    }
-  }
-
-  // Función para cargar eventos para el home (próximos 5 días)
-  Future<void> loadEventsForHome() async {
-    if (homeController.selectedProfile.value != null) {
-      await getEventosByPetForHome(homeController.selectedProfile.value!.id);
-    } else {
-      print("No hay mascota seleccionada para cargar eventos");
-    }
-  }
-
-  // Nueva función para obtener eventos por mascota filtrados para el home
-  Future<void> getEventosByPetForHome(int petId) async {
-    if (isLoading.value) return; // Evita llamadas simultáneas
-
-    isLoading.value = true;
-
-    try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/get-events-by-pets?pet_id=$petId'),
-        headers: {
-          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
-          'Content-Type': 'application/json',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        print("=== LOG EVENTOS PARA HOME CARGADOS ===");
-        print("Pet ID: $petId");
-        print("Respuesta completa del servidor: $data");
-        
-        if (data['success'] == true && data['data'] != null) {
-          // Obtener todos los eventos
-          List<CalendarModel> allEvents = (data['data'] as List).map((item) => CalendarModel.fromJson(item)).toList();
-          
-          // Guardar todos los eventos para el calendario
-          allEventsForCalendar.value = allEvents;
-          
-          // Aplicar filtrado por profesional primero
-          List<CalendarModel> professionalFilteredEvents = _filterEventsByProfessional(allEvents);
-          
-          // Filtrar eventos de los próximos 5 días solo para la vista del home
-          DateTime now = DateTime.now();
-          DateTime fiveDaysFromNow = now.add(Duration(days: 5));
-          
-          List<CalendarModel> filteredEvents = professionalFilteredEvents.where((event) {
-            try {
-              DateTime eventDate = DateFormat('dd-MM-yyyy').parse(event.date);
-              return eventDate.isAfter(now.subtract(Duration(days: 1))) && 
-                     eventDate.isBefore(fiveDaysFromNow.add(Duration(days: 1)));
-            } catch (e) {
-              print('Error al analizar la fecha del evento: $e');
-              return false;
-            }
-          }).toList();
-          
-          allCalendars.value = filteredEvents;
-          
-          print("=== EVENTOS FILTRADOS PARA HOME ===");
-          print("Usuario actual: ${AuthServiceApis.dataCurrentUser.userType}");
-          print("Email del usuario: ${AuthServiceApis.dataCurrentUser.email}");
-          print("Total de eventos cargados: ${allEvents.length}");
-          print("Total de eventos después del filtrado por profesional: ${professionalFilteredEvents.length}");
-          print("Total de eventos filtrados (próximos 5 días): ${filteredEvents.length}");
-          
-          for (int i = 0; i < filteredEvents.length; i++) {
-            final event = filteredEvents[i];
-            print("Evento filtrado ${i + 1}:");
-            print("  - ID: ${event.id}");
-            print("  - Nombre: ${event.name}");
-            print("  - Fecha: ${event.date}");
-            print("  - Pet ID: ${event.petId}");
-            print("  - Tipo: ${event.tipo}");
-            print("  - Status: ${event.status}");
-            print("  - Invitados: ${event.owners.length}");
-            print("  - Invited: ${event.invited}");
-            print("  - Owners: ${event.owners.map((o) => '${o.email}').toList()}");
-            print("  ---");
-          }
-          
-          _applyFilters();
-        } else {
-          print("Respuesta no exitosa o sin datos");
-          allCalendars.value = [];
-          filteredCalendars.value = [];
-        }
-      } else {
-        print("Error en la respuesta: ${response.statusCode}");
-        print("Cuerpo de respuesta: ${response.body}");
-        CustomSnackbar.show(
-          title: "Error",
-          message: "No se pudieron obtener los eventos",
-          isError: true,
-        );
-        allCalendars.value = [];
-        filteredCalendars.value = [];
-      }
-    } catch (e) {
-      print("Error al obtener eventos por mascota para home: $e");
       allCalendars.value = [];
       filteredCalendars.value = [];
     } finally {
@@ -558,24 +505,19 @@ class CalendarController extends GetxController {
             description: 'El evento ha sido creado',
             primaryButtonText: 'Continuar',
             onPrimaryButtonPressed: () {
-              // Recargar eventos según el contexto actual
+              // Recargar eventos solo una vez después de crear el evento
               if (homeController.selectedProfile.value != null) {
-                // Recargar eventos para la mascota seleccionada
-                getEventosByPet(homeController.selectedProfile.value!.id);
-                loadAllEventsForCalendar(); // Recargar todos los eventos para el calendario
-              } else {
-                getEventos(); // Fallback al método original
+                // Limpiar eventos existentes para forzar recarga
+                allEventsForCalendar.clear();
+                allCalendars.clear();
+                filteredCalendars.clear();
+                // Recargar eventos una sola vez
+                _loadEventsOnce();
               }
               userController.fetchUsers();
               
-              // Navegar a la agenda y forzar la recarga
+              // Navegar a la agenda
               homeController.selectedIndex.value = 1;
-              // Forzar la recarga de eventos para la agenda
-              Future.delayed(Duration(milliseconds: 100), () {
-                if (homeController.selectedProfile.value != null) {
-                  loadEventsForAgenda();
-                }
-              });
               
               Get.to(() => HomeScreen());
             },

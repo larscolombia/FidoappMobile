@@ -20,7 +20,7 @@ class CursosEntrenamiento extends StatefulWidget {
 }
 
 class _CursosEntrenamientoState extends State<CursosEntrenamiento> {
-  final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
+  final CursoUsuarioController miscursos = Get.find<CursoUsuarioController>();
   final CourseController cursosController = Get.find();
   bool _hasInitialized = false;
 
@@ -31,6 +31,10 @@ class _CursosEntrenamientoState extends State<CursosEntrenamiento> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_hasInitialized) {
         cursosController.fetchCourses();
+        // Solo cargar cursos del usuario si están vacíos
+        if (miscursos.courses.isEmpty) {
+          miscursos.fetchCourses();
+        }
         _hasInitialized = true;
       }
     });

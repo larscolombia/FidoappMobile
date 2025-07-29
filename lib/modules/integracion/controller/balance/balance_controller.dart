@@ -82,7 +82,7 @@ class UserBalanceController extends GetxController {
   void showPurchaseModal(BuildContext context) {
     // Instanciamos los controladores (si ya están instanciados, Get.put devolverá la instancia existente)
     final userBalanceController = Get.put(UserBalanceController());
-    final cursoController = Get.put(CursoUsuarioController());
+    final cursoController = Get.find<CursoUsuarioController>();
     final calendarController = Get.put(CalendarController());
 
     // Nota: Se asume que productController ya está inicializado en algún otro lugar con Get.find o similar

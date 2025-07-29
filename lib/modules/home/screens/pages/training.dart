@@ -6,19 +6,35 @@ import 'package:pawlly/modules/home/screens/widgets/training_vertical_widget.dar
 import 'package:pawlly/modules/integracion/controller/cursos/curso_usuario_controller.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class Training extends StatelessWidget {
+class Training extends StatefulWidget {
   Training({super.key});
 
+  @override
+  State<Training> createState() => _TrainingState();
+}
+
+class _TrainingState extends State<Training> {
   // Instancia del controlador para manejar el estado
   final HomeController controller = Get.put(HomeController());
-  final CursoUsuarioController miscursos = Get.put(CursoUsuarioController());
+  final CursoUsuarioController miscursos = Get.find<CursoUsuarioController>();
+  bool _hasInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Solo cargar cursos una vez al inicializar si están vacíos y estamos en el home o explore
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_hasInitialized && 
+          miscursos.courses.isEmpty && 
+          (controller.selectedIndex.value == 0 || controller.selectedIndex.value == 3)) {
+        miscursos.fetchCourses();
+        _hasInitialized = true;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (miscursos.courses.isEmpty) {
-      miscursos.fetchCourses();
-    }
-
     // Verificar si hay cursos disponibles antes de mostrar el título
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

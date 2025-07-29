@@ -31,7 +31,10 @@ class CursoUsuarioController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchCourses();
+    // Solo cargar cursos si no están cargados
+    if (courses.isEmpty) {
+      fetchCourses();
+    }
   }
 
   Future<void> updateVideoAsWatched({
@@ -73,7 +76,10 @@ class CursoUsuarioController extends GetxController {
         );
         print('curso ${coursePlatformId}');
 
-        fetchCourses();
+        // Solo recargar si es necesario
+        if (courses.isEmpty) {
+          fetchCourses();
+        }
       } else {
         // Se produjo un error en la petición.
         throw Exception(
@@ -88,7 +94,10 @@ class CursoUsuarioController extends GetxController {
 
   // Método para listar cursos
   Future<void> fetchCourses() async {
-    // isLoading.value = true;
+    // Evitar llamadas simultáneas
+    if (isLoading.value) return;
+    
+    isLoading.value = true;
     print('inicializando subscriccion de cursos');
     try {
       final response = await http.get(
@@ -109,8 +118,12 @@ class CursoUsuarioController extends GetxController {
           var coursesList = coursesData
               .map((course) => CursosUsuarios.fromJson(course))
               .toList();
-          courses.assignAll(
-              coursesList); // Asignar los datos a la lista observable
+          
+          // Usar Future.microtask para evitar actualizaciones durante el build
+          Future.microtask(() {
+            courses.assignAll(coursesList); // Asignar los datos a la lista observable
+          });
+          
           print(
               'Cursos asignados: $coursesList'); // Añadir un print para depuración
         } else {
@@ -122,7 +135,7 @@ class CursoUsuarioController extends GetxController {
     } catch (e) {
       print('error en cursos controller $e');
     } finally {
-      //  isLoading.value = false;
+      isLoading.value = false;
     }
   }
 
