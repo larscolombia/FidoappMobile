@@ -126,101 +126,95 @@ class _CommandsState extends State<Commands> {
                       DataColumn(label: Text('Acción')),
                       DataColumn(label: Text('Aprendido')),
                       DataColumn(label: Text('Editar')),
+                      DataColumn(label: Text('Eliminar')),
                     ],
-                    rows: controller.comandoList.map((comando) {
-                      return DataRow(
-                        cells: [
-                          DataCell(Text(comando.name)),
-                          DataCell(
-                            comando.vozComando.isEmpty
-                                ? Row(
-                                    children: [
-                                      Expanded(
-                                        child: TextFormField(
-                                          decoration: const InputDecoration(
-                                            hintText: 'Escribe un comando',
-                                            border: InputBorder.none,
-                                          ),
-                                          onChanged: (value) {
-                                            comando.vozComando = value;
-                                          },
-                                        ),
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.edit,
-                                          color: Styles.iconColorBack,
-                                        ),
-                                        onPressed: () {
-                                          controller.updateComando(comando);
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                : Text(comando.vozComando),
-                          ),
-                          DataCell(Text(comando.description)),
-                          DataCell(Text(comando.isFavorite ? 'Sí' : 'No')),
-                          DataCell(
-                            IconButton(
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Styles.primaryColor,
-                                size: 20,
-                              ),
-                              onPressed: () {
-                                controller.editComando(comando);
-                              },
+                    rows: controller.comandoList.isEmpty
+                        ? [
+                            DataRow(
+                              cells: [
+                                DataCell(
+                                  const Text(
+                                    'No hay comandos disponibles',
+                                    style: TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                const DataCell(Text('')),
+                                const DataCell(Text('')),
+                                const DataCell(Text('')),
+                                const DataCell(Text('')),
+                                const DataCell(Text('')),
+                              ],
                             ),
-                          ),
-                        ],
-                        onSelectChanged: (isSelected) {
-                          if (isSelected ?? false) {
-                            controller.selectComando(comando);
-                          }
-                        },
-                        selected: controller.selectedComando.value == comando,
-                      );
-                    }).toList(),
+                          ]
+                        : controller.comandoList.map((comando) {
+                            return DataRow(
+                              cells: [
+                                DataCell(Text(comando.name)),
+                                DataCell(
+                                  comando.vozComando.isEmpty
+                                      ? Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextFormField(
+                                                decoration: const InputDecoration(
+                                                  hintText: 'Escribe un comando',
+                                                  border: InputBorder.none,
+                                                ),
+                                                onChanged: (value) {
+                                                  comando.vozComando = value;
+                                                },
+                                              ),
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.edit,
+                                                color: Styles.iconColorBack,
+                                              ),
+                                              onPressed: () {
+                                                controller.updateComando(comando);
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      : Text(comando.vozComando),
+                                ),
+                                DataCell(Text(comando.description)),
+                                DataCell(Text(comando.isFavorite ? 'Sí' : 'No')),
+                                DataCell(
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Styles.primaryColor,
+                                      size: 20,
+                                    ),
+                                    onPressed: () {
+                                      controller.editComando(comando);
+                                    },
+                                  ),
+                                ),
+                                DataCell(
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                      size: 20,
+                                    ),
+                                    onPressed: () {
+                                      controller.showDeleteConfirmation(comando.id, comando.name);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          }).toList(),
                   ),
                 ),
               ),
             ),
           ),
-
-          // Mostrar comando seleccionado
-          Obx(() {
-            if (controller.selectedComando.value != null) {
-              return Center(
-                child: Text(
-                  'Comando seleccionado: ${controller.selectedComando.value!.name}',
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 0, 0, 0),
-                    fontSize: 16,
-                    fontFamily: 'Lato',
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              );
-            } else {
-              return const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(
-                  child: Text(
-                    'No hay comando seleccionado',
-                    style: TextStyle(
-                      color: Color(0xFF959595),
-                      fontSize: 16,
-                      fontFamily: 'Lato',
-                      fontWeight: FontWeight.w500,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            }
-          }),
           Utilities(),
           const SizedBox(height: 120),
         ],

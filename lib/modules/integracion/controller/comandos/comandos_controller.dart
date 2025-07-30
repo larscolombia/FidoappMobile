@@ -94,9 +94,14 @@ class ComandoController extends GetxController {
               .map((comandoJson) => Comando.fromJson(comandoJson))
               .toList();
           comandoList.assignAll(comandoListFromJson);
+        } else {
+          // Si success es false, limpiar la lista de comandos
+          comandoList.clear();
+          print('No se encontraron comandos para este pet_id: ${comandoData['message']}');
         }
       } else {
         print('Failed to fetch commands');
+        comandoList.clear();
       }
     } catch (e) {
       print(e.toString());
@@ -338,5 +343,79 @@ class ComandoController extends GetxController {
     } finally {
       isLoading(false);
     }
+  }
+
+  // Método para eliminar un comando
+  Future<void> deleteComando(int comandoId) async {
+    try {
+      isLoading.value = true;
+      final response = await http.delete(
+        Uri.parse('$apiUrl/comandos/$comandoId'),
+        headers: {
+          'Authorization': 'Bearer ${AuthServiceApis.dataCurrentUser.apiToken}',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // Eliminar el comando de la lista local
+        comandoList.removeWhere((comando) => comando.id == comandoId);
+        
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.check_circle_outline,
+            title: 'Éxito',
+            description: 'Comando eliminado exitosamente.',
+            primaryButtonText: 'Aceptar',
+            onPrimaryButtonPressed: () {
+              Get.back();
+            },
+          ),
+          barrierDismissible: false,
+        );
+      } else {
+        Get.dialog(
+          CustomAlertDialog(
+            icon: Icons.error_outline,
+            title: 'Error',
+            description: 'Hubo un problema al eliminar el comando.',
+            primaryButtonText: 'Aceptar',
+            onPrimaryButtonPressed: () => Get.back(),
+          ),
+          barrierDismissible: false,
+        );
+      }
+    } catch (e) {
+      print('Error al eliminar el comando: $e');
+      Get.dialog(
+        CustomAlertDialog(
+          icon: Icons.error_outline,
+          title: 'Error',
+          description: 'Error al eliminar el comando: $e',
+          primaryButtonText: 'Aceptar',
+          onPrimaryButtonPressed: () => Get.back(),
+        ),
+        barrierDismissible: false,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Método para mostrar confirmación de eliminación
+  void showDeleteConfirmation(int comandoId, String comandoName) {
+    Get.dialog(
+      CustomAlertDialog(
+        icon: Icons.delete_outline,
+        title: "Confirmar eliminación",
+        description: "¿Estás seguro de que deseas eliminar '$comandoName'?",
+        buttonCancelar: true,
+        primaryButtonText: "Eliminar",
+        onPrimaryButtonPressed: () async {
+          Get.back(); // Cierra el modal de confirmación
+          await deleteComando(comandoId);
+        },
+      ),
+    );
   }
 }
