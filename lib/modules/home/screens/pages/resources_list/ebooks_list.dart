@@ -31,12 +31,46 @@ class EbooksList extends StatelessWidget {
               child: Obx(() {
                 if (controller.ebooks.value.isEmpty) {
                   return Center(
-                    child: RecargaComponente(
-                      callback: () {
-                        print(controller.ebooks.value.length);
-                        controller.fetchEBooks();
-                        print('Recargar');
-                      },
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 50),
+                        Icon(
+                          Icons.book_outlined,
+                          size: 64,
+                          color: Colors.grey[400],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'No hay Ebook\'s agregados',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey[600],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Por el momento no hay ebooks disponibles.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Lato',
+                            color: Colors.grey[500],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 24),
+                        RecargaComponente(
+                          titulo: 'Recargar',
+                          callback: () {
+                            print(controller.ebooks.value.length);
+                            controller.fetchEBooks();
+                            print('Recargar');
+                          },
+                        ),
+                      ],
                     ),
                   );
                 }
@@ -46,6 +80,45 @@ class EbooksList extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 }
+                
+                // Si no hay ebooks filtrados pero sí hay ebooks en total
+                if (controller.filteredEBooks.isEmpty && controller.ebooks.value.isNotEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 50),
+                        Icon(
+                          Icons.search_off,
+                          size: 64,
+                          color: Colors.grey[400],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'No se encontraron ebooks',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w600,
+                            color: Colors.grey[600],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Intenta con otros términos de búsqueda.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Lato',
+                            color: Colors.grey[500],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                
                 return Column(
                   children: [
                     GridView.builder(

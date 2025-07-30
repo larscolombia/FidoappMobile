@@ -36,7 +36,7 @@ class Resources extends StatelessWidget {
             return BarraBack(
               titulo: 'Recursos',
               callback: () {
-                controller.updateIndex(0);
+                controller.updateIndex(3); // Cambiar de 0 a 3 para ir a Explorar
               },
             );
           }
@@ -44,7 +44,7 @@ class Resources extends StatelessWidget {
             return BarraBack(
               titulo: 'Blogs y Videos',
               callback: () {
-                controller.updateIndex(0);
+                controller.updateIndex(3); // Cambiar de 0 a 3 para ir a Explorar
               },
             );
           }
