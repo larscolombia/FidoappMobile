@@ -13,6 +13,7 @@ import 'package:pawlly/modules/integracion/controller/historial_clinico/historia
 import 'package:pawlly/modules/integracion/model/historial_clinico/historial_clinico_model.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:pawlly/utils/timezone_utils.dart';
 
 class ConfirmarFormulario extends StatelessWidget {
   final HistorialClinicoController medicalHistoryController =
@@ -265,14 +266,14 @@ class ConfirmarFormulario extends StatelessWidget {
                                 children: [
                                   Text(
                                     medicalHistoryController.isEditing.value
-                                        ? "creado ${historialClinico!.createdAt}"
-                                        : "Sera creado : ${historialClinico!.createdAt}",
+                                        ? "creado ${TimezoneUtils.formatServerDateToLocal(historialClinico!.createdAt, format: 'dd/MM/yyyy HH:mm')}"
+                                        : "Sera creado : ${TimezoneUtils.formatServerDateToLocal(historialClinico!.createdAt, format: 'dd/MM/yyyy HH:mm')}",
                                     style: Styles.textProfile15w700,
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
                                     medicalHistoryController.isEditing.value
-                                        ? "Editado por última vez el ${historialClinico!.updatedAt}"
+                                        ? "Editado por última vez el ${TimezoneUtils.formatServerDateToLocal(historialClinico!.updatedAt, format: 'dd/MM/yyyy HH:mm')}"
                                         : "",
                                     style: Styles.textProfile15w700,
                                   ),

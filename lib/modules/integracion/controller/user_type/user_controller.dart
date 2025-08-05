@@ -134,7 +134,11 @@ class UserController extends GetxController {
     if (query == null || query.isEmpty) {
       filteredUsers.value = []; // Si no hay búsqueda, no mostrar nada
     } else {
-      var foundUsers = users.where((user) => user.email.toLowerCase().contains(query.toLowerCase())).toList();
+      // Filtrar usuarios por email y excluir al usuario actual
+      var foundUsers = users.where((user) => 
+        user.email.toLowerCase().contains(query.toLowerCase()) && 
+        user.id != AuthServiceApis.dataCurrentUser.id // Excluir al usuario actual
+      ).toList();
       filteredUsers.value = foundUsers.isEmpty ? [] : foundUsers;
     }
   }
@@ -147,8 +151,11 @@ class UserController extends GetxController {
       int? queryId = int.tryParse(query);
 
       if (queryId != null) {
-        // Filtramos solo por ID si la conversión fue exitosa
-        var foundUsers = users.where((user) => user.id == queryId).toList();
+        // Filtramos solo por ID si la conversión fue exitosa y excluimos al usuario actual
+        var foundUsers = users.where((user) => 
+          user.id == queryId && 
+          user.id != AuthServiceApis.dataCurrentUser.id // Excluir al usuario actual
+        ).toList();
         print('resultado de la busqueda ${foundUsers}');
         filteredUsers.value = foundUsers.isEmpty ? [] : foundUsers;
       } else {
@@ -164,7 +171,10 @@ class UserController extends GetxController {
     } else {
       var foundUsers = users
           .where((user) =>
-              user.profile != null && user.profile!.expert != null && user.profile!.expert!.toLowerCase().contains(expertQuery.toLowerCase()))
+              user.profile != null && 
+              user.profile!.expert != null && 
+              user.profile!.expert!.toLowerCase().contains(expertQuery.toLowerCase()) &&
+              user.id != AuthServiceApis.dataCurrentUser.id) // Excluir al usuario actual
           .toList();
       filteredUsers.value = foundUsers.isEmpty ? [] : foundUsers;
     }

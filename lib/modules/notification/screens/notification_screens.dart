@@ -11,6 +11,7 @@ import 'package:pawlly/modules/notification/screens/widgets/app_bar_notification
 import 'package:pawlly/modules/provider/push_provider.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:pawlly/utils/timezone_utils.dart';
 
 class NotificationsScreen extends StatelessWidget {
   final NotificationsController controller = Get.put(NotificationsController());
@@ -302,9 +303,9 @@ class NotificationsScreen extends StatelessWidget {
                         fontFamily: 'Lato',
                       ),
                     ),
-                    // Texto de la fecha
+                    // Texto de la fecha (convertida a zona horaria local)
                     Text(
-                      notification.createdAt ?? '',
+                      TimezoneUtils.formatServerDateToLocal(notification.createdAt, format: 'dd/MM/yyyy HH:mm'),
                       style: const TextStyle(
                         fontSize: 14,
                         fontFamily: 'Lato',
@@ -402,19 +403,11 @@ class NotificationsScreen extends StatelessWidget {
   }
 
   // Método auxiliar para extraer la fecha del string "dd-MM-yyyy HH:mm"
+  // y convertirla a la zona horaria local del dispositivo
   String _extractDateFromDate(String dateString) {
     try {
-      final parts = dateString.split(' ');
-      if (parts.length == 2) {
-        final datePart = parts[0]; // "dd-MM-yyyy"
-        final dateParts = datePart.split('-');
-        if (dateParts.length == 3) {
-          final day = dateParts[0];
-          final month = dateParts[1];
-          final year = dateParts[2];
-          return '$day/$month/$year';
-        }
-      }
+      // Usar la utilidad de zona horaria para convertir y formatear la fecha
+      return TimezoneUtils.formatServerDateToLocal(dateString, format: 'dd/MM/yyyy');
     } catch (e) {
       print('Error extracting date: $e');
     }
@@ -422,12 +415,11 @@ class NotificationsScreen extends StatelessWidget {
   }
 
   // Método auxiliar para extraer la hora del string "dd-MM-yyyy HH:mm"
+  // y convertirla a la zona horaria local del dispositivo
   String _extractTimeFromDate(String dateString) {
     try {
-      final parts = dateString.split(' ');
-      if (parts.length == 2) {
-        return parts[1]; // "HH:mm"
-      }
+      // Usar la utilidad de zona horaria para convertir y formatear la hora
+      return TimezoneUtils.formatServerTimeToLocal(dateString, format: 'HH:mm');
     } catch (e) {
       print('Error extracting time: $e');
     }

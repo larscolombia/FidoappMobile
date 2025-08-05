@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:pawlly/configs.dart'; // Asegúrate de tener este archivo configurado con tus URLs y otros detalles
 import 'package:pawlly/modules/integracion/model/notigicaciones/notificaciones.dart';
 import 'package:pawlly/services/auth_service_apis.dart'; // Asegúrate de tener este servicio para obtener el token de autenticación
+import 'package:pawlly/utils/timezone_utils.dart';
 
 class NotificationController extends GetxController {
   var notifications = <NotificationData>[]
@@ -76,29 +77,14 @@ class NotificationController extends GetxController {
   }
 
   // Método auxiliar para parsear la fecha en formato "dd-MM-yyyy HH:mm"
+  // y convertirla a la zona horaria local del dispositivo
   DateTime? parseNotificationDate(String? dateString) {
     if (dateString == null || dateString.isEmpty) return null;
     
     try {
-      // Parsear formato "18-07-2025 17:16"
-      final parts = dateString.split(' ');
-      if (parts.length == 2) {
-        final datePart = parts[0]; // "18-07-2025"
-        final timePart = parts[1]; // "17:16"
-        
-        final dateParts = datePart.split('-');
-        final timeParts = timePart.split(':');
-        
-        if (dateParts.length == 3 && timeParts.length == 2) {
-          final day = int.parse(dateParts[0]);
-          final month = int.parse(dateParts[1]);
-          final year = int.parse(dateParts[2]);
-          final hour = int.parse(timeParts[0]);
-          final minute = int.parse(timeParts[1]);
-          
-          return DateTime(year, month, day, hour, minute);
-        }
-      }
+      // Usar la utilidad de zona horaria para convertir la fecha del servidor
+      // (que viene en zona horaria de República Dominicana) a la zona horaria local
+      return TimezoneUtils.convertFromDominicanToLocal(dateString);
     } catch (e) {
       print('Error parsing notification date: $e');
     }
@@ -107,36 +93,27 @@ class NotificationController extends GetxController {
 
   // Método para obtener las notificaciones de hoy
   List<NotificationData> getTodayNotifications() {
-    DateTime today = DateTime.now();
     return notifications
         .where((n) {
           final notificationDate = parseNotificationDate(n.createdAt);
-          return notificationDate != null &&
-              notificationDate.year == today.year &&
-              notificationDate.month == today.month &&
-              notificationDate.day == today.day;
+          return notificationDate != null && TimezoneUtils.isToday(notificationDate);
         })
         .toList();
   }
 
   // Método para obtener las notificaciones de ayer
   List<NotificationData> getYesterdayNotifications() {
-    DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
     return notifications
         .where((n) {
           final notificationDate = parseNotificationDate(n.createdAt);
-          return notificationDate != null &&
-              notificationDate.year == yesterday.year &&
-              notificationDate.month == yesterday.month &&
-              notificationDate.day == yesterday.day;
+          return notificationDate != null && TimezoneUtils.isYesterday(notificationDate);
         })
         .toList();
   }
 
   // Método para obtener las notificaciones anteriores a ayer
   List<NotificationData> getOlderNotifications() {
-    DateTime today = DateTime.now();
-    final yesterday = DateTime(today.year, today.month, today.day - 1);
+    final yesterday = DateTime.now().subtract(const Duration(days: 1));
     
     return notifications
         .where((n) {
