@@ -18,15 +18,10 @@ class TrainingVertical extends StatelessWidget {
 
     return Column(
       children: cursoslista.map((trainingModel) {
-        final double rawProgress =
-            double.tryParse(trainingModel.progress.toString()) ?? 0.0;
-        final double normalizedProgress =
-            rawProgress > 1 ? rawProgress / 100 : rawProgress;
         return BanerEntrenamiento(
           imagen: trainingModel.image ?? '',
           nombre: trainingModel.name,
           dificultad: trainingModel.difficulty,
-          normalizedProgress: normalizedProgress,
           callback: () {
             Get.to(() =>
                 CursosDetalles(cursoId: "${trainingModel.id.toString()}"));

@@ -23,10 +23,6 @@ class TrainingHorizontal extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: trainingList.map((trainingModel) {
-          final double rawProgress =
-              double.tryParse(trainingModel.progress.toString()) ?? 0.0;
-          final double normalizedProgress =
-              rawProgress > 1 ? rawProgress / 100 : rawProgress;
           return Container(
             margin: const EdgeInsets.symmetric(horizontal: 8),
             width: cardSliderWidth,
@@ -34,7 +30,6 @@ class TrainingHorizontal extends StatelessWidget {
               imagen: trainingModel.image ?? '',
               nombre: trainingModel.name,
               dificultad: trainingModel.difficulty,
-              normalizedProgress: normalizedProgress,
               ishorizontal: true,
               callback: () {
                 Get.to(() =>

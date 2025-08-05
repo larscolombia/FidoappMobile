@@ -93,7 +93,7 @@ class _CursoVideoState extends State<CursoVideo> {
     var margen = Helper.margenDefault;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SizedBox(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             // Contenedor para el video
@@ -105,235 +105,229 @@ class _CursoVideoState extends State<CursoVideo> {
                 videoUrl: widget.videoUrl,
               ),
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: Helper.paddingDefault),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Barra de regreso y título
-                      SizedBox(
-                        height: margen,
-                      ),
-                      SizedBox(
-                        width: width,
-                        child: BarraBack(
-                          fontFamily: 'Lato',
-                          titulo: widget.name,
-                          color: Colors.black,
-                          callback: () {
-                            Get.back();
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: margen,
-                      ),
-                      // Fecha de creación
-                      SizedBox(
-                        width: width,
-                        child: Row(
-                          children: [
-                            Text(
-                              Helper.formatDateToSpanish(widget.dateCreated),
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                                fontFamily: "lato",
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            Obx(
-                              () => Text(
-                                " | ${_commentController.visualizacion} visualizaciones",
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                  fontFamily: "lato",
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      // Descripción
-                      SizedBox(
-                        width: width,
-                        child: const Text(
-                          "Descripción",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontFamily: "lato",
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                        width: width,
-                        child: Text(
-                          widget.description,
-                          style: Styles.textDescription,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      // Botón de compartir
-                      /**
-                        SizedBox(
-                        width: MediaQuery.sizeOf(context).width - 100,
-                        child: BotonCompartir(
-                          modo: "compartir",
-                          onCompartir: () {
-                          // Nombre de la aplicación
-                          final String appName = "Balance Dog";
-                          // Título del video a compartir
-                          final String videoTitle = widget.name;
-
-                          // URL que se compartirá
-                          final String shareableUrl = widget.videoUrl;
-
-                          // Construye el mensaje que se compartirá, incluyendo título y URL
-                          final String shareMessage =
-                            "¡Mira \"$videoTitle\" en $appName!\n\n"
-                            "$shareableUrl";
-
-                          // Usa el plugin share_plus para mostrar el diálogo de compartir
-                          Share.share(
-                            shareMessage,
-                            subject: "Video de Balance Dog: $videoTitle",
-                          );
-                          },
-                        ),
-                        ),*/
-                      SizedBox(height: margen),
-                      // Comentario (InputTextWithIcon) solo envuelto en Obx si es necesario
-                      /**
-                      if (widget.tipovideo == "video")
-                        Container(
-                          width: MediaQuery.sizeOf(context).width - 100,
-                          child: GestureDetector(
-                              onTap: () {
-                                print(
-                                    'tipo de video ${widget.tipovideo} :: ${widget.videoId}');
-                                cursoController.updateVideoAsWatched(
-                                  userId: AuthServiceApis.dataCurrentUser.id,
-                                  coursePlatformId: int.parse(widget.cursoId),
-                                  coursePlatformVideoId:
-                                      int.parse(widget.cursoId),
-                                  watched: true,
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Image.asset(
-                                    'assets/icons/palomiar.png',
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                  const SizedBox(width: 10),
-                                  const SizedBox(
-                                    child: Text('Marcar como visto'),
-                                  ),
-                                ],
-                              )),
-                        ),
-                       */
-                      SizedBox(height: margen),
-                      Obx(() {
-                        if (_commentController.isComentarioPosrLoading.value) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return Column(
-                          children: [
-                            Estadisticas(
-                              comentarios: '${_commentController.comments.length} ',
-                              calificacion: _commentController.calculateAverageRating().toStringAsFixed(2),
-                              avatars: _commentController.getTopAvatars(),
-                            ),
-                            SizedBox(height: margen),
-                            BanerComentarios(
-                              eventTextChanged: (value) {
-                                _commentController.updateField('review_msg', value);
-                              },
-                              titulo: 'Tu experiencia',
-                              onRatingUpdate: (rating) {
-                                _commentController.updateField('rating', rating);
-                              },
-                              onEvento: () async {
-                                if (widget.tipovideo == 'video') {
-                                  _commentController.updateField('course_platform_video_id', widget.cursoId);
-                                  await _commentController.postComment('video', context);
-                                } else {
-                                  _commentController.updateField('blog_id', widget.cursoId);
-                                  await _commentController.postComment('blog', context);
-                                }
-                              },
-                            ),
-                          ],
-                        );
-                      }),
-                      SizedBox(height: margen),
-                      // Título "Comentarios"
-                      SizedBox(
-                        width: width,
-                        child: const Text(
-                          'Comentarios',
-                          style: Styles.TextTitulo,
-                        ),
-                      ),
-                      SizedBox(height: margen),
-                      // Listado de comentarios envuelto en Obx
-                      Obx(() {
-                        if (_commentController.comments.isEmpty) {
-                          return const Center(
-                            child: Text(
-                              'No hay comentarios.',
-                              style: TextStyle(
-                                color: Color(0xFF959595),
-                                fontSize: 16,
-                                fontFamily: 'Lato',
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          );
-                        }
-                        if (_commentController.isLoading.value) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: _commentController.comments.map((value) {
-                              return AvatarComentarios(
-                                avatar: value.userAvatar,
-                                name: value.userFullName,
-                                date: "Fecha",
-                                comment: value.reviewMsg,
-                                rating: double.parse(value.rating.toString()),
-                              );
-                            }).toList(),
-                          ),
-                        );
-                      }),
-                      const SizedBox(height: 10),
-                      // Componente para recargar comentarios
-                      RecargaComponente(
-                        callback: () => _refreshComments(),
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: Helper.paddingDefault),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Barra de regreso y título
+                  SizedBox(
+                    height: margen,
                   ),
-                ),
+                  SizedBox(
+                    width: width,
+                    child: BarraBack(
+                      fontFamily: 'Lato',
+                      titulo: widget.name,
+                      color: Colors.black,
+                      callback: () {
+                        Get.back();
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: margen,
+                  ),
+                  // Fecha de creación
+                  SizedBox(
+                    width: width,
+                    child: Row(
+                      children: [
+                        Text(
+                          Helper.formatDateToSpanish(widget.dateCreated),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontFamily: "lato",
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        Obx(
+                          () => Text(
+                            " | ${_commentController.visualizacion} visualizaciones",
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                              fontFamily: "lato",
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  // Descripción
+                  SizedBox(
+                    width: width,
+                    child: const Text(
+                      "Descripción",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.black,
+                        fontFamily: "lato",
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: width,
+                    child: Text(
+                      widget.description,
+                      style: Styles.textDescription,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Botón de compartir
+                  /**
+                    SizedBox(
+                    width: MediaQuery.sizeOf(context).width - 100,
+                    child: BotonCompartir(
+                      modo: "compartir",
+                      onCompartir: () {
+                      // Nombre de la aplicación
+                      final String appName = "Balance Dog";
+                      // Título del video a compartir
+                      final String videoTitle = widget.name;
+
+                      // URL que se compartirá
+                      final String shareableUrl = widget.videoUrl;
+
+                      // Construye el mensaje que se compartirá, incluyendo título y URL
+                      final String shareMessage =
+                        "¡Mira \"$videoTitle\" en $appName!\n\n"
+                        "$shareableUrl";
+
+                      // Usa el plugin share_plus para mostrar el diálogo de compartir
+                      Share.share(
+                        shareMessage,
+                        subject: "Video de Balance Dog: $videoTitle",
+                      );
+                      },
+                    ),
+                    ),*/
+                  SizedBox(height: margen),
+                  // Comentario (InputTextWithIcon) solo envuelto en Obx si es necesario
+                  /**
+                  if (widget.tipovideo == "video")
+                    Container(
+                      width: MediaQuery.sizeOf(context).width - 100,
+                      child: GestureDetector(
+                          onTap: () {
+                            print(
+                                'tipo de video ${widget.tipovideo} :: ${widget.videoId}');
+                            cursoController.updateVideoAsWatched(
+                              userId: AuthServiceApis.dataCurrentUser.id,
+                              coursePlatformId: int.parse(widget.cursoId),
+                              coursePlatformVideoId:
+                                  int.parse(widget.cursoId),
+                              watched: true,
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Image.asset(
+                                'assets/icons/palomiar.png',
+                                width: 24,
+                                height: 24,
+                              ),
+                              const SizedBox(width: 10),
+                              const SizedBox(
+                                child: Text('Marcar como visto'),
+                              ),
+                            ],
+                          )),
+                    ),
+                   */
+                  SizedBox(height: margen),
+                  Obx(() {
+                    if (_commentController.isComentarioPosrLoading.value) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return Column(
+                      children: [
+                        Estadisticas(
+                          comentarios: '${_commentController.comments.length} ',
+                          calificacion: _commentController.calculateAverageRating().toStringAsFixed(2),
+                          avatars: _commentController.getTopAvatars(),
+                        ),
+                        SizedBox(height: margen),
+                        BanerComentarios(
+                          eventTextChanged: (value) {
+                            _commentController.updateField('review_msg', value);
+                          },
+                          titulo: 'Tu experiencia',
+                          onRatingUpdate: (rating) {
+                            _commentController.updateField('rating', rating);
+                          },
+                          onEvento: () async {
+                            if (widget.tipovideo == 'video') {
+                              _commentController.updateField('course_platform_video_id', widget.cursoId);
+                              await _commentController.postComment('video', context);
+                            } else {
+                              _commentController.updateField('blog_id', widget.cursoId);
+                              await _commentController.postComment('blog', context);
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  }),
+                  SizedBox(height: margen),
+                  // Título "Comentarios"
+                  SizedBox(
+                    width: width,
+                    child: const Text(
+                      'Comentarios',
+                      style: Styles.TextTitulo,
+                    ),
+                  ),
+                  SizedBox(height: margen),
+                  // Listado de comentarios envuelto en Obx
+                  Obx(() {
+                    if (_commentController.comments.isEmpty) {
+                      return const Center(
+                        child: Text(
+                          'No hay comentarios.',
+                          style: TextStyle(
+                            color: Color(0xFF959595),
+                            fontSize: 16,
+                            fontFamily: 'Lato',
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    }
+                    if (_commentController.isLoading.value) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: _commentController.comments.map((value) {
+                        return AvatarComentarios(
+                          avatar: value.userAvatar,
+                          name: value.userFullName,
+                          date: "Fecha",
+                          comment: value.reviewMsg,
+                          rating: double.parse(value.rating.toString()),
+                        );
+                      }).toList(),
+                    );
+                  }),
+                  const SizedBox(height: 10),
+                  // Componente para recargar comentarios
+                  RecargaComponente(
+                    callback: () => _refreshComments(),
+                  ),
+                  const SizedBox(height: 20),
+                ],
               ),
             ),
           ],

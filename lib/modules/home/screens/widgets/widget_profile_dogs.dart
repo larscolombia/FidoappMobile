@@ -73,7 +73,6 @@ class ProfileModal extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  const SizedBox(height: 8),
                   const Text(
                     'Seleccionar el perfil de la mascota la cual quieres ver la información',
                     style: TextStyle(
@@ -82,36 +81,6 @@ class ProfileModal extends StatelessWidget {
                       fontFamily: 'Lato',
                       fontWeight: FontWeight.w500,
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      CustomCheckbox(
-                        onChanged: (value) {
-                          // Limpiar la selección de mascota en HomeController
-                          controller.selectedProfile.value = null;
-                          
-                          // Filtrar para mostrar todos los eventos en CalendarController
-                          if (Get.isRegistered<CalendarController>()) {
-                            final calendarController = Get.find<CalendarController>();
-                            calendarController.filterByPet(0);
-                          }
-                          
-                          Navigator.of(context).pop();
-                        },
-                        isChecked: false,
-                      ),
-                      const SizedBox(width: 16),
-                      const Text(
-                        "Ver información de todos los perros",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Styles.primaryColor,
-                          fontFamily: 'Lato',
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ],
                   ),
                   const SizedBox(height: 10),
                   RecargaComponente(

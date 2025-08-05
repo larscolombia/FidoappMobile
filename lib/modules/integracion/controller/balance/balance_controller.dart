@@ -65,6 +65,12 @@ class UserBalanceController extends GetxController {
         print('data balance $data');
         if (data['success']) {
           userBalance.value = UserBalance.fromJson(data['data']);
+          
+          // Habilitar el botón de compra cuando se actualiza el saldo
+          if (Get.isRegistered<CursoUsuarioController>()) {
+            final cursoController = Get.find<CursoUsuarioController>();
+            cursoController.enableButton();
+          }
         } else {
           throw Exception('Error en los datos del servidor');
         }

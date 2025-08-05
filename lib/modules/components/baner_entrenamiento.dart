@@ -16,7 +16,7 @@ class BanerEntrenamiento extends StatelessWidget {
   final String imagen;
   final String nombre;
   final String? dificultad;
-  final double normalizedProgress;
+  final double? normalizedProgress;
   final bool ishorizontal;
   final void Function()? callback;
 
@@ -153,50 +153,6 @@ class BanerEntrenamiento extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const Text(
-                    'Progreso:',
-                    style: TextStyle(
-                      fontSize:
-                          11, // Reduje el tamaño de fuente para pantallas más pequeñas
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF383838),
-                      fontFamily: Recursos.fuente1,
-                    ),
-                  ),
-                  // Fila para el indicador de progreso y el porcentaje
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Indicador de progreso lineal con ancho dinámico
-                      SizedBox(
-                        width: imageWidth *
-                            0.7, // Reduje el ancho del indicador de progreso
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(27.0),
-                          child: LinearProgressIndicator(
-                            value: normalizedProgress,
-                            backgroundColor: const Color(0XFFECECEC),
-                            color: Styles.iconColorBack,
-                            minHeight:
-                                5, // Reduje la altura del indicador de progreso
-                            borderRadius: BorderRadius.circular(27.0),
-                          ),
-                        ),
-                      ),
-                      // Porcentaje de progreso
-                      Text(
-                        '${(normalizedProgress * 100).toStringAsFixed(0)}%',
-                        style: const TextStyle(
-                          fontFamily: 'Lato',
-                          fontSize:
-                              11, // Reduje el tamaño de fuente para pantallas más pequeñas
-                          fontWeight: FontWeight.w800,
-                          color: Styles.iconColorBack,
-                        ),
-                      ),
-                    ],
-                  ),
                   SizedBox(height: height * 0.03), // Reduje el espacio inferior
 
                   // Botón "Seguir viendo"
@@ -209,7 +165,7 @@ class BanerEntrenamiento extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                           horizontal:
                               25, // Reduje el padding horizontal del botón
-                          vertical: 5, // Reduje el padding vertical del botón
+                          vertical: 5, // Reduce el padding vertical del botón
                         ),
                         elevation: 0,
                       ),
@@ -223,7 +179,7 @@ class BanerEntrenamiento extends StatelessWidget {
                             style: TextStyle(
                               fontFamily: 'Lato',
                               fontSize:
-                                  11, // Reduje el tamaño de fuente del botón
+                                  11, // Reduce el tamaño de fuente del botón
                               fontWeight: FontWeight.w400,
                               color: Color(0xffFFFFFF),
                             ),

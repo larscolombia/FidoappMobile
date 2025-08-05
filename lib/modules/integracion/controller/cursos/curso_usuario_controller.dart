@@ -14,6 +14,7 @@ import '../../../../services/auth_service_apis.dart';
 class CursoUsuarioController extends GetxController {
   var courses = <CursosUsuarios>[].obs; // Observable list of courses
   var isLoading = false.obs;
+  var isButtonDisabled = false.obs; // Nueva variable para controlar el estado del botón
   var selectedCourse = CursosUsuarios(
     id: 0,
     progress: 0,
@@ -140,6 +141,11 @@ class CursoUsuarioController extends GetxController {
   }
 
   Future<void> subscribeToCourse(int courseId) async {
+    // Si el botón está deshabilitado, no hacer nada
+    if (isButtonDisabled.value) {
+      return;
+    }
+    
     isLoading.value = true;
 
     try {
@@ -182,6 +188,8 @@ class CursoUsuarioController extends GetxController {
           print('Error: ${data['error']}');
           // Verificar si el error es de saldo insuficiente
           if (data['error'] == 'Insufficient balance') {
+            // Bloquear el botón cuando hay saldo insuficiente
+            isButtonDisabled.value = true;
             CustomSnackbar.show(
               title: 'Saldo insuficiente',
               message: 'No tienes suficiente saldo para adquirir este curso. Por favor, recarga tu cuenta.',
@@ -191,6 +199,8 @@ class CursoUsuarioController extends GetxController {
         }
       } else {
         if (data['error'] == 'Insufficient balance') {
+            // Bloquear el botón cuando hay saldo insuficiente
+            isButtonDisabled.value = true;
             CustomSnackbar.show(
               title: 'Saldo insuficiente',
               message: 'No tienes suficiente saldo para adquirir este curso. Por favor, recarga tu cuenta.',
@@ -210,6 +220,11 @@ class CursoUsuarioController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  // Método para habilitar el botón nuevamente (puede ser llamado después de recargar saldo)
+  void enableButton() {
+    isButtonDisabled.value = false;
   }
 
   // Método para seleccionar un curso individual

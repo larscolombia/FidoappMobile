@@ -186,12 +186,18 @@ class CursosDetalles extends StatelessWidget {
                         if (!puedeVerVideos)
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: ButtonDefaultWidget(
-                              title: 'Comprar Curso',
-                              callback: () {
-                                miscursos.subscribeToCourse(curso.id);
-                              },
-                            ),
+                            child: Obx(() => ButtonDefaultWidget(
+                              title: miscursos.isLoading.value 
+                                  ? 'Procesando...' 
+                                  : miscursos.isButtonDisabled.value 
+                                      ? 'Saldo Insuficiente' 
+                                      : 'Comprar Curso',
+                              callback: miscursos.isButtonDisabled.value 
+                                  ? null 
+                                  : () {
+                                      miscursos.subscribeToCourse(curso.id);
+                                    },
+                            )),
                           ),
                         ...curso.videos.map((video) {
                           return GestureDetector(

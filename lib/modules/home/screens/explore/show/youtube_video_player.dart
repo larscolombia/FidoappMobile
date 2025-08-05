@@ -93,6 +93,16 @@ class _YouTubeVideoPlayerState extends State<YouTubeVideoPlayer> {
         playedColor: Colors.red,
         handleColor: Colors.redAccent,
       ),
+      // Configuraciones adicionales para mejor comportamiento durante scroll
+      bufferIndicator: const CircularProgressIndicator(),
+      onReady: () {
+        // El video está listo para reproducirse
+        print('YouTube video ready to play');
+      },
+      onEnded: (YoutubeMetaData metaData) {
+        // El video ha terminado
+        print('YouTube video ended');
+      },
     );
   }
 }
