@@ -16,17 +16,18 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
     final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     return AppScaffold(
-        body: Container(
-      padding: Styles.paddingAll,
-      margin: EdgeInsets.only(top: height / 9),
-      width: width,
-      height: height,
-      child: Column(children: [
-        Stack(
-          children: [
-            Container(
-              child: Column(
+      body: SingleChildScrollView(
+        padding: Styles.paddingAll,
+        child: Container(
+          margin: EdgeInsets.only(top: height / 9),
+          width: width,
+          child: Column(
+            children: [
+              Stack(
                 children: [
+                  Container(
+                    child: Column(
+                      children: [
                   Text(
                     locale.value.changePassword,
                     style: Styles.joinTitle,
@@ -128,13 +129,16 @@ class ChangeSuccessPassword extends GetView<ChangePasswordController> {
                     thickness: 1,
                   ),
                   const ButtonBack(text: 'Regresar')
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ]),
-    ));
+      ),
+    );
   }
 }
 

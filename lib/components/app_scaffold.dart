@@ -79,9 +79,13 @@ class AppScaffold extends StatelessWidget {
               ).paddingTop(10),
             ),
       backgroundColor: scaffoldBackgroundColor ?? Colors.white,
-      body: Body(
-        isLoading: isLoading ?? false.obs,
-        child: body,
+      body: SafeArea(
+        top: hideAppBar,
+        bottom: false,
+        child: Body(
+          isLoading: isLoading ?? false.obs,
+          child: body,
+        ),
       ),
       bottomNavigationBar: bottomNavBar,
       floatingActionButton: fabWidget,
