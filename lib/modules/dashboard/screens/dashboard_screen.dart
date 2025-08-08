@@ -29,11 +29,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final imageSize = size.height / 4;
 
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          color: Styles.fiveColor,
-          child: Column(
-            children: [
+      body: Container(
+        color: Styles.fiveColor,
+        child: Column(
+          children: [
             // Header section
             Stack(
               alignment: Alignment.center,

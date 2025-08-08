@@ -48,9 +48,8 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
+      body: Column(
+        children: [
           Container(
             height: 200,
             width: MediaQuery.sizeOf(context).width,
@@ -210,8 +209,7 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
               ),
             ),
           ),
-          ],
-        ),
+        ],
       ),
     );
   }
