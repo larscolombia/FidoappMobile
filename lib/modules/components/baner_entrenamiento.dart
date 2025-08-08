@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class BanerEntrenamiento extends StatelessWidget {
+class BanerEntrenamiento extends StatefulWidget {
   BanerEntrenamiento({
     super.key,
     required this.imagen,
@@ -19,6 +19,19 @@ class BanerEntrenamiento extends StatelessWidget {
   final double normalizedProgress;
   final bool ishorizontal;
   final void Function()? callback;
+
+  @override
+  State<BanerEntrenamiento> createState() => _BanerEntrenamientoState();
+}
+
+class _BanerEntrenamientoState extends State<BanerEntrenamiento> {
+  bool _isLoading = false;
+
+  void _handlePressed() {
+    if (_isLoading) return;
+    setState(() => _isLoading = true);
+    widget.callback?.call();
+  }
 
   String dificultadValue(String dificultad) {
     switch (dificultad) {
@@ -39,7 +52,7 @@ class BanerEntrenamiento extends StatelessWidget {
     // Ajuste dinámico del ancho de la imagen basado en el ancho de la pantalla
     // para diferentes orientaciones (horizontal o vertical)
     final double imageWidth =
-        ishorizontal ? screenWidth * 0.30 : screenWidth * 0.35;
+        widget.ishorizontal ? screenWidth * 0.30 : screenWidth * 0.35;
     final double imageHeight =
         imageWidth * (122 / 131); // Mantiene la proporción de la imagen
 
@@ -86,7 +99,7 @@ class BanerEntrenamiento extends StatelessWidget {
               borderRadius: BorderRadius.circular(7.72),
               // Widget para mostrar la imagen desde la red
               child: Image.network(
-                imagen,
+                widget.imagen,
                 fit: BoxFit
                     .cover, // Asegura que la imagen cubra todo el contenedor sin deformarse
                 // Widget que muestra un indicador de progreso mientras se carga la imagen
@@ -127,7 +140,7 @@ class BanerEntrenamiento extends StatelessWidget {
                 children: [
                   // Dificultad del curso
                   Text(
-                    dificultadValue(dificultad ?? ''),
+                    dificultadValue(widget.dificultad ?? ''),
                     style: const TextStyle(
                       fontFamily: 'Lato',
                       fontSize:
@@ -140,7 +153,7 @@ class BanerEntrenamiento extends StatelessWidget {
                   // Nombre del curso, envuelto en un Flexible para permitir que se ajuste al espacio disponible
                   Flexible(
                     child: Text(
-                      nombre,
+                      widget.nombre,
                       maxLines: 2, // Limita el nombre a 2 líneas
                       overflow: TextOverflow
                           .ellipsis, // Muestra puntos suspensivos si el texto excede el límite
@@ -175,7 +188,7 @@ class BanerEntrenamiento extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(27.0),
                           child: LinearProgressIndicator(
-                            value: normalizedProgress,
+                            value: widget.normalizedProgress,
                             backgroundColor: const Color(0XFFECECEC),
                             color: Styles.iconColorBack,
                             minHeight:
@@ -186,7 +199,7 @@ class BanerEntrenamiento extends StatelessWidget {
                       ),
                       // Porcentaje de progreso
                       Text(
-                        '${(normalizedProgress * 100).toStringAsFixed(0)}%',
+                        '${(widget.normalizedProgress * 100).toStringAsFixed(0)}%',
                         style: const TextStyle(
                           fontFamily: 'Lato',
                           fontSize:
@@ -203,7 +216,7 @@ class BanerEntrenamiento extends StatelessWidget {
                   SizedBox(
                     height: 28, // Reduje la altura del botón
                     child: ElevatedButton(
-                      onPressed: callback,
+                      onPressed: _isLoading ? null : _handlePressed,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Styles.primaryColor,
                         padding: const EdgeInsets.symmetric(
@@ -213,21 +226,27 @@ class BanerEntrenamiento extends StatelessWidget {
                         ),
                         elevation: 0,
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         // Texto del botón
                         children: [
-                          Text(
-                            'Seguir viendo',
-                            style: TextStyle(
-                              fontFamily: 'Lato',
-                              fontSize:
-                                  11, // Reduje el tamaño de fuente del botón
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xffFFFFFF),
+                          if (_isLoading)
+                            const SizedBox(
+                              height: 12,
+                              width: 12,
+                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                            )
+                          else
+                            const Text(
+                              'Seguir viendo',
+                              style: TextStyle(
+                                fontFamily: 'Lato',
+                                fontSize: 11,
+                                fontWeight: FontWeight.w400,
+                                color: Color(0xffFFFFFF),
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
