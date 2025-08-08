@@ -22,6 +22,7 @@ class HistorialClinicoController extends GetxController {
   var selectedSortOption = "".obs; // Opción de orden seleccionada
   var isEditing = false.obs;
   var isLoading = false.obs;
+  var isFilterDialogOpen = false.obs;
   var isSuccess = false.obs;
 
   @override

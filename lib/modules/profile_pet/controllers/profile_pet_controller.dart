@@ -35,6 +35,7 @@ class ProfilePetController extends GetxController {
   var profileImagePath = ''.obs;
   var isPickerActive = false.obs;
   var medicalHistory = [].obs;
+  var isOpeningPassport = false.obs;
 
   var userTypeCont = TextEditingController().obs;
   var emailController = TextEditingController().obs;

@@ -3,14 +3,20 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/modules/integracion/controller/historial_clinico/historial_clinico_controller.dart';
 
-class FilterDialog extends StatelessWidget {
+class FilterDialog extends StatefulWidget {
   final HistorialClinicoController controller;
 
   const FilterDialog({super.key, required this.controller});
 
   @override
+  State<FilterDialog> createState() => _FilterDialogState();
+}
+
+class _FilterDialogState extends State<FilterDialog> {
+  bool _isApplying = false;
+
+  @override
   Widget build(BuildContext context) {
-    // Variables para almacenar temporalmente los valores del rango de fechas
     final startDateController = TextEditingController();
     final endDateController = TextEditingController();
     final reportNameController = TextEditingController();
@@ -41,13 +47,13 @@ class FilterDialog extends StatelessWidget {
             const SizedBox(height: 8),
             Obx(
               () => Column(
-                children: controller.sortOptions.map((option) {
+                children: widget.controller.sortOptions.map((option) {
                   return Row(
                     children: [
                       Checkbox(
-                        value: controller.selectedSortOption.value == option,
+                        value: widget.controller.selectedSortOption.value == option,
                         onChanged: (bool? value) {
-                          controller.selectSortOption(option);
+                          widget.controller.selectSortOption(option);
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(2),
@@ -76,13 +82,13 @@ class FilterDialog extends StatelessWidget {
             const SizedBox(height: 8),
             Obx(
               () => Column(
-                children: controller.categories.map((category) {
+                children: widget.controller.categories.map((category) {
                   return Row(
                     children: [
                       Checkbox(
-                        value: controller.selectedCategory.value == category,
+                        value: widget.controller.selectedCategory.value == category,
                         onChanged: (bool? value) {
-                          controller.selectCategory(category);
+                          widget.controller.selectCategory(category);
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(2),
@@ -106,36 +112,39 @@ class FilterDialog extends StatelessWidget {
       actions: [
         ButtonDefaultWidget(
           title: 'Filtrar',
+          isLoading: _isApplying,
           callback: () {
-            // Extraer valores ingresados
+            if (_isApplying) return;
+            setState(() => _isApplying = true);
             final reportName = reportNameController.text;
             final startDate = startDateController.text;
             final endDate = endDateController.text;
 
-            // Aplicar los filtros en el controlador
-            controller.filterHistorialClinico(
+            widget.controller.filterHistorialClinico(
               reportName: reportName.isNotEmpty ? reportName : null,
               startDate: startDate.isNotEmpty ? startDate : null,
               endDate: endDate.isNotEmpty ? endDate : null,
-              category: controller.selectedCategory.value,
+              category: widget.controller.selectedCategory.value,
             );
 
-            Navigator.of(context).pop(); // Cerrar el diálogo
+            Navigator.of(context).pop();
           },
         ),
         TextButton(
-          onPressed: () {
-            Navigator.of(context).pop(); // Cerrar el diálogo sin aplicar
-          },
+          onPressed: _isApplying
+              ? null
+              : () {
+                  Navigator.of(context).pop();
+                },
           child: const Text('Cancelar'),
         ),
       ],
     );
   }
 
-  static void show(
+  static Future<void> show(
       BuildContext context, HistorialClinicoController controller) {
-    showDialog(
+    return showDialog(
       context: context,
       builder: (context) {
         return FilterDialog(controller: controller);

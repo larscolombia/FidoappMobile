@@ -89,16 +89,20 @@ class InformationTab extends StatelessWidget {
               Center(
                 child: SizedBox(
                   height: 54,
-                  child: ButtonDefaultWidget(
-                    iconAfterText: false,
-                    title: 'Pasaporte',
-                    svgIconPath: 'assets/icons/svg/mdi_passport.svg',
-                    callback: () {
-                      Get.to(
-                        PetPassportView(),
-                      );
-                    },
-                  ),
+                  child: Obx(() => ButtonDefaultWidget(
+                        iconAfterText: false,
+                        title: 'Pasaporte',
+                        svgIconPath: 'assets/icons/svg/mdi_passport.svg',
+                        isLoading: controller.isOpeningPassport.value,
+                        callback: () async {
+                          if (controller.isOpeningPassport.value) return;
+                          controller.isOpeningPassport.value = true;
+                          await Get.to(
+                            PetPassportView(),
+                          );
+                          controller.isOpeningPassport.value = false;
+                        },
+                      )),
                 ),
               ),
               SizedBox(height: margen),
@@ -392,33 +396,46 @@ class InformationTab extends StatelessWidget {
                   SizedBox(
                     width: 44, // Ancho fijo
                     height: 44, // Alto fijo
-                    child: ElevatedButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(20)),
+                    child: Obx(() => ElevatedButton(
+                          onPressed: petcontroller.isAddingPerson.value
+                              ? null
+                              : () async {
+                                  petcontroller.isAddingPerson.value = true;
+                                  await showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(20)),
+                                    ),
+                                    builder: (context) {
+                                      return AssociatedPersonsModal(
+                                          controller: controller);
+                                    },
+                                  );
+                                  petcontroller.isAddingPerson.value = false;
+                                },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFC9214),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.zero,
+                            shadowColor: Colors.transparent,
+                            elevation: 0,
                           ),
-                          builder: (context) {
-                            return AssociatedPersonsModal(
-                                controller: controller);
-                          },
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFC9214),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        padding: EdgeInsets.zero,
-                        shadowColor: Colors.transparent, // Elimina la sombra
-                        elevation: 0, // Evita cualquier sombra residual
-                      ),
-                      child: const Icon(Icons.add,
-                          color: Colors.white, size: 24), // Centrado
-                    ),
+                          child: petcontroller.isAddingPerson.value
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : const Icon(Icons.add,
+                                  color: Colors.white, size: 24),
+                        )),
                   ),
                 ],
               ),

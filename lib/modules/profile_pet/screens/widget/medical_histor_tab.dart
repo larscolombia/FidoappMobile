@@ -122,8 +122,11 @@ class MedicalHistoryTab extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 ElevatedButton(
-                  onPressed: () {
-                    FilterDialog.show(context, medicalHistoryController);
+                  onPressed: () async {
+                    if (medicalHistoryController.isFilterDialogOpen.value) return;
+                    medicalHistoryController.isFilterDialogOpen.value = true;
+                    await FilterDialog.show(context, medicalHistoryController);
+                    medicalHistoryController.isFilterDialogOpen.value = false;
                   },
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.zero,
