@@ -77,19 +77,19 @@ class SignInScreen extends StatelessWidget {
                             ),
                             Container(
                               margin: const EdgeInsets.only(top: 16),
-                              child: Obx(
-                                () => ButtonDefaultWidget(
-                                  title: 'Inicia Sesión',
-                                  isLoading: signInController.isLoading.value,
-                                  callback: () async {
-                                    print('login');
-                                    if (_signInformKey.currentState!.validate()) {
-                                      _signInformKey.currentState!.save();
-                                      await signInController.saveForm();
-                                    }
-                                  },
-                                  showDecoration: true,
-                                ),
+                              child: ButtonDefaultWidget(
+                                title: 'Inicia Sesión',
+                                callback: () {
+                                  // Get.to(Inicio());
+                                  print('login');
+                                  if (_signInformKey.currentState!.validate()) {
+                                    _signInformKey.currentState!.save();
+                                    signInController.saveForm();
+                                    // print(signInController);
+                                    // Get.toNamed(Routes.HOME);
+                                  }
+                                },
+                                showDecoration: true,
                               ),
                             ),
                             Row(
@@ -121,40 +121,30 @@ class SignInScreen extends StatelessWidget {
                     // Google Sign-In (Android only)
                     if (Platform.isAndroid) ...[
                       const SizedBox(height: 16),
-                      Obx(
-                        () => SizedBox(
-                          width: double.infinity,
-                          height: 54,
-                          child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.black,
-                              side: const BorderSide(color: Styles.greyDivider),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16)),
-                            ),
-                            icon: Image.asset(
-                              Assets.imagesGoogleLogo,
-                              width: 24,
-                              height: 24,
-                            ),
-                            label: signInController.isLoading.value
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(strokeWidth: 2),
-                                  )
-                                : const Text(
-                                    'Continuar con Google',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                            onPressed: signInController.isLoading.value
-                                ? null
-                                : () => signInController.googleSignIn(context),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 54,
+                        child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                            side: const BorderSide(color: Styles.greyDivider),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16)),
                           ),
+                          icon: Image.asset(
+                            Assets.imagesGoogleLogo,
+                            width: 24,
+                            height: 24,
+                          ),
+                          label: const Text(
+                            'Continuar con Google',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          onPressed: () => signInController.googleSignIn(context),
                         ),
                       ),
                     ],

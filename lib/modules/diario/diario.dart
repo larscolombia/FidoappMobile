@@ -91,12 +91,9 @@ class Diario extends StatelessWidget {
                             Expanded(
                               flex: 2,
                               child: ElevatedButton(
-                                  onPressed: () async {
-                                    if (historialClinicoController.isFiltering.value) return;
-                                    historialClinicoController.isFiltering.value = true;
-                                    await FiltrarActividad.show(
+                                  onPressed: () {
+                                    FiltrarActividad.show(
                                         context, historialClinicoController);
-                                    historialClinicoController.isFiltering.value = false;
                                   },
                                   style: ElevatedButton.styleFrom(
                                     elevation: 0,

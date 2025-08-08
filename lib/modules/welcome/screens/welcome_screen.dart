@@ -32,8 +32,6 @@ class WelcomeScreen extends GetView<WelcomeController> {
     ),
   ];
 
-  final RxBool _isNavigating = false.obs;
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
@@ -85,18 +83,14 @@ class WelcomeScreen extends GetView<WelcomeController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Obx(
-                          () => ButtonDefaultWidget(
-                            title: "Inicia Sesión",
-                            isLoading: _isNavigating.value,
-                            callback: () async {
-                              if (_isNavigating.value) return;
-                              _isNavigating.value = true;
-                              await Get.toNamed('signin');
-                              _isNavigating.value = false;
-                            },
-                            showDecoration: true,
-                          ),
+                        ButtonDefaultWidget(
+                          title: "Inicia Sesión",
+                          callback: () {
+                            Get.toNamed(
+                              'signin',
+                            );
+                          },
+                          showDecoration: true,
                         ),
                         const SizedBox(
                           height: 16,

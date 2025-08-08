@@ -7,7 +7,6 @@ import 'package:pawlly/services/auth_service_apis.dart';
 
 class PetOwnerController extends GetxController {
   var associatedPersons = <Map<String, dynamic>>[].obs; // Lista observable
-  var isAddingPerson = false.obs;
 
   Future<void> fetchOwnersList(int petId) async {
     final url = Uri.parse('${BASE_URL}pets/$petId/owners');

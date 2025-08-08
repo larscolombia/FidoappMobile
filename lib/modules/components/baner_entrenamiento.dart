@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
-class BanerEntrenamiento extends StatefulWidget {
+class BanerEntrenamiento extends StatelessWidget {
   BanerEntrenamiento({
     super.key,
     required this.imagen,
@@ -19,19 +19,6 @@ class BanerEntrenamiento extends StatefulWidget {
   final double normalizedProgress;
   final bool ishorizontal;
   final void Function()? callback;
-
-  @override
-  State<BanerEntrenamiento> createState() => _BanerEntrenamientoState();
-}
-
-class _BanerEntrenamientoState extends State<BanerEntrenamiento> {
-  bool _isLoading = false;
-
-  void _handlePressed() {
-    if (_isLoading) return;
-    setState(() => _isLoading = true);
-    widget.callback?.call();
-  }
 
   String dificultadValue(String dificultad) {
     switch (dificultad) {
@@ -52,7 +39,7 @@ class _BanerEntrenamientoState extends State<BanerEntrenamiento> {
     // Ajuste dinámico del ancho de la imagen basado en el ancho de la pantalla
     // para diferentes orientaciones (horizontal o vertical)
     final double imageWidth =
-        widget.ishorizontal ? screenWidth * 0.30 : screenWidth * 0.35;
+        ishorizontal ? screenWidth * 0.30 : screenWidth * 0.35;
     final double imageHeight =
         imageWidth * (122 / 131); // Mantiene la proporción de la imagen
 
@@ -99,7 +86,7 @@ class _BanerEntrenamientoState extends State<BanerEntrenamiento> {
               borderRadius: BorderRadius.circular(7.72),
               // Widget para mostrar la imagen desde la red
               child: Image.network(
-                widget.imagen,
+                imagen,
                 fit: BoxFit
                     .cover, // Asegura que la imagen cubra todo el contenedor sin deformarse
                 // Widget que muestra un indicador de progreso mientras se carga la imagen
@@ -140,7 +127,7 @@ class _BanerEntrenamientoState extends State<BanerEntrenamiento> {
                 children: [
                   // Dificultad del curso
                   Text(
-                    dificultadValue(widget.dificultad ?? ''),
+                    dificultadValue(dificultad ?? ''),
                     style: const TextStyle(
                       fontFamily: 'Lato',
                       fontSize:
@@ -153,7 +140,7 @@ class _BanerEntrenamientoState extends State<BanerEntrenamiento> {
                   // Nombre del curso, envuelto en un Flexible para permitir que se ajuste al espacio disponible
                   Flexible(
                     child: Text(
-                      widget.nombre,
+                      nombre,
                       maxLines: 2, // Limita el nombre a 2 líneas
                       overflow: TextOverflow
                           .ellipsis, // Muestra puntos suspensivos si el texto excede el límite
@@ -188,7 +175,7 @@ class _BanerEntrenamientoState extends State<BanerEntrenamiento> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(27.0),
                           child: LinearProgressIndicator(
-                            value: widget.normalizedProgress,
+                            value: normalizedProgress,
                             backgroundColor: const Color(0XFFECECEC),
                             color: Styles.iconColorBack,
                             minHeight:
@@ -199,7 +186,7 @@ class _BanerEntrenamientoState extends State<BanerEntrenamiento> {
                       ),
                       // Porcentaje de progreso
                       Text(
-                        '${(widget.normalizedProgress * 100).toStringAsFixed(0)}%',
+                        '${(normalizedProgress * 100).toStringAsFixed(0)}%',
                         style: const TextStyle(
                           fontFamily: 'Lato',
                           fontSize:
@@ -216,7 +203,7 @@ class _BanerEntrenamientoState extends State<BanerEntrenamiento> {
                   SizedBox(
                     height: 28, // Reduje la altura del botón
                     child: ElevatedButton(
-                      onPressed: _isLoading ? null : _handlePressed,
+                      onPressed: callback,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Styles.primaryColor,
                         padding: const EdgeInsets.symmetric(
@@ -226,27 +213,21 @@ class _BanerEntrenamientoState extends State<BanerEntrenamiento> {
                         ),
                         elevation: 0,
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         // Texto del botón
                         children: [
-                          if (_isLoading)
-                            const SizedBox(
-                              height: 12,
-                              width: 12,
-                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                            )
-                          else
-                            const Text(
-                              'Seguir viendo',
-                              style: TextStyle(
-                                fontFamily: 'Lato',
-                                fontSize: 11,
-                                fontWeight: FontWeight.w400,
-                                color: Color(0xffFFFFFF),
-                              ),
+                          Text(
+                            'Seguir viendo',
+                            style: TextStyle(
+                              fontFamily: 'Lato',
+                              fontSize:
+                                  11, // Reduje el tamaño de fuente del botón
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xffFFFFFF),
                             ),
+                          ),
                         ],
                       ),
                     ),

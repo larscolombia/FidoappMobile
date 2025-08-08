@@ -10,9 +10,8 @@ class FiltrarActividad extends StatefulWidget {
 
   const FiltrarActividad({super.key, required this.controller});
 
-  static Future<void> show(
-      BuildContext context, PetActivityController controller) {
-    return showDialog(
+  static void show(BuildContext context, PetActivityController controller) {
+    showDialog(
       context: context,
       builder: (context) {
         return FiltrarActividad(controller: controller);
@@ -39,7 +38,6 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
 
   /// Para "Ver más" en Categoría
   bool showMoreCategories = false;
-  bool _isApplying = false;
 
   /// Categoría seleccionada
   String? selectedCategory;
@@ -284,35 +282,26 @@ class _FiltrarActividadState extends State<FiltrarActividad> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                    onPressed: _isApplying
-                        ? null
-                        : () {
-                            setState(() => _isApplying = true);
-                            widget.controller.applyFilters(
-                              categoryName: selectedCategory,
-                              sortType: selectedSorting,
-                              dateLabel: selectedDateChip,
-                            );
-                            Navigator.of(context).pop();
-                          },
-                    child: _isApplying
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const Text(
-                            'Filtrar',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Lato',
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                    onPressed: () {
+                      // 1. Llamamos a applyFilters en el controlador
+                      widget.controller.applyFilters(
+                        categoryName: selectedCategory,
+                        sortType: selectedSorting,
+                        dateLabel: selectedDateChip,
+                      );
+
+                      // 2. Cerrar el diálogo
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Filtrar',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontFamily: 'Lato',
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
               ),

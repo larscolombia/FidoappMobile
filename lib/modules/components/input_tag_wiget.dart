@@ -40,108 +40,108 @@ class _TagInputWidgetState extends State<TagInputWidget> {
         .clear(); // Limpiamos el texto cada vez que abrimos el diálogo
 
     Get.dialog(
-      StatefulBuilder(
-        builder: (context, setStateDialog) {
-          bool isProcessing = false;
-          return AlertDialog(
-            backgroundColor: Colors.white,
-            contentPadding: const EdgeInsets.all(20),
-            title: const Text(
-              'Nueva Tab',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+      AlertDialog(
+        backgroundColor: Colors.white, // Fondo blanco
+        contentPadding: const EdgeInsets.all(20),
+        title: const Text(
+          'Nueva Tab',
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Lato',
+            color: const Color(0xFFFF4931),
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextFormField(
+              controller: _dialogController,
+              decoration: const InputDecoration(
+                labelText: 'Nombre de la Tab',
+                labelStyle: TextStyle(
+                  fontFamily: 'Lato',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // Cerramos el diálogo sin hacer nada
+              Get.back();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Styles.primaryColor,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 35,
+                vertical: 8,
+              ),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(12), // Se agrega el borderRadius
+              ),
+              textStyle: const TextStyle(
                 fontFamily: 'Lato',
-                color: Color(0xFFFF4931),
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
               ),
             ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _dialogController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nombre de la Tab',
-                    labelStyle: TextStyle(
-                      fontFamily: 'Lato',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ],
+            child: const Text(
+              'Cancelar',
+              style: const TextStyle(
+                fontFamily: 'Lato',
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            actions: [
-              TextButton(
-                onPressed: isProcessing ? null : () => Get.back(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Styles.primaryColor,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 35,
-                    vertical: 8,
-                  ),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  textStyle: const TextStyle(
-                    fontFamily: 'Lato',
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                child: const Text(
-                  'Cancelar',
-                  style: TextStyle(
-                    fontFamily: 'Lato',
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFFFC9214),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 35,
+                vertical: 8,
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFC9214),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 35,
-                    vertical: 8,
-                  ),
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                onPressed: isProcessing
-                    ? null
-                    : () {
-                        final newTag = _dialogController.text.trim();
-                        if (newTag.isNotEmpty && !_tags.contains(newTag)) {
-                          final quotedTag = '"$newTag"';
-                          setState(() {
-                            _tags.add(quotedTag);
-                          });
-                          widget.onChanged?.call(_tags);
-                        }
-                        setStateDialog(() => isProcessing = true);
-                        Get.back();
-                      },
-                child: const Text(
-                  'Agregar',
-                  style: TextStyle(
-                    fontFamily: 'Lato',
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(12), // Se agrega el borderRadius
               ),
-            ],
-          );
-        },
+            ),
+            onPressed: () {
+              final newTag = _dialogController.text.trim();
+              if (newTag.isNotEmpty && !_tags.contains(newTag)) {
+                // Agrega el texto con comillas dobles.
+                final quotedTag = '"$newTag"';
+
+                setState(() {
+                  _tags.add(quotedTag);
+                });
+                widget.onChanged?.call(_tags);
+              }
+              // Cerramos el diálogo
+              Get.back();
+            },
+            child: const Text(
+              'Agregar',
+              style: const TextStyle(
+                fontFamily: 'Lato',
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
       ),
       barrierDismissible: false,
     );

@@ -200,22 +200,21 @@ class TrainingPrograms extends StatelessWidget {
                               SizedBox(
                                 height: 30, // Reduje la altura del botón
                                 child: ElevatedButton(
-                                  onPressed: cursosController.isNavigating.value
-                                      ? null
-                                      : () {
-                                          cursosController.isNavigating.value = true;
-                                          Get.to(() => CursosDetalles(
-                                                cursoId: "${course.id.toString()}",
-                                              ));
-                                          var video = cursosController.findVideoById(
-                                            courseId: course.id,
-                                            videoId: course.id.toString(),
-                                          );
+                                  onPressed: () {
+                                    // Navegar a detalles del curso
+                                    Get.to(() => CursosDetalles(
+                                          cursoId: "${course.id.toString()}",
+                                        ));
+                                    // Navegar a video del curso
+                                    var video = cursosController.findVideoById(
+                                      courseId: course.id,
+                                      videoId: course.id.toString(),
+                                    );
 
-                                          Get.to(() => CursosDetalles(
-                                                cursoId: course.id.toString(),
-                                              ));
-                                        },
+                                    Get.to(() => CursosDetalles(
+                                          cursoId: course.id.toString(),
+                                        ));
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Styles.primaryColor,
                                     padding: const EdgeInsets.symmetric(

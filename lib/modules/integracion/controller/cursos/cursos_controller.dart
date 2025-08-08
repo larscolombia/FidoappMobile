@@ -12,7 +12,6 @@ class CourseController extends GetxController {
   var courses = <Course>[].obs;
   var mycourses = <Course>[].obs;
   var isLoading = false.obs;
-  var isNavigating = false.obs;
   var url = "$DOMAIN_URL/api/course-platform";
   var filteredCourses = <Course>[].obs;
   get jsonData => null;

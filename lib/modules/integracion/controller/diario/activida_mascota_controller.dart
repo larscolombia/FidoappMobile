@@ -15,7 +15,6 @@ import 'package:pawlly/services/auth_service_apis.dart';
 class PetActivityController extends GetxController {
   final HomeController homeController = Get.put(HomeController());
   var isLoading = false.obs;
-  var isFiltering = false.obs;
   var activities = <PetActivity>[].obs;
   var filteredActivities = <PetActivity>[].obs;
   var activitiesOne = Rxn<PetActivity>(); // Observable para almacenar una sola actividad
