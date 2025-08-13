@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
+import 'package:pawlly/components/safe_text_button.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -178,10 +179,11 @@ class _RecargarSaldoScreenState extends State<RecargarSaldoScreen> {
                         } else {
                           key = 'x'; // Reemplazo de coma por "x"
                         }
-                        return TextButton(
+                        return SafeTextButton(
                           onPressed: () {
                             _onPressedKey(key);
                           },
+                          debounceDuration: const Duration(milliseconds: 100),
                           style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),

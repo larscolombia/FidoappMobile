@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pawlly/styles/styles.dart';
+import 'package:pawlly/components/safe_text_button.dart';
 
 class ButtonDefaultWidget extends StatelessWidget {
   final String title;
   final VoidCallback? callback;
+  final Future<void> Function()? callbackAsync; // Optional async handler to block until finished
   final Color defaultColor;
   final WidgetStateProperty<Color>? color;
   final Color textColor;
@@ -30,6 +32,7 @@ class ButtonDefaultWidget extends StatelessWidget {
     this.heigthButtom = 54,
     required this.title,
     this.callback,
+  this.callbackAsync,
     this.defaultColor = const Color(0xffFF4931),
     this.color,
     this.textColor = Styles.whiteColor,
@@ -69,7 +72,9 @@ class ButtonDefaultWidget extends StatelessWidget {
       child: SizedBox(
         width: widthButtom ?? width,
         height: heigthButtom,
-        child: TextButton(
+        child: SafeTextButton(
+          onPressed: (callbackAsync == null && !isLoading && !disabled) ? callback : null,
+          onPressedAsync: (!isLoading && !disabled) ? callbackAsync : null,
           style: ButtonStyle(
             elevation: MaterialStateProperty.all(1),
             backgroundColor: resolvedColor,
@@ -82,7 +87,6 @@ class ButtonDefaultWidget extends StatelessWidget {
               ),
             ),
           ),
-          onPressed: disabled || isLoading ? null : callback,
           child: isLoading
               ? CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(textColor),
@@ -152,7 +156,7 @@ class ButtonDefaultWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-        ),
+  ),
       ),
     );
   }

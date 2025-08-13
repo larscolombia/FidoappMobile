@@ -240,8 +240,8 @@ class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidge
 
     // Para listados de más de 5 elementos se incrementa el tamaño
     // para lograr un efecto que muestra que existen más elementos
-    final itemHeight = widget.items!.length <= 5 ? 56.0 : 59.0;
-    final maxItems = widget.items!.length > 5 ? 5 : widget.items!.length;
+    final itemHeight = 56.0;
+    final maxItems = widget.items!.length > 6 ? 6 : widget.items!.length;
     final maxHeight = maxItems * itemHeight;
 
     return OverlayEntry(
@@ -277,40 +277,46 @@ class _CustomSelectFormFieldWidgetState extends State<CustomSelectFormFieldWidge
                     border: Border.all(color: Colors.orange),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    children: widget.items!.map((item) {
-                      /// `itemHeight` es una constante que es igual
-                      /// a la altura de esta columna.
-                      return Column(children: [
-                        ListTile(
-                          title: Text(item,
-                              style: const TextStyle(
-                                fontFamily: 'Lato',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF535251),
-                              )),
-                          selectedColor: Colors.black,
-                          onTap: () {
-                            setState(() {
-                              _selectedValue = item;
-                              widget.controller?.text = item;
-                              _removeOverlay();
-                            });
+                  child: Scrollbar(
+                    thumbVisibility: widget.items!.length > 6,
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      shrinkWrap: false,
+                      itemCount: widget.items!.length,
+                      itemBuilder: (context, index) {
+                        final item = widget.items![index];
+                        return Column(
+                          children: [
+                            ListTile(
+                              title: Text(item,
+                                  style: const TextStyle(
+                                    fontFamily: 'Lato',
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF535251),
+                                  )),
+                              selectedColor: Colors.black,
+                              onTap: () {
+                                setState(() {
+                                  _selectedValue = item;
+                                  widget.controller?.text = item;
+                                  _removeOverlay();
+                                });
 
-                            if (widget.onChange != null) {
-                              widget.onChange!(_selectedValue);
-                            }
-                          },
-                        ),
-                        const Divider(
-                          height: 0.2,
-                          color: Color(0xFFFCBA67),
-                        )
-                      ]);
-                    }).toList(),
+                                if (widget.onChange != null) {
+                                  widget.onChange!(_selectedValue);
+                                }
+                              },
+                            ),
+                            if (index < widget.items!.length - 1)
+                              const Divider(
+                                height: 0.2,
+                                color: Color(0xFFFCBA67),
+                              ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),

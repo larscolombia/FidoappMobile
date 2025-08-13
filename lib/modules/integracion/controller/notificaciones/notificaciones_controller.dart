@@ -19,11 +19,27 @@ class NotificationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    fetchNotifications();
+    // Solo inicializar notificaciones si Firebase está disponible y el usuario autenticado
+    if (AuthServiceApis.isFirebaseInitialized && 
+        AuthServiceApis.dataCurrentUser.id != null && 
+        AuthServiceApis.dataCurrentUser.apiToken != null &&
+        AuthServiceApis.dataCurrentUser.apiToken!.isNotEmpty) {
+      fetchNotifications();
+    } else {
+      print('⚠️ No se inicializan notificaciones: Firebase=${AuthServiceApis.isFirebaseInitialized}, UserID=${AuthServiceApis.dataCurrentUser.id}, Token disponible=${AuthServiceApis.dataCurrentUser.apiToken?.isNotEmpty}');
+    }
   }
 
   Future<void> fetchNotifications() async {
     try {
+      // Verificar que el usuario esté autenticado
+      if (AuthServiceApis.dataCurrentUser.id == null || 
+          AuthServiceApis.dataCurrentUser.apiToken == null ||
+          AuthServiceApis.dataCurrentUser.apiToken!.isEmpty) {
+        print('Usuario no autenticado o token no disponible para notificaciones');
+        return;
+      }
+      
       // isLoading(true);
       final response = await http.get(
         Uri.parse(
@@ -43,7 +59,7 @@ class NotificationController extends GetxController {
         //throw Exception('Failed to load notifications');
       }
     } catch (e) {
-      print('Respuesta de las notificaciones: $e');
+      print('Error al obtener notificaciones: $e');
       // isLoading(false);
     }
   }

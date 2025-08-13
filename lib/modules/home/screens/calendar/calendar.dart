@@ -251,11 +251,11 @@ class Calendar extends StatelessWidget {
             ),
           const SizedBox(height: 15),
           RecargaComponente(
-            callback: () {
+            callbackAsync: () async {
               if (homeController.selectedProfile.value != null) {
-                calendarController.getEventosByPet(homeController.selectedProfile.value!.id);
+                await calendarController.getEventosByPet(homeController.selectedProfile.value!.id);
               } else {
-                calendarController.getEventos(); // Fallback a la función original
+                await calendarController.getEventos(); // Fallback a la función original
               }
             },
           ),

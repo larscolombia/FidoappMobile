@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/debounce_gesture_detector.dart';
 import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/components/style.dart';
 import 'package:pawlly/modules/helper/helper.dart';
@@ -44,7 +45,8 @@ class UserEventoSeleccionado extends StatelessWidget {
           if (withDelete!)
             Expanded(
               flex: 1,
-              child: GestureDetector(
+              child: DebounceGestureDetector(
+                debounceDuration: const Duration(milliseconds: 400),
                 onTap: () {
                   userController.deselectUser();
                 },

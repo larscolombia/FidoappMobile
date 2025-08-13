@@ -6,6 +6,7 @@ import 'package:nb_utils/nb_utils.dart';
 import 'package:pawlly/components/button_back.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_text_form_field_widget.dart';
+import 'package:pawlly/components/safe_elevated_button.dart';
 import 'package:pawlly/generated/assets.dart';
 import 'package:pawlly/main.dart';
 import 'package:pawlly/modules/auth/sign_in/controllers/sign_in_controller.dart';
@@ -79,12 +80,12 @@ class SignInScreen extends StatelessWidget {
                               margin: const EdgeInsets.only(top: 16),
                               child: ButtonDefaultWidget(
                                 title: 'Inicia Sesión',
-                                callback: () {
+                                callbackAsync: () async {
                                   // Get.to(Inicio());
                                   print('login');
                                   if (_signInformKey.currentState!.validate()) {
                                     _signInformKey.currentState!.save();
-                                    signInController.saveForm();
+                                    await signInController.saveForm();
                                     // print(signInController);
                                     // Get.toNamed(Routes.HOME);
                                   }
@@ -124,7 +125,7 @@ class SignInScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         height: 54,
-                        child: ElevatedButton.icon(
+                        child: SafeElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.black,
@@ -132,19 +133,26 @@ class SignInScreen extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16)),
                           ),
-                          icon: Image.asset(
-                            Assets.imagesGoogleLogo,
-                            width: 24,
-                            height: 24,
+                          onPressedAsync: () async => await signInController.googleSignIn(context),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                Assets.imagesGoogleLogo,
+                                width: 24,
+                                height: 24,
+                              ),
+                              const SizedBox(width: 8),
+                              const Text(
+                                'Continuar con Google',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
-                          label: const Text(
-                            'Continuar con Google',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          onPressed: () => signInController.googleSignIn(context),
                         ),
                       ),
                     ],

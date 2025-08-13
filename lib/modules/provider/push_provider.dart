@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -14,17 +15,42 @@ import 'package:pawlly/modules/integracion/controller/transaccion/transaction_co
 import 'package:pawlly/services/auth_service_apis.dart';
 
 class PushProvider extends GetxController {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  FirebaseMessaging? _firebaseMessaging;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   var isLoading = false.obs;
+  
+  // Getter lazy para Firebase Messaging
+  FirebaseMessaging? get firebaseMessaging {
+    if (!AuthServiceApis.isFirebaseInitialized) {
+      debugPrint('⚠️ PushProvider: Firebase no inicializado');
+      return null;
+    }
+    _firebaseMessaging ??= FirebaseMessaging.instance;
+    return _firebaseMessaging;
+  }
   @override
   void onInit() {
     super.onInit();
-    verificarDeviceToken();
+    // Solo verificar device token si Firebase está inicializado y el usuario autenticado
+    if (AuthServiceApis.isFirebaseInitialized && 
+        AuthServiceApis.dataCurrentUser.id != null && 
+        AuthServiceApis.dataCurrentUser.apiToken != null &&
+        AuthServiceApis.dataCurrentUser.apiToken!.isNotEmpty) {
+      verificarDeviceToken();
+    } else {
+      print('⚠️ Skipping device token verification: Firebase=${AuthServiceApis.isFirebaseInitialized}, UserID=${AuthServiceApis.dataCurrentUser.id}');
+    }
   }
 
   Future<void> updateDeviceToken(String userId, String deviceToken) async {
+    // Verificar que el usuario esté autenticado
+    if (AuthServiceApis.dataCurrentUser.apiToken == null ||
+        AuthServiceApis.dataCurrentUser.apiToken!.isEmpty) {
+      print('Token de autenticación no disponible para actualizar device token');
+      return;
+    }
+    
     final url = Uri.parse('${BASE_URL}update-device-token');
     isLoading.value = true;
     try {
@@ -55,14 +81,22 @@ class PushProvider extends GetxController {
         print('Error al actualizar token: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error al actualizar el token');
+      print('Error al actualizar el token: $e');
     } finally {
       isLoading.value = false;
     }
   }
 
-  //verifica si el usuario tiene el permiso de notificaciones
+    //verifica si el usuario tiene el permiso de notificaciones
   Future<void> verificarDeviceToken() async {
+    // Verificar que el usuario esté autenticado
+    if (AuthServiceApis.dataCurrentUser.id == null ||
+        AuthServiceApis.dataCurrentUser.apiToken == null ||
+        AuthServiceApis.dataCurrentUser.apiToken!.isEmpty) {
+      print('Usuario no autenticado: no se puede verificar device token');
+      return;
+    }
+    
     final String url =
         '${BASE_URL}verifi-device-token-user?user_id=${AuthServiceApis.dataCurrentUser.id}';
 
@@ -95,21 +129,52 @@ class PushProvider extends GetxController {
   /// Solicita permisos, imprime el token FCM y valida si hay autorización.
   Future<void> setupFCM() async {
     print("Solicitando permisos y configurando FCM...");
-    NotificationSettings settings = await _firebaseMessaging.requestPermission(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('Notificaciones autorizadas');
-      String? token = await _firebaseMessaging.getToken();
-      if (token != null) {
-        token = token;
-
-        updateDeviceToken(AuthServiceApis.dataCurrentUser.id.toString(), token);
+    try {
+      // Verificar que Firebase esté inicializado
+      if (!AuthServiceApis.isFirebaseInitialized) {
+        print('Firebase no está inicializado. No se puede configurar FCM.');
+        return;
       }
+      
+      // Verificar que el usuario esté autenticado
+      if (AuthServiceApis.dataCurrentUser.id == null) {
+        print('Usuario no autenticado. No se puede configurar FCM.');
+        return;
+      }
+      
+      final messaging = firebaseMessaging;
+      if (messaging == null) {
+        debugPrint('⚠️ Firebase Messaging no disponible');
+        return;
+      }
+      
+      NotificationSettings settings = await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
 
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        print('Notificaciones autorizadas');
+        String? token = await messaging.getToken();
+        if (token != null) {
+          print('Token FCM obtenido: ${token.substring(0, 20)}...');
+          
+          updateDeviceToken(AuthServiceApis.dataCurrentUser.id.toString(), token);
+        } else {
+          print('Token FCM no disponible');
+        }
+      } else {
+        print('Permiso de notificaciones denegado: ${settings.authorizationStatus}');
+      }
+    } catch (e) {
+      print('Error en setupFCM: $e');
+    }
+  }
+
+  // Método para registrar token
+  void _logToken(String? token) {
+    if (token != null) {
       print("Token FCM: $token");
     } else {
       print('Permisos de notificación denegados');
@@ -118,6 +183,12 @@ class PushProvider extends GetxController {
 
   /// Inicializa flutter_local_notifications y registra los listeners de FCM.
   Future<void> initNorification() async {
+    // Solo inicializar si Firebase está disponible
+    if (!AuthServiceApis.isFirebaseInitialized) {
+      print('No se inicializan notificaciones: Firebase no disponible');
+      return;
+    }
+    
     // Configuración para Android e iOS
     AndroidInitializationSettings initializationSettingsAndroid =
         const AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -138,7 +209,7 @@ class PushProvider extends GetxController {
     // Verifica si el mensaje contiene notificación para mostrar
 
     RemoteNotification? notification = message.notification;
-    var notificacionescontroller = Get.put(NotificationController());
+    var notificacionescontroller = Get.find<NotificationController>();
     notificacionescontroller.fetchNotifications();
     if (notification != null) {
       // Detalle de la notificación para Android

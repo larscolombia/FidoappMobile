@@ -66,10 +66,14 @@ android {
 
     buildTypes {
         debug {
-            signingConfig signingConfigs.release
+            // Usar la firma debug por defecto para evitar requerir keystore en desarrollo
         }
         release {
-            if (keystorePropertiesFile.exists()) {
+            // Solo aplicar firma release si existe el archivo y storeFile válido
+            if (keystorePropertiesFile.exists() &&
+                keystoreProperties.containsKey('storeFile') &&
+                keystoreProperties['storeFile'] != null &&
+                keystoreProperties['storeFile'].toString().isNotEmpty()) {
                 signingConfig signingConfigs.release
             }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

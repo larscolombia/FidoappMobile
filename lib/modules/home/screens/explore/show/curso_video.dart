@@ -77,12 +77,12 @@ class _CursoVideoState extends State<CursoVideo> {
   }
 
   // ignore: unused_element
-  void _refreshComments() {
+  Future<void> _refreshComments() async {
     if (widget.tipovideo == "blogs") {
-      _commentController.fetchComments(widget.cursoId, "blog");
+      await _commentController.fetchComments(widget.cursoId, "blog");
     }
     if (widget.tipovideo == "video") {
-      _commentController.fetchComments(widget.cursoId, "video");
+      await _commentController.fetchComments(widget.cursoId, "video");
     }
   }
 
@@ -97,23 +97,27 @@ class _CursoVideoState extends State<CursoVideo> {
         child: Column(
           children: [
             // Contenedor para el video
-            Container(
-              height: width,
-              width: MediaQuery.sizeOf(context).width,
-              decoration: const BoxDecoration(color: Colors.white),
-              child: YouTubeVideoPlayer(
-                videoUrl: widget.videoUrl,
-              ),
+            // Reproductor ajustado a 16:9 para reducir espacio vertical sin alterar lógica previa
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final widthScreen = constraints.maxWidth;
+                final height = widthScreen * 9 / 16; // relación 16:9
+                return SizedBox(
+                  width: widthScreen,
+                  height: height,
+                  child: YouTubeVideoPlayer(
+                    videoUrl: widget.videoUrl,
+                  ),
+                );
+              },
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: Helper.paddingDefault),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Barra de regreso y título
-                  SizedBox(
-                    height: margen,
-                  ),
+                  // Espacio reducido comparado al margen original (antes usaba margen completo)
+                  const SizedBox(height: 8),
                   SizedBox(
                     width: width,
                     child: BarraBack(
@@ -324,7 +328,9 @@ class _CursoVideoState extends State<CursoVideo> {
                   const SizedBox(height: 10),
                   // Componente para recargar comentarios
                   RecargaComponente(
-                    callback: () => _refreshComments(),
+                    callbackAsync: () async {
+                      await _refreshComments();
+                    },
                   ),
                   const SizedBox(height: 20),
                 ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/safe_elevated_button.dart';
+import 'package:pawlly/components/safe_text_button.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class TagInputWidget extends StatefulWidget {
@@ -71,11 +73,12 @@ class _TagInputWidgetState extends State<TagInputWidget> {
           ],
         ),
         actions: [
-          TextButton(
+          SafeTextButton(
             onPressed: () {
               // Cerramos el diálogo sin hacer nada
               Get.back();
             },
+            debounceDuration: const Duration(milliseconds: 300),
             style: ElevatedButton.styleFrom(
               backgroundColor: Styles.primaryColor,
               padding: const EdgeInsets.symmetric(
@@ -104,7 +107,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
               ),
             ),
           ),
-          ElevatedButton(
+          SafeElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFFFC9214),
               padding: const EdgeInsets.symmetric(
@@ -117,6 +120,7 @@ class _TagInputWidgetState extends State<TagInputWidget> {
                     BorderRadius.circular(12), // Se agrega el borderRadius
               ),
             ),
+            debounceDuration: const Duration(milliseconds: 300),
             onPressed: () {
               final newTag = _dialogController.text.trim();
               if (newTag.isNotEmpty && !_tags.contains(newTag)) {

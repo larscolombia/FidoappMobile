@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/custom_alert_dialog_widget.dart';
+import 'package:pawlly/components/safe_inkwell.dart';
 import 'package:pawlly/modules/components/regresr_components.dart';
 import 'package:pawlly/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:pawlly/modules/dashboard/screens/pacientes.dart';
@@ -143,7 +144,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   // Método auxiliar para construir un elemento de menú
   Widget _buildMenuItem(DashboardMenuItem item, BuildContext context) {
-    return InkWell(
+    return SafeInkWell(
       onTap: () {
         _onItemTap(item, context);
       },

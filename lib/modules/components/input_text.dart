@@ -342,10 +342,11 @@ class _InputTextState extends State<InputText> {
     _focusNode.unfocus();
 
     final DateFormat dateFormat = DateFormat('yyyy/MM/dd');
+    final DateTime today = DateTime.now();
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
+      initialDate: today,
+      firstDate: today, // Prevent selecting past dates
       lastDate: DateTime(2100),
       confirmText: 'Aceptar',
       cancelText: 'Cancelar',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pawlly/components/debounce_gesture_detector.dart';
 
 class BotonCompartir extends StatelessWidget {
   const BotonCompartir({
@@ -63,7 +64,8 @@ class BotonCompartir extends StatelessWidget {
         const SizedBox(width: 8),
         // Segundo Flexible: siempre muestra el botón "Compartir"
         Flexible(
-          child: GestureDetector(
+          child: DebounceGestureDetector(
+            debounceDuration: const Duration(milliseconds: 500),
             onTap: onCompartir,
             child: Container(
               height: 32,

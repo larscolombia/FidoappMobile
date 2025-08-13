@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/safe_inkwell.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/integracion/controller/notificaciones/notificaciones_controller.dart';
 import 'package:pawlly/modules/notification/screens/notification_screens.dart';
@@ -28,7 +29,7 @@ class HeaderWiget extends StatelessWidget {
     return Row(
       children: [
         Container(
-          height: 120,
+          height: 140, // Aumentamos de 120 a 140 para dar más espacio
           width: width,
           padding: Styles.paddingAll,
           decoration: const BoxDecoration(
@@ -38,7 +39,7 @@ class HeaderWiget extends StatelessWidget {
             alignment: Alignment
                 .bottomCenter, // Alinea el contenido en la parte inferior
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20), // Aumentamos el padding vertical de 15 a 20
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment
@@ -71,10 +72,19 @@ class HeaderWiget extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      GestureDetector(
+                      SafeInkWell(
                         onTap: () {
-                          // Navegar a la vista de notificaciones
-                          Get.to(() => NotificationsScreen());
+                          // Solo navegar a notificaciones si Firebase está disponible
+                          if (notificationController != null) {
+                            Get.to(() => NotificationsScreen());
+                          } else {
+                            // Mostrar mensaje de que las notificaciones no están disponibles
+                            Get.snackbar(
+                              'Notificaciones',
+                              'Las notificaciones no están disponibles en este momento',
+                              snackPosition: SnackPosition.BOTTOM,
+                            );
+                          }
                         },
                         child: Container(
                           width: 43,
@@ -86,7 +96,7 @@ class HeaderWiget extends StatelessWidget {
                           child: Center(
                             child: Obx(() {
                               int unreadCount = notificationController
-                                  .countUnreadNotifications();
+                                      ?.countUnreadNotifications() ?? 0;
                               return Stack(
                                 children: [
                                   SvgPicture.asset(
@@ -125,7 +135,7 @@ class HeaderWiget extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 10), // Espacio entre los iconos
-                      GestureDetector(
+                      SafeInkWell(
                         onTap: () {
                           // Navegar a la vista de Dashboard
                           Get.toNamed(Routes.DASHBOARD);

@@ -81,8 +81,8 @@ class _FormularioVerificacionState extends State<FormularioVerificacion> {
                             SizedBox(
                               child: RecargaComponente(
                                 titulo: 'Cargar más',
-                                callback: () {
-                                  controller.fetchUserData(
+                                callbackAsync: () async {
+                                  await controller.fetchUserData(
                                       "${AuthServiceApis.dataCurrentUser.id}");
                                 },
                               ),

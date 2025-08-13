@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pawlly/components/debounce_gesture_detector.dart';
 import 'package:pawlly/modules/components/style.dart';
 
 class CustomCheckbox extends StatefulWidget {
@@ -36,7 +37,8 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return DebounceGestureDetector(
+      debounceDuration: const Duration(milliseconds: 200),
       onTap: () {
         setState(() {
           _isChecked = !_isChecked; // Cambia el estado

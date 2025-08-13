@@ -60,7 +60,7 @@ class _CursosEntrenamientoState extends State<CursosEntrenamiento> {
           children: [
             Container(
               width: double.infinity,
-              height: 148,
+              height: 168, // Aumentamos de 148 a 168 para acomodar el nuevo tamaño del HeaderNotification
               decoration: const BoxDecoration(
                 color: Styles.colorContainer,
               ),
@@ -145,8 +145,8 @@ class _CursosEntrenamientoState extends State<CursosEntrenamiento> {
                       ),
                       SizedBox(height: margen),
                       RecargaComponente(
-                        callback: () {
-                          cursosController.fetchCourses();
+                        callbackAsync: () async {
+                          await cursosController.fetchCourses();
                         },
                       ),
                       SizedBox(height: margen),

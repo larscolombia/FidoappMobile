@@ -65,7 +65,7 @@ class AppTheme {
           statusBarColor: scafoldColor,
         ),
       ),
-      dialogTheme: DialogTheme(shape: dialogShape()),
+  dialogTheme: DialogThemeData(shape: dialogShape()),
       pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
             TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
@@ -137,7 +137,7 @@ class AppTheme {
       ),
       dividerColor: borderColor.withOpacity(0.2),
       cardColor: cardDarkColor,
-      dialogTheme: DialogTheme(shape: dialogShape()),
+  dialogTheme: DialogThemeData(shape: dialogShape()),
       pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
             TargetPlatform.android: OpenUpwardsPageTransitionsBuilder(),
