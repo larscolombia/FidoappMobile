@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
-import 'package:pawlly/modules/components/custom_checkbox.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/widgets/card_profile_dog.dart';
@@ -84,13 +83,14 @@ class ProfileModal extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   RecargaComponente(
-                    callback: () {
-                      controller.fetchProfiles();
+                    callbackAsync: () async {
                       CustomSnackbar.show(
                         title: 'Actualizando',
                         message: 'Espere mientras se actualiza la información.',
                         isError: false,
                       );
+                      // fetchProfiles() is synchronous (returns void). Trigger it and let the async flow update UI.
+                      controller.fetchProfiles();
                     },
                   )
                 ],

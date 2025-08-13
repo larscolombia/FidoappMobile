@@ -64,9 +64,9 @@ class EbooksList extends StatelessWidget {
                         const SizedBox(height: 24),
                         RecargaComponente(
                           titulo: 'Recargar',
-                          callback: () {
+                          callbackAsync: () async {
                             print(controller.ebooks.value.length);
-                            controller.fetchEBooks();
+                            await controller.fetchEBooks();
                             print('Recargar');
                           },
                         ),
@@ -147,8 +147,8 @@ class EbooksList extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     RecargaComponente(
-                      callback: () {
-                        controller.fetchEBooks();
+                      callbackAsync: () async {
+                        await controller.fetchEBooks();
                       },
                     ),
                     const SizedBox(height: 100),

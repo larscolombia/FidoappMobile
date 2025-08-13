@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/debounce_gesture_detector.dart';
 import 'package:pawlly/modules/components/border_redondiado.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/recarga_componente.dart';
@@ -42,7 +43,7 @@ class Profecionales extends StatelessWidget {
                     child: Stack(
                       children: [
                         HeaderNotification(),
-                        const BorderRedondiado(top: 170)
+                        const BorderRedondiado(top: 190) // Aumentamos de 170 a 190 para acomodar el nuevo tamaño
                       ],
                     ),
                   ),
@@ -116,7 +117,8 @@ class Profecionales extends StatelessWidget {
                       children: controller.expertTags.map((tag) {
                         final isSelected = controller.type.value == tag;
 
-                        return GestureDetector(
+                        return DebounceGestureDetector(
+                          debounceDuration: const Duration(milliseconds: 300),
                           onTap: () {
                             // Filtra usuarios basados en el tag seleccionado
                             controller.filterUsersByExpert(tag);
@@ -192,8 +194,8 @@ class Profecionales extends StatelessWidget {
                 );
               }),
               RecargaComponente(
-                callback: () {
-                  controller.fetchUsers();
+                callbackAsync: () async {
+                  await controller.fetchUsers();
                 },
               ),
               SizedBox(height: 20),
@@ -219,7 +221,8 @@ class Selecboton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return DebounceGestureDetector(
+      debounceDuration: const Duration(milliseconds: 400),
       onTap: callback,
       child: Container(
         width: 100,

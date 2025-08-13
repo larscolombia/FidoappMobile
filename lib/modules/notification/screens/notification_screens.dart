@@ -89,7 +89,7 @@ class NotificationsScreen extends StatelessWidget {
 
   Widget _buildNotificationList(List<NotificationData> notifications, {required bool showTime}) {
     // ignore: unused_local_variable
-    NotificationController controller = Get.put(NotificationController());
+    NotificationController controller = Get.find<NotificationController>();
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -99,7 +99,9 @@ class NotificationsScreen extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             // Mostrar el detalle de la notificación
-            notification.isRead == 0 ? controller.updateNotification(notification.id) : null;
+            if (notification.isRead == 0 && controller != null) {
+              controller.updateNotification(notification.id);
+            }
 
             _showNotificationDetails(context, notification);
           },

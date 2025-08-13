@@ -45,6 +45,9 @@ class AuthServiceApis extends GetxController {
   static UserData dataCurrentUser = UserData();
   
   RxString deviceToken = 'null'.obs;
+  
+  // Variable para verificar si Firebase está inicializado
+  static bool isFirebaseInitialized = false;
 
   static Future<RegUserResp> createUser({required Map request}) async {
     return RegUserResp.fromJson(await handleResponse(await buildHttpResponse(APIEndPoints.register, request: request, method: HttpMethodType.POST)));
@@ -192,7 +195,8 @@ class AuthServiceApis extends GetxController {
       final userDataStr = prefs.getString(KEY_USER_DATA);
       final apiToken = prefs.getString(KEY_API_TOKEN);
       final isLogged = prefs.getBool(SharedPreferenceConst.IS_LOGGED_IN) ?? false;
-
+      
+      // NO requiere Firebase para cargar datos de sesión básicos
       print('User data string exists: ${userDataStr != null}');
       print('API token exists: ${apiToken != null}');
       print('Is logged in: $isLogged');

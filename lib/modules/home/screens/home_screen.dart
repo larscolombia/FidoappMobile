@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/safe_inkwell.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/calendar/activity_list.dart';
 import 'package:pawlly/modules/home/screens/calendar/calendar.dart';
+import 'package:pawlly/modules/home/screens/calendar/evento_list.dart';
 import 'package:pawlly/modules/home/screens/explore/entretaiment_blogs.dart';
 import 'package:pawlly/modules/home/screens/explore/explore_input.dart';
 import 'package:pawlly/modules/home/screens/explore/training_programs.dart';
@@ -58,14 +60,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final UserBalanceController userBalanceController = Get.put(UserBalanceController());
 
-  final NotificationController notificationController = Get.put(NotificationController());
+  final NotificationController notificationController = Get.find<NotificationController>();
 
-  final PushProvider pushProvider = Get.put(PushProvider());
+  // Inicializar PushProvider solo si Firebase está disponible
+  late final PushProvider? pushProvider;
 
   final UserProfileController profileController = Get.put(UserProfileController());
   @override
   void initState() {
     super.initState();
+    
+    // Inicializar PushProvider de manera segura
+    if (AuthServiceApis.isFirebaseInitialized) {
+      pushProvider = Get.put(PushProvider());
+      debugPrint('✅ PushProvider inicializado');
+    } else {
+      pushProvider = null;
+      debugPrint('⚠️ PushProvider no inicializado: Firebase no disponible');
+    }
+    
     if (profileController.user.value.profile == null) {
       profileController.fetchUserData('${AuthServiceApis.dataCurrentUser.id}');
     }
@@ -200,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(width: 10),
                   Flexible(
                     flex: 3,
-                    child: GestureDetector(
+                    child: SafeInkWell(
                       onTap: () {
                         Get.to(() => Profecionales());
                       },
@@ -230,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               overflow: TextOverflow.ellipsis, // Muestra "..." si el texto se desborda
                               style: TextStyle(
                                 color: Colors.black,
-                                fontFamily: "Lato",
+                                fontFamily: 'Lato',
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -382,87 +395,88 @@ class EventosProximos extends StatelessWidget {
             child: Container(
               child: Column(
                 children: nearestEvents.map((event) {
-                  return Container(
-                    width: MediaQuery.sizeOf(context).width * 100,
-                    decoration: BoxDecoration(
-                      color: Styles.fiveColor,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    margin: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: Center(
-                      child: Container(
-                        width: 300,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Styles.fiveColor,
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        margin: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: SizedBox(
-                          width: Styles.tamano(context),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                width: Styles.tamano(context) - 20,
-                                child: Text(
-                                  event.name,
+                  return SafeInkWell(
+                    onTap: () {
+                      // Navegar a la vista de detalle del evento (tap en cualquier parte de la ficha)
+                      calendarController.selectEventById(event.id.toString());
+                      Get.to(() => EventoDestalles(), arguments: event);
+                    },
+                    child: Container(
+                      width: MediaQuery.sizeOf(context).width * 100,
+                      decoration: BoxDecoration(
+                        color: Styles.fiveColor,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      margin: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: Center(
+                        child: Container(
+                          width: 300,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Styles.fiveColor,
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          margin: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: SizedBox(
+                            width: Styles.tamano(context),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 10),
+                                SizedBox(
+                                  width: Styles.tamano(context) - 20,
+                                  child: Text(
+                                    event.name,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800,
+                                      fontFamily: Styles.fuente1,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                // Mostrar descripción acortada; toda la tarjeta navega al detalle
+                                Text(
+                                  (event.description ?? '').trim(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w400,
                                     fontFamily: Styles.fuente1,
                                     color: Colors.black,
                                   ),
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  calendarController.toggleVerMas("${event.id}");
-                                },
-                                child: Obx(() {
-                                  return Text(
-                                    event.description ?? '',
-                                    maxLines: calendarController.isVerMas[event.id ?? ''] ?? false ? 4 : 1,
-                                    overflow: calendarController.isVerMas[event.id ?? 0] ?? false ? TextOverflow.visible : TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: Styles.fuente1,
-                                      color: Colors.black,
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Text(
+                                      calendarController.formatEventTime(event.eventime ?? "", event.date ?? "") ?? 'Hora no especificada',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Lato',
+                                        color: Colors.black,
+                                      ),
                                     ),
-                                  );
-                                }),
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Text(
-                                    calendarController.formatEventTime(event.eventime ?? "", event.date ?? "") ?? 'Hora no especificada',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: 'Lato',
-                                      color: Colors.black,
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      event.eventime ?? "",
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: Styles.fuente1,
+                                        color: Color(0XFFFc9214),
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Text(
-                                    event.eventime ?? "",
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: Styles.fuente1,
-                                      color: Color(0XFFFc9214),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

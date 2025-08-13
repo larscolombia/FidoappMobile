@@ -134,8 +134,8 @@ class _CommentsSectionState extends State<CommentsSection> {
             const SizedBox(height: 40),
             Center(
               child: RecargaComponente(
-                callback: () {
-                  comentariosController.fetchComments(widget.id, "user");
+                callbackAsync: () async {
+                  await comentariosController.fetchComments(widget.id, "user");
                 },
               ),
             ),

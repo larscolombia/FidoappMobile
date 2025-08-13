@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pawlly/components/button_default_widget.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
+import 'package:pawlly/components/debounce_gesture_detector.dart';
 import 'package:pawlly/modules/components/input_text.dart';
 import 'package:pawlly/modules/components/select_user.dart';
 import 'package:pawlly/modules/components/style.dart';
@@ -199,7 +200,8 @@ class Helper extends GetX {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        ...filteredUsers.map((user) => GestureDetector(
+                        ...filteredUsers.map((user) => DebounceGestureDetector(
+                          debounceDuration: const Duration(milliseconds: 300),
                           onTap: () {
                             userController.selectUser(user);
                           },

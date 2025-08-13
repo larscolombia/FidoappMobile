@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:pawlly/components/safe_inkwell.dart';
 import 'package:pawlly/modules/diario/diario.dart';
 import 'package:pawlly/modules/home/controllers/home_controller.dart';
 import 'package:pawlly/modules/home/screens/home_screen.dart';
@@ -93,8 +94,9 @@ class MenuOfNavigation extends GetView<HomeController> {
   }) {
     final bool isSelected = controller.selectedIndex.value == index;
 
-    return InkWell(
-      // Changed to InkWell for better touch area
+    return SafeInkWell(
+      // Changed to SafeInkWell for debounce protection
+      debounceDuration: const Duration(milliseconds: 300),
       onTap: () async {
         switch (index) {
           case 0:

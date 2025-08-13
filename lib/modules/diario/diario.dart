@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/input_busqueda.dart';
@@ -62,7 +61,7 @@ class _DiarioState extends State<Diario> {
           children: [
             Container(
               width: double.infinity,
-              height: 148,
+              height: 168, // Aumentamos de 148 a 168 para acomodar el nuevo tamaño del HeaderNotification
               decoration: const BoxDecoration(
                 color: Styles.blackColor,
               ),
@@ -111,8 +110,8 @@ class _DiarioState extends State<Diario> {
                               const SizedBox(width: 10),
                               Expanded(
                                 flex: 2,
-                                child: ElevatedButton(
-                                    onPressed: () {
+                child: ElevatedButton(
+                  onPressed: () {
                                       FiltrarActividad.show(
                                           context, historialClinicoController);
                                     },
@@ -149,8 +148,8 @@ class _DiarioState extends State<Diario> {
                           ),
                         ),
                         RecargaComponente(
-                          callback: () {
-                            historialClinicoController.fetchPetActivities(
+                          callbackAsync: () async {
+                            await historialClinicoController.fetchPetActivities(
                                 "${homeController.selectedProfile.value?.id ?? '-1'}");
                           },
                         ),

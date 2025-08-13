@@ -15,7 +15,7 @@ class HeaderNotification extends StatelessWidget {
   });
 
   final HomeController controller = Get.put(HomeController());
-  final NotificationController notificationController = Get.put(NotificationController());
+  final NotificationController notificationController = Get.find<NotificationController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class HeaderNotification extends StatelessWidget {
 
     return Container(
       color: Styles.fiveColor,
-      height: 140,
+      height: 160, // Aumentamos de 140 a 160 para dar más espacio
       child: Stack(
         children: [
           HeaderWiget(
@@ -34,7 +34,7 @@ class HeaderNotification extends StatelessWidget {
             subtitulo: subtitulo,
           ),
           Positioned(
-            top: 120,
+            top: 140, // Ajustamos de 120 a 140 para mantener la proporción
             left: 0,
             right: 0,
             child: Container(

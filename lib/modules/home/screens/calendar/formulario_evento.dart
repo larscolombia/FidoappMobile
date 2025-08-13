@@ -25,6 +25,7 @@ import 'package:pawlly/modules/integracion/model/lista_categoria_servicio/servic
 import 'package:pawlly/modules/integracion/model/servicio_entrenador_categoria/entrenador_servicio_model.dart' as TrainerCategory;
 import 'package:pawlly/modules/integracion/model/servicio_entrenador_categoria/service_duration.dart';
 import 'package:pawlly/services/auth_service_apis.dart';
+import 'package:intl/intl.dart';
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({Key? key}) : super(key: key);
@@ -68,6 +69,69 @@ class _CreateEventState extends State<CreateEvent> {
       default:
         return displayValue?.toLowerCase() ?? '';
     }
+  }
+
+  // Parse current event date and time into a local DateTime, or null if incomplete/invalid
+  DateTime? _parseEventDateTime() {
+    try {
+  final dynamic rawDate = calendarController.event.value['start_date'] ?? calendarController.event.value['date'];
+  final String? dateStrRaw = rawDate is String ? rawDate : null;
+  final dynamic rawTime = calendarController.event.value['event_time'];
+  final String? timeStr = rawTime is String ? rawTime : null;
+      if (dateStrRaw == null || dateStrRaw.isEmpty || timeStr == null || timeStr.isEmpty) return null;
+      // Normalizar separadores y limpiar
+      final String cleanedDate = dateStrRaw.trim().replaceAll('/', '-');
+      // Normalizar hora a HH:mm (añadir cero a la izquierda si hace falta)
+      final timePartsRaw = timeStr.split(':');
+      if (timePartsRaw.length < 2) return null;
+      final hourStr = timePartsRaw[0].padLeft(2, '0');
+      final minuteStr = timePartsRaw[1].padLeft(2, '0');
+      final normalizedTime = '$hourStr:$minuteStr';
+
+      // Patrones aceptados
+      final patterns = <String>['yyyy-MM-dd', 'dd-MM-yyyy', 'yyyy/MM/dd', 'dd/MM/yyyy'];
+      DateTime? dateOnly;
+      for (final p in patterns) {
+        try {
+          dateOnly = DateFormat(p).parseStrict(cleanedDate);
+          break;
+        } catch (_) {
+          continue;
+        }
+      }
+      if (dateOnly == null) {
+        debugPrint('[PARSE EVENTO][FALLA] rawDate=$dateStrRaw cleaned=$cleanedDate sin patrón coincidente');
+        return null;
+      }
+
+      int? hour = int.tryParse(hourStr);
+      int? minute = int.tryParse(minuteStr);
+      if (hour == null || minute == null) return null;
+
+      final parsed = DateTime(dateOnly.year, dateOnly.month, dateOnly.day, hour, minute);
+      debugPrint('[PARSE EVENTO] rawDate=$dateStrRaw -> dateOnly=$dateOnly time=$normalizedTime parsed=$parsed');
+      return parsed;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // Validación robusta: permite
+  // - cualquier fecha futura (independiente de la hora)
+  // - misma fecha con hora >= ahora (con tolerancia negativa de 2 minutos por desfases)
+  bool _isEventInPast(DateTime event) {
+  final now = DateTime.now();
+  final todayDateOnly = DateTime(now.year, now.month, now.day);
+  final eventDateOnly = DateTime(event.year, event.month, event.day);
+  // 1. Fecha futura => válido
+  if (eventDateOnly.isAfter(todayDateOnly)) return false;
+  // 2. Fecha pasada => inválido
+  if (eventDateOnly.isBefore(todayDateOnly)) return true;
+  // 3. Misma fecha: validar hora/minuto con tolerancia de -2 min
+  final toleranceMinutes = 2;
+  final adjustedNow = now.subtract(Duration(minutes: toleranceMinutes));
+  // Si el evento es antes del adjustedNow => pasado, de lo contrario válido
+  return event.isBefore(adjustedNow);
   }
 
   @override
@@ -674,6 +738,23 @@ class _CreateEventState extends State<CreateEvent> {
                                 isError: true,
                               );
                               return;
+                            }
+
+                            // Block events in the past (relative to device time)
+                            final DateTime? eventDateTime = _parseEventDateTime();
+                            if (eventDateTime != null) {
+                              final inPast = _isEventInPast(eventDateTime);
+                              debugPrint('[VALIDACION EVENTO] now=${DateTime.now()} event=$eventDateTime inPast=$inPast rawDate=' + (calendarController.event.value['start_date']?.toString() ?? calendarController.event.value['date']?.toString() ?? 'null') + ' rawTime=' + (calendarController.event.value['event_time']?.toString() ?? 'null'));
+                              if (inPast) {
+                                CustomSnackbar.show(
+                                  title: "Fecha y hora inválidas",
+                                  message: "No puedes crear eventos en fechas u horas anteriores a la actual.",
+                                  isError: true,
+                                );
+                                return;
+                              }
+                            } else {
+                              debugPrint('[VALIDACION EVENTO] Parse falló. Valores raw: date=' + (calendarController.event.value['start_date']?.toString() ?? calendarController.event.value['date']?.toString() ?? 'null') + ' time=' + (calendarController.event.value['event_time']?.toString() ?? 'null'));
                             }
 
                             // Validar que se haya seleccionado una persona si no está activado el checkbox de asignación aleatoria

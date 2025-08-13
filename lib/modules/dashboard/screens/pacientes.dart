@@ -23,7 +23,7 @@ class Pacientes extends StatelessWidget {
           children: [
             Positioned(top: 0, left: 0, right: 0, child: HeaderNotification()),
             Positioned(
-              top: 160, // Ajustar según la altura del HeaderNotification
+              top: 180, // Ajustamos de 160 a 180 según la nueva altura del HeaderNotification
               left: 0,
               right: 0,
               bottom: 0,

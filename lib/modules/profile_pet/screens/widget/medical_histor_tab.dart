@@ -147,8 +147,8 @@ class MedicalHistoryTab extends StatelessWidget {
             HistorialGrid(controller: medicalHistoryController),
             SizedBox(height: margen),
             RecargaComponente(
-              callback: () {
-                medicalHistoryController.fetchHistorialClinico(
+              callbackAsync: () async {
+                await medicalHistoryController.fetchHistorialClinico(
                     homeController.selectedProfile.value!.id);
               },
             ),

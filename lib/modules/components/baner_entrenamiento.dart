@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pawlly/components/safe_elevated_button.dart';
 import 'package:pawlly/styles/recursos.dart';
 import 'package:pawlly/styles/styles.dart';
 
@@ -158,8 +159,9 @@ class BanerEntrenamiento extends StatelessWidget {
                   // Botón "Seguir viendo"
                   SizedBox(
                     height: 28, // Reduje la altura del botón
-                    child: ElevatedButton(
+                    child: SafeElevatedButton(
                       onPressed: callback,
+                      debounceDuration: const Duration(milliseconds: 500),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Styles.primaryColor,
                         padding: const EdgeInsets.symmetric(

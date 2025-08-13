@@ -270,9 +270,8 @@ class _VideoListState extends State<VideoList> {
             }),
           ),
           RecargaComponente(
-            callback: () {
-              courseController.fetchCourses();
-              print('Recargar');
+            callbackAsync: () async {
+              await courseController.fetchCourses();
             },
           ),
         ],

@@ -409,8 +409,8 @@ class _LibroDetallesState extends State<LibroDetalles> {
                             );
                           }),
                           RecargaComponente(
-                            callback: () {
-                              commentController.fetchComments(id, "books");
+                            callbackAsync: () async {
+                              await commentController.fetchComments(id, "books");
                             },
                           ),
                           const SizedBox(height: 50),

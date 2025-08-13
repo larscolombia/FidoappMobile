@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:pawlly/components/custom_snackbar.dart';
+import 'package:pawlly/components/debounce_gesture_detector.dart';
 import 'package:pawlly/modules/integracion/controller/herramientas/herramientas_controller.dart';
 import 'package:pawlly/modules/integracion/controller/soun/soun_controller.dart';
 import 'package:pawlly/styles/styles.dart';
@@ -114,7 +115,8 @@ class ToolWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return DebounceGestureDetector(
+      debounceDuration: const Duration(milliseconds: 800), // Más tiempo para sonidos
       onTap: () async {
         if (audioUrl.isNotEmpty) {
           await Get.find<SounController>().urlSound(audioUrl);
