@@ -56,3 +56,6 @@ ios/Flutter/flutter_export_environment.sh
 /android/key.properties
 
 .docs/
+
+# Play Store service account credentials (no subir a git)
+play-service-account.json

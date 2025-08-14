@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'com.google.gms.google-services'
     id 'dev.flutter.flutter-gradle-plugin'
+    id 'com.github.triplet.play'
 }
 
 def localProperties = new Properties()
@@ -50,8 +51,9 @@ android {
         applicationId "com.fidoapp.customer"
         minSdkVersion 26
         targetSdkVersion 35
-        versionCode 15
-        versionName "1.16.0"
+    // Synchronized with pubspec.yaml version: 1.16.1+16
+    versionCode 16
+    versionName "1.16.1"
         multiDexEnabled true
     }
 
@@ -73,7 +75,7 @@ android {
             if (keystorePropertiesFile.exists() &&
                 keystoreProperties.containsKey('storeFile') &&
                 keystoreProperties['storeFile'] != null &&
-                keystoreProperties['storeFile'].toString().isNotEmpty()) {
+                !keystoreProperties['storeFile'].toString().trim().isEmpty()) {
                 signingConfig signingConfigs.release
             }
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -100,4 +102,17 @@ dependencies {
 
 flutter {
     source = "../.."
+}
+
+// Configuración Gradle Play Publisher (subida desde consola)
+play {
+    // Ruta al JSON de la cuenta de servicio (añadir a .gitignore si no está)
+    def credFile = rootProject.file("play-service-account.json")
+    if (credFile.exists()) {
+        serviceAccountCredentials.set(credFile)
+    }
+    track.set("internal") // Cambiar a production cuando corresponda
+    defaultToAppBundles.set(true)
+    releaseStatus.set(com.github.triplet.gradle.androidpublisher.ReleaseStatus.DRAFT)
+    // Notas mínimas en español; para múltiples idiomas usar releaseNotes block avanzado
 }
